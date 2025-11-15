@@ -1,0 +1,462 @@
+2025年11月3日 上午 11:34|44分钟 27秒
+
+关键词:
+certain ways、certain things、own level、chat gbd、certain prompt、own perspective、certain types、chat gmv、more problems、Few times、many ways、better answers、different questions、own law、certain extent、certain roles
+
+文字记录:
+说话人 1 00:02 
+Okay, so thanks, Vincent, for, you know, taking time to do this, you know, the first of question we will start with yourself. So very briefly, you can just speak about your educational background as well as your professional background. If you are working, you know, what do you do and so on. We will start from there.
+
+说话人 2 00:24 
+Okay, so my, I am currently stuck. Sorry, I am studying in NTU, so in chemical engineering degree with a second major in business. I see this is my studies and actually I'm also currently working on a project, right? So I consider it as work, right? So this work, right, is actually working with a team of two to three people. And there is, of course, the supervisor, which are the professors, yeah, us that are also working on this task.
+
+说话人 2 01:09 
+Yeah, so this is actually a process, modeling process, correct? So it's consider as a dry lab, I would say, meaning we will be playing around with tools, softwares, right, that can help us to develop a better process model so that when we discuss with the outside team, right, like for example, the company, when they come down to NPU to do visit and update on our progress, right? Then we can better explain to them, oh, actually, what's the rationale behind doing certain things? Because the software can actually lay out things very clear. Really? Eh? Okay. It's a very good software because it knows all the chemical properties in terms of, let's say I want over here, I want 80% conversion, right? So I can just easily tweak the my conditions and it can immediately reflect what is the energy use or what is the energy release plus the what is the property of the product gas. For example, if it's in liquid, then it will show it's in liquid or gas or maybe a composition of both. So yeah, this job actually relies very heavily on AI. Maybe you can ask more about that.
+
+说话人 1 02:25 
+Yes, yes.
+
+说话人 2 02:27 
+And okay. Okay. Maybe I can explain a little bit more how I use Gai in education, right? Okay, so it's actually also very important to me because I rely quite heavily, a lot, quite heavily on this Gai for education in terms of some projects that we will need to do along the way. So it's part of the cost guideline.
+
+说话人 2 02:54 
+Like for example, okay, so this assignment is to generate an essay, for example, an email, 300 words. So then I will generate my own ideas and then I will throw into Ji and us to refine us to check grammar, ask for like maybe some creative ideas that can potentially get me some marks. And then or some maybe related to presentation, then I would say things like, okay, so can you help me refine my speech in a more creative way or more engaging way? Then they'll actually help to do it quite nicely, I will say, because most of the time is quite reliable and I will get the outcome that I expect. So I quite like it and I rely quite heavily on it.
+
+说话人 1 03:42 
+Emiliam. Okay, thanks, Wen Jin. Just, yeah, I think I want to probe some of the things you said. But before we go on a, if you compare yourself with your peer group, would you consider yourself like an earlier doctor of technology? Generally speaking.
+
+说话人 2 04:01 
+I feel like among my peers, right, everybody adopts very quickly. So I wouldn't put myself ahead of, yeah, but maybe we all are progressing quite.
+
+说话人 1 04:11 
+Equally. Yeah, so basically, because your group also earlier doctors, you also one of them, I would, I can say that.
+
+说话人 2 04:19 
+That's correct.
+
+说话人 1 04:20 
+Okay. Okay. Now this a tool that you're talking about two things. One was your project, the other one was your academic work. And you said you do depend quite a bit on both for both, right? The first one, the process control modeling. What are the different gene generative AI tools that you generally use? Can you name some of them?
+
+说话人 2 04:41 
+Okay, so we do quite a lot on chat GBT. Chat GBT, I would think that chat GBT is one of the heaviest tool that we use for this project. So, okay, like, let's see, the supervisor tells us, okay, I want.
+
+说话人 2 05:00 
+1, a separate, okay, let's say a mixture of a and B. And I want to separate a and B, but then chemically is not so easy because their properties are pretty similar. So there is no very clear way to separate these two. So then definitely we'll need to research like, okay, are there any direction that we can look into? So like, for example, adding an trainer. So, and trainer is basically compound C that when you add into the, make sure AB and C, when they come together, right, this C can actually break apart the property of a and B. So it's easier to separate. Okay, yeah, correct.
+
+说话人 2 05:40 
+So this is what we promise to chat GBT. So we say, okay, how to separate a and B and below that, we say, okay, find me a few articles. Then the chat GBT will generate some important articles that are very relevant and can help us with our planning. And not just that, we also use quite heavily on guiding us with how we go about working with the software. So just now, I was mentioning the software, right? Actually, the software is expand plus.
+
+说话人 1 06:16 
+So, okay, can I have a spelling? Aspen, is it?
+
+说话人 2 06:20 
+Yes, that's correct. ASPN and then plus plus.
+
+说话人 1 06:23 
+Okay. Yeah, go on.
+
+说话人 2 06:25 
+This tool is a bit complicated because like what I previously mention, it is very good in terms of helping us to calculate all the chemical properties and all the behaviors and all these things, right? So definitely there are a lot of things input inside ready and when we use it, right? Of course, we don't know what is the full functionality of these two and how to use. So like if suddenly, okay, now we need to use a distillation column. So okay, we don't know what are the important parameters that we need to input, right? So then we will use, we will check with you, will say, okay, this distillation column, let's call it the stwu for now, right? So then we type in, okay, dscw, is it suitable for us to model this separation? Or maybe another distillation will be more efficient. For example, Red Flag. There's also another distillation column called Red Flag and it's different in terms of the conversion and how the column works. So, okay, different column, you input different things and the output will be different also depending on what you want. So then we will say, okay, this is what we want. So which column is most suitable? So yeah, this kind of prompts what we put inside chat in Vicky and it can actually guide us very well.
+
+说话人 1 07:45 
+Okay. Okay. So you find it a quite a useful tool to enable you to work with Aspen plus LA for this project. I understand. Did you mention that the professors also encourage you to use it?
+
+说话人 2 08:03 
+Actually, they never tell us that we can use strategy before, but. Oh, I see. Yes. Yeah, you just, we use it and we just show our result. But of course, we need to make it credible. We cannot just say that, okay, try to make these days.
+
+说话人 1 08:18 
+Blah, blah. So, yeah.
+
+说话人 2 08:20 
+Yeah, we, we work, we use that as a guidance for us to work on our result and we show our result to broad.
+
+说话人 1 08:27 
+Okay, we will probe this area a little better. I think that's very interesting. Eh, so basically your, the nature of your work is the two prompt. One is you use it for your studies. The other one is you use it for this project, which is very a kind of task base, right? It's more like work. So correct. So subsequent questions are the rest of the questions that follow. You can base it on either of these scenario because you seem to be using for both, right? So, you know, I more, I whichever is more appropriate or more relevant for that question. You can you can s model it on that scenarios. Okay, carriana. So, okay, you said you're quite reliant. So I presume then what is the frequency of your use in a week? Every day? Few times a day.
+
+说话人 2 09:16 
+Yeah, I guess it's safe to say every day.
+
+说话人 1 09:19 
+So every day. Okay. Okay. So in that sense, you're very frequent user and what do you think your, I know your self efficacy rating is high. So you feel you're very equipped to deal with the generative AI tool LA, like you're quite advanced in terms of, yeah, okay, you've been attending the university courses are okay. So now moving on to the next part. Now what I'm going to do is that we will prove the usage pattern, which is the how of it. So first part is on when you actually initiate in session with your generative. AI tool. Okay, the first part is on that. So my question is based on your frequently used scenario, when you decide that, okay, let, I want to check something with chat DBT, you start your interaction, right? Is there any print, any preparation on your part? Or is it like, okay, let's start and it just straight away start a prompt.
+
+说话人 2 10:21 
+Okay, usually when when we when I get stuck on a task, right, then my instinct is to go to chat GBD if the task is so easy that I don't need it, right, then I usually won't get to it. And but usually when I go to it as a prom, right, there is not like, okay, so what do I have to plan to say? Because it's pretty obvious, right? Like if I get stuck, meaning that this is the problem, I'll just show you through the problem into chat GMV.
+
+说话人 2 10:50 
+He ask for a certain guy, but after I put in my whole long text of, let's say if I want them to refine my paragraph. So yeah, I'm showing the whole paragraph and then below, right, I will give the specific instruction. So I will say things like, okay, refine my essay to make it flow smoother, make it more grammatically correct. Make it, let's say if there's a word count, then I'll say, okay, I want you keep to this word count and try to paraphrase a bit and keep all the important points. And then I'll send. Yeah, pretty much like that. So my bottom paragraph is usually set up instruction that I delge chat unity to do with my work.
+
+说话人 1 11:35 
+So Vincent in I think what I understand is that if a task, something you have to do is something you're very familiar with, then you don't generally think of activating the generative AI LA. But if you're stuck or you want some extra help, that is when you start a session, right?
+
+说话人 2 11:59 
+Oh, okay. If I want some extra guidance, right? So meaning like, for example, yeah, correct. What you say is correct. So if I understand, then I need chat gbds help to think a bit for me. Then I will go to.
+
+说话人 1 12:14 
+It. Okay, but if you're very confident of accomplishing it yourself or then you don't really activate, right?
+
+说话人 2 12:23 
+Yeah, that's correct. Or some less cases where I think it's not necessary to go chat GBD. Like for example, yeah, it's just a very small task that, you know, the outcome is just not really that important, right? Then I just do it myself.
+
+说话人 1 12:37 
+Okay. Okay. I think I got a Sam, the the what ex the description that you gave me about the task about in this essay, right? So what I see the pattern is that you generally provide like a fairly detailed context and then you give the instruction after the context. Am I right? Okay. So basically you start with providing most of the information needed by the generative AI tool to give you the, I'll put you one then, right? Are you in the habit of dividing the task into smaller parts, maybe because it's too complex or maybe you think that will give you the best results.
+
+说话人 2 13:19 
+Yeah, actually that happens before. Sometimes when I give two complicated instructions or, oh, that's the instruction is too demanding, right? Like for example, I give a 1,000 word and then I tell you to summarize to 500 words. Sometimes they cannot do it. I will break it down. So I will copy paste paragraph by paragraph. I will say, okay, now summarize this paragraph, summarize that paragraph. And if this doesn't work right, then I will go more in detail to sentence. So for example, if I realize this sentence, it's like is, is there, it may be good, but actually if we remove it, it doesn't really matter too much, right? Then I will just show you the gnbd. I'll say like, okay, maybe you can merge two sentences into one. You can try to omit this sentence and see if the whole paragraph makes sense. So things like this.
+
+说话人 1 14:09 
+Yeah, okay, understand. Okay. Now you see in the course of your interaction with your genetic way, actually ChatGPT here. Have you noticed that it is very good with certain types of stars? And at the same time, we can certain other types of task. Can you give me some examples of either one of both? Something it's very weird, something it's poorer.
+
+说话人 2 14:36 
+Yeah, I do realize this before. So when it comes to technicalities, right, usually it can do well.
+
+说话人 1 14:47 
+Technicalities that, can you give me an example like in this case?
+
+说话人 2 14:51 
+So meaning, let's say if in my election notes, right, this part I don't understand. I don't, I take a screenshot and I send it in. To chat GBD and I ask to explain how step 1 goes to step 2, right? Generally you can explain pretty well because yeah, it is pretty good with all these technical case. And also sometimes, let's say again, using the, the, the software, the expense software, right? Yeah, I ask how to do, how to model this, how to this and that, right? And they can actually help me very well in this aspect. So this is something that I think is always good to reach out to chat GBD. And yeah, and it can actually help me, guide me quite clearly.
+
+说话人 1 15:37 
+Okay. Okay. But the parts that you s you believe they're not so good at.
+
+说话人 2 15:43 
+Okay, I think the part that, okay, I wouldn't say it's not so good at, but it's more towards, I need to prompt it better to respond. Okay. In a more my my to produce the result that I like more is that sometimes when I ask to refine or paraphrase paragraphs, right, it cannot really do what I want them to do, even though my instructions are clear. Like for example, if I say 500 word, reduce to 300 words, right? You always should 300 words. You will stop at like probably 400 something. Then I will need to further reduce.
+
+说话人 2 16:21 
+And then sometimes, because we in university, we sometimes refer to seniors work. So we need to ask chat to help us to paraphrase a bit, right? So that we don't get detected plagiarism. And then you actually remove the main points. So I was like, oh.
+
+说话人 1 16:39 
+So it doesn't seem to really understand what to take. Outline that sensor, it.
+
+说话人 2 16:44 
+Will understand. But I have Learned that certain prompt is required. Like I need to structure my prompt properly. I will need to say things like, okay, paraphrase, but keep all the main points in the paragraph. Then only we can do what I wanna do. And then sometimes, right, it's like, okay, because now I reduce to reducing the word count from paragraph to paragraph instead of the whole essay, right? Just to make sure that it can actually target a specific portion more wholly. So then let's say I put in paragraph 1 and if he actually help to reduce work count and paraphrase a bit. Ready? Okay, that's good.
+
+说话人 2 17:25 
+Then I send in paragraph 2. Then, okay, you can do the same thing also. Then later, by the third prom, right? I sent in the third paragraph, right? Then it will start to be less and less already. Meaning they paraphrase, less and less is more towards the original text that I sent in. So then I always need to remind, yeah, I always need to send again the instruction problem to.
+
+说话人 1 17:47 
+Make sure. Yeah, interesting us.
+
+说话人 2 17:50 
+Right. In a way, make it consider as a new prom, you know, even though it's the same prom, but it's always a concern. Rather than, yes.
+
+说话人 1 18:01 
+So, okay. Okay. So basically, I see that I, I, I, it is maybe because you're using the free version, right? So it has 6 limitations LA. So unless you tell very specifically to look, lock the scope and keep the scope constant until I ask you to change or something, everything. So you sort of deliberately tell the chat GBT to refer back to the original scope, the context or something, you know, then it's, I think it tends to use new information, LA or something like that. Okay. Okay.
+
+说话人 1 18:36 
+Now go on to, you mentioned earlier that you tend to use it more for task, then you either need help with or it's a bit too complex. So, oh, you don't you're not very familiar and that sort of thing, right? So are you the habit of assigning certain roles to ChatGPT, saying, you know, from the viewpoint of a researcher or the from the viewpoint of a professor. How do you evaluate or how will you Mark this or what grading will you do? How will you grade my essay? Do you do that something?
+
+说话人 2 19:13 
+Oh, that's actually a very interesting perspective. But I actually haven't done this before. The time when I use Chat GBT, right? I come from my own perspective.
+
+说话人 1 19:24 
+Okay. Okay. Mandarin. Okay. So basically you don't assign roles LA in your use.
+
+说话人 2 19:30 
+Okay. Yeah, correct.
+
+说话人 1 19:31 
+This. And if let's say, just hypothetically speaking, let's say there is something that you have to do, but you really have no knowledge, no prior knowledge at all, okay, in such a situation, how will you start your interaction?
+
+说话人 2 19:48 
+Okay, then I will throw in the instruction into chat GVD and then I'll say generate a few directions that I can work with. Then I will analyze. Each direction and then I see which one aligns with what I like to do most and then I will continue from there. I.
+
+说话人 1 20:07 
+See. Okay. Do you do like, eh, you go elsewhere to get a, like a understanding first, for example, the wiki or Google Scholar. Do you have that habit of doing it?
+
+说话人 2 20:22 
+I, yeah, I, I believes, I believe so if sometimes things I don't understand, like specific word or specific theories or concepts, and I will try understand more about it. Then after that, if I still have no direction to start with, right, I will just use Chat GMV team. Okay.
+
+说话人 1 20:45 
+Okay. Now going through your pre pre survey, the pre interview survey, you, you, I see that you have untaken some university courses, but other than that yourself taught is it in the use of Gen AR now? Are you in the habit of keeping libraries of your most frequently used from so you can sort of tailor it or, you know, tweak it a little bit and reuse and so on.
+
+说话人 2 21:11 
+No, I never keep those prompts, even though is it can be quite handy sometimes.
+
+说话人 1 21:16 
+Okay. Okay. Now I'm gonna go into the trust aspect. So you, you, you, sorry, before that, can I know roughly which year you started using chat GBD?
+
+说话人 2 21:29 
+I believe it's the first year that it's launch.
+
+说话人 1 21:33 
+20,2019 and 2020.
+
+说话人 2 21:38 
+What about changing, Vicky? I don't, I'm not sure if all the way back to 2019 dollars.
+
+说话人 1 21:43 
+Okay, maybe version 3. And I think people were starting to use it.
+
+说话人 2 21:48 
+Yeah, yeah, correct. When you start to get.
+
+说话人 1 21:51 
+GBD3. Okay, that could be LA. Okay, now you're going to Strust. So first question is, you know, before you started using whichever version of ChatGPT, you may have some perception, right, of these tools. You know, these tools are available, you may have heard about them. What was your so called initial level of trust before you started using it and how has the trust changed since you, you know, you started using, now you're like consider to be a heavy user. So the question you can just use a rough percentage LA. So I some s before and after.
+
+说话人 2 22:35 
+So before I, of course, I'm a bit skeptical. I don't actually know the functionality and I tend to be more redundant to use. But as I use it, right, I realize it can actually solve more and more problems. Then that's why my reliance on this AI tool becomes more and more. So in terms of trust, I would, I guess I would say around like six, 70% increase in trust as I can.
+
+说话人 1 23:10 
+Okay, so initial one, where do you want to keep it? 10% or zero?
+
+说话人 2 23:15 
+Oh, initial trust. Let me see. I guess when I first heard about it, percent.
+
+说话人 1 23:25 
+So you actually were encouraged by the results you got in that sense?
+
+说话人 2 23:30 
+Yeah, yeah, correct.
+
+说话人 1 23:32 
+Cuz you were skeptical at first, but then with use you thought, oh, okay, this is helping you in many ways. So that's where the improvement came from. Yeah, correct. Okay.
+
+说话人 1 23:42 
+Now, you know, the next question is trust related, but you using it heavily for your work and your studies. So how often do you like go back and verify something that some results that you got from ChatGPT using another source, whichever source it maybe we call it validation. Do you do that?
+
+说话人 2 24:09 
+Very ready. But the only thing that I can think of now, right, is I would say things like paraphrase this paragraph in a way that is not so easy to be detected by plagiarism. And also AI. Do you help me generate? I'm trying to a different a tool like for example, 0 GBP or I don't remember what's the other tools. Basically tools that detect AI tools for detecting pagerism. Oh, okay, cool. Paraphrase some more. I think what's the tool that actually is pretty good in paraphrasing already.
+
+说话人 1 24:54 
+So that you have another alternate tool on it that you can check, run it through.
+
+说话人 2 24:59 
+But. I hate. I very seldomly use them, honestly. Sometimes I just don't care because I come to realize that, like, for example, 0 GBT that detects AI, right, is actually pretty useless. Like the school users turn it in.
+
+说话人 1 25:15 
+And turn yes for.
+
+说话人 2 25:17 
+Yes.
+
+说话人 1 25:19 
+Authenticates.
+
+说话人 2 25:21 
+Ye. And that is the school official yes, AI detection system, right? So when my work got submitted up there, right, turn it in, detected at 0% AI. But when I put in the same text into 0 GBT, it detected as 60%. So then I just gave up using GB.
+
+说话人 1 25:43 
+Oh, I see. Okay. So in this instance, you did some Checkla, but you didn't get very good results there. So you have stop using all this validation, right? Okay. Now, the next question is, you know, the I, I, have you ever had this experience where ChatGPT came back to you and said, can you give me a more information on this context to so that I can help you, you know, like as in it's clarifying, as in asking you for more information, more input. Have you had that?
+
+说话人 2 26:18 
+Usually no. Honestly, maybe out of 50 cases, only one case they will ask for some clarification. Very rarely. LA, most of the time, right? Correct. Most of the time, right, if I give them limited information that they cannot work with, right? They just assume things and they just proceed over the answer, okay, which sometimes can lead to mistakes because. I don't understand the solution right? And I just copy paste everything. Then it becomes very problematic already.
+
+说话人 2 26:48 
+yessudden south daishan。 I give them from, sorry, I get a prompt, but if I feel that the prompt is not complete, right, then at the bottom in the instruction, I will say like, okay, if any information is not present, right, let me know and I will.
+
+说话人 1 27:07 
+Give you information. Yeah, so you're saying that it has a tendency of filling up information on its own law, assuming some stuff without clarify. Definitely. So you have to specifically remind it to ask you rather than assume. Yeah, how about times when it gives you some answers, but also gives you this descriptor saying, oh, no, maybe I'm not sure. Like it expresses something that makes you wonder whether it's sure, like I'm not sure of this answer, like a human would say, right? If you ask a friend for some help, the friend might say, it might be this, I'm not sure. So do you have that experience with your chargeability as well?
+
+说话人 2 27:54 
+Very rarely, really. In, in very sometimes in some cases, I manage to find that. But most of the time after it generates an answer, right, then it will say, okay, do you need me to work further with this result or do you need, yeah, generate a graph and things like.
+
+说话人 1 28:15 
+That? Yeah, yeah, yeah, yes. Okay. So you don't generally have this AI sounding unsure of. Okay, Vincent. Now the last part that I'll come into the few last few sections. So here it's about your collaborative nature of interaction. You start with a prompt. You said you give provide the, you do provide the context and you provide all the different questions that you need the ChatGPT to or the conditions and so on, right? This iterative interaction roughly on an average, how many times do you go back and forth? Sorry? How many times? Yeah, yeah, roughly here.
+
+说话人 2 29:02 
+Maybe around three times a day.
+
+说话人 1 29:07 
+Three times, three back and forth.
+
+说话人 2 29:13 
+Actually, I don't really get a question. Do you mean how many exchanges that. Yeah, I do. With chat GBD in one conversation? Is it?
+
+说话人 1 29:23 
+Yeah, you know, it is normally a session is you start your prompt, the initial prompt, then there's a little bit of back and forth and then you end, right? So my question is, how many back and forth before you end? You know, so in a normal session, yeah.
+
+说话人 2 29:38 
+On an average, is this pretty difficult to give you a fix answer? I would say most of my exchanges, right, the conversation goes on to quite long, maybe quite long to above 10 prompts, because I'll keep going back and forth to produce most the in the draft that I feel is most convincing before I submit my work. Yeah, when I start a conversation for task, let's say this is SAA, right? For remaining everything that is related to sea, I will always go back to this from.
+
+说话人 1 30:12 
+Okay. Okay. So you're one of those who will take it until you're really satisfied long. So 10.
+
+说话人 2 30:18 
+Of me. Yeah, correct.
+
+说话人 1 30:20 
+So, okay, I the normal ending of your session, I guess then it's when you get what you require and you're happy, satisfied, or have you also had experiences when you feel like there is no point so might as well abandon.
+
+说话人 2 30:38 
+I'll say both also relatable.
+
+说话人 1 30:42 
+Okay. Any examples?
+
+说话人 2 30:45 
+I mean, if I get my answer and I'm satisfy, I'll just leave the chat. Yeah, and proceed on. Then what's the second one that you mention?
+
+说话人 1 30:59 
+If let's say you feel that there's really no point, you know, you do a few back and forth, but it, then it doesn't seem to be progressing in the direction you actually have in mind. So.
+
+说话人 2 31:11 
+This works also, this, unless also what I feel like if I want check to give me some guidance, let's say if I'm using Excel and I don't know how to bring up this feature. Yeah, I ask for some suggestion and it keep giving me the suggestion that I really cannot find. Okay, I try to twist my words and try to ask from a different perspective and it just keeps coming back to the same point, right? Then I will give up and I will maybe start searching on YouTube.
+
+说话人 1 31:41 
+Yes. Okay, okay, okay. How about the times when it you get the you catch charge GPT hallucinating or contradicting itself. It said something. To you do it this way and then you contradicts.
+
+说话人 2 31:55 
+So some of the times it does. So I will always need to check its work.
+
+说话人 1 32:00 
+So you have had that experience, LA? Alpha, any examples you can think of?
+
+说话人 2 32:07 
+Like sometimes even simple calculation, right? Yeah, I ask because I'm lazy. Attack into a calculator, then checking is pretty good at that, right? Then sometimes it will come up with its own formula because I ask them to clear, show all the workings, then it will show all the workings. It will say things like, for example, using like 5*2 equals to 11. Oh, then, yeah, okay, this is just a very wrong example. But basically the point is that mathematics, very simple error is like, no, I guess sometimes it can be more complicated errors. Like let's say I say, okay, use the value of t equals to 5. It will use, let's say it will use 6 and then they will use 6 to work along until the final answer. Then when I check back, then I'll from me, like, no, t is supposed to be 5:00,15.
+
+说话人 1 33:04 
+Oh, so you have to recheck this kind of errors.
+
+说话人 2 33:08 
+Yeah, yeah, correct.
+
+说话人 1 33:09 
+Okay. Okay. Now we're gonna go into the effects of the your ChatGPT use on your professional skills or anything else you wanna add China. So for example, let's say since you started collaborating with ChatGPT so regularly in your work study and so on, have you observed any noticeable changes in the way you work as a professional at your project or as a student.
+
+说话人 2 33:34 
+Him more heavy reliance on chat DBT.
+
+说话人 1 33:37 
+Yeah, yeah, I think so. Definitely. So you tend to be like, I, I, as it become like a tool that you cannot live without.
+
+说话人 2 33:49 
+I'll see almost certain extent. I have to agree.
+
+说话人 1 33:53 
+Oh, I see. So has made you lazy. You.
+
+说话人 2 34:01 
+Think less provide better answers? Yeah, I will see. So like in some of the cases that I'm supposed to think more critically, right, then it becomes that chat ability is thinking for me. Then I can save up quite a bit of time and can use this for other purpose.
+
+说话人 1 34:21 
+Okay, so in a way, you're saying that you are saving some time, so maybe working a little efficiently, but you are relying too much on it. So in terms of your own critical thinking, you are using less of weight long.
+
+说话人 2 34:34 
+Yeah, correct.
+
+说话人 1 34:36 
+You know, I was looking at your survey. And you actually indicated that you enjoy all the, a high level cognitive kind of task, the complex problems and so on. Hum and you like to like, you like something that involves deep thinking, deep analysis and that sort of thing, right?
+
+说话人 2 35:01 
+But honestly, if the topic is my interested topic, then yeah, I guess you don't mind doing this kind of deep thinking, but sometimes assignments, right, they're really, I would think that they're pretty like pointless. So then I don't want to waste my brain following.
+
+说话人 1 35:18 
+Here. Oh, okay. Okay. So yeah, so I think the important factor there is your personal interest law. You find something like interest you stimulates you, then yeah, you don't mind. But otherwise, just delegate the work to chat if it is it something like that, correct. Okay. See, I tell you something. And when you use, I mean, you're regular user, you're active, very heavy user and so on. There's actually some tradeoff going on, right? You doing things faster, it's convenient. And then there's this accuracy problem that you were talking about, right? And then you tend to spend time verifying cuz you'd have to run through, make sure that all the instructions are followed. You know, the 5 is not a 6, the 6 is 8, that sort of thing. So there's a certain balancing act going on. You know, your speed versus your convenience versus accuracy. Do you, are you aware of it?
+
+说话人 2 36:16 
+Yeah, yeah, yeah, of course.
+
+说话人 1 36:18 
+Does it bother you? What do you do about it? So when do you draw the line?
+
+说话人 2 36:23 
+I guess it bothers me, but then still, most of the time, right, I realize that it can generate better answer compared to myself. So it can produce a better result. So then I never really draw a straight line saying, okay, this is getting out of hand and I need to start relying on myself more. I never do that, but at both, right? What I do to make sure that I still. You, you know, brainstorm on ideas before I actually rely heavily on it, right? Is that, yeah, first list down what is my working.
+
+说话人 1 37:02 
+From your thoughts.
+
+说话人 2 37:03 
+Put it into chat GBT. And then I use chat GBT as a comparison. And yes, to see who is actually correct. Okay.
+
+说话人 1 37:10 
+Okay, okay. So that's good. So you still do your own stuff and then try to see whether there's some overlap between what you think and what chargeability suggest. And how about times when something that chat picture GBD suggested to you change the way you think about a problem. Have you had that.
+
+说话人 2 37:37 
+Like this of moment? I mean, most of the time it does, right? Because chat GBD generally give a more concise answer and a more correct answer. So human tend to make mistakes and sometimes learning new theories, we don't know what is the actual way to start with. So then after looking at chat, you believe answer, I tend to pivot quite heavily to their suggestion and then, yeah, use that to change my working.
+
+说话人 1 38:08 
+Okay. Okay. I sort of look at your survey and I think you indicated that somehow you, I mean, you tend to rely on traffic, chat, GMV, but the same time you also try to cons kind of take some control yourself.
+
+说话人 2 38:28 
+Yeah, in certain ways you.
+
+说话人 1 38:32 
+Are in control, right? Not so much. You don't just let ChatGPT guide you whichever way, right?
+
+说话人 2 38:37 
+Yeah, that's why I do fact checking. And let's say I think this doesn't suit me, then I will from in a way that they generate a response I prefer better.
+
+说话人 1 38:48 
+So it's like, okay, okay, a lot of collaboration, but then there's also work on your part to verify, make sure that it's in line with your own thoughts and that sort of thing.
+
+说话人 2 38:58 
+But yeah, yeah, that's correct. Okay.
+
+说话人 1 39:00 
+Okay. I think we, the last section is on your wish list and say if you have no technological constraints, what are the three, top three things you wish ChatGPT could do better in future? The few.
+
+说话人 2 39:20 
+Understand prompts better and obey to it. Meaning like, let's say I want 300 words, right? Meaning you really do to 300 words.
+
+说话人 1 39:34 
+And so very closely LA.
+
+说话人 2 39:36 
+And secondly, I guess more coverage of information. So meaning like, let's say if I type in, okay, how to plot a graph in Excel, let's say that, right? And then it will give me definitely some instructions. But sometimes the instruction that they give, right, if it's not applicable to my laptop or sometimes they, okay, let let's say I let's say, okay, go to the insert button and then press on the chat, the chart that you want to generate.
+
+说话人 2 40:11 
+Yeah, when I'm looking in Excel, right, then I'll be thinking to myself, eh, where's the insert button in the first place? I can't even find it. So this is something that might happen, you know, especially when I use the expert plus 2. Yeah, so I guess more relevant instructions would be more helpful. Then I can immediately know that, okay, this is this will be helpful. And I would need to result myself to relying on YouTube.
+
+说话人 1 40:40 
+So yeah. How about if let's say since you're a heavy user, if there's somebody that you know who is just going to get started, what top advice will you give that person?
+
+说话人 2 40:52 
+And use Stephanie to use GI as a reference, not as the answer script itself, right? That.
+
+说话人 1 41:03 
+Authority line.
+
+说话人 2 41:05 
+Yeah, correct. And definitely still need to go through your own level of thinking.
+
+说话人 1 41:09 
+Okay, that's true here. And anything else you wanna add? Any anecdotes or anything that, you know, that in your experience, you, based on yours s historic experience, right, interacting with Jenny, anything you wanna share?
+
+说话人 2 41:29 
+Anything else I think pretty much is here. Okay. I can't think of anything for now.
+
+说话人 1 41:37 
+Other than listen. Okay. Thanks a lot, Vincent. Thank you for your time and you're very forthcoming with your answer. So that is helpful. You indicated that you can, you're willing to take part in the experimental study. Be right.
+
+说话人 2 41:53 
+Yeah, yeah, correct. Correct.
+
+说话人 1 41:54 
+Okay. Okay. So when we get to that component, hopefully, you know, get to see again, eh.
+
+说话人 2 42:00 
+So you can, I have a bit more description on that.
+
+说话人 1 42:04 
+The, that part of it is still, I mean, it, we probably set up some en en environment, control environment where you're given a task and you sit in a in that lab or classroom or wherever and actually do interaction to get the results out. So maybe we will assign you a task, you know, in a group, and you complete the task, then we clock you how long you take, you know, and then you also submit the chat log so we see what you, we observe what you do, you know, so we may go around, see what you do, you know, how do you handle, so that sort of thing. So it's like more realistic. And also it's based on one task. So we can compare how the different people do the break it up or, you know, so it's not, that's your thing.
+
+说话人 1 42:51 
+Okay. Okay. Okay. Let me check your a number. I c. I think I tried calling you because earlier because I didn't see you on the thing. So just to check your Paynow number is correct. 8,6,9,8,7,9,1,8.
+
+说话人 2 43:07 
+Yeah, that's correct.
+
+说话人 1 43:08 
+Okay. Alright, thanks, Vincent. The processing is normally two weeks. I would probably be submitting your form for payment on Monday because I have another interview on Monday and then, you know, submit to both together. So give it to the two weeks and you don't hear two weeks, then you can remind me long.
+
+说话人 2 43:28 
+Okay, sure. Maybe you can send me an email to indicate that you already transfer to me. Then I can keep track also.
+
+说话人 1 43:37 
+Okay. Okay. Sorry, Wensen. This payment is actually done by another colleague of mine and he doesn't do payment himself. It goes to the NBS finance. So it is like a few multi steps. So I wouldn't know. Normally I have to check with them, you know. So if the student comes back and says, I haven't been paid after two weeks, I normally will then nudge them. I see that's how it works. So, and they pay. I also don't know. That's why I asked you to tell. Let me know. So two weeks from now, just see long. I mean, you don't hear anything then you don't see any alerts. So, you know, notice you have not been paid for a bit long, two weeks, I think. Two weeks for Monday, I think.
+
+说话人 2 44:13 
+From Monday. Okay.
+
+说话人 1 44:15 
+Monday. Okay, sure. Okay, thank you so much, dear. Thank you.
+
+说话人 2 44:20 
+No worries. Thank you so much.
+
+说话人 1 44:21 
+Have a good day.
+
+说话人 2 44:22 
+Bye. Have a good day.
+

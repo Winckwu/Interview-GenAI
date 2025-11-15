@@ -1,0 +1,621 @@
+2025-10-21 15:19:17 CST|42min 45s
+
+Keywords:
+more things、first question、few questions、few things、little more、certain thing、bit more、hard questions、critical questions、new user、random questions、certain task、good task、negative thing、research plan、more advice
+
+Transcript:
+Speaker 1 00:00 
+About enough video coaching. Okay, sure. Okay. So this interview overall, I just explain to you the objectives and the recording part, we will cover various aspects. So it's divided into different sections. And in all, it might take up to one hour. So it really depends on how much you have to share. So I've had some instances where it meant slightly over one hour. There are also instances where it would wrap up in about 40 minutes and so on pick. And this the range we're looking at. Okay. Hope you're okay during that be for this timer. The next. Yeah, one hour. So the first section, it starts with, you know, just providing me if brief description of your background and your work. What do you do currently? What is your educational background?
+
+Speaker 2 00:57 
+Okay, so I'm currently s a student in my finally, I'm studying Masters of science in science of learning. Then I'm awaiting my TC's review actually. And then like prior I'm concurrently I'm doing like some part time work related to research system work, like doing like with a data collection and so on. Yeah, and I also like cooperate, like collaborating with some of my old colleagues on like literature review and so on. Okay. And then also prior to that, I was working as a research assistant at NIEE. Yeah, about 5,6 years or so.
+
+Speaker 1 01:42 
+Do you see to have a kind of substantial background in researcher?
+
+Speaker 2 01:46 
+Yes, check.
+
+Speaker 1 01:48 
+Then you will your masters. What do you real is it.
+
+Speaker 2 01:52 
+In science of learning? It's a few as a mix of psychology, G education, neuroscience, and a bit of AI.
+
+Speaker 1 02:03 
+Okay. Okay. So you come from the stem background and I have gone through your pre interview create survey and you seems to me that you are fairly proficient generative AI tools and you do have a subscribe to version and you consider yourself fairly advanced user, right?
+
+Speaker 2 02:23 
+In no way I think so because I've been using like APIs to call back and forth, like use, right? The monthly subscription.
+
+Speaker 1 02:33 
+And your skill in collaborating also as advanced actually, yes, us and you do have a premium version, subscribe version, right? Of.
+
+Speaker 2 02:45 
+As in I canceled it, but then, yeah, then I cancel it. But then if I'm still using like APIs to call.
+
+Speaker 1 02:52 
+Okay, okay, okay. Okay. Then, Chen, can I have one specific question regarding your technology adoption pattern? Okay. You compare yourself with your peers, how would you rate yourself as in terms of technology adoption? Are you one of the first ones who would jump into a new technology, or would you rather wait for a while and then adopt?
+
+Speaker 2 03:20 
+You usually, it usually depends on the cost, but most of the time I will just jump into it. Cuz you to jump into it.
+
+Speaker 1 03:29 
+I can put you down as an earlier doctor. Me, sorry, I'm here only a doctor of technology. I.
+
+Speaker 2 03:36 
+Can, you can put it.
+
+Speaker 1 03:38 
+Okay, okay, okay. Now, you know, you mention that you've been using this for a while and you have also, I indicated that you use it very frequently. How frequently? Many times a day.
+
+Speaker 2 03:52 
+Yeah, actually many times a day. Like, yeah, to ask questions.
+
+Speaker 1 03:57 
+Many times a day. Okay. Oh, and now what type of task do you use it for? I know you indicated a few things down there, project knowledge queries, business market planning, academic Reserve. You want to elaborate a bit on this?
+
+Speaker 2 04:12 
+Okay, so like for academic wise, right, usually our ask critical questions, so like hard questions so that I like I can cover like some of those difficult questions that might appear also like maybe to put things into perspective where I may not think of usually I will want like difficult questions. So engage me or like expose some gaps that I might have that you knowing. And then like for business, that type of thing is because I done and video trading on the site. And then I wanted to summarize some of the insights that I might have, like for technical indicators and so on, like whether convergence and divergence and so on. And then like adding this news and like whether is it like. Towards a more bullish or bearish side of things and so on. So this just like a tight thing. Okay.
+
+Speaker 1 05:10 
+So can I then say you use it more for professional task com as compared to personal? Or is it like 50?
+
+Speaker 2 05:18 
+Actually, it's 50.
+
+Speaker 1 05:21 
+Yeah, but profession, but okay. So, you know, when you first started, how long ago did you first start?
+
+Speaker 2 05:31 
+More quite early on. I can't quite remember, but maybe 2,3 years ago. Yes. Oh, no, I'm, I don't know if both RAM is considered AI too. Is it?
+
+Speaker 1 05:48 
+Well, there are, you know, like people do say for even collaborative filtering on the web base, ais voice recognition there. So it's a little, we're talking about generative AI, specifically mini. Anyway, inject something for you. You know what I mean?
+
+Speaker 2 06:02 
+Yeah, I know. I do know. I don't know. So generative, I think you could say around two years or so.
+
+Speaker 1 06:07 
+Affiliate. Yeah, correct. So now, well, you you said 50 you have subscription. What are the commonly used to the.
+
+Speaker 2 06:20 
+Communist tools? What do you mean by tools? Actually, in.
+
+Speaker 1 06:24 
+Gen AI, you say you have the whole fare, right? You have a whole suite of applications, which ones are using.
+
+Speaker 2 06:31 
+If.
+
+Speaker 1 06:33 
+They're checking PT, Claude, you know, Gemini, you have all those, right?
+
+Speaker 2 06:38 
+Do you mean the models of the AI that I'm using? Or is it like some of those tools that them.
+
+Speaker 1 06:45 
+What are the names of these are ChatGPT for one, you know, Gemini, Claude, perplexity, you know what I mean? So which one?
+
+Speaker 2 06:53 
+Actually, I use all of them. Yeah, Gemini, Cloud Charge. All.
+
+Speaker 1 06:58 
+Of them. Okay. All of them. Can you name one or two that you use more than others? Morning.
+
+Speaker 2 07:04 
+I use my own like chat box. Yeah, it's my own chat box though. Like miss the Msti.
+
+Speaker 1 07:13 
+Mistia.
+
+Speaker 2 07:14 
+Yeah, I use my own chatbot. Then I use the API to call.
+
+Speaker 1 07:18 
+Actually.
+
+Speaker 2 07:20 
+Yeah, because it's quite flexible and I can use whichever model I wanted, like depending on the context, whether I want role play or I want like more academy or I want more like human and tie off reply. So I will change the model from time to time. Okay, if you're say.
+
+Speaker 1 07:38 
+Okay, is it your own product? You do develop it?
+
+Speaker 2 07:43 
+No, I didn't develop it. I just use an open source application to call.
+
+Speaker 1 07:48 
+I see. Yeah, this interfaces with some of the others. Is it all? It uses some of the models available.
+
+Speaker 2 07:54 
+As in this a lot. I don't know how to describe it. Yeah, that's a lot. Just I can call whichever I wanted and then they will just deduct me a problem something.
+
+Speaker 1 08:08 
+I gonna working in. So, alright, so now whatever questions I ask in the coming sections are you can base it on this particular tool that you work using it. Yes, yes, a little different because you use Misty and then you call whichever one you want and so on, right? So BA, you can base your answers on this scenario. Use scenario you just mention.
+
+Speaker 1 08:30 
+Okay. Okay, sure. So the first one is in terms of the task that you mentioned earlier, whether it's business planning or for academics, research support, whichever task it may be. Okay, input. So let's say, let's take one task. If you have a example task, and then you tell me when you invoke this generative AI, what is your goal in doing so? Like what do you expect generative AI to do for you?
+
+Speaker 2 09:04 
+I will expect Jenny I to brainstorm with me actually. So it's like a collaborative partner more. So I will usually imagine the Jenny I to be my collaborative partner. So whenever I have any questions, I'll just pop up and ask. And then if I mean down, I can also ask some of those questions as well. So in a way, we are collaborating. In a way, he giving suggestion and I may argue that this might not be what I wanted or like some of these, there has some gaps in it. So anyway, we're like scaffolding towards each other, like to build on this solution.
+
+Speaker 1 09:39 
+That's very interesting, champion, because a lot of them do not consider relative AI as a collaborative partner. So since you consider this as a collaborative partner, you know, my question would be, do you kind of take it as almost like a human collaborator or do you just consider it. A tool that's.
+
+Speaker 2 10:03 
+It's more of a tool rather than human collaborator because I feel that AI did don't really have like first hand experience at like how it works. So usually it's like a even better type of like the web search or something where crawler and so on. So I in I know it has a lot of like knowledge in there, but then I know that it tends to steer away from what I wanted or you may add on things that doesn't exist or you may hallucinate that sense.
+
+Speaker 1 10:36 
+Okay. Okay. Now let's go continue on this section. A few questions here in the section is about the how, you know, how do you use. So that means one of the focus of our researcher. Okay, I asked you what is your expectation? You said you expected to collaborate with you.
+
+Speaker 2 10:54 
+Right? Yes.
+
+Speaker 1 10:55 
+The come up with something new together. So, eh, can you give me an example of opening front that you. Yeah, just a sample.
+
+Speaker 2 11:09 
+Okay, just a sample. So usually I will assign AI a role, like a human role, actually. So like you're a professor with thinking about experience and you're at that at like advising students on writing pieces, for example, and you may, and then I also add on some key questions that I want him to do. So things like also provide some critical questions or critical flaws that I might leave out in my research plan, something like that. So and then also like provide three or four questions on how to make this research plan more convincing. So something like that. And then like I will just start on like my research plan and then from there, then we just collaborate from there.
+
+Speaker 1 11:57 
+So the initial input you provider, do you think that you give enough details? Do you provide all the context required, all your constraints, and then ask the question straight away? Or are you in the habit of dividing it into smaller chunks?
+
+Speaker 2 12:19 
+I don't know. I usually half in half, I wouldn't give too much detail that I restrict myself, but also won't give like two little details that I don't know where the AI will lead me.
+
+Speaker 1 12:32 
+So I would say somewhere in the middle.
+
+Speaker 2 12:34 
+Of in the middle, correct.
+
+Speaker 1 12:36 
+DOC did maybe. Yes. Not too brief, not to detail.
+
+Speaker 2 12:40 
+Yes. Yes. Correct. It's really somewhere in the middle for me.
+
+Speaker 1 12:44 
+So I think when you do it this way, like you're holding back something, but you're giving enough for it to get started. This perception on your side about what are, what the general AI tool is good at and what you may be better at, right? Hum, you don't have a perception like that. It can do some things better and maybe I can do some things better. Do you have that.
+
+Speaker 2 13:09 
+Perception? I, yes, I do actually.
+
+Speaker 1 13:13 
+An example of something that you gave, but you thought that, okay, I can do this better than him. But you know, let him answer this part because I think he can do it.
+
+Speaker 2 13:21 
+You know, it for me, the things I do better is that is small of like me deciding on what I want actually. So maybe it's me giving a call like what I and what I don't need. And then AI is just giving everything. AI is more knowledgeable for than me for sure. Like they did like train on like base on all data from like maybe more experience people than me. I okay. Yeah, but then whether to collate this kind of information and like picking like what I want, then what I do not want. I think that Optimus ultimately is what I should do. Yeah, and I will be better in that aspect because it was the requirement and so on. Yeah, yes.
+
+Speaker 1 14:07 
+So your requirements in the context, you know better. But when it comes to collecting information that's available out there, which is like based on previous knowledge, I think ch, your gen AI tool can help, right?
+
+Speaker 2 14:19 
+Yes, yes, they can know. Actually, they know a lot more. Yes, correct.
+
+Speaker 1 14:25 
+So the next part is also we're continuing on in the same theme, which is the how part. So my question would be you, have you noticed, based on your interaction, have you noticed that a generative AI may be very good at a certain task? Oh, and they're very poor at certain task. So what are these good compatible task and not so good task?
+
+Speaker 2 14:52 
+Actually, I have to admit the Jenny I is very good at summarizing things for me, right? Yes. Yeah, I give a lot of all these info and maybe my words are over the place, but then they're able to summarize like what I wanted.
+
+Speaker 1 15:07 
+Okay. Okay. So you have use with the account summarizes all the input you give LA.
+
+Speaker 2 15:12 
+Yes, correct. And they're quite good at it actually, right? If phrase it quite nicely. Yeah, I put it quite well in a presentation and so on. But then they're bad at actually generating things. Like maybe I ask them to list me like 10 sad songs, perhaps, and then they may not give what I want.
+
+Speaker 1 15:36 
+I see.
+
+Speaker 2 15:37 
+So like it's very random in that sense. So I have to really pinpoint to what I want. But for them to generate things out for me, like if I have no knowledge on a certain thing, then like I wanted to know like, oh, you give me like five or then case studies perhaps like on maybe like inflation and then like they will just give me 10 random things and but maybe one or two may not be related or mean or exit. And then I have to fact check on my own. And so I think that's where it's still lagging behind, like the information may or may not be correct.
+
+Speaker 1 16:15 
+So the reliability may not, is not complete, is not 100%. So times when it's off, what you need, right? What you specify.
+
+Speaker 2 16:24 
+Yes, correct.
+
+Speaker 1 16:26 
+So, so since you know this, since you know that there is a chance that your Jenni may be off what you want, you know, off the track kind of thing. Yeah, intentionally tailor your prompt accordingly when you have this knowledge in mind, you use it to create tailor your prompt.
+
+Speaker 2 16:45 
+Yes, I do actually. But then I also wanted a bit of leeway as well because I don't want to restrict AI to just look at this. I also want them to look at another perspective of things. So.
+
+Speaker 1 16:57 
+So, okay, I see that. I see your strategy. So in that sense, you may not provide a lot of constraints. LA, you'd rather let it, give it like a freeway, just do whatever it wants and then you leave it entirely up to you to choose which ones you wanna use.
+
+Speaker 2 17:13 
+Yes, in a way. But I'm, I also will, how to say, like give some general direction on where it's going as well. Okay. Letting you free floor.
+
+Speaker 1 17:23 
+Oh, so I think you, you, you and the habit of scoping a little broad Alice, you notice that it's slightly off. You just let it continue for a while because you're in control and you can then decide what to pick.
+
+Speaker 2 17:36 
+Correct? Okay.
+
+Speaker 1 17:38 
+So I think you mentioned yours, the role play, right? You mention to me that you're in the habit of assigning Rosa. Can you give sample you can think of, sorry, Kenny, is it sample you can share of this assigning role to generative am?
+
+Speaker 2 17:54 
+Yes, but can you explain, can you repeat that question again? I didn't get what you said the, earlier.
+
+Speaker 1 17:59 
+We were talking and you mentioned that you're in the habit of providing a role to generative, assume that you're the professor and then look at it, you know.
+
+Speaker 2 18:07 
+Yeah, yeah, correct.
+
+Speaker 1 18:09 
+Give me one example of something you made generative way I do with the role assign.
+
+Speaker 2 18:14 
+Okay, so perhaps let me put an example of a site hobby of mine. So like I would say you're an, thank you, sorry. Yeah, trading psychologist like of with 10 years experience. And then you can look at like the different type of trade and explain like what are my top processes and how I should improve on my handling losses and how to move on. Yeah, and so on the, and then I give my trading journal entry and then I thought about whether I would be in I lose and what are my emotions along the way. So I want Jenny I to maybe like give an insight and then also like provide some advice like how how simi like similarly how treating psychologist would. And then like you also like tell me strategies to improve on my, yeah, training psychology and how to be more calm in that sense. Yeah, so I think that would be an example that I can give.
+
+Speaker 1 19:24 
+Okay. You know, you talked about collaborating, right? Okay, this way you find that you're totally clueless about something you have to do like this and really totally unfamiliar task. And 1, collaborate how you get started in this instance.
+
+Speaker 2 19:44 
+As in using these two or outside of the tool.
+
+Speaker 1 19:47 
+I see. I'm interested to know whether there is some preparation using something outside of the tool also. So you can include that.
+
+Speaker 2 19:54 
+Oh, okay. So for me, if they want to learn something. Like maybe like project planning, for example, like I may not have a clue on what's going on. I need to prepare like to plan a project actually like a new upcoming research project. So probably I'll go to a library and read some books on it. And then maybe do some web searches, YouTube videos, like them explaining like what is project management so about. And then from there, then I will get that they, the bit of like a rough knowledge of what it is rather than like in depth on what I should do and so on. And then I will maybe just ask Jenny I a bit more or maybe give them this prom about like explain like I'm 5, something like that or explain like I'm 13,15 and so on. So anyway, I can scale up and then them explaining to me in a term that I will know.
+
+Speaker 1 20:55 
+So, okay, so I s I can summarize this. You will do some preparation as in just a browsing to get some basic idea before you question. And when you question, you will ask specifically ask generative AI to assume that you have no knowledge. So yeah, like as if you're a total no base on that area, LA.
+
+Speaker 2 21:18 
+Yes, correct. Then, and then I will see whether it aligns with what I know and what I don't know. And then.
+
+Speaker 1 21:24 
+Oh yeah, okay.
+
+Speaker 2 21:25 
+From time to time as well, like, cuz I know that they may give something that I may not. Yeah, so they mislead me in some way.
+
+Speaker 1 21:34 
+So that brings us to the next part. This is the trust evaluation. So this, let's start with your initial trust in generative AI tools are before you started using it and how this trust level has changed over time and with use. So you can use a rough percentage LA. I know it BA varies from task to task. But I mean, on an average.
+
+Speaker 2 21:58 
+So it's like innisi initially when I first use Jenny, I or during how I.
+
+Speaker 1 22:05 
+Before you started using and after now currently, okay.
+
+Speaker 2 22:11 
+I seem to trust the AI less.
+
+Speaker 1 22:14 
+Now.
+
+Speaker 2 22:14 
+Yes, maybe around 30. I think.
+
+Speaker 1 22:17 
+Excluding videos.
+
+Speaker 2 22:19 
+Before it's really half and half cuz I don't know what's going on. So maybe around.
+
+Speaker 1 22:23 
+50 or so now less.
+
+Speaker 2 22:25 
+Yeah, really nice.
+
+Speaker 1 22:27 
+Interesting. Can you explain to me why that's the fix?
+
+Speaker 2 22:31 
+Because I for me is I look at my peers like the way they ask questions and then they kind of get frustrated about it. And it's like, no, that's not what I wanted. Or you can say these, but try not to say these and so on. So it will be frustrates the user. And then like it gives them the wrong information.
+
+Speaker 2 22:52 
+And then like, I remember there was one time we use ChatGPT to search for general articles, relate that to sports. I think like brand endorsement, whether this will help improve brand endorsement if the athlete is a popular athlete. Yeah, for example, yeah. And then like the ChatGPT gave a few studies, but then I found that 3 or 4 of them do not exist. Or when I click into it, right, the general article is totally different.
+
+Speaker 1 23:23 
+Oh, okay. Okay.
+
+Speaker 2 23:26 
+So I trust very little the from there. So I think that give me a very strong impression that I shouldn't trust AI that much.
+
+Speaker 1 23:35 
+I see. So this is based on your personal experiences as well as some of your peers. Like if you see, and it's all how you having just decline. So from the, if you want to set a new level, what would it be?
+
+Speaker 2 23:48 
+New level as in.
+
+Speaker 1 23:50 
+New trust level.
+
+Speaker 2 23:51 
+Oh, no, I seen that it's still 30%. Yeah, for me. Okay, yeah.
+
+Speaker 1 23:57 
+Okay. Now let's look into how you behave after you get the output from Jenny. You just mention sometimes you have to check, right?
+
+Speaker 2 24:06 
+Yes, correct.
+
+Speaker 1 24:07 
+The habit of validating, verifying the outputs you get from Jenny. I, how often you do it. And red.
+
+Speaker 2 24:17 
+You see the it's like every time I do it actually, every.
+
+Speaker 1 24:20 
+Time I see, yeah.
+
+Speaker 2 24:22 
+But it's not after every promise, like maybe like a few times in between, a few times ID and something like that.
+
+Speaker 1 24:30 
+How do you check champion? What is your phi pattern of checking.
+
+Speaker 2 24:35 
+For me is maybe like scholarly articles like Google Scholar, and then sometimes just Google, Simple Google Search or yeah. Okay.
+
+Speaker 1 24:43 
+Okay. So that's the pattern now. You know, during your interaction with the generative AI, have you ever experienced generative AI asking you for clarification saying, oh, I don't understand this, you know, what do you mean? Anyway? More information, that kind of experience have you had?
+
+Speaker 2 25:03 
+Oh, I think I did encounter this once or twice because I didn't them saying like they may not have the full context and this is base on what they as in what was given to them and they may not know the whole context. So I think probably is like just some random questions on asking for advice, perhaps like career advice and something like that. Yeah, and like base on one interaction with an interviewer and then they will say, oh, I may not have the full context. Can you, I'll see, like describe in detail on the interaction and how this person is feeling and so on.
+
+Speaker 1 25:44 
+Okay, so this experience, did it impact on your low trust level already or did it make any effect, impact on that trust that you had.
+
+Speaker 2 25:53 
+Seen in terms of personal things? I maybe I will trust it a bit more. No. Okay. No, but if it's for like professional or like maybe my side hobby, I wouldn't trust as much.
+
+Speaker 1 26:05 
+Right now. Okay. And when it said it's unsure, then oh, you, you, you don't, I don't have enough context. How did you respond to that?
+
+Speaker 2 26:13 
+Yeah, I will just actually I will describe it a bit more in detail, like maybe add on about what I'm feeling as well. So you'll give them like, I will just put everything out there and then they will sort it out from there and maybe retrieve and then they, I wish you ask them to summarize like, what am I saying? And then from there, then they will explain to me the answer. So anyway, I know that they're on the same page as I do.
+
+Speaker 1 26:44 
+Now the next part is on how you coordinate with the generative AI human. You go, you said you give around half of the information, maybe like you hold back somebody, you don't give everything at first, right? So there's a little bit of back and forth, right? This iterative kind of, yeah, session. So again, based on your experience, based on the commonly used, used use case, many times, do you think you go back and forth the looping? How many times do you look? Actually.
+
+Speaker 2 27:16 
+I, there's no definite number actually, but I know it's quite a.
+
+Speaker 1 27:20 
+Lot. So can you like just give me a ballpark.
+
+Speaker 2 27:24 
+Pop up? Let me think. So maybe like the whole context, then I'll add on a few questions perhaps around at least you mean at least at least five, actually, at least five to like maybe 20 to 30 or so.
+
+Speaker 1 27:40 
+In 30. So it's quite a wide range. Correct. You mean this back and forth? Are you in the habit of, I know you mentioned earlier that you like the scope to be a bit broad, just in every direction so that you get a wide response, right? Which then select. So I, at any point in time, do you ever try applying certain criteria control gates, like don't proceed until something is done, you know, or don't proceed until you answer all three questions or something like that.
+
+Speaker 2 28:15 
+Gates, let me think it's means if is it something like I want them to do things step by step and then like if it's not done, it can I can't proceed the next step. Is that what.
+
+Speaker 1 28:29 
+Something like that.
+
+Speaker 2 28:32 
+I did for programming, like maybe like the logic ending the logic with the AI to like if I have to do a safety check, I have to do some mechanic like mechanisms along the way and then doing some switch cases. Yeah, from there, I will just let it generate something unless you will bounce on an error. So I think maybe the logic planning, I will do that. Other than that.
+
+Speaker 1 29:02 
+Not really. So that to some extent you do, but not a lot. LA, I would say.
+
+Speaker 2 29:06 
+Yeah, yeah, not a lot. Correct.
+
+Speaker 1 29:09 
+So you mention that you do find it very good with summarizing. So I presume then every session you do ask for summarization. Do you?
+
+Speaker 2 29:19 
+Yes, I do. Correct. What?
+
+Speaker 1 29:21 
+Yeah, have you, I think you meant just mention that there was one time something was very off. Have you ever noticed generative AI giving you, contradicting itself? Like told you something is okay, then saying no, it's not or something like that. Contradicting, meaning, you know, say something is yes and then say no, you know, something like that.
+
+Speaker 2 29:43 
+So far I don't really have that actually.
+
+Speaker 1 29:47 
+Okay. Okay. How about AI hallucination? You mentioned earlier about the Inaccuracies Law. You ask for some material and some material were not valid or some material did not point to the right. Source and so on. You mentioned. Yeah, correct. But, and have you experience total hallucination? Answer, wrong day, wrong information like that?
+
+Speaker 2 30:12 
+I think I did, but it's something personal.
+
+Speaker 1 30:16 
+For personal. Okay. Okay. So yeah, before can share, that's fine. Yeah, but you have had that experience, LA.
+
+Speaker 2 30:22 
+Yeah, but it's okay. But partially, I think it's just some recommendation and then they totally give me like, they give me totally different.
+
+Speaker 1 30:30 
+Totally wrong. Yeah, yeah, correct. Okay, then when do you decide that, okay, I'm gonna stop this session? When do you end that interaction?
+
+Speaker 2 30:43 
+Alright, actually, when I get my objective, like I want the like hard questions, for example. And I have a list of questions already. So I'm more or less done. So I wouldn't, I will just come from, yeah.
+
+Speaker 1 30:58 
+So I can say that when your objectives are met, satisfactory learn, and you would end the session, right?
+
+Speaker 2 31:04 
+Correct. I'll just end for have.
+
+Speaker 1 31:05 
+You had experience where you know for sure whatever you do, it's not gonna meet. So you.
+
+Speaker 2 31:13 
+Abandon.
+
+Speaker 1 31:14 
+As in, okay, that's enough. I know this is not going anywhere. So let me stop.
+
+Speaker 2 31:21 
+Academy wise, no, but yeah, but things I do actually, yeah, like I would think like, eh, this is going nowhere or just.
+
+Speaker 1 31:28 
+Both. Okay, can you think of some example, Chen, like we can share with, I mean, it's, if it's shareable.
+
+Speaker 2 31:33 
+LA, I, yeah, it's okay. I, I mean, I, okay, so perhaps I think there was one time I'm like thinking of like how to console a friend, for example.
+
+Speaker 1 31:43 
+Okay.
+
+Speaker 2 31:44 
+Yeah, like because he was going through a breakout quite a long time actually, then I do not know how to read because I do not have the experience myself. Yeah, then I'm thinking of like solutions to do that. But I know that he start personality. I can't do this because it will hurt him a lot more. I will make things worse. Even though I see, oh, this will make things worse, but then somehow they frame in a way that it's good for him. Oh, I see. But so it, I feel that it's not, I shouldn't do like, but they advise. So from there, I will just like abandon it to.
+
+Speaker 1 32:22 
+Okay, forget it. Yeah, that's a good example because I think AI is missing the knowledge about the friend that you have. Is he?
+
+Speaker 2 32:30 
+Yeah, correct. So may, so.
+
+Speaker 1 32:33 
+Where it goes wrong?
+
+Speaker 2 32:35 
+So maybe it's either I didn't give enough context or maybe from 10. Eh, like he's not human enough and I, it's.
+
+Speaker 1 32:41 
+Not, yeah.
+
+Speaker 2 32:42 
+Yeah, I know I shouldn't do this. So from there, I will just abandon it totally and I just go with what my gut feelings from there. Yes.
+
+Speaker 1 32:49 
+Okay. Okay. Now we're going to, I know, move on to your after user. So first question is, you know, you've been using it for a few years. Couple of years are definitely more than that. So in this period of time, I, based on your experience, have you ever felt that there has been a positive or negative change in the way you work because of the generative? Yeah, yeah, because of generating.
+
+Speaker 2 33:17 
+Okay, for me, the positive is more, eh, it's more of my own rather than outside. Cuz I feel like I, I tend, I look at more things that I look at previously. So it kind of intrigues me a lot. Okay. So like, usually I'll ask some question and they will give like even harder questions that I didn't think of and that copy of.
+
+Speaker 1 33:41 
+So it broaden your scope in that sense, it broaden your own understanding of certain aspects. Is it of what? Okay, that's good. So that's a positive thing. LA, how about the negative thing? The negative.
+
+Speaker 2 33:53 
+Thing is like from like externally, like my peers and so on, because I feel there's some sort of, how to say.
+
+Speaker 1 34:02 
+Convergence in thinking. Yeah, yeah, yeah, really.
+
+Speaker 2 34:05 
+Like it's something that I would expect of AI, the answer that expect of AI, but then it's like appearing more and more frequent is thinking similar, like the train of thoughts are getting more and more similar.
+
+Speaker 1 34:20 
+Which is a problem. Yeah, homogeneity. So like they see even language is becoming very homogeneous. Everyone is talking the same language, which is the generative AI language, you see? Yes.
+
+Speaker 2 34:30 
+Correct. I like some of, somehow you can spot it. Like he is using AI. Yeah, after a while, like, yeah.
+
+Speaker 1 34:39 
+So very proper. So when you look at some output, you feel like the person is not in it. Like your person is removed from it. It's coming from.
+
+Speaker 2 34:50 
+Okay, just using AI to talk like that rather.
+
+Speaker 1 34:52 
+Than. Yeah, yeah, correct. Yes, that's you're right in that. Yeah, yeah. Has the generally may. I has influenced your decisions in any way to either personal or professional decision.
+
+Speaker 2 35:06 
+It does. Yeah, like maybe I wanna second opinion in a sense because I may think of things on impulse and then I may want a second opinion. Do we need, it's not them to decide. It's not for them to decide like what I want them, but I want them to maybe have another point of view, like maybe weigh the pros and cons and so on. So anyway, yeah, like detection, emotion, but yeah, they can, we like all these things and then, yeah, as things are, yeah.
+
+Speaker 1 35:38 
+Okay. Okay. Do you think, because you're a fairly frequent user, do you ever feel that you sometimes are excessively reliant on generative AI?
+
+Speaker 2 35:49 
+Excessively. I will still say.
+
+Speaker 1 35:51 
+Nothing. You feel yourself, eh? You know, not too much today. I don't want to use it.
+
+Speaker 2 35:55 
+Anymore, right? Yes, I do. Actually. If you do, yeah, also quite often, like, oh, I tend to like, oh, maybe I will just like save AI a lot more or I tend to get lazy. So.
+
+Speaker 1 36:06 
+Yeah, can you get that feeling? What do you do on it?
+
+Speaker 2 36:11 
+So how to say, I'll just pause and think for a while. Like, is it necessary or I should I just keep going on or should I go back and just do it traditionally something.
+
+Speaker 1 36:25 
+So you do think about whether to not, whether to stop using Jenny and do it the good old whaler something. Okay. Okay. You know, the, a lot of people that I spoke to identify efficiency is one of the benefits of using generator, where they think they can do things a bit faster, you know, hum, I'm okay. So the speed is there, the convenience is there, but you said they all also have concerns about accuracy. So this is problem of speed, convenience, accuracy. So how do you strike a balance? Like, are you a person who can spend any amount of time as long as the things you get are accurate? Or are you the one who will settle for something, you know, may not be very accurate, but just want something, get something to be done in within a shot span of time.
+
+Speaker 2 37:18 
+For that, for, I don't really want to do things in that shelf the time, but I will like, I'll say like brush it up to make it better. So you.
+
+Speaker 1 37:27 
+Brush up a little bit long.
+
+Speaker 2 37:28 
+Yeah, correct is the first option, I think.
+
+Speaker 1 37:30 
+Okay, okay, okay. I think we're almost done with the how then we concluding. So this part, the closing part is on challenges and your future, your wish list. Let's start with your wish list. So if let's say you could wish for any improvement in your generative AI tool, what would the top three items on your wish list look like?
+
+Speaker 2 37:55 
+Oh, wish this for AI in particular.
+
+Speaker 1 38:00 
+For generative AI, not GE AI in, but generative AI.
+
+Speaker 2 38:04 
+Oh, generated. Yeah, think maybe the first can usually is the common ones like cost and accessibility. I think those are quite important as well because I feel like some senior citizens, they don't really know how to use this and they tend to be quite resistant towards using. Yeah, yeah, yeah, that and don't use it and things like that. Yeah, they don't really see that benefit as well.
+
+Speaker 1 38:32 
+No. So, but they will be left out of all this, is it.
+
+Speaker 2 38:36 
+Correct? And then it's moving even faster right now. So I feel that, yeah, it's good. Do you.
+
+Speaker 1 38:42 
+Worry that there will be one part of our population who will be totally out of this whole scenario and they will miss out on things.
+
+Speaker 2 38:49 
+Correct, I feel. Yeah, that's.
+
+Speaker 1 38:52 
+Okay. And so that, so you like somebody doing something to help with this problem. Is it.
+
+Speaker 2 39:01 
+Ye? Okay. Wait. And then second could be the. I was hoping it to maybe I wish the Jenny I to be a bit more human in the sense, like to be similar to us in a sense, like how we thing and what our limits and so on. Cuz I see still very.
+
+Speaker 1 39:21 
+Yeah, to probe a little more about the person using it. So we can tailor to specifically to their first users requirements a bit more like a human way. Okay, how about, you know, you've been a user for some years and you're a fairly advanced user. So if you want to provide some tips to a new user or a newbie who's considering starting you to use a general way and what will the advice look like?
+
+Speaker 2 39:52 
+Actually, there's two. Wow, that probably the way we generate our prom. So, you know, is. It's quite related to language, like describing or asking about what we want. Yes. So like to put like our thoughts right into words. So I think that's very important. That's yeah, yeah, sure. And then, sorry, then secondly, right, I will think that us, hold on, let me think like, but then, yeah, of for the issue just I'll see, right? Yeah, they didn't, they need to know that they shouldn't be too reliant on it as well. Yeah, if not, it will just like policy like Jenny, I need you wherever you go and then you're just might be following. Yeah, it's not very good.
+
+Speaker 1 40:45 
+You have any concerns, Chen Ken?
+
+Speaker 2 40:48 
+Since not really, I think I address most of it.
+
+Speaker 1 40:51 
+Already. No consensus. How about you? You know, like, do you have this privacy kind of concern? Do you think that because since you're a research assistant, right, so you provide data, do you feel that it might be compromised, it might be misused or, you know, inadvertently shared with other people that you should that shouldn't see what the information you provide and so on. You worry about all that actually.
+
+Speaker 2 41:20 
+Is. Yeah, I'm already worry about it for more inexperienced user because I think for more advice, they will know like what to me, what market to put there as well.
+
+Speaker 1 41:34 
+Okay. Thanks a lot, tankin. I think you've been quite forthcoming with all your answers, so it's been helpful. So don't forget to s get the signs formula. I will be submitting your, yeah, payment soon. Let me check your, let me check the number that you gave for Paynow just to make sure it's correct. Yeah, venture correctly. So based on the survey, you entered your number. Yes, 8,2,9,8,7,2,9,3.
+
+Speaker 2 42:05 
+Yeah, correct. 8,9,8.
+
+Speaker 1 42:07 
+Okay, so this payment is processed by another colleague and it goes through the NBS finance. So the lag we expect is about two weeks long. So two weeks you don't hear? Drop me an email, LA.
+
+Speaker 2 42:20 
+Okay, sure.
+
+Speaker 1 42:21 
+Oh, you also indicated that you can you volunteer to participate in the experimental study later. I.
+
+Speaker 2 42:27 
+If there is, but then I'll be having reservice and I'll be honest. Are you? You know, yeah.
+
+Speaker 1 42:35 
+Okay. Thanks a lot. Thank you. Thank you so much. Okay, bye. Bye. Saturday night.
+

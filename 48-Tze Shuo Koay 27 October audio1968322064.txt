@@ -1,0 +1,426 @@
+2025年11月3日 上午 11:34|50分钟 36秒
+
+关键词:
+other thing、professional thing、other stuff、first thing、more things、other information、good thing、other way、last thing、privacy things、critical thing、whole thing、other skills、math thing stuff、other kind、other tools、things user、other design poster things
+
+文字记录:
+说话人 1 00:02 
+Okay, so, you know, to give you a brief overview of the research itself, what we are trying to do is to explore the patterns of use of generative AI tools amongst young professionals, young people. So we're interested to see how they use it, you know, the pattern. And we also want to later on investigate the effects of use on various professional skills or even learning if you're a student, you know, so for instance, how does it impact critical thinking? How does it impact their learning or any other skills, you know, so we are investigating various directions. So this is one of the first in the series of research that we have launched.
+
+说话人 2 00:58 
+Okay. Okay.
+
+说话人 1 01:00 
+Yeah, the interview itself will take about an hour. My experience is about there. You know, most of my respondents, we've gone about an hour, 40 minutes will be the lowest. So that's the expectation.
+
+说话人 1 01:14 
+Okay, it is divided into several sections. So I've, it's a roughly about 4 diff distinct sections. So I will guide you through these sections. So to begin with, feel free to add whatever you feel like, you know, because it's a free flowing format. We try to structure it because there are some areas we want to investigate. That's all.
+
+说话人 2 01:41 
+Okay, sure.
+
+说话人 1 01:43 
+So to begin with, Sergio, could you just give a brief description of your background, you know, educational background, as well as the work that you do, professional vote?
+
+说话人 2 01:58 
+Currently I'm still a student at MCN. So I'm studying information engineering and media. And currently I'm here to.
+
+说话人 1 02:08 
+Which school are you attached to?
+
+说话人 2 02:11 
+Triple E scope.
+
+说话人 1 02:12 
+Tripoli. So you basically, yeah. Okay. So the science background, right?
+
+说话人 2 02:19 
+Thanks. Right. Engineering background.
+
+说话人 1 02:21 
+Have you worked ever or you have any kind of projects that you use the generative AI to refer?
+
+说话人 2 02:29 
+Yes, technically, I would say it's like most of my compulsory courses that and you would like us today, which is like the those I'm not sure why is it call by is call like some ICC modules. So the.
+
+说话人 1 02:44 
+Modules, yes.
+
+说话人 2 02:46 
+So for those, cuz it's not, it's more like, you know, it's like, not really like related to engineering. So most of it needs likes storytelling things and like more like presentation. So for most of this IC models, I for the I ideally part, I sometimes like beside I would provide my like first idea to Jenny Eyes, then I help, I ask them to elaborate like further for me or maybe sometime I would straight ask them. I base on the question I wanted. I ask them about that. I didn't I narrow it down.
+
+说话人 1 03:24 
+Okay. Okay. So I think your professional use will be as a student, how you use it to support your learning, right? Okay. Okay. We would probe this aspect a bit later, but before we go in, I want to understand, you know, if you compare yourself with your peer group, you know, would you consider yourself an earlier doctor of technology in general.
+
+说话人 2 03:52 
+Engine AI, is it?
+
+说话人 1 03:54 
+Yeah, yes, you can talk about Jennifer. Generally speaking, if there is a new technology, are you the saw who will try it out?
+
+说话人 2 04:02 
+I'm not sure. Like in my butt. From what I feel that I think I think I'm quite early would I would say cuz I think I'm quite early to touch into like, you know, chat, GBD, Germany grow up actually autos.
+
+说话人 2 04:19 
+Cuz I'm quite used to it using like during like most of my, like, other than just education, like even sometimes I do some research on maybe news or like investing stuff or maybe like planning a trip. I most of the time I might be using ChatGPT or like any GNE or rather than using just Google search.
+
+说话人 1 04:47 
+Okay. Okay. Is it sure? When roughly when did you start using generated way at 2?
+
+说话人 2 04:56 
+As in, you mean like when do I started or like.
+
+说话人 1 04:59 
+Directly how? Too long ago did you get started?
+
+说话人 2 05:05 
+We think about it I think maybe two years ago, two.
+
+说话人 1 05:09 
+Years back up. Okay. Okay. I notice that you have indicated you don't have a paid version, right? So can you tell me which of the available tools are you using? ChatGPT, Gemini, flaw, you know, perplexity, which of the tools are you using.
+
+说话人 2 05:29 
+Like currently that which other than, yeah, use more often is it? I currently I would say try GBT the most activity. Cuz I think like, generally, I know that a lot of different like chatbot that different strength in like, I don't feel, but I feel like ChatGPT is the most general one and it provide like the information. It's not, I wouldn't say exactly hundred percent core correct, but I think it's base on compare to other free AI model. I think chat GP is quite decent.
+
+说话人 1 06:10 
+Okay, so like in terms of frequency of use, would you say every day, a few times, or once, few times a week? How will you describe the frequency of use?
+
+说话人 2 06:21 
+I would say every day. A few time. I think.
+
+说话人 1 06:24 
+Few times every day. LA.
+
+说话人 2 06:26 
+Yeah, around there are, cuz mostly for currently I would most of time use for education, but sometime maybe like during a free day or like if I'm not at school or like during my summer break, I might use useless. It won't be daily. Yeah, but currently, yes, daily.
+
+说话人 1 06:44 
+Okay. Okay. So sure, you can, you can, you know, I have a few follow up questions. So these questions, you can base it on your frequently used scenario. By the way, your user, it's Molly, mostly for your studies. You use it for personal purposes as well?
+
+说话人 2 07:01 
+Yeah, some of them, but mostly is education stuff.
+
+说话人 1 07:05 
+Can you give me a typical use scenario? Like for example, just to give you me an example of what type of usage.
+
+说话人 2 07:12 
+I would say is sometimes I might use for, you know, like money exchange rate, I might just use strategy to answer me for, although I know I can use version, but sometime I would just use for g charge vd and also I did use for planning trips. Also I ask him to schedule like 3 days to night plan for me a certain country. Then after that I only exported myself. And another one I think though I didn't use any, but before I use quite a lot, which is like for doing research from my investment, like for investments DOC you get for those things. So yeah, I ask activity for investment opinion, but all like all those stuff, like about the news, current, new or like, and about their company, something like that.
+
+说话人 1 08:06 
+Okay. So I think the subsequent questions are, we're going into the major, the body of this interview, which is on the usage pattern. You can base it on your professional use, which is to, for your studies, for your, yeah, emic purpose. So from your pre survey interview, I see that you have indicated that you use generative AI for writing, drafting your general knowledge inquiry, Q&A learning. Yeah, right. So take a typical usage scenario for ex. Can you give me an example of this learning related activity with you help seek help from Jenny. I.
+
+说话人 2 08:50 
+Okay, okay. I think let's just take maybe one ICC module and one maybe my commerce that I take design. Okay, I assume the what I do mostly would be I would still provide the idea, but most of time I would still like type everything myself first. So maybe like I don't like be like a 3 to 400 words and I just insert it into ChatGPT. Yeah, sometime I will, but I will first ask them to maybe elaborate or like, like, see, like in my, it was good or bad and maybe let them to analyze and came up with the best one. Yeah, and after that, I will still edit again myself and I would still paste it again. And then the last thing will be I ask them to check for my grammar error.
+
+说话人 2 09:42 
+Yeah, sometimes I, in my, when I'm thinking, I just straight out types it might have some grand marrow. Yes. So that's for most of the general. I think I would sometimes I would ask them to fix my grammar or maybe, okay, maybe I think or something maybe like writing emails. Yeah, I will. I will ask them to make my sentence more professionally or my more academy. And for my call modes, cuz I'm engineering, so I would say like most of the question would be like, you know, math related, which is like calculation stuff. So sometimes I will just, you know, the question is not that easy to type out. So I would just like snapshot that pain and I will just ask strategy between to explain.
+
+说话人 1 10:31 
+I think I understand the way you get started, you have some idea, you first run it through. So I wanna know before you run this idea, you know, like if you found you have some idea in your head and you're asking chargeability about it, right? Evaluate or maybe add on and that sort of thing, right? Basically, I presume.
+
+说话人 2 10:52 
+Yes.
+
+说话人 1 10:53 
+Okay. So is there any preparation involved or is it like just off your head straight away?
+
+说话人 2 11:00 
+Yeah, just offline everything, right. I would say I currently like strategy is quite normal. It's not like a very rare thing. So I already get used to that using every day. So whenever, yeah, we just straight start off.
+
+说话人 1 11:16 
+Straight away. Yeah, initiate the session. So your first prompter when you start, are you in the habit of providing all the required information? Or is it like you like to divide it into different small chunks?
+
+说话人 2 11:33 
+I would say depends on what usage I'm using. Okay, explain this explain page. Maybe like I would say, okay, saying I would say I succeed the most as a example before, like when I'm writing like a whole report. But I if in that case, I will give them like all the requirements that why would I need. Yeah, and I run check quite what the Jane and I should write out for me. And also like what are the, you know, rubrics for the reports and how I wanted it to turn out. I will give him all the requirement. Then they needed to know, yeah, if it's for like a report or I re, it says something like that, LA, but it's for, if it's for like my, you know, those math calculated things like those calculation, then in that case, I wouldn't, I would just straight give them like the questionnaire cuz I think it's not necessary for me to provide so many. Yeah, like back in forward and yeah.
+
+说话人 1 12:33 
+Yeah, that's right. Okay. Okay. And then you would then look at ChatGPT, what the answer, and then proceed from based on the information you get. LA. Okay. Okay. In this case, instance, when you interact with GPT, do you ever find ChatGPT to be exceptionally good at something? And what will it be if you find it good at something? And also, do you notice that it's doesn't really do some things very well? And what will that be in your experience?
+
+说话人 2 13:10 
+I would say like chat GBT output is more, how do you say, maybe more detail and concise. But sometimes are you like, you know, Germany and perplexity or grow either one? I mean, their result is also good, but sometimes I feel like it's either, you know, too short, like it's not detail enough. Or sometimes I feel like it's too lengthy, like it's too much details, like it would take too much time for me to read. But I feel like the general output of strategy team would be like just good for us to, you know, more details by, but also it wouldn't take a lot of time for us to read through. That's why I think it's good about chat GB.
+
+说话人 1 13:56 
+So yeah, in other words, you find the content just right for your requirement, obviously, yeah, not too long, not too short up. In comparison with the other tools you've used. So in a way, yes. Okay. Okay. What is it that you find ChatGPT really very poor at, you know, not doing very well.
+
+说话人 2 14:21 
+Currently, I'm, I think most of it is good, but I would say mainly would be those calculation stuff. Cuz I understand like maybe they're not made for that. And it's like inserting feature. Sometimes I, they can, how do you say, he can like.
+
+说话人 1 14:41 
+Understand.
+
+说话人 2 14:42 
+Understand, like, yeah, understand, like what are the sentence inside is maybe inside the, or maybe inside think they rarely touch it. So like during all those math questions, sometimes I think they might came out wrong. Yeah, I think this is may. I'm not sure. Cuz I didn't really try on like all this math thing stuff on the other Jane and I meaning so I'm not sure like how other GNE I do.
+
+说话人 1 15:10 
+So in your experience, you find it good with all the language based kind of support, eh, you find it fairly okay. But when it comes to the mathematical kind of stuff, you don't trust it. You don't use it that much, and you have not done a comparison. So you can't comment on how we fast as compared with, you know, Gelena, you know.
+
+说话人 2 15:31 
+So, so for like this kind of question, most of time, even though it came out unset with me, but I sometimes if my working is same as chat gmv 1, then sometime I think it's correct. But sometimes I realize that it's wrong. Then I would maybe check with my friend or check with my duty any anyway.
+
+说话人 1 15:53 
+Yeah, we, we, I think that's something we're interested in. I'll come back to that point that you made up about checking and all that will revert to that. But before we go on, how about when you interact with ChatGPT? Are you, have you ever ask Chat GBC to assume the role of somebody like a, let's say a professor or a Mark person, marking the assignment, you know, or an evaluator. Have you done that?
+
+说话人 2 16:23 
+Not much, not many, I would say, but I've done that. I know is for when I think it's like maybe mid of this year around when I just done my resume. Yeah, maybe I ask for category to like analyze and yeah, like a certain format of score. So I did assume like I ask them to assume to become like a professional HR something. Okay.
+
+说话人 1 16:51 
+Okay. Okay. So you've done, you've used it, but you don't use it all the time.
+
+说话人 2 16:55 
+But I don't hear the time. Yeah, all.
+
+说话人 1 16:56 
+The time. How about, you know, you were talking about some scenarios where you know a bit, some scenarios maybe you don't know as much. So if let's say you have a task for and this particular task you find yourself totally not competent at all. You have, you're totally unfamiliar. You do not have any idea about how to start in such an instance. How will you, what will be the prompt that you provide ChatGPT? What will it look like?
+
+说话人 2 17:27 
+Mainly, I would say I would first I would straight start the chat with depends on like what other pro maybe I would say I would ask them to give me a brief introduction on this field first. I guess that's probably.
+
+说话人 1 17:45 
+Overview, general.
+
+说话人 2 17:48 
+And after that, like maybe I get into your base. So then I will start to get into my question. Either or I'm trying to solve. Then I would if like this field is like I'm not very good at, I would definitely add like, you know, explain this question in detail so that person with zero knowledge can understand. Yeah, that's why I would do if solving a problem that I'm very unfamiliar with, and I will always ask Cherry to explain in details and simple so that, you know, anyone that see this prom can understand.
+
+说话人 1 18:28 
+Okay. Okay. You know, I notice from your pre interview survey that you have undertaken some kind of online courses. Is it for prompt engineering? Can you go into that? What kind of courses do you do and how do you find those courses?
+
+说话人 2 18:48 
+I did do the cost, Sarah. I'm not sure like what it is before, but I think it's related to prompting, like the format of prompting engineer. Yeah, I find it, I would say it's still okay. Cuz mainly what it teaches us is how do we prompt, which is, I think is quite useful. Yeah, but for my currently academic style, I think it's still okay. Cuz I don't think that's a lot of thing that I would need this like, you know, like the per the best format for us to on Jenny. I but I feel like what it taught there is useful if when I'm working, you know, when they're like very professional technical stuff that we need to solve, then I think that's the best case that you can use those prompt to prompt. Jenny. I like charge you be so that they know like what you're working and what kind of problem you're solving and what kind of result you wanted to get.
+
+说话人 1 19:50 
+Okay. Okay. Now the we're going into the next section, which is on the trust building aspect. Okay, we are still out. Yeah, so here I'm interested to know about how, what was your initial trust level in generative AI before you started using and how did this trust level change after you used it? As in, so before and after, you know, before you heard about it, but you haven't used it. So you would have had some perception, some test level. You can give a rough percentage and then you tell me how this percentage has changed now that you have used it for a two years, right?
+
+说话人 2 20:34 
+Yeah, okay. I would say at first, give me a 50%. I think like during the early stage of Jane and I, you know, their result came out. They didn't show like know those reference website. Yeah, we can resign their research through. Yeah, correct. But like until now, I think most of the. Yeah, I every like every time if you ask a question that could be search through Google search also. Yes. So when they come up with all the outputs, they will always provide reference for us. Yeah, so I think my current sounds like I would says I don't mean 90,95 is quite high because I think 90, this is everything got reference. Yeah, technically, if I don't trust him, I can just check the reference. But for I, for what I know, since I this one year in uni, most of the information they Jenny I, not just having the any Jenny I, they provide, it's mostly correct, I would say. Yeah, but I'm quite, I would say I quite trust checking currently.
+
+说话人 1 21:46 
+So that's your experience, LA. So your trust is gonna have a, it's not hundred percent, but yeah, so talking about this gap, you mentioned earlier that sometimes it gives you some outputs and then you would check, right? So this part is on this validation, you get how often do you do this checking? Like let's say if you take 10 times out of 10 times, how many times do you think you go back to verify?
+
+说话人 2 22:13 
+I think maybe four times. Okay. Cuz I, for this kind of, you know, checking things that it would depends like what kind of question I'm asking. Cuz I, as I say, like for those calculation question, there's no reference. So this kind of question, I wouldn't do that kind of thing. So this kind of checking will only works on if I'm doing research. Yeah, which mean I actually need to go online to find other stuff, but tragedy help me do it. So for this time, it's like, it's a, I think I would say like, if it's a very important stuff that, you know, I need to make sure that it is correct, then most of time I would do, I would check the website. But if like a very general knowledge, you know, maybe like, how do I say, like I ask them about this week, why is the top 10 news? Yeah, maybe this kind of question, then I wouldn't really do research, right? Cuz I think I form for my own opinion. I think it's like they re rarely really they will went wrong.
+
+说话人 1 23:24 
+So I see that this validation is mostly for task that has an impact on your workload, your academic work. Yeah, so if it's like some general information and all, you rather just take whatever it throws at you. But otherwise, you do check what is your pattern of checking? You go back to web. You said, is it Google Scholar? Where do you go?
+
+说话人 2 23:46 
+I will shouldn't use Google search. I would say. Oh, oh, I would, I would, I mean, I would first check the reference link that can be for me. Then I press it inside. Then other than that, I will also Google search like all those information.
+
+说话人 1 24:04 
+It you mention that nowadays it provides a lot of source references and so on, right? Do you guys habit of checking these references to make sure that they're valid?
+
+说话人 2 24:16 
+I wouldn't say often, but I did check a few times. LA.
+
+说话人 1 24:21 
+So, okay, in the course of your interaction, I like you open a session and you start interacting, right? So during this time, have you ever experienced a scenario where chat GQT tells you, please provide a bit more information for me to work on, as in asking for clarification or further information and so on. Have you had that experience?
+
+说话人 2 24:46 
+Yes, but you let me think away. Wish. Yeah, I remember it did ask me.
+
+说话人 1 24:53 
+Okay.
+
+说话人 2 24:56 
+I would say maybe during maybe I'm. Like, you know, I'm making my presentation style or maybe I'm, when I'm designing stuff, sometimes I might ask her GPT to help me design. Not how many design, but most more like how many give me an idea, like how can I create my presentation slides or any other design poster things. Yeah, that ins in those kind of cases. Sometimes I think maybe the poem as a user we give is not detail enough. Then Chinese team might form us to give more detail for them.
+
+说话人 1 25:36 
+Okay. Okay. So that's it happened. It has happened LA, right? How about times when it will give you an answer, but it sounds a little unsure of the answer. Like, you know, human beings, sometimes we try to provide answers, but we're not sure. Then they say, maybe, you know, like we have the habit of saying, right, maybe. So have you had experience that with Chat GBT?
+
+说话人 2 26:07 
+I don't think so. I would say I feel like every time I from them, they felt quite confident. But I think I would say currently, maybe this half year so far, I think all the information that provide is correct. But I remember maybe I last year or maybe during the first few months of me using JNI, I do realize their question, their answer there, GNE I provide is wrong, but they're still providing confidently in in, yeah, in those case that I would just. And then are you sure something around there this then most of the time they might get it themself that they answer only. So, okay, but that's for the first thing I'm using, right? Currently, I would say it rarely happen, this kind of thing.
+
+说话人 1 27:00 
+So there were times when it was confident, but it gave the wrong answer. Then you pointed it out and then, yeah, Alisa. Okay. Do you think this affected your trust in any way when it happens?
+
+说话人 2 27:10 
+Yeah, it does. Cuz I just, I would say.
+
+说话人 1 27:13 
+It's pretty confident when it gives you wrong.
+
+说话人 2 27:16 
+Especially those question is like a very general knowledge. It's like even humans know. It's not like those very high question, then they just give the wrong answer.
+
+说话人 1 27:26 
+Okay. Okay. Now I'm gonna go into the this coordination between you and charge APTA. Okay, so you start a session, maybe you have something in mind, you start a session. So again, I know that it depends on the type of task that you're doing, but on average, how many times do you go back and forth before you wrap it up?
+
+说话人 2 27:49 
+As in like how many time I ask them.
+
+说话人 1 27:51 
+Yeah, yes, and clarify and then come back again, go back, you know, that's everything.
+
+说话人 2 27:58 
+I would say depends on the answer chat duty give me. Is it relevance or related to what I wanted? Yeah, so if my first problem is enough for what tragedy generated, yeah, and is suitable for me, sometimes maybe twice or three times my works 93. If the case that, you know, when he generate prompt generate the answer for me already. Yeah, I realize there are something I didn't mention before that then maybe it might go up to more than 10 times.
+
+说话人 1 28:41 
+Okay. So on a good session, maybe two to three, otherwise it's 10 LA. Okay. Okay, clear. Now let's go into, you know, your interaction. Yeah, during this interaction, are you in the habit of providing like certain gates, control gates, for example, say, do not proceed until I just say so do not proceed or until this is verified or it doesn't. Such do you have that the habit of checking, giving signals or saying, okay, stop, freeze in other kind of thing.
+
+说话人 2 29:19 
+I didn't if stop, but I would say I didn't give something. But you know, sometime when I have, you know, separate information there I need to get from awareness. I feel like it's too long. Maybe I was give them separately. I would say something like I give them like maybe 300 word paragraph and then at the end, I would say if they understand they need, I would say something like maybe read through this paragraph and analyze it and then just reply yes. Okay, I will prompt them this way. Then they would wishes they would just reply and then I would further give them 0 other information. Okay, only I proceed with like the main question.
+
+说话人 1 30:05 
+So do you normally, I mean, sometimes, you know, you ask a question, there are so many options and alright, are you in the habit of asking Jenny I to give you a summary?
+
+说话人 2 30:14 
+Yeah, I would. I think summary is quite a good thing that Chinese need to write in.
+
+说话人 1 30:20 
+Okay. Okay. Have when interacting with Jenny, I have you notice contradiction, like it's saying something first, then it contradicts itself, you know, like not so much error, but like taking a U turn kind of thing.
+
+说话人 2 30:38 
+Hello, I think it did happen. Okay, not really often, I would say cuz.
+
+说话人 1 30:48 
+So may happen. Did you kind of tell prompted say, hey, you know, is this, you know, what you told me earlier, now you're telling me this?
+
+说话人 2 30:55 
+Yeah, I like if I, I if I found out this kind of thing, I would definitely understand from my efforts. You would tell me that this is correct or like this is why happen then currently, like, yeah, I will ask them to make sure they explain in detail that I will understand why they change in this kind of thing.
+
+说话人 1 31:19 
+Eh. Okay. You know, the last question on this in this section would be like, for example, you told me sometimes you wrap up in three, sometimes you wrap up after 10. Now what is that point where you design? Okay, that's it. I'm done with you. It can be in a good way or it can be like, okay, this is not going anywhere. So my mind as well wrap up. What is the appointment? Do you decide?
+
+说话人 2 31:44 
+Most of the point, I would say is in a good way. I rarely any in a bad way cuz I, even if it's like the result is not good, I will just keep on prompt until you get something.
+
+说话人 2 31:56 
+Now is what I need. Maybe I will say sometimes I might even just open a new chat again. Cuz like, you know, if it's the same patch, you will like, if since the start, like remember.
+
+说话人 1 32:08 
+The whole thing.
+
+说话人 2 32:08 
+Yeah, you remember holding, then yeah, it might just keep on follow like his first idea. Okay, but if I try to use a new test, sometimes it might give me a fresh new idea that yes, maybe during the low old chat you won't works. Sometimes, right? If those I might use a new chat.
+
+说话人 1 32:27 
+So in your case, you will persist until something useful comes out of it. Okay. Okay. That's right. Okay, now the next part, I will come into the last two sections. So the last, but first section is on how this affects your professional decision making. Okay, so for instance, since you started using ChatGPT two years ago, you know, have you actually noticed any change in the way you work? Any skills you picked up, either good or bad, you know, whether it can be a good improvement or not so good thing. What about it? Maybe what are your comments on there?
+
+说话人 2 33:08 
+As I said, for calculation stuff, I think chat gt doesn't affect much of my own skill. Cuz I, you know, during classes, I will still need to do all those C calculation myself. It just that sometimes I couldn't answer question. I will ask them to help me explain it for me so that I can understand. This time, I wouldn't say, I think I still got all the skills to it myself. But for, I would say maybe critical thinking scan, I also writing, I think these two things are the main. I think that currently people or students will might rely most of in on Jenny.
+
+说话人 2 33:51 
+I cuz I, you know, they have the perfect grammar, I would say. So like everything they type out is like almost perfect is too good to be true sometimes. So I think that's the case where my writing skill, I would say my writing skill is not really that good. Cuz I, we can just use charge of team for most sort of stuff. And also even critical thing is here, you know, maybe I need to, you know, came up with a question based on like a certain star. Maybe I can come up with one or two. But may if I just ask shadiky to give me 10 or 20, they can just give out, give out 10 and 20 question related to that kind of thing.
+
+说话人 1 34:33 
+So the, I mean, are you worried about how it affects you? As in, have you become lazier or have you become like a bit more alert? Cuz you have to catch all the mistakes and you know, you have to be a bit more careful while using.
+
+说话人 2 34:48 
+I mean, I would say I'm worry a little bit currently current, the current state of Jane, I think it's still okay. I wouldn't say okay. Over us as human. Cuz I think there are still a lot part of human is can be differentiated from Ji. Yes, I would say more like currently what Jane I do is, but I though it would, you know, it would stop us from thinking too much. We can just probably like we didn't need think too much. But I think it's in a good way that casually how was to, you know, faster, fasten up like a lot of things like all those good idea, but we can just from them and it would make everything more efficient.
+
+说话人 1 35:39 
+So efficiency, LA the speed you see as an improvement. Okay. Okay. Has, have you, can you think of a time when actually chat GBT sort of steered you in a totally different direction and it actually was better for the work that you were doing.
+
+说话人 2 36:01 
+Let me just think for a while. Okay, I think it rarely happen. Cuz I would say, you know, whenever I provide an idea, most of the time I think charging team will just, he wouldn't like, you know, provide any extra ideas. I mean, it would elaborate based on my idea. Yeah, more detail like other stuff, but it wouldn't like change my direction, I would say, unless I term it. Yeah, so far I think I feel like most of the things I do, it really suggest me to go another way unless I find himself.
+
+说话人 1 36:50 
+So no, you, reka moments with chat ept, yetla. So mostly led by you. You're the one driving it. Yeah, you get the idea. Mostly it's like along the same lines kind of thing, right? Oh, okay. Do you think your reliance on AI is excessive sometimes? Have you experienced or felt that way? Oh, I'm depending on this a bit too much. I don't like it. Do you feel that?
+
+说话人 2 37:18 
+I would say is for me, I think it's still okay though. Although I know I use it daily, but I feel like it's still okay. Like most of my camera stuff, I would still do it myself, you know, like maybe watching lecture, reading, yeah, price, yeah, doing my assignments. Yeah, yeah, I would say it 90% of the time, but I would still do it myself. Oh, yeah, it's more like a assisting. Yeah, understand.
+
+说话人 1 37:47 
+So you don't think that it's overpowering or taking up too much of your time or your. Okay, okay. Yeah, you know, there's this. So I don't know whether you experience that there's this speed thing you mention you more faster, more efficient and more. But and then there's also this concern about accuracy, which you also mentioned that sometimes it's wrong, but you know, and if it's like a critical piece of info, you definitely will check and that sort of thing. So do you find that you have to like balance between all three things, you know, make sure that's correct, also do the work fast, you know, so, and also easily, you have to do the work without struggling too much, you know, to do it faster. But at the same time, so is there like a balancing thing you you think about, you consciously think about like, I have to make sure that it's correct, but at the same time, I don't want to be, spend too long doing it, that kind of thing.
+
+说话人 2 38:44 
+I would say like the current, yeah, yeah, I'm using like chat GBT. I think I crisis Microsoft, you know, I, I wouldn't say like even though it is inaccurate, but I think it's still efficient in a way, if even way in a way compare to if I'm doing the research myself. Yeah, cuz I maybe in just a 20 second, it can check up to, you know, put 10 websites about. Yes. Okay. I'm checking. Yeah, actually myself, maybe I need like no one or two hour.
+
+说话人 1 39:20 
+That's true.
+
+说话人 2 39:21 
+So in that case, after you give me the question I'm asking, I can just check in myself through those, you know, 10 website by searching the keywords that you provide me, then I can just check in myself. But in that case, I w maybe I would just need like, you know, half hour. So even like the answer is not that accurate, if I can, I can. Yeah, it's still, I would say it's still very efficient. Like if it will still take up, okay, much higher compared to, I do the research myself.
+
+说话人 1 39:55 
+So you find the convenience of convenience feature very attract. Active LA.
+
+说话人 2 40:00 
+Yeah, that's everything is all in once.
+
+说话人 1 40:04 
+Yeah, true. Okay, now we're coming to the end of the interview. On the last section, the first question is, if you could wish for anything, no technology barrier, what will you wish for in the future? Generative AI, your wish list. Okay.
+
+说话人 2 40:26 
+Let me think about it.
+
+说话人 1 40:29 
+Yeah, take your time.
+
+说话人 2 40:39 
+Okay, I think I get that. I will see maybe like what you mention just now about, you know, some, if Jenny, I have suggest me the other way when I'm providing then and answer or like maybe an answer to any question that I wanted that way. Maybe like if they provide another like ideal solution, cuz I feel like currently what most of GMV do, they wouldn't like straight up suggest. I will, I like, you know, when you prompt then to like, you know, analyze some stuff in some way, they will just do it the same. But I know if you like ask them, is there any ways or better ways that can do it, they would do that. But if you didn't prompt them that they, it wouldn't think of that. But I think it's better if in future, you know, Jenny, I like all these trouble. They can have more, know how I say, but maybe it's more like a, that maybe they can become like more human. Okay. I think that's good and bad about it. I would say, you know, I, it's good for us as in they could help us in more things. I make any expect in our daily life. Yeah, but I mean, the consecution is might be what if they become smarter and they starting to have their own conscious, like all this kind of thing. Like, you know, we see through like all those movies. Yeah, to yeah, that I would say, yeah, that is the thing I might wish for.
+
+说话人 1 42:22 
+Worry future you worry about that. But then, yeah, in your wish list, you still feel it could be a bit more human in terms of understanding, but the person that is interacting with it. And in what way do you want it to be more human?
+
+说话人 2 42:39 
+Not in like, you know, emotion stuff. I would say in a human way, as in.
+
+说话人 1 42:45 
+Consider.
+
+说话人 2 42:46 
+It. Cuz and also like, you know, they know how to object, as in not object, they know how to, you know, reject your idea. It's.
+
+说话人 1 42:59 
+Like, okay, okay. And it's.
+
+说话人 2 43:01 
+Not, oh, yeah, yeah. It's not like the user, the things user provide is always the best. Yes, they should, they maybe they have, they need to.
+
+说话人 1 43:09 
+Okay. Okay. Yeah, I understand. So you're saying that want to see that kind of vulnerability on the part of channel AI LA. So in a way, to see you know, that this is this idea is not probably that not that great or it doesn't do that nowadays, always giving you then kind of encouragement to the extent that you wonder whether it's sincere.
+
+说话人 1 43:32 
+Yeah, yeah, sometimes, yeah. Okay, I understand that. Okay, now you've use this for about 2 years now. If you were to provide some advice to somebody who is young person who's new to gene generative a I use. What will you, what advice will you give?
+
+说话人 2 43:52 
+Get first, I would say if it's related to, I don't know, research stuff or maybe some very professional thing, it is still best to check your own. I mean, you can still use chatbot, like chatting meeting to ask them about those kind of thing. But it's, I think it's still best to do research on your own. Like you need to do checking and also maybe I would say like some kind of, you know, life decision, maybe, I don't know, buying a house, buying a car. Yeah, or like anything else. I mean, I would say charge like AI would help us to decide better. But sometime I feel like it's it is better to also consult your friends. Yes, Emily do yeah, get more like other different kind of opinions, but I feel like chat beauty will always lean in your way. Yeah.
+
+说话人 1 44:55 
+Homogeneity and.
+
+说话人 2 44:57 
+Also for. A new user, I would say. Cuz I feel like a lot of people using chat activity, they didn't provide enough details to it, which lead to the result came out is some time not at good, but I would say it's good enough, but it might be bad. It might be, it can be better.
+
+说话人 1 45:20 
+If you provide more, more details.
+
+说话人 2 45:22 
+Config provide more details about on that thing. So I think providing like details, which is like the format of contain like the certain format of pointing would be good. LA, yeah.
+
+说话人 1 45:33 
+Drafting the prompts LA properly.
+
+说话人 2 45:35 
+Yeah, yeah, drafting the problem.
+
+说话人 1 45:37 
+Yeah, it's very important. Okay. Any concerns you have with the ChatGPT? I think you mention some along the way. Yeah, but you just want to summarize it. What are your concerns while with generative AI coming up? You are you worry about anything, right? Privacy, your job loss.
+
+说话人 2 45:58 
+Okay. I think job loss is quite a thing in the future. Yeah, because I know like, you know, currently, and I like they could almost do like, you know, especially I know it's like, you know, software engineering or those, yeah, like coding. I can feel that Jenny is getting very good at it. Yeah, even now during all my peers, I will see them like even doing assignments right there that related to coding. Like some of us would just prompt them to code everything. So I think at least one of my concern that I think chat duty or any general in general in the future, they might take over a lot of job, okay, which is not good. I mean, if, yeah, if, if, if I, if in the future we would still need to works to get like, you know, all those salary stuff, but if in the future we might, I don't know, maybe we might don't need to work. Maybe if that the case, it is fine. But currently it's not LA cuz we need to work, correct? Yeah, so there's one of concern. Then other thing is, I'm guessing still the reliability, I mean, the accuracy of any app on things that, yeah, I think technically that's the two main stuff.
+
+说话人 1 47:24 
+Main concerns. How about the intellectual property and privacy issues and all? Do you think about that?
+
+说话人 2 47:33 
+And I think, cuz I feel like this kind of thing, right? I think it's similar to, you know, all that to one step, Instagram, all those thing. Cuz like, oh, I would say like those kind of thing is more, how do I say, they have access to our more to our privacy more than AI works because AI mostly we just do like professional side, I would say. But it's still like it's just different company that have access to our idea that, you know, when you text inside a chat, technically that company would have your thing, but I know there are system there for privacy things, LA, but in term, I think AI is still okay cuz I feel like, you know, as I said just now, like, you know, WhatsApp or Instagram, you might even share your daily life, what you're doing and you're chatting with your friend or maybe family about where you're going, but you won't do that AI.
+
+说话人 1 48:38 
+So you feel that the most serious threats with the other social media platform from and all then changing along.
+
+说话人 2 48:44 
+Yeah, for privacy wise.
+
+说话人 1 48:47 
+Okay, alright, okay. I think Sasha, we had a good session and I think you're very forthcoming with your answers and all that. So we're concluding. Is there anything you want to add? Like maybe it can be a bit of an anecdote, something related to HRDP. Use anything you want to share? Eh? When before we close.
+
+说话人 2 49:11 
+I think I would say, you know, for any students that might be using charge, I think, or maybe any student that is still not using, yeah, even primary or secondary, I'm not sure. But I would say for current generation, I think it is best to use. Eh, Jenny, I, I mean, cuz I feel like if you're not using it, you're losing to others. Cuz I see a lot of people are using Jenny and it help you in a lots of way. See, so I would say like using GNE app appropriately is a good thing for any of us.
+
+说话人 1 49:53 
+So you will encourage them to use LA if you're not use. Okay. Okay. I just do a quick check on your. Phone number because that's payla No. 9,2,7,0,6,1,9,3. Yeah, right. So that will be the pain pain. The pain now is handled by colleague of mine, but he also has to refer to the NBS Finance. So this whole process, we expecting it to take about 2 weeks long. I will be submitting yours by tomorrow, end of the day tomorrow. Give you two weeks after that, right? You don't hear it after two weeks, do drop me, EMEA. I will straight. Okay, thank you. Thank you. Sure. Bye bye.
+
+说话人 2 50:33 
+Okay, thank you. Bye.
+
