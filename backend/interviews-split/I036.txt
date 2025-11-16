@@ -1,0 +1,441 @@
+受访人36:
+Gen AI Usage Interview - Zac
+Tue, Oct 7, 2025
+
+1:15 - Thara Ravindran
+Hello, is that Zak?
+
+1:18 - Thara Ravindran
+Zak, I'm Tara. I'm supposed to have an interview with you at 2 today. Are you logging on?
+
+1:25 - Thara Ravindran
+Are you? I don't see you. Maybe I think... Opened up the chat of 10-15 minutes ago. Maybe you are waiting in another room. Can you see me? Close your window and then look for the meeting. Yeah, I open. Yes, thanks.
+
+2:38 - ZK
+Hi Zach.
+
+2:40 - Thara Ravindran
+Hi, good afternoon. Thank you for logging on.
+
+2:45 - Thara Ravindran
+uh not able to on the video is it uh is that all right to keep it off yeah it's okay if you do not wish to it's fine okay okay I think you have uh sent in your informed consent but just very quickly I'll brief you on uh the objectives of our interview today and uh also tell you about uh So, first, you know, this research investigates use of generative AI amongst young professionals such as you to actually investigate the pattern of use. How do you use it? And also, what effect does it have on your learning, you know, your critical thinking, and aspects such as that. So that's the objective. You probably have Read the document, so you have an idea. And thing is that we will be audio recording this. So with your permission, I'm turning the recording on.
+
+3:59 - ZK
+Yes, it's OK.
+
+4:02 - Thara Ravindran
+OK, recording is on now. OK, Zach. I have your pre-interview survey answers with me. So from time to time, I might go back to clarify certain aspects or probe on certain aspects that you have answered in this survey question. So to begin with, we'll start with a brief description of you. What is your domain? What do you do now? Can you start with that? OK, sure.
+
+4:34 - ZK
+I'm currently a post-grad, then I'm mainly doing machine learning and then trying to make AI more efficient in terms of doing a chatbot and cleaning up the data.
+
+4:49 - Thara Ravindran
+So which school are you attached to?
+
+4:52 - ZK
+I'm currently in NTU. Which school?
+
+4:56 - Thara Ravindran
+School of Humanities.
+
+4:59 - ZK
+Ah, I see.
+
+5:03 - Thara Ravindran
+All right. Um, so have you, have you had any, um, previous, uh, work experience?
+
+5:12 - ZK
+Uh, all along? Uh, because I was from business background. Um, I think AI and computer science has always been on the rise since COVID then taken up modules, learning about how to code in, um, the basic functions regarding Python and all that. So I would say I'm a basic to intermediate user.
+
+5:40 - Thara Ravindran
+Yeah, I see that.
+
+5:43 - Thara Ravindran
+Can you let me know how frequently you use GenAI? Every day or x number of times a week, you know, whatever you can kind of quantify it a bit.
+
+5:54 - ZK
+I think right now it's about two to three times a week.
+
+6:02 - Thara Ravindran
+Do you have any particular tool that you use frequently or you spend time, split time between the various tools available? Can you name some of the most frequently used tools?
+
+6:15 - ZK
+The two main ones that I use now is ChatGPT. So these two are the ones that I find to use the most often. I tried DeepSignal before. It was really good until it started to be a bit unstable because of 5G.
+
+6:33 - Unidentified Speaker
+And they constantly had updates.
+
+6:35 - ZK
+So I tried to gravitate towards the former two more nowadays.
+
+6:41 - Thara Ravindran
+Okay, Chakripti and Gemini. I see that you have a paid version. Paid version of Chakripti?
+
+6:48 - Thara Ravindran
+okay okay all right okay now um you um can I ask you what purpose you use it more often uh for work or more for personal reasons or a mix of both mix of both mix of both okay okay thanks okay moving on now I'm going to ask you a few um questions which will probe your pattern of use now the questions will be based on your most frequent use scenario. Either personal or professional, or you can answer based on a little bit of both. It doesn't matter. So assuming that we are basing everything on your most used scenario, can I know your major motivation for starting on ChatGPT and Gemini? What prompted you to get started?
+
+7:40 - ZK
+I think really it's based on friends' recommendations. I was always trying to use Google and planning, brainstorming process was always very organic when it comes to, let's say, writing a report or trying to do something new. Then, I guess, ChatGPT was something very often used by the people around me.
+
+8:06 - Unidentified Speaker
+So I give it a try.
+
+8:09 - ZK
+And surprisingly, process was quite easy to navigate and then I found myself quite interested to use it nowadays because I don't have to think so much when it comes to planning and also gathering data it becomes very efficient.
+
+8:27 - Thara Ravindran
+Zach, can I also check with you, you know, you compare yourself with your peer group, would you consider yourself one of the early technology adopters? Are you one of those people who will go and try out something new that's available the very first time you hear about it? Or will you wait?
+
+8:45 - ZK
+Okay, I think this is a little bit tough to answer. I do love it, but then if it's, if let's say I need to pay for it, then I would be a bit more on the fence. So usually I'll check out the free things first.
+
+9:00 - Thara Ravindran
+So you're a bit cautious that way. If the payment is involved, then you'd rather wait for a while and then decide, right? Okay, now we're going to the use scenario. Okay, how do you use it? So to start with, you must visualize one of the tasks that you use it regularly. I was looking through your pre-interview. I see that you have used it. You have marked translation, research support and creative content, images, music. So you can base it on anyone. You can identify the one and you can then elaborate on that. Regarding your goal. So you said that you will be using it for, let's say, your academic research support or this creative content creation.
+
+9:51 - Thara Ravindran
+What are you looking for from ChakGPT? What is your primary goal in going to ChakGPT with that task?
+
+9:59 - ZK
+I think for the particular task, when it comes to academic, I think ChatGPT is a great tool in terms of helping me understand cultural context. So there are a lot of content which I'm not exposed to, such as the history of a nation and the cultural context of a certain country that I'm not fully exposed to. So whenever I need to gather background data, I can use GPT to help me understand better.
+
+10:34 - Thara Ravindran
+Yeah, okay. So in this case, can you give me an example of a query that you will run through CharityBT?
+
+10:44 - ZK
+Sure, so for example, I want to know which countries have been colonized and when colonization was successful. So that was one I tried to test it and then the result came out pretty, pretty incredible.
+
+11:03 - Thara Ravindran
+Okay, okay. You find the answers better than what you would get from Google?
+
+11:09 - ZK
+I actually tried Google beforehand.
+
+11:12 - Thara Ravindran
+There were a lot of results I needed to do one by one to proof check and see if it's what I need.
+
+11:18 - ZK
+But with GPT it kind of gives me a summary and then immediately it tells me okay so which is the one that I want to go for and then I can prompt it better. And then in the end, you can actually finalize a result page that gives me the answer I need.
+
+11:35 - Thara Ravindran
+That's right, yeah. I think that makes it unique, yeah. So in this question, I think it's a simple enough task. But if, let's say, you had a slightly more complex task for CharTPT, are you in the habit of breaking it up into small parts and then feeding it little by little? Or would you, like, type everything out in a large complex prompt and feed it straight away?
+
+12:00 - ZK
+I usually start with a simple one. I actually, I tried both scenarios before that when I did a very concise and detailed task, it kind of still gives me the, it was still at step one. So I needed to train it.
+
+12:17 - Thara Ravindran
+So then from then on, I started to feed it smaller tasks and then kind of eats Okay, so that's your experience with... Okay, so the partitioning gives you better results, yeah. Okay, are you of the opinion that the generative way in this case, chart GPT does better in certain types of tasks than the others?
+
+12:40 - ZK
+Oh yes, definitely.
+
+12:42 - Thara Ravindran
+What will they be? I think it does very well.
+
+12:45 - ZK
+Okay, GPT is very good for general questions. So anything under the sun that you want to find out, you can use Gemini. Gemini is more for academic work. Then if you want to gather research, you want to form a system, you use Gemini.
+
+13:04 - Thara Ravindran
+So you sort of figured out that each one has its unique strength, you use accordingly here.
+
+13:13 - Thara Ravindran
+So you know, in some of the tasks that you assigned to the Gen AI, Can you identify some aspects of the task that the AI does very well, as well as some that they do poorly?
+
+13:33 - ZK
+Okay, I think GPT does well for anything, both complex. So if you were to ask it questions, let's say if you want to...
+
+13:48 - ZK
+biology of insects or something that's more informative. I think it can surely give you the answer. The things that it does not do so well is maybe for creative content, for example, art and music. So those are the ones that I tried before and I didn't get a good answer.
+
+14:09 - Thara Ravindran
+So you would rate the fact-based kind of tasks better, easier for AI than creative content creation. Okay, moving on. Now, you know, because you know this already, now you have this notion that it does well when it's fact-based, but it's not so good when it's like very open-ended and very creative and all that. So, you have this in mind when you generate your prompts for chat GPT, I presume?
+
+14:46 - ZK
+You keep it in mind?
+
+14:48 - Thara Ravindran
+Yeah, most of the time.
+
+14:52 - ZK
+You avoid asking certain questions because of this? I think so far, not yet.
+
+15:00 - Thara Ravindran
+No, not yet. Are you in the habit of assigning like some to tangibility for them to give you like a more better, you know, better quality outputs. For example, let's say, you know, take the role of or an assessor and then evaluate my essay, you know, something like that. Are you in the habit of doing that?
+
+15:27 - ZK
+I think this is a quite interesting standpoint.
+
+15:29 - Unidentified Speaker
+I have actually tried that before.
+
+15:37 - Thara Ravindran
+OK, I'm just checking. So you generally wouldn't do that. Going on, the question is about some of the tasks that you mentioned. There may be some that is totally unfamiliar to you, as in you really have no background knowledge of something, and then you go to chat GPT to help. To get some help from JNAI.
+
+16:05 - Thara Ravindran
+How do you handle that? How will you start in this instance? Because you don't really know much about whatever that task is. So if it's like a completely unknown territory, how will you start with this LGBT?
+
+16:23 - ZK
+Actually, I'll just start with the main topic that I want to find out and then see how we navigate from there.
+
+16:32 - Unidentified Speaker
+So you will broadly give the topic, see what it returns, and take it from there.
+
+16:36 - Thara Ravindran
+Am I right?
+
+16:38 - ZK
+Okay, so unfamiliar tasks.
+
+16:42 - Thara Ravindran
+Okay, Zach, in terms of your formal training, you have indicated that you have no formal training, right? You're self-taught, right?
+
+16:55 - ZK
+Primarily self-taught.
+
+16:58 - Thara Ravindran
+So can I know a little bit about, um, how did you go about YouTube videos? I mean, do you have any resources that you use?
+
+17:06 - ZK
+Uh, YouTube has a great selection of videos watched before. And then I've also taken informal courses before regarding Python.
+
+17:20 - ZK
+So all this helps me understand code better.
+
+17:25 - Thara Ravindran
+Yeah, true, true.
+
+17:28 - Thara Ravindran
+Moving on, we are going into the aspect of credibility, which is trust. My question would be, what was your initial level of trust in AI before you started use? And how did this trust evolve after you started using it?
+
+17:47 - ZK
+Can you give me a percentage?
+
+17:53 - ZK
+I'm really more on the neutral side.
+
+17:59 - Unidentified Speaker
+It's kind of a novel concept that is rising these few years.
+
+18:04 - ZK
+It hasn't been around maybe the past one or two decades. So it's only, I do think that my percentage is maybe I'm more positive to trying out new technologies such as this, but also I don't think it's really high performing to a point whereby it can be the main choice when it comes to doing something. And then I don't think at all when I use GPT, I don't think that's the case yet.
+
+18:43 - Thara Ravindran
+So this 60% has been, you maintain that trust throughout, is it? There has been no change in, Did I say that?
+
+18:52 - ZK
+More or less, 60%.
+
+18:53 - Thara Ravindran
+More or less? You maintained that.
+
+18:59 - Thara Ravindran
+Now, the next question is about your checking and validating what ChartGPT says. You said you will type a query and you get some answers. How often do you go back and verify or validate what ChartGPT said? When do you do it, if you do it?
+
+19:19 - ZK
+I usually fact check if it prompts me a link. So I usually click and open to see what is it about. And then because sometimes it just gives me a maybe a non-governmental source. Then I would be a little bit thinking of whether it's truthful or not. Or if it happens to be an informal article from an unknown source, then I could actually open other tabs to check whether what is it being shown on the screen is truthful.
+
+20:00 - Thara Ravindran
+I see, okay. Are you in the habit of providing some instruction like certain titles, databases or certain dates or version, et cetera, for some parameters to change GPT to restrict its search and the output that it provides. Do you guide there?
+
+20:24 - ZK
+Yeah, I think I've done that before because it started, there was one time I wanted to find out about maybe social media influencers, how do they operate and then actually how do they build their following. So I think when I inserted this prompt earlier, lot of pages that were from unknown sources popped up.
+
+20:46 - Unidentified Speaker
+And then I think that was more concrete and published.
+
+20:51 - ZK
+So I tried to block out all the blogger or WordPress websites.
+
+21:01 - Thara Ravindran
+And doing this, do you think that it helped to have more confidence in the output you got?
+
+21:08 - ZK
+Yes, I think it better refined it.
+
+21:12 - Thara Ravindran
+Now, two things. One is, have you had the experience of a gen AI coming back to you with an answer and saying that it doesn't have very high confidence? You know, I'm not so sure, but maybe, you know, did it ever sound unsure of its answers to you in your experience?
+
+21:35 - ZK
+I think so far my experience has been it will always provide you with an answer. The thing that comes to mind would be whether it's satisfactory or not. So in one case whereby I tried to give it samples of artwork whereby I wanted it to generate similar content and then what I got was very And the kind of maybe pictures that showed up were not what I had in mind at all. Even if I send in the same photos again, it will still give me the same output.
+
+22:13 - Thara Ravindran
+I see. Okay, okay. So yeah, now we're going to go into, you know, when you interaction with the Jatipati, the coordination that happens. So one of the things that emerges from what you're telling me is that there's a little bit of iteration, right? The process is a little iterative. You say something, you ask something, it gives you something back, and then you kind of refine it, or you take it from there, you know, probe, dive deeper, whatever. Can you give me an overall description of this process, this iterative process? Do you start, like, I think you already mentioned that you start with a small component first, right?
+
+22:59 - Thara Ravindran
+How many iterations of back-and-forth will you have with DPD before you get something that you can work with? I would say about 5 to 10. I see. I guess it also depends on what you are saying, right?
+
+23:19 - Thara Ravindran
+Are giving like Control gates are like you say things like, you know, instructing Gen-AI not to proceed unless some things are validated and, you know, until I give you the okay, do not proceed, stop and that sort of thing. Are you in the habit of doing that? I guess only at the final stage, whereby I don't require anything else, then I will stop it. I see, I see. So, do you ask Chargivity to summarize lock the scope or lock the sources and lock the assumptions before start carrying on?
+
+24:01 - ZK
+I think not so far. Once I see the content that I need, then I will actually stop typing and then leave it as it is.
+
+24:09 - Thara Ravindran
+Have you had any contradictions from Chattopadhyay so far or hallucinations?
+
+24:20 - ZK
+Not that I know.
+
+24:22 - Thara Ravindran
+Oh, okay. When do you make your decision about stopping the interaction?
+
+24:28 - ZK
+Once I get the information that I seek.
+
+24:31 - Thara Ravindran
+So it's something that matches your expectation and then at that point you decide that that's it, huh?
+
+24:40 - Thara Ravindran
+Also, Seth, are you in the habit of using versions and changelog like do you keep your prompts and then edit, you know, then keep different versions to check to kind of double verify whether Chattopadhyay is consistently systematic, you know, it's consistent in its output and not contradicting or confusing itself and so on.
+
+25:02 - ZK
+I think it really changes all the time and even if I type two Yes, that's true.
+
+25:20 - ZK
+Hello, Zach, I think I lost you for a little while. Yeah, I'm still online.
+
+25:26 - Thara Ravindran
+I think the voice faded. OK, OK, moving on to the next section, which is on how the use impacts you. So this section where I'll have a few probes on that. So since you started using these Gen AI tools for work, what kind of changes have you noticed in your work? Whether it is in terms of, it could be like some personal skills that you developed or it could be in terms of efficiency, you know, you're doing more things, you're doing faster, whatever it may be. What are your comments on that?
+
+26:03 - ZK
+I guess AI has helped me to give very good answers but sometimes it will come across too perfect. And then I do need to humanize it a bit more in a sense that it's relatable. So I guess this is the key towards using AI-generated answers.
+
+26:25 - Thara Ravindran
+Any example you can share with me where it gave you something and it affected something you did, something you had to do with that result in a good way, not so good way in whatever ways you know just to illustrate this impact so actually I have written papers before reports I try to send it into the system just to help me paraphrase and refine it better so in a way it can correct any grammar mistakes I have also but I think sometimes the gpt gives me another version of what I changes the meaning of certain...
+
+27:08 - ZK
+Oh, that's a problem. You need to still vet through, even if it looks good.
+
+27:17 - Thara Ravindran
+Do you find yourself relying too much on JNI? Is that a concern for you?
+
+27:22 - ZK
+I think it does well for smaller passages. If you keep maybe an essay or a long-form text, it will not use for a long time.
+
+27:38 - Thara Ravindran
+You don't really have a concern about you being too dependent on this tool, do you?
+
+27:46 - ZK
+I think there's a fine line to everything. It's a good tool, but it's not 100% foolproof.
+
+27:53 - Thara Ravindran
+At this point in time, I think you are safe, as in you don't really depend too much on it.
+
+28:00 - Unidentified Speaker
+Can I say that?
+
+28:04 - ZK
+Yes, I think I can.
+
+28:06 - Thara Ravindran
+Yeah, but it's something that can't happen, right? It's something that people can get used to this.
+
+28:13 - ZK
+Then I think whether or not I'm addicted to using it.
+
+28:17 - Thara Ravindran
+I meant that, yeah. In a way, it's a civilized. Okay, now the next part is on a few things. One is, what are your major concerns in using Chattopadhyay One? Can start with that then I will move on to the other parts.
+
+28:39 - ZK
+Major concerns may be the fact-checking portion. Try not to really believe everything that I see and then also it from point to time, time to time I always try to factor check it through Google.
+
+28:59 - Thara Ravindran
+Really I think the concern is on the content itself. If you want to like create a wish list, just note down let's say three major improvements or breakthrough improvements you want to see in this tool in future. What will they be?
+
+29:23 - ZK
+I guess invention of content and things that have have not been discovered yet will be GPT can, or AI in general, can help with this.
+
+29:41 - Thara Ravindran
+Any other?
+
+29:41 - ZK
+I guess it's mainly this.
+
+29:45 - Thara Ravindran
+What about data privacy, the copyright, that kind of issues? Have you thought about it? Does it concern you?
+
+29:55 - ZK
+I mean, I usually don't have a criminal mind, but I guess it can be also exploited for this purpose.
+
+30:04 - Thara Ravindran
+Do it will affect your cognitive abilities? I mean, generally speaking, I don't mean you personally, but do you think this kind of tool, you know, actually impact on kind of diminish cognitive capabilities?
+
+30:19 - ZK
+I guess if I was a younger kid using it, it will definitely impact.
+
+30:27 - ZK
+Now that I'm a grown I don't think it's so much because that mindset of thinking this is just another toy to play with.
+
+30:39 - ZK
+A younger person were to use this and they can be overly reliant on it. Unless they don't know anything, they just go to it. And then it's kind of a problem solver. So in a way they are not that equipped with resilience. When it comes to solving problems.
+
+31:04 - Thara Ravindran
+I think we are almost done. The last question is, you know you've been using this for a while now, how long have you been using since when? Can you roughly retrace your beginning?
+
+31:14 - ZK
+Beginning, I think I started two to three years ago.
+
+31:17 - Thara Ravindran
+So if you want to like provide three top for someone who has not yet been initiated into a journey, what will the advice be? The top advice.
+
+31:35 - ZK
+You
+
+31:42 - Thara Ravindran
+Don't be too trustful.
+
+31:44 - ZK
+Always go in with a motive in mind. Don't believe everything that you see. Generated from GPT.
+
+31:53 - Thara Ravindran
+Yes, yeah. That's kind of much needed advice for many. Okay, your self-efficacy is good. Your trust is also quite positive. You don't have any anxiety while using. In terms critical thinking, your cognition, you seem to actually enjoy challenging cognitive tasks.
+
+32:26 - ZK
+You notice? Oh yes, I do. Yeah, yeah.
+
+32:30 - Thara Ravindran
+Also algorithm aversion, you do agree that there are some aspects of AI that make you kind of nervous, but you still would give it a chance, I presume. So this, like we call it as healthy skepticism kind of thing. While collaborating, do you treat this tool as a human almost?
+
+32:56 - Unidentified Speaker
+I mean, you kind of said, in my work, I consider Gen AI to be more of a creative partner than a tool, you know? You kind of said, agreed. So does it mean like, you kind of treat this as a partner?
+
+33:09 - ZK
+Like, you know, you can sound out ideas, Yes, because I am a worm by nature, so I can help as a live encyclopedia, something like a reference book, but just in the form of a computer screen software program.
+
+33:30 - Thara Ravindran
+Okay, okay. Then how about the sense of control? Do you feel the sense of control or do you think the chat GPT kind of leads you through this interaction?
+
+33:48 - ZK
+Usually, I try to be one in control.
+
+33:55 - ZK
+But I think whenever it wants to suggest me a lot of content, I try to say, because I don't want to be too information and then get very sidetracked.
+
+34:08 - Thara Ravindran
+So you do have a habit of somehow bringing the control back over to you and it kind of runs away with something.
+
+34:18 - Thara Ravindran
+I think, yeah, I mean, come to the close. You've indicated that you are okay with participating in our experimental components. So chances are that I, you know, if you're shortlisted, I mean, it's a small, smaller subset of those we are interviewing, but there's a chance that I might see you again. Can I check your phone number? I just used to call you on this number, 6499. Sorry, And that's your PayNow number, right?
+
+34:49 - ZK
+Yes, link to PayNow. Link to PayNow.
+
+34:52 - Thara Ravindran
+Okay, thanks a lot, Zach. We've come to the end of our interview. And thanks for your candid sharing and all that. Anything else you want to add?
+
+35:03 - Unidentified Speaker
+Anecdote, any experience you've had with Genii tools?
+
+35:08 - ZK
+I think so far the experience has been positive. Know, I believe can be further improved to help a lot of things.
+
+35:17 - Unidentified Speaker
+So thank you.
+
+35:22 - Thara Ravindran
+No, Zach, your payment will come from my colleague who handles the, you know, the incentive thing. It's supposed to be two weeks, I'll be submitting the once I completed tomorrow. You don't hear anything in two weeks, please drop me an email.
+
+35:39 - ZK
+OK, sure. Thanks a lot, Zak.
+
+35:40 - Thara Ravindran
+You have a good day. Thank you. OK, bye.

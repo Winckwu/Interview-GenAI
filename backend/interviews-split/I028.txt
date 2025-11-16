@@ -1,0 +1,1838 @@
+受访人28:
+WEBVTT
+
+1
+00:02:33.960 --> 00:02:35.440
+Jeremy Hong: I didn't see it.
+
+2
+00:02:35.440 --> 00:02:37.270
+yunjie.fan@ntu.edu.sg: Hello, hello, Jeremy.
+
+3
+00:02:37.270 --> 00:02:38.629
+Jeremy Hong: Hey, nice to meet you.
+
+4
+00:02:38.820 --> 00:02:44.019
+yunjie.fan@ntu.edu.sg: Nice to meet you. Is that okay for you to not turn on the camera, actually?
+
+5
+00:02:44.020 --> 00:02:45.520
+Jeremy Hong: Not turned on. Okay, no worries.
+
+6
+00:02:45.910 --> 00:02:52.810
+yunjie.fan@ntu.edu.sg: Due to… I'm going to record the whole session, so I just let you know.
+
+7
+00:02:53.640 --> 00:02:54.399
+Jeremy Hong: Yeah, no problems.
+
+8
+00:02:54.400 --> 00:03:11.800
+yunjie.fan@ntu.edu.sg: So, first of the study is to aim to understand the AI corporations, and thank you so much for joining the interview. And, I noticed that you are one of the callers here from NTU, right?
+
+9
+00:03:11.800 --> 00:03:12.530
+Jeremy Hong: Yes.
+
+10
+00:03:13.190 --> 00:03:18.300
+yunjie.fan@ntu.edu.sg: So, could you please briefly, like, demonstrate what you do?
+
+11
+00:03:18.810 --> 00:03:21.550
+Jeremy Hong: Oh, I'm actually currently part of the,
+
+12
+00:03:21.690 --> 00:03:27.110
+Jeremy Hong: I'm part of the marketing outreach and admissions team.
+
+13
+00:03:27.390 --> 00:03:32.950
+Jeremy Hong: aimed at an undergraduate studies office at Nanyang Business School.
+
+14
+00:03:33.980 --> 00:03:37.170
+yunjie.fan@ntu.edu.sg: Okay, okay. And
+
+15
+00:03:37.940 --> 00:03:42.920
+yunjie.fan@ntu.edu.sg: Is that okay for you to interview in English, or you are more comfortable in Chinese?
+
+16
+00:03:42.920 --> 00:03:44.900
+Jeremy Hong: I'm more comfortable in English.
+
+17
+00:03:44.900 --> 00:03:47.490
+yunjie.fan@ntu.edu.sg: Okay, okay, sure. So,
+
+18
+00:03:47.630 --> 00:03:55.989
+yunjie.fan@ntu.edu.sg: As you mentioned that you have already briefly introduced that you are responsible in outreach and admission, right?
+
+19
+00:03:55.990 --> 00:03:57.279
+Jeremy Hong: Yes, correct.
+
+20
+00:03:57.310 --> 00:04:01.610
+yunjie.fan@ntu.edu.sg: So, what is the main responsibility, can I know?
+
+21
+00:04:01.800 --> 00:04:11.800
+Jeremy Hong: I mean, on a day-to-day basis, I'm actually the program lead for the Master's in finance program at Nanyang Business School.
+
+22
+00:04:12.610 --> 00:04:23.629
+Jeremy Hong: So, I mean, anything… at the end of the day, I'm in charge of the outreach and the admissions process. So, the stuff like interviewing students or providing one-on-one consultations.
+
+23
+00:04:24.250 --> 00:04:26.669
+Jeremy Hong: Yeah, that's what I'm in charge of.
+
+24
+00:04:27.370 --> 00:04:33.050
+yunjie.fan@ntu.edu.sg: So, how do you think you're gonna… using AI or these similar tools as your work?
+
+25
+00:04:33.350 --> 00:04:54.119
+Jeremy Hong: Okay, so I think for in terms of AI, one of the things that you, I mean, I would utilize in terms of, like, kind of, like, sorting data, for example, like, sometimes when students enter in their data, they come in many different forms. So, I mean, on a day-to-day basis, AI would help me in terms of, like, consulting data. For example, let's say they use, commerce in their names.
+
+26
+00:04:54.180 --> 00:04:57.540
+Jeremy Hong: That's an excellent example. When they submit applications.
+
+27
+00:04:57.980 --> 00:05:13.000
+Jeremy Hong: So, when I… for example, when I'll use AI to just automatically help me to remove all the commas from names, and make sure they're in a specific format for me when I have to enter in their details on a… onto a spreadsheet, for example.
+
+28
+00:05:13.440 --> 00:05:18.249
+yunjie.fan@ntu.edu.sg: Okay, I can get that. So, which model are you most frequently to use?
+
+29
+00:05:18.390 --> 00:05:21.519
+Jeremy Hong: I think… I think it's chat… chat GPT in general?
+
+30
+00:05:21.960 --> 00:05:24.370
+yunjie.fan@ntu.edu.sg: In general, but you didn't pay for it, right?
+
+31
+00:05:24.370 --> 00:05:26.770
+Jeremy Hong: I know, I use the free version.
+
+32
+00:05:27.280 --> 00:05:35.740
+yunjie.fan@ntu.edu.sg: Okay, so could you please a little bit, like, more demonstrate about the process you're doing, the data analysis, this kind of thing?
+
+33
+00:05:35.740 --> 00:05:47.169
+Jeremy Hong: Okay, so, I mean, okay, on terms of data analysis, I mean, a lot of… a lot of the times, I can't use… particularly use AI because it… I mean, it is confidential data, so I can't… I can't necessarily use AI.
+
+34
+00:05:47.170 --> 00:06:02.179
+Jeremy Hong: But what I would say that AI, in terms of AI use that I would use more frequently is, for example, like, coming up with ideas, right? In terms of, like, marketing materials, and you, like, they're just trying to get used AI as a starting tool, like, oh, I want to write this in a certain way, give it…
+
+35
+00:06:02.180 --> 00:06:06.450
+Jeremy Hong: Right, so I will say, okay, I want to use a specific voice for an email.
+
+36
+00:06:06.600 --> 00:06:19.179
+Jeremy Hong: or I'll ask AI, okay, this is what I wrote, I wouldn't give it a prompt. Rather, I will write something already, and I'll ask AI, okay, can you make this sound a bit more, for example, professional? Make it sound more…
+
+37
+00:06:19.490 --> 00:06:38.939
+Jeremy Hong: more casual, or more… or more… I mean, professional… professional generally is the term that I would use for most of the… my prompts and when I… when I do, kind of, use AI, I will write it out, and I'll ask them to help me make it some more professional, and I'll compare differences between the two.
+
+38
+00:06:39.030 --> 00:06:48.109
+Jeremy Hong: reading what I wrote versus what AI generated for me, and pick the right answer, right solution in terms of what I'm intending to go for.
+
+39
+00:06:49.950 --> 00:06:55.370
+yunjie.fan@ntu.edu.sg: So, were you going to use different kind of AI models to compare the results that they present to you?
+
+40
+00:06:55.370 --> 00:07:00.159
+Jeremy Hong: Not in particular, I don't. I normally just use one, yeah.
+
+41
+00:07:00.380 --> 00:07:12.589
+Jeremy Hong: Because the thing… the thing about it is that it's not… I'm using it more as a tool to kind of, like, just check my work, as opposed to using it as a more creative
+
+42
+00:07:12.590 --> 00:07:25.270
+Jeremy Hong: or as an answer key, per se. It's just, okay, give me alternatives to what I have just done, and I will try to seek. But I don't really seek other models, per se. Sometimes I use AI for artwork as well.
+
+43
+00:07:25.460 --> 00:07:36.119
+Jeremy Hong: where I use… for obvious purposes, you need to create artwork. That one, I will just rely on what's already given to me in Photoshop as… yeah, because I think that's provided by the school.
+
+44
+00:07:36.970 --> 00:07:40.029
+yunjie.fan@ntu.edu.sg: Oh, so which model you are using for the artwork?
+
+45
+00:07:40.030 --> 00:07:45.469
+Jeremy Hong: The artwork is, however, is provided by Adobe itself. I'm not exactly sure what model they use.
+
+46
+00:07:45.960 --> 00:07:47.160
+yunjie.fan@ntu.edu.sg: Okay, sure.
+
+47
+00:07:47.160 --> 00:07:52.030
+Jeremy Hong: generative fill and whatnot, like, they were just generated for me. I'm really not sure the model.
+
+48
+00:07:52.670 --> 00:08:03.540
+yunjie.fan@ntu.edu.sg: Okay, I think I have two, like, aspects that you are using. One is for… to, like, give you more inspiration of your work, and the other is in the art pieces, art-relevant works, right?
+
+49
+00:08:03.540 --> 00:08:04.560
+Jeremy Hong: Yes, correct.
+
+50
+00:08:04.710 --> 00:08:12.170
+yunjie.fan@ntu.edu.sg: Okay, so, have you ever been trained in the, in the, like, prong engineering, this kind of thing?
+
+51
+00:08:12.170 --> 00:08:14.590
+Jeremy Hong: No, I'm actually a comms major, yeah.
+
+52
+00:08:15.020 --> 00:08:23.080
+yunjie.fan@ntu.edu.sg: Oh, okay. So, how can you, like, verify the… the, content that the AI generates to you is accurate?
+
+53
+00:08:23.080 --> 00:08:27.339
+Jeremy Hong: Okay, so that's the thing, is that I don't really use it to generate information.
+
+54
+00:08:27.590 --> 00:08:45.580
+Jeremy Hong: So, I don't… I'm not… I'm not… I'm not using it like a search engine where I, like, try to search for information. Rather, I use it as a kind of, like, spell check kind of… kind of situation, or in terms of artwork, I'm using it to… for example, I'm giving it upon to remove a certain item, which I'm actually quite proficient in, like, Photoshop, and that's where I generally use it.
+
+55
+00:08:45.720 --> 00:08:53.080
+Jeremy Hong: So I would… in a way, when I see the artwork, I would know that, hey, it's what I'm looking for.
+
+56
+00:08:53.450 --> 00:08:56.179
+Jeremy Hong: I don't really use it for information, I'm not using it to…
+
+57
+00:08:56.420 --> 00:08:59.220
+Jeremy Hong: Captain up with something that is factual information.
+
+58
+00:09:00.110 --> 00:09:14.850
+yunjie.fan@ntu.edu.sg: Okay, okay, so, because you have already mentioned about you wanted to, like, broaden your brain to have more, more information about your inspiration, so this kind of thing, I feel like you need to at least know the
+
+59
+00:09:14.850 --> 00:09:20.739
+yunjie.fan@ntu.edu.sg: Correct address or the, or the, the, the accurate about the information that it, it gives, right?
+
+60
+00:09:20.740 --> 00:09:28.609
+Jeremy Hong: I… okay, so here's the thing, is that generally, I'm not… I don't really look for it for information, I use it more for tonality purposes.
+
+61
+00:09:29.730 --> 00:09:48.199
+Jeremy Hong: So, for example, I'm writing an email, I want it to… okay, as I said just now, as I write an email, I want it to sound professional, right? I'm not filling in information to find me all the stats that'll make it sound professional. I already have, like, say, the stats on hand already. I just want it to format it in a way that makes it look professional.
+
+62
+00:09:48.200 --> 00:09:48.790
+yunjie.fan@ntu.edu.sg: Okay, okay.
+
+63
+00:09:48.790 --> 00:10:00.919
+Jeremy Hong: professional. So, there's no factual information being shot at me that I'm not already providing. I'm not asking it for me to find information related to a topic. Rather, I am asking it to change what I'm saying, or
+
+64
+00:10:01.290 --> 00:10:04.959
+Jeremy Hong: It changed… it's actually changed what I am saying into a different form.
+
+65
+00:10:05.700 --> 00:10:12.260
+yunjie.fan@ntu.edu.sg: Okay, so it's just a… Tool and, like, assistant to help you to, like.
+
+66
+00:10:12.420 --> 00:10:16.530
+yunjie.fan@ntu.edu.sg: Lecture content more for, like, format in a rather way, right?
+
+67
+00:10:16.530 --> 00:10:40.249
+Jeremy Hong: Yeah, formatted in another way. And I mean, in the same way, it's like, you're kind of, like, also using it as a spell checker. Is it a spell checker in, like, Microsoft Word, for example. Like, yeah, it's not giving you new information, but it's also using some AI tool on its back end, some algorithmic tool for you to understand, like, oh, this is spelled wrongly. But I don't necessarily think that it'll give me… I'm not asking you to, like, search for information or derive information.
+
+68
+00:10:40.250 --> 00:10:41.300
+Jeremy Hong: From some way.
+
+69
+00:10:41.490 --> 00:10:44.599
+yunjie.fan@ntu.edu.sg: Okay, so you failed it in English, or…
+
+70
+00:10:45.290 --> 00:10:45.870
+Jeremy Hong: Huh?
+
+71
+00:10:46.270 --> 00:10:50.590
+yunjie.fan@ntu.edu.sg: Do you just provide the information in English, or in Chinese, or any?
+
+72
+00:10:50.590 --> 00:10:54.579
+Jeremy Hong: It's all in English, yeah, that's my primary mode of conversation.
+
+73
+00:10:54.940 --> 00:11:04.489
+yunjie.fan@ntu.edu.sg: Okay, so have you ever used AI in, like, the, planning or the marketing strategy, this kind of thing?
+
+74
+00:11:04.750 --> 00:11:09.529
+Jeremy Hong: Not, not in particular, not really for strategy purposes, yeah.
+
+75
+00:11:10.740 --> 00:11:26.940
+yunjie.fan@ntu.edu.sg: So, have you… because you have already mentioned in the creative way, so, could you please, like, let me know about, like, what information you're gonna give it, and what kind of the words that all you are ready to mention about what you want to present from here? Okay.
+
+76
+00:11:26.940 --> 00:11:46.420
+Jeremy Hong: Okay, so, let's say in… okay, I'm using this particularly into… in a Photoshop sense. So, in Photoshop sense, so let's say you want something to be removed, you just give it a prompt to say, hey, remove this item from the image. Then I'll make a selection of what I want to be removed, and I'll just say, remove this from the image.
+
+77
+00:11:47.070 --> 00:11:49.269
+Jeremy Hong: So, that's the prompt I give it.
+
+78
+00:11:49.780 --> 00:12:01.989
+Jeremy Hong: it's not… I don't… I don't really generate the image from… I'm not asking it to generate an image, but in particular, rather than asking it to remove it from, let's say, a background or whatnot.
+
+79
+00:12:02.810 --> 00:12:07.719
+yunjie.fan@ntu.edu.sg: Okay, so you have… you don't have to worry that the AI maybe caused, like, the…
+
+80
+00:12:07.860 --> 00:12:13.080
+yunjie.fan@ntu.edu.sg: homogenization across the campaigns or your materials, right?
+
+81
+00:12:13.080 --> 00:12:32.660
+Jeremy Hong: Not really in particular, if anything, homolisation, because we already… a lot of times, we already have, like, existing artworks within our team that we are using already, but we need to make certain tweaks to it. So, if there's hominization, that's actually good, because we want it to kind of look similar between our programs, or what… whatever we have already.
+
+82
+00:12:32.900 --> 00:12:37.870
+yunjie.fan@ntu.edu.sg: Okay, so do you think it's gonna to instead the creator's job?
+
+83
+00:12:38.460 --> 00:12:39.729
+Jeremy Hong: Creator, creator what?
+
+84
+00:12:40.280 --> 00:12:43.550
+yunjie.fan@ntu.edu.sg: Creator's job, like, the role in the team.
+
+85
+00:12:43.550 --> 00:13:02.980
+Jeremy Hong: for AI, I mean, for our artists already, I mean, our artists themselves already use AI in certain… in different ways already, so I don't… I think AI is more of a tool at this point, but naturally, I think when you create, let's say, generated artwork, so say, for non-essential items, such as stuff like backgrounds, which don't have to be factual.
+
+86
+00:13:02.980 --> 00:13:06.120
+Jeremy Hong: For sure, I think AI is going to help a lot of people to
+
+87
+00:13:06.600 --> 00:13:22.999
+Jeremy Hong: to probably do their own artworks, per se, but jobs-wise, I'm not too certain. Rather, how I would see it is that people who are already doing this work would already… would have an added tool for them, because I think all these works still require an eye for, like, I say artwork, for example.
+
+88
+00:13:23.000 --> 00:13:34.530
+Jeremy Hong: they require… it requires somebody who is already experienced and knows what to look out for. If you're not an artist, a lot of times, you don't necessarily see the issues with it. So I don't particularly think this is a new job thing.
+
+89
+00:13:35.900 --> 00:13:46.639
+yunjie.fan@ntu.edu.sg: Okay, so do you think AI plays a great role, or it takes a large, like, percentage of your job in the… your admission or outreach.
+
+90
+00:13:47.150 --> 00:13:54.369
+Jeremy Hong: Not in particular, because I think a lot… a big part of my job is still talking to students.
+
+91
+00:13:54.620 --> 00:14:10.549
+Jeremy Hong: Right? In terms of outreach, I do still talk to students. I have to make sure that they understand what I'm saying, and a lot of the times, they are asking me questions that are not exactly found on the… found on the web, or found anywhere else. These are more…
+
+92
+00:14:10.660 --> 00:14:18.179
+Jeremy Hong: Soft… like, in a way, you are kind of, like, talking to the students and trying to assuade them in one way or the other.
+
+93
+00:14:18.650 --> 00:14:26.479
+Jeremy Hong: Right? And this information sometimes is not stuff that you necessarily have noted down in one place or the other, or can be found on a web… on our website.
+
+94
+00:14:27.570 --> 00:14:30.610
+yunjie.fan@ntu.edu.sg: So, have you ever maybe tried to just…
+
+95
+00:14:30.940 --> 00:14:39.250
+yunjie.fan@ntu.edu.sg: give the AI about the information about your student to help… to let you to get a better way to communicate with him.
+
+96
+00:14:39.770 --> 00:14:57.900
+Jeremy Hong: At the moment, we're not currently using AI bots, and I think one of the reasons for that is, I think, in the admissions process, we are also very concerned about the use of AI bots, let's say, for, like, admission essays and whatnot. Currently, we do not employ anything to, for instance, mark out, I mean, these
+
+97
+00:14:58.030 --> 00:15:03.320
+Jeremy Hong: These boards, in terms of board usage for our potential students.
+
+98
+00:15:03.350 --> 00:15:21.979
+Jeremy Hong: But I don't think there's any plans to actually necessarily use, like, a model so people can chat with them. Instead, I think what we do, in particular for the specialized masters at Nanya Business School, is that we actually have real-life students actually chat, and our admissions team chatting with students through a system called Unibuddy.
+
+99
+00:15:23.250 --> 00:15:30.299
+yunjie.fan@ntu.edu.sg: Okay, so is that the reason that you feel like it appears, like, strong, but actually mislead?
+
+100
+00:15:30.780 --> 00:15:39.209
+Jeremy Hong: Is it misleading, or what? Because I think all these people… everybody on our platform that we use to communicate with potential students are all real people.
+
+101
+00:15:39.480 --> 00:15:58.099
+Jeremy Hong: I think this… I mean, right now, our… this seems to engender a lot more trust in that, in the process, having a person behind all these conversations, and meeting people in real life, because I think a large part of our job currently is also, like, going to fairs, for example, going to overseas fairs, and talking to people, and making sure that they understand
+
+102
+00:15:58.100 --> 00:16:10.730
+Jeremy Hong: And they will still come down to and talk to us at these fairs, let's say when we go to India, or we go to China, or we go to Thailand, and Japan, Korea. We still have a lot of students coming in and asking questions
+
+103
+00:16:10.730 --> 00:16:20.500
+Jeremy Hong: even though, I mean, a lot of the information is… can be… of the program can be found online, but they want to hear a lot. I think there's a level of trust that you get when you're actually seeing somebody in person.
+
+104
+00:16:21.330 --> 00:16:26.969
+yunjie.fan@ntu.edu.sg: Yeah, sure. So, beyond your work, do you frequently use AI in your, like, daily life?
+
+105
+00:16:27.680 --> 00:16:29.620
+Jeremy Hong: Do I use AI in my daily life?
+
+106
+00:16:29.620 --> 00:16:30.450
+yunjie.fan@ntu.edu.sg: Yeah?
+
+107
+00:16:30.910 --> 00:16:45.039
+Jeremy Hong: Beyond work, I mean, in my daily life, I think AI is… I use it, in a way, like a search engine in some ways, because, like, for example, right now, I think the people are using hacks, like, okay, using… finding cheaper flights, right?
+
+108
+00:16:45.270 --> 00:16:55.380
+Jeremy Hong: So I use it to find cheaper flights. I don't… and sometimes to have inspiration, let's say, to plan a trip. Sometimes your first goal call is to ask AI, okay, help me plan a trip.
+
+109
+00:16:55.640 --> 00:17:01.839
+Jeremy Hong: let's say I'm going to Thailand or Bangkok, for example, I'll say, okay, find me places to go in Bangkok.
+
+110
+00:17:01.870 --> 00:17:03.060
+yunjie.fan@ntu.edu.sg: And I think…
+
+111
+00:17:03.060 --> 00:17:19.979
+Jeremy Hong: they… sometimes I can actually feed it my past itineraries, so that it gives me a… they have a rough idea of… AI itself has a rough idea of, oh, what… what might interest me and whatnot. But I think it's only merely a tool, as I said. I think a lot of… in a lot of times, I do use a…
+
+112
+00:17:20.650 --> 00:17:21.920
+Jeremy Hong: I do have…
+
+113
+00:17:22.030 --> 00:17:27.660
+Jeremy Hong: I do, kind of, like, after I see what they give me, I still go, I don't trust it immediately, I go and Google.
+
+114
+00:17:27.660 --> 00:17:43.899
+Jeremy Hong: Google it, and make sure that, okay, this is something that I'm actually genuinely… I might be interested in, and then before deciding on, like, pulling the trigger for it, I don't just, oh, trust it blindly, like, oh, because they, like, AI recommended the chat… ChatGPT recommended it to me, I go for it immediately.
+
+115
+00:17:44.560 --> 00:17:51.590
+yunjie.fan@ntu.edu.sg: Oh, so what is the reason you don't trust it? Like, how do you usually, like, assess the credibility of AI?
+
+116
+00:17:51.740 --> 00:18:09.399
+Jeremy Hong: I don't necessarily distrust the credibility of AI, but rather, because, I mean, I don't… I don't see it… okay, when I use AI, I don't necessarily… I… I'm somebody who likes to, clear his browsing history on quite a regular basis.
+
+117
+00:18:10.290 --> 00:18:16.599
+Jeremy Hong: And because of that, and I don't use ChatGPT with an account all the time.
+
+118
+00:18:16.910 --> 00:18:23.500
+Jeremy Hong: So, in a way, it doesn't really have a history of who I am, and what my preferences are.
+
+119
+00:18:24.830 --> 00:18:42.169
+Jeremy Hong: And as a result, its recommendations are the… it's a generally crowd-sourced information, I would say. It's taking the best for everybody, and I'm not necessarily somebody who likes to go with the flow, or somebody who is… I won't say comfortable, but I'm not necessarily somebody who
+
+120
+00:18:42.250 --> 00:18:49.980
+Jeremy Hong: is in line with everyone else. Like, my interest varies quite differently from most people. I would say when I travel.
+
+121
+00:18:50.120 --> 00:18:58.560
+Jeremy Hong: in terms of, like, oh, how… where to go, or even how much time to spend outside. Like, I generally, when I go overseas, I do like to have a bit more time to…
+
+122
+00:18:59.560 --> 00:19:15.610
+Jeremy Hong: to kind of relax and unwind, I enjoy the trip itself. Like, I'm not somebody who likes to go on a trip and spend, like, a thousand hours outside. Like, every working moment needs to be optimized. I do like to spend some time inside the hotel as well.
+
+123
+00:19:15.610 --> 00:19:20.809
+Jeremy Hong: So, in a way, it's like, kind of like seeing pictures and seeing a general feel and vibe.
+
+124
+00:19:20.810 --> 00:19:25.779
+Jeremy Hong: from the place, so I would like to… that's why I do Google… I still do my own research, lah.
+
+125
+00:19:26.320 --> 00:19:43.290
+yunjie.fan@ntu.edu.sg: Okay, okay, okay. So, back to the working scenario, because you… anyway, you need to rely on AI in the… in the tool to, like, help you to optimize the format. So, do you ever try to, in the multi-round reactions or interactions?
+
+126
+00:19:43.310 --> 00:19:50.479
+yunjie.fan@ntu.edu.sg: To… to give… to, like, let him to give you a, like, plan B, E, plan A, like, result A, result B, this kind of thing.
+
+127
+00:19:50.480 --> 00:20:05.609
+Jeremy Hong: Not… not… not really, I've never done that, yeah. I don't… I don't particularly have a reason why I have not particularly tried this side out, I've just never done it, yeah, because I think in a lot of ways, what we do at the admission, the outreach side has been
+
+128
+00:20:05.870 --> 00:20:19.189
+Jeremy Hong: has been something that we are trying as a whole, and as a result, we don't really try to go against the grain, because that would mean everybody in other programs will do the same. We try to be quite parallel in terms of the way we do things.
+
+129
+00:20:20.200 --> 00:20:25.580
+yunjie.fan@ntu.edu.sg: So, what is the main purpose you feel like the AI helps you the most?
+
+130
+00:20:25.980 --> 00:20:42.440
+Jeremy Hong: I think AI… how I would see AI right now is AI is some… in the past, when you would say… ask somebody, hey, help me check… check… check something, like, check this word, but there's, like, grammatical errors, or, like, spelling errors, or just general formatting issues.
+
+131
+00:20:42.440 --> 00:21:02.159
+Jeremy Hong: Because I see it as that person, right? So, I don't… I have a bit more faith in terms of, like, okay, the AI tool will help me to spot mistakes, or help me to change something, but I don't necessarily use it to… I don't think I use it to come up with something, yeah.
+
+132
+00:21:02.560 --> 00:21:04.310
+Jeremy Hong: It's more of a checker for me.
+
+133
+00:21:04.510 --> 00:21:10.119
+yunjie.fan@ntu.edu.sg: Okay, so if it just checks some, incorrect issues in your work.
+
+134
+00:21:10.490 --> 00:21:24.099
+Jeremy Hong: Yes, or I'll mix it better, but I don't see it as somebody as a… I know… what I know is some people do like to, like, collaborate with AI, like, okay, here's some ideas, or, like, give me some ideas for something. I… that's not necessarily something that I do.
+
+135
+00:21:24.640 --> 00:21:31.650
+yunjie.fan@ntu.edu.sg: Okay, so will you just optimize that the incorrect yourself, and won't rely on AI anymore, right?
+
+136
+00:21:31.650 --> 00:21:35.329
+Jeremy Hong: I don't, in particular, rely on AI that much, yeah.
+
+137
+00:21:35.460 --> 00:21:43.120
+yunjie.fan@ntu.edu.sg: Okay, okay, so what is the, like, situation you decide to stop, like, interacting with AI?
+
+138
+00:21:44.600 --> 00:21:48.039
+Jeremy Hong: I said, when did I start, or a situation in which I will stop?
+
+139
+00:21:48.040 --> 00:21:55.920
+yunjie.fan@ntu.edu.sg: like, we start a conversation with AI, and, like, which kind of situation, oh, stop, stop to interaction, I gotta do it my own.
+
+140
+00:21:56.470 --> 00:22:07.319
+Jeremy Hong: I… I… I don't think I ever stopped using AI. I ever started using AI in that way, so I would not say I've ever… I ever started, nor will I ever stop, yeah.
+
+141
+00:22:07.660 --> 00:22:26.969
+yunjie.fan@ntu.edu.sg: No, no, I mean, just for a one specific scenario, like, you start a conversation with AI, and you just feed him any information that you want him to help you to reach, but in which situation, in this conversation, you decide to, oh, stop here, and I'm gonna do the rest of my job of my own.
+
+142
+00:22:27.400 --> 00:22:28.650
+Jeremy Hong: Okay,
+
+143
+00:22:28.660 --> 00:22:35.360
+Jeremy Hong: I… usually, because the thing is, AI normally comes in at the more final stage of it, so…
+
+144
+00:22:35.360 --> 00:22:50.310
+Jeremy Hong: So, when AI gives me… gives me some suggestions, for example, okay, I'm going to give the example of a tone thing, where I'm writing an e… I'm writing an email to a specific audience. This, okay, it sounds like, okay, I'll give a specific example of when I was writing to alumni, right, about an announcement.
+
+145
+00:22:50.700 --> 00:22:56.139
+Jeremy Hong: And I just want to make sure that, hey, the tone that I use isn't too casual.
+
+146
+00:22:56.420 --> 00:23:12.880
+Jeremy Hong: Per se. So I will… I will use… I… what I will do is I'll use AI to… and I'll fill it this… the email that I already crafted, and say, okay, make this sound more professional, and I'll see the result. But from there, what I would… what I would do is I would compare the result between what AI got me.
+
+147
+00:23:12.900 --> 00:23:36.100
+Jeremy Hong: and what I wrote already, and then, in a way, in a way, paragraph by paragraph, sentence by sentence, decide, okay, what's the best way to incorporate all of these things? So, I think once AI gives me a result, I will look at it and I'll evaluate it, and if I need further prompts, I would, but after that, then I would take it back and actually form my own opinion, and form my own email.
+
+148
+00:23:36.120 --> 00:23:49.020
+Jeremy Hong: based on something that they have suggested. So, in the same way, like, to compare it to when I have, like, a face… I just said, and somebody else give me a face-to-face, they might suggest something for me to change, but I might think, oh, okay.
+
+149
+00:23:49.040 --> 00:24:06.080
+Jeremy Hong: this suggestion is not as good as what I had originally done, so I would just neglect that information. But sometimes, when you… as in real life, when someone gives you a good idea, you say, oh, that's a good idea, then you will take that piece of advice, and then you will just incorporate it into your work.
+
+150
+00:24:07.360 --> 00:24:12.999
+yunjie.fan@ntu.edu.sg: Do you feel like AI makes you more, like, independent, or, like, more dependent?
+
+151
+00:24:13.360 --> 00:24:27.409
+Jeremy Hong: I don't think independent or… I don't think I'm really dependent on AI per se, because I think if you talk… if you ask me about, like, spell checkers and whatnot, yes, for sure, I think I'm dependent on those things, because they do help me
+
+152
+00:24:27.410 --> 00:24:35.949
+Jeremy Hong: like, sports spelling mistakes, especially if you're typing too fast, you see the line, it's like, oh, you made a spelling error. Would I have caught it? I highly doubt so.
+
+153
+00:24:35.950 --> 00:24:41.720
+Jeremy Hong: Right? But you're talking to me about, like, gen… something that is generative, something that is, like, derived from a large language model.
+
+154
+00:24:41.720 --> 00:24:54.540
+Jeremy Hong: what I would say is then I don't think I would do it, because in a way, I would have, like, other people to check with, right? And I think so much of my job is subjective, is there's no right or wrong answer.
+
+155
+00:24:54.540 --> 00:25:10.080
+Jeremy Hong: Like, there's no right or wrong way to talk to a student, a prospective student, and tell them more about your program. And there are better ways, for sure, but there's no way for you to ever ascertain after it's done. There's no grading system that I would say there is. So I'm not…
+
+156
+00:25:10.080 --> 00:25:17.239
+Jeremy Hong: in a way, beholden to it. Because I would never know if, let's say, example, if I'm talking to a prospective student, whether I could have done a better job.
+
+157
+00:25:17.450 --> 00:25:18.310
+Jeremy Hong: Correct.
+
+158
+00:25:18.650 --> 00:25:23.270
+yunjie.fan@ntu.edu.sg: Yeah, so, like, which degree do you think AI helps you to efficient your job?
+
+159
+00:25:23.440 --> 00:25:37.469
+Jeremy Hong: I think AI allows… allows me to have some… have somebody there to help me bounce… to make… not bounce ideas off, but someone to help me just decide to help me track my work, someone as a tracker. I don't… I don't see it as a…
+
+160
+00:25:37.720 --> 00:25:52.440
+Jeremy Hong: a tool beyond that. Like, in a way, like, I see, like, spell check, right? It's this one more… one more final check of what I have done. It's not a… that's necessarily a… a, oh, I use it as the basis of my work.
+
+161
+00:25:53.580 --> 00:25:55.930
+yunjie.fan@ntu.edu.sg: So, when you started to be using AI.
+
+162
+00:25:55.930 --> 00:25:56.620
+Jeremy Hong: Yes.
+
+163
+00:25:57.170 --> 00:25:58.229
+yunjie.fan@ntu.edu.sg: Like, when you started.
+
+164
+00:25:58.230 --> 00:26:12.900
+Jeremy Hong: When did I start? So all these generative… because, like, in terms of how… what you define as AI, right? Because I think if you look way back, like, in terms of, like, Photoshop, it had this thing called generative fail.
+
+165
+00:26:13.520 --> 00:26:24.109
+Jeremy Hong: Well, where it would fill in, like, it would help you, like, have content-aware feel, where it's like, you have content that is within the context, and it will help you generate something.
+
+166
+00:26:24.750 --> 00:26:30.819
+yunjie.fan@ntu.edu.sg: Based on the content… it's this feature called Content Awarefail, and I think it was released in the early 2010s.
+
+167
+00:26:31.460 --> 00:26:35.029
+yunjie.fan@ntu.edu.sg: Okay, so… so, like, how many years you have been using,
+
+168
+00:26:35.030 --> 00:26:40.409
+Jeremy Hong: No, so what kind… so I'm asking you now is, like, what do you define as AI?
+
+169
+00:26:42.110 --> 00:26:46.080
+yunjie.fan@ntu.edu.sg: Ai is the… the… the… the…
+
+170
+00:26:46.800 --> 00:27:03.510
+Jeremy Hong: like, the mechanism that we are talking about, so… Yes, because the thing is, okay, so, like, how people would define AI might be, like, large language models, for example, like a chat GPT and whatnot. But in terms of AI, let's say I use AI for, say, let's say when you're on Gmail, for example.
+
+171
+00:27:03.510 --> 00:27:10.239
+Jeremy Hong: and your email is sorted based on spam filters. Spam filters in itself is a form of AI, correct?
+
+172
+00:27:10.810 --> 00:27:13.139
+yunjie.fan@ntu.edu.sg: We are just talking about big models, so…
+
+173
+00:27:13.140 --> 00:27:20.030
+Jeremy Hong: Okay, so this large language model. So, in this case, I would say I started using it probably, like, 2022, 2023.
+
+174
+00:27:21.160 --> 00:27:21.860
+Jeremy Hong: Yeah, but I mean…
+
+175
+00:27:21.860 --> 00:27:22.440
+yunjie.fan@ntu.edu.sg: I'm glued.
+
+176
+00:27:22.440 --> 00:27:30.719
+Jeremy Hong: during the boom of when ChatGPT became… first became a thing, so that's when I… I went… I went to, like, try it… try it out, per se.
+
+177
+00:27:31.520 --> 00:27:39.359
+yunjie.fan@ntu.edu.sg: So, I started from there, you're just using it as a tool, but you never like to deeply communicate with it, right?
+
+178
+00:27:39.360 --> 00:27:41.679
+Jeremy Hong: No, I generally don't, yes.
+
+179
+00:27:42.310 --> 00:27:43.719
+yunjie.fan@ntu.edu.sg: Oh, okay.
+
+180
+00:27:44.340 --> 00:27:57.600
+yunjie.fan@ntu.edu.sg: So do you think maybe NF, like, features or the, for the product way, you feel like future AI, maybe, can… would you like to see the update?
+
+181
+00:27:58.420 --> 00:28:11.410
+Jeremy Hong: Well, I think AI in general, or is… okay, how large language models are working in general, or these models are working in general, is in terms of the form of communication, so…
+
+182
+00:28:11.540 --> 00:28:19.249
+Jeremy Hong: when I see, for example, Google, Google releasing software using Gemini to have a more conversational
+
+183
+00:28:19.450 --> 00:28:38.110
+Jeremy Hong: oh, conversational awareness in a way of surroundings and whatnot. I mean, that's something that I'm particularly intrigued by, but… and at the same time, I'm… in terms of the… in terms of the interaction model of how we interact with AI, I think that to me is the more fascinate… more fascinating thing.
+
+184
+00:28:38.110 --> 00:28:49.370
+Jeremy Hong: Because, I mean, for… at least for me, I know… I know now there are, like, different ways for people to use AI, but for me, the primary model in which I use AI is still, like, a chat… a chat prompt, right? A text prompt.
+
+185
+00:28:49.450 --> 00:29:01.629
+Jeremy Hong: into AI. But if AI itself can kind of preemptively communicate with me as I'm doing my work, that, to me, is that next interaction paradigm.
+
+186
+00:29:02.240 --> 00:29:09.239
+Jeremy Hong: I'm… to which I… I am, like, it's preemptively communicating with me. That's how I… what I would want to see.
+
+187
+00:29:09.910 --> 00:29:21.109
+yunjie.fan@ntu.edu.sg: Yeah, still to be… we are seeking for the audience wishes cannot be critical thinking in this process, I feel like you are fully… can be, like, critical thinking. So do you feel like…
+
+188
+00:29:21.320 --> 00:29:29.499
+yunjie.fan@ntu.edu.sg: Any recommendations to… to let people who are using AI have a better, like, stronger skills in creative thinking?
+
+189
+00:29:29.730 --> 00:29:44.769
+Jeremy Hong: In critical thinking… so, okay, so the thing about critical thinking and AI is that people don't really care where… I'm just… this has been a long-term issue when we talk about, like, say, search engines in general, when we talk about Google and where they index their information from.
+
+190
+00:29:44.770 --> 00:29:58.119
+Jeremy Hong: Right? And I think… I think right now, for a lot of… a lot of models that we… we talk about, like, AI in general, we don't know what models they have been trained on, we don't know what content they have been trained on, or what are the sources of content that they have been trained on.
+
+191
+00:29:58.120 --> 00:30:09.210
+Jeremy Hong: And I think… I think for a lot of people, I think having an awareness of AI hallucinations, for example, are… is something that we definitely need to
+
+192
+00:30:09.540 --> 00:30:21.379
+Jeremy Hong: to push a lot further. I think right now, this is true for almost anything, like, for example, we talked about the radio in the 1930s, where people trusted everything they heard on the radio or television.
+
+193
+00:30:21.920 --> 00:30:25.870
+Jeremy Hong: And I think it's not particularly a kind of…
+
+194
+00:30:25.970 --> 00:30:48.830
+Jeremy Hong: a situation where you have to tell people, oh, AI is something that you need to worry about when it comes to, like, hallucinations or false information. However, it will take a widespread number of big incidences where AI causes issue for there to be this shift in perception towards, okay, this is merely a tool, as opposed to something that you rely on.
+
+195
+00:30:48.830 --> 00:30:49.620
+Jeremy Hong: And I think…
+
+196
+00:30:49.700 --> 00:30:59.529
+Jeremy Hong: inevitably, there will be a situation… situations will come up where people would… people would… would not actually take heed. I'm gonna give the example of…
+
+197
+00:30:59.810 --> 00:31:15.919
+Jeremy Hong: of the rise of fake news, correct? And when you look at fake news and how people are just con… are literally falling for fake news and not checking their sources, this is going to continue on with AI, and the thing is, once this level of trust has been built, it's hard to decouple this trust.
+
+198
+00:31:17.100 --> 00:31:27.510
+Jeremy Hong: And I think the only way for AI… the trust in AI to kind of be reduced is literally for another form of information gathering to come out.
+
+199
+00:31:27.820 --> 00:31:35.719
+Jeremy Hong: So, like, people trusted the newspapers less, because social media became a thing, right? And then they started to trust social media more.
+
+200
+00:31:35.990 --> 00:31:51.269
+Jeremy Hong: or… and then they started to distrust newspapers. I think right now, what we… what is… what we are seeing is that when to… in order for people to trust AI less, we need something that is more, in a way, accurate, right? Or something that they have more trust in.
+
+201
+00:31:51.570 --> 00:31:58.920
+Jeremy Hong: to come along, and because they have more trust in this new platform, they start to see why they should distrust AI.
+
+202
+00:32:00.300 --> 00:32:06.810
+yunjie.fan@ntu.edu.sg: But, you just mentioned about the… the, AI hallucinations, so how could you define this?
+
+203
+00:32:06.930 --> 00:32:24.819
+yunjie.fan@ntu.edu.sg: Like, which do you think, oh, it's just triggering the people's untrust for AI? Like, which kind of the information for, like, oh, the people should realize it's not true, it's not… can be trusted? But I feel most of the people not using AI is because they don't have the ability to… to identify this kind of thing.
+
+204
+00:32:24.820 --> 00:32:25.460
+Jeremy Hong: I…
+
+205
+00:32:25.710 --> 00:32:40.460
+Jeremy Hong: So, that's the thing, right? Because I don't necessarily… because I don't use AI as a end-all, be-all source, and the thing is, I know, especially for the younger generation, they kind of… they use AI as a search engine.
+
+206
+00:32:41.020 --> 00:32:51.089
+Jeremy Hong: And I think that's… I mean, that can be a difference in thinking, because, for example, in the past, when you googled something, you don't necessarily trust the first source or the second source, right?
+
+207
+00:32:52.100 --> 00:32:53.529
+Jeremy Hong: And I think because there is
+
+208
+00:32:53.790 --> 00:33:05.509
+Jeremy Hong: because AI in itself is, in a way, a singular source of truth for a lot of people. For a lot of people who use it as a singular source, it becomes very dangerous.
+
+209
+00:33:05.950 --> 00:33:09.829
+Jeremy Hong: Yeah, so I… what… so what is your question… question for this?
+
+210
+00:33:10.420 --> 00:33:13.969
+Jeremy Hong: How do you tell people to not trust a singular source?
+
+211
+00:33:14.750 --> 00:33:19.690
+yunjie.fan@ntu.edu.sg: By which degree they need to think themselves, but not trust others that march.
+
+212
+00:33:19.690 --> 00:33:36.669
+Jeremy Hong: I… I… what… the thing about AI is that I don't think you should trust AI at all, right? Because there is a… there is a level of hallucinations that cannot be quant… that is not necessarily quantifiable, even by its researchers. Especially on a topic-by-topic basis.
+
+213
+00:33:37.500 --> 00:33:45.949
+Jeremy Hong: like, I think there should be… we should use AI with a certain level of distrust in general, and not use it as a single point of truth.
+
+214
+00:33:46.690 --> 00:33:47.580
+Jeremy Hong: And…
+
+215
+00:33:47.580 --> 00:33:48.110
+yunjie.fan@ntu.edu.sg: Yeah.
+
+216
+00:33:48.130 --> 00:33:56.270
+Jeremy Hong: But I think it's, unfortunately, and this is true for almost anything that we can use for, as I said, newspapers, we talk about Google, we talk about…
+
+217
+00:33:56.680 --> 00:34:11.120
+Jeremy Hong: search engines that people just use the top link and use that as, hey, this is what I want, how I want… how I see reality, because this… this source that I trust has this as its number one answer.
+
+218
+00:34:11.730 --> 00:34:20.960
+Jeremy Hong: Like, because, I mean, as a comms major, right, we talk about, like, journalism, and talk about, like, having at least two credible sources from different places.
+
+219
+00:34:21.750 --> 00:34:34.179
+Jeremy Hong: Right? So, in a way, anything that I see online, I take with me. Like, even you have… like, as a scientist or whatnot, you take… you don't necessarily say, this is correct. You say, I have a certain degree of confidence.
+
+220
+00:34:34.650 --> 00:34:44.880
+Jeremy Hong: That something is correct, like, a percentage point, and if your number… and if you are… is accurate up to 95%, that's your benchmark of 99%, depending on
+
+221
+00:34:44.989 --> 00:34:51.290
+Jeremy Hong: on your margin of error for your experiment or your findings. You don't… you never say that it's 100% true.
+
+222
+00:34:52.239 --> 00:35:09.959
+yunjie.fan@ntu.edu.sg: Yeah, but actually, because you have this kind of skill, because you are experienced, but for students, or for the younger people, or for the people all in the radar just cannot have this ability to define which kind of information is right or wrong, right?
+
+223
+00:35:10.290 --> 00:35:20.879
+Jeremy Hong: Yes, so that is… that is a worry, that is definitely a worry for me, but at the same point, that this… the same thing is also true for any other thing that is not AI.
+
+224
+00:35:22.090 --> 00:35:29.509
+Jeremy Hong: So, it's like, when people, when you see, like, people say, don't take, don't take vaccines, because vaccines cause autism, for example.
+
+225
+00:35:29.670 --> 00:35:30.340
+yunjie.fan@ntu.edu.sg: Mmm.
+
+226
+00:35:30.340 --> 00:35:48.970
+Jeremy Hong: that wasn't something that was caused by AI. That was some… that was something that… that was true… that was caused by other factors, and people not having… being critical thinkers. Like, AI is just a… it's just the new wave of people not thinking critically, but people have not been thinking critically for a long time beyond AI.
+
+227
+00:35:49.410 --> 00:35:53.860
+Jeremy Hong: So, is this… I don't think this is necessarily an AI problem.
+
+228
+00:35:54.250 --> 00:35:57.190
+Jeremy Hong: But more of a critical thinking problem.
+
+229
+00:35:58.370 --> 00:36:02.260
+yunjie.fan@ntu.edu.sg: But I think AI improves a lot, right? Like, in…
+
+230
+00:36:02.710 --> 00:36:19.710
+Jeremy Hong: So, actually, the irony of it is that I think people are actually more aware of AI hallucinations at this point, because, in a way, most people who are using AI now grew up on the notion that AI… grew up in a time when AI was not perfect.
+
+231
+00:36:21.060 --> 00:36:22.000
+Jeremy Hong: Correct.
+
+232
+00:36:22.000 --> 00:36:36.649
+yunjie.fan@ntu.edu.sg: What if you just verify all the AIs give you the information is, like, 90 or even more accurate? Is that a… it's not a… it's not a problem, right? It's just a normal problem.
+
+233
+00:36:36.650 --> 00:36:46.279
+Jeremy Hong: It's… no, the thing is, is that I think a lot of people… okay, I won't talk about the very people who are very young. I'm talking about people who are, okay, currently in university.
+
+234
+00:36:46.280 --> 00:36:58.699
+Jeremy Hong: For example, and when ChatGPT came out in… when… and it grew in, like, popularity in the early 2020s, these… a lot of them grew up knowing that AI can be wrong.
+
+235
+00:36:59.900 --> 00:37:00.480
+Jeremy Hong: Correct.
+
+236
+00:37:01.270 --> 00:37:18.499
+Jeremy Hong: or AI has issues. So, in a way, there is… there is still skepticism behind AI. I think the issue would come in is when AI is, as you say, 90% accurate, 95% accurate, there's a certain… there is a… AI is often more correct than what we can find.
+
+237
+00:37:18.600 --> 00:37:27.160
+Jeremy Hong: that all we can ever determine. That is… that, and people are so accustomed to AI always being right, that people who grew up in that generation
+
+238
+00:37:27.300 --> 00:37:33.750
+Jeremy Hong: I think, in that sense, that is… those are the people who I would think is a bigger issue, because
+
+239
+00:37:33.940 --> 00:37:42.259
+Jeremy Hong: To them, critical thinking would be relying on multiple AI models, as opposed to finding other sources of truth beyond AI.
+
+240
+00:37:43.090 --> 00:37:51.979
+Jeremy Hong: As opposed to somebody now who, like, for example, me, who uses an AI tool, I would still use other sources to verify the information.
+
+241
+00:37:53.870 --> 00:38:06.160
+yunjie.fan@ntu.edu.sg: So, what if the error comes, like, all the, like, your subnetes using AI, like, covering their 90% even more of their job?
+
+242
+00:38:06.900 --> 00:38:08.839
+yunjie.fan@ntu.edu.sg: How could you just to marry this thing?
+
+243
+00:38:09.090 --> 00:38:11.429
+Jeremy Hong: So they use AI for 90% of their job.
+
+244
+00:38:12.580 --> 00:38:15.009
+Jeremy Hong: So what… so what's the question? What would I…
+
+245
+00:38:15.200 --> 00:38:18.870
+yunjie.fan@ntu.edu.sg: You asked, like, what would you do to fix this kind of.
+
+246
+00:38:20.440 --> 00:38:33.109
+Jeremy Hong: I mean, in a way, if somebody's using AI for 90% of their job, it is… I mean, if I was to talk to this person, I would say… what I would say is that then that's an issue less so on the person.
+
+247
+00:38:33.300 --> 00:38:43.049
+Jeremy Hong: And more… less so on the… and more so on the job, because if the job can be replaced by a model, wouldn't this person fear for their job, right?
+
+248
+00:38:43.550 --> 00:38:47.089
+yunjie.fan@ntu.edu.sg: So which, like, which degree do you think is reasonable?
+
+249
+00:38:47.680 --> 00:38:54.669
+Jeremy Hong: I don't think at a certain degree or whatnot, because I think, okay, I would say this, like, let's say I'm talking about pilots, right?
+
+250
+00:38:55.520 --> 00:39:01.580
+Jeremy Hong: Pilots use some sort of computational power, like autopilot, for 95% of their job.
+
+251
+00:39:02.060 --> 00:39:20.059
+Jeremy Hong: Or even 98% of their job. Like, landing is automated, flying is automated, and takeoff is automated, and literally everything can be automated on the pilot's end. Yet they are paying paid such big bucks, and no one would ever say, oh, we can go on a plane that is completely… completely manned by a computer.
+
+252
+00:39:20.540 --> 00:39:37.960
+Jeremy Hong: And the reason for that is that… that you need that person there for that 0.1% chance when something goes wrong, and you need human intervention. And the issue is, A, we cannot predict what kind of human intervention can be done, and B, sometimes the computer doesn't know that they need human intervention.
+
+253
+00:39:38.880 --> 00:39:54.049
+Jeremy Hong: So, I will not give… I cannot say I will give a certain percentage of the time when a person's job can be wholly done by AI, because, hey, even though your job can be done by AI, you still need somebody there to know that this thing is wrong, or something is… something is going… going wrong.
+
+254
+00:39:54.990 --> 00:40:08.570
+yunjie.fan@ntu.edu.sg: what you just mentioned is just a tool, so what if the people wishing, who is just super skilled with creative thinking, he can just help to… just the AI to help him to efficient his job?
+
+255
+00:40:08.570 --> 00:40:16.349
+Jeremy Hong: Yeah, and I don't think there's anything wrong with doing that, as long as this person realizes when AI is doing…
+
+256
+00:40:16.430 --> 00:40:31.289
+Jeremy Hong: Doing something that has an issue, or let's say you are in a line of work that requires creative thinking, or that relies on lateral thought, where it's… where thought is just not just derived from
+
+257
+00:40:31.540 --> 00:40:43.639
+Jeremy Hong: from an idea that was actually crowdsourced and whatnot, because everything AI… a lot of… in always, a lot of things that AI does is through, like, models itself does, is through lateral thinking, as opposed to…
+
+258
+00:40:43.800 --> 00:40:45.580
+Jeremy Hong: Real creative work.
+
+259
+00:40:46.580 --> 00:40:49.130
+yunjie.fan@ntu.edu.sg: To which do you think maybe I…
+
+260
+00:40:49.550 --> 00:40:54.830
+yunjie.fan@ntu.edu.sg: Good guidelines for the… for the younger generations to collaborate with it.
+
+261
+00:40:55.120 --> 00:41:02.429
+Jeremy Hong: I think… I think the thing is about collab… when you have collaboration, as you talk about the younger generation and collaboration, they need to understand…
+
+262
+00:41:03.540 --> 00:41:06.560
+Jeremy Hong: Understand the topic at hand before they
+
+263
+00:41:06.960 --> 00:41:08.890
+Jeremy Hong: Before they use it as a tool.
+
+264
+00:41:09.640 --> 00:41:10.170
+Jeremy Hong: Right?
+
+265
+00:41:10.690 --> 00:41:13.090
+Jeremy Hong: Because if you don't understand what you are doing.
+
+266
+00:41:13.280 --> 00:41:14.830
+Jeremy Hong: You can't use it as a tool.
+
+267
+00:41:15.110 --> 00:41:18.909
+Jeremy Hong: It's very… I won't say you can't, but it's very dangerous to use it as a tool.
+
+268
+00:41:19.490 --> 00:41:20.469
+Jeremy Hong: Because you don't know.
+
+269
+00:41:20.470 --> 00:41:20.840
+yunjie.fan@ntu.edu.sg: Yeah.
+
+270
+00:41:20.840 --> 00:41:22.220
+Jeremy Hong: don't know when something goes wrong.
+
+271
+00:41:22.460 --> 00:41:28.929
+yunjie.fan@ntu.edu.sg: Yeah, yeah, but it's the thing, is some of the younger generation is just using AI to help them to better understand.
+
+272
+00:41:29.440 --> 00:41:42.969
+Jeremy Hong: Yeah, and for a lot of these people, they will not have any issues. I mean, if they go through life without any issues, great, right? But when something go… if something does go wrong, they will not know it, and that could be bad.
+
+273
+00:41:43.320 --> 00:41:54.349
+Jeremy Hong: But, I mean, that's the thing. In a lot of ways, right? We talk about, like, automated driving, for example, when you see cars driving on their own versus human drivers.
+
+274
+00:41:54.630 --> 00:42:07.600
+Jeremy Hong: the incidence rate of a automated car crashing is lower than when there's human, like, interacted, like, driving. Like, someone drives on their own versus a computer driving or autopiloting a vehicle.
+
+275
+00:42:07.730 --> 00:42:16.079
+Jeremy Hong: Oh, but the thing is, is… there's… there's a net benefit for everyone not driving their cars, but I think that… that time…
+
+276
+00:42:16.190 --> 00:42:20.469
+Jeremy Hong: like, as long as the incidence rate of that is lower, I think that's fine, right?
+
+277
+00:42:21.180 --> 00:42:23.979
+yunjie.fan@ntu.edu.sg: Yeah. But, so…
+
+278
+00:42:24.750 --> 00:42:39.440
+yunjie.fan@ntu.edu.sg: So, which way do you think is appropriate for the collaboration? If you just cut into one of your working scenarios, like, from the 0 to 1, which do you think is the best flow for the younger generations to collaborate?
+
+279
+00:42:41.010 --> 00:42:48.290
+Jeremy Hong: I think it's good as a checker of your work, or as a checker for…
+
+280
+00:42:49.060 --> 00:42:52.150
+Jeremy Hong: Again, as a tool, right? I think…
+
+281
+00:42:52.510 --> 00:42:56.640
+Jeremy Hong: They need their basics, well, they need foundational knowledge.
+
+282
+00:42:57.770 --> 00:43:15.880
+Jeremy Hong: like, if you look at it as a, this can replace thought, then I think that's… that becomes very dangerous. I mean, I'm not exactly sure about the question that you're asking me, like, because that… in everything, you need the foundation, you need the basics, and without that information… without the basics and the foundational level.
+
+283
+00:43:16.530 --> 00:43:22.540
+Jeremy Hong: I don't think… I don't think people should… it shouldn't be something that they rely upon to replace it.
+
+284
+00:43:23.320 --> 00:43:28.400
+yunjie.fan@ntu.edu.sg: Yes, but I feel like most of the audience you're talking about is with experienced, but
+
+285
+00:43:28.440 --> 00:43:48.160
+yunjie.fan@ntu.edu.sg: Most of the students who are the younger generations, they are using AI to help them to realize something. Like, they are into a new startup work, they don't know how to understand, how to begin, how to just executive, so it just asks AI, and it gives him a guideline to operate.
+
+286
+00:43:48.580 --> 00:43:58.840
+yunjie.fan@ntu.edu.sg: So, and then he follows AI's instructions to do step-by-steps. Don't you feel like this kind of issues could be a problem, or you feel, oh, that is okay?
+
+287
+00:43:59.870 --> 00:44:04.780
+Jeremy Hong: I think I… okay, so, on my part, at the near term.
+
+288
+00:44:05.000 --> 00:44:20.479
+Jeremy Hong: In the near term, I think it's a problem. And the reason why I think it's a problem is not necessarily having to do with the fact that, oh, they're not critical think… they are not critical thinkers or whatnot. I think right now, in talking about the workplace, is that people
+
+289
+00:44:20.720 --> 00:44:25.660
+Jeremy Hong: people see AI as the most efficient way to do certain things.
+
+290
+00:44:25.790 --> 00:44:30.989
+Jeremy Hong: And not without understanding a larger issue at hand of why certain things are being done.
+
+291
+00:44:31.070 --> 00:44:43.939
+Jeremy Hong: But, however, in the long term, I think this is something that would be, in general, more encouraged by the general populace. And the reason for that is in the same way as, I would say, search engines, right?
+
+292
+00:44:44.000 --> 00:44:55.869
+Jeremy Hong: in the past, people saw search engines as a… as a deter… as a… something that… that is bad for the workplace, because it meant people didn't know how to search for information on their own. Let's say they go into the library to search for
+
+293
+00:44:55.870 --> 00:45:05.380
+Jeremy Hong: search for a paper, now we just go onto Google, we type a few things, and we get the papers that we were looking for. People don't understand how to go through journals anymore.
+
+294
+00:45:05.410 --> 00:45:08.069
+Jeremy Hong: In terms of on the research basis, right?
+
+295
+00:45:08.150 --> 00:45:14.599
+Jeremy Hong: And… but then right now, everyone is saying, okay, it's been widely said, okay, Google it and see what information comes out there.
+
+296
+00:45:15.470 --> 00:45:29.489
+Jeremy Hong: And I think that's how, in terms of the work… work life… work in the workplace, the attitudes towards AI will shift as people get a larger understanding of what AI is, and the workflows in it will change.
+
+297
+00:45:29.550 --> 00:45:47.269
+Jeremy Hong: So, I don't… I think it's more of a short-term issue where you have two conflicting ideas of how certain things should be done, and when people converge on AI as the most efficient way of doing things, that's where, I think work becomes a lot easier, or a lot more collaborative.
+
+298
+00:45:48.520 --> 00:45:52.619
+yunjie.fan@ntu.edu.sg: But don't you think that it needs some change for the younger shit?
+
+299
+00:45:53.310 --> 00:46:00.729
+Jeremy Hong: I… the thing about change in… do you think AI… do I think AI needs to be changed, or do I think the younger generation needs to change?
+
+300
+00:46:01.780 --> 00:46:11.249
+yunjie.fan@ntu.edu.sg: No, I mean, like, some training shit. Like, some training to them is… help them to have some… some inspiration in doing something. But…
+
+301
+00:46:11.470 --> 00:46:21.559
+yunjie.fan@ntu.edu.sg: if they just lack of the training, they just have no clue to doing this kind of thing, right? So, the only thing they can rely on is the tools right now is AI.
+
+302
+00:46:22.410 --> 00:46:36.750
+Jeremy Hong: Okay, I think I understand your question, and I would… what I would… what I would counter with that is that no one ever trained, like, someone like… like me, I'm not… I'm not sure who… how old you are, but no one ever taught me how do I look through things in a…
+
+303
+00:46:36.940 --> 00:46:38.700
+Jeremy Hong: an encyclopedia.
+
+304
+00:46:39.130 --> 00:46:49.799
+Jeremy Hong: Like, I was never… or how do I find research paper? How do I find online journals? It, like, those things were never a part of how I did my work, and I was never trained in those things.
+
+305
+00:46:49.800 --> 00:47:01.929
+Jeremy Hong: However, that also meant that I can do things perfectly fine. That didn't mean, oh, I don't understand their use case or whatnot. Like, how many of the younger generation do not know how to use a dictionary, for example?
+
+306
+00:47:02.250 --> 00:47:04.460
+Jeremy Hong: Yet, they are perfectly fine in spelling.
+
+307
+00:47:05.010 --> 00:47:22.669
+Jeremy Hong: Like, I think AI merely is an evolution of what we had in the past. Like, Google itself, like a search engine in itself, is AI… at the heart of it is AI as well, right? In terms of how things are shown to us, what is indexed, and how it's displaying stuff to us.
+
+308
+00:47:22.670 --> 00:47:28.610
+Jeremy Hong: But we… we just take… we take it as fact. Not even fact, we just live… live with it, and…
+
+309
+00:47:28.610 --> 00:47:35.860
+Jeremy Hong: I don't think a lot of people were trained on how to use Google. They just learned how to use it, they learned how to incorporate that into their lives.
+
+310
+00:47:36.170 --> 00:47:43.030
+Jeremy Hong: So, on that front, I don't necessarily think that, oh, because, like, they need training to change how
+
+311
+00:47:43.220 --> 00:48:00.310
+Jeremy Hong: how AI should… yes, there are people that we should probably teach skills to, to better themselves, but I think the fundamental way in which we evolve is that a lot of people, when they see AI, they just treat it as such, and then there's a new paradigm that kind of
+
+312
+00:48:00.350 --> 00:48:17.409
+Jeremy Hong: develops based on that. I don't think that necessary training has to do with it, because I think when we talk about a common denominator, let's say for AI tools, people, like, developers and how programs are developed go towards that lowest common denominator.
+
+313
+00:48:17.410 --> 00:48:27.540
+Jeremy Hong: And people… like, right now, Google has a lot of powerful tools, like, how you… in terms of how you search for certain things, but 99% of the population doesn't use them.
+
+314
+00:48:27.810 --> 00:48:42.800
+Jeremy Hong: And I think these… the same skills that people say that, oh, like, the younger generation currently lack, in terms of critical thinking and whatnot, will be replaced by other things where they are… they are much more superior in other ways.
+
+315
+00:48:44.650 --> 00:48:48.030
+yunjie.fan@ntu.edu.sg: So, which thing do you think is the biggest risk for AI?
+
+316
+00:48:48.540 --> 00:48:57.089
+Jeremy Hong: the biggest risk for… the biggest risk for AI is… is… comes from, as we said, a lack of critical thinking.
+
+317
+00:48:57.120 --> 00:49:08.879
+Jeremy Hong: And the biggest risk that I see is that because of how AI, like, how the current state of AI, in terms of how, like, models are generated, relying on
+
+318
+00:49:09.170 --> 00:49:12.159
+Jeremy Hong: On things that have already been done before.
+
+319
+00:49:12.270 --> 00:49:21.570
+Jeremy Hong: Or things that are existing already, is that creative works or new forms of thinking are no longer being developed.
+
+320
+00:49:22.000 --> 00:49:41.660
+Jeremy Hong: I think that in itself is the biggest risk of AI. However, there's nothing to say that AI… how AI is or was, like, AI in the past, what I used to deem as AI was algorithmic, and now it's models. I am not going to say AI is going to remain stagnant and not address the issues that I am… I am saying.
+
+321
+00:49:42.470 --> 00:49:51.030
+Jeremy Hong: So, I think, based on how AI is right now, I would say, hey, critical thinking and a lack of new thought, lack of unique thought.
+
+322
+00:49:51.320 --> 00:50:03.049
+Jeremy Hong: And the thing is… what I am worried about in terms of AI is that evolution of… of, let's say, speech… of speech, that evolution of…
+
+323
+00:50:03.440 --> 00:50:09.210
+Jeremy Hong: of just… How… how things are developed, and how things are going to…
+
+324
+00:50:09.570 --> 00:50:25.569
+Jeremy Hong: how things might remain stagnant because of AI. Like, if you see from the 1970s… from the 1970s to the 80s to the 90s, there are distinct eras of certain… certain things. But when you look at AI, if AI just, in a way, regurgitates how
+
+325
+00:50:25.810 --> 00:50:41.820
+Jeremy Hong: what has been done before, or whatnot, or makes modification, or creates variation on what's been done before, culture doesn't change. People would remain, in a way, stand still on, like, singular moments. Like, right now, like, would…
+
+326
+00:50:41.820 --> 00:50:50.079
+Jeremy Hong: would there be a possibility where, like, the entirety of AI kind of, like, Kind of halts cultural development.
+
+327
+00:50:50.230 --> 00:50:52.760
+Jeremy Hong: That is a, that is a way, and that is a fear.
+
+328
+00:50:55.380 --> 00:51:10.260
+yunjie.fan@ntu.edu.sg: Actually, but you have already mentioned about the creativity of AI, but, I feel like, really, training should be you talking with AI, like you continuously feel it the information that you want him to present.
+
+329
+00:51:10.280 --> 00:51:15.390
+yunjie.fan@ntu.edu.sg: And it's just generally to be personalized based on
+
+330
+00:51:15.720 --> 00:51:26.600
+yunjie.fan@ntu.edu.sg: like, different kind of information you're giving to it. Have you ever, like, noticed this kind of thing? Maybe it's just gonna… to get a revolution in the future, to be more…
+
+331
+00:51:26.600 --> 00:51:36.830
+yunjie.fan@ntu.edu.sg: like, personalized, to deal with the kind of issue about creativity, or the thing you have already mentioned in the personalized, this kind of thing.
+
+332
+00:51:36.830 --> 00:51:51.309
+Jeremy Hong: Personalization is… I don't see as a store for the issue. I think personalization is something that I think will definitely come to AI, and has already come to AI, in terms of… of consumer… on the consumer side of things, and how things are…
+
+333
+00:51:51.480 --> 00:52:04.280
+Jeremy Hong: being generated. However, what I do worry is that what can be personalized to me, it would remain stagnant because of the way AI currently is, in terms of how models are generated.
+
+334
+00:52:04.490 --> 00:52:23.510
+Jeremy Hong: I think those things are, like, separate things… things, right? Like, the fear is because everyone kind of… information is… is sought on a… when the models are generated kind of basis, it will kind of… or slow down the development of new things.
+
+335
+00:52:24.230 --> 00:52:29.480
+Jeremy Hong: Because everything, like, information-seeking and whatnot is solely based on the past.
+
+336
+00:52:30.200 --> 00:52:42.880
+Jeremy Hong: I think personalization is merely an extension of what is currently done on the current models. I think personalization is in itself a… won't be an evolution on what we have.
+
+337
+00:52:43.210 --> 00:53:03.179
+Jeremy Hong: But it doesn't address that cultural shifting. So, okay, I'm gonna give an example of this… something that is not really AI-related, but rather how culture in itself has remained stagnant. So, if you look… if you look at when the iPhone came out in 2000 and… 2007 till now.
+
+338
+00:53:03.800 --> 00:53:13.540
+Jeremy Hong: As much as we talk about the social media revolution and whatnot, the way we interact with our devices has largely remained similar.
+
+339
+00:53:13.990 --> 00:53:22.689
+Jeremy Hong: In terms of a glass… a glass display, and music, and everything being siloed within apps, or in some ways, widgets.
+
+340
+00:53:23.030 --> 00:53:27.889
+Jeremy Hong: But our interaction paradigm primarily is still a touchscreen device.
+
+341
+00:53:27.890 --> 00:53:43.250
+Jeremy Hong: And in doing so, if you look at how the 8… like, in the 20 years before the iPhone, from the 1980s to 2007, that shift was very drastic. Like, the idea of communicating to somebody from across the world.
+
+342
+00:53:43.450 --> 00:53:54.360
+Jeremy Hong: it seemed very foreign. But right now, even if you look at how we are interacting right now, we are interacting through Zoom, we are talk… well, we are talking… we are having this conversation, correct?
+
+343
+00:53:54.660 --> 00:53:55.130
+yunjie.fan@ntu.edu.sg: Hmm.
+
+344
+00:53:55.130 --> 00:54:01.009
+Jeremy Hong: This thing could have been done 20 years ago, maybe through a different platform, maybe through, like, Skype, or even a phone call.
+
+345
+00:54:02.210 --> 00:54:07.289
+Jeremy Hong: But it's… the interaction paradigm has… had… had not… had not shifted.
+
+346
+00:54:07.610 --> 00:54:10.999
+Jeremy Hong: Whereas in, like, in the 20 years before.
+
+347
+00:54:11.180 --> 00:54:16.109
+Jeremy Hong: before the iPhone, this sort of communication would be unheard of.
+
+348
+00:54:17.080 --> 00:54:36.399
+Jeremy Hong: the speed in which technology has evolved has shrunk significantly. The amount of queues that we have gotten has not gotten that much better. It has evolved upon itself, like, in terms of how we… in terms of talking, like, oh, Zoom is free, we don't have to use, like, a landline to communicate.
+
+349
+00:54:36.500 --> 00:54:43.450
+Jeremy Hong: how that thing has worked remained the same. However, because we had that foundation on which phone calls are made on.
+
+350
+00:54:43.710 --> 00:54:55.759
+Jeremy Hong: it evolved around itself, as opposed to coming with a new paradigm in which we communicate. And I think that's where AI will struggle. It will struggle to create new paradigms in which thought can be processed.
+
+351
+00:54:56.790 --> 00:54:59.589
+Jeremy Hong: Because it is merely building on the past.
+
+352
+00:55:00.360 --> 00:55:04.440
+yunjie.fan@ntu.edu.sg: So what if just with the development, the AI must, or…
+
+353
+00:55:04.810 --> 00:55:12.990
+yunjie.fan@ntu.edu.sg: has got to be involved in the collaboration, in the teamwork, so… what do you think is the best role for him, or for the AI?
+
+354
+00:55:13.200 --> 00:55:25.570
+Jeremy Hong: I think that would depend on the team itself, right? In terms of how, A, how many people are using AI, the trust of AI, and how established certain protocols are set in place. Because I think
+
+355
+00:55:25.570 --> 00:55:33.489
+Jeremy Hong: If, let's say, you're in a team of 10 who has been doing something for a very long time, and you introduce AI into the program.
+
+356
+00:55:33.910 --> 00:55:44.919
+Jeremy Hong: into that process, they will shun AI, because they have been doing something that works for so long. And in a lot of cases, these are the companies that would succeed because
+
+357
+00:55:44.920 --> 00:55:57.779
+Jeremy Hong: they have a system that works, and they shouldn't change it, or this is the company that fail because they don't go on with the times. I think how AI should be done is, as I said from the very start, as merely a tool.
+
+358
+00:55:57.780 --> 00:56:05.800
+Jeremy Hong: for them to… for them to think… think of ways that maybe the team of 10 had never thought of before in some ways. However, I think…
+
+359
+00:56:05.990 --> 00:56:11.399
+Jeremy Hong: they cannot just blindly follow AI, they have to have their own expertise to… in which to…
+
+360
+00:56:12.080 --> 00:56:23.090
+Jeremy Hong: to see how AI work… AI can be integrated into their work stream. And there's no, like, right or wrong answer in terms of a, oh, a certain percentage of… oh, a certain percentage needs to be done by AI.
+
+361
+00:56:23.400 --> 00:56:36.349
+Jeremy Hong: I'll go back to the pilot analogy. In the past, pilots had to do everything in a flight. Now they barely do anything on a flight. It does not… they make their role any less relevant. They still need to be in the cockpit. However.
+
+362
+00:56:36.460 --> 00:56:51.309
+Jeremy Hong: However, their workload has reduced. And in that same way, I see AI working in that way for a lot of places where, hey, I still need somebody who understands the product. And in a lot of ways, right, it will kind of, like, make the people who
+
+363
+00:56:51.460 --> 00:56:55.199
+Jeremy Hong: Know what they are doing that much more successful.
+
+364
+00:56:56.590 --> 00:57:10.359
+yunjie.fan@ntu.edu.sg: So, which do you think is more important? Like, for the future education managers or future education involvers, is to need more AI features or have, like, strong critical thinking?
+
+365
+00:57:10.900 --> 00:57:17.970
+Jeremy Hong: I… I… how I see it is that I think AI Pint.
+
+366
+00:57:18.290 --> 00:57:25.919
+Jeremy Hong: Let me put it this way. I think AI will fundamentally change how people perceive different things, and I think
+
+367
+00:57:26.140 --> 00:57:34.880
+Jeremy Hong: as somebody in education, what I would say is that the demand for certain educational functions might be reduced.
+
+368
+00:57:36.430 --> 00:57:41.999
+Jeremy Hong: And that's how I see the AI shifting education needs.
+
+369
+00:57:42.920 --> 00:57:48.339
+Jeremy Hong: Because I think… I mean, in the past, a li… okay, a librarian was somebody
+
+370
+00:57:48.390 --> 00:58:06.530
+Jeremy Hong: whose role was a lot more critical, because a librarian was somebody who helped you find information. It was not just, help me find a book, but where do I find certain things? And being a librarian requires a master's degree. It still requires a master's degree and whatnot. However, the role is, in a way, diminished because people
+
+371
+00:58:06.690 --> 00:58:10.650
+Jeremy Hong: Can, in a way, solve, like, 90% of their job.
+
+372
+00:58:10.850 --> 00:58:13.659
+yunjie.fan@ntu.edu.sg: At this point, with true search engines and the internet.
+
+373
+00:58:13.870 --> 00:58:17.000
+Jeremy Hong: And then the role of the librarian became less popular.
+
+374
+00:58:17.360 --> 00:58:25.980
+Jeremy Hong: And that's the way I would say AI as well, that AI will make certain… certain roles diminished, and because of that, in the educational space.
+
+375
+00:58:26.080 --> 00:58:28.899
+yunjie.fan@ntu.edu.sg: It will make certain, like, degrees less popular.
+
+376
+00:58:29.880 --> 00:58:44.779
+Jeremy Hong: And from there, it's like the shift for there would be, hey, to identify, okay, how can we offer programs that will make people more interested in furthering their education, and how do we create a value proposition for people who want to further their education?
+
+377
+00:58:47.200 --> 00:58:54.269
+yunjie.fan@ntu.edu.sg: So, which is your, like, best decision, or for your thoughts? Is the stronger creative thinking more important, or AI features?
+
+378
+00:58:55.070 --> 00:58:56.789
+Jeremy Hong: I… I would say…
+
+379
+00:58:56.940 --> 00:59:10.109
+Jeremy Hong: in a way, if I think how AI features in itself would become more important, because I think critical thinking… if critical thinking reduces, these AI features have to do, kind of.
+
+380
+00:59:10.400 --> 00:59:16.249
+Jeremy Hong: the critical thinking will only reduce when AI features become as strong as they are.
+
+381
+00:59:17.170 --> 00:59:22.049
+Jeremy Hong: Because, I mean, even nowadays, right, we assume certain things are correct already.
+
+382
+00:59:22.050 --> 00:59:22.680
+yunjie.fan@ntu.edu.sg: Hmm.
+
+383
+00:59:22.680 --> 00:59:32.249
+Jeremy Hong: let's say we use Excel, correct? Then we… we just put a sum of everything. We don't assume that thing is wrong. It could be wrong, we just don't… we just never know.
+
+384
+00:59:32.840 --> 00:59:38.689
+Jeremy Hong: Because we just assume that whatever we put… the formula that we enter into Excel is correct.
+
+385
+00:59:39.770 --> 00:59:40.640
+Jeremy Hong: And do we…
+
+386
+00:59:40.640 --> 00:59:41.320
+yunjie.fan@ntu.edu.sg: Yeah.
+
+387
+00:59:41.320 --> 00:59:43.579
+Jeremy Hong: That level of critical thinking was…
+
+388
+00:59:43.900 --> 00:59:54.069
+Jeremy Hong: was taken out of us, instead of, like, checking every sum row by row. We don't do that anymore, we don't double-check our work anymore, let's say we do an Excel sheet, because
+
+389
+00:59:54.600 --> 01:00:04.100
+Jeremy Hong: Or else we just assume it's correct. That level of critical thinking in… in not even talking about my, like, new, the new generation, I'm talking about someone like me who uses Excel.
+
+390
+01:00:04.420 --> 01:00:06.740
+yunjie.fan@ntu.edu.sg: I really don't do that.
+
+391
+01:00:06.760 --> 01:00:13.820
+Jeremy Hong: And that is not an AI thing. That is just technology has gotten to a point where I trust it enough that even if it's flawed.
+
+392
+01:00:13.980 --> 01:00:16.939
+Jeremy Hong: It's better than I manually count everything at once.
+
+393
+01:00:17.900 --> 01:00:31.490
+Jeremy Hong: And then that's the thing of AI, where as AI features become better, the way we do certain critical thinking would be reduced in some way, shape, or form. It will naturally be because we take things for granted that they are correct.
+
+394
+01:00:31.640 --> 01:00:37.070
+Jeremy Hong: But in that, new critical thinking skills might come out as a result, right?
+
+395
+01:00:37.880 --> 01:00:44.520
+Jeremy Hong: People spend less time on Excel sheets, but they use the Excel sheets, the data from the Excel sheets, to draw conclusions.
+
+396
+01:00:44.680 --> 01:00:45.760
+Jeremy Hong: even more.
+
+397
+01:00:47.030 --> 01:00:58.850
+Jeremy Hong: And I think that's how I would say that critical thinking would… might evolve because of the AI features, but the AI features would reduce the level of critical thinking as we see it today.
+
+398
+01:00:59.020 --> 01:01:02.760
+Jeremy Hong: Based on if they are trusted enough.
+
+399
+01:01:03.000 --> 01:01:16.669
+yunjie.fan@ntu.edu.sg: I agree with you, I agree with you with that. But, my… so, what is my… my thought and my concern right now about the research, because this is my… not my research, it's the PhD research. I was thinking
+
+400
+01:01:16.730 --> 01:01:28.430
+yunjie.fan@ntu.edu.sg: Which way do you think may be better to solve this kind of problem? If we… back to the infrastructure, we're back to the product, how can the users have stronger critical thinking?
+
+401
+01:01:28.780 --> 01:01:31.569
+yunjie.fan@ntu.edu.sg: Buy, maybe, the updates of the product.
+
+402
+01:01:31.990 --> 01:01:38.170
+yunjie.fan@ntu.edu.sg: And in the, in the, in the, in the pace of the AI gets stronger and stronger.
+
+403
+01:01:40.040 --> 01:01:45.300
+Jeremy Hong: It's… how do we… retain critical thinking. Is that the question?
+
+404
+01:01:46.190 --> 01:02:01.540
+yunjie.fan@ntu.edu.sg: like, if we're back to design the product of AI, we start from the infrastructure, we start from the technical issues, we… how can we just not damage, like, people's critical thinking, but we still make it stronger?
+
+405
+01:02:02.260 --> 01:02:04.589
+Jeremy Hong: That's the thing, right? I… I think…
+
+406
+01:02:05.270 --> 01:02:13.659
+Jeremy Hong: I don't necessarily think we need… we need to have all these functions, because people would just, as we say, take things for granted.
+
+407
+01:02:14.700 --> 01:02:27.929
+Jeremy Hong: that there will be no glitches or anything. People… and naturally, I think as a collective, critical thinking would be reduced as a result. However, what I would say is, because it is such an efficient tool.
+
+408
+01:02:28.130 --> 01:02:45.140
+Jeremy Hong: the way… the work we define as critical thinking might change, right? Is that people are no longer obsessed over counting, right? I go back to the Excel spreadsheet example. People in the past used to be obsessed with counting, making sure that all… that their calculations were correct.
+
+409
+01:02:45.730 --> 01:03:03.820
+Jeremy Hong: as opposed to seeing what was calculated and trying to draw, like, for example, let's say it's a business, and trying to come profit, like, profit and loss, they were making sure that whatever their sums were correct, as opposed to saying, oh, I made less profit here, I made more profit there, how do we better the business?
+
+410
+01:03:04.450 --> 01:03:08.250
+Jeremy Hong: AI, in a way, based on how useful it is.
+
+411
+01:03:08.350 --> 01:03:18.139
+Jeremy Hong: can draw… make people… can shift people away from the doing… from the… from stuff that could be automated, for example, and how we thought of Excel in the past now can be
+
+412
+01:03:18.220 --> 01:03:36.280
+Jeremy Hong: shifted towards, oh, finding out information, or finding out history, and how do we learn from those things? I think it will shift… it shifts that… it shifts the paradigm of what we define as critical thinking. Because in the past, what we might have defined as critical thinking was merely
+
+413
+01:03:36.290 --> 01:03:40.919
+Jeremy Hong: Somebody who did a lot, who was meticulous in a certain way.
+
+414
+01:03:41.190 --> 01:03:53.079
+Jeremy Hong: Whereas, I think for, like, as an AI product designer, I would not necessarily worry so much about creating a product that makes people think critically, whereas I would want a product that does
+
+415
+01:03:53.110 --> 01:04:04.810
+Jeremy Hong: the features that it says, and develop more features that will remove… that will take stuff that used to be manual labor into something that could be automated. And from there.
+
+416
+01:04:04.880 --> 01:04:18.339
+Jeremy Hong: create… and from there, how people think, the collective way of people, how people think, would change, and I would think it would… it might change for the better, because it… as I said, I don't see AI as an end-all be-all, I see it as a tool.
+
+417
+01:04:19.190 --> 01:04:24.870
+Jeremy Hong: And there will naturally be people who just see it as an end-all, be-all, but I… I think that is true for almost any new invention.
+
+418
+01:04:25.150 --> 01:04:25.820
+yunjie.fan@ntu.edu.sg: Hmm.
+
+419
+01:04:26.930 --> 01:04:34.379
+yunjie.fan@ntu.edu.sg: Okay… But, you said about the change of the thinking problem, but I feel like…
+
+420
+01:04:34.520 --> 01:04:39.819
+yunjie.fan@ntu.edu.sg: It's just due to the people generally cannot define right or wrong.
+
+421
+01:04:39.910 --> 01:04:57.370
+yunjie.fan@ntu.edu.sg: So it's just gonna gradually turn out to be an ethical issue, like, years after years, because you… everybody generates the information. It's not about right or wrong, right? Maybe it's all about… about the… the default generates continuous going. So…
+
+422
+01:04:57.780 --> 01:04:58.690
+yunjie.fan@ntu.edu.sg: Yes.
+
+423
+01:04:59.150 --> 01:05:06.630
+yunjie.fan@ntu.edu.sg: You said about the paradigm, but what is the paradigm in the after days is just the wrong thing.
+
+424
+01:05:07.090 --> 01:05:26.630
+Jeremy Hong: Look, but when it's just the wrong thing, that is… that can be true for even stuff that isn't AI, correct? Like, you see the idea of right or wrong, for example, the use of vaccines. Like, there is a scientific… there's scientific proof, and there is… there is belief.
+
+425
+01:05:27.090 --> 01:05:38.070
+Jeremy Hong: And I think that's… that's the thing of when people… there's no matter what kind of technology there is, or whatever it is, they will all… belief will all… belief will always trump
+
+426
+01:05:38.420 --> 01:05:42.520
+Jeremy Hong: effect, or reality. And… and…
+
+427
+01:05:42.810 --> 01:05:54.550
+Jeremy Hong: I'm gonna give… I'm gonna give that example again, it's like, when you… when you look back into the past, where people believed that the Earth was… Earth was square… was a square, was… and we would fall off the Earth, it was not a sec… a…
+
+428
+01:05:54.550 --> 01:06:06.239
+Jeremy Hong: spherical item. And a lot of people believe that, but as more information came in, as the information became more widespread, as we created tools that help us to generate
+
+429
+01:06:06.950 --> 01:06:20.859
+Jeremy Hong: generate critical… we use tools that would help… that aided in our critical thought, right? Like, I mean, because, I mean, like, Google… that search engine social media gave us more access to more information.
+
+430
+01:06:21.130 --> 01:06:24.730
+Jeremy Hong: And from there, people were able to form more critical thought.
+
+431
+01:06:26.430 --> 01:06:38.260
+Jeremy Hong: Such entries in itself, or even social media in general, these are all algorithms that are based on a certain form of models. A certain form of… of VWAP.
+
+432
+01:06:38.450 --> 01:06:52.860
+Jeremy Hong: a reward system in which they will show you things that you agreed upon in general, right? In terms of social media, that confirmed your biases and whatnot. That is true, that can be true for AI as well, where it can confirm your biases, and in that case.
+
+433
+01:06:52.890 --> 01:07:06.100
+Jeremy Hong: But that does not mean that AI in itself can be a bad thing. Just because AI delivers something that can be critically… that is objectively wrong, it does not mean that people would objectively say AI is wrong.
+
+434
+01:07:06.470 --> 01:07:19.480
+Jeremy Hong: I think it can give you false positives of a result, but that's the truth for almost everything, in terms of any form of information gathering system from the past. From a communication standpoint.
+
+435
+01:07:20.570 --> 01:07:30.729
+yunjie.fan@ntu.edu.sg: Do you feel like it's actually a natural thing? Maybe the AI gonna have to give every users or every audience a wrong consensus.
+
+436
+01:07:31.300 --> 01:07:43.040
+Jeremy Hong: Like, a wrong consensus can be built based on a number of factors, and it does not have to… like, AI is merely a platform in which a wrong consensus can come upon.
+
+437
+01:07:44.740 --> 01:07:46.870
+yunjie.fan@ntu.edu.sg: Hmm, okay.
+
+438
+01:07:47.550 --> 01:07:52.450
+yunjie.fan@ntu.edu.sg: So, do you have any suggestions for avoiding this kind of issue?
+
+439
+01:07:52.840 --> 01:07:59.739
+Jeremy Hong: of avoiding. That's the thing, is that I would say, as we develop, we have to make sure that we hold
+
+440
+01:07:59.810 --> 01:08:15.750
+Jeremy Hong: like, AI developers account… like, accountable, and making sure that errors are seen as a bad thing, as opposed to something that just happens, right? There needs to be a comfortability for these errors, and this is something that we are seeing upon, because
+
+441
+01:08:16.000 --> 01:08:32.370
+Jeremy Hong: Fortunately or unfortunately, we live in an environment in which errors, like, mistakes are seen as persona non grata. They are something that people… people feel like, hey, these things have to be perfect, we have pushed AI to this standpoint that
+
+442
+01:08:32.370 --> 01:08:38.530
+Jeremy Hong: Any mistake that AI makes has to be… it is something that is… makes AI completely fall on itself.
+
+443
+01:08:38.560 --> 01:08:41.720
+Jeremy Hong: But I think it's every tool that we have made is not perfect either.
+
+444
+01:08:42.450 --> 01:08:47.429
+Jeremy Hong: But we don't… we don't criticize when Google gives us the wrong answer for something, correct?
+
+445
+01:08:48.420 --> 01:08:55.480
+Jeremy Hong: In the same way, because we see… because we see AI as this level of, like, AI has to be perfect.
+
+446
+01:08:55.620 --> 01:09:09.640
+Jeremy Hong: That's the best way that we continue to do so, because until something that is better than AI, what we consider AI now to be better, we will always trust AI to be perfect, and when AI isn't, we hold it to a higher standard.
+
+447
+01:09:10.740 --> 01:09:14.540
+yunjie.fan@ntu.edu.sg: Okay, okay. So, yes, I think,
+
+448
+01:09:14.710 --> 01:09:19.420
+yunjie.fan@ntu.edu.sg: I am all done with my questions. Do you have anything maybe you feel like.
+
+449
+01:09:19.420 --> 01:09:22.350
+Jeremy Hong: Yeah, I don't have anything on my end.
+
+450
+01:09:22.700 --> 01:09:23.700
+yunjie.fan@ntu.edu.sg: Okay.
+
+451
+01:09:23.800 --> 01:09:35.800
+yunjie.fan@ntu.edu.sg: Yes, I feel like it's super, like, unique for your insights, actually. I have never been about some of your… your thinkings about the paradigms, or about your…
+
+452
+01:09:35.899 --> 01:09:45.560
+yunjie.fan@ntu.edu.sg: like, you're already the one that I feel like is so unique that you've, like, 100% no believing in life. That is surprised me.
+
+453
+01:09:45.600 --> 01:09:57.680
+yunjie.fan@ntu.edu.sg: Well, actually, I feel like, it's a good conversation between you and us, and I feel like maybe you can just involve in the future related studies, maybe?
+
+454
+01:09:57.820 --> 01:09:59.110
+Jeremy Hong: Yep, sure, no problems.
+
+455
+01:09:59.590 --> 01:10:09.900
+yunjie.fan@ntu.edu.sg: Okay, and once again, thank you for your participation, and we may contact you for the… for the, like, the court rotations in the future.
+
+456
+01:10:09.900 --> 01:10:10.800
+Jeremy Hong: Okay, sure.
+
+457
+01:10:10.800 --> 01:10:13.029
+yunjie.fan@ntu.edu.sg: Okay, okay, thank you for your time.
+
+458
+01:10:13.030 --> 01:10:14.169
+Jeremy Hong: Thank you so much.
+
+459
+01:10:14.170 --> 01:10:15.089
+yunjie.fan@ntu.edu.sg: Thank you, yeah, bye.

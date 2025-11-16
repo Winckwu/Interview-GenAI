@@ -1,0 +1,495 @@
+受访人35:
+1:03 - Thara Ravindran
+hey hi morning detention hello can you hear me I'm able to hear you okay Can you turn on your video too?
+
+1:37 - Gitansha Aggarwal
+Hi Vinansha.
+
+1:38 - Thara Ravindran
+Yeah, it's possible for you to be to come on video?
+
+1:41 - Gitansha Aggarwal
+Actually, I'm currently in my office.
+
+1:47 - Thara Ravindran
+I see, okay. Can you talk? I mean is it okay for you?
+
+1:56 - Thara Ravindran
+Just give you a brief overview of what this interview is about. I think you investigates how young professionals interact with Gen-AI and whether the dynamics between Gen-AI and the user resembles something like human-human interaction. So we apply a theoretical frame called transactive memory systems, which consists of specific dimensions. We're basically trying to find out whether there are any parallels. Does it reflect human-human interaction in some ways, or how is it different? And what effect this interaction has on your learning, the improvements in different aspects, such as, in this instance, it's critical thinking and so on.
+
+3:00 - Thara Ravindran
+And as you know, we the research, the process requires you to be recorded. So, you know, I will be starting recording soon so that we have something to validate, you know, the findings and so on. So in case we are not clear, we can always go back to your transcript audio recording to verify facts and so on.
+
+3:28 - Thara Ravindran
+I have your pre-interview survey which you have filled out and I will be probing on certain aspects there as well.
+
+3:40 - Gitansha Aggarwal
+We'll begin with yourself.
+
+3:42 - Thara Ravindran
+If you can just give me a brief description of your background, what do you do work-wise, professionally and so on. Especially I'm interested to your tech adoption, technology adoption, attitude, intentions, and so on. For example, you compare yourself with your peer group. We want to know whether you are one of the earlier adopters or, you know, you're one who will wait for some cue to get started and so on. What motivates you to get started and so on, okay? So you can start begin by by giving me a brief description of your background.
+
+4:28 - Gitansha Aggarwal
+Yeah, sure. So basically, currently, I'm working as a solutions developer in a marine and offshore company. And so, and then I'm like a AI digital developer. And besides that, I have just completed my master's from NTU in business analytics. So regarding like the AIs and all those who have worked on some of the POCs using the LLM, so I have like fairly enough idea on how to use them and how they can affect like in the day to day work life basis, those kind of things.
+
+5:12 - Unidentified Speaker
+Your master's was in can I know which domain your master's is in? Business analytics.
+
+5:17 - Thara Ravindran
+business analytics and you're currently working as an analyst or software developer?
+
+5:22 - Gitansha Aggarwal
+I'm more like a software developer. Software developer.
+
+5:27 - Thara Ravindran
+How about your technology adoption pattern, Gitansha?
+
+5:33 - Gitansha Aggarwal
+So for that, I would say it's like, I mean, I kind of keep on looking about the latest news and all those stuff.
+
+5:46 - Gitansha Aggarwal
+sometimes like I need to reference to the tutorials or those kind of a thing.
+
+5:56 - Unidentified Speaker
+So it's not like I can start like from the very basics but need a bit of a help I would say.
+
+6:07 - Thara Ravindran
+If you compare yourself with your peers, are you one of the first people to go in or you like you wait for a while before you go in?
+
+6:18 - Gitansha Aggarwal
+I think I would place myself as like first to go in.
+
+6:23 - Thara Ravindran
+Ah, okay. Earlier doctors, I would say.
+
+6:29 - Thara Ravindran
+Now, I know you indicated that you do not have a paid version, although you have been trained in prompt engineering. I think you attended some Coursera courses or something like that.
+
+6:42 - Gitansha Aggarwal
+Yeah, yeah, correct.
+
+6:44 - Thara Ravindran
+So, can you explain why? This seems to be a little bit of contradiction, because usually, if they are trained, they probably have the paid version, although there is no strict correlation. I'm just curious why you decided not to use a paid version yet.
+
+7:00 - Gitansha Aggarwal
+Actually, since there are so many multiple resources, I feel like I can make use of the different free versions to fulfill whatever want to accomplish.
+
+7:17 - Thara Ravindran
+So you don't see the need.
+
+7:22 - Thara Ravindran
+And out of all the different tools available, which are the ones that you use the most frequently?
+
+7:32 - Gitansha Aggarwal
+Most frequently, I would say like the Chennai, especially like the ChatGPT.
+
+7:40 - Gitansha Aggarwal
+Gemini, Cloud, those kind of things.
+
+7:49 - Thara Ravindran
+You know, you mentioned that you're one of the earlier adopters and I guess in the case of Jatipati, Gemini, you probably were one of the first people to get started amongst your peer group, right? Can you tell me what motivated you? What got you started? When you want to download and try out?
+
+8:09 - Gitansha Aggarwal
+So basically like after being in Singapore, I used to go to like multiple networking events or those kind of things which were like used to focus on these kind of things. So hearing those, yeah, it gives me an idea like maybe, okay, these are the things people are looking forward to. So maybe I should try and see how they are going to be.
+
+8:37 - Thara Ravindran
+So when you are in these and people speak about these tools, you felt that you have to keep yourself updated, so you decided to try.
+
+8:48 - Thara Ravindran
+Okay, now we are going to go into what do you use it for, you know, like, since you're a software professional and you seem to have a background in application development and all that. The question is, what proportion of the time do you use it professionally versus personally? If you use it for personal purposes at all you know or do you use it for more?
+
+9:13 - Gitansha Aggarwal
+I think I would say it's a balance between both of them because professionally sometimes in the debuggings and those kind of things it is useful also when I have to understand some concepts it actually provides you like great resources and helps you understand the concepts ready And for the personalization, like again, if I have to pick up something or sometimes that is helpful. Sometimes like when I'm drafting the emails or like editing some passages or I have to change my tone, those kinds of things, I would say I use it.
+
+10:00 - Thara Ravindran
+for conceptual understanding, and for your profession, for your tasks, what kind of tasks? Can you give me an example, for example, for work, work use?
+
+10:17 - Thara Ravindran
+I mean, since I'm like, mostly software developers, it's understanding a new concept or something or like debugging, Now, you will base the next set of questions on your debugging professional experience or conceptual clarification, any one of them.
+
+10:47 - Unidentified Speaker
+Basically, is trying to understand your pattern of use.
+
+10:53 - Unidentified Speaker
+How do you interact with JetAI?
+
+10:57 - Thara Ravindran
+take your coding or debugging or even conceptual understanding example.
+
+11:05 - Thara Ravindran
+First of all, when you use ChatGPT, what is your objective in tapping on ChatGPT really? Like the specific goal there, what would it be? What do you expect ChatGPT to help you with?
+
+11:20 - Gitansha Aggarwal
+So, I mean, I mostly do that because sometimes it's like when I do the Google search or those like of thing. So it has an advantage that it can consolidate all the information. I don't have to like switch to different tabs or maybe like if I want to have the follow up questions.
+
+11:37 - Unidentified Speaker
+I can just say,
+
+11:41 - Gitansha Aggarwal
+So it's more of like I have like a structured thing and I can reference through my other materials while googling or normal stuff.
+
+11:53 - Thara Ravindran
+So, you like the fact that it consolidates information across different sources as compared to chat, Google which is just pointing you in different directions, right? So, that's your goal in using, okay. Now, the next question is your pattern of use. How do you get started? You know, like the first prompt or is there some preparation you do, you know? So, I'm interested in your the pre-prompt preparation and your first prompt, let's say.
+
+12:30 - Gitansha Aggarwal
+So for that, maybe I usually try to assign a rule to it so that it doesn't go in other directions and probably focus on that one.
+
+12:41 - Unidentified Speaker
+Then I try to give it some context as well.
+
+12:50 - Thara Ravindran
+will provide a content and in your first prompt you know you just now you mentioned that you provide a context yeah how detailed will this first prompt with your context description will be like how much information will you give will you give most of it some part of it do you break down the things that you need into different parts how what is your Actually, it usually depends on the nature of the task that I have to do.
+
+13:23 - Gitansha Aggarwal
+So if it's like something which I don't, which like it's small task, like maybe draft an email or something like that. Yeah, not much. I don't provide it much context because I just want like a first draft and then I can edit it by myself. If it's like some concepts or like, how is this related to that, those kind of things. It would be like, this is my aim and this is the This is what I want.
+
+13:54 - Thara Ravindran
+And you assign the role also you you tell you to take the role of let's say, can you give me an example?
+
+14:02 - Gitansha Aggarwal
+So, okay, like, even I will just take an example of a table. So if it's like something related to data science and say you're an expert in data scientist, I have to like, and do it something else. So then I assigned that particular rule.
+
+14:24 - Thara Ravindran
+Assuming that you would be, if you're an expert in this area, one would use it.
+
+14:31 - Thara Ravindran
+The next question is on, you know, like, you're dealing with the outputs from ChatGPT, right?
+
+14:44 - Thara Ravindran
+So the question is do you do you find the Chakrapati to be good at certain tasks or better than you rather you know and do you and what are these tasks you find it particularly bad with something and what what would that be? So you know in your in your opinion based on your experiences.
+
+15:04 - Gitansha Aggarwal
+Okay so if I have those pinpointed something which it is good at.
+
+15:17 - Gitansha Aggarwal
+I would say like originating the first drafts or like providing some ideas like to get started with.
+
+15:23 - Thara Ravindran
+Okay okay yeah you find that quite reliable and you like that part. Okay okay and how about those aspects that you think it is not very good at?
+
+15:37 - Gitansha Aggarwal
+For that I would say it's so sometimes if I just provided too much information, right?
+
+15:45 - Thara Ravindran
+I see.
+
+15:47 - Gitansha Aggarwal
+So it's more like less creative freedom. So yeah.
+
+15:54 - Thara Ravindran
+Is there anything, any specific example you can think of Like you gave too much information and you found it output not so good.
+
+16:04 - Gitansha Aggarwal
+The one example which is actually coming to my mind right now is like while I was writing emails or those kind of things, right? So I provided like the GED or stuff. So it used to like have completely focus on the GED and instead of like- I see.
+
+16:26 - Unidentified Speaker
+It is not what you are looking for. Yeah, exactly.
+
+16:33 - Thara Ravindran
+Now I'm going to go into In the task that you mentioned just now, such as you're asking for conceptual clarification or debugging of code or whatever. These are tasks that you are familiar with yourself. How about some examples of tasks that you are not familiar with? You don't know much about it and you are seeking the help of ChatGPT. Can you give me an example of that? How did you do? What was your experience with that?
+
+17:02 - Gitansha Aggarwal
+I actually understand. What kind of thing you mean like I don't have the knowledge about or is it something else which you want me to give an example of
+
+17:18 - Thara Ravindran
+I just I'm on understanding your experience using Chattopadhyay when the user is not familiar with what should be done you know like you're totally clueless you get stuck you have you had that kind of experiences where you really don't know anything Yeah, maybe explain that.
+
+17:41 - Gitansha Aggarwal
+So, I mean, like, I'm learning totally a new concept or something, right? And I have no idea about it, what I'm going to dive into. So usually at that time, what I do, it's like, if I have to accomplish certain tasks, and I just provide start with that particular information like I want to accomplish this and this is like my set of the things which I need to do and this is what I want to know about and then I try to see what it provides me and let's say provided me like this is how you should get started and then nowadays it's also generating like this is what you can use exactly so try to look through that and if I have like some things I don't understand or understand it conceptually, then I asked you to give me an analogy of it so that it solidifies my thinking. I see.
+
+18:40 - Unidentified Speaker
+And then I asked you to follow up questions.
+
+18:44 - Gitansha Aggarwal
+If I'm stuck on some particular thing, I'm still unable to understand it. Can you explain it a bit more, or maybe in some other way? So those kind of things.
+
+18:58 - Thara Ravindran
+And how would you find the responses for that?
+
+19:04 - Gitansha Aggarwal
+I mean, since I have no idea about it, so I would say the responses are quite good because at least with the analogy and those kind of stuff, I'm able to understand the concept so I can proceed.
+
+19:19 - Thara Ravindran
+The next part covers your trust in AI. So at this point, I think looking at your pre-survey, I see that your trust in Gen AI is quite good, you know, as in most of the time you trust that it handles a fairly common task quite well.
+
+19:47 - Thara Ravindran
+But although you said that you are not willing to depend on the AI output in multi-step collaborations. Can you explain that a bit? Because for the others, you seem to agree and strongly agree.
+
+20:02 - Thara Ravindran
+There are a couple of questions. It seems like a mixture.
+
+20:06 - Unidentified Speaker
+You said that you're sometimes suspicious of the output, even when it looks correct.
+
+20:15 - Thara Ravindran
+Can you explain why that's the case?
+
+20:20 - Gitansha Aggarwal
+as I mentioned, sometimes I use it for like codings and those kind of stuff, right.
+
+20:26 - Gitansha Aggarwal
+So usually during that time, while I'm asking it again and again, so it sometimes misses the concepts and hallucinates sometimes, I see, which can sometimes lead to some of the functionality is those kind of a thing. The cases which I'm not very of it. And again, like I have provided the example of like the emails and then it's too much of the context. And then it's okay.
+
+20:56 - Thara Ravindran
+So that's the reason.
+
+21:02 - Thara Ravindran
+You also disagree that you don't you're not willing to depend on AI output in a multi step collaboration.
+
+21:07 - Gitansha Aggarwal
+Yeah, you are okay with their common tasks, common tasks.
+
+21:13 - Thara Ravindran
+I think it trusted. What do you have in mind when you indicated that you are not willing to depend on AI for multi-step collaboration?
+
+21:26 - Gitansha Aggarwal
+So for me the main thing which I won't depend on for multi-step collaboration is like because of the one step can lead to like a chain effect kind of a thing.
+
+21:40 - Unidentified Speaker
+So which can be sometimes harder to control or like figure out where exactly So, if it just involves you and Chadjipati, you are okay.
+
+21:54 - Thara Ravindran
+If it involves other people, then you will be okay.
+
+21:59 - Thara Ravindran
+Now, the next part is on, you know, coming back to your trust, you know, what percentage do you think your trust level was when you first got started?
+
+22:13 - Gitansha Aggarwal
+So actually when I got started it was around like 22-23ish. Yeah at that time it was quite low.
+
+22:26 - Thara Ravindran
+I see and how did it change over time with use?
+
+22:31 - Gitansha Aggarwal
+So like as these days like it's getting better and better right because something new is coming up they're making it more trustable and it's expanding a lot like even now you can get the citations and references like where exactly it is coming from so that has like kind of raised some of my trust in it.
+
+22:54 - Thara Ravindran
+And what what is the level now I mean if you want to give a percentage roughly?
+
+23:00 - Gitansha Aggarwal
+So I would say around 80 percent.
+
+23:03 - Thara Ravindran
+So from 20 to 30 it has increased to 70 to 30 depending on yeah okay. So the next question is when AI gives you the output you know maybe conceptual clarification or some advice how often do you go back and verify this?
+
+23:25 - Gitansha Aggarwal
+Okay I mean usually sorry so if like there's some citations or those kind of thing right I try to verify with those citations and if it's like depends on the nature of the impact it will have if it's like a big part of it which I need to verify then I'll try to fact check it because as you know the output we get from it is not always correct so for me it becomes essential to when I'm using it to verify like if I'm using it what I'm doing is like actually verified, at least from my side.
+
+24:05 - Thara Ravindran
+Give me an example of something you checked, verified with the, what sources do you use to check? How do you check your output from Chargibility? What do you verify it against?
+
+24:19 - Gitansha Aggarwal
+Usually like Google search or something like that.
+
+24:24 - Thara Ravindran
+Okay, give did this? Because you had to be sure.
+
+24:32 - Gitansha Aggarwal
+So sometimes like while I was in my college, I was doing like some researches or something for assignment at that particular time. So I had to like fact check if the studies it is providing me are actually valid or not. Or is it something it is making up?
+
+24:59 - Thara Ravindran
+Have you ever had any experience where the AI sounded like it's not sure of its own response? For example, it gives you some answer, but with a caveat. It says, oh, I'm not very sure of this, or I'm only half sure, or whatever. Have you ever come across that?
+
+25:21 - Gitansha Aggarwal
+Oh, I'm like on the top of the mind. I can't remember anything like that.
+
+25:29 - Gitansha Aggarwal
+Because mostly it sounds like pretty confident when it's generating.
+
+25:32 - Unidentified Speaker
+I see. OK, OK.
+
+25:36 - Thara Ravindran
+So you don't see that unsure kind of response. How about AI questioning you about the context, for example? Example, AI telling you that, you know, the context is not clear to me, can you give me more information? Have you had that experience?
+
+25:54 - Gitansha Aggarwal
+Okay, usually, I try to provide something like if you are unclear, then ask me something. So, at that moment, it does ask me some questions, like if you can provide me this more context tailored to your responses.
+
+26:12 - Gitansha Aggarwal
+And it's straight out asking me, I don't think I have this idea.
+
+26:21 - Thara Ravindran
+So I think from what you've been telling me, I understand that your interaction with Jatipati is a little bit of an iterative one, right? It asks, you ask question, it gives you something, and then you ask more further probing questions, and it goes on, right? How many times do you think this kind of interaction last, you know, how many loops, iteration does it take for you to get something?
+
+26:50 - Gitansha Aggarwal
+Like useful, which I can reuse, right? I would say like, I'm able to get like something solid in under three to five.
+
+27:01 - Thara Ravindran
+Three to five, three to five. Do you apply what we call control or criteria and say do not proceed until you know until I say so until I this is verified or some such you do you apply that kind of yeah yeah so basically like I asked to like don't generate it unless you have all the you have asked all the verifying questions yes I do yeah this is for code generation I presume?
+
+27:37 - Gitansha Aggarwal
+Usually code generation or sometimes like I have to develop some draft or some person I'm working on.
+
+27:45 - Thara Ravindran
+You ask AI to summarize the, you know, summarize what the output given or lock the scope or lock the assumptions, sources and so on.
+
+27:58 - Gitansha Aggarwal
+Yeah, actually, yeah. So sometimes I use Perl city or the notebook lm so yeah if I don't have a lot of time to go through the case studies but actually then so I just put it in the notebook lm and then Read through the summaries and but then even once I know the idea then I try to go through it again to see like which yeah what points is highlighted in the case studies so to have the like remember them properly and get a better understanding of the case studies. And for the perplexity, I feel like it gives a solid research material. If you want to try it, you have the summary as well. And then if you want a detailed report or anything, you can just go to the links and explore it more.
+
+28:57 - Thara Ravindran
+um had the experience of tragedy contradicting something it said or something you you knew for yourself your conviction we had any such prediction from tragedy I mean I remember like it has happened like usually if you ask go for a simple question like the common classic example was the strawberry case and so it has happened And how do you then manage it? You just stop your conversation or you try to correct it? How do you deal with that?
+
+29:38 - Gitansha Aggarwal
+Earlier I used to stop my conversation but these days I like sometimes I just prob it a bit more like this is not what it is.
+
+29:47 - Thara Ravindran
+You do sometimes provide feedback to get the BTM.
+
+29:54 - Gitansha Aggarwal
+Okay, okay.
+
+29:58 - Thara Ravindran
+When do you decide to stop your iteration?
+
+30:03 - Gitansha Aggarwal
+Then I feel like I have something concrete to get started like what I wanted to get.
+
+30:08 - Unidentified Speaker
+Yeah, I'm satisfied I get a certain level.
+
+30:19 - Thara Ravindran
+What is the nature of your ending of your interaction? Do you tell the GPT that, OK, I've had enough, or do you just stop?
+
+30:28 - Gitansha Aggarwal
+Oh, I just usually stop. Or sometimes it's like, if it's an email draft or something, I just say, OK, this is what I want to thank you, and those kind of stuff. Yeah, yeah.
+
+30:38 - Thara Ravindran
+OK, I see. You know, just asking you something about your use, are you in the habit of using tags or change logs and and to coordinate the revisions. Sometimes you have to revise certain things.
+
+30:55 - Unidentified Speaker
+You do? Do you?
+
+31:02 - Thara Ravindran
+Now we're going to go into the impact that use of ChatGPT has on your personal learning gains. So for example, you're using it for your professional reasons. Have you noticed any change in you professionally or personally since using JPT?
+
+31:24 - Gitansha Aggarwal
+I mean I would say sometimes like if you're just reading through something like especially if it's very technical it's harder to like remember the concepts but with JPT you can get the analogy. So like I feel like using those analogies, I'm able to remember the concepts in a much simpler and way where I can like reference them for the future as well.
+
+31:49 - Thara Ravindran
+You found it very helpful in that sense.
+
+31:54 - Thara Ravindran
+Has it impacted on your decision making? Have you had some good? So if you were to list a few benefits of using ChargerBT, what would the benefits be?
+
+32:05 - Gitansha Aggarwal
+I mean, first of all, has made like everything move at a faster pace, right? Everything gets done.
+
+32:17 - Gitansha Aggarwal
+So mostly efficiency.
+
+32:20 - Thara Ravindran
+Have you noticed any improvement in your learning or your work in other personal aspects?
+
+32:31 - Gitansha Aggarwal
+I mean I think everything will can come under like umbrella Do you think you use it too much?
+
+32:45 - Gitansha Aggarwal
+I mean, I think I do because sometimes I have tasks where I want to just be myself and I feel like maybe relying a bit on it too much is impacting.
+
+32:57 - Thara Ravindran
+Yeah, you do have that.
+
+32:59 - Gitansha Aggarwal
+So how do you then handle that when you know that you are depending too much you cut it off sometimes yeah so I try to like if I feel like I'm depending on it too much so let's say the email thing so I try to like come up with the drafts myself and then feel like okay yeah this is what I wanted and then so kind of you can say restrict a bit of it.
+
+33:31 - Thara Ravindran
+We're coming to the almost to the end. What are your so-called wish list for CharityBD? I know you are fully aware that there are restrictions because I went through your AI anxiety answers and also the answers on algorithm aversion. You seem to have a healthy skepticism, we want to call it that, about AI. So if you want to wish for improvements, can you give me some points on what these improvements are in your wish list?
+
+34:04 - Gitansha Aggarwal
+So for the responses I generate, right? I mean, first of all, I would say, right?
+
+34:15 - Thara Ravindran
+OK, sorry.
+
+34:16 - Gitansha Aggarwal
+I just got a blank for a minute. Let me just.
+
+34:26 - Gitansha Aggarwal
+I think first of all the privacy issues and like one thing I feel like we don't know who's gonna take the responsibilities because there has been cases like the other companies doing the researches where they still don't know sometimes like how the AI is gonna be behave and there has been cases where they have experienced like to save itself it can like blackmail the people and like so those kind of a thing like if we can come up with something we can control and another thing definitely like the quality of the content even though it's late on yeah Anything else?
+
+35:15 - Gitansha Aggarwal
+I think that should be it.
+
+35:20 - Thara Ravindran
+How about, you know, you are trained in prompt engineering, and you've used it quite extensively. So if you want to give some advice to people who have never tried LGBT, can you list two, three, three, let's say three advice?
+
+35:38 - Gitansha Aggarwal
+Or however many, yeah.
+
+35:40 - Thara Ravindran
+What would be the top three advice for novice users?
+
+35:45 - Gitansha Aggarwal
+So first of all, I would say give it the context of the task you want it to be done. And another thing is maintain the proper instruction sets.
+
+36:00 - Thara Ravindran
+First this, then this.
+
+36:02 - Gitansha Aggarwal
+How you would explain a thing to a child. You want to get it accomplished. And the third thing is, I would say, don't just rely on it blindly.
+
+36:12 - Thara Ravindran
+Try to, like, cushion it.
+
+36:16 - Unidentified Speaker
+Like, if it's generated something, don't just take it and go ahead with it.
+
+36:23 - Gitansha Aggarwal
+So those will be my top three advices.
+
+36:30 - Thara Ravindran
+You know, just out of another aspect, curiosity, another aspect, which I think from what you've been telling me, it seems to me that you do treat this as a tool for productivity, really, right? Just out of curiosity, do you ever consider this tool as slightly more than a tool and maybe a human peer, like a group teammate, perhaps? Have ever experienced that? You treat it like that?
+
+37:04 - Gitansha Aggarwal
+Very occasionally, I would say.
+
+37:07 - Unidentified Speaker
+Occasionally, yeah. So in certain instances, maybe, yeah? Can you give me an example, if you don't mind?
+
+37:15 - Gitansha Aggarwal
+I mean, so if I think maybe some personal projects or like, yeah. So this is what I come up with, do you think?
+
+37:31 - Unidentified Speaker
+it is good or do you have any suggestions for it maybe like how can I make it better?
+
+37:37 - Thara Ravindran
+I see so if it's like a personal query or a personal some task then you you tend to be a little more human like with AI is it okay okay understand and and what is your experience so far with that? I mean it's oh I feel I be honest I just used to switch between the two things so my experiences I would say quite similar yeah similar meaning is it's like how you would talk to a human friend yeah so far you found that comparable is it something like that a bit comparable but still like I won't exactly give it like a human personification like at back of my mind I still know that it's not exactly oh it's not yeah how about uh as compared with uh I mean since you are using it professionally too you know I just wanted to see how your interaction with chatty compares with uh using say google's google's call
+
+38:55 - Unidentified Speaker
+Yeah, yeah.
+
+38:58 - Thara Ravindran
+How do you rate? How do you count?
+
+39:02 - Gitansha Aggarwal
+So I would say, for the researchers, Google Scholar is quite good, because you can get the complete links and everything. But with GPT and Gen AI tools, it's like you get a summary as well. So I feel like it's efficient, because sometimes when you Read through all the papers, you feel like, OK, this was not actually what I was looking for. But there's no going back now. But the summaries, you can know, okay, this is not, this might not contain something which I want to look into, probe into. So you can just leave it and move on.
+
+39:43 - Thara Ravindran
+Anything else you want to add, Gitansha? Any interesting experiences you've had with HGPT or? Gemini that you want to share?
+
+39:55 - Gitansha Aggarwal
+I mean. I think.
+
+39:59 - Thara Ravindran
+OK, one of the experience I it was actually recent experience, so it was.
+
+40:05 - Gitansha Aggarwal
+So for the video generation, so I was like trying to look.
+
+40:08 - Thara Ravindran
+Yeah, yeah.
+
+40:10 - Gitansha Aggarwal
+OK, so I was trying to like look for a few free versions.
+
+40:17 - Unidentified Speaker
+And I was trying to see like if the GPT, the SORA is the specialized model which can generate the videos, but I was trying to see like if GPT itself can do that or not.
+
+40:30 - Gitansha Aggarwal
+So instead of admitting sometimes that it cannot generate the video, it keeps on asking clarifying questions.
+
+40:37 - Unidentified Speaker
+Okay, I'll start generating it. Do you want this or this? Then I'll ask for this and it will ask.
+
+40:45 - Thara Ravindran
+oh so it doesn't quite say sorry I'm I see that's what you were expecting okay so we want to be a little more humble and more open and openly admitting of its own yeah thank you just checking with you your phone number for to which the pay now will work is Yeah, yeah, correct. I want to tell you that, you know, this is my first week of data collection, and you are probably the third respondent. So I will be initiating the payments with a colleague. A colleague from my research team is handling the payment. So it might take up to two weeks, although I will be submitting sometime Friday this week. So if you don't hear from me, two weeks do drop me an email okay yeah sure okay thank you so much you have a good day

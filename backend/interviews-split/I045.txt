@@ -1,0 +1,513 @@
+2025-10-21 15:19:11 CST|58min 24s
+
+Keywords:
+good thing、certain things、first thing、initial thing、more things、own thing、particular thing、different things、many things、technical things、small thing、only thing、random things、funny things、things easier、good way、initial code、certain problem
+
+Transcript:
+Speaker 1 00:01 
+Okay, okay, Ganesha, we, I have, I know this, the duration of this interview will be roughly one hour. I've had one or two respondents of exceeded one hour. That's really because they have so much to say. But most of them would be under around there, you know, 1 hour, 50,40 minutes. Okay, so it's actually partition into different sections. So the first section, we will start with that. So to begin with, you know, you can just give me a brief description of your professional background, a little bit about yourself. What do you do professionally and what did you train yourself in as in your degree or your postcard qualification that you have undertake listing for that? Yeah, you can.
+
+Speaker 2 00:55 
+Okay. Yeah, yeah, sure. So, I mean, as you already know, my name is Dennis and I'm from India. So professionally, what I do now is I'm a research fellow at NPU. So I work in the trippy department. Any business.
+
+Speaker 1 01:14 
+On it? Okay, hum.
+
+Speaker 2 01:17 
+So here I work on the field of, I mean, broadly speaking, biomedical optics, but strictly speaking, I work on something called computational imaging, okay? And my PhD was done in a similar field where I did my PhD in Excel for the last 5 years, for 4 years. So, so, and that has to do with biomedical optics also where I develop AI based algorithms for image reconstruction or to solve something called inverse problem so that we can have non invasive imaging of  tissues or something to detect cancer. Here also I do something like that where the core concept is I do develop algorithms for inverse problems. And the inverse problem here is for a concept called lens less energy. But here I use AI, but also, you know, develop other algorithms without the user.
+
+Speaker 1 02:22 
+Okay.
+
+Speaker 2 02:24 
+In the end of the day, the goal is then biomedical optics, where as of now, it imagine  issues, I image like biomedical assets for particle detection, stuff like that. Yes.
+
+Speaker 1 02:40 
+Okay. Okay. So since you are in I trip lead, were you like a trained engineer? What what's what was your degree in?
+
+Speaker 2 02:51 
+So I have a PSD in I mean, I was in the electrical engineering department where I got my PSD. But then the, so I guess that is it. But I am trained in something called electrooptic engineering or.
+
+Speaker 1 03:06 
+Optic engineering. I see.
+
+Speaker 2 03:08 
+Or optical engineering. Okay. So that is where my opinion is.
+
+Speaker 1 03:14 
+Okay. Okay, Ganesh, just moving on. We're still in the first fact about yourself, you know, in terms of technology adoption, would you consider yourself as one of the earlier doctors as compared to your peer group?
+
+Speaker 2 03:33 
+To be honest, I don't think I'm one of the very earliest, but I guess I was pretty early to using some of the models are like, yeah, yeah, sure. So.
+
+Speaker 1 03:48 
+You won't say you're one of the very first, but you still would move in maybe after that. So what prompts you to get into a technology?
+
+Speaker 2 03:58 
+Sometimes? Like, okay, so basically because I do develop a lot of algorithms, so it needs sometimes a lot of extensive debugging or sometimes we have to meet. I mean, this is what may do it in the first place is like, it's a little faster when I take the help of AI, especially when I have to debug. I mean, it wasn't pretty good like few years ago when I started using like 3 or 44,4,5 years ago. I mean, chat GBD wasn't that good, but then it will still go to debug stuff. So it just to make things faster, you know. Yeah, you know, comment some stuff on the code or something that is.
+
+Speaker 1 04:41 
+Okay. Okay. So Ganesha.
+
+Speaker 2 04:44 
+Do you also like to add? Oh, so because I mean, you've also done a PhD, so you realize that we do need to write articles or something sometimes. So sometimes we have, I have like a writer's block. And you, it's hard to start writing something, so to get an initial perspective or something. Yeah, I reduce AI just to get an initial perspective, you know, to just start something.
+
+Speaker 1 05:14 
+Okay. I think I, I, I s I've seen your pre interview survey and you have indicated the you use it for writing for creative content and academics, research support. Yeah, but just surprisingly you did not indicate code generation. Do you use it for code generation as well?
+
+Speaker 2 05:34 
+Okay, I did not say code generation because I write my own codes. I don't generate the codes with the. Yeah, yeah, I mean, but I do use it to, you know, to fix some very minor issues or.
+
+Speaker 1 05:48 
+Debugging. So.
+
+Speaker 2 05:50 
+So yeah, debugging or, you know, sometimes I am not like a very, a beautiful product in a sense that I don't comment or I don't put these things. Yeah, difficult. So it's very easy for me to just put the code into chat GBD and say, okay. But I don't generate the code. But yeah, yeah.
+
+Speaker 1 06:10 
+Okay. Yeah, I think I, okay, so, you know, regarding your usage of Jenny, I, you mention the different types of use. So would you say I, if you were to divide between professional use and personal use, roughly what percentage would be professional, what percentage would be personal.
+
+Speaker 2 06:33 
+More. I am so far not use any of the AI for very personal use. Maybe very rarely. I draft the occasional message to just put it, put something on LinkedIn or something, but then that is very rare. So I say 98% or 90, then it's professional. Yeah, I don't see. Okay.
+
+Speaker 1 06:56 
+So, you know, since it, you use it for professional purposes, you can base the following questions, the rest of the questions on the most frequently used scenario 1 or 2 for them. Yeah, so let's move on.
+
+Speaker 1 07:14 
+The next question is on typical use scenarios. Okay, so you can visualize one of the most frequently use scenario. By the way, I mean the frequency of use, would you consider yourself using it almost every day?
+
+Speaker 2 07:29 
+Yeah, yes. I mean, so we write code on Visual Studio code, right? Like the python comes already with something called a co pilot, which is constantly suggesting stuff. I mean, it just makes things easier because, you know, I'm typing a part of my code and eh, there are options like auto fill or something which predicts what you said, what you want to. And it just makes it easier. I mean, so whenever I'm writing code or whenever I'm working, there's an AI agent which is running on the background, helps me with very minor tasks, not necessarily with the code itself. But yeah, this is, and I also have a, the paid versions of cloud and chagpt. Yeah, so I do use it.
+
+Speaker 1 08:22 
+As gonna ask you. Yeah, so your pre paid subscription is for cloud and as well as chat GBT, is it? Yes, yes. Okay. Okay. Now, you know, based on this, your typical use scenario, can you tell me a little bit about how will you get started? You know, the first initial prompt, is there any preparation? What triggers you to get started, you know, open a session with guide the cloud or Chat GBT, but how, when do you decide and what is your initial prompt look like?
+
+Speaker 2 08:59 
+So basically at this point of time, like I already know that I'm going to use it at some point whenever I start a project. So my chargeability or cloud or looks, it doesn't have a lot of chats, but it is it I already compartmentalize into projects that I'm working on. And E every time there is let's say that there some small thing I need to debug, I just put in the code, especially for codes I use cloud. And if there is some extensive writing to do, and let's say that, you know, I want like 20 big text references that I need from Google Scholar and I don't want to go and check every time. I just go to ChatGPT and then say, you know, these are the DOS of the references. Just give me a bit better, a bit straightforward, unless I'm writing something when writing a journal or something.
+
+Speaker 2 10:00 
+Manual step or something. That's when I actually give it very extensive in instructions like, you know, you know, don't use certain words. Yeah, the tone of problems I request certain things, you know, what exactly I'm looking for. Of course, this one, what I notice or what I think is that even how much ever you give instructions to these things, it's not going to be as good as what you what you what yourself is are going to write in the journal. So this is just going to be head start for me. So in the sense that it does not have the intuition that you have, which you gain from working in this in a particular field for a long time. Yeah, see? Okay. And the prompts, like I said, like it just, I don't say hello or good something. I guess what I want like.
+
+Speaker 1 11:00 
+In personal. Okay. Okay. Yeah, I, I, yeah, I think your point probably answer partially some of the questions and follow, but anyway, that's fine. So I would presume then that you're in the habit of dividing your, you know, the so called task in 2 different partitions or smaller units for chat GB to decipher. Yes, you do that a lot.
+
+Speaker 2 11:26 
+Yeah, because what I did notice, like not so long ago, like almost six or seven months ago, I did notice that chargeability. I mean, I do understand that they have access to my data, but I do also, I also realize that it remembers stuff from every time you ask something. It does numbers. What I did notice was that there is a lot of cross talk. Like I might be working on two or three different things. And then if I ask a similar question, then I did notice that, oh, there was a lot of cross stuff from remember. So it was easier for me to just compartmentalize into, yeah, projects and ChatGPT, not to remember things outside the project. Me. And as for cloud, I just use it mostly to comment my codes and this debug a little bit in the sense that.
+
+Speaker 1 12:28 
+Comment on the code and debug. I see.
+
+Speaker 2 12:30 
+Yes, I mean, even debugging is like very minor debugging. So of course it, I mean, what I would have love to, you know, generate it and, you know, you know, that make the AI right. A lot of things I just don't feel very confident enough or I don't think that good, as good as me writing myself. So yeah.
+
+Speaker 1 12:53 
+Okay, that's okay. Yeah, leads me to the next question, which is, you have a fairly good idea of what you're good at as opposed to what ChatGPT may be good at. So what I read from what you've been telling me is that you find Chat GPD helpful when it comes to debugging, but then the script code writing, you rather retain it for yourself. Is it.
+
+Speaker 2 13:15 
+Alright? Yes, that's true.
+
+Speaker 1 13:19 
+Anything else you wanna add? I mean, anything else you notice it? Chat GBD can do better than you or you can do better than chat GBT.
+
+Speaker 2 13:27 
+Okay, for example, right, like where I, so I already told you that I develop, I used to develop AI algorithms for my inverse problems, which is a class of complicated problems, which you, you, it's very hard to solve. That's why we take the help of AI in the first place. So what we have to do is like we try to, we have to know very detailed in depth knowledge of the physics of whatever you engineer that tend to be. And this task is way more complex than just telling Chat GBT to do to, you know, do something, which is very obvious.
+
+Speaker 2 14:11 
+So I, in the end of the day, I can't really rely or I cannot trust ChatGPT or Claud because they do write a code which, and the problem with this is that it runs for hours. And they do write a code and you after running for a few hours, you realize that the report is not actually true. So if you don't really understand what you're doing, or if you don't really, if you trust the AI much more than what you believe you're good at, I think it's going to be a very bad outcome. So I think at this point of time, at least, that I'm more confident in myself than chat GBT in most cases, yes. But yeah.
+
+Speaker 1 15:03 
+I'd still use it. Yeah, think I understand. How about assigning roles while, you know, you're interacting with cloud or ChatGPT? Are you in the habit of saying, assume or take the perspective of a reviewer or an examiner or, you know, an expert. And are you in the habit of assigning certain roles to ChatGPT before sort of giving I, I mean, giving the so called task that you have at hand. I don't have them doing it.
+
+Speaker 2 15:37 
+Not I don't really because like I said, mostly it is me writing my own stuff or for debugging. You don't really need roles for such things. But I do set tones like I want it in such a tone or I want the grammar to be in such a way.
+
+Speaker 1 15:56 
+Same. I mean.
+
+Speaker 2 16:02 
+Ask the occasional, you know, explain it like ex you're explaining it to a baby kind of stuff. But that's very, I think it's not like.
+
+Speaker 1 16:12 
+Yeah, yeah, assigning. So assigning of rules is not something you do on a regular basis. And how about your initial prompt? Would you consider your initial prompt to be rich in information? As in, do you provide sufficient information upfront? Or are you in the habit of giving just enough context and then elaborate if asked?
+
+Speaker 2 16:35 
+Oh, yeah, I mean, the, I am very particular about all the information I gave in the beginning itself because I notice that helps a lot. So like I already said, I already divided projects, right? So when you divide in the project itself, before you even give an initial prompt, you can upload so many files, right? And then when you start a project, before you, the initial prompt itself, we can give a set of instructions on how we want everything is for them to be. So I'm very, I think that pixel from my side is rich in information. Like I said, the tone, I say what I want. Yeah, I tell everything. And then in the initial thing, I try to give as much information as possible and try to use as good English as possible so that it actually understands what they understand exactly what I want, then gives me something accordingly. Yeah, because most of the times if you don't, because I didn't give notice, you probably must have noticed. So it's like you type something and then it gives you some output and you say, no, this is not whatever. And then the AI agent was he now answer. So I don't want that to happen because I guess survey support.
+
+Speaker 1 17:49 
+So yeah, waste your time. Yeah, avoid all that. Okay. Yeah, this question is on Charles. I mean, so that's fine. I think you've been describing scenarios where I think you have a fairly good grasp of the task at hand. As in, okay, you have enough contextual knowledge and then you're asking for a little bit of help here and there. So that's one. But how about task where you have not enough information, you really are clueless, let's say very unfamiliar. How will you then, in what ways will it be different, your interaction with judge ability? Where will you start?
+
+Speaker 2 18:33 
+If I'm completely clueless, I just ask, oh, ChatGPT or any other AI agent if they know about it, like in the first place, like what is it? Do you know certain such or do you know something? And based on the answers they gave an detail because they're multiple options, right? Like you can do an extended literature search website, you can do, yeah, you know, a lot of things. So I mean, I guess even if I type something I don't know about at Google these days, even Google is a very detailed AI answer. So I guess I am relying about these things, AI agents. If I don't know something, I'll just ask. Like, I don't really know. Let me just, you know, tell me what this is.
+
+Speaker 1 19:28 
+So your question would be to sort of ask the agent to give you whatever information it has on that.
+
+Speaker 2 19:35 
+And then if I want to basically use certain things, like let's say, for example, in a hypothetical situation, I am having a certain area which I'm interested in, which is completely different from my, what I do. Yeah, the research actually. But I believe that kind of that area, some principles or some mathematics of that, then they use to develop something in my area, but I don't know how to do it. First thing would be is like, do you know about this area? But then if it says something, and then the next follow will obviously be, oh, this sounds interesting. Can this be use for this particular thing? Okay, and you know, so on and so forth. That's how the flow will probably be.
+
+Speaker 1 20:21 
+Ganesh, you mention that you're self taught in the prompt engineering, you know, whatever you, you, how you how to use them, your alternative AI tools. Did you, I mean, how did you getting really good at this use of the AI tools?
+
+Speaker 2 20:43 
+Okay, so I mean, we have to go back to the beginning, right? Like the first, yeah, my first usage AI, any agent, like for example, it just helping me to do anything was these things, which was like early versions of something called Quilt Bot or our grammarly. I don't know if you heard.
+
+Speaker 1 21:06 
+About that. Yeah, I mean, you could if, yeah, I guess then, you know, even your web common e commerce site probably had some aim with it, AI, you know, collaborative filtering, guessing what you would like and so on, right?
+
+Speaker 2 21:21 
+Yeah, but more.
+
+Speaker 1 21:22 
+About the generative AI stuff, maybe you could start with the ChatGPT version 3, which was the first version.
+
+Speaker 2 21:30 
+Okay. That wasn't, I mean, I did start using ChatGPT probably around 2,019,2,020 for it. I mean, to 19. Yeah, I think it was still chat GBD 3.53, something like that. So the prompt engineering, like in the beginning, I just had to just write something and say, yeah, what is this? I mean, I still didn't believe it very much to the point that I extensively ask for something, but then slowly as I start noticing chat GBD saying, oh, now I understand what you're trying to say.
+
+Speaker 2 22:10 
+Now I understand what you can say. I realize that I need to give it. If I gave it most information and structured information and give a prompt in a very good way, then the likely, it is more likely that it give me, yeah, the answers which I'm looking for, which we're just mostly at that point of time, you know, this paragraph seems like incoherent and it's not connected. Can you just fix it or yeah, you know, this code, this particular line, there's some error like, I mean, it wasn't like I need a chat to get for the time because.
+
+Speaker 1 22:47 
+You were testing it out.
+
+Speaker 2 22:49 
+When there was some error on my code, I just. Anyway, I mean, we just had to, if you don't understand the error, you just put it on casual or something and search for it and use. Still got what you wanted. Yes. You know, it was easy for we just chat everything because you didn't have to go to the has enough. Yeah, so a multi clear.
+
+Speaker 1 23:08 
+Experiment. So in this case, yeah, I can summarize it as something like trial and error. You tried different things and you saw which one gave you good results, something like that.
+
+Speaker 2 23:21 
+Yes, you can say. But yeah, I just tried from my side to give as much information as possible. And what I felt was more important also was to set the tone and the limits of which it can, you know, it shouldn't cross certain red lines or. Yeah, yeah, that helps. At least that's what I.
+
+Speaker 1 23:48 
+Oh, okay. Gonna, since you're in one of the earlier doctors, so, you know, starting as early as the first version and so on, what was your initial level of trust in the generative AI tools? And how did this change? Did this trust change videos.
+
+Speaker 2 24:07 
+Initially, I, I, for example, I just use from 2,019. I said I started right like for a year, I just used it only for correcting my English if there was any corrections. So that was the level of trust. I didn't really very give me a debugging for my code or I didn't believe that. Oh, how do I say? I mean, I really did test it. Maybe because, I don't know if I didn't trust it or because I didn't want to use it. Because at that point of time, I was still much better than chat GBT at that. So if.
+
+Speaker 1 24:47 
+You wanna assign a percentage level of trust, Ganesh, how much would that be.
+
+Speaker 2 24:51 
+At that point? That will be around.
+
+Speaker 1 24:56 
+30,35.
+
+Speaker 2 24:57 
+Yeah, some, somewhere around that.
+
+Speaker 1 24:59 
+Okay. Okay, yeah. And how did it change? I mean, after you started using it, maybe, you know, as of now, let's say, what do the trust level be?
+
+Speaker 2 25:10 
+I mean, it started really changing when I started developing my own AI algorithms for certain tasks. Yes. And I started believing, oh, believing in a sense that, oh, AI can actually do something with, yeah, because we're all physics guys, right? Like, so we need to know exactly what is happening when we try to, you know, solve a certain problem. We, we, yeah, we like solutions, but we also want to know what is exactly happening and what we're solving. And that was a blog. Maybe most of us, I mean, I don't know if I'm really generalizing that, but for me at least, that I didn't know that this was, eh, I thought it was just some, you know, it's just AI and it's not gonna be good.
+
+Speaker 2 25:56 
+But then when I started developing my own AI algorithms for my projects, yeah, I did understand that, oh, it could do a lot more. And by that time, there were more advances. And I think some another thing is like people started doing things with ChatGPT, except other than just, you know, doing funny things like people started, yeah, writing code for mining bitcoins. People started writing code for, or, you know, a lot of things it, it, it could by the time it could organize trips and stuff like that. So I said, okay, maybe it can do stuff. Let's start by doing some small things and see if it can work.
+
+Speaker 2 26:38 
+Because in the end of the day, if it, he, he, he, I can't rely completely even today on this. So, okay, so, but I am more reliant today than I was like a few years ago.
+
+Speaker 1 26:50 
+So let's say this 35% that you mentioned at your start of use, what percentage is it now?
+
+Speaker 2 26:59 
+I would say around 60%,60M.
+
+Speaker 1 27:02 
+So it has grown.
+
+Speaker 2 27:04 
+This a lot to be designed, but I think this is good. I mean, if I if this ChatGPT was here, was there when I was doing my masters on my PSD, I feel like would have done a completely different case, could have been much better. But yeah, I don't know. I mean, that's how much I think it has developed since the days I was using it.
+
+Speaker 1 27:28 
+Yes. Okay. Okay. Now, the c next part, next few questions is on your validation behavior. For example, let's say you type a question, it gives you some answer. You know, I wanna know how frequently do you go back somewhere else to validate or verify the answer you got from your tool.
+
+Speaker 2 27:54 
+So for, okay, so I want to be like really thorough the thing. So I, like I said, I wanna divide this into two things, the writing and then the debugging part.
+
+Speaker 1 28:10 
+Okay.
+
+Speaker 2 28:10 
+Okay. So let's say for the writing, I will, let's say, prompt, ask in the beginning, ask something content entity and attendees are paragraph. I mean, because I do have some knowledge in whatever I write. I go and I can actually tell when something, something untrue or some rubbish has been written by ChatGPT.
+
+Speaker 2 28:33 
+But that's just the scientific technical part, right? But sometimes it's not really perfect with grammar also grammar or punctuations and stuff like. So I do have a grammarly on my overly for on my word document. So there's always a cross check between grammar spellings, the Americanized and the u British versions of words. There's always a process that is happening and I check, I sent them to the technical part and stuff.
+
+Speaker 2 29:05 
+And now we have been more to the codes, right? So the code I've already written the most I would do is like write like a huge skeleton and then say, you know, now put muscle and skin and stuff like that to the code.
+
+Speaker 2 29:20 
+Before this, I do not really trust. I not trust in the sense that I don't really use ChatGPT for most of my coding. Yes thing. I've always use cloud because I feel that cloud is much better. Yeah, at this kind of engineering. I mean, it's just a feeling might be wrong, but this, and I write it and then I don't do even whatever I do the debugging, I don't do it like the for the entire code. I do it like in small part so that I can actually verify what exactly is happening. And then once that thing happens, I just try to use my own thing, like. Because there's nothing else that can change. Like I have to check the debugging and then see if my the solutions which the debug code are is giving is relevant in terms of physics, in terms of what we want to do. And there's also like, as I said, there's also a co pilot running side by side in my side. Yes, code. So that is checking simultaneously everything. So in a week.
+
+Speaker 1 30:29 
+There is another AI tool kind of also validating your answers. Can you see.
+
+Speaker 2 30:35 
+That? Yeah, I mean, I also have to look at it myself, of course. But there's also another thing that says, yeah.
+
+Speaker 1 30:43 
+You will run the answers through you and also use co pilot to kind of validate. So if you to get some confirmation about what do you see.
+
+Speaker 2 30:52 
+Yeah, yeah, I mean, to give you some context, the, the, I mean, I don't know if you already know the code pilot is somewhere on the right side of your course when you're writing the code. And as soon as there's an error, as soon as there's something that it starts running, I, I, I, it has direct access to your no notebooks and your. Yeah, terminal. Yeah, it just does its thing like, and that is not really trustworthy. So you have to check it again because you it didn't they just did it without you asking anything to be honest. It just saw an error and tries to get it, which might not be the best way to look at it. But.
+
+Speaker 1 31:34 
+They should mention something about using the Jenny I tool to maybe do a draft, right, of an academic paper, let's say a general paper or something like that.
+
+Speaker 2 31:44 
+General people. I mean, I don't, like I said, like, I just maybe start off with some paragraphs. That's it. I don't do not let it write the methods. I don't let it write the incremental section. Sorry. It just the literature survey part where I'm too lazy sometimes to yes, get all of the big text files are, you know, that could that kind of stuff.
+
+Speaker 1 32:07 
+So for the literature review, you know, so do you set certain constraints before getting the answers? For example, let's say 0, only look at articles from after 22 or between this period or appear reviewed, or you give such constraints to the generative AI tool.
+
+Speaker 2 32:28 
+So that, yeah, I would say I am very constrained images that I upload all the papers I've already read and let me review it specifically because I don't. Okay. I mean, more recently it has been better, but I did notice that chat GBD just writes whatever it wants to write.
+
+Speaker 1 32:44 
+So when you s these constraints, do you find that the quality of output is better? You can trust it more, you know.
+
+Speaker 2 32:54 
+The quality out of output is much better. That I will agree when you give a lot of constraint inside. Okay. Yeah, like I said, regarding trust, like I would trust it like 60% or 70%.
+
+Speaker 1 33:08 
+Of it. It's still not there. And see what you mean. No.
+
+Speaker 2 33:11 
+Because this is in the, it's not that even if it was hundred percent trustable, I would like it to just, I mean, I'm still maybe old school in this sense that I want it to be my thing and I'm just taking the help of an agent, not because I cannot write or not because I cannot do code or anything. Yeah, just sometimes it's just quicker and easier. And that is what I want these things to be. I do not want them to. I, in the end of the day, I don't want to forget writing or I don't know.
+
+Speaker 1 33:47 
+The, the, yeah, the agency, but yeah, which come to there. But you know, just a couple of clarification. When you interact with the generative AI tool, have you ever had the experience of generative AI asking you to provide more information, something to the extent that, oh, I don't quite understand or I need more information before I can help you. Have you had that? Yes, yes.
+
+Speaker 2 34:11 
+Can you give me a link? Quite a lot because it's sometimes I do ask it very technical things. Like I said, for you, for example, like, can something from some other area, somewhere else area of research can be used to do something in my particular, for example, okay, I mean, I, I, it does ask sometimes that. Is that what you mean? Okay. Is this what you mean.
+
+Speaker 1 34:38 
+Clarifying.
+
+Speaker 2 34:39 
+That? It does like ask me to clarify it. It does me sometimes. Can you give me more context?
+
+Speaker 1 34:48 
+It does that. Okay. So when you have that kind of interaction, do you find yourself trusting it a bit more? That point, I.
+
+Speaker 2 34:59 
+Don't really.
+
+Speaker 1 34:59 
+Know. That's. It improve your trust when you when it actually class for clarification. I.
+
+Speaker 2 35:04 
+Mean, a little bit maybe. I mean, I don't know if it is me really trusting it or it's just because it's asking me questions too and it's engaging. I don't know. I mean, I does, I guess. Yeah, I mean, I do believe in the quality of the answers because it's not just blindly saying something. So yeah, you can take that as trust that maybe.
+
+Speaker 1 35:25 
+Okay. How about situations where AI gives you an answer and sounds a little unsure of its own answer? Have you had that experience?
+
+Speaker 2 35:42 
+Oh, can you just repeat it? Like the AI itself? Yeah, it's on.
+
+Speaker 1 35:46 
+Answer. Yes, you've asked a question. AI provides you with an answer. But when it provides you with the answer, it also tells you that, well, you know, I'm not sure it, this could be the answer you're looking for, something like that, something like how you know a person, if you're discussing some problem with the per with a friend, the friend would say, you know, yeah, maybe it is this, but I'm not sure. So it's like a very human like behavior to say something, try and answer a question, but then admit that you don't know.
+
+Speaker 2 36:21 
+I mean, I'm trying to think of if there was an instance like that. Yeah, I mean, not really. I, I don't know. I don't really think I really happen, but I'm sure it must have happened once or twice, but I just don't.
+
+Speaker 1 36:37 
+Remember. You can't remember. Okay, alright, now we're going into the coordination dimensions. So this is where you coordinate the task with the generative AI. You mentioned that you're in the habit of providing as much detail as possible upfront, just to avoid waste of time and to make sure that the responses are useful and of good quality, right? So, but I'm sure you know, even though you provide very detailed context in your initial prompt, there are times when it comes back and there's a little bit of back and forth going on. It's very standard. So there is this looping in what we call an interaction session, right? There's a little bit of back and forth. So in your experience, for your coding related task or the other, you know, paperwriting task, roughly how many times do you think you will go back and forth this looping on an hour?
+
+Speaker 2 37:35 
+Okay, at least to get the desired result, I think at least.
+
+Speaker 1 37:43 
+3,4, sometimes reach 4 looping. I see.
+
+Speaker 2 37:47 
+That'll be the average. Because I, I, I, because what I realize is that even though I gave it most of the information I want to wanted to know that still sometimes is not enough for the quality I am expecting. Yeah, so it needs something more and it's mostly to do with the sometimes the tone or the. I do feel this transition in the writing part, in the debugging part, there's nothing much like it tells you that the, oh, this is the problem. This is what happening. And then you just try to fix that problem by yourself. But in the writing part is where these things happen. Sometimes I, I mean, I don't know if it's me noticing or it just happening or the ChatGPT tries to not write like ChatGPT sometimes. And for some reason and it writes random things just because it doesn't want to sound like it. But I try to tell it like, I'm not going to just copy and paste it. Like I just.
+
+Speaker 1 38:49 
+Need to crush.
+
+Speaker 2 38:52 
+To start. So you just give me information and then don't think about all of these things.
+
+Speaker 1 38:59 
+The next question is on criteria Gates, you know, so I was this question basically wanted to probe whether you are in the habit of providing certain criteria for the generative AI tool to progress to the next step. Cuz we're doing it in steps, right? So this criteria could be something like don't proceed unless you validate the sources or the citation and so on, you know, or do not advance until all the bullets are provided, are covered first or something like that.
+
+Speaker 2 39:33 
+So this thing, I don't use it for the writing part because I just need a head start. Yeah, but for the coding part, sometimes I do say, okay, these are the errors or these are the, I needed a good feedback. This first you tell, I will ask. Sometimes what it does is like it just takes the errors and it starts writing its own big code, which I don't need that. So I have to literally say, you know. Don't write any code. Yeah, just tell me what they, what do you think these errors are? And then maybe try to fix it once I say, but I'm verifying. Yeah, that happens for the writing part. I don't think the, that's not me.
+
+Speaker 1 40:16 
+That's more used for the coding. Are you also in the habit of asking ChatGPT to summarize all the responses? So lock the scope so that, you know, it stays within that boundary that you have set.
+
+Speaker 2 40:31 
+I mean, like I said, I create these projects, right? So I don't really have to do it. They already.
+
+Speaker 1 40:38 
+Remember, they already follow that. Yeah, with.
+
+Speaker 2 40:41 
+And the project itself has set up instruction. So.
+
+Speaker 1 40:44 
+I so it sort of set the parameters straight away. Have you had any experience where you find this generative AI tool kind of contradicting itself? We had that. Or even hallucinations and we had that problem.
+
+Speaker 2 41:00 
+I mean, in the beginning a lot. And yeah, like few years ago more than now, it does say things and it does say something contrary also.
+
+Speaker 1 41:13 
+Can you think of any example? If you can share one example, that would be good.
+
+Speaker 2 41:17 
+It's mostly the writing point, right? Like, I mean, I don't know if Claud used to do it because now it is pretty recent. Like maybe I've started using it since the last seven or eight months, etc. That's it. Because the coding is extensive. I just needed some assistance to make it quicker. But the chat GPD I've been using for a long time.
+
+Speaker 2 41:40 
+It used to always do this in the sense that, you know, especially in sentence formation where it says something and down the line it says something else. For example, it will, it used to counteract, it used to give me references which never existed, which I don't know, which was, yeah, I mean, this is this used to be very common and I for to think of a specific example is like, yeah, there was once I was writing this introduction, do this some article, and I had to write about, you know, about my aims and my, you know, what I want to object that, you know, my objective, what I want to achieve, my, yeah, results and everything. Yeah, it used to just write something very random, like it in no way connected to whatever. I just ask. Yeah, I used to do that and it used to give references to back it up, which cannot really references. I mean just some random thing which GE generated by itself.
+
+Speaker 1 43:00 
+How about your decision to end the session? When exactly do you stop the particular session? So when I say session, it just means your start of prompt and, you know, back and forth and then saying, okay, that's it. Now I think like a good or a bad ending, you know, it could be either. Okay.
+
+Speaker 2 43:22 
+I mean, eh, 85 to 90% of the time, it's usually I get what I wanted and I was a server this. But 10% of the time it's just sometimes, you know, at 3 o'clock in the morning. Yeah, you, that's when you really think, yeah, I can help you because you're already exhausted and sometimes it doesn't work. And that's when I say, okay, let's just go to sleep. That's but most of the time, yeah, good for major. Like I don't write the entire paper or yeah, write the entire book. So I don't really expected to work so well. Yes, but sometimes there are errors which are on your part. It's just an oversight and you think it's a big error because it doesn't work. And you think, okay, let's go to chat GBT. But then it's basically a minor error and then you can fix it on your own. That's frustrating. And then, yeah, yeah. Okay.
+
+Speaker 1 44:27 
+Okay. The last two sections, we, the last but first one is on, you know, how the use of generative tools impact done on your professional performance. Okay, so the first question is, one, have you, whether you have observed any noticeable changes? It can be in a good way or in a bad way in the way you approach your task in your profession. It could be quality, speed, efficiency. See or even depth of your thinking.
+
+Speaker 2 45:04 
+Okay. I don't think there's any change in depth of thing thinking. But then, like I said, the time it it's I think it's much faster. I work little faster hum is at the end of the day. Oh, I don't know. I mean, maybe it's counter in tier 2. They said that instead of now writing myself and then checking, now I check it multiple times. Yeah, so maybe it is not fast. I don't.
+
+Speaker 1 45:35 
+Know. But yeah, I.
+
+Speaker 2 45:36 
+Am a little more confident than before because I know that there is some solution somewhere. Yes, if I want to do it, I will not just base that coordinate for. There's always some solution. Yeah, at least even if it's a bad solution, there's some start where I can say, oh, maybe I should look in the a particular direction. So that improves quality, ISU. But in terms of the way we think, because we, I mean, I have to do the initial code and I have to come up with the idea of, you know, adding the proposal or something that needs, I mean, that kind of thinking, I don't really, I mean, I need to think of something first before I ask ChatGPT. So I don't think that has changed much to be honest. But certainly, yeah, the quality. I mean, I would say speed in a few ways, but I would also say, yeah, it.
+
+Speaker 1 46:35 
+Seems like probably you're working a bit. So yeah, yeah, yeah, I do it. I agree with that point you made about in the end, if you actually, you know, go and dig deeper, you may end up to spending more time because you're verifying 11. So that part I do agree. But then at least there's a perception that you're able to work a bit faster, right?
+
+Speaker 2 46:56 
+Yeah, sure.
+
+Speaker 1 46:59 
+How about, you know, balancing between this need for speed, convenience, and also accuracy when using your AI tool, do you see yourself as balancing all between all three options pretty well? Like, do you think you get a good mix of all 3?
+
+Speaker 2 47:23 
+It's convenient from the AI?
+
+Speaker 1 47:25 
+Yeah, from their tool, from the use of AI tool, I.
+
+Speaker 2 47:28 
+Don't think so. Because most of the time I do focus on accuracy and I do not really care much about if it is really fast. I mean, that is the only thing I really expect from an agent. Accuracy and eh, eh, eh, it's just, and if it can actually, I mean, I don't know what it would think on the data power thing faster on my behalf. Yeah, what I want is accuracy because yeah, I what I want is accuracy at a fast pace. Let let's say let's say put it because it's not that maybe I'm just to, I mean, for the most part of a PSD until the final year or something, I did not use AI and I just work. That's fine.
+
+Speaker 2 48:26 
+So what a what this gen AI is to me is the more, not more, nothing more than a convenience where I, it sort of sometimes reinforces a little bit of what I want and give some new perspective. Sometimes, yeah, it's just conveniently accurate. That's what I want. I do not want the anything else. It has to be fast. So that saves me time. And it has to be accurate so that, I mean, I can you trust it a little more and use it?
+
+Speaker 1 48:58 
+Regarding. Sure, you do see that these two objectives can sometimes contradicter, like when you're looking for speed and accuracy at the same time, it really happens, you know, because there's a tradeoff there. You want something fast, then you probably will have to compromise a little bit on accuracy and the other way around. Do you agree with them?
+
+Speaker 2 49:19 
+To the most part, yeah, but so I did notice that given.
+
+Speaker 1 49:24 
+Really a tradeoff like that, you would then choose accuracies, what I understand.
+
+Speaker 2 49:28 
+Yes. Yes, perfect.
+
+Speaker 1 49:31 
+Do you find yourself excessively relying on chat, DPT or any of the tools, clawed or whatever?
+
+Speaker 2 49:37 
+Not really. I mean.
+
+Speaker 1 49:41 
+You do feel you are in control, right?
+
+Speaker 2 49:43 
+Yeah, yeah, yeah, sure. I don't really, I mean, if somebody gives me a task, I'm not gonna say I, the first thing is not me going to ChatGPT. Yeah, do something. That's not the first thing.
+
+Speaker 1 49:56 
+That's not that issue. Yeah. Okay. How about. How about your wish list for generative AI? I mean, I know your trust level is now around 65. For you to be able to trust this more better and to for this tool to be, you know, become such an integral part of what you do, what kind of recommendations do you f if you could just wish for anything, you know, without any technological constraints, what could you wish for?
+
+Speaker 2 50:31 
+First of all, I would like to say that I will never completely be able to trust it. Maybe my cap will be around 75%, whatever it does. Oh, I mean, what can improve with this hum? It's just that I, what is there right now is that for most of these AIS is still a lack of information, right? Like they're not trained yet on many things you probably need. So eventually that's what it is. Like the more information it gets, the more things it can do. Yeah, it's just going to be better. And I know that for a fact wish list. I mean, there's already something if you pay $200, it's under $20, you get something called Research Grade AI or something. I've never used it, but yeah, I mean, a wish list would be that it gets cheaper, maybe. I mean, but from a technological point of view, I don't think there's much in terms of how it learns or what. From my side, I think it's like, yeah, I mean, I'm happy with what I have right now. And I, and the amount of trust I still have on ChatGPT will not grow a lot, even if it, if the technology itself grows.
+
+Speaker 1 52:11 
+What are your concerns the nation, you know, with all this generative AI? I, it's very pervasive now. Everyone is using it. What would be your top concern?
+
+Speaker 2 52:24 
+I mean, overall, is, or just an an an.
+
+Speaker 1 52:28 
+Either way. I mean, you can answer it generally speaking or personally, professionally for you. I.
+
+Speaker 2 52:33 
+Do teach sometimes and I do correct papers and stuff like. So a concern is that they've used a lot of AI. And I think that is very bad for critical thinking, especially in the formative years of your next ambassadors or some feel like that. Yeah, No. 2 is like the, a lot of people really trust it and I think they use it for, you know, to tell personal stuff or.
+
+Speaker 1 53:07 
+Yes.
+
+Speaker 2 53:08 
+I think that stops people from going out. And yeah, that's one of my consensus like, okay.
+
+Speaker 1 53:15 
+That will have some reconcussions in that sense.
+
+Speaker 2 53:20 
+And yeah, I mean, it just people are too aligned and they will probably, at the end of the day, we really land and less trusting of themselves and yeah, their peers, which might not be a good thing.
+
+Speaker 1 53:38 
+How about dump? Go on.
+
+Speaker 2 53:42 
+Sorry. I mean, yeah, I was just the Rochester. And.
+
+Speaker 1 53:50 
+How about if let's say you were to provide some advice or tips to a newbie, somebody who is new to generative. Yeah, what would, what tip will you give still use? I mean.
+
+Speaker 2 54:02 
+Depends on what stage of life he or she is, right? Okay. For example, if they're in school or if they're in the screen, like bachelors or something, yeah, I would strongly suggest them not to use it because at the end of that is when you develop your, the, I mean, that is not even what I'm talking is not even like the technical thing, right? Like we're doing it, let's say engineering degree, you need to develop the way you think, the way, yeah, big people. But that's also the formative years of your social emic understanding of the world or the way you look at stuff or your own ideology. Everything is, that's when you form and that happens when you interact a lot with other people, when you interact across age, across many things. And when you have discussions with real people, chat, GBD tends to, on any. Yeah, it tends to make you feel better. I understand. That's what it's program to do. Yeah, so I guess you will be, the best part is that you will be so disconnected and then you will not have, yeah, anything for yourself to think. And the worst part is you will be radicalized because somebody is reinforcing your thoughts without any discussion with anybody else.
+
+Speaker 2 55:27 
+That is something which I, yeah, will say, but the advice would, if they were my ages, like, you know, they already have an understanding and they're, I think mature enough to. No, so I will just say try to use it and you know, say whatever I, my advice would be on how to use it rather than, you know, say if you should use it or not or, you know, how much they should use it and stuff like that. It will be more technical, like, you know, give prompts or give information that kind of things. If they were my age or like, yeah.
+
+Speaker 1 56:07 
+Hey, Ganesh, I think we've come to the end to see if you have anything else other than what I've been asking you to add or, you know, and I do it or anything interesting you wanna share about your experiences using Jenny. I, you can do them now.
+
+Speaker 2 56:24 
+I don't know why. I don't really think there's something, but I would like to ask you about the, you said in the beginning there were some experimental phase, right? But what exactly is that like?
+
+Speaker 1 56:36 
+I mean, oh, that we have to design certain experimental study where you will be provided with some task and we will observe how you interact and probably gather your chat logs and probably test you and so on.
+
+Speaker 2 56:54 
+Oh, I see. Okay.
+
+Speaker 1 56:55 
+To detail the, you know, the come up with a detail plan. But roughly we know what the objective would be like. It'll be much cheaper in the study. I think I see that you'll be indicated that you would be interested in that.
+
+Speaker 2 57:09 
+Yeah, yeah, sure.
+
+Speaker 1 57:11 
+And also checking with you, Ganesh, you have a, okay, now number issue have indicated 9, three, 9, three, eight, 77, two, 44.
+
+Speaker 2 57:26 
+Nine, three, eight, seven, two, 44. Yeah, right.
+
+Speaker 1 57:29 
+Okay. I checked because a colleague of mine will be processing the payment. It seems to some delay, you know. So ideally what happens is I submit all of the interviewees details end of the week and they submit the following Monday. But I just found out that the last Monday payment does not come through. So obviously, you know, at the initial set, there's always some difficulty because they will ask for various supporting documentation and all that. But by right, you should get it in 2 weeks. You have not heard from them in 2 weeks. Please send me an email and reminder.
+
+Speaker 2 58:03 
+Okay.
+
+Speaker 1 58:04 
+Thanks a lot, Danish. Thanks for your time and sharing and all the best to you. Yeah, hopefully. Thank you.
+
+Speaker 2 58:11 
+I mean, if you when you finish the study and when you publish your findings, please. Yes, let, let us.
+
+Speaker 1 58:21 
+Yes, we do. Thank you. Thanks, Ganesha.
+

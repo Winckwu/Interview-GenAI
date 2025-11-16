@@ -1,0 +1,513 @@
+受访人39:
+2025-10-14 16:18:19 CST|35min 12s
+
+Keywords:
+few things、few times、first few questions、other thing、new things、more references、own chat、co pilot、First question、same time、few more queries、few years、few resources、few factors、certain things、good answering、many times、key thing
+
+Transcript:
+Speaker 1 00:00 
+Alright, okay. But I mean, this interview will take about an hour, but it's divide into different sections. So to begin with, maybe you can talk to me briefly about yourself. Of course, you can touch on your background, you know, as in your educational background, as well as professionally if you're doing something, you can also talk about your work.
+
+Speaker 1 00:28 
+The third thing I would like to know is about your technology adoption pattern. Are you one of those people who will adopt a new technology as soon as it appears, or you are one who would wait before jumping into the that particular use of a new technology. Okay, you can start now like that.
+
+Speaker 2 00:51 
+Okay, so I'm gonna start with my background. You know, my, I have a chemical engine. I'm a chemical engineer by study. Oh, okay. Yeah, I did it from ndu, full of chemical and biomonitor engineering. So effort seems that I've been working as a process safety consultancy in consultancy firms. I see pumps in Singapore, I see, okay, the consultant, the mean item, one of the main items to look at is in terms of efficiency when doing the work. So that's definitely need to push us to adopt that all in. Yeah, familiar with example Powerpoint or in year 6, the use of AI.
+
+Speaker 1 01:45 
+In so yeah, because the work mandates it as a person, are you normally somebody who will try out new things, new technology? I mean.
+
+Speaker 2 01:56 
+Will I try on? Depends on what technology it is. For example, let's say I'm assuming of I have all the resources. Yeah, yes, I will try now. For example, now I have iPhone 12 with me. Yeah, one of the items is the new iOS, right? iOS.
+
+Speaker 1 02:17 
+The new iOS.
+
+Speaker 2 02:19 
+So my, because the gap are quite far and lagging a phone that is laggy is pretty problematic for me. Wait for maybe another 3,6 months to make sure that the iOS is stable. Okay, whether it really fits into, I won't have actually, I haven't found any review whether it fits. It seems like it fits in terms of performance, whether it will be laggy or lower battery life. Yeah, that I haven't found out yet. Andy, I'm working in. Andy, you, by the way. Okay, so something I empty you're into stuff also, right? Yes. So Cids has the co pilot. Yes, license, free co pilot license for one year. So yes, we got that to try out.
+
+Speaker 1 03:20 
+Okay. So I what I hear is that you're one of those who would kind of assess the use of it and a little carefully, and then you will adopt if professionally you require it, you will definitely use it. Alright, okay, okay. Going on, Edward, the about when you talk about yourself, I see that you indicated intermediate proficiency, but you're not subscribing to any versions of gen AI. Can you tell me what generative AI tools are you using currently?
+
+Speaker 2 03:55 
+Mostly chat GBT and co pilot.
+
+Speaker 1 03:58 
+Co pilot chat GBT. How often do you think you use it in a week?
+
+Speaker 2 04:02 
+In a way, we recently quite often. Gotta try. Well, both have plus and minus. I think chat, GBT so far I've been using for a more general topics. Yeah, research. Yeah, yes. The co pilot, I'm more using it for switching until documents. Let's see. Yeah, it doesn't.
+
+Speaker 2 04:29 
+Yesterday I tried of using compiler to rate something for me from searching the webs. Yeah, like what are what do the top 10,15 universities do in terms of health and safety? Yeah, so I did use to go pilot on that, compare against chat GBT.
+
+Speaker 1 04:50 
+See, so when you say quite often, do you mean every day or few times a week? Cool.
+
+Speaker 2 05:00 
+Could be every day.
+
+Speaker 1 05:01 
+Yeah, it could go up to every.
+
+Speaker 2 05:03 
+Okay, recently, it's quite often.
+
+Speaker 1 05:05 
+I see. OK，所以我们。
+
+Speaker 1 05:09 
+Roughly what year did you get started on this gen AI tools? Can you remember when you got started?
+
+Speaker 2 05:16 
+2020. Oh, late 2023.
+
+Speaker 1 05:22 
+23. Okay. Okay, 2023.
+
+Speaker 2 05:24 
+Alright. One of the reason is my previous workplace, which is processing consultancy. Yeah, something that can be done by generative AI. Yes. Yeah, there, there is a, they have their own software to model for modeling for calculation. Yeah, but not ineavailability of AI yet.
+
+Speaker 1 05:46 
+I see you see, so you got started there and see, okay, now we're going on. Edward, though, we're going into your pattern of user, which is one of our focus areas. So when you talk about pattern of views, you can base the answer on the most frequently used tasks. For example, you said almost every day you use it. So first of all, when, what do you use it for? What task do you use it for? Professional or personal? If professional, if you can be a bit specific, you know, for this purpose and so on, that will help.
+
+Speaker 2 06:23 
+So far, mostly professional, yeah, personal, yeah, but less, like less frequent. So profession, can.
+
+Speaker 1 06:33 
+You say professional? Can you give me an example of a task you get help with from ChatGPT for.
+
+Speaker 2 06:40 
+For from chat GVT. So one of thing is recently I can GBT to help me code something for, yeah, for Excel purpose.
+
+Speaker 1 06:54 
+I see coding.
+
+Speaker 2 06:56 
+Correct. And Andrea, I think the most frequent for my job score at the moment, yeah, is greeting a Powerpoint structure.
+
+Speaker 1 07:10 
+Powerpoint structure. Okay.
+
+Speaker 2 07:12 
+Alright, Powerpoint structure, which go first? What kind of topics you should put in? Yeah, and also in terms of grammar checking or rephrasing of.
+
+Speaker 1 07:22 
+I see of right up abstract.
+
+Speaker 2 07:27 
+Mission, something along that I need.
+
+Speaker 1 07:31 
+So you seek help for writing, professional writing, like and Powerpoint presentations. And so. Okay, okay.
+
+Speaker 2 07:38 
+Alright. Yeah, not to mention something I yesterday, let's say I wanna search for what the 15 University does. Yes. Okay. Chat GBT and co pilot is really helpful in terms of compiling all the links in, yeah, presentation, including the summary.
+
+Speaker 1 08:02 
+You mention the, you compared the outputs, right? What did you find?
+
+Speaker 2 08:07 
+How do I find?
+
+Speaker 1 08:09 
+So when compared, what is the your end result observation.
+
+Speaker 2 08:17 
+The first few questions are pretty comparable re get because it's both are getting resources from, yeah.
+
+Speaker 1 08:24 
+Same source.
+
+Speaker 2 08:26 
+Yeah, so both answers are comparable. Of course, let's say KGVT give university, ABC give us BCT, something along that line.
+
+Speaker 1 08:39 
+So it is like not very far off. The answers were similar. Okay.
+
+Speaker 2 08:45 
+We did, we're in office of camera and safety. We also did try of comparing between co pilot Gemina and ChatGPT. Previously the outcome was go by ChatGPT is in the middle of Gemini and co pilot, some co pilot is too short, Gemini is long winded. Yeah, co pilot is in between this short sweet. I see kind of responses.
+
+Speaker 1 09:18 
+I see. So you do switch between co pilot and even Gemini, is it.
+
+Speaker 2 09:25 
+Jamie? Not very rarely. Just.
+
+Speaker 1 09:26 
+For very rarely, but mostly chargeability. Okay. And then moving on, we're going into the how of your, the pattern of your use. So I will start with the initial stages and then I'll take you through the middle pattern, the last but which is a conclusion. So the beginning stage when you s begin your interaction, is there some kind of a Rachel for you? Do you prepare or it's just open it and straight away star front.
+
+Speaker 2 09:55 
+Maybe giving the prom, right? And straight away start.
+
+Speaker 1 09:59 
+They don't start the problem. Okay.
+
+Speaker 2 10:02 
+We need to get our answer that we want, but we need.
+
+Speaker 1 10:05 
+Yeah, yeah. So away, straight away. So you have a query. Go write the prompt. What is the nature of this prompt, may I ask? Meaning I want to know how detail are you in your first prompt?
+
+Speaker 2 10:18 
+How detail? I'm like, if let's say up like yesterday, I wanna find the top 15 university. Yeah, I know what topic I want. I will write, okay, I want the top 15 university according to QS for the purpose of chemical handling. Yeah, then yes, I will write assets. But if I don't know yet, something like creating Powerpoint here, I wanna create Powerpoint about now how a noise induction and misconduct injury work works. Yeah, it's just that brief overview.
+
+Speaker 1 11:00 
+I see. So I understand if you're familiar with what you want to ask, you get the as descriptive as possible, but you don't know, then it will be a bit more preferred, right? Okay. How about dividing, you know, the task? We have several steps. Are you in the habit of dividing the task into spe, you know, smaller parts first for juddivity? Or are you in the habit of providing all the instructions together altogether? Okay, okay. Have you notice that ChatGPT handle certain things very well, but it's not so good with the some others.
+
+Speaker 2 11:40 
+I don't know.
+
+Speaker 1 11:43 
+What's your experience?
+
+Speaker 2 11:44 
+Thanks. So far, not really.
+
+Speaker 1 11:49 
+So you do, it has been doing okay. You cannot say that it's good with something. It's not so good with something. Correct? Okay. Okay. So there's nothing good or bad to identify LA. So the next question is regarding, you know, assigning role to chat ability. You know, some of the users have a habit of telling sadivity to take the role of a teacher, take the role of an evaluator or a client, you know, and then based on that perspective, do answer your question. Do you do that?
+
+Speaker 2 12:25 
+So far?
+
+Speaker 1 12:26 
+No. So far you have not. Okay, so the rule, yeah, I think you mentioned unfamiliar task is the task is unfamiliar, how is it different? Your interaction, what's your experience with our family that you said you'll be brief, right? Your prompt will be brief.
+
+Speaker 2 12:42 
+My problem will be brief tends to give a lot more quite in a lot of info.
+
+Speaker 1 12:50 
+Then what do you doing today?
+
+Speaker 2 12:51 
+Correct. Yeah, so I need to pick. Of course, we need to think of the responses and eventually we need to prompt further which connection I wanna know more. Yes, so let's say I pick a topic, it gives us give me three points. Maybe I pick the first point and actually satisfies or understand enough. I'll go to the second point.
+
+Speaker 1 13:14 
+So you then systematically probe into each area that you interest to use it? Yes, correct. Okay. How roughly how many times you think you will iterate like that?
+
+Speaker 2 13:25 
+How many times are we iterate.
+
+Speaker 1 13:28 
+Average? I know it will depend on the context and the query. Yeah, just to, you know, like give an average figure.
+
+Speaker 2 13:35 
+Probably if let's say k using the sample, one point is probably I need to query about 5 times, not 5 times. And sometimes the depending on the topic, the rest of us will brands to all different directions to. It's true. Okay.
+
+Speaker 1 13:52 
+Okay. Okay. Then we move on to the exception, which is on your trust in AI. Okay, so there will be several probes on different aspects of trust. First question is, before you started use late 2023, you mentioned, remember now what was your, before you started use, what was your level of trust in generative AI? And after you started using it, how did it change.
+
+Speaker 2 14:17 
+Now? Before that, it's not the referencing part. Yeah, even now, Jenny, I, we still need to do the check and the referencing. Yeah, differences properly. So before there is more of preferences and didn't really give me watch I ask. Yeah, but after that, I think after 2024, it's feel so much better attribution. I feels like talking to a support team.
+
+Speaker 1 14:48 
+More useful, LA more useful. So if let's say you want to assign a percentage of trust before and after, what will the percentage be like?
+
+Speaker 2 14:58 
+I'll be less. So the 20,30% to ninety percent.
+
+Speaker 1 15:03 
+I see. So initially was like 20,30, and then it grew to 90 LA. Yeah, I see. Okay. And now that brings us to the next question, which is, you know, you have an output from chat DPT, right? You got some response. Are you in the habit of checking, verifying this output against, I don't know, maybe Google, whichever way, another gen AI tool. Do you have their habit or a textbook or ask somebody, do you have their habit validating? I.
+
+Speaker 2 15:34 
+Will f. I will ask for the references and reference. Okay. Reference.
+
+Speaker 1 15:41 
+If they provide you with the proper reference, have you s gone to check whether the references they point to AC actually correct or not?
+
+Speaker 2 15:49 
+I do.
+
+Speaker 1 15:51 
+You do. And you have so far had good experience there.
+
+Speaker 2 15:54 
+So far good. After certain things that somehow it ref, it makes reference to a broken link. Yeah, hum. Yeah, I, yeah, so that's the part that probably I couldn't trust and ask further to get more references.
+
+Speaker 1 16:16 
+I see. Okay. Okay. So you ask for references, you said, do you ask for document identifiers? When did you retrieve the retrieval date or date of the source and all that? Do you go into that kind of specifics? Can you ask for.
+
+Speaker 2 16:32 
+Reference? No, it's just how many? Give me the reference link.
+
+Speaker 1 16:36 
+That's it. And then you will go and check the link, right? Alright. Okay. Okay. And now two things. One is, have, has, have you had the experience of gen AI telling you then it does not quite understand your question and ask you to give more information. Have you had that experience?
+
+Speaker 2 16:58 
+Not exactly on that point, but yeah, hardly. It's more of a general to, because it's general topics you ask, okay, there are few factors, which one do you want.
+
+Speaker 1 17:13 
+Probing 2. And.
+
+Speaker 2 17:14 
+So it's not really about, I don't understand your.
+
+Speaker 1 17:16 
+The question. Yeah, yeah, it's more scoping, right? Scoping related. Okay. Okay. How about when Jenny I is answering your query? Does it ever sound like unsure? I'm not sure if this is the answer, you know, that kind of thing. Like it's not very confident with the answer. Has, have you felt that.
+
+Speaker 2 17:35 
+Not in ChatGPT. I check for.
+
+Speaker 1 17:40 
+Co pilot is.
+
+Speaker 2 17:41 
+Yeah, I'm not sure if you try co pilot in and do you.
+
+Speaker 1 17:44 
+Not really. I'm more like a ChatGPT. And I use ChatGPT publicity kind of listen. Yeah, I'm not the.
+
+Speaker 2 17:54 
+So in NDU, there's a compiler that which interface looks like change GPT. There's also co pilot.
+
+Speaker 1 18:00 
+Agent. Yes, I have seen it, but I've not really tried. So you're saying that the co pilot actually gives you that kind of low confidence kind of answers.
+
+Speaker 2 18:09 
+Previously, the age, I didn't try on the co pilot interface or the copilot chat. I did try on the co pilot agent.
+
+Speaker 1 18:18 
+Agent.
+
+Speaker 2 18:18 
+One that looks like Leon can what? Yeah, so I did ask few things. Can you give me, I give them a prom. Okay, what to do if I'm sick? That's where to go. So in some of the references, it quoted some of the references doesn't say what they quoted.
+
+Speaker 1 18:44 
+They quarter.
+
+Speaker 2 18:45 
+So yeah, what further of eh, your reply h cannot be found in this link where you got it from. Yeah, so.
+
+Speaker 1 18:55 
+You questioned it, but on its own, it didn't say that you when you questioned it, then it will correct. So, okay, okay. Oh, also it, but you know, after you finish with the interaction, are you, I mean, I'm sure you get multiple answers and so on, right? Do you usually ask the Jenny I to summarize the all the differences it gave? Or, you know, lock the scope for further querying. Say, okay, you keep the scope the same, have a few more queries based on that or something like that. Do you practice?
+
+Speaker 2 19:35 
+I'm not really sure about the lock that you mean. If you're saying that, eh, I have question at the top and somehow I defeated to question B and go back to question a. Like, yes, I have that experience.
+
+Speaker 1 19:54 
+What I meant is if let's say there's a problem that you're asking question about, and there are some parameters that you already provided and you say, okay, you keep this parameter constant for all the next questions, you know, so.
+
+Speaker 2 20:07 
+That's no one. Yes. In that sense, yes.
+
+Speaker 1 20:11 
+Or summarizing.
+
+Speaker 2 20:14 
+Summary, it's more about some, something like, ye, yeah, yesterday, I'm sorry, the top 15 university. So I ask about the chemical handling. So I get the references book further for some of the top universities. Yeah, and I go back for the same a condition. GI give me the references for handling radiation, eh?
+
+Speaker 1 20:43 
+And then you do, do you ask for a like a summary of everything? It said.
+
+Speaker 2 20:48 
+Well, it, it gave me summary.
+
+Speaker 1 20:51 
+It already gave summary. Yes.
+
+Speaker 2 20:52 
+Although I didn't write the word summary. Now, you.
+
+Speaker 1 20:55 
+Didn't ask, but it provided me. Yes, that's good. That's it. How about experience with the Jenny I contradicting itself said something first and then it go the it goes in the opposite direction, you know, like contradicts totally turns around and says something directly contradicting experience.
+
+Speaker 2 21:19 
+So far, not on chat GBT, the co pilot agent. Thank you.
+
+Speaker 1 21:25 
+Can you remember any example?
+
+Speaker 2 21:28 
+The specific example.
+
+Speaker 1 21:29 
+If you can remember.
+
+Speaker 2 21:31 
+So the specific example was, I was, let me try to recall. So I was asking, can you list down the master degree in ndu, the 2 ID, if I'm not wrong? Or AI or data analysis. So it gives me few things. Them I believe is and the link from Mae. Yeah, so I, of course, I ask for the references, open.
+
+Speaker 1 22:08 
+Mechanical engineering.
+
+Speaker 2 22:10 
+Material mechanical engineering, correct. I mean.
+
+Speaker 1 22:15 
+Okay.
+
+Speaker 2 22:15 
+Got the answer of open the link. May I ask, but there is nothing mention about.
+
+Speaker 1 22:22 
+Oh, so it was wrong. I see. Okay, yeah, okay. Okay. Edwin will. So when you conclude, you will end your session with the Jenny Aya. What is normally the prompt for you to stop?
+
+Speaker 2 22:39 
+Nothing.
+
+Speaker 1 22:41 
+Well, well, what makes you decide to? Okay. Okay. That's it. I'm done. Okay.
+
+Speaker 2 22:48 
+What makes no decide what to.
+
+Speaker 1 22:50 
+Make that.
+
+Speaker 2 22:54 
+Oh, what.
+
+Speaker 1 22:55 
+Is a typical scenario when you will end your session?
+
+Speaker 2 22:59 
+Yeah, really nothing.
+
+Speaker 1 23:01 
+No, I just. You have an answer because there are, for example, let's say sometimes, you know, you're looking for something, but you won't get then so you do the so many back and forth until you're been like, oh, that it doesn't move beyond that then that's it. And or you ask a question, you get an answer, you ask for refinement, it gives you the refinement and then you're satisfied with the output and you stop. That's what I mean. Typically, how does it end? And good and not so good.
+
+Speaker 2 23:31 
+So far it's been great. Yeah, good luck. Majority. Great. Yeah, yeah, that's.
+
+Speaker 1 23:36 
+Good. Okay, now the last two sections, the last but first section is on how the use of Jenny I impacts on your decision making, your work or your personal, okay, either professionally or personally. So since you started using, have you notice any change in the way it could be positive, negative, in the way you do work, you know? Yes. Can you explain.
+
+Speaker 2 24:06 
+Mostly positive certificates? Yeah, it definitely help us a lot in getting information, pre possibly preparing for presentation, I think images, doing program, some programming. So it makes our life easier. Yeah, we don't need to struggle so much. True. But on the other side, in terms of relying or giving the control of 1 minute to Jenny, I usually screen. Yeah, yeah, it don't in, yeah, kind. It's more for additional support.
+
+Speaker 1 24:52 
+Yeah, so you find yourself working a little more efficiently, but at the same time, you do not wish to give up control on your task to chat ability. You still want to retain control, right? Okay, okay, okay. How about your concerns? Do you have any concerns about Jenny? I.
+
+Speaker 2 25:11 
+Concern about Gai. Okay, if all our jobs will be gone when it is very efficient. I.
+
+Speaker 1 25:20 
+Think. Okay, if.
+
+Speaker 2 25:23 
+You wanna, we can answer at anything, a lot, if not a lot of things. And there will be time where probably as a professional, working professional most to be obsolete because of AI desktop export or some it platform.
+
+Speaker 1 25:50 
+Do you know, do you feel like when you're collaborating, you're working with almost like a human partner like that. Do you have that feeling?
+
+Speaker 2 26:00 
+Sometimes, you know, I just.
+
+Speaker 1 26:04 
+What we can explain a bit at what, can you just elaborate that a bit?
+
+Speaker 2 26:08 
+So for me, it's like my second hand in getting all the data. Okay. Yeah, all the excited I want, but.
+
+Speaker 1 26:17 
+Almost like a buddy, right? Like a.
+
+Speaker 2 26:21 
+But it, it will not be the second mean.
+
+Speaker 1 26:24 
+Of course. Yeah, it won't be here too. How about if let's say you've been using it, so for like slightly away. Yeah, I presume then if that's the case, then you want to give like three tips to somebody who is new to gen AI. What will you tell them?
+
+Speaker 2 26:45 
+3 tips in using it.
+
+Speaker 1 26:48 
+Effectively.
+
+Speaker 2 26:54 
+Keep asking questions until you understand. And you get what you want.
+
+Speaker 1 27:01 
+That's.
+
+Speaker 2 27:01 
+True. Double check the references. Yes. And be mindful of your prompt.
+
+Speaker 1 27:14 
+Be mindful of the prompt. Okay.
+
+Speaker 2 27:15 
+Okay. One from one word could change.
+
+Speaker 1 27:19 
+It's very true. I'm just the key thing getting anything useful. How about the a wish list we see for future version of Jenny I.
+
+Speaker 2 27:34 
+From any GNE I.
+
+Speaker 1 27:36 
+Yeah, anything, you know, what do you wish for?
+
+Speaker 2 27:40 
+Are we say it is free.
+
+Speaker 1 27:42 
+3? Yeah, of course. Other than that.
+
+Speaker 2 27:49 
+And another part, so the other part is maybe related to co pilot, because I believe this is something that needs to be embedded in depth in the programming of the Chennai. Yeah, I hope it can. People in terms of, eh, maybe there is us, there is actually a document related to your questions. Okay, but this document is not accessible because you're in this, you don't have the permission. So yeah, I hope we can touch on that point. Not necessarily enter.
+
+Speaker 1 28:33 
+I see. So it's like a log, but that's not accessible to you, is it? You want access to your own logs.
+
+Speaker 2 28:42 
+I see I'm not access to my own lock. So let's see. I'm a suit game eh? I'm s I'm a stuff I wanna, I WA I wanna get the data of how many researchers.
+
+Speaker 1 28:56 
+Yeah, all that is not available. Okay, understand, right?
+
+Speaker 2 28:59 
+Yes. So are you available for a certain people.
+
+Speaker 1 29:03 
+But not for you.
+
+Speaker 2 29:04 
+Lee? Yeah, correct. Okay. The other thing is sometimes it doesn't generate or it has a very limited output in terms of catering all the data together. Okay, and so let's see. I wanna see, hey, I wanna see all the schools in MPU with the respective numbers of lecturers and status according to gender. So assuming the data is available, usually some, a question like that will not give us a good answering. So Indian, I have to request for the numbers first, copy to Excel, create my own chat.
+
+Speaker 1 29:49 
+Okay. Okay. So this, so that kind of limitation you want addressed in your future version. sense lahmmhmmok。 Okay, I think we have come to the end of the interview, eh? But if you want to add, like, wanna share something freely about your experience using Jenny, I, you can do that. Any story, anything you want us share with us, any experience, then it's in in interesting or, you know, unusual.
+
+Speaker 2 30:17 
+Any interesting or unusual. Yeah, long, I would say it's pretty, I mean, I have limited back ID background. I would be. It is interesting to know that ChatGPT, even though it says, okay, it's safe, but actually we don't know where the data is saved or our pay, where our conversation is requested and how all the other AI like deep speech. I mean, I trying to get there yet, Paris or maybe there is, there's only a few resources saying, okay, this one is better for work purposes. Yeah, better for what purpose as a user, maybe there will be a u YouTube review comparing all those. That will be. Yeah, good.
+
+Speaker 1 31:11 
+Currently it's like you sort of figure it out yourself kind of thing.
+
+Speaker 2 31:16 
+And the purpose of cover. Com, not comment, sorry, for the purpose of within the company internally. So useful to have guidance. Okay. Yes, yes. And a strong guidance from the.
+
+Speaker 1 31:31 
+Regulatory. To sort of guide you in a, guide you in the right direction. Is it correct?
+
+Speaker 2 31:39 
+Okay. And to be honest, we're moving very fast AI. Like some of us, it's pretty difficult for most of us to catch up with the, or the development of technology. And yeah, I'm just curious how those it people can manage their work with the some set a rapid speed of.
+
+Speaker 1 32:08 
+Dynamic environment.
+
+Speaker 2 32:11 
+Cross banking, choosing, looking in Google, Facebook, do you have, yeah, can focus on it. I ask, you know, I sell or just a normal user. Yeah, I wonder how, yeah, the indirect, right? A year later, it's maybe too late. Once we end up on activity 4 is 75.
+
+Speaker 1 32:42 
+Yeah, true. Yeah, this happening very fast is, do you have any worry? I mean, you worry about how your work will change or be taken away or something like that.
+
+Speaker 2 32:56 
+Yeah, definitely. Do they so worry about it? I think everyone should, except of a very manual labor work. I watch a feed, a YouTube video, but godfather of AI, I say, yeah, yeah, you clean it if you watch it. So his advice was, get ready to be a plumber. And yeah, it will definitely improve. It will improve a lot. Security is one of the issue. To what extent it will confirm all our work of the lawyer, no artist. Yeah, we.
+
+Speaker 1 33:40 
+Don't. Yeah, I think all domains of work will undergo changes. And yeah, means the coming few years will be very challenging in that sense. Latter. Alright.
+
+Speaker 2 33:51 
+So in that sense, how we as a company make sure everyone is ready for.
+
+Speaker 1 33:59 
+It. Yes, yes. Yeah, I think that's very challenging too. Nothing else I read here. Thanks a lot for, you know, the spending time and talking to me. I, yeah, and think that's all I have for you. I look at your free survey and I think that you have indicated yes to the experimental study. So you know, there's a chance that we will meet again at the experimental component. We should be at a later time. Yeah, for this one, I just check with you. Your Paynow phone number recorded is 9,6,7,1,5,4,1,7, correct? So my colleague of mine who is on in the same team is P processing it. The turnaround is about 2 weeks. You don't hear anything in two weeks, please email me and let me know. Okay? Sure. Thanks a lot. Okay.
+
+Speaker 2 34:56 
+Hopefully my responses are useful for your reason.
+
+Speaker 1 34:59 
+Yeah, of course. Eh? Eh, every respond. Yeah, yeah, of course. It a bit worse. And you did take time to elaborate all the points. Thank you.
+
+Speaker 2 35:07 
+Alright, okay. See you. Have a good weekend. Bye bye.
