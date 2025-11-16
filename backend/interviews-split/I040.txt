@@ -1,0 +1,312 @@
+受访人40:
+2025-10-14 16:18:24 CST|28min 12s
+
+Keywords:
+certain information、certain papers、certain task、certain things、other users、certain area、certain types、certain level、certain role、other people、certain metric、other languages、information base、many others、other words、more information、quality information
+
+Transcript:
+Speaker 1 00:00 
+Okay, so it started the recording. Kenny, again, once again, thank you. And you know, I, we will start by briefly talking about yourself as a person, you know, so I think we are very keen to know more about your attitude towards technology, eh, as compared to your peer group, your background, you know, what are you doing currently, you know, and so on. So let's start from there.
+
+Speaker 2 00:29 
+Okay. So I'm Kenny. I'm currently a year TTP student at NTU. I'm doing research on  wing and Mandarin vehicles. So with respect to the question about technology with RES, in terms of technology as in hardware side, I think I'm more or less on par with my peers. Software site, I'm still not as adept at using generative AI as my peers.
+
+Speaker 1 00:57 
+Would you consider yourself like one of the early adopters of any new technology or do you wait until a few of your friends have started using it? How will you rate yourself earlier?
+
+Speaker 2 01:09 
+I would say like the second batch, like the batch right after early adopters.
+
+Speaker 1 01:16 
+Understand. Okay. Alright, I see that. What's your background in.
+
+Speaker 2 01:21 
+Aerospace engineering?
+
+Speaker 1 01:23 
+Okay, engineering. And how about your regular use of gen AI? Which tool are you using currently?
+
+Speaker 2 01:34 
+Chat GBT and co.
+
+Speaker 1 01:35 
+Pilot for pilot and ChatGPT. Okay. Alright. I notice that you have indicated that you're not using any paid version, right? So currently you using the free version? Okay, okay. Alright. How frequently do you think you use it? Let's say every day, you know.
+
+Speaker 2 01:56 
+Every two days or three days.
+
+Speaker 1 01:58 
+Yeah, okay. Every two days or three days. Alright, yeah, now I'm gonna go into the kind of task that you use it for. Okay, so we interested to know why do you use it? What task do you use it for? So we will start with that and then we'll go into that out. Okay. Okay. First of all, can you roughly tell me whether the use of ChatGPT or even co pilot is strictly for your studies, your work related task, or is it for personal task or is it a mix of both?
+
+Speaker 2 02:37 
+It's mostly for work. I use it mostly as a advantage engineer to help me to gather my thoughts for my research. Occasionally, I use it for some personal purposes, but mostly is for work.
+
+Speaker 1 02:47 
+Yeah, mostly. Yeah, mostly. So you would say more than half of the time you're using it for work now?
+
+Speaker 2 02:52 
+Yeah, probably like 70%. Understand?
+
+Speaker 1 02:54 
+70%. Okay, that's good. Now I'm gonna run you through the task as Sasha. So can you give me an example of your work related task that you rely on chat, GBT or co pilot for?
+
+Speaker 2 03:10 
+Wait, so one very good example I feel is that the for research, I think at the moment, Web of science or Google Scholar are the standard, but sometime it can be very difficult to find the papers that I need. So I use Chat GBD to help me to collate the relevant papers in the relevant fields because it can be a lot more specific compared to using Google Scholar.
+
+Speaker 1 03:34 
+I see. Yeah, so you find it helpful because it can do the collision of all the various information that you need. Paper section. Okay, okay. Alright, so now let's go into, you know, the actual mechanics of how you use it up. So you mentioned that you find it more useful than Google Scholar search. Yes. So can you be a bit more specific? Can you, you know, say, for example, in what ways or where exactly you find this tool more helpful than a Google Scholar.
+
+Speaker 2 04:14 
+Okay, so for example, if I wanna a paper on specifically on an aircraft of like, for example, 1 meter wing span, I wouldn't be able to find it to Google Scholar because Google Scholar, they don't they'll normally the your keywords I is only identify in maybe the abstract and the title. And then Google's color, they also rank your searches base on number of views or citation or like based on a certain metric. But sometimes the papers that I need on I'm not very like well cited. Like I need stuff that is not well cited at all. Yeah, so I think there is one very key difference. Yeah, okay.
+
+Speaker 1 04:57 
+I understand. So. Okay. So, you know, let me just go back to the initial stage. People to major motivation for using ChatGPT, say for for as compared to the use of like, like a search tool like Google Scholar, you know, or even Google. So Google, what prompted you to get started?
+
+Speaker 2 05:23 
+I think the, because initially I have worries on, but on the credibility and also the security issue of GDP. So I didn't use it at first. Then there are two factors. One was all my peers were using it and my peer pressure is one. Then the other one would be the fact that I wasn't finding what I needed to find with Google Spots. Yeah, so that prompted me to try hgbd because that was like the most the one that most people are using. So I decide to start with that first.
+
+Speaker 1 05:57 
+Now we're going to into the process of using. So before you start your work, what you ChatGPT, you mention it's good at certain things like identifying those papers that are not so well cited, but very focused on the specific, you know, I, I either the context that you're looking for and so on, right? So instead you mention it's very good.
+
+Speaker 1 06:20 
+Now let's talk about, you know, I, I, I, how you prepare, how you get started on a particular interaction with activity, let's say assign. Let's take for example, one of the task that you just mention, looking for collating certain papers on a very special, very highly specialized area of research or something like that. What is your starting point? How do you get structure?
+
+Speaker 2 06:46 
+Like, what do I do before I.
+
+Speaker 1 06:49 
+Yeah, from misleading preparation, how do you get started? The initial.
+
+Speaker 2 06:54 
+I would say that, let's say I need certain information, so I will like right now and comment what are the information I need, right? Try to craft the prom in a way that chat GBT will understand me. Yeah, then that's it. I think that's the whole workflow. So yeah.
+
+Speaker 1 07:10 
+Prompt, crafting of the prompt is your first step. LA, you activate your thoughts into a prompt and then, and that's where you s get started.
+
+Speaker 2 07:18 
+That's correct.
+
+Speaker 1 07:20 
+I is it possible that you know, the task that you assign to charge GPT, you kind of cut it up. Do you usually cut it up into smaller parts?
+
+Speaker 2 07:31 
+Maybe two parts? Yeah, two.
+
+Speaker 1 07:32 
+Parts, 2%. Okay. And eh, now when you do that, do you ask Chat GBT to assume a certain role or do you just provide the question straight away?
+
+Speaker 2 07:50 
+Most of them I provide the question.
+
+Speaker 1 07:53 
+Straight away. How do you consider using asking ChatGPT to assume, let's say, the role of a teacher or a, or a evaluator or something like that. Have you ever considered that or you do you use it.
+
+Speaker 2 08:09 
+Often? I don't know. That's a good point. I never I haven't tried it yet. Okay. Okay.
+
+Speaker 1 08:14 
+Just checking. Alright. Now the prompt that you mention in terms of the level of complexity of the prompt, do you think the first time round you provide enough information for ChatGPT to answer your question?
+
+Speaker 2 08:29 
+Most of the time, I think I provide like maybe 80% of what CGP team will from me. Then I will reply. There's normally how it goes. Yeah, so there's.
+
+Speaker 1 08:39 
+Sufficient information straight away. 80%. Okay. Okay. When you normally run your questions through ChatGPT, what is your assessment of the capability of ChatGPT to handle that question? How good do you think chargeability is in handling that particular type of question that you provide?
+
+Speaker 2 09:05 
+I was saying on the scale of 1 to 10 is about seven. There are certain types of questions that future GPT are better. So, and then there's certain type of question that I think so GBD just unable to said the woman.
+
+Speaker 1 09:22 
+You have a, you gave me example for the task that he just good at. How about those that you think they're not so good at?
+
+Speaker 2 09:31 
+So not so good would be, I have tried using it for coding, for engineering purposes. It's not very good at comprehending equations at the moment. Yeah, it can still give me the wrong equation.
+
+Speaker 1 09:47 
+Alright. You know, if let's say there's a task that you want help, you know, from s fringe activity, but you are a bit unfamiliar with that task yourself, are not sure? Sure. If that's the case, then what? How will you get started? What did you ask ChatGPT to do first? For the answer, media.
+
+Speaker 2 10:10 
+The time I was not familiar with, I think, one of my programming task. So I ask ChatGPT, then I give it an example code on right and then ask it to base off, base it off of that. Then I will take the code that gives to me and I'll run it and then I'll try to debug in, see if I can get the code working with the help of Chat GBT. I see.
+
+Speaker 1 10:32 
+So there's a little bit of a back and forth. You start somewhere and then you refine, you use it, you test it and you come back. Okay. Okay. I want to elaborate on that part a bit. So, you know, talking about trust building, so you start with a certain level of task. What do you think your initial ta trust level on ChatGPT is? Roughly? What percentage would that be on an average?
+
+Speaker 2 10:59 
+Six out.
+
+Speaker 1 11:01 
+Out of 10. 6 out of 10. Okay. Now, in some of these cases, when you interact with chat apt, have you ever found some evidence of this trust going up, down, you know, in some ways.
+
+Speaker 2 11:17 
+For the research paper kind of task where you need more of a searching or like quality information. I think my trust has got now because the more I use it, the more I find there is more or less in line with what I think is happening. But for coding, especially engineering and math and that kind of thing, recently my trust has gone down because, okay, yeah, I'm guiding more my FYP students and then because he's younger than me, so he's been using HBD longer in his undergrad, so he trusts tragically more than me. But then I found a very critical error in the formulation by GPT. So that's where my trust went down. But particularly for discount task, yeah. Okay.
+
+Speaker 1 12:02 
+Okay. So it's a mixed bag. In other words, sometimes for certain task it has improved and in certain task it hasn't. Okay. Okay. Okay. Now you know what about your validation of categories? For example, you ask a question, you said you give enough information, you get answers. Now I wanna know what do you do with these answers, you know, after you get the so called response from chat GBT, what is your typical post interaction behavior? You go and check on it again, something else. What do you do?
+
+Speaker 2 12:36 
+Most of the time, I at least read through. I see. Give a sanity check, right? I read if the content makes sense. Yes. And then for the math, I do a quick check and I see if the math is correct or not.
+
+Speaker 1 12:50 
+Do you normally do like a web based verification, validation kind of thing, but you take what chat DBD said and then go and check it against, let's say, like a paper, academic paper or an academic source or a textbook or something like that. Do you.
+
+Speaker 2 13:07 
+Do that? Used to do that before I transferred it more. I.
+
+Speaker 1 13:11 
+See. Okay. Okay. There was a time. So now you find that you don't need to do that kind of validation. I see. Okay. Now, yeah. Have there been any instances where ChatGPT looked or sounded like it's unsure and kept asking you for more information? You know, oh, oh, oh, it made it clear that the context is not very clear to ChatGPT. Please give me more information.
+
+Speaker 2 13:38 
+I think once or twice, but that might have just been my prom being very vague.
+
+Speaker 1 13:42 
+I see. So you feel it's your problem rather than strategy? Okay. Okay. And now, how about the confidence that ChatGPT projects? Do you find the answers always very confident, or does tragedy sound a little unsure?
+
+Speaker 2 14:02 
+ChatGPT mostly sounds very confident, right? They confident. I wonder if it's just the programming behind.
+
+Speaker 1 14:10 
+Yeah, true. Okay. Now we talking about the iterative behavior that the way you use chat ability, you said this, it's like a process of refinement and so on. Can you describe your iterative interaction, the typical iterative interaction? So you said 80% of the information required you give upfront, right? And then you, most of the time you get a fairly, okay, satisfactory answers, right? So how many steps do you think you have to go through before you're completed? You s have a sense of completion, you satisfy and in you kind of wrap it up.
+
+Speaker 2 14:46 
+Most of the time is maybe two or three maximum unless the topic is very complicated. But normally it's just asking it for table or asking it to maybe refine on a certain area. Yeah.
+
+Speaker 1 15:00 
+Okay, okay. We interested to know whether are you familiar with use of control gates as in say, do not proceed and unless I tell you to do this, lock some information and is, do you use that kind of Gates.
+
+Speaker 2 15:14 
+Thing very rarely? Yeah, ash, ash.
+
+Speaker 1 15:20 
+Okay. Alright. Do you ask for summarization of information from check CPT?
+
+Speaker 2 15:29 
+Yes, I do. Occasionally.
+
+Speaker 1 15:32 
+I notice from your interview that you did not Mark translation. So I presume because of your proficiency in English language, you do not really rely on ChatGPT FOSA for translation, kind of.
+
+Speaker 2 15:45 
+Well, I have tested it with other languages and I think at the moment is like not what I yeah, I think it's still not there. Yeah, I should yeah, yeah.
+
+Speaker 1 15:57 
+In terms of translation now. Okay. Yes. Okay. What is your, what is your queue to stop the interaction? You know, either you stop when you have gotten the results that you're expecting or when you feel like this is just going in an endless loop and there is no resolution. So I think you're satisfied or not satisfied, but what is that particular trigger for you to stop metrics?
+
+Speaker 2 16:27 
+I think there are cases both. Most of the time is I'm satisfy what I need. There'll be a couple of times when like depending on the topic, I will ask who ask chat GPD and I'll be like, but this not what I need. So I just stop.
+
+Speaker 1 16:44 
+Okay. So most of the time you're satisfied, you get what you need, and then you s just stop the interaction. Okay, now we're going to go into how critical the answers you get from ChatGPT is for your decision making. Okay, we going into that aspect. So you just assuming that you got a fairly satisfactory answer from chat GBT, my question is, to what extent do you think this answer from ChatGPT impact on your work as the your decision, you know, how does it influence? Again, you can give me a rough percentage or you can just be descriptive about it.
+
+Speaker 2 17:26 
+So I don't quite understand the question.
+
+Speaker 1 17:29 
+You know it. To what extent does the result that you receive from chat GBT help in actually accomplishing the one thing?
+
+Speaker 2 17:37 
+Understand, I think maybe like a seven or eight of them. I mean.
+
+Speaker 1 17:40 
+That's pretty good. Okay. Okay. And have you actually observed any changes in your performance or your output or throughput after you started using ChatGPT as a tool.
+
+Speaker 2 17:53 
+I will say my efficiency maybe going up by like 10% because I don't use it as short term as most of my friends.
+
+Speaker 1 18:00 
+But it has improved long. Yeah, by around 10. That's good. That's good. Now, have there been any instances where ChatGPT actually changed your perspective so completely that you went in a different direction than when you started initially? As in, did it kind of divert your thoughts, process in a different direction, Evan?
+
+Speaker 2 18:23 
+I think. No, no, never, not drastically.
+
+Speaker 1 18:26 
+Knows to take sense. Okay. Now I'm gonna go into the, the almost the last part. So this is about what are your challenges using Chat GBT, you know, because you know, it's even it's an evolving tool. And I wanna know whether when you interact with ChatGPT, do you consider the AI agent as almost as a human partner or a colleague or somebody that you can sound off ideas and so on. Do you have that feeling?
+
+Speaker 2 18:57 
+Sometimes it almost feels that way. But then, but when I BA, basically if I don't prompt, as if I'm prompting to a AI about right, the answers you get not exactly what you want. So I think to that, and no, I still need to craft my answers in a way that my prompts in a way that cgbd can understand me.
+
+Speaker 1 19:22 
+That is true. So in that sense, you still treat it, treat it as computer program rather than human. I would say.
+
+Speaker 2 19:28 
+Maybe in between, like in between.
+
+Speaker 1 19:32 
+So in that sense, I would, can I then assume that then when you interact with chargeability, it's still like a little bit more human than maybe interacting with like just a Google search bar.
+
+Speaker 2 19:45 
+Yeah, definitely.
+
+Speaker 1 19:48 
+Okay. Okay. Now, what are your visions for this ChatGPT for the future? How would you wish this evolves? You know, until you just mention your. Productivity has gone up in a 10% maybe like until you find this is like an indispensable productivity tool for you to rely on. What do you envision? Assume that there are no barriers, LA, you know, assume that if you could have a wish list, what would you.
+
+Speaker 2 20:14 
+Wish? I really wish that the stem portion is like the calculation and searching options will be much better. Like now, I think it's still a bit, it still has a long way to go before it becomes truly trustable. Yeah, and to the point where I don't need to adopt it anymore.
+
+Speaker 1 20:39 
+Okay. But this is question about some guides or tips for other users. But I know you kind of put yourself down as an intermediate user, not like a very advanced user. But even despite that, if you were to give like a top 3 tips for somebody who is totally uninitiated to check DPT to effectively user this tool. What would that be? One of? Up to three tips. Let's say.
+
+Speaker 2 21:06 
+This could solve you weird, but I think the first step would be don't trust everything that it tells you. Because the reason I see that is because if you trusted holy, right, sometimes even you on the off chance it fits you the wrong thing, you're not will catch it. Then the second thing would be to craft your prompts clearly. Yeah, because I think prompting is a, if your prompts are not clear or you use the wrong word, it will lead you in a different direction from what you intended. I think the tip, I don't really have any other tips actually. Yeah, it's.
+
+Speaker 1 21:42 
+Alright. Yeah, thanks. I think that's valuable already. Now, you know, have you had any experiences of AI hallucination while using that two will not be show whatever. Did you ever have that?
+
+Speaker 2 21:55 
+I think so, yes, like once or twice, but that was before. I think those people charge GB for. Yeah, I think after this one, yeah, it should be fine now. So.
+
+Speaker 1 22:05 
+You haven't had any bloopers as such, LA, can you remember this one episode where you had this nonsense.
+
+Speaker 2 22:11 
+Results? I think I can't really remember the details, but I remember I asked it something, but I didn't give me anything close to what I was asking. So.
+
+Speaker 1 22:19 
+This is the earlier version LA. So maybe, yeah. Okay. So, and do you have any concerns about the use of chat ability? What are your major worries about it?
+
+Speaker 2 22:30 
+I think my worries is not regard, my main worry is not regarding ChatGPT itself, is more of the users that I worry that, I mean, experiments are over relying and then we forget how to do. Yeah, yeah, cannot. Yeah, our own critical thinking.
+
+Speaker 1 22:45 
+Yeah, that's a great point. I agree with that. Okay. Okay. Now, you know, I just coming back, I think we're almost done. Probably another 10,15 minutes. I'm just going through your survey. And you know, we had this assessment of your anxiety, AI anxiety and also algorithm aversion. So, and then I realize that your aversion is more or less on of between 4 and 5, you know, mostly 4 and so on. And your anxiety is definitely there.
+
+Speaker 1 23:17 
+Now, these two things are, I think as far as you know, as a researcher from of coming from me, my personal perspective, I think these are two good things because it gives you that safeguard against blind trust in AI, you know, and that over reliance and so on. So my question is, you know, these, how, what do you, what is, what are your perspectives on being so guarded? You know, like you have this AI anxiety. You said that you sometimes feel very anxious working with AI, you know your anxieties really? And how does this anxiety influence the way you use it?
+
+Speaker 2 23:59 
+Exciting. Yes. Then sorry.
+
+Speaker 1 24:01 
+So you, you and yeah, and set you questions mostly strongly agree. And so, you see, I sometimes feel uneasy and anxious when working with the gen AI, you know, and you also say, I feel tense when I re when I try, have to try out new AI features and.
+
+Speaker 2 24:22 
+A service issue, there's two fronts, right? One is that the, you not sure of the robustness of the tool yet. I think that's one. And the second is that I just feel that not knowing. I mean, of course, we sign the agreements and everything, but not knowing what goes on behind the scenes, where the data goes, what they do about data is one concern. Like what if, I mean, I don't think they'll do it, but what if I prompt something about maybe a emerging technology, right? For examples? And then ChatGPT is actually feeding the information to a rival company or arrival research institute. Then what would they do with the information? So to this point, I have not really prompted anything about my research, as in like my core parts of the research yet, because I don't know what they will do with this information, right? Even if they don't explicitly feedback, what if they use it to train their new models? And then it helps to prompt other people to go along the same track. Yeah, so that's my worry.
+
+Speaker 1 25:32 
+Understand. I think it's a valid concern as well. How about your algorithm version? It basically, you know, like when I read through your survey, it seems to me that you, like many others working in science and technology, believe that if you have the option of using a human expert, I suppose to agent generative AI agent, you would rely on the te human expert.
+
+Speaker 2 25:59 
+Yeah, because at least with the human expert, you can call a real conversation. You can talk about things that I think at the moment chat gbd is unable to do. Yeah, cuz chat gbd, oh, is really fully information base. There is no opinion, there is no experience, so to speak, right? Yeah, it's purely Torre theoretical. Yeah, it's true.
+
+Speaker 1 26:24 
+Okay. Now, if you just a couple of questions. This is on agency. I think from what you've been talking to me about the way you use, it seems to me that you put yourself in the driving seat when you use gen AI rather than you get led by gen AI. That's what I understand. So, eh, eh, eh. Would you agree with that?
+
+Speaker 2 26:50 
+Yes, I agree.
+
+Speaker 1 26:52 
+So I think it also, sh probably shows your confidence as a specialist in your domain as opposed to Jenny. I, so you're very clear about what you're good at and what Jenny I can do for you. So you don't totally submit the entire problem as something that Jenny I should solve for, you know, and then you take the lead. Okay. Okay. Anything else to add about your experiences with on your a use of gen AI or any other interesting experiences you've had? Anything else you wanna share?
+
+Speaker 2 27:23 
+No, I think that's all. Yeah, I think the questions were quite complete.
+
+Speaker 1 27:28 
+Yeah, Kenny, I see that you provided a mobile number. I just repeat it just to ensure your correctness. You know, your payments are will be processed on a weekly basis. So I suspect that this week, since yours is the first interview I schedule, so most probably, it probably come through next weekend is what I feel. Or you don't hear anything next week. And after next weekend, do drop me an email. It's done by a colleague of mine from the same team. Yeah, so your number is 9,3,6,2,2,9,5,8.
+
+Speaker 2 28:01 
+Yes, that's correct. And 3,6,2,2,9.
+
+Speaker 1 28:03 
+Right? And just verify. Okay, thanks a lot, Kenny. I think you have a good day.
+
+Speaker 2 28:08 
+Thank you. Have a good thing. Bye bye.

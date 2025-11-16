@@ -1,0 +1,339 @@
+受访人37:
+2025-10-14 16:18:14 CST|38min 21s
+
+Keywords:
+few times、other questions、good time、other parts、few questions、several times、many times、first time、other person、other task、other context、technology adoption、AI instruction、AI answer、several questions、other people、certain part、longer time
+
+Transcript:
+Speaker 1 00:00 
+Yeah, we're recording. Okay, so I have different section. So, you know, I'll guide you through and sometimes I may have to refer back to your pre interview to probe on certain aspects that so that's something sure to start with, you know, you can probably give me a brief description of yourself. What is your domain? What do you do currently? Okay, you can talk about that. And I all, I'm also keen to find out when compared to your peer group, the other people in your group in terms of technology adoption, will you consider yourself as one of those who will jump in the very first time? Or will you like wait for some people to go in first, get some feedback and then plunging. So yeah, so you can start with what do you do in your background and.
+
+Speaker 2 00:57 
+Okay, hi, Prof Tara. I'm Apria. I'm currently an MBA candidate at Nanyang Technological University. I have three years of full time working experience before, and I do graduate from an electrical engineering de bachelor degree. And about the technology adoptions, I would say that I'm someone who will wait for people to give me feedback, like the reviews, like whether this, the AI, is it accurate or is just a tool. And actually I do use AI pretty late compare to my friends. I only use it like around this year, I would say. And I start subscribe on August and I start using it heavily due to the academic purposes.
+
+Speaker 1 01:54 
+Okay. Okay. So you're one of those cautious adopters. So you have an electrical engineering background and now you're doing a management degree, right? NBA. Okay, great. Okay, moving on. You mentioned that you have a subscription. So I wanna know, you know, which of the gen AI tools, there's so many available, which one, so are you using regularly? Okay, so whatever questions I ask LA later on, you can base it on this most useful, whichever that may be, Jenny, I or Gemini or Chloro, whichever one. Okay, then another thing is how, what is your frequency of use like, so you start, you said you started late, early this year and you subscribed in September. So in terms of how frequently you use in one week, how many times do you think?
+
+Speaker 2 02:42 
+Okay, so the tool that I'm using is Gen AI chgbd. I used to like, when I'm not subscribing, I used to use like both Jenny and Gemini. But now since I have subscribed to Jenni, so I stop using the other options. And I do compare bit like between Jen AI and jam and I as well. And I feel like Jen and I actually has a more accurate response. And for now, like after I subscribe, how often I use, I would say that I use it heavily, like every day.
+
+Speaker 1 03:19 
+3 day. Yeah, every day. Okay, okay. Alright. I feel the, you know, the, so assuming that you're using ChatGPT on your, as your regular Jenny I tool LA, and mostly for your work as your MBA student, right? Yes. Okay. So I've, I'm more interested to now find out what kind of tasks do you collaborate with Jenny I for so the you can give me some examples, maybe one or two commonly used scenario. And then later on when we go into other questions, all these questions, you can base it on that commonly used scenario.
+
+Speaker 2 03:57 
+Yeah, yeah, sure. I use it in a lot of purposes. Like I just learn about Dolly. If you know about it, we have this marketing task and my friends is teaching me how to generate a great graphic design pictures. Actually, I think Jenni is doing a very good job. Like I can do rebranding for a logo in a split, I would say, 30 seconds. And it has done. And the second thing is when I was studying for my quiz, I do find some questions that I don't understand at all. And I just screenshot it and put it on Jenny. I and they do explain me all of the concept and as well as like teach me all of the step by step. And also sometimes I don't know how to do it on Excel. They will help me generate all the formula needed, like which column I would need. And I also do ask Jenny to put me. Some graphs, the consulting start 2*2 metrics, and lastly, the function that I use most heavily is to ask Jenny to fix my grammar because English is not my first language, so I still struggle with the grammar.
+
+Speaker 1 05:20 
+Okay, so mostly I see that you use it for your writing your assessments like quiz to generate the graphics and so on. And you find it easy. Okay, now going on now what we're gonna do is I'm gonna go probing to the. How do you use spot? Okay, so we have a few questions there, a set. So questions right there. So to start with, you know, you started using it, you told me sometime early this year. What was your initial goal? I mean, what is the motivation for you to get start? I know you were prompted by your friends. So what was the immediate push for you to go in? Okay, I'm gonna start using this.
+
+Speaker 2 06:06 
+I early this year, I still work in my company. So my company usually block all of the AI for options. Yeah, but earlier this year, they started to build our own company AI. They collab, they subscribe to co pilot. So the first AI tool that I'm using is co pilot. So it's because like all of my friends and my mentor are using the co pilot and they find it very helpful to refine our code because I was in as a test engineer, we do code a lot. And after learning about how to use Code Pilot, I started to be interested in AI as well, like how useful they're. But I think earlier this year, all of this AI tool is not as advanced as today. So I still have that hesitations where when I use AI earlier this year, especially co pilot, but now I think they they improve they update they their technology very fast. So now I'm in the state of 90% or 80% trust AI reason I think.
+
+Speaker 1 07:24 
+So you have had good experiences with the AI after the new generation shut down new versions, right?
+
+Speaker 2 07:33 
+5, I would say.
+
+Speaker 1 07:35 
+So this co pilot, you dabbling with your co pilot as a test engineer with roughly which year was this?
+
+Speaker 2 07:42 
+This year.
+
+Speaker 1 07:43 
+So early this year, January. Okay, so what did, again, we're going into the how again, you know, so you told me what motivated you and let's start look at the path, turn the views. So I want to know if let's say you decide that today there's a task that you wanna collaborate with Jenny, I for, you know, how do you get started? Do you, is there like a preparation? Do you do something prior to starting the session with Jenny? I.
+
+Speaker 2 08:19 
+Actually, I think the quality of AI answer depends on how well, how detail you're writing on your prompt. So before collaborate with AI, I do need to have the full picture of what are the results that I, one, the key takeaway that I want, like which part, which content I wanna AI to help me.
+
+Speaker 2 08:43 
+So let's start with like lay out of all of the context first. Oh, this is a finance. And then the material, the topic is about this. And then I want to learn particularly about this. Can you explain me step by step, like what are the output? And let's say I'm using it for designing a Powerpoint deck.
+
+Speaker 2 09:13 
+I would say that, oh, this is the context that I want. I have write the draft already. I put it on the prom, but I told AI too, can you help me do it in a consulting style and help me do more deeper research regarding and do quality check for my writings and the logical flows, whether it goes well or not.
+
+Speaker 1 09:40 
+So I guess you provide the context first. Yeah, and then you provide the question and you take it from there, right? Do you have a habit of, let's say one of the task that you want to collaborate is a little complex. So will you then partition or break it to smaller parts for AI only provided the thing first?
+
+Speaker 2 10:00 
+Usually, I always put everything first. And if I feel like AI is like, I sometimes do put 5 questions at in the same problem, I do feel like AI sometimes do miss several questions. So I do re prom again like, oh, you're missing this question. Thank you. So.
+
+Speaker 1 10:20 
+That's how you work LA. And you notice that it does miss some of the stuff that you put in your initial prompt. Okay. You know, so when you provide this prompts, okay, do you have any idea or any notion there, Jenny? I is very good with certain things, but not so good at other parts.
+
+Speaker 2 10:46 
+Okay, Gen AI is really good at all of the basic calculations. I would say the finance accounting calculation, they do it really well, but they're really bad at, I would say, about plotting graph, sorry here, plotting graph.
+
+Speaker 1 11:08 
+So I see you have not had good results with that.
+
+Speaker 2 11:11 
+About like, I still need to do it myself. Like sometimes I do ask Jedi to generate a simple slide or deck. Like most of the time when you prompt something, like I ask them to do a consulting style content, but Jenny always offer help to, oh, do you want me to help you generate a deck? When I said yes, the deck doesn't shows really good. It's still very ugly. And yeah, I would say that I cannot use the file. And I sometimes also like ask Jenni to help me do the formula and they do ask me back like, do you want me to create the Excel with the formula ready? When I download it, the Excel just error and all of the weird codes. I think that side of part that still need improvements.
+
+Speaker 1 12:06 
+Okay, so yeah, experience, it's like it volunteers to blow things, but it actually doesn't give you very moderate. I see. Okay, okay. So you mention to me that there are some task that it's good at, but there are some that it doesn't do very well, right? So do you, I mean, I presume then you have this knowledge in your, at the back of your head when you develop your prompt for the Jenny you you do or do you still go ahead and ask even though you know it's not so good at certain things, you still, you know, prompted to do it just to test it out or something like that. Do you do that?
+
+Speaker 2 12:44 
+I still ask AI to double check.
+
+Speaker 1 12:49 
+Okay. Okay. And now I think earlier on in your answer, you mention something about asking for certain styles, like consulting styles and so on, to do some work right now. The next question is about whether you assign any role to AI while asking them to do task for you. For example, let's say, you know, you have an essay and you're sort of running it through ChatGPT. Will you then say, assuming that you're the marker of this assignment, how will you rate? Have you ever tried that assigning role to is any.
+
+Speaker 2 13:26 
+I have tried assigning role, but it's not as the third party, but it's to be me. Like, oh, let's say that you're going for an interviews of for this company, how would you react if you're being asked with these questions? And I do send AI my resume and cover letter. Oh, let's let AI to pretend to be me and oh.
+
+Speaker 1 13:48 
+Interesting. Okay. It's more like a reverse role. You asking the Jenny I to be you based on your recipe and.
+
+Speaker 2 13:56 
+I'm the interviewer. So we do it.
+
+Speaker 1 13:58 
+Right? Okay. Okay. So that's how you work with it. Regarding the roller, okay, if let's say, you know, some of the task that you ask ChatGPT, you have no basic information. Like you're very clueless about that. If s, if that's the case, how we use that.
+
+Speaker 2 14:19 
+And no prior knowledge. Most of the cases are I, I in an MBA program, we do have like, we need to read a lot of cases like Harvard Business cases and it has around, it's very long, like around 20 to 50 ish page. So usually I just throw there is a document so AI to help me summarize it. I think that's all. And I do not reread the case. I just fully trust it. You use.
+
+Speaker 1 14:49 
+That summarization from Jenny. I, and in your experience so far, have you, you know, like had good experience? Ends with this, following the summary from Jenny. I, without reading the case, have you found it quite okay to do that? I think idea difficulty.
+
+Speaker 2 15:09 
+Due to the time limit. I just accept it. But I accepted it. Yeah, I know there's, they're missing a lot of detail tells. And oh, there's another cases where I do throw several chapters of books to AI and ask them to help me summarize it, but the reader doesn't come as what I want. If it is about cases, I think AI can do it reminder. But for like a finance or a like a heavy textbook, they still cannot do it because all of the formulas and a lot of charges that these are the capability that AI is still like lacking.
+
+Speaker 1 15:48 
+Yeah, I think you make it right. Thank you. Okay, now. Oh, fine. I'm not sure. Okay, moving on to the trust. I think you mention to me that your trust kind of went up, right? So before you got started, you know, so before when you hear about this generative AI tools and at that point we before you start using it, what was your dress trust level and how did it kind of improve over the overtime with use? Improve or decline?
+
+Speaker 2 16:28 
+Initially, why I don't really trust AI is because I don't think that the, I don't have the need, I would say, because I haven't come to like school and like doing my job. I think I still believe my mentor and myself will much better. But if I went to school, like everyone is using AI, like I don't have other choices, then yeah, following the trend. And I would say that, eh, I do really helps me about it. And about the trust. Actually, I do ask AI to help me solve 10 questions and it gets like one or two questions wrong. So that's why initially I don't really trust AI. But as what I've said before, like after the AI do improvements, releasing the new versions, I think the accuracy went out. And now I don't really like, I don't have any trust issue for the AI.
+
+Speaker 1 17:31 
+So the initial trust level, where would you put the initial trust level? You wanna give a rough percentage before use?
+
+Speaker 2 17:39 
+Before using, I would say like sixty.
+
+Speaker 1 17:43 
+60%. And it has gone up to close 200 now.
+
+Speaker 2 17:47 
+Yeah, I still 80. I still double check my work.
+
+Speaker 1 17:51 
+Of course. Okay. Okay. So about 18 hour now, you know, have you had any experience with the generative AI asking you for more clarification. So you, you fed the, you told me that you try to start with by giving all of the information possible, right? You type everything that you need to type and as you progress with the interaction, is there any time when Jenny, I will tell you, okay, I need more information? Or is it, you know, it's not some clarification. Is this what you meant? Do you have that experience?
+
+Speaker 2 18:30 
+Do it happen several times, especially when you're generating a graphic design. So I do ask AI, can you help me generate a character of like Keith, like 5 years old and everything? But AI, you do ask me back a question like which country is this kid coming from and what are the hairstyle, the skin tone color and I do provide them provide AI, the the one the all of his questions required and they do come with a very detail picture, I would say.
+
+Speaker 1 19:04 
+So it does prove you in that sense. Okay, how about the AI answers? Have you ever experienced the AI answering with some uncertainty saying, oh, I'm not so sure, but maybe this is what you're looking for?
+
+Speaker 2 19:18 
+Yes, especially when I was giving less context, like I was asking what is beta, but I'm not saying that beta is like in the finance or what are the context and but AI to put all of the beta definitions in all of the context. I find this and he would, AI would be saying like, I'm not sure which context you're, but I'm providing all of this context. Can you please let me know that which one that are looking for? I think that.
+
+Speaker 1 19:52 
+Okay, okay. And so rather than sounding unsure, it is sort of giving you every.
+
+Speaker 2 19:57 
+Possible. Yeah, yeah, yeah.
+
+Speaker 1 19:59 
+Are you scenario? Down. Okay. Okay. And how about, you know, this iteration that you were telling me, right? You give a lot of information first, and then you, the interaction will continue. So it's a, it repeats a few times, right back and forth. So in a typical task that you just mention, on an average, I know it, this varies with the type of task you're doing, but on an average, how many times do you think you look with gen AI before stopping or ending?
+
+Speaker 2 20:32 
+I would say.
+
+Speaker 1 20:34 
+5 times on an average fact. That's okay. Do you apply any criteria for Jenny? I do like a stop check and then do this before proceeding. Do you apply that?
+
+Speaker 2 20:51 
+I never said stop, but it's more like I'm giving more context. Oh, you should follow this criteria. Instead of entity.
+
+Speaker 1 20:59 
+You don't say okay until I tell you do not go in or you don't, you don't, I don't know. Okay. Us. And I know that you do use Jenny I a lot for summarizing case study, right? So generally speaking, if let's say it's not a case study, but some other task, at the end, do you still ask Jenny I to summarize what it said just to check your understanding or something like that.
+
+Speaker 2 21:25 
+For other task, I don't ask for summarization. I would say that explain me like I'm 5. If I, I if I don't really get what are the.
+
+Speaker 1 21:36 
+Okay, okay, okay. How about experiences with AI contradicting itself? It said something and then it's sort of confuse you by saying something totally the opposite. Have you had that kind of experiences, contradictions?
+
+Speaker 2 21:51 
+No, I have never.
+
+Speaker 1 21:53 
+Try our AI hallucinations. You've heard of her AI hallucinating, giving you erroneous results and so on. So have you had that?
+
+Speaker 2 22:01 
+I had it in on Gemini, actually.
+
+Speaker 1 22:06 
+Okay. Okay. But it's not something that common. Okay. Another thing is, April, when you use Jenny, I, let's say for some task repetitively, let's say like this happens on a weekly basis or every few days, you have to repeat the task. Do you keep track of the questions, the prompts, and then edit the prompt and to just to save time and type a? Do you do that?
+
+Speaker 2 22:35 
+I do keep several like they have the target template. Yeah, like I do go, I do frame it like for base on the task if it is a recurring one, I do keep the history. I don't overlapping with other context. So AI would have a better track record of everything and it does save my time as well. Like, eh, I still remember of the chat history and I don't need to repeat myself, but sometimes it, if it gets too old, AI would ask me to resend attachment or the context as well.
+
+Speaker 1 23:13 
+Do you keep versions of the Jenny I answers and your questions and capture to track changes and to make sure that your revisions are accurate.
+
+Speaker 2 23:25 
+Yes, every time AI is through me context, I would edit it and I would ask AI to. No, don't change anything, just fix like, yeah, I think.
+
+Speaker 1 23:37 
+Okay, I'm going into the last few sections in this. First, I have to take you through the effects of using Jenny I on whatever the work that you do. Okay, so the first question is, have you actually experience any difference, any noticeable difference in the way you work after you started using Jenny?
+
+Speaker 2 24:00 
+In the way I work, I would say that I've become more efficient. Does it only s me or I observe my friends as.
+
+Speaker 1 24:12 
+Well? I, this is more about your work style, you know, and your personal, you know, for example, let's say I, I to, to just to give you an example, one of the, my respondent said that he found it, he can really remember what I mean earlier when he was using YouTube or a Google Scholar, he could remember what concepts he clarified. Like he had some memory. But with Jenny, I, he doesn't seem to remember that much.
+
+Speaker 2 24:39 
+Oh, for me, maybe I'm a late adopter. I think I haven't reached that stage yet. Yeah, I still am very detail oriented. I just think that AI do make me more efficients in terms of doing my work. Because I still review everything that. May I have thrown to me?
+
+Speaker 1 25:04 
+Okay. So in that sense, you're still kind of okay, I guess.
+
+Speaker 2 25:14 
+Maybe I just use it for a few months as.
+
+Speaker 1 25:17 
+Well. Yeah, to, eh, okay. Has it been a time when Jenny, I kind of made a huge difference to your final output or your decision or, you know, you know, the submission that you're making out of it. Maybe, you know, do you think, you know, like, did you find like, wow, you know, with Jenny, I now I have something so much better. Have you experience it?
+
+Speaker 2 25:42 
+Yes, I would say it helps you feel like it's not your working like it was too fancy to be. Yeah, like I feel like the results, I don't really submit the fancy result from AI because I feel like that's not me. And I would ask AI very to repromise, like to regenerate it, like please make it more simple and human, like SMB to AI and it do simplify the answer. So I don't want to submit something that is too good to be true.
+
+Speaker 1 26:25 
+As well. I see. So you tend to not use something that doesn't sound like you. Okay. Okay.
+
+Speaker 2 26:34 
+Get right all of the research that is too detail of that, like reading several papers, I wouldn't submit.
+
+Speaker 1 26:40 
+It. Yeah, so you make you rather go with something a bit more simpler than what it's arena. How about your dependence on Jenny? I know you're a later doctors and you just mention that you probably are not so over dependent. So with this question is on reliance, how deeply do you find yourself depending too much on it ever, you know, you think you're still okay.
+
+Speaker 2 27:05 
+I think now I can't really live without AI. Yeah, it helps a lot with the brainstorming process. I would. I see. Oh, I mean, I think AI part in my studies is more, much more about the brainstorming because I do, I usually find friends to help me brainstorm, but we waste a lot of time and sometimes we act together. But with AI, everything can fix and all of the idea can come within split of seconds. I would say that that's the.
+
+Speaker 1 27:41 
+That's very interesting. Okay, now that you mention this kind of interaction, you're saying that it is very good with a brainstorming. Okay, I'm gonna ask you whether when you collaborate with Jenny, I do you get a semblance of feeling that you're actually partnering with more or less like a human system.
+
+Speaker 2 28:02 
+I still think AI as a like a technology.
+
+Speaker 1 28:07 
+Woman.
+
+Speaker 2 28:08 
+Oh, but sometimes when I feel very down in my personal affairs, I do. I do like, I only did it once because I know a lot of people try to have a hard to hard conversation with AI.
+
+Speaker 1 28:23 
+Yeah, they do.
+
+Speaker 2 28:23 
+It. I do it once when I just like having a heartbreak. I do telling all of the contact AI, all of the context. But yeah, I don't think that's helpful because I feel like I need to go to the psychology psychiatry.
+
+Speaker 1 28:41 
+So, but you check it out. You, you, yeah.
+
+Speaker 2 28:43 
+I do check and I do ask about like all of, if I'm sick, all of the symptoms and what happens to me. AI do offer all of the medicine advice, but now I've seen AI have improve, has improve on their disclaimer. Like I do say that, oh, we I s please take a medical doctor. These are not the official instructions because before AI do not put this kind of that claimer and I would say good time, good point.
+
+Speaker 1 29:14 
+A little bit more better in that sense. It's sort of once you about the dangers of using the answers without consulting.
+
+Speaker 2 29:22 
+But consulting about medical advices. I would say that AI done a really good job like the AI instruction and that is in instruction is very similar.
+
+Speaker 1 29:33 
+I see. Well, that's interesting also. Okay. Okay. And now we're kind of coming to that last button in the last part. A few types of question. One is regarding what are the concerns or challenges you have while using Jenny? I, what do you, eh, you feel any concerns? What will the concerns be?
+
+Speaker 2 29:56 
+I'm afraid that I'm become more lazy and yeah. Oh, I don't train my brand well.
+
+Speaker 1 30:02 
+Do you think that I see.
+
+Speaker 2 30:04 
+Because all of the brainstorming are the is the hardest part. Yeah, true. If AI can do everything, I really scared about it. And now AI is getting more advanced and us even a very hard like curic courses, like finance, heavy course, like finance cases that has 10 pages, AI can solve it really well. So that to concern you, like what if AI like replace everything? Like do people still need to learn finance? Like we need few months to excel in these topics, but AI can just solve it within like 1 minute maximum. And that tho that are our concern as well, like how would it impact the job market and impact on our brain as well? As we don't use it too much, we don't practice too much, it will get worse.
+
+Speaker 1 31:06 
+I think it's a valid concern, like shared by many young people that how it impacts on your own development, personal professional development and your job market. Okay. You know, if let's say you could just wish for any improvement in AI without any concern about technological constraints, what will you ask for your wish list for future AI? What do you like to see there.
+
+Speaker 2 31:35 
+For future AI? At least first, like summarize the textbook.
+
+Speaker 1 31:43 
+Oh, textbook. Okay.
+
+Speaker 2 31:44 
+Yeah, textbook summarizations because I had like 1,000 PA pages on chat group and sometimes you need to finish it within two months. And I'd say that AI should do well on that. And as well as the graphic design and video editing as well.
+
+Speaker 1 32:01 
+Okay, so these are the capabilities you like to see. Yeah, now, you know, I pray you've been using you like paid version since August, September, and it looks like you've been using it quite heavily cuz you told me that you can't imagine working without it. So if you want to provide an, eh, maybe couple of advice to somebody who has na not started with air but want to start, what will you give them? What advice will you give these people?
+
+Speaker 2 32:34 
+I think everyone should follow technological advancement or you will be lagging. Yeah, yeah, I think that's all. And you wouldn't perform as better as it cannot catch up with all of your peers. You're not adopting the technology. I think that these are the.
+
+Speaker 1 32:54 
+So your advice would be encouraging them to start using. Okay, okay. Okay. So that's the almost the end. So let me just probe you on some aspects of your reinterview free survey, interview survey. I think most of the questions you have answer based on what we expect. Like for example, your trust is kind of high, your self efficacy is also high. You, you have you, you have, they do not seem to have much of anxiety using AI, right? Because you've answered that you disagree. You don't feel uneasy, no tension. And, but you do say that you worry that sometimes you may not be in control when you're using 10 AI. Why do you think? Yeah, you feel it kind of runs away with your task sometimes you're led by Jenny. I. What makes you say that?
+
+Speaker 2 34:00 
+You mean like in control?
+
+Speaker 1 34:02 
+Yes.
+
+Speaker 2 34:04 
+Sometimes, eh, I don't really get my point as well. Like I try to control the answer, but every time I ask AI to revise, it doesn't come up with the one that I want. So I still need to do it myself. It's like how, no matter how many prompts on how many times I do ask AI to fix this certain part, but they, they just like they, it just rephrase all of a AI's previous answer, not the one that I want.
+
+Speaker 1 34:41 
+Not the way you want it. Okay. You, you know, you're like cognition related questions, I think you have answered mostly on the high side, as in you like to tackle complex problems. You enjoy all that. It's like fun doing, solving problems which are a bit more complex and.
+
+Speaker 1 35:00 
+Online. So in your case, you're more a systematic thinker than an intuitive kind of problem solver, right? You kind of break down, you have a structured approach to problem solving. I would say, okay, your algorithm aversion seems to be mostly agree, but then you do have some disagree by, for example, you said before acting on AI suggestions, I usually want human verification and you disagree with that. So you don't normally need to verify anything. You think.
+
+Speaker 2 35:35 
+The human verification. I think I miss understand the. Okay.
+
+Speaker 1 35:39 
+So it's actually agree also in that case.
+
+Speaker 2 35:42 
+I thought that human clarification is not me, like other person, like I don't need other person, you.
+
+Speaker 1 35:48 
+Don't need. Okay, I think I kind of missed one aspect. So for example, let's say when the AI gives you some output, do you, are you in the habit of taking the output and going and checking elsewhere like Google Scholar or something?
+
+Speaker 2 36:02 
+Oh yeah, I mean, I think it depends, but mostly no.
+
+Speaker 1 36:08 
+Also I ask you whether you view this as a human collaborator. You told me no, it's a tool for you, right? Yeah, you don't really. And about control, eh, can you give me an example of some interaction you had with AI where you felt like you were not really in control of this final output that a, I kind of decided it for you.
+
+Speaker 2 36:36 
+Yeah, I would say it's more about the picture or character, generations.
+
+Speaker 1 36:43 
+Character.
+
+Speaker 2 36:44 
+Every time I ask AI to fix it, it just do not goes as well. So.
+
+Speaker 1 36:51 
+You're not able to influence the output.
+
+Speaker 2 36:53 
+Patch. Yeah, maybe there's a limitations. I do spend around it 30 minutes, go back and forth. I see didn't happen. Yeah, didn't help because AI image generation still takes longer time than the text vision China each.
+
+Speaker 1 37:11 
+Okay, thanks a lot, April, for taking the time. Anything you want to add? Like you can just add any, eh, anecdotes or story related to your use of Jenny. I, which I mean, yeah, so just anything you wanna share?
+
+Speaker 2 37:26 
+I would say that from my observations, people who believe they are very smart themselves, like they have the high confidence, they wouldn't use AI as much as we, the one who is more insecure in our conditions. And yeah, right. I think that's all. And sometimes people, when we use AI too much and those kind of people who is very smart, they would say that, use your brain like that. That's how they being sarcastic to us. And yeah, yeah, I think.
+
+Speaker 1 38:05 
+That's my. Okay, thank you so much, Apria. Really appreciate your time. You indicated that you're willing to take part in the experiment. So maybe we will see again on the best to you. Okay, thank.
+
+Speaker 2 38:17 
+You, Sarah, for your time as well. Bye.

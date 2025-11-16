@@ -1,0 +1,555 @@
+受访人34:
+0:00 - Thara Ravindran
+Yes, same. Okay, you can talk and you're okay, right, for about an hour? Yeah, that's fine.
+
+0:07 - Abdullah Bin Faheem
+Okay, great.
+
+0:08 - Thara Ravindran
+Okay, to get started, I hope you have some idea about what this research aims to do. I'll just give you very briefly the objective of this study. We are trying to gather some information about how young professionals use tools like ChatGPT, Gen AI tools to improve their professional performance. And we want to see the nature of this introduction, as well as the effect of ChatGPT interaction on professional skills and personal skills. For example, we are interested to see how it helps to improve critical thinking ability. So basically, investigative kind of research.
+
+1:06 - Thara Ravindran
+And one of the things is that for research purposes, we would like this interaction, our interview to be recorded. So with your permission, I will turn on the recording. Yeah, sure.
+
+1:18 - Abdullah Bin Faheem
+I already read the document as well, that you shared yesterday.
+
+1:24 - Thara Ravindran
+So I'm going to start the recording now okay yeah so basically we have a few sections to the interview I'll start with the first one which is a brief description of you as a person you can start with your professional or study background you know do you do what did you study and so on so I'm originally from Pakistan and the recently completed my PhD from South Korea and then I moved to Singapore in February this year for postdoctoral research.
+
+2:02 - Abdullah Bin Faheem
+So most of my work is in chemistry to specific computational chemistry. And right now I'm working on I guess the subject of energy storage.
+
+2:16 - Abdullah Bin Faheem
+And yeah, that's the main details of my current position and I have done so far.
+
+2:22 - Thara Ravindran
+Okay, now you come from a chem background. Have you always done chemistry or did you like branch to chemistry at some point?
+
+2:32 - Abdullah Bin Faheem
+Sort of, like my bachelor's was in chemical engineering and then chemistry, master's and PhD.
+
+2:40 - Thara Ravindran
+Okay, all right. Now if I were to ask you about your or technology adoption pattern, you know? So in terms of how, when you start trying out emerging new technology, would you consider yourself as an early adopter as compared to your peer group?
+
+3:06 - Abdullah Bin Faheem
+Yes, I would actually. A lot of the times, like it is me, like whatever, like in the friend group or so forth, suggesting to use particular tools.
+
+3:16 - Unidentified Speaker
+I also tend to look up a lot of latest models or latest technologies being introduced on YouTube or news articles and so forth.
+
+3:27 - Abdullah Bin Faheem
+So actually, when GPD out, 3 I entire progression of its performance from when it came out and until now, actually. So I would say yes.
+
+3:44 - Thara Ravindran
+Did you get prompted by something that your friends mentioned or did you read about it or come across the tool during your search or something? How do you get started? On GPT-3?
+
+3:57 - Abdullah Bin Faheem
+Well, normally I. I've used like, let's say Koto autocomplete chatbots for a long time, so and at that time it was introduced as something that was similar with the better functionality, you know, better like comprehension or context windows and so forth. So I tried it out and then it gave very poor results in the beginning. As you might remember, a few years ago it was quite horrible, especially when it comes to long memory context. But at that time, like, no, actually no one was using that. So I was the one that found it online and then decided to try it out with, you know, great emails. We try to see if it can code reasonably well, because I'm from a computational chemistry background, so a lot of coding involved in there. But other than that, when it comes to these new and new websites popping up, usually I just kind of like every week or so tend to Google, like, was there a new platform that's appearing? And then if it looks interesting, I just make an account and check it out. A lot of the times they give free trials as well, so, you know.
+
+5:09 - Thara Ravindran
+So I guess, since you are one of those early adopters of technology, it's just natural that you tried out. Is there any tool that you use in particular more than the others? You mentioned ChargerPT, so can I say then you use ChargerPT more than the others? Not really, actually.
+
+5:29 - Abdullah Bin Faheem
+ChargerPT is not good for certain things, I think.
+
+5:34 - Abdullah Bin Faheem
+ChargerPT, well, it depends. The rankings, in my opinion, shift a little bit, but there's like a bunch of them, right? There's Claude, there's Gemini Pro now, there's DeepSeek, there's ChatGPT, there's Quenchat. Like, ChatGPT is good for certain coding tasks, but it's, and Gemini Pro is better at writing tasks. Perplexity is better at, like, writing more, how do I say this, more human-based text. And if I want to, and they also have different speeds so normally GPT I use for coding for maybe study or something like that or to extract papers or articles I use perplexity which is like and and for Gemini it's good it it works well if you give it a very solid direction like do this this exactly because these all of them tend to to elucidate at some point.
+
+6:35 - Thara Ravindran
+Can you then kind of conclude you use several and almost like, is there one that you use more than the others?
+
+6:46 - Abdullah Bin Faheem
+No, I think I will kind of spread out my task over all of them, to be honest, like I said. It's not really a good idea to use one of them for everything because they tend to fail miserably for certain tasks and perform really well for others.
+
+7:00 - Thara Ravindran
+I'll indicate that. OK, and let's move on to your actual use. I was wondering, since you use several for different purposes, probably it's going to be a little difficult for you to identify one or two tasks that you use routinely. Oh, no, of course not.
+
+7:22 - Unidentified Speaker
+I know I can identify that pretty clearly, actually. Like, GPT-specific tasks.
+
+7:28 - Abdullah Bin Faheem
+specifically for coding, I would say, and writing articles and help with that. I use Gemini Pro normally for searching for articles or doing a literature survey. I would use a literature survey or like finding out information on a new topic. I would use Perplexity. And a lot of the times if I want to make if I'm writing a paper and I want some say ideas for, for example, a figure, for example, like, you know, so I would like either GPT image generation tends to work better in most cases, especially if you give it a sample image or you make an outline on PowerPoint and share it with GPT so it can fill out the details and you can get ideas from that.
+
+8:11 - Thara Ravindran
+These are four of my main tasks that I do. I think for the following few questions, maybe you could pick one or two of these commonly used scenarios to answer my question. Since you've been trying out different things, you could fix one or two to kind of answer the rest of the questions. Now, what we're trying to do is to explore the pattern of use.
+
+8:38 - Thara Ravindran
+So, the first question is regarding, you know, your interactions, big start of interaction. Do you have, do you, especially when you use it for professional purposes, like you just mentioned, So when you say professionally, where do you begin? Do you have like a preparation or brief preparation before you start the window, interaction window with the Gen AI? Do you do some prep? And what is the nature of your initial prompt? What would it look like,
+
+9:12 - Abdullah Bin Faheem
+So, well, since I'm a postdoc, most of my work is research-based, right? So if I want want to know about a specific topic, I personally like to check out a few research articles myself first, like on the web of science or something. I read through their overlying abstracts and stuff. And then after I have a bunch of five different articles that I, or four or five, I tend to upload them, all of them at the same time, to a specific model. And then ask them to summarize. I want to see what it understands first, what comprehension. Then with that context, I ask it to give me more papers, and then give me a brief summary. After that, like I still check them one by one, and this is like research-based. In the other cases, if I want to say code a specific equation, for instance, a similar approach is used, but I tend to give it specific instructions on how to code. For example, make a disk structure, use this equation, do it like this, use this library, And in small sections. If I give it the whole code, then it like I think 80% of the time I would spend more time debugging what it gave me rather than just like copy pasting it. I find it better to do it like how I described because I find like in my previous group in South Korea, actually, when one of my was trying to learn a new topic, she would just directly search on ChatGPT, which is a horrible idea, because it always gives you very general information. So I cannot trust it to give me information directly from the internet. I need to give it documents that it can read and just contain itself within that context first. That's a very interesting strategy.
+
+11:03 - Thara Ravindran
+So you could try to keep it focused on some stuff that you would like it to. Isn't that a pretty interesting strategy? Okay, so kind of partly answered my next question, which is, do you usually test partitioning of the tasks? And I think you do, you do that.
+
+11:21 - Abdullah Bin Faheem
+Any particular reason? I mean, did you always use this strategy?
+
+11:24 - Thara Ravindran
+Or is it something that you evolved after your experiences with ChargedGPT?
+
+11:29 - Abdullah Bin Faheem
+That's, yeah, so, well, in the beginning, ChargedGPT didn't have the web search option, right? Oh, no. So, and in addition, I've read some of their papers that LLMs tend to hallucinate a lot of citations. That's still a problem today. And actually, they don't really have a solution. They don't know why it does that. Because I read the original paper, and I was like, well, you know, it needs more data. I'm like, okay. But itself, as a self-contained model itself, it does have a certain capability to summarize information that I give it pretty well. So because of that, I can, if I give it the specific document in a specific And I can understand, I can ask it to give me what it can comprehend or it's like not like what it can section out from there is no piece of article. It's not really comprehend comprehension, it's just kind of copy pasting what it thinks are the most important parts of the of the document itself. If I give it that context and then ask further questions, then it will be able to give me what it can comprehend. It can use that as the central focus and then search that specific equation or method online and then give me information which I can check again to see if it's reasonable or not because unless I do that it does not give me answers relevant to my queries. It will always diverge from my main topic after say 10 chats for instance. So I do tend to refresh and generate a new chat as well after 15 prompts because I don't really trust the responses after that.
+
+13:14 - Thara Ravindran
+Okay, so it's quite clear what your strategy is and it's interesting and that is kind of different from what I've been hearing all this while since I started. No, I fully understand its limitations.
+
+13:28 - Unidentified Speaker
+I don't really want to waste my time solving its problems after I ask like something.
+
+13:39 - Thara Ravindran
+So based on what you've been saying, based on the task that you generally use it for, do you consider these tools particularly good at some tasks and not so good at some others? And what would they be? You can give some examples of things that it does well.
+
+13:58 - Unidentified Speaker
+I think you already did. You want to add to that?
+
+14:02 - Abdullah Bin Faheem
+Yeah, so it's really good in very short like contexts like if I ask for like a small thing like if I say make this particular make a function in Python that has this input I can copy paste the exact input and then this output copy paste that exact and just generate the function It helps me like a lot because I don't remember every single Python library on the planet.
+
+14:32 - Unidentified Speaker
+It can find certain libraries and then write any code, for example. It can, for example, if I'm running a simulation, for instance, and it's a new software, it can search input files and generate a pseudo input file that I can look at what's important.
+
+14:46 - Abdullah Bin Faheem
+It can search up small things, like, for example, well-known things, not niche things, that I can, like, say, okay, well, what does this parameter mean or what is this concept? And then it helps me with the revision because I already read these so it just helps me revise my memory but it's really bad like these are the main things like it can be very good at but it's very bad when you wanted to use it to learn something new you cannot use that because it will never give you exact information it's very general and because um I find myself it's not related to your question but like I just to add to the effort myself like if I if I study like that then I don't remember anything you know it's it's very superficial so because of that it's hard and also it's very confident in what it says too like it will confidently give you wrong answers that doesn't make any sense like I am for instance one of the things is it was really horrible recently so I did some derivation with some mathematics, right, and then put that, and then just ask it to, at the same time, to generate a code that did that derivation and gives the final equation to calculate. When I looked at the equation, it was wrong. I don't know where it got it from, so I was like, this is wrong. And then Chad GPT confidently said, yeah, you're right, it is wrong, and then gave me another wrong answer. I see. So inference yeah, is horrible at that. You need to give it the exact equation and then maybe it can give you the correct relationships between the terms in there.
+
+16:33 - Thara Ravindran
+OK, I think that you made a very interesting point about the confidence even when you see the wrong output. So good and bad, yeah? And how about your signing rules to JNI? Do you normally ask your Gen AI to assume the role of, say, a reviewer, a tester, evaluate, et cetera?
+
+17:00 - Unidentified Speaker
+I mean, I tried doing it, but here's the thing.
+
+17:06 - Abdullah Bin Faheem
+If you say, for example, if you were to ask it to review text and say, take the role of an expert in this field and act as a reviewer, it will give you, like, oh, this is amazing. This is so good. And then and they'll be like no maybe change a little bit and its suggestions are really general on the other hand if you ask it to be critical then it will be overly critical to the point that you're like well this is not a criticism you're just saying stuff to fill out the sentences now so when I do ask it to act as something it will not do its job that well I mean people do that all the time right all the same but like but like it might work for a topic you don't know about but for a topic I know about and it gives me an answer, it does not act like a reviewer. Now, on the other hand, if I give it 10 papers, because the limit is 10 you're uploading your documents, and based on these particular papers, is this work new? Is it repeated in any way? Then I might get reasonable answers. And a reviewer, in my sense, is going to look at that importance. So I have to kind of navigate my way around what it thinks. At that point, it can just read papers myself and see. I don't need a trajectory model for that.
+
+18:19 - Unidentified Speaker
+Yeah, yeah. I think that's a very valid point you brought out. And it's not so much the role that you assign, but how you scope context of your task that makes all the difference.
+
+18:32 - Thara Ravindran
+I think it's a very good observation. Moving on, you're talking about, I mean, I kind I'm going to from all of your response that you seem to be very much in control when you are using chat APT. You tend to drive the interaction forward rather than being led by what chat. I'm going to give you a scenario where you are totally unfamiliar with the task at hand.
+
+19:02 - Abdullah Bin Faheem
+You really do not know anything about it.
+
+19:05 - Unidentified Speaker
+And as you are in such a context and you would still using one of the Gen AI tools you mentioned. How do you think you would start the interaction? How do you go about seeking the help from both?
+
+19:20 - Abdullah Bin Faheem
+I tried two different, I mean, I've relied on Shared GPT and not relied, so I can give answers for both of those cases, my experiences anyways. So before Shared GPT, you know, like I did my PhD before it came out, actually, because it came out in 2022.
+
+19:37 - Abdullah Bin Faheem
+Yeah, so I graduated I only used it a little bit, so research was mainly, if I don't know a particular topic, I would go on Web of Science and I would search keywords and find review papers and I would read that questions and then get information about the topic. If it's something very basic level, it's not advanced, like I mean straight of the art, then I would read a book on the topic, an entire book, just to understand and then it doesn't take long maybe three weeks right so if a new project on the other hand uh so that helps me and then I can search more and so forth it's typical general traditional method for research in case of chat gpt if I don't know anything about a topic I mean I would still ask it to give me review papers first actually but one time I know I do it like this now one time I ask it to give me information about a particular topic I had no idea about I searched something about um batteries materials and what do what does it think is the next way direction I should go for these these are blah blah and um it just regurgitated old information and that's an example of one topic that I don't know the direction to if it's a completely new project then I it's really bad at ideas actually chad deputy cannot give new ideas not give interesting ideas it will give you a general thing. Oh, maybe you should look at this system, or oh, this could be interesting. But it's mostly, I would say, not useful information, actually. It would be interesting at the high school level, but if you're doing research and you're trying to actually obtain specifics about a topic on how to approach it, I'm giving general answers because there's many times I've tried this, but it will not you the answers that will help you proceed forward it's the best answer you get is if you know something about it and you give it a direction and make it focus in that direction and then it can give you an answer that might be reasonable like it happened to me a few times where it was able to give me interesting answers but if it looks at data from like online articles or just read abstracts it will just regurgitate that again like it was like that's one of the biases of LLMs, right? Because, like, in many research articles, actually, they promote the material they're studying, the method they're studying, as amazing as state-of-the-art. Would pick it up and then say, this must be amazing. It doesn't know how to evaluate that. They have to use a lot of these adjectives often.
+
+22:21 - Unidentified Speaker
+It might be true for the context of the system or the field but not like generally.
+
+22:29 - Thara Ravindran
+You know, I was just taking a look at your pre-interview survey and I noticed that you're self-taught. You pick up the prompt engineering yourself. You have not undergone any sort of formal CISO training. And you do have a paid version of which the tools?
+
+22:49 - Abdullah Bin Faheem
+Gemini and ChargePG. You pay for them.
+
+22:53 - Thara Ravindran
+Perplexity is free for 12 for education purposes. So you still find it quite all right with the self-taught mode? You feel you're in control of use of Chattabuti?
+
+23:10 - Unidentified Speaker
+After this, I did check out some YouTube tutorials as well. They're quite lengthy now. Before, they were like maybe five minutes. I'll just do this.
+
+23:17 - Abdullah Bin Faheem
+And then now that you get a one-hour video of just explaining how, but it's already stuff I know. It makes sense. Like, like if it's thinking of it as an, or like a very complicated autocomplete model, essentially.
+
+23:31 - Thara Ravindran
+And then like, like I know how it's trained.
+
+23:34 - Abdullah Bin Faheem
+Cause I, I mean, I, it's not my field, but since I've also like, I've used chat GPT and like these paid models, but I've also downloaded the LML, the free ones and then run them on my computer as well.
+
+23:47 - Thara Ravindran
+So I know the exact, databases they were trained on.
+
+23:50 - Abdullah Bin Faheem
+And because of that, I kind of can figure out their limitations. So when I am giving a prompt, I keep that in mind. Like, I know this context window of this LLM is this much, 300k or 1 million or whatever. I know that after 15, it will start to hallucinate and forget the previous information from my experience.
+
+24:10 - Thara Ravindran
+I know that if I don't confine it to a specific direction, it's just going to go everywhere.
+
+24:15 - Abdullah Bin Faheem
+And I have to click refresh or reprompt myself. One thing I've learned recently is that if I get an answer that I don't like, I just edit my original prompt and then make sure it doesn't include what he wrote. Then that way, the context is streamlined.
+
+24:34 - Thara Ravindran
+Moving on, we will go on to your trust of Gen AI tools. Before you got started on your, I think, Chattopadhyay you first 3 started, what would you say was a rough percentage of level of trust you had?
+
+24:57 - Abdullah Bin Faheem
+In the beginning, yeah, it's been quite consistent, like percentage, zero, no trust, 100%, like a lot of trust, I would say like maybe 50%.
+
+25:06 - Thara Ravindran
+And you started?
+
+25:08 - Abdullah Bin Faheem
+It has remained the same, actually. It hasn't changed.
+
+25:13 - Thara Ravindran
+So you started with about 50%, and it continues to be around there?
+
+25:20 - Abdullah Bin Faheem
+I mean, they introduce these new models.
+
+25:23 - Unidentified Speaker
+They introduce 1.0, 3.0, like Flash, and then 4.0, and now the terrible naming schemes aside, the GPT-5, they tend to break their And because of that, I can't really have any trust in what they do.
+
+25:44 - Abdullah Bin Faheem
+Like if you notice like five is performing worse than three.
+
+25:47 - Thara Ravindran
+Oh, in my opinion, that's legitimately what I observed.
+
+25:51 - Abdullah Bin Faheem
+Like it's a, the ability for it to generate text is significantly lower. I don't trust it to write for writing tasks these days. And the reason why I don't, another reason why I don't trust is because it will, like I said, it will very confidently give you very wrong answers. And then also completely backtrack when you challenge it. Like I don't want you to agree with everything I say. If it can argue with me, then I would have a higher trust.
+
+26:18 - Thara Ravindran
+Oh, interesting. OK, which brings us to the next section. So this was on, you know, how the trust you said it has remained more or less the same. And let me see. You know, I was going to ask you whether there were times when you something and the tool responded with, I'm not so sure, or something that gave you the impression that it was aware of its own limitations. Oh, no. It's how it's made.
+
+26:53 - Abdullah Bin Faheem
+Because it's trained on the Instruct GPT database, and then after that, it's trained on specific data, it will always want to answer a question with an answer, like that database does not have a blanks. So it will always generate an answer, that's how it's trained.
+
+27:09 - Thara Ravindran
+That's just how it is, yeah. And can I say then that it concerns you that it does that?
+
+27:17 - Abdullah Bin Faheem
+Yeah, I mean, of course, I mean, like I said, it makes me lower as the trust. Of course, AI sounding too sure of itself even when you know more sure than the experts on the field. I'm like, what are you talking about?
+
+27:37 - Thara Ravindran
+It's more. It's the same with people too, right? When you speak to people and they sound too confident about answers that you know are wrong. Yeah, but
+
+27:47 - Abdullah Bin Faheem
+It's they don't backtrack immediately when you challenge them.
+
+27:51 - Thara Ravindran
+Yes, they will argue like their point.
+
+27:53 - Abdullah Bin Faheem
+They will believe that point and then they will try to even though the argument may or reasonable, but they will not just fall in line every time you question it. That's I said, if it can argue with me, then I can trust it.
+
+28:06 - Unidentified Speaker
+Yes, yes, you know, I would have seen the famous strawberry spelling example, right?
+
+28:11 - Abdullah Bin Faheem
+Yeah, yeah, three hours or like two hours.
+
+28:14 - Thara Ravindran
+Yeah, OK, so I think, yeah, I see where you're coming from How about times when SAP DPT would ask you to supply more information, saying, oh, I don't understand this context well enough. Can you give me a bit more details or any such, you know, where you provided a context, but, you know, the tool still wants you to provide a bit more information.
+
+28:40 - Abdullah Bin Faheem
+Yeah, normally, a normal chat GPT mode doesn't do that. I think that and like both of a lot of these models have these like deep research buttons or like lab buttons that if give it specific information they will ask you to define the context like if I say I want to study a say a particular material they will be like okay want me to limit it for this case want to focus on this materials do you want me to look at papers within this range do you want to focus on journals that are like high ranking low ranking high citations like stuff like that so it will ask me that information to verify but that's only because it's designed to be like that yeah Like, I imagine that the developers or they, when they program that button, they ask, they ask the chargeability review, the context it gave you, and then ask further questions for the top three or four questions. And then, and then continue with the deep research. I think that's what they did. I don't know exactly. I'm just guessing here. I'm really low. I'm sure.
+
+29:48 - Unidentified Speaker
+That's, that's also like, kind of indicates to me like that this is what it's that's its main focus.
+
+29:56 - Abdullah Bin Faheem
+So it also a little flawed because like it's relying on chat GPT analyze the results from chat GPT to give the results to you from its chat GPT. So yeah, like I said, I think I prefer all my prompts to be incredibly specific.
+
+30:15 - Unidentified Speaker
+Otherwise, I don't want like I do this for and I cannot spend two hours trying to argue with Shantipati to give me the perfect prompt. I would rather spend 10 minutes writing something reasonable and then just get the answer I want. Yeah, down on the Chinese.
+
+30:33 - Thara Ravindran
+Which again, you know, brings us to our next listing. How often do you challenge Shantipati or give it feedback? You did mention some of these aspects earlier on in your answers, but can you be a bit specific and give Give me an example of a time when you had a challenge session with one of the tools or when you sort of gave feedback, maybe a positive feedback or a negative.
+
+31:01 - Abdullah Bin Faheem
+Yeah, so it can make so when it comes to writing tasks, I give it a prompt and then I say there's a lot of repetition in this long paragraph, shorten it, reduce it and then it will give me a paragraph which will completely details from there is no one something I don't want at all.
+
+31:17 - Thara Ravindran
+I didn't give it.
+
+31:19 - Abdullah Bin Faheem
+I then I was like, OK, this particular sentence is wrong because of this and then it will be wrong again.
+
+31:24 - Unidentified Speaker
+So that can happen in that case. I just refresh the chat and try again.
+
+31:29 - Abdullah Bin Faheem
+That's how I mean, like it's like it's using like an entropic function to decide the next based on. I forgot the word, but it's like a specific equation that gives a probability of the next word. Yeah, it comes so. If I refresh the chart, I I think I can like kind of like change the response.
+
+31:50 - Unidentified Speaker
+Yeah, so to speak, yeah, and that gives me.
+
+31:53 - Abdullah Bin Faheem
+When I give them negative response, I just would be like this is wrong. Give it this is too general. You remove all the original points.
+
+32:01 - Thara Ravindran
+It can partially fix that issue, but
+
+32:05 - Unidentified Speaker
+I guess like I said, I would just like I find myself refreshing.
+
+32:07 - Abdullah Bin Faheem
+a new chat window much works much better so um when it comes to that is a specific example when it comes to logic itself like for example I can give it some structures of some molecules and say predict can you tell me which one do you think is going to perform great for this task and it can give me a response and give me some logic okay the atoms on this one is beneficial for this property or whatever they can be completely wrong or completely reasonable then I if I say OK, no, this property is not doesn't make any sense for this case, then it will completely agree with me and give me in some cases
+
+32:46 - Unidentified Speaker
+the correct property.
+
+32:48 - Abdullah Bin Faheem
+Then I might look at the result, be like OK, some of what it is saying sounds reasonable to me. I should check it out more and in some cases like it doesn't make any sense.
+
+32:58 - Thara Ravindran
+Refresh the prompt. Yeah, I mean I think it's flowing nicely because I wanted to ask you about your tendency to verify or validate something you got from Charity?
+
+33:13 - Abdullah Bin Faheem
+Often do you do that? Every time, every time. Okay, time. I have to, like if I'm like, anything I do, I have to put, I'm writing it for a paper, right?
+
+33:24 - Thara Ravindran
+And I can't like put stuff in a paper without verifying it. I can't form like a project proposal without verifying it either. No, absolutely not.
+
+33:31 - Abdullah Bin Faheem
+Or like I can't, for my own like knowledge as well, I cannot like, I cannot build my knowledge base on something that I'm not sure with.
+
+33:40 - Thara Ravindran
+This is why books and papers are so important for research.
+
+33:45 - Abdullah Bin Faheem
+It's unfortunate a lot of papers are also using ChatGPT to complete the entire text without verification. Actually, one of my reviewers in an old paper, they used ChatGPT to copy the entire paper and gave me the review.
+
+34:02 - Thara Ravindran
+So that kind of like, you know, the academic world will be grappling with in the coming years. And I think it will blow over. Yeah, it might.
+
+34:11 - Unidentified Speaker
+Yeah, I think it might cause like, I think a lot of, well, this is unrelated, but I think a lot of the companies that are using AI chatbots, they're going to fail miserably perhaps in the coming future.
+
+34:25 - Thara Ravindran
+That's what I see.
+
+34:26 - Abdullah Bin Faheem
+It's kind of like the dot-com bubble essentially.
+
+34:30 - Thara Ravindran
+So you know when you say every time you go back to verify validate exactly where where do you do your checking?
+
+34:39 - Abdullah Bin Faheem
+Well, I I asked for a specific topic right? I can check in a book on that concept or when it gives me an article like this article says this. I can just open that article and check it right. Exactly saying that or like if it says something like OK, structure of this kind of molecule is reasonable or not, but I can just draw the molecule on a piece of paper and look at its chemistry, if it makes sense or not. It should follow some rules, right?
+
+35:09 - Thara Ravindran
+Okay, so that's about the validation. Now we're going to move into the coordination aspect of your interaction with the Gen-AI tools. You mentioned this iterative nature, and I think what made your pattern of use interesting is that you tend to do it in small modules, you know, small modules, and sometimes you kind of decouple one from the other, just so that some errors that propped up in the first one will not reappear in the second, right? So, that's about this thing.
+
+35:43 - Abdullah Bin Faheem
+So, how many times roughly, you know, would you say you go into this loop of interaction, get something that you think is decent enough for you to close the window and three or four times maybe four times yeah yeah um it's a range that it's like a median essentially like I would say minimum two maximum ten I guess and four or five is like not sorry not three or four or five would be the medium yeah um and um it depends on the task like if I you know No, it's like it also it's a simple if it's a simple task like okay give me this command in Linux. I want to do this. It'll just give me one line. I just don't need to do it once for this fantastic charge. Everybody works fantastic.
+
+36:31 - Thara Ravindran
+Yes, that's a very great just one line of like command.
+
+36:34 - Abdullah Bin Faheem
+That's all if it's like okay generate this 100 line input file. Yeah, I mean but that's all that's only if I have no idea about the software or the package or whatever the case may be, though I still need to check what those terms mean. Characteristics came out for me after I knew specifics of many things that I need to do, the basis of many, like computational chemistry, like base, everything builds on that. I can kind of like know how it's correct and I can kind of distinguish. If I started from zero, like for example, if I start my bachelor's or master's now and I completely rely on ChatGPT, then I don't think I can distinguish whether or not it's reasonable or not. It's very hard. So one of my, like I said, one of my juniors would like learn new topics from ChatGPT. When I ask her like, this is wrong, she's like, but ChatGPT said this. And I'm like, it's not a person. Okay, you cannot rely on it for anything like that.
+
+37:42 - Thara Ravindran
+Yeah, I know. This you're talking about and I think the right of them um fall under that that category you know using it as help to kind of lead them somewhere because they don't know enough to you know but I think there's a different scenario you you do have the basic knowledge and a bit beyond that so you're in a better position to then uh even evaluate the kind of output that you're receiving from yeah like because I've like seen how wrong it can be.
+
+38:14 - Unidentified Speaker
+I cannot trust it to give me information about a topic I don't know anything about.
+
+38:19 - Abdullah Bin Faheem
+No matter how the size of its parameters, from like 300 million to 1 trillion or whatever, 1.8 think is the newest one, it doesn't change its performance. I think it's kind of reaching some kind of bottleneck for its architecture.
+
+38:39 - Abdullah Bin Faheem
+Again, this is unrelated to the discussion, but from my understanding, it's like a recurrent neural network. But it was originally used for translation tasks.
+
+38:52 - Thara Ravindran
+So we had RNNs, and then we moved towards other architectures like LSTMs and gated recurrent networks.
+
+39:00 - Abdullah Bin Faheem
+And now we have transformers. Transformers perform better than all of these, but now transformers are also reaching their limits. So they might not be the final architecture, architecture when it comes to general AI.
+
+39:16 - Thara Ravindran
+I think the future is where they would decouple from LLMs and do it in a different way where LLMs are being used, but not as much as it's being used currently. I wanted to ask you about version tags and changelogs, but I think you kind of answered that part by telling me that you tend to edit previous version of your prompts to get an answer that is clean and so on. I think you may have answered that. Okay, now we move on to how, you know, these tools impact on your work. Okay, so I'd like you to sort of explain whether there have been changes the way you work, positively or negatively, you know, what benefits that you derived as a postdoc fellow in your professional work?
+
+40:13 - Abdullah Bin Faheem
+So they save a lot of time.
+
+40:15 - Unidentified Speaker
+I mean, instead of spending maybe 20 minutes on writing a code that's very basic, I can just spend two minutes, get the code and just run it. And then I don't need to check it that deeply as well.
+
+40:30 - Abdullah Bin Faheem
+If I want some, you know, some idea text or whatever, I can just quickly generate that. If I want to write an email, for instance, and I don't want to spend time being polite or constructing the grammar, I can just write me this email and just copy paste.
+
+40:47 - Unidentified Speaker
+That kind of thing tends to save a lot of time.
+
+40:49 - Abdullah Bin Faheem
+I mean, it's a huge time saver if it's used properly, but relying on it blindly is going to waste more time. So that's why many people actually don't like using ChatGPTN.
+
+41:07 - Thara Ravindran
+Like I said, it's a tool.
+
+41:09 - Abdullah Bin Faheem
+Use it properly and you get the answers you want. If you don't, then you tend to suffer. I learned this from trial and error, actually. It's not like I picked it up in one day, right?
+
+41:23 - Thara Ravindran
+So it's safe to say that you find it as productivity, a bit more efficiently, wherever you can use it in a way that suits your needs. I was going through your critical evaluation, critical thinking scores, and I see that you are ranging between agree and strongly agree for most of the questions. And one where you say, I tend to rely on systematic thinking rather than intuition. You kind of answered neutral. So what does it mean that you do apply some intuition as well?
+
+42:06 - Abdullah Bin Faheem
+I mean, do you always? Systematic thinking, well, from the question I understand systematically, systematic thinking is if I have, like I said, a particular structure. If I have a task, OK, I do this step.
+
+42:23 - Thara Ravindran
+I can do that with something.
+
+42:24 - Abdullah Bin Faheem
+is I need some like intuition like if I'm looking at a data or like if I'm looking at like I said a particular molecule what does my intuition say this should probably give like this kind of result this is what I should look out for and that's not like systematic that's just a guess. It just comes to you. Yeah maybe from experience maybe from some conscious information I have or so forth.
+
+42:48 - Unidentified Speaker
+Yeah so it is neutral, I'm just checking on that. Your algorithm version tells me you have a healthy skepticism, which is obvious.
+
+42:58 - Unidentified Speaker
+And OK, let's move on to now the wish list.
+
+43:03 - Thara Ravindran
+So assuming you have no technology barriers, you can ask for anything, what would be the top three things on your wish list for generative AI tool in the future?
+
+43:16 - Abdullah Bin Faheem
+It doesn't, under this question, Will it answer correctly or incorrectly? There's verification.
+
+43:23 - Thara Ravindran
+Oh, so there is no correct or incorrect, but it's all about what you would like to see in a future version.
+
+43:32 - Unidentified Speaker
+Oh, OK. Yeah, if what I would like to see in the future, OK, that's an interesting question.
+
+43:39 - Abdullah Bin Faheem
+I would like to see have better context, much better context that maybe significantly better context would be extremely good because you know it forgets everything one other like if it does that then I can rely on it more in terms of like along with chat window the second thing would probably be to verify its own text because it generates very confidently either it's like an article or whether its own text or logic and I think these two are the The third one is probably related to, how do I say, it's like, I think this third question was also answered. The third probably would be, it would be great if it can run the code it generates and then see if it gets the correct answer.
+
+44:36 - Thara Ravindran
+If I can upload, yeah.
+
+44:43 - Abdullah Bin Faheem
+one of the biggest things of chart GPT or these many of these LLMs, I've seen chart GPT because it's like one of the main ones and everyone knows about it. So, um, because like a lot of the times the, um, they're advertised to be in the performance metrics. What are these like text, math, coding, you know, these are the three main, one of the three main ones. And they keep like going, like, the same data bank, like the same verification model to just again and again just reiterate that basically the training at that point, it's not validation data anymore. It's like training data at this point. So those numbers don't mean anything. And I say coding and these three tasks is because they're not actually improving them in my opinion. They're just kind of like stagnating now.
+
+45:37 - Thara Ravindran
+Sort of inbreeding in that sense, you know.
+
+45:42 - Unidentified Speaker
+I think these models are going to get a little worse because... It probably would.
+
+45:47 - Thara Ravindran
+So yeah, unless it keeps refreshing with the updated and validated knowledge, the base, like you said, and it keeps, you know, information based on the old knowledge.
+
+46:02 - Unidentified Speaker
+Yeah, they like kind of like train them at a time website allowed them to scrape all the text that they needed. Now they don't allow that. So they just kind of keep training it on their own text. And I'm like, that's not going to give good results. I think that's a valid answer.
+
+46:18 - Thara Ravindran
+OK, so I think we're coming to the close, really. What would your major concerns be about using these tools?
+
+46:27 - Abdullah Bin Faheem
+People trust them too much. People do trust them too much, you think?
+
+46:32 - Thara Ravindran
+Yeah, they trust them a lot, actually.
+
+46:35 - Abdullah Bin Faheem
+I to rephrase this better, they rely on the chat GPT to do a lot of the thinking. That's not going to end well for them. Their own ability to cognitively discern what information is correct, incorrect, is going to go down quite substantially.
+
+47:05 - Abdullah Bin Faheem
+Like I said, it's a tool you cannot think of it as a person You cannot think of it as they and end all be all when it comes to giving answers So my main concern is that people rely on it too much or trust it too much not in the sense that they don't shouldn't Use it. You should probably use it properly.
+
+47:21 - Thara Ravindran
+It should understand its caveats like you know people don't like Do that with other stuff like like they would trust certain journals more than the others but in the charge a pity response they would like charge if it is going to give the equal weightage to a nature paper and like a ranking one like that doesn't make any sense and when you're reading that you're like okay so everybody thinks is correct so you know like if there's a lot of biases yeah it does yeah you that's that's your top concern I would say that yeah it was my it's my concern being over and then sort of in a way it impacts on their own cognitive
+
+48:06 - Unidentified Speaker
+development.
+
+48:07 - Abdullah Bin Faheem
+Yeah, because I experienced this myself like when I was using it more often than usual and I was reading the papers. I just kind of had this hand like triggering like OK, do I copy this stuff? The tragedy that's explained, but like when it reads it, it gives you a very poor summary of without missing all. And I'm like I don't want to know if it's amazing or great. I want to know like what specifically why it's doing it. And it's like awful when it comes to like generating text in certain cases because it will always use certain words breathtaking underscores.
+
+48:37 - Unidentified Speaker
+I don't know why it keeps using that.
+
+48:40 - Abdullah Bin Faheem
+No idea. I hate that word. But you can tell if it's written. A text is written by Chad GPT.
+
+48:46 - Thara Ravindran
+If they mentioned the word. I don't know why it keeps using that.
+
+48:50 - Abdullah Bin Faheem
+I hate that word.
+
+48:53 - Abdullah Bin Faheem
+But you can tell if it's written.
+
+48:54 - Thara Ravindran
+A text is written by Chad GPT. If they mentioned the word.
+
+48:57 - Abdullah Bin Faheem
+I don't know why it keeps using that. Like underscores and or em dashes a lot of times like people normally don't use those. Very interesting area to explore.
+
+49:04 - Thara Ravindran
+You know this time it could build like a chap DPT vocabulary on academic paper writing.
+
+49:10 - Unidentified Speaker
+Yeah, yeah, like yeah, I it's the best way I can give it to give me the correct writing is as I give it a text I wrote myself and I said this is a sample text.
+
+49:21 - Thara Ravindran
+Do not deviate from the phrasing I have used here.
+
+49:25 - Abdullah Bin Faheem
+and then it will give me something with similar or more academic style phrasing. So true.
+
+49:31 - Thara Ravindran
+Anything else you'd like to add, Abdullah? Do you have any comments or any anecdotes to share?
+
+49:40 - Abdullah Bin Faheem
+Just one or two, perhaps. To add to the point that you asked, where's my major concern at the end, is that because of the over-reliance, I've seen certain researchers or PhD students or master's students take more time in obtaining the correct results because they will keep relying on it too much and then when they use that as a basis law of logic to perform further experiments, they would get erroneous results or results they were not expecting and then they kind of ask Charjeepati again. And it continues. And as a result, this allows them to not pick up on basic knowledge, I guess is the right word.
+
+50:29 - Abdullah Bin Faheem
+That point and one other unrelated to this one, probably that these companies, they tend to, many of their models actually don't care about its performance. I genuinely think they don't care about how it improves its performance. Because I didn't know the difference. I could not observe the difference between O3 Flash, O1 something blah blah blah. It's faster.
+
+50:59 - Unidentified Speaker
+Is it wrong slower or wrong faster?
+
+51:02 - Abdullah Bin Faheem
+So that's why I have like checked out multiple websites because like I find that the more people go on like a particular service, the more they tend to not care about their user base. Like if my code is written on a Chargipity, yeah, if we're written on like many of these companies are using Chargipity APIs or whatever the case may be. And the moment they update their website, all their systems crash. I see. So it's like my, I think my summary of it to me it's a tool and
+
+51:45 - Thara Ravindran
+It's just too late. I don't trust it.
+
+51:47 - Abdullah Bin Faheem
+I like to give me perfect results. So based on that I already know that I should check it every time.
+
+51:57 - Thara Ravindran
+Yes, obviously I think that thanks a lot. I'm delighted. No problem. And let me just check your.
+
+52:02 - Abdullah Bin Faheem
+OK, now.
+
+52:10 - Unidentified Speaker
+number to make sure that it's correct. It's recorded down as 88721708. Yes, correct.
+
+52:25 - Thara Ravindran
+So what will happen now is that my colleague who handles the payment will get in touch with you and most probably it will be payla. Give it two weeks and if you don't hear anything in two weeks, please email me and let me know. All right.
+
+52:40 - Abdullah Bin Faheem
+OK, thank you so much. Three minutes.
+
+52:44 - Unidentified Speaker
+Can I ask you one question? I'm curious.
+
+52:49 - Unidentified Speaker
+In the interviews that you participated in, how was the general trust towards ChadJPT? Because that's one of my major concerns. I'm curious what people have said.
+
+52:59 - Thara Ravindran
+I mean, obviously, your trust level is way lower. I have not done many yet. I'm just starting and you're actually is the fourth because I just started on Thursday so the yours will be the fourth and all other three they have all started off with very low trust say 20 to 30 and they have pushed it up to 70 80 around more than 50 most of them so that's the trend I've been seeing I've interviewed the older people and it's the same they started off with very low trust and after some level of you they have pushed it up to something beyond 50, I would say, So that seems to be the trend, most of them. You're the only person who told me that you started off around you 50 maintain the 50, because that's your experience. So yeah, so in that sense, the trust-wise, I think you would fall in a totally different category. I think you have your reasons, you explained well.
+
+54:05 - Unidentified Speaker
+but also something that's, I guess, you answered that question as well.
+
+54:10 - Thara Ravindran
+You know, I think the difference lies in your own two things. One, your own basic knowledge base and your awareness of that knowledge base. Two things. One is that you know something. The second is that you know that you know. You know what I mean? The metacognition of it. So I think if these two things are there, then you to see these tools in a very different light. It's compared to somebody who probably knows, but probably is not aware that he knows enough or is not confident of his own knowledge, who then tends to rate that tool platform as something that's, oh, you know, this is fantastic. And so I totally understand that.
+
+54:55 - Unidentified Speaker
+Where you come from and how you use it.
+
+54:59 - Thara Ravindran
+I think you are not the typical user. You're an atypical user. Than I would say. But thanks anyway, yeah. OK, I think that's the whole point of the investigation, to see all these different types of usage. So anything interesting? If you have any anecdotes that you forgot to share but would like to share, feel free to email, yeah?
+
+55:21 - Thara Ravindran
+You have indicated a yes to the experiment, so hopefully we will get to see you again in the second component of the study. OK, sure.
+
+55:30 - Abdullah Bin Faheem
+Have a nice day and take care.
+
+55:32 - Thara Ravindran
+Nice talking to you.

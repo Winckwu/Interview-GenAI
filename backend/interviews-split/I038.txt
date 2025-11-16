@@ -1,0 +1,552 @@
+受访人38:
+2025-10-14 16:18:09 CST|46min 59s
+
+Keywords:
+time search、information search、first time、first task、search results、quick search、typical search task、few times、Search range、individual search、free search、search query、perform search、easy search、Google Scholar search、information search scenario、normal Google search
+
+Transcript:
+Speaker 1 00:00 
+Now, okay, so then this interview, the maximum I've taken is about an hour plus. Actually the minimum would be about half an hour. So it's somewhere in between, depending on how elaborate you get with certain scenarios and so on. So to begin with, Brian, I would like to know a little bit about yourself so you can start by talking about your background, what are you doing currently, then get more.
+
+Speaker 2 00:32 
+Go ahead. Yeah, so my name is Brian. So I'm currently studying data science and AI. So I am familiar with Gen AI, not only with its application, but also like its development. Talking about gen AI, especially work in a gen AI company before, like an AI agent startup. And so I'm quite familiar with this. So maybe I'll start with how I use Gen AI. So Jenny, there are a lot of Jenny era Jenny, I can change anything. Basically, mainly text. I'm using it for text. That's with LM. Also, sometimes I use it to generate image. I'm not good in creating posters, but for club activities, I need to make posters. So I usually brainstorm using Gemini banana, new banano banana, and then the OpenAI ChatGPT. Also regarding videos, well, I just, I, I, I do, I tried such functionality like generating video, especially Gemini, but it's only for fun. I've for audio, I've also tried with Sono AI, if you've heard about it. So the AI, my mainly at that time I was think I'm using Snow AI to brainstorm a project with my friend. So I do have experience, you know, using Gen AI for various activities and in different modalities such as text, videos, image, and audio.
+
+Speaker 1 01:51 
+It's interesting, Brian, I think, yeah, you, I notice that you indicated that your proficiency is expert level and I see why it is so anyway, you've done computer science currently. Are you working or you pursuing some postre, postgraduate.
+
+Speaker 2 02:05 
+Understand undergrad. Actually.
+
+Speaker 1 02:07 
+You're an undergrad still. Oh, so the the one, the work you're talking about is prior work experience before is it.
+
+Speaker 2 02:13 
+Internship experience to be on to be.
+
+Speaker 1 02:15 
+Fair. I see. Okay. Okay, Brian, just another question regarding your technology adoption patterns. So we're interested to know if you compare yourself with your peers. Would you consider yourself as, it's one of the first plunging, or are you one of those slightly cautious ones who will wait for a while and then legend?
+
+Speaker 2 02:45 
+Okay, so I'm not sure if this answers questions, but I would consider myself adopting a technology only when it I see it, I see it could fit me. So if it, okay, yeah, if it solve my problem. So in a sense, yes, I'm usually among the first adopters, but I usually only adopt technology that solve my problem or something I care about.
+
+Speaker 1 03:08 
+Yeah, I get it. So it's not everything that is out in the horizon that you would plunge into. You will actively choose the ones that suit you. And then if it is something that is suitable, you will go in first.
+
+Speaker 1 03:20 
+Yes. Okay, understand. You mentioned a few tools that you have tried. I want you to shortlist maybe the top 2,3 tools that you use on a regular basis. What will they be?
+
+Speaker 2 03:35 
+So first is ChatGPT. Second is Gemini. Third is coding, coding, air coding tools, Github compiler.
+
+Speaker 1 03:46 
+For pilot.
+
+Speaker 2 03:47 
+Github. No, sorry, my, yeah, it's the name recording tools. Co pilot, co pilot Sophia, Github Compaign.
+
+Speaker 1 03:57 
+Okay, roughly what is the frequency of usage? Would you say? You use it every day? You know.
+
+Speaker 2 04:04 
+Complexity, by the way.
+
+Speaker 1 04:05 
+Yeah, complexity too. Yeah, of course, right?
+
+Speaker 2 04:07 
+So I use every day.
+
+Speaker 1 04:09 
+Use it every day. See that you have a pair of tools, which is very typical of people who engage very deeply. So they say tend to use several tools rather than anyone. Okay. Okay. And now moving on in terms of your efficiency, you mentioned that you're an expert, right? But you're self dot. I see that, sorry, see that you rated yourself and as an expert, but self taught. Yes, self talk, right. So how did you go about doing this?
+
+Speaker 2 04:45 
+What do you mean? Like understanding how to use GNE?
+
+Speaker 1 04:49 
+You said yourself don't. Did you do trial and error? Did you? Oh, the, you know, online. Yeah.
+
+Speaker 2 04:57 
+So I've ever watch on online effort. Some tutorials like people will be posting how these Jenny and stuff, but I won't say that I do it very consciously and very few. If if it's if it comes to my feet, I will watch them some maybe yeah, I've ever watched what this one good, very good video. Yeah, on production on how to Eugenia by a well known AI researcher. I think that shapes my mental model on how these things. But the rest is just trying error. So if you say, do I take, do I watch any content? I'll say the one that actually influences how user is just one video. I can, they're interested in knowing I can do a quick search. It's easy search. And then the rest, yes, I'm doing trial error. And yeah, my friend will be sharing about things and I'll, you know, Checha, I'll learn from my friends how they use it as well.
+
+Speaker 1 05:54 
+Yeah, from Princess.
+
+Speaker 2 05:58 
+Yeah, that's w the video. Yeah, expand.
+
+Speaker 1 06:01 
+Okay, now you know the next question. Now what I would say is you use it for several purposes. You mention like a variety of things, right? So if let's say you want to select a a few, a couple of most frequently done task by collaboration with the Jenny I, what would they be?
+
+Speaker 2 06:26 
+Search. I mainly search. I mainly using for search.
+
+Speaker 1 06:30 
+Like information search.
+
+Speaker 2 06:32 
+Oh yeah, more advanced Google search, basically.
+
+Speaker 1 06:34 
+More advanced Google. So that's one. Any other?
+
+Speaker 2 06:37 
+Sometimes I use it for coding, but Cody, I know it seems not very reliable these days for something. So yeah, so I do use that, but not very frequently, mainly to find resources. So I will describe my case. For example, I'm interested in learning blah, blah, blah. Can you please find me textbooks or blocks or articles and whatnot? Then I'll read from there.
+
+Speaker 1 07:02 
+So now what we will do is we'll fix this task as your information search, which is your primary task, right? Collaborating with. So whatever questions that follow, you can base it on your information search scenario. Do you use it for personal purposes or strictly for your studies?
+
+Speaker 2 07:23 
+Well, I use it for all purposes, but yeah, for all kind of search, even like cooking or whatever. But usually for stuff that's more personal like cooking or health related, I will just directly ask the questionary and rather than searching for sources, but for academic researchers, I ask it for sources.
+
+Speaker 1 07:49 
+I see that's interesting. So you make a differentiation between the two types of task. Right? Now, let's go on to the how of it. So now this part, a few questions that follow will focus on your pattern of use.
+
+Speaker 1 08:05 
+Okay, as at the beginning, during the interaction and to the end, so first to begin with, before you start your o interaction session with the Jenny, I do you do any preparation something you this is some kind of ritual you do before? How do you initiate your conversation with ChatGPT?
+
+Speaker 2 08:32 
+No, I usually just perform. I just, if I'm doing search, right, maybe what's on your mind is when I search, I when I start a conversation, do I give full context of, eh, what will follows, right? Not necessarily. I think it depends. Usually my instruction will be self contain, sort of like the first time I search for it, I will give quite a detail information of where I'm coming from.
+
+Speaker 1 08:58 
+Yeah, so you one of those who will start with the with most of the info needed for the for gen AI to process.
+
+Speaker 2 09:07 
+Yeah, they try to make it less ambiguous. Yes.
+
+Speaker 1 09:10 
+You do. You start with that straight away. Okay. Okay. Now, moving on you your prompt, you said it will be very detail, right.
+
+Speaker 2 09:22 
+In my opinion. So.
+
+Speaker 1 09:24 
+Okay, the way you see it, are you in the habit of dividing the task to smaller components for Gen AI? Do you ever practice there?
+
+Speaker 2 09:34 
+Yes, actually, yeah, well, yes, usually because my prom from such promise specific, I think it should be, well, scope enough. It should be small enough.
+
+Speaker 1 09:49 
+Yeah, yeah, yes.
+
+Speaker 2 09:51 
+But then in this case, since, okay, we're talking about search, right? Because we're talking about search, it is not a multitask. Yeah, I, yeah, that's why.
+
+Speaker 1 10:00 
+So yeah, I understand. So in that sense, maybe there isn't much scope for partitioning because it's not a com shop that you're talking.
+
+Speaker 2 10:08 
+Yeah, well, if I'll be searching for a different thing, I'll just start another chat. So do it separately.
+
+Speaker 1 10:14 
+Okay. Now you know. So when you interact with Jenny, I do you have a notion that Jenny, I may be good at certain things, but you may be better at others. And what will they be?
+
+Speaker 2 10:31 
+Yes. And my notion has actually developed over the years in it. I, I'm, I, I think I'm use, I used to think that it is better and a lot of things more things than me, but that conception has change and which explains how, why I'm using it the way I do it right now. I think it is good in something that involve lower order thinking. Like massive, it can do things very fast, but it can do lower, only lower order thinking. So things like gathering resources, search, involve.
+
+Speaker 2 11:07 
+So how do LM perform search, right? Well, how do this ln perform search? I'll, they will take my query and they will break it down to a lot of keywords and they're going to use those keyword to search, to perform the normal Google search that we're usually performing, right? And then they will, they will take so they will append resources that they find interesting, then can be related to my queries, and they'll give it to me. So those kind of lower order thinking, just searching for simple keywords, appending those, they're important and sending it to me. Those are the thing that I think it is good at doing. But if you ask it to perform something require related to higher order thinking, I think it's not that good. Okay. Massive or order thinking, massive lower order thinkings tasks. Yeah, if that could be.
+
+Speaker 1 11:57 
+That's good at. Okay, Brian, in this case, because you're doing search using this, you know, what in your opinion is better when you use Jenny, I as suppose to use you using Google. Okay.
+
+Speaker 2 12:20 
+So I in this case, I assume you mean the Google, not the AI mode that is just introduce. No, yeah, yeah, yeah. So the thing what I LM is that I can specify my search query in 4 paragraph, I know 4 sentences or 5 sentences, even sometimes two paragraph. And then I can append resources that I found useful. So, okay, I find this useful. Can you find similar ones? Something like that. I think that's it. Yeah, I don't need to think about specific keywords.
+
+Speaker 1 12:50 
+Moving on, you know, you mention that AI is good at certain things, but not so good at certain things, right? So I presume then when you interact with AI, you're aware of these limitations, right? Yes. Prompt will be like kicking the into consideration the fact that higher order thinking is an issue with today I, right?
+
+Speaker 2 13:13 
+Yes, yes, of course. Okay.
+
+Speaker 1 13:15 
+So now are you in the, oh, habit of us asking Jenny I to assume specific roles while doing the search, okay, of, you know, say somebody, a researcher from the perspective of somebody.
+
+Speaker 2 13:34 
+Yeah, I get it. Well, yes, I've of course done that. Like ask Jenny, I to assume specific roles. Yeah, if the that's a question, then I do it at times. But yeah.
+
+Speaker 1 13:46 
+Out of it. But you do to use. Can you think of any specific example of that?
+
+Speaker 2 13:54 
+Well, I usually do that, do the role. I think it's called role prompting sub certain role, mainly for conversation or just general conversation, you know, like I used to do it, but now these days, not so often. But for such, no, but for some task, for example, I mean this situation, can you please assume this role and, you know, think of how you respond to this scenario and one on.
+
+Speaker 1 14:26 
+Okay. Okay. How about, you know, the search that you mentioned? I was wondering if there is some search related task then, or even coding related task, which we also use it for you. You've totally unfamiliar with you. Do you have no clue? How is your interaction with the Jenny I different in that case?
+
+Speaker 2 14:49 
+I would say if I have no clue, I'll my instruction will be less specific, I guess that's one thing. Yeah.
+
+Speaker 1 14:59 
+Cuz you. Yourself, don't you? Can you think of some example of a prompt you will start with? Or what will the prompt to bring?
+
+Speaker 2 15:06 
+So usually, okay, for search, usually I'll still, because when we're searching something, there is actually no a reason why we're doing it, right? So in that case, I will specify my intention, still very specific, but I will not direct it to like, you know, this is my intention and you should look for this keywords cuz you don't know. Yeah, I will not include the technical keywords, but I also include my intention, right? And then for food, usually I'll just, yeah, same thing, but I'll just more copy my code and paste it without a lot of, I think the different key difference is technical jargon or the technical terms. If I'm not very familiar with something, I usually won't include it in my prompts.
+
+Speaker 1 15:47 
+So there will be less context when you have an unfamiliar task like you, cuz you can't supply much task. Also, s constraints, you, mama saying that you won't know much, so you won't give any constraints. You would just straight away.
+
+Speaker 2 15:58 
+Ask. No technical constraint, domain specific con.
+
+Speaker 1 16:04 
+Okay, moving on now, this part to deal with your trust in Jenny, I think I kind of look through your pre survey form and I see that your trust is not very high. Yeah, actively slower.
+
+Speaker 2 16:18 
+Develops overtime. Like.
+
+Speaker 1 16:22 
+I my question is, you know, before you started using Jenny, I, what was your trust level? You know, we develop this perception right across percent. So, and then how did it change over time?
+
+Speaker 2 16:34 
+Okay, I will say it follows like bell curve or something. Yeah, so I'm among the first adopter of GB Chat, GBT actually, when it first come out. Yeah, I think I'm one of the first doctors, like in the first day I use it and my first task was asking you to generate some HTML code, like some code. Well, it does so with good syntactic, there is no syntax and stuff. So I was quite impressed. But when I was asking some questions which I deem interesting, it doesn't give good answers. So I would say initially it's not that good. But then, you know, GPT four comes out and cloud, at the time there was cloud 3 open. Yeah, my god, it started increase but not very significantly. And then you have, it got better right after that. I got there. And then you have cloud 4, Po 3.5. I think my trust was quite high the time. Yeah, for O and GPT 4.5, I think that picks and it picks there.
+
+Speaker 2 17:36 
+But I'll say, you know, as this product gets better in some sense, like in the first month of like first week of using that, I was impress. But after continuously using that use, you start to fill some gap and then your expectation also increase. Yeah, true. Like initially don't expect to do that, then it does that, then you know you're impressed and you expect it to do more thing, but it can't do it. So during the cycle of, you know, expectation disappointment, expectation disappointment.
+
+Speaker 1 18:07 
+Think it's a very interesting pattern you mention. Yeah, and you and you.
+
+Speaker 2 18:12 
+But right now, because I'm quite involve in the field of AI, there I read literatures or interviews, experts interviews that talk about limitation of Jenny I and how they're not going to ever, you know, they're not going to surpass human level intelligence and whatnot. So right now it's just like stabilize. It goes down and stabilize. So it peaks somehow it's stabilize.
+
+Speaker 1 18:36 
+So Brian, if you were to assign a percentage, if you say before and after percentage, what will it be?
+
+Speaker 2 18:42 
+Well, I'll say, you know, initially, when is it, 2,022? I think it really doesn't around.
+
+Speaker 1 18:47 
+There three years ago.
+
+Speaker 2 18:48 
+Like 20%. Then I think in peak in 2,024 and early to 75 or enter 4, maybe it will be like 80% or so and now 90% even in the peak. But now I think it's like 20%. I think rather than assigning percentage, the way I like to view it is that now I know better what kind of task it is supposed to do. I, I'm, I'm, I have bare mental model on what kind of task I can assign it.
+
+Speaker 1 19:18 
+Absolutely. I think you said it right. It's more that, you know, as you interact and you develop experience, your expectations mature and you have a perfect understanding of what you expect this tool to do for you. And when it doesn't match, then you know it's not be made up. A very good point there.
+
+Speaker 1 19:39 
+Okay, now let's go into this aspect of continuing with trust. Are you in the habit of going back and checking on something? Check GBTA, your virgin AI to regive you answer? Checking, I think. Validating basic and then do you just take it or do you go back or let me verify this?
+
+Speaker 2 20:07 
+It depends, right? Because these days mainly I use it for resources. I'll just open everything it ask me to open. There's no harm in doing that. So yeah, but regarding coding, usually I do, sometimes I don't. If I care about it, I'll you check because it often handles me if I think if it's just some prototype, I'll just copy paste. Eh?
+
+Speaker 1 20:32 
+It depends on the significance of this output to you. LA. Yeah, important component. Then check. Otherwise, just let it be.
+
+Speaker 2 20:42 
+And also the risk, like risk level, you know, say.
+
+Speaker 1 20:46 
+Yeah, of course.
+
+Speaker 2 20:48 
+If it's okay, there's no risk to for me to just like it or just follow it, like open every site that there is. I'll just do it.
+
+Speaker 1 20:56 
+Okay, that. Okay. Do you set constraints for ChatGPT to progress? Say only search in this kind of sources, you know, peer reviewed. And also say, assume this and always keep this assumptions in mind, you know, specific parameters to restrict such.
+
+Speaker 2 21:20 
+Yes, sometimes I do, but sometimes, okay, I see that ChatGPT is quite good. I can't say same for other tools which I feel like perplexity. I, I sh maybe I need to for perplexity, I need to s tell it maybe because I'm a this is my background. I'm a sort of researcher, right? I'm a student researcher. I do learn free search. So for chat GBD, I notice if I'm asking academic questions and it's going to reply, it's going to find any sources and not some reddit blocks. Yeah, not some reddit post, but for perplexity, sometimes it does. So I think it depends on this, on the tools.
+
+Speaker 1 22:04 
+Situation and tool. Okay. How about times when you're interacting with ChatGPT and ChatGPT tells you, yeah, I need a little more information. I'm not sure what you want or, you know, the context is unclear. Can you give me a bit more information? Have you had that kind of experiences?
+
+Speaker 2 22:22 
+That's very honestly, I think, yeah, yeah. The overwhelming experience is, well, unless I instructed to find false and asking questions, it usually just say, yes, I will do it for you. Or if I correct it, you're very right. Whatever. Seek off and see. I don't know. Psychopantic.
+
+Speaker 1 22:44 
+Making it sort of making you feel good about yourself, is it? You feel that they never comes back and ask you for clarification because you just want to make you feel and about myself.
+
+Speaker 2 22:59 
+Sorry.
+
+Speaker 1 23:01 
+Well, then the next question that follows this, have you ever had experience where, Jenny, I sounded a little unsure of its output. I'm not sure, you know, but I think this may be your answer.
+
+Speaker 2 23:14 
+Okay, that happens, but ve.
+
+Speaker 1 23:18 
+Very rarely, right?
+
+Speaker 2 23:22 
+It.
+
+Speaker 1 23:22 
+Doesn't remember one time it happened.
+
+Speaker 2 23:25 
+Hum.
+
+Speaker 1 23:27 
+Content is okay.
+
+Speaker 2 23:29 
+Well, I sort of have vague image, vague ideas, but I forgot when. Yeah, what.
+
+Speaker 1 23:34 
+Okay, if it comes back to you, maybe you can share.
+
+Speaker 2 23:37 
+I think I think it's related. It, it I think it related to something where I ask it whether it's sure or not, you know, like I ask about level of certainly it has, I need to explicitly mention about it. Basically, thank.
+
+Speaker 1 23:53 
+So on its own it won't, but if you ask it, then it might say, yeah, yeah. Okay. Now we're going into the coordination aspect. You know, when you coordinate the task between you and ChatGPT, you mention that you have to loop a few times, right? You you ask, you said you start with a lot of context already, straight away, gives you some answer and you kind of lead it through a few rounds and then you conclude, right? So this iteration on a typical search task, how many times do you do this looping back and forth?
+
+Speaker 2 24:29 
+Like how many times I have to put back and forth until I get why I wanted?
+
+Speaker 1 24:34 
+What an average. I know it depends, but.
+
+Speaker 2 24:36 
+It depends. Yeah, but okay, the trick I use here, you know, so it actually do search for longer time. So these days they it doesn't do a lot of back and forth. But when I'm using perplexity, sometimes I do two to three times.
+
+Speaker 1 24:54 
+Okay. So that's not that. Yeah, I.
+
+Speaker 2 24:56 
+Know. I think I kind of know the reason. Maybe. What's the reason? This because SGP has this thing called memory mode. It can refer to your customersations. Yeah, because. So maybe.
+
+Speaker 1 25:07 
+That's true. Yeah, that's true. Okay, so do you, are you either you ask that individual search for information, it comes back, it has several sources. Do you ask for summarization of the findings?
+
+Speaker 2 25:24 
+I used to. Sometimes I do. If I, so summarization of the, for example, of certain papers or journals or books, right? I think, and if the journal not consistently, that's my, that's on situation.
+
+Speaker 2 25:40 
+If the journal I find is not very, I don't have much time. I perceive it now. It's very important. I'll just ask you summarize so I know the gist. But if I do have some time and I perceive the journal has been quite important, I'll read it myself. Yeah, I think over the years I found that its summarization is not actually as good as my reading comprehension. But see, I'll just do speed reading. I'm not like reading a lot of anyway.
+
+Speaker 1 26:09 
+Just selectively ask for summarization, which is a clever strategy. How about locking of the scope and stuff like that? You gonna, because sometimes you provide context until yourself get a bit confused about what other things you asked him to do. So do you then, once you get all the things in, would you ask ChatGPT or Jenny I to kind of lock that scope there and then proceed based on that submission or scope to provide it. Oh, scope.
+
+Speaker 2 26:39 
+What do you mean by scope? Like it should, let me.
+
+Speaker 1 26:42 
+Yeah, let's just take a vague term like imaging can fit any situation. Then you say, okay, I want imaging in this area only.
+
+Speaker 2 26:54 
+So over the past few weeks, I've been using maybe on, well, education psychology, because I would like to develop my learning skills and stuff. So usually when I go to particular area, when I don't know anything, I just mention my intention. I will search for me. Once I read all some and know about the jargon, I'll usually do set some constraint. So for example, yeah, if I've been exploring more about meaningful learning theory by algebra and stuff, so I'll set constraint, you know, please just find workday to meaningful theory, learning theory and stuff. Yeah, you.
+
+Speaker 1 27:31 
+Will provide certain scope for it to search. Okay.
+
+Speaker 2 27:34 
+I have you have the knowledge.
+
+Speaker 1 27:38 
+If you already have knowledge, how about using saving version, saving logs and so on. Are you in the habit of keeping your prompts in a file and then editing it for reuse that something.
+
+Speaker 2 27:51 
+No, like you mean creating my own templates, right? Oh, no.
+
+Speaker 1 27:57 
+How about when, you know, you said about two to three times and then you stop at what point you decide that's enough, no more interaction. And I think this is the best I can get. How do you design.
+
+Speaker 2 28:10 
+It for context, like for search, right? For search, usually I found something, for example, it returns to me 10 sources. I'll just skim through everything. I just skim through everything. And then if I found that, you know, there's is there's one source that's good or two source, usually that leads to more sources, right? So in that sense, I usually do just do one time search or maybe 2 times if I don't find any gold in the first time. So for coding, so for such task, it's usually successful. It will give me something. At least for coding, it can be unsuccessful, right? If after 5 to 6 iterations, you cannot call my errors, my bucks, then I'll stop because it's just messing up everything else.
+
+Speaker 1 29:03 
+I get it. How about times when you find your Jenny I contradicting itself or even hallucinating experiences? Have you had like that?
+
+Speaker 2 29:14 
+Okay, usually I notice, right? I will only notice that the Jenny I contradict itself or hallucinate on areas I have some expertise. Interesting. Otherwise, I don't even have a knowledge to know if it's like clean up. I yeah, yeah, yeah. I'm using this for a long time. So I kind of notice a pattern now.
+
+Speaker 1 29:34 
+You may be right. So you notice only when you have enough information. Other times you may not have notice. Yeah, sure. Okay. Now we're going to go into the a section where we are going to delve a bit into your, the impact of use of Jenni on your professional personal skills and so on. Okay, so do you notice any recognizable change in you, in the way you work, you as a person? Listen, since you started using Jenny, but you use every day.
+
+Speaker 2 30:04 
+Hum, hum, hum, hum. It used to be the case that I offload everything to Jenny. I see I have, you know, ChatGPT, Gemini, Perpexy open all around. I see. That's just how I interact the world, like more stuff. Yeah, so that's just how in track. I don't go read some papers. I'll just ask you to summarize. Then basically it becomes a user interface for me to interact with the internet and with my work.
+
+Speaker 2 30:38 
+And do you know CLI tools like Cloud Code, Gemini CLI? So yeah, yeah, I'm using the extensive used to at this, especially when I was working in my intern recently. So they provide sort of unlimited cloud code credits. So this is how I code. Yeah, I'll just code everything through cloud code. And it mean, yeah, do accept and why not.
+
+Speaker 2 31:02 
+So of course, that change stuff, right? And then for search, usually I used to do, usually I used to have multiple tabs for different keywords, right? But yeah, same topic, but now it's just one tab because one chat contains the topic itself. The whole topic is contain one tab because, yeah.
+
+Speaker 1 31:22 
+So you don't need multiple.
+
+Speaker 2 31:23 
+Yeah, it's correct. So I think that's how change. But overtime, as I see how it's not as good as, yeah, I kind of revert to my old way of working now. So I won't ask it to summarize things for me. I'll just skip it myself or coding as well. I will just try to do it myself. So there used to be a case that I do everything through it, even writing.
+
+Speaker 2 31:53 
+Right now I try not to write with ChatGPT. Yeah, my writing is entirely done by me. That's one thing as well. I used to like every writing of mine, I don't actually write. Like I just say it's share to it my intention. So right email to professor for this and this and this, you know. And then I used to for every right things I have, I used to have it check for now? No, I said that as a rule. Yeah, because I think it's quite the, I think it's cognitively then dangerous. Okay.
+
+Speaker 1 32:23 
+Actually, it's very interesting. So yeah, this is, I think you're a native user that way. So anyway, so personally, you know, you told me that you wean yourself off this habit of depending on it for all kinds of writing and so on. Right? So personally, how did it change? We work. Oh, oh, you, you is this any skills you picked up? Is any learning?
+
+Speaker 2 32:50 
+What do you mean? Sorry?
+
+Speaker 1 32:52 
+Did you learn like some kind of a lesson by your excessive views and dependence? Did you feel like we know cognitively I'm being restricted because I tend to depend too much on this and I don't need to do.
+
+Speaker 2 33:07 
+Overtime. I feel like I lose my first, my value.
+
+Speaker 1 33:12 
+Agency.
+
+Speaker 2 33:13 
+Yeah, that's one. But more concretely is my ability to communicate my intention. Yeah, so now, like I used to feel like now I'm using my right, doing my writing on my own. But when I was excessively doing my writing with HGBT or something, I feel that I cannot, I lose the ability to convey my intention properly, even leading even the chat GBD account because I can may give like us few sentence intention like, oh, I want this on this. But those are simple intention, right? Like babies, I want to eat, I want to drink, I want to what? But like more complex intentions, I use, I feel that I use, I, I lost it.
+
+Speaker 1 33:54 
+That emotion perhaps the the eh, how you want the tone to come out in the communication that something maybe.
+
+Speaker 2 34:03 
+Okay. May, I'm not sure if that answers your question. Maybe not actually, like, maybe can you review?
+
+Speaker 1 34:10 
+Yeah, actually, and Brian, I think looking at more like, I think any answer, there's no right or wrong answer here. I was, for example, of, I've been asking this question to several of the others and some people won't say, oh, you know, I'm working faster, my efficiency is gonna, yeah, another person was saying, you know, like, yeah, faster and all that. But I don't know because I seem to not retain much that I hear from chat DPD. But at the same time, if I'm doing Google Scholar search and I'm reading, I tend to remember what I read. But in somehow in chat GBD, I don't recall much. So I've had answers like that, you know. Okay. So yeah, so this is only for views, you know, only what you said is relevant quite, yeah. So anything like that from your experience?
+
+Speaker 2 35:03 
+Oh, so my work pattern, right? So first, of course, I, I feel that it's faster if I use it the right way. And there is, it throws me down a lot if I'm doing it the wrong way. So, yeah, okay, what's the right way? What's wrong way? The right way is just to do search. If I'm doing, using it to do search instead of manually thinking of keywords and then doing multiple tabs. It's faster because it collects resources directly for me, but it will make my process lower. Yeah, use it for complex coding, debugging. I think sometimes I used to like, you know, do multiple iterations, so many that it spends like 40 minutes. And I feel that I could have solved it much faster. So it's slower in that sense because I use it wrongly.
+
+Speaker 1 35:48 
+Yeah, I would say it's a mixed bag that way. Yeah, like.
+
+Speaker 2 35:51 
+So maybe the productivity gain for me.
+
+Speaker 1 35:55 
+Is not that.
+
+Speaker 2 35:56 
+80%, maybe 10% because of search, but there.
+
+Speaker 1 35:59 
+Is some, yeah, it's a different. Okay, now I'm gonna go into, I mean, can you think of any example where ChatGPT actually made an impact on your work or your personal life.
+
+Speaker 2 36:13 
+Okay, the main impact is when I'm starting new topics, when I'm starting to learn new topics, it will suggest resources and keywords, which I feel it's very useful.
+
+Speaker 1 36:26 
+You know that we're coming to the end of the interview. The last part covers things like your wish list, you know, what are your challenges, what are your concerns? You can talk about what you wanna see in better, what kind of tips you wanna provide somebody who is new to today. I so start with, let's say, let's start with your.
+
+Speaker 2 36:46 
+Wish list. Well, I wish it is.
+
+Speaker 1 36:51 
+Faster.
+
+Speaker 2 36:53 
+I wish it's faster. I wish it is. It can. Because right now, if I'm, even if I'm performing search, it's mainly giving search results, which are, how to say, common results. Yeah, I wish it has more diverse.
+
+Speaker 1 37:10 
+Search range. Okay. Okay. So somehow the content that you get and you don't seem to think that it's interesting. It's just like very commonplace. If.
+
+Speaker 2 37:19 
+I'm new to it, it's interesting. If I'm not, if not.
+
+Speaker 1 37:22 
+You already know.
+
+Speaker 2 37:24 
+So diversity and response.
+
+Speaker 1 37:27 
+Diversity.
+
+Speaker 2 37:28 
+Interesting. I've never seen responsibilities to hallucination or not to. So yeah, and then I wish, I wish you inspire and coding.
+
+Speaker 1 37:41 
+Okay. So you're looking for something that is better in terms of the content, it provides, speed and so on. Okay, what tips would you give someone, you know, you're an expert users, but also you wanna guide like a younger person who is new to this. What top advice will you give 1 to 3?
+
+Speaker 2 37:59 
+Well, first, don't use it too extensively. Not, yeah, I think reason is because it seems it looks smart. Seems smart, appear smart because it's capable of generating something that sounds smart, but not that smart.
+
+Speaker 1 38:16 
+It's not really that easy.
+
+Speaker 2 38:20 
+Second, I think use it for something that is so first is not lower, not for everything. Second, specifically use it for something that doesn't require higher order thinking skills. Do you use it for repetitive task such as looking for keywords, finding resources and whatnot? Those are repetitive task that, yeah, that's not cognitively challenging. Use it for that. Third is maybe don't do your writing with the GPT.
+
+Speaker 1 38:52 
+Don't do your writing, whichever.
+
+Speaker 2 38:54 
+Don't do your right activity. That's much more. I think people understand me, the importance of writing and being able to convey your intention effectively. But I think that's important to at least be able to function effectively in the society because you're interacting with people and whatnot. You feel you lose that capability to tell, to convey your message to people. I think that's really bad.
+
+Speaker 1 39:19 
+That could be accepted. Okay. Alright, I think that's concludes our interview questions, but I just want to take about five minutes for you to kind of just freely share any anecdotes, anything you wanna say about your experiences so far interacting with Jenny are.
+
+Speaker 2 39:36 
+My experience so far. So many.
+
+Speaker 1 39:38 
+Concerns, by the way, Brian, daily concerns. Do you have any concerns about Jenny? I.
+
+Speaker 2 39:45 
+Concerns like societal concerns? Yes, I think.
+
+Speaker 1 39:50 
+Societal what we.
+
+Speaker 2 39:52 
+So, okay, I, I'm in the field of AI, right? So I'm studying that. I'm actually passionate in that too. And I've been. Noticing a trend. And this is, this goes off track a little bit, but this is quite interesting. Yeah, this does not answer your question, but I notice some trends in AI products, at least successful product markets with AI products. And like ChatGPT, I'm talking about ChatGPT, there's a second generation. I see the first generations are the recommendation engines. Yeah, social media, YouTube, Instagram, TikTok. Those are, yeah, those are, yeah, those are AI products. People don't see it as AI products, but they, the main, the TikTok is an AI product. I mean, if it's just playing videos, any phone can play videos, right? But the main thing that makes it useful is because it recommends stuff for you. So it's an AI product. Yeah, yeah, it's an AI product. Instagram is also AI product. It shows you the thing that you want to see.
+
+Speaker 1 40:48 
+Collaborative filtering you.
+
+Speaker 2 40:50 
+So first, yeah, social media, first generation, those are AI products. Is it good for society? Arguable, right? It interferes with election. It causes mental health issues, it causes short attendance span. Does it makes people overall happier? Arguable, right? Maybe not. Maybe yes. I remember some people said, you know, it's quick entertainment, cheap entertainment and whatnot. True, but is it good overall? Maybe not, right?
+
+Speaker 2 41:17 
+So, and then I see similar patterns in, you know, ChatGPT. Initially, people are very happy with it. I think in the 10 years time, I'm not sure if we're going to judge it s the same, you know, because you see social media, it's an AI product and it's not good for society overall. Yeah, no, you see chat GBT on other those AI product subsidy, especially LMS students start to believe that, you know, they're missing out if they're not utilizing it heavy enough, heavily enough. People are addicted to it. You know, fear told boyfriend, fear to our girlfriend. Not sure if that's good or bad. People say it overcome my loneliness and whatnot.
+
+Speaker 2 41:58 
+So, but then for social media, you make some argument at a time it make me feel connected with my friends, right? Do people, are people actually more connected now than before? I'm not sure that's our view. Yeah, so I notice a pattern here. Well, although I'm working AI, I see that AI products tend to be overall in some in in this in this lens net negative society. So that's my concern actually. Like it is, I initially it's good people celebrated, but when you see the long run because of various interplace and so on, and because human is complex, right? Yeah, it tends to be net negative. A social media is actually meant to connect us, but s people so lot of people feel more disconnected than ever. Right. Bubbles and then short attention spends the real thing, right? People are not be are not able to do long horizon thinking and multi step reasoning and stuff. That's a real thing. And then what's happening in ChatGPT? So this is the thing, like in 10 years time, people already have short attention. Now. If they cannot convey their intention, that's not good because that's what Chajib is doing it. It's if you outsource everything there, especially you're writing, which a lot of people do, by the way, you won't be able to convey your intentions very effectively. And like, if you don't know what you want, then who knows, right? I don't think happy that way. And, and so if you're talking about sociality concerns, that's my societal concerns.
+
+Speaker 1 43:39 
+Okay. How about privacy concerns and so on? Copyright?
+
+Speaker 2 43:45 
+Well, well, yeah, I think it's quite big on that copyright and stuff. Yeah, I don't know. I don't have that much concern with copyright. Yes, and I think ideas are there. I, ideas should be. I is meant to be shared freely. I don't I mean, like patterns itself is something that's argue right? It's patterns good or not, right? I, eh, the thing that I'm saying is that something like patterns or copyright and whatnot, it depends on the cases. But it's not always something that is good factor because sometimes copyrights and whatnot they they in he they prevent innovation because people cannot.
+
+Speaker 2 44:28 
+Yeah, so regarding privacy, well, yeah, I don't have much thought about it. Yeah, I read about this thing, this article, which says that in the US, I think ChatGPT is actually obligated to share their data to the government if they ask. So I think that's not.
+
+Speaker 1 44:50 
+Saying they have asked, you know, most social media to do the same thing as well.
+
+Speaker 2 44:54 
+So I think.
+
+Speaker 1 44:55 
+Pattern that they will always follow that.
+
+Speaker 2 44:58 
+You know, that's not very good. But, well, yeah, I think, but people can be aware about that and the search. And you do you know this thing called Local LLM.
+
+Speaker 1 45:14 
+Local 11? Yeah, I read about it.
+
+Speaker 2 45:17 
+You can run it locally too. I mean, at some, right now it's not very practical, but I think overtime our laptop is going to be, it's going to adapt to this and we're going to be.
+
+Speaker 1 45:30 
+I mean, I mean, we see that as a trend that accelerated with text typing, right? WhatsApp texting. I mean, we started with English, all of us, and now a lot of us use vernacular. So, so yeah, so I'm sure it will evolve and get there someday. Anyway, thanks, Brian. It was quite delightful talking to you and just checking with you about your pay now number that you entered. It's 8,9,1,6,9,0,5,4. Sorry, your No. 8,9,1,6,9,0,5,4.
+
+Speaker 2 46:10 
+Yeah, it's I just stop it. 8,91,90,54.
+
+Speaker 1 46:14 
+Yeah, 9,0,54.
+
+Speaker 2 46:16 
+I thought be there.
+
+Speaker 1 46:17 
+Separate now number. So I just want to tell you that okay, we concluded the interview and I think you've been pretty for forthcoming and quite a few interesting points you brought out as well. So thank you for that. Now, you indicated that you're willing to take part in our experiment, right?
+
+Speaker 2 46:37 
+Well, well.
+
+Speaker 1 46:38 
+Well, that would be scheduled early to time and maybe a smaller subset of those interviewed. It's gonna be a random selection, but there's a chance that we will cross parts again. Anyway, all the best to you and you know, have a good day. Okay, thanks. Alignment.
+
+Speaker 2 46:54 
+Okay, have a nice day. Thank you. Yeah.

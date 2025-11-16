@@ -1,0 +1,522 @@
+受访人41:
+2025-10-14 16:18:01 CST|52min 47s
+
+Keywords:
+good things、good point、good code、certain things、same thing、second thing、good enough thing、general point、interesting thing、right thing、fun thing、confidence thing、language thing、whole thing、exploration thing、promotional things、more information、next question
+
+Transcript:
+Speaker 1 00:00 
+Okay, okay, start, let's start with yourself. Barra, can you please give me a brief account of you as a person? What is your background? What do you do currently?
+
+Speaker 2 00:13 
+Yeah, so yeah, my name is borrow I from small state from India called Kerala from the southern part of India from preventive. I did my bachelors and masters in physics. Now I'm pursuing a PhD. In theoretical optics and my broad interests. I mean, I used to have a lot of interest where I used to do a lot of things, but now I don't get time to do much stuff. It's just work and just rest. So other than that, yeah, I like to hang out with people. Yeah, that's about it. I have a boring like.
+
+Speaker 1 00:58 
+Okay, okay. Barra, you, you know, I'm interested to know a bit more about your technology adoption patterns, you know, so question is, if you compare yourself with your peers. Would you say that you are one of the first people who would adopt something new like Jenny? Yeah, yes.
+
+Speaker 2 01:21 
+Yes.
+
+Speaker 1 01:21 
+Yes. Okay. Okay. Okay. Then. So moving on, let's go into, you know, the specific use. Do you, I see from your pre interview that you do not subscribe to any of the Gen a I tools. Is it true?
+
+Speaker 2 01:41 
+Did I see that the did I say I didn't subscribe?
+
+Speaker 1 01:45 
+Do you have a subscription?
+
+Speaker 2 01:47 
+Oh, okay. Currently I do not, like I used to, but then they stopped. And I can't say that I don't have it because.
+
+Speaker 1 01:59 
+I, it's my mistake. You said that you do subscribe. Yes, the answer. And.
+
+Speaker 2 02:05 
+I have subscribe currently. I mean, you, these companies, they give out like one year free for the students and alright, you know, the promotional things they do. Okay, so I'm under one of those. So okay, I'm currently not paying for it, but I am using update service as.
+
+Speaker 1 02:27 
+Okay. Okay, so a couple of questions. So, which are the tools that you use more frequently them?
+
+Speaker 2 02:36 
+So coding, my work completely relies on like theoretical computation.
+
+Speaker 1 02:42 
+There are so like us, Gemini, change, deep sink, which one do you use more frequently?
+
+Speaker 2 02:49 
+I think there is anthropics cloud. Do you know about that? Anthropics? No, I'm not sure that. Okay, so there is a company called anthropic and they have a AI model called cloud. And it is primarily like software engineer hum oriented. So it's primarily for the coding kind of things. According that it's useful. It's according I, yeah, it's according to, I primarily use that. Sometimes I do switch to that GPT Gemini, not so much deep seek when it came out, it was really good and I did use it for a long time. But after which I they didn't I didn't see much improvement in their AI compared to other. So I, oh, I don't use Deep Sick at all.
+
+Speaker 1 03:36 
+Okay. Okay. So it's more, sorry, get, let me take the on the name that I think it is new to me. I don't think I have milk, but what's the name again?
+
+Speaker 2 03:46 
+I, it's I just put in said, yeah.
+
+Speaker 1 03:54 
+It is an LLM base to like presume is it LLM?
+
+Speaker 2 03:57 
+Yes, it yeah, it is LM Base. So anthropic is the name of the company and cloud is the.
+
+Speaker 1 04:03 
+Oh, the cloud. Okay, okay. Now, okay, we're going to go into the various task you seek help with from your cloud or in Jenni. Okay, so the rest of the questions that I ask, you can base it on the most frequently used scenario, whichever one it may be. You mention that you use it for coding mostly, so it can be base coding, it can be based on any other work that you do on a regular basis. Currently in a week, what how frequently do you use the tools you mention, colonel.
+
+Speaker 2 04:48 
+In GPT? Baby, take me from every. Can I go to work?
+
+Speaker 1 04:53 
+Every day. Currently. Are you working, by the way? You're a PhD candidate full.
+
+Speaker 2 04:57 
+Time? Yeah, I am. I have a PhD candidate. Full time, right? If I'm a full time pH can. Yes.
+
+Speaker 1 05:05 
+Okay. So based on this coding that you mention that you every day use. So one of the, I mean, I, I, we're going to delve a bit more into the how do you use the pattern of use. So I want to know, you know, before you start an interaction, before you decide that you want to run something through ChatGPT or cloud more. Do you do some preparation or do you prepare something beforehand or you draft your prompt and how do you get started?
+
+Speaker 2 05:42 
+So depends on the problem that I'm working on. Okay, and the sense that suppose I have been given a very new task and I have very limited knowledge about it. And so in that sense, I just go blindly to the AI tools and say, okay, what is this towards this? Can you do with this? Is it being done? So it's a, it's a first, it's an exploration thing.
+
+Speaker 2 06:08 
+After some time, I would have some idea in my mind as to then my prompts get more and more restricted, more and more specific. I'd say I want this and the last step of my workflow doesn't involve way, right? I mean, I use a, a to the point where I get to work and okay, it's working now. And the last part is just not using AI at all. It's just going through it and seeing if it's, yeah, if it's there, if whatever it's correct, is it there? Because these LLMs, they're just trying to do one thing, that is to give you the answer. Yeah, and they will, especially encoding, they will do all sorts of cheating methods to give you that answer.
+
+Speaker 2 06:54 
+So I found out that really late and nowadays after I have a about the full code, I know it's working, I manually go into check every line. It's like, okay, does it make sense? Does it make sense? So yeah, that's how it is. Okay.
+
+Speaker 1 07:11 
+Okay. Barry, you mentioned something about your use when you are unfamiliar with the task. If let's say something that you already know about, you have some understanding, then how do you start?
+
+Speaker 2 07:26 
+If I have some understanding, I would still use AI, but it would be in a more measured way.
+
+Speaker 1 07:34 
+Measure little bit. Can you give me an example, something?
+
+Speaker 2 07:39 
+Yeah, sure. So I was writing this code and I was having problem with this one thing and I went to am and said, you know, you have try to implement this. And eh was like, oh, we can do this. You know, people do this. This is a very, and since I knew about the whatever is doing as like, no, don't do it. Just do this you to do, I don't want you to do all that. Just do this. So that's what happens when I still know. Yeah, I don't know if I'm lazy because even though I know something, I still have the AI do it because I'm getting too lazy to write code.
+
+Speaker 1 08:29 
+Okay. And I think that's perfectly fine. I think a lot of the users do that. But let me just summarize what you just said. When you already know enough about the problem and you still ask for help from s gen AI. It tends to take you through different options, which probably not all of which are, is relevant to what you're doing. Is that what you're telling me? And then you have to tell them to screen off or filter off some of the stuff that it gave and focus on some that you think or you know will work. Am I right?
+
+Speaker 2 09:01 
+I wouldn't say that it doesn't give irrelevant information. Yes, relevant inter information. But yeah, that's not the ultimate goal of what we're trying to find something the, it's like, okay, do this. It works. I know the how it works. Why do I want to bring in a new technique which I don't know? Then I that also I have to learn. And ultimately, if both algorithms do the same thing, what as like, okay, just even if it's bad, it's fine. Just write it this way so that I can understand. And the final pass.
+
+Speaker 1 09:33 
+So you try to guide it to the areas that you're comfortable with.
+
+Speaker 2 09:37 
+Yes, yes, yes. Okay, understand.
+
+Speaker 1 09:40 
+Okay. You know, when you interact with the Jenni tool, do you, are you in the habit of breaking up the task into smaller units? Yes, you do that. Can you give me an example of that?
+
+Speaker 2 09:56 
+So recently, I think. I had to write a link, big piece of code and it's like a thousand ninth of. And you can, the AI can write thousand lines of code. I mean, that sounds far enough that it can write thousand lines of code, but I don't like to do it.
+
+Speaker 2 10:20 
+In a sense, there are two points why I don't like it. No. 1 is that when it tends to write longer pieces of code, it tends to lose more information. Either they just, it's not going to be as perfect as it is, this right thing, like a small piece of road. And the second point is that it's such trouble to go through all thousand lines of code at once. Yeah, that's, I'd rather have it built up piece by piece. I know if even if it has to, you know, sometimes there is no choice, it will give a lot of code and I don't like it. But I would want to do it step by step. But there are situations that I understand that, you know, you can't break it up into small parts. You can write a part of something and call it a whole. You need to the full drink. So sometimes I do understand, but I try to work which model pieces are called at that time. Yeah, so that.
+
+Speaker 1 11:20 
+Okay. Yeah, I think I get the scenario. So you were saying that if you do not partition, then it tends to provide you with a big chunk. And sometimes this is certain details that you want incorporated. Is that what you mentioned?
+
+Speaker 2 11:35 
+Yes. Okay. Yeah, it misses detail and also it misses some of the nuance that we want. Out of it.
+
+Speaker 1 11:45 
+Okay. Okay. So in your inter regular interaction, especially in this co coding, C coding related work, do you find ChatGPT particularly very clever or good at certain tasks, certain things? What will they be?
+
+Speaker 2 12:04 
+I do. I mean.
+
+Speaker 1 12:06 
+You don't think so?
+
+Speaker 2 12:07 
+Not, I don't think I have found ChatGPT to be. ChatGPT is a very general purpose would ignore. Yeah, I.
+
+Speaker 1 12:14 
+Didn't mean chat ppt. I meant, yeah, it could be clawed or one of them. It's over. Yes.
+
+Speaker 2 12:19 
+So.
+
+Speaker 1 12:20 
+Sorry, I just to set the contact, the questions I ask, I may use chat DPD in a generic way, but what I mean is the whichever tool that you're using, okay, we're not focused on the tool so much. Yeah, continue.
+
+Speaker 2 12:31 
+Okay, so do I find it clever in the sense, is it trying to be manipulative?
+
+Speaker 1 12:38 
+No, I mean, that. Is it a good. I think clever. Are you used in a good sense? Is it like particular good or better than you or, you know, yeah, in a way, very skillful at certain things.
+
+Speaker 2 12:52 
+It's a, yeah, I have noticed it's a dilemma because I know it can go better than me. Yeah, I clearly know. Yes, I, I, I know. I, yeah, I know because it can write something in like two or three minutes, which might take me like one or two days. And even that I have to Google around. And but the dilemma is that with something so good can produce very bad results. And you're like astonished by the duality of it. Clearly it can write good code and, but I don't know what it actually needs to write the like the best version of Pixel. So it's good in the sense that maybe it needs the guidance only with good guidance, I think you can get good code. And with complicated questions, you really need like really good prompt engineering to get like the best results from it. So ultimately I think it depends on you.
+
+Speaker 1 13:58 
+Absolutely. Okay. So I think I get the point you're making. You're basically saying that it is good in coding because it is very fast. It can probably produce code for a fairly complex problem very quickly, much more quick, much more faster than yourself or something like that link.
+
+Speaker 2 14:18 
+More than fastness, it's more efficient. Also efficient in the sense it attracts better code in the sense that the whatever code it rights runs faster. It uses less memory. I see for me, I would write the bare bonds version, then I would have to go through iteratively what can I make better. Okay, this. And then I'll have to go to the internet. How do you make this better? Implement that logic I have to iteratively make it better and better. Yeah, since it's trained on like really good code and we just seen all the code in the, so it knows the best ones. Okay, it can just use. That's what I mean.
+
+Speaker 1 14:57 
+Yeah, yeah. Okay. Okay. How about the. Other side of it. I mean, we're talking about the good things. What about those task or those work that you assign to your Jenny, I that it does very badly, as in, you know, it doesn't do well there. Can you give me examples of that some task that your Jenni is not good at? That's right. If if you do have, if you don't have, that's fine.
+
+Speaker 2 15:30 
+Okay. I mean, earlier I used to have, but this AI tools are like advancing at a very rapid pace, right? You know, people still say that, oh, ChatGPT gives bad references and it nowadays, the number of bad references that uses like drop tremendously. And people are discussing about the ChatGPT one year ago and from there to here in just one year. Yes, it's amazing. Something it's bad at.
+
+Speaker 1 16:02 
+I mean, you have experience in it, but right, it's okay if you can't anything. Okay, I just because the question is.
+
+Speaker 2 16:09 
+It has it it has given bad code and all it has sometimes it just fails to understand. Maybe that's the negative. It.
+
+Speaker 1 16:18 
+Failed. And you, and the context you're providing, is that what you mean? Yes.
+
+Speaker 2 16:22 
+Yes. Okay. Okay, good. Sometimes I, that is, I find it so frustrating because I will give the same prompt again and again. I see and it just fails to understand it. I see. I'm like, and then I have to give examples. Then I have to leave the whole thing and I have to start fresh, at which point it probably, it's like, okay, I get what you're saying. And sometimes you just can't get your, I don't know if it's a language thing or whatever I'm discussing is a, requires much more nuance, but sometimes it just can't. That's the bad experience I had with.
+
+Speaker 1 17:03 
+Requirements that you try to explain. Is it? Oh, oh, try.
+
+Speaker 2 17:06 
+To, yes, prompt. You can explain how have explain detail, have explained in like paragraphs and paragraphs of what I actually want, but it doesn't get it. Okay. And the.
+
+Speaker 1 17:19 
+Communication breakdown sometimes you encounter while using, is it something that, yeah, about context or the problem you're trying to describe it to us, trying to explain. Yeah, one, but it doesn't understand. Is it okay?
+
+Speaker 2 17:31 
+Yeah, and apparently I've heard this is that the once the AI gets something into its memory, it's really hard to erase it and so will increase the take and further responses will keep it in its memory. And there are those kind of issues.
+
+Speaker 1 17:52 
+So in this case, since you have a this understanding that it can generate efficient, good quality code. And but at the same very same time, it also sometimes fails to understand the problem context or the requirement that you specify. Very bearing this in mind, how do you then craft your prompt? Because you have this understanding that it is good enough thing, but it has these disadvantages or drawbacks or limitations. How do, yeah, so given all this understanding, how will you decide on your strategy? How do you go about my.
+
+Speaker 2 18:31 
+Prompt? I found that giving examples in pounds is like, first I need to give the background. It's like, okay, this is what we're doing. This is what we're doing this. And at this point, you shouldn't not bring very technical terms into it.
+
+Speaker 2 18:52 
+Okay, suppose, because I've noticed that at least from my side, if I'm working with light or theoretical optics and simulation and light, yeah, and I'm working it from a very algorithmic point of view. S the moment I say something about light or something, it just holds in all information from lights. And it's gone with the, yes, the message and like, okay, I don't want to bring all that. I just want to do this. So I'm very careful when I give prompts so as to not make it confused about something else. Yeah, second thing is I would say step by step. Okay, this is what I want. Yeah, in steps.
+
+Speaker 2 19:42 
+Then let's do an example as to suppose this is where this is whatever to give us an input. Step 1 will produce this, step 2 should produce this, step 3 should produce this. And then there are a lot of error connection code like don't. Code too much. Like it likes to code a lot as like, I'm like, okay, just in a very pro code in a very fundamental way, simplified way.
+
+Speaker 2 20:11 
+Then what are some other error corrections? Okay, everything has to be logical. It has to make sense from a physical point of view. You add those lines in just to make sure that.
+
+Speaker 1 20:24 
+So I guess in a way you control this interaction using certain checkpoints or control gates. You say, okay, don't go further than this or do on only. Yeah, okay. I think I understand. How about using role assignment? Have you tried telling your clock to look at something from the perspective of maybe a marker evaluator?
+
+Speaker 2 20:58 
+Yes, I have it. You have?
+
+Speaker 1 21:02 
+Can you pick it? But when you did this.
+
+Speaker 2 21:05 
+I WA, I was writing something and my professor is very particular about language. Anna citing something. It was not coming as well, but I wanted to write it for some reason. Yeah, I don't want the AI to write. Yes, going in and everything is, it's not an essay you have to play that. You can just pull it off the internet and. Right. Yeah, you have to do right what you're doing. So I wrote the whole thing, but the cohesiveness and the structure didn't make really sense to me. Okay. And stress like, okay, imagine that you're a professor looking at this word. What all would you want to me to explain more? What all should I, and one time I also did this thing where I had a quiz coming up. And so I've, after studying, I was like, okay, I wanted to practice on some questions and I knew from like someone was saying that the professor puts questions from the old question papers, okay, and he changes them every time. So I just downloaded the question papers, I gave it to him. Assume you're a professor. How will you change these questions to, yeah, make more sense? So those sorts of role links.
+
+Speaker 1 22:24 
+You have list. Yeah, I think interesting. Okay. Okay. Now I'm gonna go into your trust of AI. I see that, you know, when you talk about trust in AI, when you first started, you said you're an earlier doctor of technology. So in the case of generative AI, what was your level of trust before you started using? You can give me a rough percentage.
+
+Speaker 2 22:50 
+Actually, it was very high earlier days, it wasn't the 75. I was really trusting of it because it was such something very new. Yeah, and now it's gone down over here. Now it's like 40 percentage. So it is.
+
+Speaker 1 23:08 
+Actually reduce your trust level has gone down after use. Is it?
+
+Speaker 2 23:13 
+It's from 75. Crazy because yeah, it the AI systems had gone better, but my trust in them had decreased because are you use it for a long time and you obviously see the mistakes it makes. And sometimes I think this is one time that I generated a bunch of theory, the help of AI. I didn't look into it and all, but I went to, I went and showed it to my person and for some reason it's like, this is just not good. And he started pointing out the mistakes and all. And I was like, oh , man. You know this in u, UK, if you had sit sat down and did it, you would have clearly saw this. I mean, why do you even check it? I felt so stupid that day of. So there were like some experiences like this. Okay, there, it will give a wrong piece of code. I will go show it to the professor process. He would check the code basically. But then at a later point, I will check. Yeah, I'll be like others. Dismessage, this is mistake. I showed it to him. What would have happened if he had checked the code and she saw it? Yeah, so that I've been, yeah, that's the thing.
+
+Speaker 1 24:29 
+You, so you've had that kind of experiences. So.
+
+Speaker 2 24:32 
+That's, yeah, I've had a lot of experiences where I know these are perfect, which is, yeah.
+
+Speaker 1 24:39 
+So I think you kind of answered some of the following questions, but I'm gonna ask these questions anyway. So what we wanna know is your, after you get your output, did, are you in the habit of verifying the correctness of the output? How often you do it? How do, how do you check? How often do you check?
+
+Speaker 2 25:00 
+How do I check? How often do I check s? Okay, suppose it's like a really important work that it's something really central to the whatever I'm doing. I would first have my objective completed. I have to make sure it, yeah, then I will actually go through every lander coded route. Yeah, so every time it lines writes a piece of code, which I'm sure there's like, okay, I'm going to put it out somewhere for people to see. I will make sure that every line of the code is like I have read each and every line of the port. I'll have to make sure that.
+
+Speaker 2 25:43 
+The second thing is even for assignments that they will have us use, Jenny Snr is there also. I still like to read it. Yeah, I still like, but I'm less nitpicky about the salt. I'm less nitpicky about the what it gives. If it give gets the general point across, I'm like, okay, fine, but I'll still like to read it and please that I don't check there.
+
+Speaker 2 26:19 
+And so set dollars, general queries, you know, people use chat, Gbts, Google these days. I mean, I use chat, Gbts, Google these days. Yes. And so gives, you know, so maybe a new summary. It says, okay, this is the summary of the news that happened. Yeah, week. I would, I wouldn't say, I wouldn't go to that to live site and see if it's so yeah, yeah. So that's my varied level of use.
+
+Speaker 1 26:46 
+So I think primarily your way validation comes from yourself. Most of the time manually, you will verify, check, read line by to make sure. Okay. Okay. The next couple of questions. One is regarding, you know, ChatGPT behavior. I mean, in the case, Jenny, I Behavior Cloud, however, does it come back to you and tell you that it doesn't understand your context very well. Can you provide a little more information? Have you ever had that kind of experience?
+
+Speaker 2 27:22 
+If yes, I mean, I've had only when I have prompted it myself. Because I like to throw in prompts that I said, ask me anything if you don't have unders, I don't if you haven't understood anything. Okay, like if do you need more contact, you can ask me. Other than that, I haven't really gotten. I've seen social media areas about people seeing, getting those, yeah, provide more information. But yeah, but I don't know. It's, I haven't, I have never seen that as like from a very fun like a point and goes like in the sense I give it a question, it gives me an answer. It's always the case. It will give me some answer. Yeah, right or wrong, it always gives me. That's unless I've prompted it. It always gives me some answer.
+
+Speaker 1 28:14 
+So I think I understand clearly. So basically what you're saying is it does not return with more, with the query for a more description, more context, unless you prompt it. That's what it is on its own. It is. Okay. So yeah, I think Italy's with the whatever we've been hearing. And also, you know, the one last time, does it, have you ever had any experience of your. Jenny, I sounding a little unsure of the answer it provided. It gave you some answer. And did it sound like, oh, I'm not so sure whether this will work?
+
+Speaker 2 28:52 
+Not a child. Every day, every time it's like fully confident. And I would say, no, it's wrong. It's like, oh my bad, sorry. Yeah, yeah, then you're absolutely correct. And then it will give the next wrong answer. I was like, no, this is also not correct. As I go, you're absolutely right again, I'm sorry. And it just keeps going on like that. At no point is it like, okay, I'm sure about the answer, right?
+
+Speaker 1 29:16 
+It never gives you that the answer.
+
+Speaker 2 29:19 
+I have noticing.
+
+Speaker 1 29:20 
+How does it impact on your trust when it does that, but it sounds too sure. I.
+
+Speaker 2 29:27 
+Mean, from a, I can think about someone. I mean, you would want advice from a person who is like very sure about things, right? Correct. So you, as we never take advice from a person who's like, I'm not so sure.
+
+Speaker 1 29:45 
+Do you get to trust? Because it sounds. Sure.
+
+Speaker 2 29:50 
+I can't because I know it gets it wrong. Yes. I mean, to a person that doesn't know that makes mistakes, I am. I know why. Why they would think it's more trustworthy. But yeah, you use it long enough and you see the mistakes and that, and petition. That is the fundamental of why I don't trust it. I mean, even if tomorrow it says, okay, I'm not sure about it, still I wouldn't trust it just because it sounds more human also. So I wouldn't trust it.
+
+Speaker 1 30:28 
+Okay. Okay. I mean, in your case, I do not know because use your primary task is the coding. I don't know whether.
+
+Speaker 2 30:38 
+This. I do use ChatGPT. I have use ChatGPT, Cloud, Croc. I've used every mystery, all of them.
+
+Speaker 1 30:45 
+So do you often ask the gen AI to summarize the outputs? Yes, summarize what inputs and lock the scope, lock the sources, lock the exemption, and then proceed from there. And that sort of thing.
+
+Speaker 2 31:02 
+Summaries, I open up summaries of papers. I really, yes, papers. The, I like to be, if I'm reading a paper, it takes a very long time. I like to underline, highlight everything that like I have to understand everything. And most people don't to read papers. Like they just go through it once and they understand the basic. I can't read papers like that. So I'd often have an AI. I'll just upload it and it's like, okay, just give me the, I've come up with creative ways to make sure that it's not just a summary. Yeah, only reduce to be just a summary.
+
+Speaker 2 31:39 
+Now it's more like, okay, tell me what they're doing. I prompted a bit more. Tell me the story. Tell me why they're doing this. What is the novelty of the. Yeah, like explaining sections. And I have, I can prompt it like, okay, explain in sections only when I've understood the section, ask me questions. Yeah, after the section, and if I answer those questions correctly, then only you should move to the, yeah, next section. So yeah, I prompted like that.
+
+Speaker 1 32:09 
+So do you get, can you do that?
+
+Speaker 2 32:12 
+I hope so. I don't know. I still feel that people reading papers is better. But yeah, I can do it. So actually, this is the only I.
+
+Speaker 1 32:24 
+Have. So it will do for now. How about, yeah, ChatGPT. I mean, Jenny, I contradicting itself. Have you ever had any experience where it said something and it contradicted itself late after a while? Oh, you know, like hallucinating.
+
+Speaker 2 32:43 
+Doesn't even have to be after a while. And just the next question, it can contradict itself. Yeah, I've seen this as like, but last time you said this was correct. Oh my bad. Sorry. It comes back to its confidence thing, right? It's very confident about that answer.
+
+Speaker 1 33:03 
+So the contents covers up for all these mistakes it's making, is it?
+
+Speaker 2 33:08 
+But you know, if you're not, you are not going through it, you will be making mistakes. But.
+
+Speaker 1 33:15 
+Yeah, so yeah, roughly how many times do you think you iterate your questions before you can finally conclude your interaction? Oh man, that's on an average. Yeah, I know it depends on the task, but let's say on an average, what is the number of times you would go back and forth?
+
+Speaker 2 33:40 
+Okay, I do see I have a, well, I said I have a subscribe that I have not subscription, but they give me the three thing. I can ask about 300 questions.
+
+Speaker 1 33:52 
+Per month. Do you? I yeah, I know I'm talking about one session, you know, like you have one question or one task and then, yeah, and you go back and forth explaining, getting answers.
+
+Speaker 2 34:05 
+We say, let's say about five to 10.
+
+Speaker 1 34:09 
+Times. Five to 10. Okay. Five to 10. Okay, now I'm gonna go into the, you know, like I just a bit curious about when do you decide to stop either in a, with a good, it's a good conclusion or it's a not so good conclusion. What is the end point? When do you decide? Now.
+
+Speaker 2 34:37 
+For AI, I'm, I'm so I'm stopping using this.
+
+Speaker 1 34:41 
+Sorry, but I think I lost you. Your voice is breaking a bit. I didn't hear.
+
+Speaker 2 34:44 
+Okay. Okay. So you mean the, when do I stop using it? Like, I suppose I'm using it through that way.
+
+Speaker 1 34:53 
+No, I didn't mean stop using it. You know, you start a session, you ask questions. And this one. The question, answer it. You said you're treat five to 10 times at some point. Yes. You said, okay, that's enough. I'm done. When do you decide? Oh, at, yeah.
+
+Speaker 2 35:10 
+As I told you, right, there are a lot of things that you can do yourself. And that I'm the, I'm just lazy that I'm trying to make it to. And so after about five times, it's, if it's not getting it, I mean, it gets on my nerves. I'm like, I can do this better and faster.
+
+Speaker 2 35:28 
+Yeah, at this point, I feel like, or I will be like, okay, let me add some of my own code. I will, and I'll come back at a later point.
+
+Speaker 2 35:40 
+So now that it has, might have some more, but yeah, that's it. I am gonna. Sometimes if the problem is too big, I might give it to a different a I. And like I've had this thing where I would just keep switching answers between 3 or four AIs. I'll just please give it to that and I'll have them discuss what the problem is and each of them will give different answers. Yeah, and I would give take these answers and put it to the other one. And I say like, okay, these are the problems. And it really to defend why it didn't, so those kind of thing. But that used to happen. Now it doesn't. I just do it myself. Yeah, after by themselves.
+
+Speaker 1 36:27 
+Okay. Yeah, but we just brought up something interesting, which is you conclude by either deciding you do it yourself or deciding that I want to run it through another alternate tool. That's, I think, yeah, interesting thing to do. Okay, and moving on to, you know, how the use of this gen AI tool impacts on you, then what you do afterwards, either your work, you know, or your decision making, whatever it is. So I want to ask you whether you have observed any changes, any noticeable changes, either positive or negative, in how you work, how you approach, you know, so it could be in terms of quality, in terms of efficiency, or how you think the depth of your thinking, you know, have you notice any s differences in the way you.
+
+Speaker 2 37:25 
+Yes, I have. I have a lot. I have thought about it a lot. Every, when it gives you a summary, you will feel that you know the answer, but it's so short span, you forget it after some time. I, I don't know, every time I go to a for an answer or to teach me something or I tend to forget about it because if yeah, yeah, in during my college days, I used to go watch YouTube videos and go to class. I'll do good on a quiz or an exam after 3,4 weeks. Don't forget the whole thing. And so this feels like the next step. And I mean, you can't find a YouTube video for everything, yeah, that is being taught in the world. But here it feels like it's not, even though it's not as engage, engage my engage as a YouTube video, but yeah, it is. So that is one effect that I've seen. And another is that I don't know if I, the joy of doing things is also is orders.
+
+Speaker 1 38:45 
+The joy is you find bet more joy or less.
+
+Speaker 2 38:50 
+Sometimes when you write something by yourself or you do a painting by yourself or you make a illustration or whatever, it's a tedious process and like you want to give it to a kind fit journal, your pressure to make it. You go here and it's like, but there is some joy. I think how I figured it out was that my subscription had ended and it was near the month end, 22nd,23rd. And I was so angry because actually I, there is no way I'm paying for a subscription at content. I don't have money. Yeah, I like, okay, I'll do it next. After I get my salary next week, I'll do. So that one week I was coding by myself. And there's this one, as I know, I won't say that I was enjoying every part of it, but there's this one point was enjoying coding so much that I actually felt sad. I'm like, okay, it's it's such it's a such a fun thing to do. And I was reminded, okay, this is why you wanted to do coding. This is why you wanted to do simulations because you found it fun. Now you're just making everything. They. I do everything and that one experience. Yeah. It does.
+
+Speaker 1 40:04 
+I mean, so it takes away when you have the tool.
+
+Speaker 2 40:08 
+Yes, okay. It's good to have a tool. But yeah, of course, the problem solving, you can't take the problem solving element from a way. So yeah, it's good to, I mean, I would, I want to do the problem solving and I want to solve the problem, but when it's have solving the problem also and you don't really find joy in it. Yeah, that's what I felt at least. And then another thing is that, what do I find negative?
+
+Speaker 1 40:44 
+And how about have you noticed improvement in your productivity and all that?
+
+Speaker 2 40:49 
+Yeah, I want to say you feel like it's improved productivity because you're churning out a lot of stuff. But at a very record space.
+
+Speaker 1 40:56 
+Yeah, it will. But is it.
+
+Speaker 2 40:58 
+True? It feels fast because it's writing a lot. But yeah, at least in my work process where I have to both iterate, make it work, and, you know, go through the checking every line support. It still takes a long time. And I don't know if you know, I, if I would have just done it myself, it would have taken the same amount of time. Yeah, I don't know. I have never checked.
+
+Speaker 1 41:32 
+But on the surface, you can say it looks like it's faster.
+
+Speaker 2 41:35 
+Yeah, yes, you it feels faster because you feels seems like you're doing a lot. And then you're cutting off a lot, then you're doing a lot again. Whereas the other way, it's like the rabbit and the daughter is right. The daughter is just like.
+
+Speaker 1 41:49 
+Yes.
+
+Speaker 2 41:49 
+It's slowly going.
+
+Speaker 1 41:52 
+But then you make slow but steady progress. This.
+
+Speaker 2 41:55 
+Yeah, you make slow and steady.
+
+Speaker 1 41:56 
+Yeah, you might.
+
+Speaker 2 41:57 
+Match and fast progress. That's true. You make fast progress, then you undo a lot of that progress, then you do again fast progress.
+
+Speaker 1 42:05 
+I think you made a you made sense also the point about transcend memory. I think, I think that's a very good point that you brought down. How the things that you get as output of chat GBD doesn't stick with you. Whereas if you read a book or if you do Google Scholar search and try to assimilate some knowledge, it stays with you longer. And this one doesn't. So there is that concern. That's very true cognitively. Okay, how about your reliance on Jenny? I, do you ever find yourself depending too much on it?
+
+Speaker 2 42:45 
+Yes. The fact that the, yeah, the fact that I get angry when pay subscription stopped. You feel that you got, yeah, it's like a common man. How am I so dependent on something.
+
+Speaker 1 43:01 
+On your relay? Do you feel that that's a concern?
+
+Speaker 2 43:05 
+Yeah, it's a concern. When at the same time I'm getting work done. Yeah, which I don't know if I could have done would be an experiment on my side. You know what, one month without AI one. But yeah, at this point I you can't escape the AI everywhere, even in you, they made it in your browser. So you, I can't even do a Google, normal Google search and read the first question you ask, it will come out with an AI. And.
+
+Speaker 1 43:35 
+Yeah, so not guessing you.
+
+Speaker 2 43:38 
+So might as well embrace it. I don't know, maybe one month I'll just go with books. I don't know. But yeah.
+
+Speaker 1 43:47 
+Yeah, it's true. You, you, there is no escape from it. Okay. You know, I was wondering whether you treat this tool as a productivity tooler. Do you ever consider this kind of somewhat he like a human collaborator or a partner?
+
+Speaker 2 44:08 
+Oh, oh, I mean, I do speak to it from a like, sometimes I would like to argue about things. I would like, because they have these voicemarks and all. So I, I'll I that point, even though I don't consider the human income. No, I don't. No, it's purely to.
+
+Speaker 1 44:31 
+It's a tool. Yeah, but you do argue or it you challenge the tool. When. Can you give me an example of that challenging it or.
+
+Speaker 2 44:40 
+Wonder if I felt so bored and I heard that when I rolled out with so that GPT had they had.
+
+Speaker 1 44:47 
+For.
+
+Speaker 2 44:48 
+So yeah, I was just talking to it. I like explain to me this. Okay. And eh, from a conversational point of view. Yeah. Okay. The same telling me this is. Yeah, so yeah, so that's the only point I consider. But you soon realize that there also you get it, the snacks where it doesn't understand you. Yeah, you think it's a human being, but it's not. After some point, you realize that it's just that whatever text they're giving, they just added a voice to it. And that the after that I haven't used it. And when it rolled out, I used it. After that I have it.
+
+Speaker 1 45:34 
+Okay. And now let's go into your wish list for your Jenny. I, if you could think of any possible new features, enhancements, can you name like top 3 wish for.
+
+Speaker 2 45:52 
+Future LMS or the AI.
+
+Speaker 1 45:55 
+G? Jenny? Yeah, yeah, we LLM base. I mean one, yeah, LLM base, because the ones that we're talking about is LM base, but then it's shifting away from LLM as well, you know, so don't forget.
+
+Speaker 2 46:08 
+What do I want and LLM to.
+
+Speaker 1 46:10 
+And what do you I generative AI to do for you in future, whether it's or not? Yeah, it doesn't have to be 11. Very good. I mean, I don't know, you, you know, I, I right today, I, we mean, anything that will take an input from you and give you something new, you know, new as and it's not really new, but combining knowledge that's available and then it gives you a picture, a document or essay or code.
+
+Speaker 2 46:42 
+Oh, I mean, s it's doing of them fairly well at this point. I really don't want this part of the LLM part of the, but once, I mean, it's good to have a reliable partner as you say. I don't want it to sound overly confident in situations I, they can fix those kind of things. Yeah, but if I, my wish list for AAS and the feeds that actually matter, you know, the yeah, the protein synthesis, they're using AI to the battery materials manufacturing, they those guys are using AI to solve problems. Yeah, so we have better problems then this, I mean, we can do this. And from whatever I've heard, it's not boosting productivity at all. Because the report came out recently that almost 90 percentage of the companies that pet on AI started losing money because at the end of the year, you need human beings.
+
+Speaker 1 47:46 
+Of course. Yeah, absolutely. I think, yeah, yeah, the best in class is a requirement, especially when there's reliance on AI. Otherwise, the AI will be very mediocre. Let's not talk.
+
+Speaker 2 47:57 
+About. Okay, there's some good that those two are the big, what there were the milestones that companies are trying to reach. Yeah, honors artificial superintelligence and artificial general.
+
+Speaker 1 48:14 
+Intelligence, agin. And.
+
+Speaker 2 48:16 
+So, yeah.
+
+Speaker 1 48:19 
+Okay. That way you've been a user since search Jenny. I came on k became available right to 3 years.
+
+Speaker 2 48:28 
+ChatGPT 3.8,3.0.
+
+Speaker 1 48:30 
+Yeah, yes. So if you want to, if you want to give but like top 3 advice or recommendation to somebody who is new to Jennifer, what will you tell them?
+
+Speaker 2 48:45 
+One is trust but verify. Trust budget.
+
+Speaker 1 48:49 
+Okay.
+
+Speaker 2 48:51 
+Sit all you want, but always verify it. Use it to do the boring tasks while you get to do the like creative parts. There's some guy was telling that, you know, I wanted a to do my laundry so that I could paint.
+
+Speaker 1 49:17 
+Yeah, that's what we wanna.
+
+Speaker 2 49:20 
+So let's try to make it air. Do the boring stuff. Yeah, the stuff you don't want to do. And the v third.
+
+Speaker 1 49:29 
+One, witty.
+
+Speaker 2 49:31 
+But the third one is, it's a tool, nothing more, nothing less. Don't concentrate as a human being. Because people have compared apparently suicides in Japan because they're kind of.
+
+Speaker 1 49:46 
+Yes.
+
+Speaker 2 49:47 
+Do do not do anything more not with dependent on it for anything, any like life advice and stuff. Yeah, yeah, sure. Don't take it too low. Too hard. Yeah, both those will be my three advice.
+
+Speaker 1 50:02 
+Yeah, thank you. Yeah, I think we're almost at the end. Anything else you want to add, Barva? I mean, it can be based on any of the aspects we touched on or just anything, any anecdotes, any experience you wanna share which you think will be relevant, which give us some new insights. Any concluding thoughts, including.
+
+Speaker 2 50:26 
+Thoughts? Yeah, hum. Maybe you're trying to figure it out. Hum, figure out this whole AI stuff. And I think people like you, we, we, you guys are like way far behind when it comes to like actual policing and governing and studying ethics when compared to like the air booming. You can't have a day, every day there is some person coming out of the newer model. Yeah, increased accuracy as so we're living in such a world festival. And so yeah, we're living in such a world. And so whenever we, I don't without any guard rails often leads to problems. That's why we have people, you know, whenever they come up something new, they have people studying the effects of it. So in such a world, I wish people would be more cautious and then excited about the only able.
+
+Speaker 1 51:42 
+Yeah, true. That's okay. Alright, thanks very much. Thank you. I think you've been very candid and yeah, I enjoy talking to you. Okay, you signed up for the experimental study. So if you get chosen, then we probably will get in touch with you again. But let just confirm your phone number, which you provided for pay now. So the number I have, I see here is 8,6,7,9,0,2,7,0.
+
+Speaker 2 52:16 
+Yeah, that's correct.
+
+Speaker 1 52:17 
+Okay, so that's happy. Now my colleague, another member of the team, is dealing with the payment. And usually heat will take about two weeks. I'll be submitting it on Monday, the coming Monday after I conclude the second round of interviews. So if hear anything in two weeks, please email me. Yeah, thank you. Thanks a lot. And all the best you borrow. Thank you. Okay, bye.
+
+Speaker 2 52:44 
+All the best for your status.
+
+Speaker 1 52:45 
+Yeah, thank you.
