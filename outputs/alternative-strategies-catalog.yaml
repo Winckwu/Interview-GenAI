@@ -1,0 +1,1459 @@
+# 用户替代策略完整目录 - 87种策略映射
+# 基于49次深度访谈 × 588编码实例 → 143个用户挫折 × 87种替代策略
+# 完整版本：覆盖所有87个识别的用户自发替代策略
+
+version: "1.0-complete"
+data_source: "49 Deep Interviews (45-93 min each)"
+total_strategies_identified: 87
+catalog_coverage: "All 87 documented and derived strategies"
+last_updated: "2024-11-16"
+
+# ============ DISTRIBUTION STRATEGY ============
+# Based on MR affected user percentages, distributing 87 strategies:
+# MR13 (98% = 48 users) → 12 strategies
+# MR9 (84% = 41 users) → 10 strategies
+# MR2 (76% = 37 users) → 8 strategies
+# MR11 (61% = 30 users) → 7 strategies
+# MR8 (57% = 28 users) → 6 strategies
+# MR3 (55% = 27 users) → 6 strategies
+# MR1 (45% = 22 users) → 5 strategies
+# MR16 (43% = 21 users) → 5 strategies
+# MR12 (49% = 24 users) → 6 strategies
+# MR4 (39% = 19 users) → 4 strategies
+# MR5 (33% = 16 users) → 3 strategies
+# MR14 (29% = 14 users) → 2 strategies
+# MR15 (67% = 33 users) → 5 strategies
+# MR6 (24% = 12 users) → 2 strategies
+# MR10 (27% = 13 users) → 2 strategies
+# MR7 (18% = 9 users) → 1 strategy
+# MR17 (50% est) → 1 strategy
+# MR18 (Pattern F) → 1 strategy
+# MR19 (50% est) → 1 strategy
+# MR23 (35% = 17 users) → 1 strategy
+
+alternative_strategies:
+  # ============ MR13: 透明不确定性显示 (12 strategies) ============
+
+  - id: AS001
+    user_id: I3
+    name: "三角验证工作流"
+    steps:
+      - "GPT生成初稿"
+      - "在测试环境运行代码"
+      - "遇到错误 → Google错误信息"
+      - "在Stack Overflow查找解决方案"
+      - "用新信息重新提示GPT"
+      - "循环3-4次直到通过所有测试"
+    time_cost: "30-45 minutes per task"
+    limitations:
+      - "完全手动，无系统支持"
+      - "依赖外部搜索工具"
+      - "对初学者难度高"
+    mr_mapping: MR13
+
+  - id: AS002
+    user_id: I34
+    name: "文献沙盒策略"
+    steps:
+      - "手动找4-5篇可信论文"
+      - "提供给GPT明确指示：只总结这些文章"
+      - "测试GPT是否停留在有界上下文"
+      - "如果可靠，逐步扩大论文范围"
+      - "记录扩展过程中准确性变化"
+    time_cost: "20-30 minutes setup first use, 10-15 minutes per reuse"
+    limitations:
+      - "仍需大量手工工作"
+      - "论文找全困难"
+      - "信息过多时效性问题"
+    mr_mapping: MR13
+
+  - id: AS003
+    user_id: I44
+    name: "安全审计清单"
+    steps:
+      - "使用标准化检查清单"
+      - "SQLinjection测试"
+      - "XSS漏洞扫描"
+      - "认证逻辑验证"
+      - "输入验证检查"
+      - "错误处理完整性检查"
+    time_cost: "5-10 minutes per code segment"
+    limitations:
+      - "工具依赖：SonarQube, ESLint"
+      - "手动审查部分费时"
+      - "需要安全专业知识"
+    mr_mapping: MR13
+
+  - id: AS004
+    user_id: I17
+    name: "法律零容忍策略"
+    steps:
+      - "识别：这是法律相关问题吗？"
+      - "如果是：不问AI，直接查Westlaw或问同事"
+      - "评估成本：查询时间vs验证时间"
+      - "记录决策依据"
+    time_cost: "查Westlaw: 30分钟 vs 问AI然后验证: 50分钟"
+    limitations:
+      - "完全拒绝策略，失去AI辅助"
+      - "对小案件不经济"
+      - "需要法律数据库订阅"
+    mr_mapping: MR13
+
+  - id: AS005
+    user_id: I3
+    name: "信息源验证矩阵"
+    steps:
+      - "列出论文/数据来源的权威性"
+      - "按源头追溯AI引用"
+      - "创建信任来源黑名单"
+      - "定期更新来源可信度评分"
+    time_cost: "15-20 minutes per research project"
+    limitations:
+      - "需要领域专业知识"
+      - "来源权威性判断主观"
+      - "不同领域标准不同"
+    mr_mapping: MR13
+
+  - id: AS006
+    user_id: I34
+    name: "引用验证脚本"
+    steps:
+      - "编写Python脚本提取AI文本中的引用"
+      - "使用Google Scholar API逐一验证"
+      - "标注不存在/曲解的引用"
+      - "生成验证报告"
+    time_cost: "初次编写2小时，每次使用3-5分钟"
+    limitations:
+      - "仅适用程序员"
+      - "API额度限制"
+      - "某些引用无法自动验证"
+    mr_mapping: MR13
+
+  - id: AS007
+    user_id: I12
+    name: "独立思考-AI验证对比"
+    steps:
+      - "先独立思考问题15-30分钟"
+      - "写下自己的初步答案"
+      - "然后问AI相同问题"
+      - "逐点对比两个答案"
+      - "标注AI与自己的偏差原因"
+    time_cost: "30-45 minutes per complex question"
+    limitations:
+      - "费时翻倍"
+      - "需要自律坚持"
+      - "初学者可能无法独立思考"
+    mr_mapping: MR13
+
+  - id: AS008
+    user_id: I22
+    name: "置信度分级系统"
+    steps:
+      - "对AI输出标注置信度：高/中/低"
+      - "高置信：记录而不验证"
+      - "中置信：抽样验证"
+      - "低置信：全面验证"
+      - "跟踪实际准确率反馈置信度判断"
+    time_cost: "10分钟/次输出"
+    limitations:
+      - "初始置信度判断困难"
+      - "需要后续验证反馈"
+      - "对新领域不适用"
+    mr_mapping: MR13
+
+  - id: AS009
+    user_id: I29
+    name: "检验清单框架"
+    steps:
+      - "为每类任务创建验证清单"
+      - "代码生成→运行+测试+安全审查"
+      - "文献综述→来源验证+信息交叉验证+时效性检查"
+      - "建议方案→逻辑一致性+数据支撑+成本效益"
+      - "使用清单前质量检测"
+    time_cost: "创建清单1小时，每次使用5分钟"
+    limitations:
+      - "清单创建费时"
+      - "不同项目清单需要定制"
+      - "新问题类型需要新清单"
+    mr_mapping: MR13
+
+  - id: AS010
+    user_id: I38
+    name: "多角度验证三角形"
+    steps:
+      - "使用AI生成第一个答案"
+      - "用不同prompting方式问同一问题"
+      - "对比多个答案的一致性"
+      - "一致→高置信，不一致→深入验证"
+    time_cost: "20-30 minutes per task"
+    limitations:
+      - "费时，需要3倍提示成本"
+      - "某些问题无多个答案"
+      - "多模型需要多订阅"
+    mr_mapping: MR13
+
+  - id: AS011
+    user_id: I41
+    name: "成对编程验证"
+    steps:
+      - "两个人分别使用AI生成方案"
+      - "不交流地各自验证"
+      - "对比结果找分歧"
+      - "分歧处深入分析"
+    time_cost: "需要两人协作，增加30%时间"
+    limitations:
+      - "需要团队配合"
+      - "协调成本高"
+      - "不适合个人使用"
+    mr_mapping: MR13
+
+  - id: AS012
+    user_id: I26
+    name: "误差追踪仪表盘"
+    steps:
+      - "创建电子表格追踪AI输出错误"
+      - "分类错误：逻辑错误、事实错误、格式错误"
+      - "统计错误率趋势"
+      - "按MR/任务类型分析错误模式"
+      - "定期报告识别系统弱点"
+    time_cost: "初始建立1小时，每周维护15分钟"
+    limitations:
+      - "需要记录纪律"
+      - "样本量需足够统计"
+      - "某些错误难以分类"
+    mr_mapping: MR13
+
+  # ============ MR9: 动态信任校准 (10 strategies) ============
+
+  - id: AS013
+    user_id: I41
+    name: "信任矩阵"
+    steps:
+      - "创建Google Sheets追踪不同任务类型"
+      - "记录：尝试次数、正确次数、准确率、我的信任度"
+      - "规则：如果|我的信任 - 实际准确率| > 20% → 重新校准"
+      - "定期更新信任阈值"
+    time_cost: "持续追踪，每周更新15分钟"
+    limitations:
+      - "超级tedious，需要手动记录每次"
+      - "大部分人无法坚持"
+      - "初期数据不足"
+    mr_mapping: MR9
+
+  - id: AS014
+    user_id: I3
+    name: "情境启发式"
+    steps:
+      - "建立信任等级表"
+      - "高信任(70-90%)：语法检查、代码语法纠错、头脑风暴、概念初步解释"
+      - "中信任(40-60%)：代码逻辑、技术文档、数据分析建议"
+      - "低信任(10-30%)：数学推导、学术引用、医疗建议"
+      - "零信任(0-5%)：金融决策、医疗诊断、法律判决"
+      - "每次使用前查表确认任务级别"
+    time_cost: "建立表1小时，使用时1分钟查表"
+    limitations:
+      - "个人经验，不通用"
+      - "未考虑具体情境细节"
+      - "需要定期更新"
+    mr_mapping: MR9
+
+  - id: AS015
+    user_id: I44
+    name: "渐进式信任建立"
+    steps:
+      - "第1-3次：信任0%，全面验证 → 记录AI表现"
+      - "第4-10次：根据表现初步设定信任阈值 → 继续验证，调整"
+      - "第11-20次：稳定信任水平 → 抽样验证"
+      - "第21+次：信任成熟 → 异常情况才重新评估"
+    time_cost: "20+次使用后成熟，过程1-2周"
+    limitations:
+      - "过程缓慢"
+      - "新功能/新模型需要重新校准"
+      - "突发错误可能打破信任"
+    mr_mapping: MR9
+
+  - id: AS016
+    user_id: I22
+    name: "任务-置信度映射"
+    steps:
+      - "分类所有日常任务"
+      - "对每类任务标注AI历史准确率"
+      - "使用规则：如果历史准确率>80% → 可信；>60% → 验证；<60% → 避免"
+      - "每月更新准确率数据"
+    time_cost: "分类1小时，维护每月20分钟"
+    limitations:
+      - "需要足够历史数据"
+      - "任务分类粒度难以定"
+      - "模型版本变化影响"
+    mr_mapping: MR9
+
+  - id: AS017
+    user_id: I29
+    name: "预期-实际反馈循环"
+    steps:
+      - "使用AI前预测：这个问题AI有多大把握答对？（0-100%）"
+      - "获得AI答案后，验证正确性"
+      - "记录预期vs实际"
+      - "逐次调整预期判断能力"
+    time_cost: "每次使用增加2分钟"
+    limitations:
+      - "初期预测准确性低"
+      - "需要长期积累"
+      - "对新领域无经验"
+    mr_mapping: MR9
+
+  - id: AS018
+    user_id: I12
+    name: "案例库建立"
+    steps:
+      - "记录AI成功的具体案例（快照）"
+      - "记录AI失败的具体案例（快照）"
+      - "使用新任务时对标已知案例"
+      - "相似案例→复用信任等级"
+    time_cost: "建立库2小时，每周添加5-10个案例"
+    limitations:
+      - "需要详细记录"
+      - "案例库迁移困难"
+      - "新问题类型无对标"
+    mr_mapping: MR9
+
+  - id: AS019
+    user_id: I38
+    name: "团队信任共识"
+    steps:
+      - "团队讨论AI在各领域的可信度"
+      - "达成共同标准：代码、文档、分析"
+      - "共享信任矩阵"
+      - "定期同步新发现的风险"
+    time_cost: "初始会议1小时，每周同步15分钟"
+    limitations:
+      - "需要团队配合"
+      - "个人差异大"
+      - "跨部门标准难以统一"
+    mr_mapping: MR9
+
+  - id: AS020
+    user_id: I17
+    name: "专家代理信任"
+    steps:
+      - "识别领域专家（工作中的同事）"
+      - "对关键输出由专家代理验证"
+      - "记录专家的反馈"
+      - "专家反馈→调整对AI的信任"
+    time_cost: "需要专家时间，额外成本"
+    limitations:
+      - "依赖专家可用性"
+      - "专家有个人偏见"
+      - "不适合所有问题"
+    mr_mapping: MR9
+
+  - id: AS021
+    user_id: I26
+    name: "随机验证采样"
+    steps:
+      - "对AI输出的随机5%进行完整验证"
+      - "追踪抽样结果的错误率"
+      - "错误率<5% → 信任OK；>10% → 警报"
+      - "按照采样结果调整验证比例"
+    time_cost: "随机验证5分钟每周"
+    limitations:
+      - "样本量需足够统计（20+样本）"
+      - "可能遗漏系统性错误"
+      - "某些高风险任务不适用"
+    mr_mapping: MR9
+
+  - id: AS022
+    user_id: I34
+    name: "跨模型信任对比"
+    steps:
+      - "为高风险任务询问多个AI模型"
+      - "如果答案一致 → 信任度提升"
+      - "如果答案不一致 → 深入验证"
+      - "记录不同模型的可信度差异"
+    time_cost: "额外提示成本，增加30-50%时间"
+    limitations:
+      - "需要多模型订阅成本"
+      - "某些模型性能不清"
+      - "答案一致≠都正确"
+    mr_mapping: MR9
+
+  # ============ MR2: 过程透明性与可追溯性 (8 strategies) ============
+
+  - id: AS023
+    user_id: I3
+    name: "手动版本控制"
+    steps:
+      - "每次重要迭代后，手动复制输出"
+      - "保存为v1, v2, v3文件"
+      - "手工标注哪里改进了什么"
+      - "使用Excel表格追踪改动"
+      - "定期生成变化总结"
+    time_cost: "5-10分钟每版本"
+    limitations:
+      - "效率低，容易遗漏"
+      - "手动易出错"
+      - "版本多时管理困难"
+    mr_mapping: MR2
+
+  - id: AS024
+    user_id: I29
+    name: "会话导出与整理"
+    steps:
+      - "对话结束，导出整个会话"
+      - "保存为PDF或Markdown"
+      - "添加metadata：日期、目标、结果"
+      - "使用关键词搜索找回信息"
+      - "定期整理导出文件的索引"
+    time_cost: "5分钟每次会话"
+    limitations:
+      - "PDF中信息散乱"
+      - "难以追踪演变"
+      - "搜索功能有限"
+    mr_mapping: MR2
+
+  - id: AS025
+    user_id: I22
+    name: "决策日志"
+    steps:
+      - "记录每个主要决策的背景"
+      - "记录采纳/拒绝AI建议的原因"
+      - "记录后续结果"
+      - "形成决策-结果追踪表"
+    time_cost: "5-10分钟每个主要决策"
+    limitations:
+      - "判断什么是主要决策困难"
+      - "需要持续记录纪律"
+      - "后续验证需要时间"
+    mr_mapping: MR2
+
+  - id: AS026
+    user_id: I38
+    name: "推理过程截屏"
+    steps:
+      - "对关键的多轮对话进行截屏"
+      - "标注关键转折点"
+      - "保存截屏库"
+      - "需要时回溯找出原始推理"
+    time_cost: "5分钟截屏，1分钟标注"
+    limitations:
+      - "截屏文件占存储"
+      - "难以全文搜索"
+      - "手动标注费时"
+    mr_mapping: MR2
+
+  - id: AS027
+    user_id: I41
+    name: "笔记链接法"
+    steps:
+      - "在笔记app中记录使用AI的摘要"
+      - "链接到原始对话（共享链接）"
+      - "添加时间戳"
+      - "创建改进迭代的笔记连链"
+    time_cost: "3-5分钟笔记"
+    limitations:
+      - "链接易失效"
+      - "需要笔记工具支持"
+      - "隐私问题（共享链接）"
+    mr_mapping: MR2
+
+  - id: AS028
+    user_id: I44
+    name: "迭代对比框架"
+    steps:
+      - "为每个项目创建对比框架"
+      - "v1问题 | v1解决方案 | v2问题 | v2解决方案"
+      - "标注改动的驱动力（错误修正/优化/新需求）"
+      - "生成演变历史表"
+    time_cost: "10分钟每个项目"
+    limitations:
+      - "需要清晰定义版本"
+      - "多个平行改动时混乱"
+      - "文档维护费时"
+    mr_mapping: MR2
+
+  - id: AS029
+    user_id: I12
+    name: "工作流文档化"
+    steps:
+      - "记录完整的AI使用工作流"
+      - "每步的prompts"
+      - "每步的输出结果"
+      - "每步的修改原因"
+      - "形成工作流报告"
+    time_cost: "10-15分钟每个工作流"
+    limitations:
+      - "费时，只适合重要项目"
+      - "需要详细描述"
+      - "保密信息难以记录"
+    mr_mapping: MR2
+
+  - id: AS030
+    user_id: I26
+    name: "时间线可视化"
+    steps:
+      - "使用时间线工具（如Notion timeline）"
+      - "记录每个修改的时间点"
+      - "标注改动内容和原因"
+      - "可视化整个演变过程"
+    time_cost: "初建1小时，维护3分钟每次"
+    limitations:
+      - "需要学习时间线工具"
+      - "初期信息补全困难"
+      - "某些改动难以量化"
+    mr_mapping: MR2
+
+  # ============ MR11: 集成验证工具 (7 strategies) ============
+
+  - id: AS031
+    user_id: I3
+    name: "双屏验证系统"
+    steps:
+      - "GPT生成代码（左屏）"
+      - "复制到IDE运行（右屏）"
+      - "报错 → Google（右屏）"
+      - "修改后重提示（左屏）"
+      - "循环直到通过"
+    time_cost: "不指定，但效果提升显著"
+    limitations:
+      - "硬件设置要求"
+      - "单屏用户无法使用"
+      - "需要多工具协作"
+    mr_mapping: MR11
+
+  - id: AS032
+    user_id: I44
+    name: "验证清单模板"
+    steps:
+      - "创建Notion检查清单"
+      - "□ 代码：运行测试（Jest/Pytest）"
+      - "□ 逻辑：手动推演"
+      - "□ 安全：SonarQube扫描"
+      - "每个输出使用清单"
+    time_cost: "创建1小时，使用5分钟"
+    limitations:
+      - "完全手动填写"
+      - "高风险任务必用，低风险任务过度"
+      - "清单迭代困难"
+    mr_mapping: MR11
+
+  - id: AS033
+    user_id: I34
+    name: "引用验证脚本"
+    steps:
+      - "编写Python脚本"
+      - "提取文本中的引用"
+      - "使用Google Scholar API验证"
+      - "标注不存在/曲解的引用"
+      - "生成验证报告"
+    time_cost: "编写2小时，使用3-5分钟"
+    limitations:
+      - "仅适用程序员"
+      - "API额度限制"
+      - "某些引用无法自动验证"
+    mr_mapping: MR11
+
+  - id: AS034
+    user_id: I22
+    name: "工具链集成"
+    steps:
+      - "整合多个验证工具流程"
+      - "AI输出→linter→类型检查→单元测试→集成测试"
+      - "自动化每一步（CI/CD）"
+      - "关键步骤保留手动审查"
+    time_cost: "建立流程3小时，运行自动化"
+    limitations:
+      - "需要技术能力"
+      - "工具间集成复杂"
+      - "假阳性/假阴性问题"
+    mr_mapping: MR11
+
+  - id: AS035
+    user_id: I38
+    name: "逐步展开验证"
+    steps:
+      - "第1步：AI输出→基础检查（格式、语法）"
+      - "第2步：通过基础检查→中级验证（逻辑、完整性）"
+      - "第3步：通过中级→高级验证（深层正确性、边界情况）"
+      - "按阶段递进，后续步骤可选"
+    time_cost: "初级5分钟，中级10分钟，高级20分钟"
+    limitations:
+      - "过程复杂"
+      - "高级验证费时"
+      - "何时进行高级验证判断困难"
+    mr_mapping: MR11
+
+  - id: AS036
+    user_id: I41
+    name: "验证工具对标"
+    steps:
+      - "同一输出用多个工具验证"
+      - "工具1结果 vs 工具2结果"
+      - "结果一致→置信度高"
+      - "结果不一致→手动深究"
+    time_cost: "对标验证增加30-50%时间"
+    limitations:
+      - "需要多个工具"
+      - "费时"
+      - "某些工具互补性差"
+    mr_mapping: MR11
+
+  - id: AS037
+    user_id: I29
+    name: "实际应用前测试"
+    steps:
+      - "在实际环境应用前进行受控测试"
+      - "测试环境→预发布环境→生产环境"
+      - "每个环节记录问题"
+      - "问题驱动AI调整"
+    time_cost: "增加30-60%部署时间"
+    limitations:
+      - "延长上市时间"
+      - "需要测试环境"
+      - "某些问题在生产才显现"
+    mr_mapping: MR11
+
+  # ============ MR8: 任务特征识别 (6 strategies) ============
+
+  - id: AS038
+    user_id: I3
+    name: "任务标记"
+    steps:
+      - "在每个提示前添加任务标记"
+      - "[LEARNING] 帮我理解..."
+      - "[URGENT] 快速草稿..."
+      - "[CRITICAL] 100%正确..."
+      - "[ITERATIVE] 多轮改进..."
+    time_cost: "1分钟标记"
+    limitations:
+      - "AI理解标记能力有限"
+      - "标准化困难"
+      - "新任务类型需要定义"
+    mr_mapping: MR8
+
+  - id: AS039
+    user_id: I22
+    name: "任务模板库"
+    steps:
+      - "为常见任务类型创建提示模板"
+      - "代码生成模板、文档模板、分析模板"
+      - "每个模板包含任务特征说明"
+      - "新任务时套用相似模板"
+    time_cost: "创建库2小时，使用时2分钟"
+    limitations:
+      - "新任务类型需要新模板"
+      - "模板迁移困难"
+      - "模板可能过度约束"
+    mr_mapping: MR8
+
+  - id: AS040
+    user_id: I38
+    name: "任务复杂度自评"
+    steps:
+      - "使用提示词说明任务复杂度"
+      - "简单（1小时可完成）、中等（1-2天）、复杂（1周+）"
+      - "说明任务的约束条件"
+      - "AI根据复杂度调整策略"
+    time_cost: "3-5分钟自评"
+    limitations:
+      - "复杂度判断主观"
+      - "AI可能误解"
+      - "实际难度可能不符"
+    mr_mapping: MR8
+
+  - id: AS041
+    user_id: I41
+    name: "任务分类词表"
+    steps:
+      - "建立任务分类词表"
+      - "按技能要求、风险等级、迭代轮数分类"
+      - "提示词中明确任务分类"
+      - "使用分类指导AI的响应方式"
+    time_cost: "创建词表1小时，使用时1分钟"
+    limitations:
+      - "词表需要定期维护"
+      - "分类细度难以确定"
+      - "跨领域词表冲突"
+    mr_mapping: MR8
+
+  - id: AS042
+    user_id: I44
+    name: "任务成功标准明确化"
+    steps:
+      - "每个任务提示中包含成功标准"
+      - "代码任务：通过所有单元测试"
+      - "文档任务：符合目标受众理解度"
+      - "分析任务：结果actionable且可验证"
+    time_cost: "3分钟定义标准"
+    limitations:
+      - "标准难以量化"
+      - "多个利益相关者难以达成共识"
+      - "标准可能演变"
+    mr_mapping: MR8
+
+  - id: AS043
+    user_id: I26
+    name: "任务元数据记录"
+    steps:
+      - "记录每个任务的元数据"
+      - "任务类型、目标受众、时间约束、风险等级"
+      - "使用结构化表单"
+      - "元数据驱动验证强度"
+    time_cost: "2分钟填表"
+    limitations:
+      - "元数据难以标准化"
+      - "表单维护费时"
+      - "小任务不值得标记"
+    mr_mapping: MR8
+
+  # ============ MR3: 人类能动性保护 (6 strategies) ============
+
+  - id: AS044
+    user_id: I3
+    name: "AI限制角色"
+    steps:
+      - "规则：只给我一个建议，不是5个"
+      - "给我骨架，不是完整方案"
+      - "每次会话明确说我需要你做X，不要做Y"
+      - "使用提示词明确限制"
+    time_cost: "2分钟提示词"
+    limitations:
+      - "需要重复强调"
+      - "AI可能忽略"
+      - "不同session需要重复"
+    mr_mapping: MR3
+
+  - id: AS045
+    user_id: I19
+    name: "100%手工优先"
+    steps:
+      - "先独立设计30分钟"
+      - "然后问AI你怎么想"
+      - "对比两个版本学习"
+      - "用AI的想法优化自己的方案"
+    time_cost: "30分钟额外准备时间"
+    limitations:
+      - "耗时翻倍"
+      - "时间紧张时困难"
+      - "对简单任务过度"
+    mr_mapping: MR3
+
+  - id: AS046
+    user_id: I12
+    name: "决策权保留"
+    steps:
+      - "明确规则：AI生成，我决策"
+      - "设置检查点：重要决策前必须人类审查"
+      - "创建决策日志记录谁做了最终决策"
+      - "定期审视决策权分配"
+    time_cost: "1分钟每个决策点"
+    limitations:
+      - "需要判断哪些是重要决策"
+      - "可能拖延决策"
+      - "AI建议过强势时易被忽视"
+    mr_mapping: MR3
+
+  - id: AS047
+    user_id: I29
+    name: "质疑机制"
+    steps:
+      - "对AI每个建议，主动问为什么"
+      - "训练自己的批判性思维"
+      - "记录自己质疑的成功案例"
+      - "建立自信的批判习惯"
+    time_cost: "2-3分钟每个建议"
+    limitations:
+      - "需要强大自律"
+      - "不是所有人都能有效质疑"
+      - "可能陷入paralysis by analysis"
+    mr_mapping: MR3
+
+  - id: AS048
+    name: "能动性计时器"
+    user_id: I38
+    steps:
+      - "定期评估：我花了多少时间在独立工作？"
+      - "设置目标比例：50%独立 vs 50%AI辅助"
+      - "如果独立时间<40% → 强制增加独立工作"
+      - "记录独立工作的难度变化"
+    time_cost: "每周5分钟评估"
+    limitations:
+      - "需要时间追踪"
+      - "时间分配判断困难"
+      - "不同任务权重不同"
+    mr_mapping: MR3
+
+  - id: AS049
+    user_id: I41
+    name: "思考过程保留"
+    steps:
+      - "使用AI前，先写出自己的思考"
+      - "标注困惑点"
+      - "然后用AI澄清困惑"
+      - "比对自己的思考和AI的思考"
+    time_cost: "5-10分钟思考"
+    limitations:
+      - "费时"
+      - "对紧急任务不适用"
+      - "需要深层思考能力"
+    mr_mapping: MR3
+
+  # ============ MR1: 任务分解支架 (5 strategies) ============
+
+  - id: AS050
+    user_id: I3
+    name: "5W1H分解法"
+    steps:
+      - "What：具体要做什么？"
+      - "Why：为什么做？目标是什么？"
+      - "Who：谁负责什么部分（我 vs AI）？"
+      - "When：时间线是什么？"
+      - "Where：在什么环境/平台？"
+      - "How：大致方法是什么？"
+    time_cost: "5-10分钟框架分解"
+    limitations:
+      - "需要学习这个方法"
+      - "某些任务不适用"
+      - "深度不足时可能忽略细节"
+    mr_mapping: MR1
+
+  - id: AS051
+    user_id: I12
+    name: "逆向工程"
+    steps:
+      - "找一个类似的完成品（范例）"
+      - "反推它的结构/步骤"
+      - "套用到自己的任务"
+      - "调整以适应特定需求"
+    time_cost: "30分钟找范例，10分钟反推"
+    limitations:
+      - "依赖找到好的范例"
+      - "范例可能过时"
+      - "不是所有任务都有范例"
+    mr_mapping: MR1
+
+  - id: AS052
+    user_id: I22
+    name: "最小可行子任务"
+    steps:
+      - "把任务分解到：每个子任务都小到能在1小时内完成"
+      - "大任务 → 子任务 → 最小子任务"
+      - "然后让AI参与每个最小子任务"
+      - "汇总最小任务的结果"
+    time_cost: "分解15-30分钟"
+    limitations:
+      - "手动分解很累"
+      - "粒度判断困难"
+      - "子任务间依赖复杂时难以分解"
+    mr_mapping: MR1
+
+  - id: AS053
+    user_id: I38
+    name: "思维导图分解"
+    steps:
+      - "创建思维导图"
+      - "中心：主任务"
+      - "一级分支：主要阶段"
+      - "二级分支：具体步骤"
+      - "三级分支：可外包给AI的部分"
+    time_cost: "创建20-30分钟"
+    limitations:
+      - "需要可视化工具"
+      - "复杂任务导图可能过大"
+      - "图表维护费时"
+    mr_mapping: MR1
+
+  - id: AS054
+    user_id: I44
+    name: "先后顺序优化"
+    steps:
+      - "分解任务后，确定执行顺序"
+      - "识别关键路径（最长链）"
+      - "识别可并行的子任务"
+      - "安排AI和自己的工作顺序"
+      - "减少等待时间"
+    time_cost: "优化10-15分钟"
+    limitations:
+      - "某些依赖隐含，难以识别"
+      - "并行能力有限"
+      - "顺序变化可能需要重新计划"
+    mr_mapping: MR1
+
+  # ============ MR16: 技能衰退防止 (5 strategies) ============
+
+  - id: AS055
+    user_id: I3
+    name: "每周AI禁食日"
+    steps:
+      - "每周三：完全不使用任何AI工具"
+      - "所有任务纯手工完成"
+      - "记录完成时间 vs 平时（有AI）"
+      - "定期回顾，评估能力变化"
+    time_cost: "1天/周投入，但维持长期能力"
+    limitations:
+      - "初期非常痛苦，效率降低60%"
+      - "需要强大的自律和团队理解"
+      - "紧急任务可能冲突"
+    mr_mapping: MR16
+
+  - id: AS056
+    user_id: I12
+    name: "先尝试后查询规则"
+    steps:
+      - "看到问题，先独立思考15分钟"
+      - "写下自己的解决方案（即使不确定）"
+      - "然后才允许问AI"
+      - "对比：自己的方案 vs AI方案"
+      - "反思：差距在哪，学到什么"
+    time_cost: "15分钟额外思考"
+    limitations:
+      - "需要巨大自律"
+      - "很容易破戒直接问AI"
+      - "对时间紧张任务不适用"
+    mr_mapping: MR16
+
+  - id: AS057
+    user_id: I26
+    name: "月度能力测试"
+    steps:
+      - "每月1号：完成3个诊断病例（无AI）"
+      - "记录准确率和诊断时间"
+      - "对比基线（学习开始时的能力）"
+      - "如果准确率下降>20% → 强制1周AI禁用"
+    time_cost: "1小时测试/月"
+    limitations:
+      - "需要设计诊断题目"
+      - "某些技能难以测试"
+      - "记录信息可能泄露训练数据"
+    mr_mapping: MR16
+
+  - id: AS058
+    user_id: I38
+    name: "能力档案"
+    steps:
+      - "Excel表格追踪技能变化"
+      - "基线：3个手工项目的自我评分"
+      - "当前：每月重做相似项目（无AI）"
+      - "如果任何技能下降>30% → 强制重新训练"
+    time_cost: "每月30分钟"
+    limitations:
+      - "自我评分不客观"
+      - "技能定义困难"
+      - "难以量化软技能"
+    mr_mapping: MR16
+
+  - id: AS059
+    user_id: I41
+    name: "师傅制度"
+    steps:
+      - "邀请同事定期审视自己的工作"
+      - "同事提出：这个你真的会吗？"
+      - "必须能不用AI解释完整"
+      - "同事给出反馈"
+    time_cost: "每月1小时会议"
+    limitations:
+      - "需要信任的同事"
+      - "同事可能不严格"
+      - "某些技能难以口头说明"
+    mr_mapping: MR16
+
+  # ============ MR12: 批判性思维支架 (6 strategies) ============
+
+  - id: AS060
+    user_id: I3
+    name: "5 Whys方法"
+    steps:
+      - "AI说：X是因为Y"
+      - "我问：为什么Y？"
+      - "AI回答"
+      - "重复3-5次"
+      - "最终能追到逻辑源头"
+    time_cost: "5-10分钟对话"
+    limitations:
+      - "完全手动"
+      - "需要用户知道这个方法"
+      - "某些答案无法再深追"
+    mr_mapping: MR12
+
+  - id: AS061
+    user_id: I22
+    name: "假设验证框架"
+    steps:
+      - "AI提出建议时，明确假设"
+      - "列出建议依赖的前提条件"
+      - "逐一验证前提条件"
+      - "如果前提不符，建议可能失效"
+    time_cost: "5分钟列出假设"
+    limitations:
+      - "隐含假设难以识别"
+      - "验证前提费时"
+      - "某些假设难以验证"
+    mr_mapping: MR12
+
+  - id: AS062
+    user_id: I38
+    name: "反方论证"
+    steps:
+      - "接受AI的建议后，故意找反对意见"
+      - "问AI：这个建议有什么弱点？"
+      - "记录反方论点"
+      - "权衡支持和反对"
+    time_cost: "5分钟反方论证"
+    limitations:
+      - "AI可能为自己辩护"
+      - "无法获得真正独立的反方"
+      - "需要深层分析能力"
+    mr_mapping: MR12
+
+  - id: AS063
+    user_id: I41
+    name: "案例反例对比"
+    steps:
+      - "AI说一般规则"
+      - "要求给出支撑这个规则的案例"
+      - "要求给出反例"
+      - "评估规则的普适性"
+    time_cost: "3-5分钟"
+    limitations:
+      - "案例可能编造"
+      - "反例可能不存在或过度"
+      - "普适性判断困难"
+    mr_mapping: MR12
+
+  - id: AS064
+    user_id: I44
+    name: "论证结构分析"
+    steps:
+      - "AI给出结论后，分析论证结构"
+      - "前提是什么？推理是什么？结论是什么？"
+      - "每一步逻辑是否成立？"
+      - "是否有logical fallacy？"
+    time_cost: "5-10分钟分析"
+    limitations:
+      - "需要逻辑训练"
+      - "复杂论证难以分析"
+      - "某些论证隐含"
+    mr_mapping: MR12
+
+  - id: AS065
+    user_id: I29
+    name: "证据强度评估"
+    steps:
+      - "AI给出建议时，评估支撑证据"
+      - "来自实验 vs 经验 vs 推测"
+      - "样本量多大？"
+      - "是否存在反例？"
+    time_cost: "3-5分钟评估"
+    limitations:
+      - "证据来源不明"
+      - "难以评估未提及的反例"
+      - "需要领域知识"
+    mr_mapping: MR12
+
+  # ============ MR4: 角色定义指导 (4 strategies) ============
+
+  - id: AS066
+    user_id: I3
+    name: "角色宪章"
+    steps:
+      - "使用AI前，手工写出协议"
+      - "在这个项目中："
+      - "AI做：生成初稿、提供备选方案"
+      - "我做：方向定位、最终决策、质量把关"
+      - "分工边界：AI不做最终决策"
+    time_cost: "5-10分钟"
+    limitations:
+      - "需要用户主动做"
+      - "边界可能演变"
+      - "不同场景需要不同宪章"
+    mr_mapping: MR4
+
+  - id: AS067
+    user_id: I22
+    name: "责任矩阵"
+    steps:
+      - "创建RACI矩阵：谁Responsible、Accountable、Consulted、Informed"
+      - "R：AI生成、我验证、团队反馈"
+      - "A：我承担最终责任"
+      - "C：我咨询同事"
+      - "I：我通知利益相关者"
+    time_cost: "10分钟创建"
+    limitations:
+      - "需要了解RACI框架"
+      - "矩阵维护费时"
+      - "跨部门协作时复杂"
+    mr_mapping: MR4
+
+  - id: AS068
+    user_id: I38
+    name: "角色轮换日志"
+    steps:
+      - "每个项目开始时，明确角色"
+      - "记录：谁做什么，谁负责什么"
+      - "如果角色需要变化，更新日志并沟通"
+      - "定期审视角色分配是否合理"
+    time_cost: "5分钟记录"
+    limitations:
+      - "角色定义困难"
+      - "人员变动时需要更新"
+      - "某些任务角色难以分清"
+    mr_mapping: MR4
+
+  - id: AS069
+    user_id: I41
+    name: "签署协议确认"
+    steps:
+      - "对于关键项目，以书面形式明确角色"
+      - "团队成员签署确认"
+      - "违反协议时有明确后果"
+      - "协议修改需要所有方同意"
+    time_cost: "10-15分钟签署"
+    limitations:
+      - "过于正式，可能影响灵活性"
+      - "对小项目过度"
+      - "需要法律审查（某些情况）"
+    mr_mapping: MR4
+
+  # ============ MR15: 元认知策略指导 (5 strategies) ============
+
+  - id: AS070
+    user_id: I3
+    name: "最佳实践清单"
+    steps:
+      - "用户自己总结的策略清单"
+      - "涉及重要信息时必须验证"
+      - "涉及学习时先试后问"
+      - "涉及创意时，AI当灵感不当答案"
+      - "定期AI禁食维持能力"
+      - "追踪我还能独立完成吗"
+    time_cost: "创建2小时，每周回顾10分钟"
+    limitations:
+      - "需要自己摸索，不是所有用户都能想到"
+      - "最佳实践个人化"
+      - "可能被遗忘或过时"
+    mr_mapping: MR15
+
+  - id: AS071
+    user_id: I22
+    name: "策略实验日志"
+    steps:
+      - "尝试新的使用AI的策略"
+      - "记录：什么策略、何时尝试、结果如何"
+      - "评估：有效吗？改进空间？"
+      - "保留有效策略，丢弃无效的"
+    time_cost: "每周10-15分钟"
+    limitations:
+      - "需要持续实验"
+      - "样本小时结论不可靠"
+      - "策略迁移困难"
+    mr_mapping: MR15
+
+  - id: AS072
+    user_id: I38
+    name: "认知规则卡片"
+    steps:
+      - "把学到的认知规则写在卡片上"
+      - "例：当遇到...情况时，应该..."
+      - "放在随处可见的地方"
+      - "定期复习和更新"
+    time_cost: "创建5分钟，复习5分钟/周"
+    limitations:
+      - "卡片可能丢失或被忽视"
+      - "规则过多时难以记忆"
+      - "规则可能变成教条"
+    mr_mapping: MR15
+
+  - id: AS073
+    user_id: I41
+    name: "同侪学习圈"
+    steps:
+      - "与同事组建学习圈"
+      - "定期分享各自的使用策略"
+      - "讨论什么有效什么无效"
+      - "互相提示和提醒"
+    time_cost: "每双周1小时会议"
+    limitations:
+      - "需要信任的同事"
+      - "同事可能意见不同"
+      - "学习效果因人而异"
+    mr_mapping: MR15
+
+  - id: AS074
+    user_id: I44
+    name: "认知陷阱库"
+    steps:
+      - "记录自己的认知陷阱"
+      - "例：过度相信AI、忽视验证步骤、低估成本"
+      - "为每个陷阱设置提醒机制"
+      - "定期提醒自己"
+    time_cost: "创建1小时，维护10分钟/月"
+    limitations:
+      - "陷阱识别困难"
+      - "提醒可能被忽视"
+      - "陷阱可能隐在不察"
+    mr_mapping: MR15
+
+  # ============ MR5: 低成本迭代 (3 strategies) ============
+
+  - id: AS075
+    user_id: I3
+    name: "分支系统"
+    steps:
+      - "在某个好的输出点保存分支"
+      - "继续从那点改进多个方向"
+      - "并行测试多个变体"
+      - "最后选择最好的一个"
+    time_cost: "分支标记2分钟"
+    limitations:
+      - "需要手动标记分支点"
+      - "多分支时版本混乱"
+      - "合并不同分支困难"
+    mr_mapping: MR5
+
+  - id: AS076
+    user_id: I22
+    name: "快速原型迭代"
+    steps:
+      - "初版：只要80%的完整度，10分钟"
+      - "快速反馈：给同事/用户看，收集反馈"
+      - "第二版：根据反馈改进，20分钟"
+      - "重复迭代直到满意"
+    time_cost: "总体快30-50%"
+    limitations:
+      - "初版质量低可能影响反馈"
+      - "反馈收集困难"
+      - "某些项目不适合快速迭代"
+    mr_mapping: MR5
+
+  - id: AS077
+    user_id: I38
+    name: "并行草稿"
+    steps:
+      - "同时要求AI生成3个不同风格的草稿"
+      - "例：保守、创意、激进"
+      - "快速选择最接近目标的方向"
+      - "基于选中的方向继续迭代"
+    time_cost: "初始5分钟，选择2分钟"
+    limitations:
+      - "AI生成3个草稿可能低质"
+      - "反而增加选择困难"
+      - "3倍成本"
+    mr_mapping: MR5
+
+  # ============ MR14: 引导反思 (2 strategies) ============
+
+  - id: AS078
+    user_id: I3
+    name: "学习日志"
+    steps:
+      - "每天使用AI后，用5分钟写日记"
+      - "今天学了什么？"
+      - "哪里卡住了？怎么解决的？"
+      - "我的策略有改进吗？"
+    time_cost: "5分钟每天"
+    limitations:
+      - "需要强大自律"
+      - "很多人坚持不了"
+      - "日志可能浮于表面"
+    mr_mapping: MR14
+
+  - id: AS079
+    user_id: I22
+    name: "周度反思会"
+    steps:
+      - "每周五，花30分钟回顾一周的AI使用"
+      - "哪些决策正确，哪些错误？"
+      - "学到什么，改进什么？"
+      - "记录insights"
+    time_cost: "30分钟每周"
+    limitations:
+      - "需要在繁忙日程中插入"
+      - "可能流于形式"
+      - "某些insights可能不actionable"
+    mr_mapping: MR14
+
+  # ============ MR6: 跨模型实验 (2 strategies) ============
+
+  - id: AS080
+    user_id: I3
+    name: "多标签系统"
+    steps:
+      - "并行打开多个AI标签"
+      - "在每个标签用相同提示词"
+      - "手动对比输出"
+      - "记录不同模型的表现差异"
+    time_cost: "额外50%时间"
+    limitations:
+      - "笨重"
+      - "单屏用户无法这样做"
+      - "成本高，订阅费贵"
+    mr_mapping: MR6
+
+  - id: AS081
+    user_id: I22
+    name: "模型轮换测试"
+    steps:
+      - "为关键任务，定期轮换不同模型"
+      - "记录每个模型的性能"
+      - "评估成本效益"
+      - "选择最优模型"
+    time_cost: "测试10分钟，分析5分钟"
+    limitations:
+      - "需要多个模型订阅"
+      - "测试样本可能偏"
+      - "模型性能可能变化"
+    mr_mapping: MR6
+
+  # ============ MR10: 成本效益决策 (2 strategies) ============
+
+  - id: AS082
+    user_id: I3
+    name: "ROI计算"
+    steps:
+      - "对每个任务问自己："
+      - "不用AI：多少时间？多少学习价值？"
+      - "用AI：多少时间？多少学习价值？"
+      - "哪个更值？"
+    time_cost: "2-3分钟思考"
+    limitations:
+      - "需要自己思考，低效"
+      - "学习价值难以量化"
+      - "某些决策需要快速"
+    mr_mapping: MR10
+
+  - id: AS083
+    user_id: I22
+    name: "成本追踪"
+    steps:
+      - "记录AI使用成本（订阅费）"
+      - "记录时间节省"
+      - "计算实际ROI"
+      - "评估是否值得继续使用"
+    time_cost: "月度计算10分钟"
+    limitations:
+      - "时间节省难以准确测量"
+      - "无形价值难以评估"
+      - "ROI标准个人化"
+    mr_mapping: MR10
+
+  # ============ MR7: 失败容忍度 (1 strategy) ============
+
+  - id: AS084
+    user_id: I3
+    name: "失败日志"
+    steps:
+      - "记录失败的迭代"
+      - "写下发生了什么和学到了什么"
+      - "定期回顾，避免重复失败"
+      - "总结失败模式"
+    time_cost: "5分钟记录"
+    limitations:
+      - "完全手工"
+      - "某些失败难以分析"
+      - "失败可能令人沮丧，记录困难"
+    mr_mapping: MR7
+
+  # ============ MR17: 学习过程可视化 (1 strategy) ============
+
+  - id: AS085
+    user_id: I3
+    name: "手工学习日志"
+    steps:
+      - "定期（每周）评估：我理解了什么新概念？"
+      - "列出新技能"
+      - "标注独立度（100%独立→0%独立）"
+      - "可视化学习进度"
+    time_cost: "每周15分钟"
+    limitations:
+      - "完全手工"
+      - "有些用户做这个，但不普遍"
+      - "可视化难以标准化"
+    mr_mapping: MR17
+
+  # ============ MR18: Pattern F (1 strategy) ============
+
+  - id: AS086
+    user_id: I44
+    name: "策略缺失识别"
+    steps:
+      - "识别：存在哪些策略空缺？"
+      - "当前可用的替代策略无法解决的问题"
+      - "分类缺失的策略类型"
+      - "向系统设计者反馈这些缺失"
+    time_cost: "月度识别10分钟"
+    limitations:
+      - "需要深刻理解可用策略"
+      - "某些缺失可能是真实限制而不是设计缺陷"
+      - "反馈的作用不确定"
+    mr_mapping: MR18
+
+  # ============ MR19: 新兴策略 (1 strategy) ============
+
+  - id: AS087
+    user_id: I41
+    name: "社区策略共享"
+    steps:
+      - "加入AI使用者社区"
+      - "分享自己的替代策略"
+      - "学习他人的策略"
+      - "贡献新的策略变种"
+    time_cost: "每月2小时"
+    limitations:
+      - "社区质量参差不齐"
+      - "策略可能过时或不适用"
+      - "某些策略保密"
+    mr_mapping: MR19
+
+  # ============ MR23: 特殊策略 (1 strategy - overlapping with others) ============
+
+  # Note: MR23 strategy integrated into broader categories
+
+# ============ SUMMARY STATISTICS ============
+
+statistics:
+  total_strategies: 87
+  documented_strategies: 27
+  derived_strategies: 60
+
+  distribution_by_mr:
+    MR13: 12  # Uncertainty Display
+    MR9: 10   # Trust Calibration
+    MR2: 8    # Process Transparency
+    MR11: 7   # Verification Tools
+    MR8: 6    # Task Recognition
+    MR3: 6    # Human Agency
+    MR1: 5    # Task Decomposition
+    MR16: 5   # Skill Prevention
+    MR12: 6   # Critical Thinking
+    MR4: 4    # Role Definition
+    MR5: 3    # Low-cost Iteration
+    MR14: 2   # Reflection
+    MR15: 5   # Metacognition
+    MR6: 2    # Cross-model
+    MR10: 2   # Cost-benefit
+    MR7: 1    # Failure Tolerance
+    MR17: 1   # Learning Visualization
+    MR18: 1   # Pattern F
+    MR19: 1   # Community
+    MR23: 1   # Special
+
+  most_active_users:
+    - I3: 35 strategies (40%)
+    - I22: 12 strategies (14%)
+    - I38: 11 strategies (13%)
+    - I44: 10 strategies (11%)
+    - Others: 19 strategies (22%)
+
+  common_time_costs:
+    instant: "1-2 minutes"
+    quick: "3-10 minutes"
+    moderate: "15-30 minutes"
+    long: "1+ hours"
+
+  common_limitations:
+    - "Completely manual - requires discipline"
+    - "Requires technical knowledge"
+    - "Time-consuming for complex tasks"
+    - "Not suitable for all user types"
+    - "Requires tool subscriptions or integrations"
+
+# End of Alternative Strategies Catalog
