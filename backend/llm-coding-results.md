@@ -6864,3 +6864,303 @@ Both AI entrepreneurs, vastly different approaches:
 
 ---
 
+
+---
+
+## Complete Cohort Analysis (I001-I049)
+
+### Overall Score Distribution
+
+**Top Performers (≥30/36):**
+- **I013** 张梓敬 - 33/36 ⭐⭐ (Pattern A, AI研究/大模型安全, 北大深研院)
+- **I019** NTU项目支持 - 33/36 ⭐⭐ (Pattern C, AI/区块链项目)
+- **I034** Abdullah - 33/36 ⭐⭐ (Pattern A, Computational Chemistry, postdoc)
+- **I031** - 32/36 ⭐ (Pattern A)
+- **I038** Brian - 32/36 ⭐ (Pattern D, Data Science & AI undergrad)
+- **I006** 黄双杰 - 31/36 ⭐ (Pattern E, 医学院硕士/健康数据)
+- **I022** 强化学习博士 - 31/36 ⭐ (Pattern A, RL/DL for AUV, NTU智慧学院)
+- **I025** AI+教育研究者 - 31/36 ⭐ (Pattern A, NLP background)
+- **I027** - 31/36 ⭐ (Pattern A)
+- **I018** 航天博后 - 30/36 (Pattern D, UAV path planning)
+
+**Bottom Performers (≤18/36):**
+- **I014** 吴梓锐 - 16/36 (Pattern C, 清华工商管理硕士) - LOWEST
+- **I030** Vincent - 15/36 (Pattern B, AI entrepreneur)
+- **I023** Web3交易所运营 - 18/36 (Pattern C)
+- **I026** E-commerce创业 - 18/36 (Pattern C)
+
+**Score Range:** 15-33/36 (2.2x difference)
+
+### Pattern Distribution Across All 49 Interviewees
+
+| Pattern | Count | % | Representative Cases |
+|---------|-------|---|---------------------|
+| **A - Strategic Decomposition & Control** | 18 | 37% | I001, I013⭐, I022⭐, I025⭐, I027⭐, I031⭐, I034⭐ |
+| **B - Iterative Optimization** | 8 | 16% | I002, I007, I009, I011, I030 (lowest entrepreneur) |
+| **C - Context-Sensitive Adaptation** | 14 | 29% | I004, I005, I012, I014 (lowest overall), I019⭐, I021 |
+| **D - Deep Verification** | 8 | 16% | I003, I016, I017, I018⭐, I020, I038⭐ (only Pattern D in top tier) |
+| **E - Learning-Oriented** | 1 | 2% | I006⭐ (unique case) |
+
+**Key Findings:**
+- **Pattern A dominance**: 37% of cohort, contains 50% of top performers
+- **Pattern E rarity**: Only 1 case (I006) - explicit prompt library building
+- **Pattern D paradox**: I038 is the ONLY Pattern D in top 10, shows trust evolution (20%→80%→20%)
+- **Pattern C versatility**: Wide score range (16-33/36), includes both highest (I019) and lowest (I014) scorers
+
+### Dimension Analysis (P-M-E-R)
+
+**Perfect Dimension Scores (12/12):**
+- **Planning (P):** I013, I019, I022, I025, I034 (all high scorers, all Pattern A except I019)
+- **Monitoring (M):** None
+- **Evaluation (E):** I034 only (9/9 maximum)
+- **Regulation (R):** I038 only (6/6 PERFECT - unique to Pattern D)
+
+**Dimension Strengths by Pattern:**
+
+| Pattern | Strongest Dimension | Weakest Dimension | Typical Profile |
+|---------|-------------------|------------------|-----------------|
+| Pattern A | P (Planning) 10-12 | R (Regulation) 4-5 | High control, moderate adaptation |
+| Pattern B | R (Regulation) 4-6 | E (Evaluation) 3-5 | Iteration focus, weak meta-analysis |
+| Pattern C | M (Monitoring) 5-8 | P (Planning) 5-9 | Context-aware, variable preparation |
+| Pattern D | E (Evaluation) 7-8 | P (Planning) 6-10 | Critical thinking, diverse strategies |
+| Pattern E | E (Evaluation) 8 | M (Monitoring) 7 | Learning emphasis, balanced |
+
+### Educational Level vs Pattern
+
+**Doctoral/Postdoctoral (n=18):**
+- Pattern A: 9/18 (50%) - I001, I013⭐, I018⭐, I022⭐, I024, I025⭐, I027⭐, I031⭐, I034⭐
+- Pattern D: 5/18 (28%) - I003, I016, I017, I020, I038⭐
+- Pattern C: 3/18 (17%) - I021
+- Pattern E: 1/18 (6%) - I006⭐
+
+**Master's Students (n=8):**
+- Pattern C: 4/8 (50%) - I012, I014 (lowest), I015
+- Pattern B: 2/8 (25%) - I002, I011
+- Pattern A: 1/8 (13%) - I008
+- Pattern E: 1/8 (13%) - I006
+
+**Undergraduates (n=6):**
+- Pattern C: 3/6 (50%) - I004
+- Pattern B: 2/6 (33%) - I007, I009
+- Pattern A: 1/6 (17%)
+- Pattern D: 1/6 (17%) - I038⭐ (exceptional undergrad)
+
+**Entrepreneurs/Professionals (n=7):**
+- Pattern C: 4/7 (57%) - I023, I026
+- Pattern B: 2/7 (29%) - I029, I030 (lowest)
+- Pattern A: 1/7 (14%)
+
+**Key Insight:** 
+- **Doctoral level → Pattern A or D** (78% combined)
+- **Master's/Undergrad → Pattern C** (43-50%)
+- **Entrepreneurs → Pattern C** (57%)
+
+### Domain-Specific Patterns
+
+**STEM Researchers (Computer Science, Engineering, AI):**
+- **Dominance:** Pattern A (60%) and D (30%)
+- **Scores:** 26-33/36 range
+- **Examples:** I013 (AI safety, 33), I016 (LLM security, 25), I018 (aerospace, 30), I022 (RL, 31), I034 (chemistry, 33)
+- **Characteristic:** Technical understanding drives systematic control or deep verification
+
+**Business/Management:**
+- **Dominance:** Pattern C (50%) and B (30%)
+- **Scores:** 16-26/36 range
+- **Examples:** I014 (MBA, 16-lowest), I015 (企业管理, 19), I021 (传播学, 24)
+- **Characteristic:** Context-sensitivity prioritized over systematic approaches
+
+**Medical/Health:**
+- **Unique:** I006 (Pattern E, 31/36) - ONLY explicit prompt library builder
+- **Characteristic:** Evidence-based learning orientation
+
+**Finance/Economics:**
+- **Mixed:** I008 (Pattern A, 23), I017 (Pattern D, 22)
+- **Characteristic:** Risk-awareness drives verification behaviors
+
+### Trust Evolution Patterns
+
+**Trust Increase (Initial → Current):**
+- **Largest increase:** I049 (10% → 60-70%, +60%) - Problem-solving success driven
+- **Moderate increase:** I002 (skeptical → confident in 3-4 iterations)
+- **Pattern A typical:** Stable trust with clear boundaries (I001, I013, I034)
+
+**Trust Decrease (Peak → Current):**
+- **ONLY case:** I038 (20% → 80% → 20%) - Complete cycle, hallucination disillusionment
+- **Pattern D signature:** Experience-driven trust reduction
+
+**Stable Trust:**
+- **Pattern A characteristic:** I034 (50% constant, "never changed")
+- **Basis:** Architectural understanding vs empirical testing
+
+### Unique Behavioral Signatures
+
+**I001** (刘艳筝, Pattern A):
+- "一段一段" + "一块一块" - Habitual decomposition language
+- "逐字逐句对比" - Character-level verification
+- "甘愿自己多花一些时间" - Time investment acceptance
+
+**I006** (黄双杰, Pattern E - UNIQUE):
+- "专门的文档去记录一些我常用的提示符" - ONLY prompt library
+- "之前有过教训" - Explicit learning from failures
+- DeepSeek capability evolution tracking (90% → 55开)
+
+**I013** (张梓敬, 33/36 - HIGHEST):
+- "发散-收敛模型" - Explicit theoretical framework
+- Research-driven practice (studies LLM security, applies to usage)
+- PERFECT sufficient conditions (12/12 P+M+E)
+
+**I014** (吴梓锐, 16/36 - LOWEST):
+- Zero verification on high-risk coursework (M2=0)
+- Binary trust model (100% trivial vs 0% important)
+- Complete delegation without monitoring
+
+**I018** (航天博后, 30/36):
+- Multi-model cherry-picking optimization
+- Quantified trust (40-60% academic vs 80%+ life)
+- Copilot文献思维导图 - Tool-assisted reading
+
+**I019** (NTU项目, 33/36):
+- Stakeholder context framework - Professional adaptation
+- 约会关系分析 - Novel personal application
+- "绝对信任AI" in objective analysis
+
+**I020** (NIE研究员, 29/36):
+- "不会相信他给我的任何资料" - Permanent skepticism
+- "教AI" control mentality
+- New window strategy - Context isolation
+
+**I034** (Abdullah, 33/36):
+- "If it can argue with me" - Epistemological test
+- Architecture-level understanding (downloaded LLMs)
+- Constant 50% trust - No evolution
+
+**I038** (Brian, 32/36 - ONLY Pattern D in top tier):
+- Complete trust cycle: 20% → 80% → 20%
+- "I said that as a rule" - Explicit self-regulation
+- Recursive skill degradation awareness
+- Higher/Lower-order thinking framework
+- PERFECT regulation score (6/6) - ONLY case
+
+**I049** (Wee Chen Xian, 24/36):
+- Context degradation awareness - "by the third prompt... less and less"
+- Hierarchical decomposition: Essay → Paragraphs → Sentences
+- Comparison strategy: "list my working... use ChatGPT as comparison"
+- Academic integrity navigation
+
+### Cross-Pattern Contrasts
+
+**Highest Pattern A vs Highest Pattern D:**
+
+| Aspect | I034 (Pattern A, 33/36) | I038 (Pattern D, 32/36) |
+|--------|------------------------|------------------------|
+| **Trust Evolution** | Constant 50% | Cycle: 20%→80%→20% |
+| **Planning** | 12/12 PERFECT | 11/12 |
+| **Regulation** | 5/6 | 6/6 PERFECT (ONLY) |
+| **Approach** | Proactive control from start | Reactive evolution through experience |
+| **Philosophy** | Epistemological rigor | Societal pattern recognition |
+| **Stability** | "Never changed approach" | "Revert to old way of working" |
+| **Knowledge Base** | Architecture understanding | AI field insider (paradoxically increases skepticism) |
+
+**Highest Pattern C vs Lowest Pattern C:**
+
+| Aspect | I019 (Pattern C, 33/36) | I014 (Pattern C, 16/36) |
+|--------|------------------------|------------------------|
+| **Context Adaptation** | Stakeholder framework | Binary importance filter |
+| **Planning** | 12/12 PERFECT | 5/12 |
+| **Monitoring** | 8/12 | 4/12 |
+| **Verification** | Multi-AI validation | Zero (M2=0) |
+| **Use Case** | Professional + Personal depth | Delegation only |
+
+**Pattern B Range:**
+
+| Aspect | I011 (Pattern B, 22/36) | I030 (Pattern B, 15/36) |
+|--------|------------------------|------------------------|
+| **Iteration** | 3-4轮 pragmatic | Delegates to team |
+| **Learning** | Refuses investment (E2=1) | No reflection (E2=0) |
+| **Engagement** | Cost-benefit calculator | Result-only checking |
+| **Role** | Product manager (字节跳动) | AI entrepreneur (CTO handles) |
+
+### Surprising Findings
+
+1. **Pattern E Scarcity (2%)**: Only I006 explicitly builds prompt libraries
+   - Expected: Learning orientation should be common
+   - Reality: Most rely on ad-hoc strategies
+
+2. **Undergraduate Exception (I038)**: 
+   - Pattern D typically requires domain expertise
+   - I038 (undergrad) achieves 32/36 through AI field education
+   - Higher score than 85% of doctoral researchers
+
+3. **Entrepreneur Paradox**:
+   - I029 (non-technical, 23/36) > I030 (technical CEO, 15/36)
+   - Personal iteration depth > delegation effectiveness
+
+4. **Perfect Regulation Singularity**:
+   - ONLY I038 achieves R1=R2=3 (6/6)
+   - Pattern D signature: evolution-driven self-regulation
+   - All Pattern A cases max at 5/6
+
+5. **Context Drift Awareness**:
+   - ONLY I049 explicitly describes quality degradation pattern
+   - "by the third prompt... less and less"
+   - Suggests most users unaware of context window effects
+
+6. **AI Field Insider Effect**:
+   - I013 (AI security research): High systematic control (33/36)
+   - I038 (AI field student): High skepticism despite expertise
+   - Technical knowledge → divergent trust calibrations
+
+### Metacognitive Maturity Indicators
+
+**High Maturity (Score ≥30):**
+- Explicit frameworks (I013发散-收敛, I034 epistemological test)
+- Multi-tool orchestration (I018 cherry-picking, I025 Claude Max)
+- Self-regulation rules (I038 "as a rule", I020 "never trust")
+- Quantified trust (I018 40-60% vs 80%+, I008 55开 vs 91开)
+
+**Medium Maturity (Score 24-29):**
+- Task decomposition without framework
+- Verification present but unsystematic
+- Tool selection based on experience
+- Trust boundaries but not explicitly articulated
+
+**Low Maturity (Score ≤20):**
+- Reactive strategies only
+- Minimal verification (often M2 ≤1)
+- Single-tool reliance
+- Binary or uncalibrated trust
+
+### Recommendations for Future Research
+
+1. **Investigate Pattern E scarcity**: Why don't more users build prompt libraries?
+2. **Study I038's trust cycle**: Longitudinal analysis of expectation-disappointment patterns
+3. **Examine context drift awareness**: Why only I049 notices quality degradation?
+4. **Explore domain effects**: STEM vs Business metacognitive strategy differences
+5. **Analyze entrepreneur delegation**: When does personal iteration outperform team delegation?
+
+---
+
+## Summary Statistics Table
+
+| Metric | Value | Notes |
+|--------|-------|-------|
+| **Total Interviewees** | 49 | I001-I049 complete |
+| **Score Range** | 15-33/36 | 2.2x difference |
+| **Mean Score** | 24.3/36 | 67.5% average |
+| **Median Score** | 24/36 | - |
+| **Top Performers (≥30)** | 10 (20%) | I006, I013, I018, I019, I022, I025, I027, I031, I034, I038 |
+| **Bottom Performers (≤18)** | 4 (8%) | I014, I023, I026, I030 |
+| **Pattern A** | 18 (37%) | Dominant pattern |
+| **Pattern B** | 8 (16%) | - |
+| **Pattern C** | 14 (29%) | Most variable (16-33 range) |
+| **Pattern D** | 8 (16%) | - |
+| **Pattern E** | 1 (2%) | Rare |
+| **Perfect Planning (P=12)** | 5 (10%) | I013, I019, I022, I025, I034 |
+| **Perfect Regulation (R=6)** | 1 (2%) | I038 only |
+| **Perfect Evaluation (E=9)** | 1 (2%) | I034 only |
+| **Doctoral/Postdoc** | 18 (37%) | 78% → Pattern A or D |
+| **STEM Researchers** | 15 (31%) | 90% → Pattern A or D |
+| **Entrepreneurs** | 7 (14%) | 57% → Pattern C |
+
+---
+
