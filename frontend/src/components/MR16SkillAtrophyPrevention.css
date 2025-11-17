@@ -1,0 +1,676 @@
+/**
+ * MR16: Skill Atrophy Prevention System - Styling
+ * Responsive design with dark mode support
+ */
+
+.mr16-skill-atrophy-prevention {
+  --mr16-primary: #2196f3;
+  --mr16-success: #4caf50;
+  --mr16-warning: #ff9800;
+  --mr16-danger: #f44336;
+  --mr16-bg: #ffffff;
+  --mr16-text: #212121;
+  --mr16-border: #e0e0e0;
+  --mr16-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --mr16-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: var(--mr16-text);
+  background-color: var(--mr16-bg);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .mr16-skill-atrophy-prevention {
+    --mr16-bg: #121212;
+    --mr16-text: #e0e0e0;
+    --mr16-border: #424242;
+  }
+}
+
+/* Header */
+.mr16-header {
+  margin-bottom: 32px;
+  border-bottom: 2px solid var(--mr16-border);
+  padding-bottom: 16px;
+}
+
+.mr16-header h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--mr16-text);
+}
+
+.mr16-header p {
+  margin: 0;
+  color: rgba(var(--mr16-text), 0.7);
+  font-size: 14px;
+}
+
+/* Container */
+.mr16-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Sections */
+.mr16-section {
+  background: var(--mr16-bg);
+  border: 1px solid var(--mr16-border);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: var(--mr16-shadow);
+}
+
+.mr16-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--mr16-border);
+}
+
+.mr16-section-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mr16-text);
+}
+
+.mr16-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mr16-text);
+}
+
+/* Skills Overview */
+.mr16-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.mr16-skill-card {
+  padding: 16px;
+  border: 2px solid var(--mr16-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--mr16-bg);
+}
+
+.mr16-skill-card:hover {
+  border-color: var(--mr16-primary);
+  box-shadow: var(--mr16-shadow-lg);
+}
+
+.mr16-skill-card.selected {
+  border-color: var(--mr16-primary);
+  background: rgba(33, 150, 243, 0.05);
+  box-shadow: var(--mr16-shadow-lg);
+}
+
+.mr16-skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.mr16-skill-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: var(--mr16-text);
+}
+
+.mr16-atrophy-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-transform: capitalize;
+}
+
+.mr16-skill-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mr16-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mr16-metric .label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(var(--mr16-text), 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mr16-metric .value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--mr16-primary);
+}
+
+/* Progress Bar */
+.mr16-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--mr16-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.mr16-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--mr16-primary), var(--mr16-success));
+  transition: width 0.3s ease;
+}
+
+.mr16-progress-bar.large {
+  height: 12px;
+}
+
+/* Empty State */
+.mr16-empty-state,
+.mr16-empty-message {
+  text-align: center;
+  padding: 24px;
+  color: rgba(var(--mr16-text), 0.6);
+  font-size: 14px;
+}
+
+/* Warning Banner */
+.mr16-section.warning-banner {
+  border-left-width: 4px;
+  padding: 20px;
+  background: rgba(244, 67, 54, 0.05);
+}
+
+.mr16-warning-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mr16-warning-text {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--mr16-text);
+}
+
+.mr16-suggested-actions,
+.mr16-resources {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 12px 16px;
+  border-radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .mr16-suggested-actions,
+  .mr16-resources {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.mr16-suggested-actions h5,
+.mr16-resources h5 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mr16-text);
+}
+
+.mr16-suggested-actions ul,
+.mr16-resources ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.mr16-suggested-actions li,
+.mr16-resources li {
+  font-size: 14px;
+  color: rgba(var(--mr16-text), 0.8);
+  margin-bottom: 6px;
+}
+
+/* Health Profile */
+.mr16-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.mr16-profile-item {
+  padding: 16px;
+  background: rgba(33, 150, 243, 0.05);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mr16-profile-item .label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(var(--mr16-text), 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mr16-profile-item .value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mr16-primary);
+}
+
+.mr16-profile-item .value.status {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Risk Gauge */
+.mr16-risk-gauge {
+  width: 100%;
+  height: 6px;
+  background: var(--mr16-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.mr16-risk-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Session History */
+.mr16-sessions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mr16-session-item {
+  padding: 12px;
+  background: rgba(33, 150, 243, 0.03);
+  border-left: 3px solid var(--mr16-primary);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mr16-session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mr16-session-header .time {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(var(--mr16-text), 0.6);
+}
+
+.mr16-session-header .category {
+  background: var(--mr16-primary);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.mr16-session-metrics {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: rgba(var(--mr16-text), 0.7);
+}
+
+/* Maintenance Section */
+.mr16-section.maintenance-prompt {
+  background: rgba(76, 175, 80, 0.05);
+  border-left: 4px solid var(--mr16-success);
+}
+
+.mr16-maintenance-plan {
+  gap: 16px;
+}
+
+.mr16-progress-badge {
+  background: var(--mr16-success);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mr16-plan-info {
+  background: rgba(33, 150, 243, 0.05);
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.mr16-plan-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: rgba(var(--mr16-text), 0.8);
+}
+
+.mr16-plan-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0;
+}
+
+.mr16-progress-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(var(--mr16-text), 0.7);
+}
+
+.mr16-plan-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--mr16-border);
+}
+
+.mr16-plan-task {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  border-left: 3px solid var(--mr16-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .mr16-plan-task {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.mr16-task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mr16-task-description {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--mr16-text);
+  line-height: 1.4;
+}
+
+.mr16-task-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mr16-task-meta .difficulty {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.mr16-task-meta .difficulty.easy {
+  background: rgba(76, 175, 80, 0.2);
+  color: #2e7d32;
+}
+
+.mr16-task-meta .difficulty.medium {
+  background: rgba(255, 152, 0, 0.2);
+  color: #e65100;
+}
+
+.mr16-task-meta .difficulty.hard {
+  background: rgba(244, 67, 54, 0.2);
+  color: #c62828;
+}
+
+@media (prefers-color-scheme: dark) {
+  .mr16-task-meta .difficulty.easy {
+    color: #81c784;
+  }
+  .mr16-task-meta .difficulty.medium {
+    color: #ffb74d;
+  }
+  .mr16-task-meta .difficulty.hard {
+    color: #ef5350;
+  }
+}
+
+.mr16-task-meta .time {
+  font-size: 12px;
+  color: rgba(var(--mr16-text), 0.6);
+}
+
+.mr16-task-meta .ai-disabled {
+  background: rgba(244, 67, 54, 0.2);
+  color: var(--mr16-danger);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Buttons */
+.mr16-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: none;
+}
+
+.mr16-button.primary {
+  background: var(--mr16-primary);
+  color: white;
+}
+
+.mr16-button.primary:hover {
+  background: #1976d2;
+  box-shadow: var(--mr16-shadow-lg);
+}
+
+.mr16-button.secondary {
+  background: var(--mr16-border);
+  color: var(--mr16-text);
+}
+
+.mr16-button.secondary:hover {
+  background: #bdbdbd;
+}
+
+/* Modal */
+.mr16-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.mr16-modal {
+  background: var(--mr16-bg);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.mr16-modal h3 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--mr16-text);
+}
+
+/* Form Groups */
+.mr16-form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mr16-form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mr16-text);
+}
+
+.mr16-form-group input,
+.mr16-form-group select {
+  padding: 10px 12px;
+  border: 1px solid var(--mr16-border);
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--mr16-bg);
+  color: var(--mr16-text);
+  font-family: inherit;
+}
+
+.mr16-form-group input:focus,
+.mr16-form-group select:focus {
+  outline: none;
+  border-color: var(--mr16-primary);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.mr16-form-group small {
+  font-size: 12px;
+  color: rgba(var(--mr16-text), 0.6);
+}
+
+.mr16-modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--mr16-border);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mr16-skill-atrophy-prevention {
+    padding: 16px;
+  }
+
+  .mr16-header {
+    margin-bottom: 24px;
+  }
+
+  .mr16-header h2 {
+    font-size: 24px;
+  }
+
+  .mr16-skills-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .mr16-profile-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mr16-section {
+    padding: 16px;
+  }
+
+  .mr16-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .mr16-button {
+    width: 100%;
+  }
+
+  .mr16-modal-buttons {
+    flex-direction: column-reverse;
+  }
+}
+
+@media (max-width: 480px) {
+  .mr16-skill-atrophy-prevention {
+    padding: 12px;
+  }
+
+  .mr16-header h2 {
+    font-size: 20px;
+  }
+
+  .mr16-skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mr16-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mr16-modal {
+    padding: 16px;
+  }
+
+  .mr16-skill-metrics {
+    gap: 4px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .mr16-skill-card,
+  .mr16-button,
+  .mr16-progress-fill,
+  .mr16-risk-fill {
+    transition: none;
+  }
+}
+
+/* Focus states for keyboard navigation */
+.mr16-skill-card:focus-visible,
+.mr16-button:focus-visible {
+  outline: 3px solid var(--mr16-primary);
+  outline-offset: 2px;
+}
