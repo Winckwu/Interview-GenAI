@@ -5,7 +5,8 @@ import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'ax
  * Handles authentication, error handling, and request/response interceptors
  */
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// 使用相对路径，让 Vite 代理处理
+const API_BASE_URL = '/api';
 
 /**
  * Create axios instance with base configuration

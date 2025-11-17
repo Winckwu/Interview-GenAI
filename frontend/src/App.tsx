@@ -23,11 +23,7 @@ import LoadingSpinner from './components/common/LoadingSpinner';
  * Redirects to login if user is not authenticated
  */
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthStore();
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -40,25 +36,19 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
  * Main App component with routing configuration
  */
 const App: React.FC = () => {
-  const { isAuthenticated, loading, checkAuth } = useAuthStore();
+  const { checkAuth, loading } = useAuthStore();
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Check authentication on app load
   useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        await checkAuth();
-      } catch (error) {
-        console.error('Auth initialization error:', error);
-      } finally {
-        setIsInitialized(true);
-      }
+    const initialize = async () => {
+      await checkAuth();
+      setIsInitialized(true);
     };
 
-    initializeAuth();
+    initialize();
   }, [checkAuth]);
 
-  if (!isInitialized) {
+  if (!isInitialized || loading) {
     return <LoadingSpinner fullScreen />;
   }
 
@@ -94,8 +84,8 @@ const App: React.FC = () => {
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
-        {/* Catch-all - Redirect to dashboard */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Catch-all - Redirect to login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );
