@@ -18,7 +18,7 @@ const DashboardPage: React.FC = () => {
     fetchPatterns();
     fetchPredictions();
     fetchEvolutions();
-  }, [fetchPatterns, fetchPredictions, fetchEvolutions]);
+  }, []);
 
   if (loading) {
     return <LoadingSpinner message="Loading dashboard..." />;
