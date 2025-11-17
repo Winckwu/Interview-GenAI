@@ -47,7 +47,7 @@ app.use((req: Request, _res: Response, next) => {
 // Health Check Endpoints
 // ============================================================================
 
-app.get('/health', asyncHandler(async (req: Request, res: Response) => {
+app.get('/health', asyncHandler(async (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -55,17 +55,17 @@ app.get('/health', asyncHandler(async (req: Request, res: Response) => {
   });
 }));
 
-app.get('/health/detailed', asyncHandler(async (req: Request, res: Response) => {
+app.get('/health/detailed', asyncHandler(async (_req: Request, res: Response) => {
   try {
     // Check database
-    const dbTest = await pool.query('SELECT NOW()');
-    const dbHealth = dbTest.rows.length > 0 ? 'ok' : 'failed';
+    await pool.query('SELECT NOW()');
+    const dbHealth = 'ok';
 
-    // Check Redis
+    // Check Redis (optional)
     const redisHealth = redisClient.isReady ? 'ok' : 'disconnected';
 
     res.json({
-      status: dbHealth === 'ok' && redisHealth === 'ok' ? 'ok' : 'degraded',
+      status: dbHealth === 'ok' ? 'ok' : 'degraded',
       database: dbHealth,
       redis: redisHealth,
       timestamp: new Date().toISOString(),
@@ -87,7 +87,7 @@ app.get('/health/detailed', asyncHandler(async (req: Request, res: Response) => 
 app.use('/api/auth', authRoutes);
 
 // Placeholder routes - to be implemented
-app.get('/api/users/:userId', authenticateToken, asyncHandler(async (req: Request, res: Response) => {
+app.get('/api/users/:userId', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
   res.json({
     success: true,
     data: { message: 'User endpoint ready' },
@@ -95,7 +95,7 @@ app.get('/api/users/:userId', authenticateToken, asyncHandler(async (req: Reques
   });
 }));
 
-app.get('/api/patterns', authenticateToken, asyncHandler(async (req: Request, res: Response) => {
+app.get('/api/patterns', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
   res.json({
     success: true,
     data: [],
@@ -104,7 +104,7 @@ app.get('/api/patterns', authenticateToken, asyncHandler(async (req: Request, re
   });
 }));
 
-app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (req: Request, res: Response) => {
+app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
   res.json({
     success: true,
     data: { message: 'Prediction endpoint ready' },
@@ -112,7 +112,7 @@ app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (req:
   });
 }));
 
-app.get('/api/evolution', authenticateToken, asyncHandler(async (req: Request, res: Response) => {
+app.get('/api/evolution', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
   res.json({
     success: true,
     data: [],
@@ -139,12 +139,20 @@ let server: any;
 
 export const startServer = async () => {
   try {
-    // Initialize Redis
-    await redisClient.connect();
-    console.log('✓ Redis connected');
+    // Initialize Redis (optional - don't fail if Redis is not available)
+    if (NODE_ENV !== 'development') {
+      try {
+        await redisClient.connect();
+        console.log('✓ Redis connected');
+      } catch (redisError) {
+        console.warn('⚠ Redis connection failed (optional in development)');
+      }
+    } else {
+      console.log('ℹ Redis skipped in development mode');
+    }
 
     // Test database connection
-    const result = await pool.query('SELECT NOW()');
+    await pool.query('SELECT NOW()');
     console.log('✓ Database connected');
 
     // Start Express server
@@ -166,7 +174,11 @@ export const stopServer = async () => {
   return new Promise<void>((resolve) => {
     if (server) {
       server.close(async () => {
-        await redisClient.quit();
+        try {
+          await redisClient.quit();
+        } catch (e) {
+          // Redis might not be connected
+        }
         console.log('Server stopped');
         resolve();
       });

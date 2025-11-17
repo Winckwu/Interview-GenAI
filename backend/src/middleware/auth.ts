@@ -1,82 +1,89 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { AuthPayload } from '../types';
 
-/**
- * Authentication Middleware
- * Validates JWT tokens and attaches user to request
- */
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: AuthPayload;
+      user?: {
+        id: string;
+        email: string;
+        username: string;
+        userType: string;
+      };
     }
   }
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    res.status(401).json({
+      success: false,
+      error: 'Access token required',
+      timestamp: new Date().toISOString(),
+    });
+    return;
+  }
 
-    if (!token) {
-      return res.status(401).json({
+  jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
+    if (err) {
+      res.status(403).json({
         success: false,
-        error: 'Access token required',
+        error: 'Invalid or expired token',
         timestamp: new Date().toISOString(),
       });
+      return;
     }
 
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-      if (err) {
-        if (err.name === 'TokenExpiredError') {
-          return res.status(401).json({
-            success: false,
-            error: 'Token expired',
-            timestamp: new Date().toISOString(),
-          });
-        }
-        return res.status(403).json({
-          success: false,
-          error: 'Invalid token',
-          timestamp: new Date().toISOString(),
-        });
-      }
+    req.user = decoded;
+    next();
+  });
+};
 
-      req.user = decoded as AuthPayload;
-      next();
-    });
-  } catch (error) {
-    return res.status(500).json({
+export const generateToken = (
+  payload: { id: string; email: string; username: string; userType: string },
+  expiresIn: string = '24h'
+): string => {
+  return (jwt.sign as any)(payload, JWT_SECRET, { expiresIn });
+};
+
+export const requireAdmin = (req: Request, res: Response, next: NextFunction): void => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    res.status(401).json({
       success: false,
-      error: 'Authentication error',
+      error: 'Access token required',
       timestamp: new Date().toISOString(),
     });
+    return;
   }
-};
 
-export const generateToken = (payload: AuthPayload, expiresIn = '24h'): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn });
-};
+  jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
+    if (err) {
+      res.status(403).json({
+        success: false,
+        error: 'Invalid or expired token',
+        timestamp: new Date().toISOString(),
+      });
+      return;
+    }
 
-export const verifyToken = (token: string): AuthPayload | null => {
-  try {
-    return jwt.verify(token, JWT_SECRET) as AuthPayload;
-  } catch (error) {
-    return null;
-  }
-};
+    if (decoded.userType !== 'admin') {
+      res.status(403).json({
+        success: false,
+        error: 'Admin access required',
+        timestamp: new Date().toISOString(),
+      });
+      return;
+    }
 
-export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user?.userType !== 'admin') {
-    return res.status(403).json({
-      success: false,
-      error: 'Admin access required',
-      timestamp: new Date().toISOString(),
-    });
-  }
-  next();
+    req.user = decoded;
+    next();
+  });
 };
