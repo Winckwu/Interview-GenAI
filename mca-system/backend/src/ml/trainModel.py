@@ -460,15 +460,19 @@ def main():
     csv_path = None
     dataset_name = None
 
-    # Priority 1: Hybrid dataset (recommended)
-    if (current_dir / 'hybrid_training_data.csv').exists():
+    # Priority 1: Enhanced dataset (with targeted B & D samples)
+    if (current_dir / 'enhanced_training_data.csv').exists():
+        csv_path = current_dir / 'enhanced_training_data.csv'
+        dataset_name = "Enhanced"
+    # Priority 2: Hybrid dataset (recommended)
+    elif (current_dir / 'hybrid_training_data.csv').exists():
         csv_path = current_dir / 'hybrid_training_data.csv'
         dataset_name = "Hybrid"
-    # Priority 2: Augmented dataset
+    # Priority 3: Augmented dataset
     elif (current_dir / 'augmented_training_data.csv').exists():
         csv_path = current_dir / 'augmented_training_data.csv'
         dataset_name = "Augmented"
-    # Priority 3: Original dataset
+    # Priority 4: Original dataset
     elif (current_dir / 'training_data.csv').exists():
         csv_path = current_dir / 'training_data.csv'
         dataset_name = "Original"
