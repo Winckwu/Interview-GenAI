@@ -67,7 +67,7 @@ api.interceptors.response.use(
           withCredentials: true,
         });
 
-        const { token } = response.data;
+        const { token } = response.data.data || response.data;
 
         // Update token in localStorage
         const authState = JSON.parse(localStorage.getItem('auth-storage') || '{}');

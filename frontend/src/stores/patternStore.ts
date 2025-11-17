@@ -125,14 +125,14 @@ export const usePatternStore = create<PatternState>((set, get) => ({
         context,
       });
 
-      const newPrediction = response.data;
+      const newPrediction = response.data.data;
       set({
         predictions: [...get().predictions, newPrediction],
       });
 
       return newPrediction;
     } catch (error: any) {
-      const errorMsg = error.response?.data?.message || 'Failed to create prediction';
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Failed to create prediction';
       set({ error: errorMsg });
       throw error;
     } finally {
