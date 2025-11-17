@@ -412,12 +412,31 @@ def main():
 
     # Paths
     current_dir = Path(__file__).parent
-    csv_path = current_dir / 'training_data.csv'
+
+    # Try datasets in priority order: Hybrid > Augmented > Original
+    csv_path = None
+    dataset_name = None
+
+    # Priority 1: Hybrid dataset (recommended)
+    if (current_dir / 'hybrid_training_data.csv').exists():
+        csv_path = current_dir / 'hybrid_training_data.csv'
+        dataset_name = "Hybrid"
+    # Priority 2: Augmented dataset
+    elif (current_dir / 'augmented_training_data.csv').exists():
+        csv_path = current_dir / 'augmented_training_data.csv'
+        dataset_name = "Augmented"
+    # Priority 3: Original dataset
+    elif (current_dir / 'training_data.csv').exists():
+        csv_path = current_dir / 'training_data.csv'
+        dataset_name = "Original"
+
     output_dir = current_dir / 'models'
 
-    if not csv_path.exists():
-        print(f"❌ Training data not found: {csv_path}")
+    if csv_path is None or not csv_path.exists():
+        print(f"❌ No training data found!")
         return
+
+    print(f"📊 Using {dataset_name} Dataset: {csv_path.name}")
 
     # 1. Load data
     df, X, y = load_training_data(str(csv_path))
