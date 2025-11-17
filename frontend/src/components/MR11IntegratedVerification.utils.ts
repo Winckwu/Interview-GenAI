@@ -1,0 +1,340 @@
+/**
+ * MR11: Integrated Verification Tools - Utilities
+ *
+ * Provide one-click verification for different content types without
+ * automatically verifying (maintaining user responsibility for evaluation).
+ * Support Pattern A (Expert Delegation) and D (Safety-First) users.
+ */
+
+export type VerificationMethod = 'code-execution' | 'cross-reference' | 'calculation' | 'citation-check' | 'syntax-check' | 'fact-check';
+export type VerificationStatus = 'unverified' | 'pending' | 'verified' | 'error-found' | 'partially-verified';
+export type ContentType = 'code' | 'math' | 'citation' | 'fact' | 'text';
+export type UserDecision = 'accept' | 'modify' | 'reject' | 'skip';
+
+export interface VerifiableContent {
+  id: string;
+  contentType: ContentType;
+  content: string;
+  flagged: boolean;
+  verificationMethod?: VerificationMethod;
+}
+
+export interface VerificationResult {
+  contentId: string;
+  verificationMethod: VerificationMethod;
+  toolUsed: string;
+  status: VerificationStatus;
+  matchesAIOutput: boolean;
+  confidence: number; // 0-1
+  findings: string[];
+  discrepancies: string[];
+  suggestions: string[];
+  timestamp: Date;
+}
+
+export interface VerificationLog {
+  id: string;
+  contentId: string;
+  result: VerificationResult;
+  userDecision: UserDecision;
+  userNotes?: string;
+  correctnessBeforeVerification?: boolean;
+  correctnessAfterVerification?: boolean;
+}
+
+export interface VerificationStatistics {
+  totalVerified: number;
+  errorsFound: number;
+  errorRate: number; // 0-1
+  byContentType: Record<ContentType, { total: number; errors: number; rate: number }>;
+  byVerificationMethod: Record<VerificationMethod, { total: number; errors: number; rate: number }>;
+  trustBuiltUp: boolean; // true if error rate is low
+}
+
+// Verification tool definitions
+export const VERIFICATION_TOOLS: Record<ContentType, { methods: VerificationMethod[]; description: string }> = {
+  code: {
+    methods: ['code-execution', 'syntax-check'],
+    description: 'Test code behavior and syntax'
+  },
+  math: {
+    methods: ['calculation', 'syntax-check'],
+    description: 'Verify mathematical expressions and calculations'
+  },
+  citation: {
+    methods: ['citation-check', 'cross-reference'],
+    description: 'Verify citations and sources'
+  },
+  fact: {
+    methods: ['fact-check', 'cross-reference'],
+    description: 'Verify factual claims'
+  },
+  text: {
+    methods: ['cross-reference', 'fact-check'],
+    description: 'General verification and cross-referencing'
+  }
+};
+
+// Tool descriptions
+const TOOL_DESCRIPTIONS: Record<VerificationMethod, string> = {
+  'code-execution': 'Run code in a test environment to verify behavior',
+  'syntax-check': 'Check code syntax without execution',
+  'calculation': 'Verify mathematical expressions (Wolfram Alpha-style)',
+  'citation-check': 'Verify citations against Google Scholar / databases',
+  'cross-reference': 'Cross-reference claims against multiple sources',
+  'fact-check': 'Verify facts against Wikipedia / authority sources'
+};
+
+/**
+ * Simulate verification of content
+ */
+export function performVerification(
+  content: VerifiableContent,
+  method: VerificationMethod
+): VerificationResult {
+  let findings: string[] = [];
+  let discrepancies: string[] = [];
+  let suggestions: string[] = [];
+  let matchesAIOutput = true;
+  let confidence = 0.85;
+  let status: VerificationStatus = 'verified';
+
+  // Simulate verification based on content type
+  if (content.contentType === 'code') {
+    if (method === 'code-execution') {
+      findings.push('Code executed without errors');
+      findings.push('All test cases passed');
+      suggestions.push('Performance could be improved by 15% with caching');
+    } else if (method === 'syntax-check') {
+      findings.push('Syntax is valid');
+    }
+  } else if (content.contentType === 'math') {
+    if (method === 'calculation') {
+      // Check if expression contains common errors
+      if (content.content.includes('0/') || content.content.includes('/0')) {
+        discrepancies.push('Division by zero detected');
+        matchesAIOutput = false;
+        status = 'error-found';
+        confidence = 1.0;
+      } else {
+        findings.push('Mathematical expression is valid');
+        findings.push('All calculations are correct');
+      }
+    }
+  } else if (content.contentType === 'citation') {
+    if (method === 'citation-check') {
+      findings.push('Citation format is correct');
+      findings.push('Source exists in Google Scholar');
+      suggestions.push('Update to latest edition (published 2023)');
+    }
+  } else if (content.contentType === 'fact') {
+    if (method === 'fact-check') {
+      findings.push('Fact verified against Wikipedia');
+      findings.push('Consistent with recent research');
+    }
+  }
+
+  // Add some realistic variation
+  if (Math.random() > 0.85) {
+    matchesAIOutput = false;
+    status = 'error-found';
+    discrepancies.push('Minor inconsistency found');
+    confidence = 1.0;
+  }
+
+  return {
+    contentId: content.id,
+    verificationMethod: method,
+    toolUsed: getToolName(method),
+    status,
+    matchesAIOutput,
+    confidence,
+    findings,
+    discrepancies,
+    suggestions,
+    timestamp: new Date()
+  };
+}
+
+/**
+ * Get tool name from method
+ */
+function getToolName(method: VerificationMethod): string {
+  const names: Record<VerificationMethod, string> = {
+    'code-execution': 'Node.js Runtime',
+    'syntax-check': 'ESLint / TypeScript',
+    'calculation': 'Wolfram Alpha',
+    'citation-check': 'Google Scholar',
+    'cross-reference': 'Brave Search API',
+    'fact-check': 'Wikipedia'
+  };
+  return names[method];
+}
+
+/**
+ * Create a verification log entry
+ */
+export function createVerificationLog(
+  result: VerificationResult,
+  decision: UserDecision,
+  notes?: string
+): VerificationLog {
+  return {
+    id: `log-${Date.now()}`,
+    contentId: result.contentId,
+    result,
+    userDecision: decision,
+    userNotes: notes
+  };
+}
+
+/**
+ * Update verification log with actual correctness assessment
+ */
+export function updateVerificationOutcome(
+  log: VerificationLog,
+  beforeCorrect: boolean,
+  afterCorrect: boolean
+): VerificationLog {
+  return {
+    ...log,
+    correctnessBeforeVerification: beforeCorrect,
+    correctnessAfterVerification: afterCorrect
+  };
+}
+
+/**
+ * Calculate verification statistics
+ */
+export function calculateVerificationStatistics(
+  logs: VerificationLog[]
+): VerificationStatistics {
+  const byContentType: Record<ContentType, { total: number; errors: number; rate: number }> = {
+    code: { total: 0, errors: 0, rate: 0 },
+    math: { total: 0, errors: 0, rate: 0 },
+    citation: { total: 0, errors: 0, rate: 0 },
+    fact: { total: 0, errors: 0, rate: 0 },
+    text: { total: 0, errors: 0, rate: 0 }
+  };
+
+  const byVerificationMethod: Record<VerificationMethod, { total: number; errors: number; rate: number }> = {
+    'code-execution': { total: 0, errors: 0, rate: 0 },
+    'syntax-check': { total: 0, errors: 0, rate: 0 },
+    'calculation': { total: 0, errors: 0, rate: 0 },
+    'citation-check': { total: 0, errors: 0, rate: 0 },
+    'cross-reference': { total: 0, errors: 0, rate: 0 },
+    'fact-check': { total: 0, errors: 0, rate: 0 }
+  };
+
+  let totalVerified = 0;
+  let totalErrors = 0;
+
+  logs.forEach(log => {
+    // Track by content type (inferred from verification method)
+    if (log.result.status === 'error-found' || !log.result.matchesAIOutput) {
+      totalErrors++;
+    }
+    totalVerified++;
+  });
+
+  // Track by verification method
+  logs.forEach(log => {
+    const method = log.result.verificationMethod;
+    byVerificationMethod[method].total++;
+    if (log.result.status === 'error-found' || !log.result.matchesAIOutput) {
+      byVerificationMethod[method].errors++;
+    }
+  });
+
+  // Calculate rates
+  Object.values(byVerificationMethod).forEach(stats => {
+    stats.rate = stats.total > 0 ? stats.errors / stats.total : 0;
+  });
+
+  const errorRate = totalVerified > 0 ? totalErrors / totalVerified : 0;
+  const trustBuiltUp = errorRate < 0.2; // Less than 20% error rate indicates good trust
+
+  return {
+    totalVerified,
+    errorsFound: totalErrors,
+    errorRate,
+    byContentType,
+    byVerificationMethod,
+    trustBuiltUp
+  };
+}
+
+/**
+ * Get verification recommendations based on content
+ */
+export function getVerificationRecommendations(
+  content: VerifiableContent
+): VerificationMethod[] {
+  const tools = VERIFICATION_TOOLS[content.contentType] || VERIFICATION_TOOLS.text;
+  return tools.methods;
+}
+
+/**
+ * Get confidence message based on verification result
+ */
+export function getConfidenceMessage(result: VerificationResult): string {
+  if (result.status === 'error-found') {
+    return `⚠️ Verification found issues. Confidence: ${Math.round(result.confidence * 100)}%. Review discrepancies before accepting.`;
+  }
+
+  if (result.status === 'partially-verified') {
+    return `📊 Partially verified with ${Math.round(result.confidence * 100)}% confidence. Some areas need manual review.`;
+  }
+
+  if (result.matchesAIOutput && result.confidence > 0.9) {
+    return `✅ Verification confirms AI output is correct. High confidence: ${Math.round(result.confidence * 100)}%.`;
+  }
+
+  if (result.matchesAIOutput) {
+    return `✓ Verification supports AI output. Moderate confidence: ${Math.round(result.confidence * 100)}%.`;
+  }
+
+  return `Need more information. Confidence: ${Math.round(result.confidence * 100)}%.`;
+}
+
+/**
+ * Get action recommendation after verification
+ */
+export function getActionRecommendation(result: VerificationResult): string {
+  if (result.status === 'error-found' && result.suggestions.length > 0) {
+    return `Consider: ${result.suggestions[0]}`;
+  }
+
+  if (result.matchesAIOutput) {
+    return 'Safe to accept AI output';
+  }
+
+  if (result.discrepancies.length > 0) {
+    return `Modify based on findings: ${result.discrepancies[0]}`;
+  }
+
+  return 'Review findings and make a decision';
+}
+
+/**
+ * Get verification workflow guidance
+ */
+export function getWorkflowGuidance(step: 'select' | 'review' | 'decide'): string {
+  const guidance: Record<string, string> = {
+    select: 'Choose the most appropriate verification method for this content type',
+    review: 'Carefully review the verification results and findings',
+    decide: 'Decide whether to accept, modify, or reject based on verification results'
+  };
+  return guidance[step];
+}
+
+export default {
+  performVerification,
+  createVerificationLog,
+  updateVerificationOutcome,
+  calculateVerificationStatistics,
+  getVerificationRecommendations,
+  getConfidenceMessage,
+  getActionRecommendation,
+  getWorkflowGuidance
+};
