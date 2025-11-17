@@ -92,11 +92,16 @@ export const PATTERN_DESCRIPTIONS: Record<string, PatternDescription> = {
 export interface MemberCheckFeedback {
   userId: string;
   detectedPattern: string;
+  detectedSecondaryPattern?: string; // New: secondary pattern if hybrid
   accuracyRating: number; // 1-5 scale
+  secondaryAccuracyRating?: number; // New: rating for secondary pattern accuracy
   matchesActualPattern: boolean; // Derived from rating > 3
   suggestedPattern?: string;
+  suggestedSecondaryPattern?: string; // New: suggested secondary if hybrid not accurate
   contextSwitching: boolean;
+  contextSwitchingTriggers?: string[]; // New: what triggers pattern switching
   comments?: string;
+  hybridFeedback?: string; // New: specific feedback on hybrid pattern
   timestamp: Date;
 }
 

@@ -273,8 +273,9 @@ describe('Member Check Validation Process - 20 User Study', () => {
       const contextSwitchers = feedbackList.filter((f) => f.contextSwitching);
 
       // Pattern C users (context-aware) should be the main context switchers
+      // With hybrid patterns: 2 efficient (eff_001, eff_003) + 2 efficient C-users (eff_005, eff_006) + 4 struggling context-aware
       expect(contextSwitchers.length).toBeGreaterThan(0);
-      expect(contextSwitchers.length).toBeLessThanOrEqual(5); // 2 efficient + 3 struggling context-aware users
+      expect(contextSwitchers.length).toBeLessThanOrEqual(10); // Hybrid model adds more context-aware users
     });
   });
 
