@@ -51,8 +51,14 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
+    // Don't retry on auth endpoints to prevent infinite loops
+    const isAuthEndpoint = originalRequest.url?.includes('/auth/verify') ||
+                          originalRequest.url?.includes('/auth/refresh') ||
+                          originalRequest.url?.includes('/auth/login') ||
+                          originalRequest.url?.includes('/auth/register');
+
     // Handle 401 Unauthorized - token expired or invalid
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthEndpoint) {
       originalRequest._retry = true;
 
       try {
@@ -77,6 +83,12 @@ api.interceptors.response.use(
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }
+    }
+
+    // Handle 401 on auth endpoints - just reject, don't retry
+    if (error.response?.status === 401 && isAuthEndpoint) {
+      localStorage.removeItem('auth-storage');
+      return Promise.reject(error);
     }
 
     // Handle 403 Forbidden
