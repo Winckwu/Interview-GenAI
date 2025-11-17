@@ -72,15 +72,16 @@ export const usePatternStore = create<PatternState>((set, get) => ({
     try {
       const url = userId ? `/patterns?userId=${userId}` : '/patterns';
       const response = await api.get(url);
-      set({ patterns: response.data });
+      const patterns = response.data.data || [];
+      set({ patterns });
 
       // Set current user pattern if available
-      if (response.data.length > 0) {
-        set({ currentUserPattern: response.data[0] });
+      if (patterns.length > 0) {
+        set({ currentUserPattern: patterns[0] });
       }
     } catch (error: any) {
-      const errorMsg = error.response?.data?.message || 'Failed to fetch patterns';
-      set({ error: errorMsg });
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Failed to fetch patterns';
+      set({ error: errorMsg, patterns: [] });
     } finally {
       set({ loading: false });
     }
@@ -91,10 +92,11 @@ export const usePatternStore = create<PatternState>((set, get) => ({
     try {
       const url = userId ? `/predictions?userId=${userId}` : '/predictions';
       const response = await api.get(url);
-      set({ predictions: response.data });
+      const predictions = response.data.data || [];
+      set({ predictions });
     } catch (error: any) {
-      const errorMsg = error.response?.data?.message || 'Failed to fetch predictions';
-      set({ error: errorMsg });
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Failed to fetch predictions';
+      set({ error: errorMsg, predictions: [] });
     } finally {
       set({ loading: false });
     }
@@ -105,10 +107,11 @@ export const usePatternStore = create<PatternState>((set, get) => ({
     try {
       const url = userId ? `/evolution?userId=${userId}` : '/evolution';
       const response = await api.get(url);
-      set({ evolutions: response.data });
+      const evolutions = response.data.data || [];
+      set({ evolutions });
     } catch (error: any) {
-      const errorMsg = error.response?.data?.message || 'Failed to fetch evolutions';
-      set({ error: errorMsg });
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Failed to fetch evolutions';
+      set({ error: errorMsg, evolutions: [] });
     } finally {
       set({ loading: false });
     }
