@@ -8,13 +8,14 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
+import path from 'path';
 import pool from './config/database';
 import redisClient from './config/redis';
 import { errorHandler, notFoundHandler, asyncHandler } from './middleware/errorHandler';
 import { authenticateToken } from './middleware/auth';
 import authRoutes from './routes/auth';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app: Express = express();
 const PORT = process.env.PORT || 5000;
