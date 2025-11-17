@@ -26,13 +26,20 @@ const api: AxiosInstance = axios.create({
  */
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Get token from localStorage
-    const token = localStorage.getItem('auth-storage')
-      ? JSON.parse(localStorage.getItem('auth-storage') || '{}').state?.token
-      : null;
+    try {
+      // Get token from localStorage with better error handling
+      const authStorage = localStorage.getItem('auth-storage');
+      if (authStorage) {
+        const parsed = JSON.parse(authStorage);
+        // Handle both direct token and nested state.token formats
+        const token = parsed.state?.token || parsed.token;
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+        if (token && typeof token === 'string') {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to parse auth storage:', error);
     }
 
     return config;

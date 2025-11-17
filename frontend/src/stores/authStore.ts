@@ -99,13 +99,28 @@ export const useAuthStore = create<AuthState>()(
       checkAuth: async () => {
         set({ loading: true });
         try {
+          // Check if we have a token in storage
+          const token = get().token;
+          if (!token) {
+            set({ user: null, isAuthenticated: false });
+            return;
+          }
+
           // Try to verify current token/session
           const response = await api.get('/auth/verify');
-          const { user } = response.data;
-          set({ user, isAuthenticated: true });
-        } catch (error) {
-          set({ user: null, isAuthenticated: false, token: null });
-          delete api.defaults.headers.common['Authorization'];
+          const { user } = response.data.data || response.data;
+          if (user) {
+            set({ user, isAuthenticated: true, token });
+          } else {
+            set({ user: null, isAuthenticated: false, token: null });
+          }
+        } catch (error: any) {
+          console.warn('Auth verification failed:', error.response?.status);
+          // Clear auth state if token is invalid (401, 403)
+          if (error.response?.status === 401 || error.response?.status === 403) {
+            set({ user: null, isAuthenticated: false, token: null });
+            delete api.defaults.headers.common['Authorization'];
+          }
         } finally {
           set({ loading: false });
         }
