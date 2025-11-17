@@ -153,10 +153,69 @@ export const apiService = {
     get: (patternId: string) => api.get(`/patterns/${patternId}`),
 
     getUserPattern: (userId: string) =>
-      api.get(`/users/${userId}/pattern`),
+      api.get(`/patterns/${userId}`),
 
-    analyze: (userId: string) =>
-      api.post(`/patterns/analyze`, { userId }),
+    analyze: (sessionId: string) =>
+      api.post(`/patterns/analyze`, { sessionId }),
+  },
+
+  /**
+   * Session endpoints
+   */
+  sessions: {
+    create: (data: any) => api.post('/sessions', data),
+
+    get: (sessionId: string) => api.get(`/sessions/${sessionId}`),
+
+    list: (params?: any) => api.get('/sessions', { params }),
+
+    end: (sessionId: string) => api.patch(`/sessions/${sessionId}`, {}),
+  },
+
+  /**
+   * Interaction endpoints
+   */
+  interactions: {
+    create: (data: any) => api.post('/interactions', data),
+
+    get: (interactionId: string) => api.get(`/interactions/${interactionId}`),
+
+    list: (params?: any) => api.get('/interactions', { params }),
+
+    update: (interactionId: string, data: any) =>
+      api.patch(`/interactions/${interactionId}`, data),
+  },
+
+  /**
+   * Evolution endpoints
+   */
+  evolution: {
+    list: (params?: any) => api.get('/evolution', { params }),
+
+    get: (evolutionId: string) => api.get(`/evolution/${evolutionId}`),
+
+    track: (data: any) => api.post(`/evolution/track`, data),
+
+    stats: (userId: string) => api.get(`/evolution/stats/${userId}`),
+  },
+
+  /**
+   * Skills endpoints
+   */
+  skills: {
+    setBaseline: (data: any) => api.post('/skills/baseline', data),
+
+    recordTest: (data: any) => api.post('/skills/test', data),
+
+    getBaselines: () => api.get('/skills/baselines'),
+
+    getHistory: (skillName: string, params?: any) =>
+      api.get(`/skills/${skillName}/history`, { params }),
+
+    getAlerts: (params?: any) => api.get('/skills/alerts', { params }),
+
+    dismissAlert: (alertId: string) =>
+      api.patch(`/skills/alerts/${alertId}`, { dismissed: true }),
   },
 
   /**

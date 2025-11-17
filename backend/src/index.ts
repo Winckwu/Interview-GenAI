@@ -14,6 +14,13 @@ import redisClient from './config/redis';
 import { errorHandler, notFoundHandler, asyncHandler } from './middleware/errorHandler';
 import { authenticateToken } from './middleware/auth';
 import authRoutes from './routes/auth';
+import usersRoutes from './routes/users';
+import sessionsRoutes from './routes/sessions';
+import interactionsRoutes from './routes/interactions';
+import patternsRoutes from './routes/patterns';
+import evolutionRoutes from './routes/evolution';
+import skillsRoutes from './routes/skills';
+import analyticsRoutes from './routes/analytics';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
@@ -87,40 +94,26 @@ app.get('/health/detailed', asyncHandler(async (_req: Request, res: Response) =>
 // Auth routes (public)
 app.use('/api/auth', authRoutes);
 
-// Placeholder routes - to be implemented
-app.get('/api/users/:userId', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
-  res.json({
-    success: true,
-    data: { message: 'User endpoint ready' },
-    timestamp: new Date().toISOString(),
-  });
-}));
+// User routes
+app.use('/api/users', usersRoutes);
 
-app.get('/api/patterns', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
-  res.json({
-    success: true,
-    data: [],
-    message: 'Patterns endpoint ready',
-    timestamp: new Date().toISOString(),
-  });
-}));
+// Session routes
+app.use('/api/sessions', sessionsRoutes);
 
-app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
-  res.json({
-    success: true,
-    data: { message: 'Prediction endpoint ready' },
-    timestamp: new Date().toISOString(),
-  });
-}));
+// Interaction routes
+app.use('/api/interactions', interactionsRoutes);
 
-app.get('/api/evolution', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
-  res.json({
-    success: true,
-    data: [],
-    message: 'Evolution tracking endpoint ready',
-    timestamp: new Date().toISOString(),
-  });
-}));
+// Pattern detection routes
+app.use('/api/patterns', patternsRoutes);
+
+// Evolution tracking routes
+app.use('/api/evolution', evolutionRoutes);
+
+// Skill monitoring routes
+app.use('/api/skills', skillsRoutes);
+
+// Analytics routes
+app.use('/api/analytics', analyticsRoutes);
 
 // ============================================================================
 // Error Handling

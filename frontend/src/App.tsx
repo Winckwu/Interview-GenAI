@@ -8,6 +8,7 @@ import AuthLayout from './layouts/AuthLayout';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import ChatSessionPage from './pages/ChatSessionPage';
 import PatternsPage from './pages/PatternsPage';
 import PredictionsPage from './pages/PredictionsPage';
 import EvolutionTrackingPage from './pages/EvolutionTrackingPage';
@@ -72,6 +73,9 @@ const App: React.FC = () => {
           {/* Dashboard */}
           <Route path="/" element={<DashboardPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+
+          {/* Chat Session */}
+          <Route path="/session/:sessionId" element={<ChatSessionPage />} />
 
           {/* Core Features */}
           <Route path="/patterns" element={<PatternsPage />} />

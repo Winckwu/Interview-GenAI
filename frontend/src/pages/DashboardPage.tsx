@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAuthStore } from '../stores/authStore';
 import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
+import api from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 /**
@@ -10,8 +12,31 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
  * Main dashboard showing overview of AI usage patterns and system metrics
  */
 const DashboardPage: React.FC = () => {
+  const navigate = useNavigate();
   const { user } = useAuthStore();
   const { patterns, predictions, evolutions, loading, fetchPatterns, fetchPredictions, fetchEvolutions } = usePatternStore();
+  const [creatingSession, setCreatingSession] = useState(false);
+  const [sessionError, setSessionError] = useState<string | null>(null);
+
+  // Handle start new session
+  const handleStartSession = async () => {
+    setCreatingSession(true);
+    setSessionError(null);
+
+    try {
+      const response = await api.post('/sessions', {
+        taskDescription: 'General AI interaction',
+        taskType: 'general',
+        taskImportance: 'medium',
+      });
+
+      const sessionId = response.data.data.session.id;
+      navigate(`/session/${sessionId}`);
+    } catch (err: any) {
+      setSessionError(err.response?.data?.error || 'Failed to create session');
+      setCreatingSession(false);
+    }
+  };
 
   useEffect(() => {
     // Fetch initial data
@@ -62,10 +87,35 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="page dashboard-page">
-      <div className="page-header">
-        <h1>Dashboard</h1>
-        <p className="page-subtitle">Welcome back, {user?.username}! Here's your AI usage overview.</p>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1>Dashboard</h1>
+          <p className="page-subtitle">Welcome back, {user?.username}! Here's your AI usage overview.</p>
+        </div>
+        <button
+          onClick={handleStartSession}
+          disabled={creatingSession}
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#10b981',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '0.375rem',
+            fontWeight: '600',
+            cursor: creatingSession ? 'not-allowed' : 'pointer',
+            opacity: creatingSession ? 0.7 : 1,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {creatingSession ? 'Starting...' : '+ Start New Session'}
+        </button>
       </div>
+
+      {sessionError && (
+        <div style={{ padding: '0.75rem 1rem', backgroundColor: '#fee2e2', borderRadius: '0.375rem', marginBottom: '1rem', color: '#991b1b' }}>
+          {sessionError}
+        </div>
+      )}
 
       {/* Key Metrics Cards */}
       <div className="metrics-grid">
