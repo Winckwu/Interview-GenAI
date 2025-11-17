@@ -46,7 +46,7 @@ const App: React.FC = () => {
     };
 
     initialize();
-  }, [checkAuth]);
+  }, []);
 
   if (!isInitialized || loading) {
     return <LoadingSpinner fullScreen />;
