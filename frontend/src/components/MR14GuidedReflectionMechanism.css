@@ -1,0 +1,255 @@
+.mr14-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background: var(--mr14-bg, #ffffff);
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--mr14-text, #1a1a1a);
+}
+
+.mr14-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--mr14-border, #e0e0e0);
+}
+
+.mr14-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--mr14-accent, #0066ff);
+}
+
+.mr14-subtitle {
+  margin: 0;
+  color: var(--mr14-secondary, #666);
+  font-size: 1rem;
+}
+
+.mr14-progress {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+  justify-content: space-between;
+}
+
+.mr14-progress-item {
+  flex: 1;
+  padding: 1rem;
+  background: var(--mr14-secondary-bg, #f9f9f9);
+  border: 2px solid var(--mr14-border, #e0e0e0);
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--mr14-secondary, #666);
+  transition: all 0.2s ease;
+}
+
+.mr14-progress-item.active {
+  background: var(--mr14-accent, #0066ff);
+  color: white;
+  border-color: var(--mr14-accent, #0066ff);
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+}
+
+.mr14-content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mr14-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mr14-stage-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--mr14-text, #1a1a1a);
+}
+
+.mr14-stage-subtitle {
+  margin: 0;
+  color: var(--mr14-secondary, #666);
+  font-size: 0.95rem;
+}
+
+.mr14-prompt-item {
+  padding: 1.5rem;
+  background: var(--mr14-secondary-bg, #f9f9f9);
+  border: 1px solid var(--mr14-border, #e0e0e0);
+  border-radius: 8px;
+}
+
+.mr14-prompt-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mr14-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.mr14-option:hover {
+  background: var(--mr14-bg, #ffffff);
+}
+
+.mr14-option input {
+  margin-top: 0.25rem;
+  cursor: pointer;
+}
+
+.mr14-option span {
+  line-height: 1.4;
+  color: var(--mr14-text, #1a1a1a);
+}
+
+.mr14-text-prompt {
+  padding: 1.5rem;
+  background: var(--mr14-secondary-bg, #f9f9f9);
+  border: 1px solid var(--mr14-border, #e0e0e0);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mr14-prompt-question {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--mr14-text, #1a1a1a);
+}
+
+.mr14-reflection-textarea {
+  padding: 1rem;
+  border: 2px solid var(--mr14-border, #e0e0e0);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  color: var(--mr14-text, #1a1a1a);
+  background: var(--mr14-bg, #ffffff);
+}
+
+.mr14-reflection-textarea:focus {
+  outline: none;
+  border-color: var(--mr14-accent, #0066ff);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+.mr14-next-btn,
+.mr14-complete-btn {
+  padding: 0.75rem 1.5rem;
+  background: var(--mr14-accent, #0066ff);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-end;
+}
+
+.mr14-next-btn:hover,
+.mr14-complete-btn:hover {
+  background: #0052cc;
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+}
+
+.mr14-completion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.mr14-success-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mr14-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: #e8f5e9;
+  border-radius: 50%;
+  font-size: 3rem;
+}
+
+.mr14-success-message h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #2e7d32;
+}
+
+.mr14-success-message p {
+  margin: 0;
+  color: var(--mr14-secondary, #666);
+  font-size: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .mr14-container {
+    --mr14-bg: #1e1e1e;
+    --mr14-secondary-bg: #2a2a2a;
+    --mr14-text: #ffffff;
+    --mr14-secondary: #b0b0b0;
+    --mr14-border: #404040;
+    --mr14-accent: #4a9eff;
+  }
+}
+
+@media (max-width: 768px) {
+  .mr14-container {
+    padding: 1rem;
+  }
+
+  .mr14-title {
+    font-size: 1.5rem;
+  }
+
+  .mr14-progress {
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .mr14-progress-item {
+    padding: 0.75rem;
+  }
+
+  .mr14-next-btn,
+  .mr14-complete-btn {
+    width: 100%;
+    align-self: stretch;
+  }
+}
