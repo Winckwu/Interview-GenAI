@@ -56,12 +56,12 @@ export const useAuthStore = create<AuthState>()(
         set({ loading: true, error: null });
         try {
           const response = await api.post('/auth/login', { email, password });
-          const { user, token } = response.data;
+          const { user, token } = response.data.data;
 
           get().setToken(token);
           set({ user, isAuthenticated: true });
         } catch (error: any) {
-          const errorMsg = error.response?.data?.message || 'Login failed';
+          const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Login failed';
           set({ error: errorMsg, isAuthenticated: false });
           throw error;
         } finally {
@@ -78,12 +78,12 @@ export const useAuthStore = create<AuthState>()(
             password,
             userType,
           });
-          const { user, token } = response.data;
+          const { user, token } = response.data.data;
 
           get().setToken(token);
           set({ user, isAuthenticated: true });
         } catch (error: any) {
-          const errorMsg = error.response?.data?.message || 'Registration failed';
+          const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Registration failed';
           set({ error: errorMsg, isAuthenticated: false });
           throw error;
         } finally {
