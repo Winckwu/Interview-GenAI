@@ -1,0 +1,598 @@
+/**
+ * UncertaintyIndicator Component Styles
+ *
+ * Design Principles:
+ * 1. Clear visibility without disrupting content reading
+ * 2. Intuitive color coding (green=safe, orange=caution, red=careful)
+ * 3. Minimal and elegant UI
+ * 4. Responsive and accessible
+ */
+
+.uncertainty-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+/* ============================================================================
+   Main Content Area
+   ============================================================================ */
+
+.uncertainty-content {
+  padding: 12px 16px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border-left: 4px solid #e0e0e0;
+  line-height: 1.6;
+  font-size: 15px;
+  color: #333;
+}
+
+.content-text {
+  display: inline;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ============================================================================
+   Uncertainty Badge (Main Interactive Element)
+   ============================================================================ */
+
+.uncertainty-badge {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.uncertainty-badge:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.uncertainty-badge:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+}
+
+/* Confidence Level Specific Styles */
+
+.uncertainty-badge.high {
+  border-color: #4CAF50;
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.uncertainty-badge.high:hover {
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+}
+
+.uncertainty-badge.medium {
+  border-color: #FF9800;
+  background-color: rgba(255, 152, 0, 0.05);
+}
+
+.uncertainty-badge.medium:hover {
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.15);
+}
+
+.uncertainty-badge.low {
+  border-color: #F44336;
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+.uncertainty-badge.low:hover {
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.15);
+}
+
+/* Badge Header (Icon, Percentage, Label) */
+
+.confidence-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.confidence-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.confidence-icon::before {
+  content: '';
+}
+
+.uncertainty-badge.high .confidence-icon {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.uncertainty-badge.medium .confidence-icon {
+  background-color: rgba(255, 152, 0, 0.1);
+}
+
+.uncertainty-badge.low .confidence-icon {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.confidence-percentage {
+  font-size: 20px;
+  min-width: 50px;
+}
+
+.confidence-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.high-risk-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #fff3e0;
+  border: 1px solid #FFB74D;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #E65100;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.expand-indicator {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  color: #999;
+}
+
+.uncertainty-badge.expanded .expand-indicator {
+  transform: rotate(180deg);
+}
+
+/* Action Text */
+
+.confidence-action {
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ============================================================================
+   Expanded Details Section
+   ============================================================================ */
+
+.uncertainty-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reasons Section */
+
+.reasons-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reasons-section h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.reasons-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.reason-item {
+  margin: 6px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #666;
+}
+
+/* Verification Advice (High-Risk Domains) */
+
+.verification-advice {
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin: 0;
+}
+
+.verification-advice h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #E65100;
+}
+
+.verification-advice p {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #666;
+}
+
+/* Confidence Explanation */
+
+.confidence-explanation {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.confidence-explanation h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.confidence-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scale-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  border-left: 4px solid #ddd;
+}
+
+.scale-item.high {
+  border-left-color: #4CAF50;
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.scale-item.medium {
+  border-left-color: #FF9800;
+  background-color: rgba(255, 152, 0, 0.05);
+}
+
+.scale-item.low {
+  border-left-color: #F44336;
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+.scale-item .label {
+  display: inline-block;
+  min-width: 70px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+}
+
+.scale-item .description {
+  flex: 1;
+  font-size: 12px;
+  color: #666;
+}
+
+.confidence-note {
+  margin: 0;
+  padding: 8px 12px;
+  background-color: #e3f2fd;
+  border-radius: 4px;
+  border-left: 3px solid #2196F3;
+  font-size: 12px;
+  color: #1565c0;
+  line-height: 1.5;
+}
+
+/* ============================================================================
+   Feedback Section
+   ============================================================================ */
+
+.feedback-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  background-color: #f0f7ff;
+  border-radius: 6px;
+  border-left: 4px solid #2196F3;
+}
+
+.feedback-section h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.feedback-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.feedback-btn {
+  padding: 8px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feedback-btn:hover {
+  border-color: #999;
+  background-color: #f5f5f5;
+}
+
+.feedback-btn.active {
+  background-color: #2196F3;
+  border-color: #2196F3;
+  color: #fff;
+}
+
+.feedback-thanks {
+  margin: 0;
+  font-size: 12px;
+  color: #2196F3;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   Monitoring Info
+   ============================================================================ */
+
+.monitoring-info {
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border-left: 3px solid #999;
+}
+
+.info-text {
+  margin: 0;
+  font-size: 11px;
+  color: #999;
+  font-family: 'Monaco', 'Courier New', monospace;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+/* ============================================================================
+   Confidence Bar (Visual Indicator)
+   ============================================================================ */
+
+.confidence-bar-container {
+  height: 3px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+/* ============================================================================
+   Responsive Design
+   ============================================================================ */
+
+@media (max-width: 600px) {
+  .confidence-header {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .expand-indicator {
+    order: 3;
+    width: 100%;
+  }
+
+  .uncertainty-badge {
+    padding: 10px 12px;
+  }
+
+  .uncertainty-content {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .feedback-buttons {
+    flex-direction: column;
+  }
+
+  .feedback-btn {
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  .scale-item {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .high-risk-badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}
+
+/* ============================================================================
+   Accessibility
+   ============================================================================ */
+
+/* Focus indicators for keyboard navigation */
+.uncertainty-badge:focus-visible {
+  outline: 3px solid #2196F3;
+  outline-offset: 2px;
+}
+
+.feedback-btn:focus-visible {
+  outline: 2px solid #2196F3;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .uncertainty-badge,
+  .confidence-bar-fill,
+  .expand-indicator,
+  .uncertainty-details,
+  .feedback-thanks {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .uncertainty-content {
+    background-color: #2a2a2a;
+    border-left-color: #444;
+    color: #e0e0e0;
+  }
+
+  .uncertainty-badge {
+    background-color: #333;
+    border-color: #555;
+  }
+
+  .confidence-action {
+    color: inherit;
+  }
+
+  .confidence-header {
+    color: #e0e0e0;
+  }
+
+  .expand-indicator {
+    color: #999;
+  }
+
+  .reasons-list {
+    color: #999;
+  }
+
+  .reason-item {
+    color: #ccc;
+  }
+
+  .confidence-label {
+    color: #999;
+  }
+
+  .scale-item {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+  }
+
+  .scale-item .label,
+  .scale-item .description {
+    color: #ccc;
+  }
+
+  .confidence-note {
+    background-color: #1a2332;
+    color: #64b5f6;
+  }
+
+  .feedback-section {
+    background-color: #1a2332;
+  }
+
+  .feedback-btn {
+    background-color: #2a2a2a;
+    border-color: #555;
+    color: #ccc;
+  }
+
+  .feedback-btn:hover {
+    background-color: #3a3a3a;
+    border-color: #666;
+  }
+
+  .monitoring-info {
+    background-color: #2a2a2a;
+  }
+
+  .info-text {
+    color: #999;
+  }
+
+  .confidence-bar-container {
+    background-color: #444;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .uncertainty-badge {
+    border-width: 3px;
+  }
+
+  .confidence-header {
+    font-weight: 600;
+  }
+
+  .confidence-action {
+    font-weight: 700;
+  }
+
+  .feedback-btn.active {
+    box-shadow: 0 0 0 2px #fff;
+  }
+}
