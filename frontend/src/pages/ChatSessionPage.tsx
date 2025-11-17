@@ -60,9 +60,7 @@ const ChatSessionPage: React.FC = () => {
   }, [sessionId, navigate]);
 
   /**
-   * Send user prompt and get AI response
-   * In a real system, this would call actual AI API
-   * For now, simulating with placeholder response
+   * Send user prompt and get AI response from OpenAI API
    */
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,27 +71,31 @@ const ChatSessionPage: React.FC = () => {
     setError(null);
 
     try {
-      // Simulate AI response (in production, integrate actual AI)
-      const aiResponse = `This is a simulated AI response to your prompt: "${userInput}"
+      // Call AI API endpoint (backend securely handles OpenAI key)
+      const startTime = Date.now();
+      const aiApiResponse = await api.post('/ai/chat', {
+        userPrompt: userInput,
+        conversationHistory: messages.map((m) => ({
+          role: m.role === 'user' ? 'user' : 'assistant',
+          content: m.content,
+        })),
+      });
 
-In a production system, this would be replaced with actual AI model responses (GPT-4, Claude, etc.).
-
-The system will track:
-- Your verification of this response
-- Any modifications you make
-- How you interact with the AI output
-- Your learning patterns over time`;
+      const responseTime = Date.now() - startTime;
+      const aiContent = aiApiResponse.data.data.response.content;
+      const aiModel = aiApiResponse.data.data.response.model;
 
       // Log interaction to backend
       const interactionResponse = await api.post('/interactions', {
         sessionId,
         userPrompt: userInput,
-        aiResponse,
-        aiModel: 'gpt-4-turbo',
-        responseTime: Math.random() * 3000 + 1000, // Simulated latency
+        aiResponse: aiContent,
+        aiModel,
+        responseTime,
         wasVerified: false,
         wasModified: false,
         wasRejected: false,
+        confidenceScore: 0.85,
       });
 
       const interaction = interactionResponse.data.data.interaction;

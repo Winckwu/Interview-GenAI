@@ -21,6 +21,7 @@ import patternsRoutes from './routes/patterns';
 import evolutionRoutes from './routes/evolution';
 import skillsRoutes from './routes/skills';
 import analyticsRoutes from './routes/analytics';
+import aiRoutes from './routes/ai';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
@@ -114,6 +115,9 @@ app.use('/api/skills', skillsRoutes);
 
 // Analytics routes
 app.use('/api/analytics', analyticsRoutes);
+
+// AI Chat routes (secured with authentication)
+app.use('/api/ai', aiRoutes);
 
 // ============================================================================
 // Error Handling
