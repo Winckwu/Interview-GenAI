@@ -1,7 +1,7 @@
 """
 Pattern Recognition Model Training Pipeline
 
-Trains three classification models (Random Forest, SVM, Neural Network) on 12-dimensional
+Trains four classification models (Random Forest, XGBoost, SVM, Neural Network) on 12-dimensional
 metacognitive subprocess features to classify AI usage patterns (A-F).
 
 Target Metrics:
@@ -28,6 +28,12 @@ from sklearn.metrics import (
     classification_report, confusion_matrix, accuracy_score,
     precision_score, recall_score, f1_score, roc_auc_score
 )
+
+try:
+    import xgboost as xgb
+    XGBOOST_AVAILABLE = True
+except ImportError:
+    XGBOOST_AVAILABLE = False
 
 warnings.filterwarnings('ignore')
 
@@ -171,6 +177,38 @@ def train_neural_network(X_train: np.ndarray, y_train: np.ndarray, **kwargs) -> 
     model.fit(X_train_scaled, y_train)
     model.scaler = scaler  # Store scaler with model
     print("  ✓ Neural Network trained")
+
+    return model
+
+
+def train_xgboost(X_train: np.ndarray, y_train: np.ndarray, **kwargs) -> 'xgb.XGBClassifier':
+    """Train XGBoost classifier"""
+    print("\n⚡ Training XGBoost...")
+
+    if not XGBOOST_AVAILABLE:
+        print("  ⚠️  XGBoost not available, skipping")
+        return None
+
+    # Calculate scale_pos_weight for imbalanced classes
+    neg_count = (y_train == 0).sum()
+    pos_count = len(y_train) - neg_count
+
+    model = xgb.XGBClassifier(
+        n_estimators=200,
+        max_depth=6,
+        learning_rate=0.1,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        objective='multi:softmax',
+        num_class=6,
+        random_state=42,
+        eval_metric='mlogloss',
+        tree_method='hist',
+        **kwargs
+    )
+
+    model.fit(X_train, y_train)
+    print("  ✓ XGBoost trained")
 
     return model
 
@@ -378,7 +416,12 @@ def visualize_results(results: Dict[str, Dict], output_dir: str):
     print(f"  ✓ Saved: model_comparison.png")
 
     # 3. Confusion matrices
-    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+    num_models = len(results)
+    fig, axes = plt.subplots(1, num_models, figsize=(5*num_models, 4))
+
+    # Handle single model case
+    if num_models == 1:
+        axes = [axes]
 
     for idx, (model_name, result) in enumerate(results.items()):
         cm = result['cm']
@@ -451,6 +494,7 @@ def main():
     print("="*70)
 
     rf_model = train_random_forest(X_train, y_train)
+    xgb_model = train_xgboost(X_train, y_train)
     svm_model = train_svm(X_train, y_train)
     nn_model = train_neural_network(X_train, y_train)
 
@@ -461,6 +505,13 @@ def main():
         rf_model, X_train, X_test, y_train, y_test,
         'Random Forest'
     )
+
+    # XGBoost (no scaler needed)
+    if xgb_model is not None:
+        results['XGBoost'] = evaluate_model(
+            xgb_model, X_train, X_test, y_train, y_test,
+            'XGBoost'
+        )
 
     # Need to pass scaler for SVM
     results['SVM'] = evaluate_model(
