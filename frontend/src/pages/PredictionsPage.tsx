@@ -49,7 +49,8 @@ const PredictionsPage: React.FC = () => {
     return <LoadingSpinner message="Loading predictions..." />;
   }
 
-  const userPredictions = predictions.filter((p) => p.userId === user?.id);
+  const predictionArray = Array.isArray(predictions) ? predictions : [];
+  const userPredictions = predictionArray.filter((p) => p.userId === user?.id);
   const accuracy = userPredictions.length > 0
     ? ((userPredictions.filter((p) => p.isCorrect).length / userPredictions.length) * 100).toFixed(1)
     : 0;

@@ -21,7 +21,8 @@ const PatternsPage: React.FC = () => {
     return <LoadingSpinner message="Loading patterns..." />;
   }
 
-  const userPatterns = patterns.filter((p) => p.userId === user?.id);
+  const patternArray = Array.isArray(patterns) ? patterns : [];
+  const userPatterns = patternArray.filter((p) => p.userId === user?.id);
 
   const getPatternDescription = (patternType: string): string => {
     const descriptions: Record<string, string> = {

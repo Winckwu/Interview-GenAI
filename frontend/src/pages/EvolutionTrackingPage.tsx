@@ -22,7 +22,8 @@ const EvolutionTrackingPage: React.FC = () => {
     return <LoadingSpinner message="Loading evolution data..." />;
   }
 
-  const userEvolutions = evolutions.filter((e) => e.userId === user?.id);
+  const evolutionArray = Array.isArray(evolutions) ? evolutions : [];
+  const userEvolutions = evolutionArray.filter((e) => e.userId === user?.id);
 
   const improvementCount = userEvolutions.filter((e) => e.changeType === 'improvement').length;
   const migrationCount = userEvolutions.filter((e) => e.changeType === 'migration').length;
