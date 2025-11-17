@@ -1,0 +1,320 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ User Management ============
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  sessions      Session[]
+  skillBaselines SkillBaseline[]
+  skillAlerts   SkillAlert[]
+  assessments   Assessment[]
+  modelComparisons ModelComparison[]
+  frustrationReports FrustrationReport[]
+
+  @@map("users")
+}
+
+// ============ Session & Interaction ============
+
+model Session {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  startedAt     DateTime  @default(now())
+  endedAt       DateTime?
+  durationMinutes Float?
+
+  taskDescription String?
+  taskType      String?   // 'coding', 'writing', 'research', etc.
+  taskImportance String?  // 'high', 'medium', 'low'
+
+  // Relations
+  interactions  Interaction[]
+  patternLogs   PatternLog[]
+  metrics       MetacognitiveMetric[]
+
+  @@map("sessions")
+  @@index([userId, startedAt])
+}
+
+model Interaction {
+  id            String    @id @default(uuid())
+  sessionId     String
+  session       Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  timestamp     DateTime  @default(now())
+  userPrompt    String    @db.Text
+  aiResponse    String    @db.Text
+  aiModel       String    // 'gpt-4-turbo', 'claude-sonnet-4-5', etc.
+
+  promptWordCount Int
+  responseTime  Float     // milliseconds
+
+  wasVerified   Boolean   @default(false)
+  wasModified   Boolean   @default(false)
+  wasRejected   Boolean   @default(false)
+
+  confidenceScore Float?  // MR13: 0-100
+  uncertaintyReasons String[] // MR13
+
+  @@map("interactions")
+  @@index([sessionId, timestamp])
+}
+
+model PatternLog {
+  id            String    @id @default(uuid())
+  sessionId     String
+  session       Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  timestamp     DateTime  @default(now())
+  detectedPattern String  // 'A', 'B', 'C', 'D', 'E', 'F'
+  confidence    Float     // 0-1
+
+  features      Json      // 12-dimensional feature vector
+
+  @@map("pattern_logs")
+  @@index([sessionId, timestamp])
+}
+
+model MetacognitiveMetric {
+  id            String    @id @default(uuid())
+  sessionId     String
+  session       Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  timestamp     DateTime  @default(now())
+
+  // 12 features for pattern recognition
+  promptSpecificity Float
+  verificationRate Float
+  iterationFrequency Float
+  modificationRate Float
+  taskDecompositionScore Float
+  reflectionDepth Float
+  crossModelUsage Float
+  independentAttemptRate Float
+  errorAwareness Float
+  strategyDiversity Float
+  trustCalibrationAccuracy Float
+  timeBeforeAIQuery Float
+
+  @@map("metacognitive_metrics")
+  @@index([sessionId])
+}
+
+// ============ Skill Tracking ============
+
+model SkillBaseline {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  skillName     String    // 'python_coding', 'academic_writing', etc.
+  baselineScore Float
+  measuredAt    DateTime  @default(now())
+
+  // Relations
+  tests         SkillTest[]
+
+  @@map("skill_baselines")
+  @@index([userId, skillName])
+  @@unique([userId, skillName])
+}
+
+model SkillTest {
+  id            String    @id @default(uuid())
+  baselineId    String
+  baseline      SkillBaseline @relation(fields: [baselineId], references: [id], onDelete: Cascade)
+
+  testedAt      DateTime  @default(now())
+  score         Float
+
+  independencePercentage Float  // % of task done without AI
+  qualityScore  Float
+  speedScore    Float
+
+  @@map("skill_tests")
+  @@index([baselineId, testedAt])
+}
+
+model SkillAlert {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  triggeredAt   DateTime  @default(now())
+  alertType     String    // 'skill_atrophy', 'over_reliance', etc.
+  severity      String    // 'warning', 'critical'
+
+  message       String    @db.Text
+  dismissed     Boolean   @default(false)
+
+  @@map("skill_alerts")
+  @@index([userId, triggeredAt])
+}
+
+// ============ Model Comparison ============
+
+model ModelComparison {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime  @default(now())
+  prompt        String    @db.Text
+
+  results       Json      // Array of {model, output, latency, tokenCount}
+  userRatings   Json?     // {model: rating}
+
+  @@map("model_comparisons")
+  @@index([userId, createdAt])
+}
+
+// ============ MCA System Models ============
+
+model MetaRequirement {
+  id            String    @id @default(uuid())
+  mrId          String    @unique  // MR1, MR2, ..., MR20
+  title         String
+  description   String    @db.Text
+  category      String
+  affectedUserPercentage Float
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  frustrations  Frustration[]
+  strategies    AlternativeStrategy[]
+
+  @@map("meta_requirements")
+  @@index([mrId])
+}
+
+model Frustration {
+  id            String    @id @default(uuid())
+  ufId          String    @unique  // UF001, UF002, ..., UF143
+  mrId          String
+  metaRequirement MetaRequirement @relation(fields: [mrId], references: [id])
+
+  userId        String?   // User ID from interview (e.g., I34, I17)
+  category      String
+  description   String    @db.Text
+  quote         String    @db.Text
+
+  severity      Int       // 1-5 scale
+  timeCost      String
+  frequency     String
+  affectedDomain String
+
+  designImplication String @db.Text
+  resolutionStrategy String @db.Text
+  downstreamImpact String @db.Text
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  reports       FrustrationReport[]
+  strategies    AlternativeStrategy[]
+
+  @@map("frustrations")
+  @@index([mrId])
+  @@index([ufId])
+}
+
+model AlternativeStrategy {
+  id            String    @id @default(uuid())
+  asId          String    @unique  // AS001, AS002, ..., AS087
+  frustrationId String
+  frustration   Frustration @relation(fields: [frustrationId], references: [id])
+
+  mrId          String
+  metaRequirement MetaRequirement @relation(fields: [mrId], references: [id])
+
+  userId        String?   // User ID from interview (e.g., I3, I29)
+  name          String
+  description   String    @db.Text
+  steps         String[]  // Array of strategy steps
+
+  timeCost      String
+  limitations   String[]
+  effectiveness String?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("alternative_strategies")
+  @@index([frustrationId])
+  @@index([mrId])
+  @@index([asId])
+}
+
+// ============ User Assessment ============
+
+model Assessment {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  assessmentType String   // 'comprehensive', 'quick', 'follow_up'
+
+  // Scores for different dimensions
+  planningScore Float
+  monitoringScore Float
+  evaluationScore Float
+  regulationScore Float
+
+  // Overall assessment
+  overallScore  Float
+  primaryPattern String?  // The dominant pattern (A-F)
+  recommendedStrategies String[] // IDs of recommended strategies
+
+  insights      String    @db.Text
+  notes         String?   @db.Text
+
+  completedAt   DateTime  @default(now())
+
+  @@map("assessments")
+  @@index([userId, completedAt])
+}
+
+// ============ User Feedback & Reports ============
+
+model FrustrationReport {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  frustrationId String
+  frustration   Frustration @relation(fields: [frustrationId], references: [id])
+
+  experienced   Boolean   @default(true)
+  severity      Int?      // User's reported severity 1-5
+  frequency     String?   // How often they experience it
+  notes         String?   @db.Text
+
+  reportedAt    DateTime  @default(now())
+
+  @@map("frustration_reports")
+  @@index([userId])
+  @@index([frustrationId])
+  @@unique([userId, frustrationId])
+}
