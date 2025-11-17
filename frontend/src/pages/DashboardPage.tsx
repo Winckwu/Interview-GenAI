@@ -49,15 +49,19 @@ const DashboardPage: React.FC = () => {
     return <LoadingSpinner message="Loading dashboard..." />;
   }
 
-  // Calculate metrics
-  const totalPredictions = predictions.length;
-  const correctPredictions = predictions.filter((p) => p.isCorrect).length;
+  // Calculate metrics (ensure arrays)
+  const patternArray = Array.isArray(patterns) ? patterns : [];
+  const predictionArray = Array.isArray(predictions) ? predictions : [];
+  const evolutionArray = Array.isArray(evolutions) ? evolutions : [];
+
+  const totalPredictions = predictionArray.length;
+  const correctPredictions = predictionArray.filter((p) => p.isCorrect).length;
   const predictionAccuracy = totalPredictions > 0 ? ((correctPredictions / totalPredictions) * 100).toFixed(1) : 0;
 
-  const userPatterns = patterns.filter((p) => p.userId === user?.id) || [];
+  const userPatterns = patternArray.filter((p) => p.userId === user?.id) || [];
   const currentPattern = userPatterns.length > 0 ? userPatterns[0] : null;
 
-  const userEvolutions = evolutions.filter((e) => e.userId === user?.id) || [];
+  const userEvolutions = evolutionArray.filter((e) => e.userId === user?.id) || [];
   const improvementCount = userEvolutions.filter((e) => e.changeType === 'improvement').length;
 
   // Mock data for charts (in real app, this would come from API)

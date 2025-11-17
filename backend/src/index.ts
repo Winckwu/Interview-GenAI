@@ -119,6 +119,16 @@ app.use('/api/analytics', analyticsRoutes);
 // AI Chat routes (secured with authentication)
 app.use('/api/ai', aiRoutes);
 
+// Placeholder: Predictions endpoint
+app.get('/api/predictions', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    data: [],
+    message: 'Predictions endpoint',
+    timestamp: new Date().toISOString(),
+  });
+}));
+
 // ============================================================================
 // Error Handling
 // ============================================================================
