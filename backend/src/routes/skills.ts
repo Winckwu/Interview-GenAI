@@ -270,7 +270,7 @@ router.get(
 
     if (dismissed !== undefined) {
       query += ` AND dismissed = $${paramCount++}`;
-      params.push(dismissed === 'true' || dismissed === true);
+      params.push(dismissed === 'true');
     }
 
     query += ` ORDER BY triggered_at DESC`;
