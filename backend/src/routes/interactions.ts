@@ -19,12 +19,11 @@ router.post(
       sessionId,
       userPrompt,
       aiResponse,
-      aiModel = 'gpt-4-turbo',
+      aiModel = 'claude-sonnet-4-5',
       responseTime = 0,
       wasVerified = false,
       wasModified = false,
       wasRejected = false,
-      confidenceScore,
     } = req.body;
 
     // Validation
@@ -59,27 +58,25 @@ router.post(
     }
 
     const interactionId = uuidv4();
-    const promptWordCount = userPrompt.split(/\s+/).length;
 
     const result = await pool.query(
       `INSERT INTO interactions (
-        id, session_id, user_prompt, ai_response, ai_model, prompt_word_count,
-        response_time, was_verified, was_modified, was_rejected, confidence_score, created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-      RETURNING id, session_id, user_prompt, ai_response, ai_model, prompt_word_count,
-                response_time, was_verified, was_modified, was_rejected, confidence_score, created_at`,
+        id, session_id, user_id, user_prompt, ai_response, ai_model,
+        response_time_ms, was_verified, was_modified, was_rejected, created_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      RETURNING id, session_id, user_id, user_prompt, ai_response, ai_model,
+                response_time_ms, was_verified, was_modified, was_rejected, created_at, updated_at`,
       [
         interactionId,
         sessionId,
+        userId,
         userPrompt,
         aiResponse,
         aiModel,
-        promptWordCount,
         responseTime,
         wasVerified,
         wasModified,
         wasRejected,
-        confidenceScore || null,
         new Date(),
       ]
     );
@@ -91,16 +88,16 @@ router.post(
         interaction: {
           id: interaction.id,
           sessionId: interaction.session_id,
+          userId: interaction.user_id,
           userPrompt: interaction.user_prompt,
           aiResponse: interaction.ai_response,
           aiModel: interaction.ai_model,
-          promptWordCount: interaction.prompt_word_count,
-          responseTime: interaction.response_time,
+          responseTimeMs: interaction.response_time_ms,
           wasVerified: interaction.was_verified,
           wasModified: interaction.was_modified,
           wasRejected: interaction.was_rejected,
-          confidenceScore: interaction.confidence_score,
           createdAt: interaction.created_at,
+          updatedAt: interaction.updated_at,
         },
       },
       message: 'Interaction logged successfully',
@@ -129,11 +126,10 @@ router.get(
     }
 
     const result = await pool.query(
-      `SELECT i.id, i.session_id, i.user_prompt, i.ai_response, i.ai_model, i.prompt_word_count,
-              i.response_time, i.was_verified, i.was_modified, i.was_rejected, i.confidence_score, i.created_at
+      `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
+              i.response_time_ms, i.was_verified, i.was_modified, i.was_rejected, i.created_at, i.updated_at
        FROM interactions i
-       JOIN sessions s ON i.session_id = s.id
-       WHERE i.id = $1 AND s.user_id = $2`,
+       WHERE i.id = $1 AND i.user_id = $2`,
       [interactionId, userId]
     );
 
@@ -152,16 +148,16 @@ router.get(
         interaction: {
           id: interaction.id,
           sessionId: interaction.session_id,
+          userId: interaction.user_id,
           userPrompt: interaction.user_prompt,
           aiResponse: interaction.ai_response,
           aiModel: interaction.ai_model,
-          promptWordCount: interaction.prompt_word_count,
-          responseTime: interaction.response_time,
+          responseTimeMs: interaction.response_time_ms,
           wasVerified: interaction.was_verified,
           wasModified: interaction.was_modified,
           wasRejected: interaction.was_rejected,
-          confidenceScore: interaction.confidence_score,
           createdAt: interaction.created_at,
+          updatedAt: interaction.updated_at,
         },
       },
       timestamp: new Date().toISOString(),
@@ -179,7 +175,7 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const { interactionId } = req.params;
     const userId = req.user?.id;
-    const { wasVerified, wasModified, wasRejected, confidenceScore } = req.body;
+    const { wasVerified, wasModified, wasRejected } = req.body;
 
     if (!userId) {
       return res.status(400).json({
@@ -192,8 +188,7 @@ router.patch(
     // Verify interaction belongs to user
     const check = await pool.query(
       `SELECT i.id FROM interactions i
-       JOIN sessions s ON i.session_id = s.id
-       WHERE i.id = $1 AND s.user_id = $2`,
+       WHERE i.id = $1 AND i.user_id = $2`,
       [interactionId, userId]
     );
 
@@ -225,11 +220,6 @@ router.patch(
       values.push(wasRejected);
     }
 
-    if (confidenceScore !== undefined) {
-      updates.push(`confidence_score = $${paramCount++}`);
-      values.push(confidenceScore);
-    }
-
     if (updates.length === 0) {
       return res.status(400).json({
         success: false,
@@ -247,8 +237,8 @@ router.patch(
       UPDATE interactions
       SET ${updates.join(', ')}
       WHERE id = $${paramCount}
-      RETURNING id, session_id, user_prompt, ai_response, ai_model, prompt_word_count,
-                response_time, was_verified, was_modified, was_rejected, confidence_score, created_at
+      RETURNING id, session_id, user_id, user_prompt, ai_response, ai_model,
+                response_time_ms, was_verified, was_modified, was_rejected, created_at, updated_at
     `;
 
     const result = await pool.query(updateQuery, values);
@@ -260,16 +250,16 @@ router.patch(
         interaction: {
           id: interaction.id,
           sessionId: interaction.session_id,
+          userId: interaction.user_id,
           userPrompt: interaction.user_prompt,
           aiResponse: interaction.ai_response,
           aiModel: interaction.ai_model,
-          promptWordCount: interaction.prompt_word_count,
-          responseTime: interaction.response_time,
+          responseTimeMs: interaction.response_time_ms,
           wasVerified: interaction.was_verified,
           wasModified: interaction.was_modified,
           wasRejected: interaction.was_rejected,
-          confidenceScore: interaction.confidence_score,
           createdAt: interaction.created_at,
+          updatedAt: interaction.updated_at,
         },
       },
       message: 'Interaction updated successfully',
@@ -300,12 +290,11 @@ router.get(
     const limitNum = Math.min(parseInt(limit as string) || 50, 100);
     const offsetNum = parseInt(offset as string) || 0;
 
-    let query = `SELECT i.id, i.session_id, i.user_prompt, i.ai_response, i.ai_model,
-                        i.prompt_word_count, i.response_time, i.was_verified, i.was_modified,
-                        i.was_rejected, i.confidence_score, i.created_at
+    let query = `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
+                        i.response_time_ms, i.was_verified, i.was_modified,
+                        i.was_rejected, i.created_at, i.updated_at
                  FROM interactions i
-                 JOIN sessions s ON i.session_id = s.id
-                 WHERE s.user_id = $1`;
+                 WHERE i.user_id = $1`;
     const params: any[] = [userId];
     let paramCount = 2;
 
@@ -325,18 +314,19 @@ router.get(
         interactions: result.rows.map((i: any) => ({
           id: i.id,
           sessionId: i.session_id,
+          userId: i.user_id,
           userPrompt: i.user_prompt,
           aiResponse: i.ai_response,
           aiModel: i.ai_model,
-          promptWordCount: i.prompt_word_count,
-          responseTime: i.response_time,
+          responseTimeMs: i.response_time_ms,
           wasVerified: i.was_verified,
           wasModified: i.was_modified,
           wasRejected: i.was_rejected,
-          confidenceScore: i.confidence_score,
           createdAt: i.created_at,
+          updatedAt: i.updated_at,
         })),
       },
+      count: result.rows.length,
       timestamp: new Date().toISOString(),
     });
   })
