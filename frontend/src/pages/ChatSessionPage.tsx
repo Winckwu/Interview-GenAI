@@ -55,7 +55,7 @@ const ChatSessionPage: React.FC = () => {
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
   const [sessionsLoading, setSessionsLoading] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Load session list with valid interactions
   useEffect(() => {
