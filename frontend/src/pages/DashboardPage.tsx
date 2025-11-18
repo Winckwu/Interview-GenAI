@@ -42,14 +42,11 @@ const DashboardPage: React.FC = () => {
     { week: 'Week 4', accuracy: 81 },
   ];
 
-  const patternDistribution = [
-    { name: 'Pattern A', value: 15 },
-    { name: 'Pattern B', value: 12 },
-    { name: 'Pattern C', value: 10 },
-    { name: 'Pattern D', value: 8 },
-    { name: 'Pattern E', value: 3 },
-    { name: 'Pattern F', value: 2 },
-  ];
+  // Convert pattern distribution to chart format
+  const patternDistributionChart = Object.entries(patternDistribution).map(([name, value]) => ({
+    name: `Pattern ${name.toUpperCase()}`,
+    value: Math.round((value as number) * 100),
+  }));
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
@@ -130,10 +127,7 @@ const DashboardPage: React.FC = () => {
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
-                data={Object.entries(patternDistribution).map(([name, value]) => ({
-                  name: `Pattern ${name}`,
-                  value: Math.round((value as number) * 100),
-                }))}
+                data={patternDistributionChart}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
@@ -142,7 +136,7 @@ const DashboardPage: React.FC = () => {
                 fill="#8884d8"
                 dataKey="value"
               >
-                {Object.entries(patternDistribution).map((entry, index) => (
+                {patternDistributionChart.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
