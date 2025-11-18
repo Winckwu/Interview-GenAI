@@ -300,11 +300,16 @@ router.get(
 
     const patterns = result.rows.map((p: any) => ({
       id: p.id,
+      userId: p.user_id,
       sessionId: p.session_id,
-      detectedPattern: p.detected_pattern,
+      patternType: p.detected_pattern,
       confidence: p.confidence,
-      features: p.features,
+      aiRelianceScore: 0,
+      verificationScore: 0,
+      contextSwitchingFrequency: 0,
+      metrics: typeof p.features === 'string' ? JSON.parse(p.features) : p.features || {},
       createdAt: p.created_at,
+      updatedAt: p.created_at,
     }));
 
     // Get most recent pattern
@@ -353,18 +358,23 @@ router.get(
       [userId, limitNum, offsetNum]
     );
 
+    const patterns = result.rows.map((p: any) => ({
+      id: p.id,
+      userId: p.user_id,
+      sessionId: p.session_id,
+      patternType: p.detected_pattern,
+      confidence: p.confidence,
+      aiRelianceScore: 0,
+      verificationScore: 0,
+      contextSwitchingFrequency: 0,
+      metrics: typeof p.features === 'string' ? JSON.parse(p.features) : p.features || {},
+      createdAt: p.created_at,
+      updatedAt: p.created_at,
+    }));
+
     res.json({
       success: true,
-      data: {
-        patterns: result.rows.map((p: any) => ({
-          id: p.id,
-          sessionId: p.session_id,
-          detectedPattern: p.detected_pattern,
-          confidence: p.confidence,
-          features: p.features,
-          createdAt: p.created_at,
-        })),
-      },
+      data: patterns,
       timestamp: new Date().toISOString(),
     });
   })

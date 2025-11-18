@@ -136,11 +136,15 @@ router.get(
 
     const evolutions = result.rows.map((e: any) => ({
       id: e.id,
-      sessionId: e.session_id,
-      currentPattern: e.current_pattern,
-      previousPattern: e.previous_pattern,
-      changeType: e.change_type,
-      confidence: e.confidence,
+      userId: userId,
+      timePoint: e.created_at,
+      fromPattern: e.previous_pattern || 'unknown',
+      toPattern: e.current_pattern,
+      changeType: e.change_type as 'improvement' | 'migration' | 'oscillation' | 'regression',
+      metrics: {
+        confidence: e.confidence,
+        sessionId: e.session_id,
+      },
       createdAt: e.created_at,
     }));
 
@@ -155,10 +159,8 @@ router.get(
 
     res.json({
       success: true,
-      data: {
-        evolutions,
-        statistics: stats,
-      },
+      data: evolutions,
+      statistics: stats,
       timestamp: new Date().toISOString(),
     });
   })
@@ -189,23 +191,27 @@ router.get(
     const countResult = await pool.query('SELECT COUNT(*) as total FROM evolution_logs WHERE user_id = $1', [userId]);
     const total = parseInt(countResult.rows[0].total);
 
+    const evolutions = result.rows.map((e: any) => ({
+      id: e.id,
+      userId: userId,
+      timePoint: e.created_at,
+      fromPattern: e.previous_pattern || 'unknown',
+      toPattern: e.current_pattern,
+      changeType: e.change_type as 'improvement' | 'migration' | 'oscillation' | 'regression',
+      metrics: {
+        confidence: e.confidence,
+        sessionId: e.session_id,
+      },
+      createdAt: e.created_at,
+    }));
+
     res.json({
       success: true,
-      data: {
-        evolutions: result.rows.map((e: any) => ({
-          id: e.id,
-          sessionId: e.session_id,
-          currentPattern: e.current_pattern,
-          previousPattern: e.previous_pattern,
-          changeType: e.change_type,
-          confidence: e.confidence,
-          createdAt: e.created_at,
-        })),
-        pagination: {
-          limit: limitNum,
-          offset: offsetNum,
-          total,
-        },
+      data: evolutions,
+      pagination: {
+        limit: limitNum,
+        offset: offsetNum,
+        total,
       },
       timestamp: new Date().toISOString(),
     });

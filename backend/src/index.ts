@@ -18,6 +18,7 @@ import usersRoutes from './routes/users';
 import sessionsRoutes from './routes/sessions';
 import interactionsRoutes from './routes/interactions';
 import patternsRoutes from './routes/patterns';
+import predictionsRoutes from './routes/predictions';
 import evolutionRoutes from './routes/evolution';
 import skillsRoutes from './routes/skills';
 import analyticsRoutes from './routes/analytics';
@@ -106,6 +107,9 @@ app.use('/api/interactions', interactionsRoutes);
 
 // Pattern detection routes
 app.use('/api/patterns', patternsRoutes);
+
+// Predictions routes
+app.use('/api/predictions', predictionsRoutes);
 
 // Evolution tracking routes
 app.use('/api/evolution', evolutionRoutes);
