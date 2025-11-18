@@ -19,6 +19,7 @@ const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();
   const { patterns, predictions, evolutions, loading, fetchPatterns, fetchPredictions, fetchEvolutions } = usePatternStore();
   const { sessions, sessionsLoading, loadSessions, deleteSession: deleteSessionFromStore, error: sessionError } = useSessionStore();
+  const { setSidebarOpen } = useUIStore();
   const [creatingSession, setCreatingSession] = useState(false);
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
 
@@ -34,6 +35,8 @@ const DashboardPage: React.FC = () => {
       });
 
       const sessionId = response.data.data.session.id;
+      // Close sidebar before navigating to new session
+      setSidebarOpen(false);
       navigate(`/session/${sessionId}`);
     } catch (err: any) {
       console.error('Failed to create session:', err);
