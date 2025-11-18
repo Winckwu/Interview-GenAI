@@ -347,6 +347,9 @@ const ChatSessionPage: React.FC = () => {
         role: 'ai',
         content: aiContent,
         timestamp: interaction.createdAt,
+        wasVerified: interaction.wasVerified || false,
+        wasModified: interaction.wasModified || false,
+        wasRejected: interaction.wasRejected || false,
       };
 
       setMessages((prev) => [...prev, userMessage, aiMessage]);
