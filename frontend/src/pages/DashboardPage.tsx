@@ -20,6 +20,7 @@ const DashboardPage: React.FC = () => {
   const { patterns, predictions, evolutions, loading, fetchPatterns, fetchPredictions, fetchEvolutions } = usePatternStore();
   const { sessions, sessionsLoading, loadSessions, deleteSession: deleteSessionFromStore, error: sessionError } = useSessionStore();
   const [creatingSession, setCreatingSession] = useState(false);
+  const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
 
   // Handle start new session
   const handleStartSession = async () => {
@@ -234,7 +235,7 @@ const DashboardPage: React.FC = () => {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '0' }}>
               {sessions.map((session, index) => {
-                const [isHoveringCard, setIsHoveringCard] = React.useState(false);
+                const isHoveringCard = hoveredSessionId === session.id;
                 return (
                   <div
                     key={session.id}
@@ -248,8 +249,8 @@ const DashboardPage: React.FC = () => {
                       display: 'flex',
                       flexDirection: 'column',
                     }}
-                    onMouseEnter={() => setIsHoveringCard(true)}
-                    onMouseLeave={() => setIsHoveringCard(false)}
+                    onMouseEnter={() => setHoveredSessionId(session.id)}
+                    onMouseLeave={() => setHoveredSessionId(null)}
                   >
                     <button
                       onClick={() => navigate(`/session/${session.id}`)}

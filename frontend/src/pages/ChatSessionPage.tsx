@@ -58,6 +58,7 @@ const ChatSessionPage: React.FC = () => {
   const [sessions, setSessions] = useState<SessionItem[]>([]);
   const [sessionsLoading, setSessionsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
 
   // Load session list with valid interactions
   useEffect(() => {
@@ -460,7 +461,7 @@ const ChatSessionPage: React.FC = () => {
             </div>
           ) : (
             sessions.map((session) => {
-              const [isHovering, setIsHovering] = React.useState(false);
+              const isHovering = hoveredSessionId === session.id;
               return (
                 <div
                   key={session.id}
@@ -470,8 +471,8 @@ const ChatSessionPage: React.FC = () => {
                     marginBottom: '0.5rem',
                     position: 'relative',
                   }}
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
+                  onMouseEnter={() => setHoveredSessionId(session.id)}
+                  onMouseLeave={() => setHoveredSessionId(null)}
                 >
                   <button
                     onClick={() => {
