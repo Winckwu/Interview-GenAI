@@ -111,7 +111,7 @@ const ChatSessionPage: React.FC = () => {
       const aiMessage: Message = {
         id: interaction.id,
         role: 'ai',
-        content: aiResponse,
+        content: aiContent,
         timestamp: interaction.createdAt,
       };
 
@@ -260,7 +260,7 @@ const ChatSessionPage: React.FC = () => {
             padding: '1rem',
             backgroundColor: '#f0f9ff',
             borderBottom: '1px solid #bfdbfe',
-            borderLeft: `4px solid ${getPatternColor(pattern.detectedPattern)}`,
+            borderLeft: `4px solid ${getPatternColor(pattern.pattern)}`,
           }}
         >
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -272,7 +272,7 @@ const ChatSessionPage: React.FC = () => {
                 style={{
                   width: '3rem',
                   height: '3rem',
-                  backgroundColor: getPatternColor(pattern.detectedPattern),
+                  backgroundColor: getPatternColor(pattern.pattern),
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
@@ -282,11 +282,11 @@ const ChatSessionPage: React.FC = () => {
                   fontWeight: '700',
                 }}
               >
-                {pattern.detectedPattern}
+                {pattern.pattern}
               </div>
               <div>
                 <p style={{ margin: '0', fontWeight: '600', color: '#1f2937' }}>
-                  {getPatternLabel(pattern.detectedPattern)}
+                  {getPatternLabel(pattern.pattern)}
                 </p>
                 <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
                   Confidence: {(pattern.confidence * 100).toFixed(1)}%
