@@ -48,7 +48,7 @@ export const useAnalytics = (days: number = 30): UseAnalyticsReturn => {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [fetchAnalytics]);
+  }, [days]);
 
   return {
     analytics,
@@ -107,7 +107,7 @@ export const usePatternStats = (userId: string, days: number = 30): UsePatternSt
     if (userId) {
       fetchPatternStats();
     }
-  }, [userId, fetchPatternStats]);
+  }, [userId, days]);
 
   return {
     stats,
@@ -201,7 +201,7 @@ export const useSessions = (): UseSessionsReturn => {
 
   useEffect(() => {
     fetchSessions();
-  }, [fetchSessions]);
+  }, []);
 
   return {
     sessions,
