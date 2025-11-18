@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
@@ -28,61 +29,73 @@ export interface UIState {
 /**
  * UI state store using Zustand
  * Manages notifications, sidebar, theme, and other UI elements
+ * Theme and sidebar state are persisted to localStorage
  */
-export const useUIStore = create<UIState>((set, get) => ({
-  notifications: [],
-  sidebarOpen: true,
-  theme: 'light',
+export const useUIStore = create<UIState>(
+  persist(
+    (set, get) => ({
+      notifications: [],
+      sidebarOpen: true,
+      theme: 'light',
 
-  addNotification: (message: string, type: NotificationType, duration = 5000) => {
-    const id = `notification-${Date.now()}-${Math.random()}`;
-    const notification: Notification = {
-      id,
-      message,
-      type,
-      duration,
-      timestamp: Date.now(),
-    };
+      addNotification: (message: string, type: NotificationType, duration = 5000) => {
+        const id = `notification-${Date.now()}-${Math.random()}`;
+        const notification: Notification = {
+          id,
+          message,
+          type,
+          duration,
+          timestamp: Date.now(),
+        };
 
-    set((state) => ({
-      notifications: [...state.notifications, notification],
-    }));
+        set((state) => ({
+          notifications: [...state.notifications, notification],
+        }));
 
-    // Auto-remove notification after duration
-    if (duration > 0) {
-      setTimeout(() => {
-        get().removeNotification(id);
-      }, duration);
+        // Auto-remove notification after duration
+        if (duration > 0) {
+          setTimeout(() => {
+            get().removeNotification(id);
+          }, duration);
+        }
+      },
+
+      removeNotification: (id: string) => {
+        set((state) => ({
+          notifications: state.notifications.filter((n) => n.id !== id),
+        }));
+      },
+
+      clearNotifications: () => {
+        set({ notifications: [] });
+      },
+
+      toggleSidebar: () => {
+        set((state) => ({
+          sidebarOpen: !state.sidebarOpen,
+        }));
+      },
+
+      setSidebarOpen: (open: boolean) => {
+        set({ sidebarOpen: open });
+      },
+
+      toggleTheme: () => {
+        set((state) => ({
+          theme: state.theme === 'light' ? 'dark' : 'light',
+        }));
+      },
+
+      setTheme: (theme: 'light' | 'dark') => {
+        set({ theme });
+      },
+    }),
+    {
+      name: 'ui-store',
+      partialize: (state) => ({
+        theme: state.theme,
+        sidebarOpen: state.sidebarOpen,
+      }),
     }
-  },
-
-  removeNotification: (id: string) => {
-    set((state) => ({
-      notifications: state.notifications.filter((n) => n.id !== id),
-    }));
-  },
-
-  clearNotifications: () => {
-    set({ notifications: [] });
-  },
-
-  toggleSidebar: () => {
-    set((state) => ({
-      sidebarOpen: !state.sidebarOpen,
-    }));
-  },
-
-  setSidebarOpen: (open: boolean) => {
-    set({ sidebarOpen: open });
-  },
-
-  toggleTheme: () => {
-    set((state) => ({
-      theme: state.theme === 'light' ? 'dark' : 'light',
-    }));
-  },
-
-  setTheme: (theme: 'light' | 'dark') => {
-    set({ theme });
-  },
-}));
+  )
+);
