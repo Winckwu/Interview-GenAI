@@ -82,8 +82,8 @@ export const usePatternStore = create<PatternState>((set, get) => ({
               userId: userId || 'current',
               patternType: statsData.dominantPattern as 'A' | 'B' | 'C' | 'D' | 'E' | 'F',
               confidence: statsData.patterns?.[statsData.dominantPattern]?.avgConfidence || 0.5,
-              aiRelianceScore: 50,
-              verificationScore: 50,
+              aiRelianceScore: 0.5, // 0-1 range for 50%
+              verificationScore: 0.5, // 0-1 range for 50%
               contextSwitchingFrequency: 1,
               metrics: statsData.distribution || {},
               createdAt: new Date().toISOString(),
