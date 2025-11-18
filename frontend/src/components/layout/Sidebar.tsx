@@ -43,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       label: 'A/B Testing',
       path: '/ab-test',
       icon: 'abtest',
-      visible: true,
+      visible: false, // Hidden - not yet implemented
     },
     {
       label: 'Admin',
