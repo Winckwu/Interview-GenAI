@@ -58,11 +58,16 @@ export const useAuthStore = create<AuthState>()(
           const response = await api.post('/auth/login', { email, password });
           const { user, token } = response.data.data;
 
-          get().setToken(token);
-          set({ user, isAuthenticated: true });
+          // Set token, user, and authenticated status atomically
+          set({ token, user, isAuthenticated: true });
+
+          // Update API headers with new token
+          if (token) {
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          }
         } catch (error: any) {
           const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Login failed';
-          set({ error: errorMsg, isAuthenticated: false });
+          set({ error: errorMsg, isAuthenticated: false, token: null, user: null });
           throw error;
         } finally {
           set({ loading: false });
@@ -80,11 +85,16 @@ export const useAuthStore = create<AuthState>()(
           });
           const { user, token } = response.data.data;
 
-          get().setToken(token);
-          set({ user, isAuthenticated: true });
+          // Set token, user, and authenticated status atomically
+          set({ token, user, isAuthenticated: true });
+
+          // Update API headers with new token
+          if (token) {
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          }
         } catch (error: any) {
           const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Registration failed';
-          set({ error: errorMsg, isAuthenticated: false });
+          set({ error: errorMsg, isAuthenticated: false, token: null, user: null });
           throw error;
         } finally {
           set({ loading: false });
@@ -92,8 +102,10 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
-        get().setToken(null);
+        // Clear all auth state atomically
         set({ user: null, isAuthenticated: false, token: null });
+        // Clear API headers
+        delete api.defaults.headers.common['Authorization'];
       },
 
       checkAuth: async () => {
