@@ -395,9 +395,12 @@ button:disabled,
    Cards & Containers
    ============================================================================ */
 .card {
-  background-color: white;
+  background-color: var(--bg-primary);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: background-color var(--duration-base) var(--easing-ease),
+              border-color var(--duration-base) var(--easing-ease);
   padding: var(--spacing-lg);
   transition: all var(--duration-base) var(--easing-ease);
 }

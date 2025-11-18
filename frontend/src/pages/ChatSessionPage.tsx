@@ -358,6 +358,7 @@ const ChatSessionPage: React.FC = () => {
    */
   const handleNewChat = async () => {
     setCreatingNewSession(true);
+    setError(null);
     try {
       const response = await api.post('/sessions', {
         taskDescription: 'General AI interaction',
@@ -368,6 +369,7 @@ const ChatSessionPage: React.FC = () => {
       const newSessionId = response.data.data.session.id;
       // Close sidebar and navigate to new session
       setSessionSidebarOpen(false);
+      setCreatingNewSession(false); // Reset state before navigating
       navigate(`/session/${newSessionId}`);
     } catch (err: any) {
       console.error('Failed to create new session:', err);
