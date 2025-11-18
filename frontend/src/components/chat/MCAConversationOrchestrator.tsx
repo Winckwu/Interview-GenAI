@@ -280,7 +280,10 @@ export const MRDisplay: React.FC<MRDisplayProps> = ({
           {mr.urgency === 'enforce' && '🛑'}
           {mr.name}
         </div>
-        <p style={{ margin: '0', whiteSpace: 'pre-wrap' }}>{mr.message}</p>
+        <p style={{ margin: '0.5rem 0 0 0', whiteSpace: 'pre-wrap' }}>{mr.message}</p>
+        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', opacity: 0.7 }}>
+          <em>💡 Intervention Tips: These suggestions help you reflect on your learning process. No need to act on them immediately—just notice and think about them.</em>
+        </p>
       </div>
     );
   } else if (mr.displayMode === 'sidebar') {
@@ -300,7 +303,7 @@ export const MRDisplay: React.FC<MRDisplayProps> = ({
             {mr.urgency === 'observe' && '💡'}
             {mr.urgency === 'remind' && '⚠️'}
             {mr.urgency === 'enforce' && '🛑'}
-            {mr.name}
+            Metacognitive Intervention
           </div>
           {onClose && (
             <button
@@ -317,6 +320,7 @@ export const MRDisplay: React.FC<MRDisplayProps> = ({
             </button>
           )}
         </div>
+        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', fontWeight: 600 }}>{mr.name}</p>
         <p style={{ margin: '0.5rem 0 0 0', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>{mr.message}</p>
       </div>
     );
@@ -343,8 +347,20 @@ export const MRDisplay: React.FC<MRDisplayProps> = ({
           boxShadow: '0 20px 25px rgba(0, 0, 0, 0.15)',
           border: `3px solid ${colors.border}`,
         }}>
-          <h3 style={{
+          <p style={{
             margin: '0 0 1rem 0',
+            padding: '0.75rem',
+            backgroundColor: '#f0f9ff',
+            border: '1px solid #93c5fd',
+            borderRadius: '0.375rem',
+            fontSize: '0.75rem',
+            color: '#1e40af',
+            fontWeight: '500',
+          }}>
+            💡 <strong>Metacognitive Intervention:</strong> The system has detected an important learning moment. Please take a moment to reflect.
+          </p>
+          <h3 style={{
+            margin: '0.5rem 0 1rem 0',
             fontSize: '1.125rem',
             fontWeight: '700',
             color: colors.text,

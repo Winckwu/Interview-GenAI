@@ -925,7 +925,7 @@ const ChatSessionPage: React.FC = () => {
                     <button
                       onClick={() => markAsVerified(message.id)}
                       disabled={updatingMessageId === message.id}
-                      title="Mark this response as verified/correct"
+                      title="✓ VERIFY: Confirm this AI response is correct and helpful. This feedback helps us understand what quality looks like."
                       style={{
                         fontSize: '0.75rem',
                         padding: '0.4rem 0.75rem',
@@ -952,7 +952,7 @@ const ChatSessionPage: React.FC = () => {
                     <button
                       onClick={() => markAsModified(message.id)}
                       disabled={updatingMessageId === message.id}
-                      title="Mark this response as modified/learned"
+                      title="✎ MODIFY: Check this if you edited, rewrote, or improved the AI's response. This shows you're actively learning and not just copying."
                       style={{
                         fontSize: '0.75rem',
                         padding: '0.4rem 0.75rem',
