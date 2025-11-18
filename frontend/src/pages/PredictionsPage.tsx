@@ -23,8 +23,10 @@ const PredictionsPage: React.FC = () => {
   });
 
   useEffect(() => {
-    fetchPredictions(user?.id);
-  }, [user?.id, fetchPredictions]);
+    if (user?.id) {
+      fetchPredictions(user.id);
+    }
+  }, [user?.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

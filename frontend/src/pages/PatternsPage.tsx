@@ -12,8 +12,10 @@ const PatternsPage: React.FC = () => {
   const { patterns, loading, fetchPatterns } = usePatternStore();
 
   useEffect(() => {
-    fetchPatterns(user?.id);
-  }, [user?.id, fetchPatterns]);
+    if (user?.id) {
+      fetchPatterns(user.id);
+    }
+  }, [user?.id]);
 
   if (loading) {
     return <LoadingSpinner message="Loading patterns..." />;

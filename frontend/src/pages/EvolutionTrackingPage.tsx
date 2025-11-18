@@ -13,8 +13,10 @@ const EvolutionTrackingPage: React.FC = () => {
   const { evolutions, loading, fetchEvolutions } = usePatternStore();
 
   useEffect(() => {
-    fetchEvolutions(user?.id);
-  }, [user?.id, fetchEvolutions]);
+    if (user?.id) {
+      fetchEvolutions(user.id);
+    }
+  }, [user?.id]);
 
   if (loading) {
     return <LoadingSpinner message="Loading evolution data..." />;
