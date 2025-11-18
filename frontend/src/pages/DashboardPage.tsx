@@ -101,23 +101,53 @@ const DashboardPage: React.FC = () => {
           disabled={creatingSession}
           style={{
             padding: '0.75rem 1.5rem',
-            backgroundColor: '#10b981',
+            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
             color: '#fff',
             border: 'none',
-            borderRadius: '0.375rem',
+            borderRadius: '0.75rem',
             fontWeight: '600',
             cursor: creatingSession ? 'not-allowed' : 'pointer',
             opacity: creatingSession ? 0.7 : 1,
             whiteSpace: 'nowrap',
+            boxShadow: '0 4px 15px rgba(16, 185, 129, 0.4)',
+            transition: 'all 150ms ease',
+            transform: creatingSession ? 'scale(0.98)' : 'scale(1)',
+          }}
+          onMouseEnter={(e) => {
+            if (!creatingSession) {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 25px rgba(16, 185, 129, 0.6)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!creatingSession) {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(16, 185, 129, 0.4)';
+            }
           }}
         >
-          {creatingSession ? 'Starting...' : '+ Start New Session'}
+          {creatingSession ? '⏳ Starting...' : '+ Start New Session'}
         </button>
       </div>
 
       {sessionError && (
-        <div style={{ padding: '0.75rem 1rem', backgroundColor: '#fee2e2', borderRadius: '0.375rem', marginBottom: '1rem', color: '#991b1b' }}>
-          {sessionError}
+        <div
+          style={{
+            padding: '1rem 1.5rem',
+            backgroundColor: '#fef2f2',
+            borderRadius: '0.75rem',
+            marginBottom: '1.5rem',
+            color: '#991b1b',
+            borderLeft: '4px solid #ef4444',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            boxShadow: '0 2px 8px rgba(239, 68, 68, 0.15)',
+            animation: 'fadeIn 300ms ease',
+          }}
+        >
+          <span style={{ fontSize: '1.25rem' }}>✕</span>
+          <span style={{ fontWeight: '500' }}>{sessionError}</span>
         </div>
       )}
 
@@ -243,16 +273,101 @@ const DashboardPage: React.FC = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="page-actions">
-        <button className="btn btn-primary">
-          <a href="/predictions">Make a New Prediction</a>
-        </button>
-        <button className="btn btn-secondary">
-          <a href="/patterns">View All Patterns</a>
-        </button>
-        <button className="btn btn-secondary">
-          <a href="/evolution">Track Evolution</a>
-        </button>
+      <div
+        className="page-actions"
+        style={{
+          display: 'flex',
+          gap: '1rem',
+          marginTop: '2rem',
+          flexWrap: 'wrap',
+        }}
+      >
+        <a
+          href="/predictions"
+          style={{
+            padding: '0.75rem 1.5rem',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '0.75rem',
+            fontWeight: '600',
+            textDecoration: 'none',
+            cursor: 'pointer',
+            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+            transition: 'all 150ms ease',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.6)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+          }}
+        >
+          ✨ Make a New Prediction
+        </a>
+        <a
+          href="/patterns"
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#f3f4f6',
+            color: '#374151',
+            border: '2px solid #e5e7eb',
+            borderRadius: '0.75rem',
+            fontWeight: '600',
+            textDecoration: 'none',
+            cursor: 'pointer',
+            transition: 'all 150ms ease',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#e5e7eb';
+            e.currentTarget.style.borderColor = '#667eea';
+            e.currentTarget.style.color = '#667eea';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#f3f4f6';
+            e.currentTarget.style.borderColor = '#e5e7eb';
+            e.currentTarget.style.color = '#374151';
+          }}
+        >
+          📊 View All Patterns
+        </a>
+        <a
+          href="/evolution"
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#f3f4f6',
+            color: '#374151',
+            border: '2px solid #e5e7eb',
+            borderRadius: '0.75rem',
+            fontWeight: '600',
+            textDecoration: 'none',
+            cursor: 'pointer',
+            transition: 'all 150ms ease',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#e5e7eb';
+            e.currentTarget.style.borderColor = '#667eea';
+            e.currentTarget.style.color = '#667eea';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#f3f4f6';
+            e.currentTarget.style.borderColor = '#e5e7eb';
+            e.currentTarget.style.color = '#374151';
+          }}
+        >
+          📈 Track Evolution
+        </a>
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ const LoginPage: React.FC = () => {
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
@@ -47,11 +48,11 @@ const LoginPage: React.FC = () => {
 
     try {
       await login(formData.email, formData.password);
-      addNotification('Login successful!', 'success');
+      addNotification('✓ Login successful!', 'success');
       // Navigate immediately - state is already updated atomically
       navigate('/');
     } catch (err) {
-      addNotification('Login failed. Please check your credentials.', 'error');
+      addNotification('✕ Login failed. Please check your credentials.', 'error');
     }
   };
 
@@ -82,16 +83,23 @@ const LoginPage: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email Address</label>
             <input
               id="email"
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter your email"
+              onFocus={() => setFocusedField('email')}
+              onBlur={() => setFocusedField(null)}
+              placeholder="you@example.com"
               className={formErrors.email ? 'error' : ''}
               disabled={loading}
+              style={{
+                borderColor: focusedField === 'email' ? '#667eea' : formErrors.email ? '#ef4444' : '#e5e7eb',
+                backgroundColor: focusedField === 'email' ? '#f0f9ff' : '#f9fafb',
+                transition: 'all 150ms ease',
+              }}
             />
             {formErrors.email && <span className="error-message">{formErrors.email}</span>}
           </div>
@@ -104,21 +112,44 @@ const LoginPage: React.FC = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Enter your password"
+              onFocus={() => setFocusedField('password')}
+              onBlur={() => setFocusedField(null)}
+              placeholder="••••••••"
               className={formErrors.password ? 'error' : ''}
               disabled={loading}
+              style={{
+                borderColor: focusedField === 'password' ? '#667eea' : formErrors.password ? '#ef4444' : '#e5e7eb',
+                backgroundColor: focusedField === 'password' ? '#f0f9ff' : '#f9fafb',
+                transition: 'all 150ms ease',
+              }}
             />
             {formErrors.password && <span className="error-message">{formErrors.password}</span>}
           </div>
 
-          <button type="submit" className="btn btn-primary btn-large" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
+          <button
+            type="submit"
+            className="btn btn-primary btn-large"
+            disabled={loading}
+            style={{
+              opacity: loading ? 0.7 : 1,
+              transform: loading ? 'scale(0.98)' : 'scale(1)',
+              transition: 'all 150ms ease',
+            }}
+          >
+            {loading ? (
+              <>
+                <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
+                {' Signing in...'}
+              </>
+            ) : (
+              'Sign In'
+            )}
           </button>
         </form>
 
         <div className="auth-footer">
           <p>
-            Don't have an account? <Link to="/register">Sign up here</Link>
+            Don't have an account? <Link to="/register">Create one here</Link>
           </p>
         </div>
       </div>
