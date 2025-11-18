@@ -48,7 +48,13 @@ const LoginPage: React.FC = () => {
     try {
       await login(formData.email, formData.password);
       addNotification('Login successful!', 'success');
-      navigate('/');
+      // Clear form data after successful login
+      setFormData({ email: '', password: '' });
+      setFormErrors({});
+      // Navigate after a brief delay to ensure state is updated
+      setTimeout(() => {
+        navigate('/');
+      }, 100);
     } catch (err) {
       addNotification('Login failed. Please check your credentials.', 'error');
     }

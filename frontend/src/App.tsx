@@ -37,17 +37,21 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
  * Main App component with routing configuration
  */
 const App: React.FC = () => {
-  const { checkAuth, loading } = useAuthStore();
+  const { checkAuth, loading, isAuthenticated, token } = useAuthStore();
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const initialize = async () => {
-      await checkAuth();
+      // Only call checkAuth if user is not already authenticated
+      // (prevents double login issue after successful login)
+      if (!isAuthenticated && !token) {
+        await checkAuth();
+      }
       setIsInitialized(true);
     };
 
     initialize();
-  }, []);
+  }, [isAuthenticated, token]);
 
   if (!isInitialized || loading) {
     return <LoadingSpinner fullScreen />;
