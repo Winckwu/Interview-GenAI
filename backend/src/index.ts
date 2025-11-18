@@ -114,6 +114,7 @@ import assessmentsRoutes from './routes/assessments';
 import usersRoutes from './routes/users';
 import interactionsRoutes from './routes/interactions';
 import aiRoutes from './routes/ai';
+import mcaRoutes from './routes/mca';
 
 // ============================================================================
 // API Routes
@@ -151,6 +152,9 @@ app.use('/api/interactions', interactionsRoutes);
 
 // AI chat and endpoints
 app.use('/api/ai', aiRoutes);
+
+// MCA (Metacognitive Assessment) - Real-time pattern recognition and MR activation
+app.use('/api/mca', mcaRoutes);
 
 // Placeholder routes - backward compatibility
 app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {

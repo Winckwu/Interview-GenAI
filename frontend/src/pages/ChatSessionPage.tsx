@@ -5,6 +5,7 @@ import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
 import { useUIStore } from '../stores/uiStore';
 import PatternAnalysisWindow from '../components/chat/PatternAnalysisWindow';
+import { useMCAOrchestrator, MRDisplay, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
 
 interface Message {
   id: string;
@@ -78,6 +79,22 @@ const ChatSessionPage: React.FC = () => {
   const [sessionSidebarOpen, setSessionSidebarOpen] = useState(false);
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
   const [creatingNewSession, setCreatingNewSession] = useState(false);
+
+  // MCA orchestration states
+  const { result: mcaResult, activeMRs } = useMCAOrchestrator(sessionId || '', messages, true);
+  const [displayedModalMR, setDisplayedModalMR] = useState<ActiveMR | null>(null);
+  const [dismissedMRs, setDismissedMRs] = useState<Set<string>>(new Set());
+
+  // Handle modal MRs display
+  useEffect(() => {
+    if (activeMRs && activeMRs.length > 0) {
+      // Find first modal MR that hasn't been dismissed
+      const modalMR = activeMRs.find(
+        (mr) => mr.displayMode === 'modal' && !dismissedMRs.has(mr.mrId)
+      );
+      setDisplayedModalMR(modalMR || null);
+    }
+  }, [activeMRs, dismissedMRs]);
 
   // Load session list with valid interactions
   useEffect(() => {
@@ -962,6 +979,21 @@ const ChatSessionPage: React.FC = () => {
                   </div>
                 )}
               </div>
+              {/* Inline MRs - displayed after AI messages */}
+              {message.role === 'ai' && activeMRs && activeMRs.length > 0 && (
+                <>
+                  {activeMRs
+                    .filter((mr) => mr.displayMode === 'inline')
+                    .map((mr) => (
+                      <div key={mr.mrId} style={{ marginTop: '0.75rem' }}>
+                        <MRDisplay
+                          mr={mr}
+                          onClose={() => setDismissedMRs((prev) => new Set([...prev, mr.mrId]))}
+                        />
+                      </div>
+                    ))}
+                </>
+              )}
             </div>
           ))}
 
@@ -976,13 +1008,54 @@ const ChatSessionPage: React.FC = () => {
           )}
           </div>
 
-          {/* Right Sidebar - Pattern Analysis Window */}
+          {/* Right Sidebar - Pattern Analysis Window & MR Panel */}
           {showPatternPanel && (
-            <PatternAnalysisWindow
-              pattern={pattern}
-              isLoading={patternLoading}
-              onClose={() => setShowPatternPanel(false)}
-            />
+            <div style={{
+              width: '320px',
+              borderLeft: '1px solid #e2e8f0',
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              backgroundColor: '#f9fafb',
+            }}>
+              {/* Sidebar MRs */}
+              {activeMRs && activeMRs.some((mr) => mr.displayMode === 'sidebar') && (
+                <div style={{
+                  padding: '1rem',
+                  borderBottom: '1px solid #e2e8f0',
+                }}>
+                  <h3 style={{
+                    margin: '0 0 1rem 0',
+                    fontSize: '0.875rem',
+                    fontWeight: '600',
+                    color: '#1f2937',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                  }}>
+                    💡 Recommendations
+                  </h3>
+                  {activeMRs
+                    .filter((mr) => mr.displayMode === 'sidebar' && !dismissedMRs.has(mr.mrId))
+                    .map((mr) => (
+                      <div key={mr.mrId} style={{ marginBottom: '0.75rem' }}>
+                        <MRDisplay
+                          mr={mr}
+                          onClose={() => setDismissedMRs((prev) => new Set([...prev, mr.mrId]))}
+                        />
+                      </div>
+                    ))}
+                </div>
+              )}
+
+              {/* Pattern Analysis Window */}
+              <div style={{ flex: 1, overflowY: 'auto' }}>
+                <PatternAnalysisWindow
+                  pattern={pattern}
+                  isLoading={patternLoading}
+                  onClose={() => setShowPatternPanel(false)}
+                />
+              </div>
+            </div>
           )}
         </div>
 
@@ -1057,6 +1130,17 @@ const ChatSessionPage: React.FC = () => {
           </form>
         </footer>
       </div>
+
+      {/* Modal MR Display */}
+      {displayedModalMR && (
+        <MRDisplay
+          mr={displayedModalMR}
+          onClose={() => setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]))}
+          onAcknowledge={() => {
+            setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]));
+          }}
+        />
+      )}
 
       {/* CSS for animations */}
       <style>{`
