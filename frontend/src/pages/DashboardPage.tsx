@@ -55,10 +55,23 @@ const DashboardPage: React.FC = () => {
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
   // Generate intervention strategy data based on verification metrics
+  // Shows how different verification levels impact overall quality
   const interventionData = [
-    { strategy: 'Low Verification', successRate: Math.round(verificationRate * 50) },
-    { strategy: 'Medium Verification', successRate: Math.round(verificationRate * 75) },
-    { strategy: 'High Verification', successRate: Math.round(verificationRate * 100) },
+    {
+      strategy: 'Low Verification',
+      successRate: Math.min(verificationRate, 30), // Low verification caps at 30%
+      description: 'Minimal checks'
+    },
+    {
+      strategy: 'Medium Verification',
+      successRate: Math.min(verificationRate * 1.2, 70), // Medium verification improves quality
+      description: 'Selective checks'
+    },
+    {
+      strategy: 'High Verification',
+      successRate: Math.min(verificationRate * 1.5, 100), // High verification maximizes quality
+      description: 'Thorough checks'
+    },
   ];
 
   // Detect pattern change by checking if current dominantPattern differs from initial pattern
@@ -239,17 +252,30 @@ const DashboardPage: React.FC = () => {
 
         {/* Intervention Strategy Comparison */}
         <div className="chart-container">
-          <h3>Intervention Strategy Effectiveness</h3>
+          <div>
+            <h3>Verification Strategy Impact</h3>
+            <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '0 0 1rem 0' }}>
+              📋 Shows how different levels of AI output verification impact quality of your work.
+              Higher verification leads to better outcomes and helps prevent skill degradation.
+            </p>
+          </div>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={interventionData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="strategy" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="successRate" fill="#10b981" />
+              <YAxis label={{ value: 'Quality Impact Score (%)', angle: -90, position: 'insideLeft' }} />
+              <Tooltip
+                formatter={(value: number) => `${value.toFixed(1)}%`}
+                labelFormatter={() => 'Strategy Impact'}
+              />
+              <Bar dataKey="successRate" fill="#10b981" name="Quality Impact" />
             </BarChart>
           </ResponsiveContainer>
+          <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#475569' }}>
+            <p style={{ margin: '0.5rem 0' }}>💡 <strong>Low Verification:</strong> Quick decisions but higher risk of missed errors</p>
+            <p style={{ margin: '0.5rem 0' }}>💡 <strong>Medium Verification:</strong> Balanced approach with selective spot-checks</p>
+            <p style={{ margin: '0.5rem 0' }}>💡 <strong>High Verification:</strong> Thorough review (recommended) - ensures quality and skill preservation</p>
+          </div>
         </div>
 
         {/* Quick Stats */}
