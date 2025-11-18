@@ -20,7 +20,7 @@ router.post(
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const { sessionId } = req.body;
-    const userId = (req as any).userId;
+    const userId = req.user?.id;
 
     if (!sessionId) {
       return res.status(400).json({
@@ -122,7 +122,7 @@ router.get(
   '/',
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
-    const userId = (req as any).userId;
+    const userId = req.user?.id;
 
     const stats = await PatternDetectionService.getUserPatternStats(userId);
     const trends = await PatternDetectionService.getPatternTrends(userId, 7);

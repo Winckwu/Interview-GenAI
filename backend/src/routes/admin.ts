@@ -14,7 +14,7 @@ const router = Router();
  * Middleware to check if user is admin
  */
 const isAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const userId = (req as any).userId;
+  const userId = req.user?.id;
 
   const result = await pool.query(
     'SELECT role FROM users WHERE id = $1',

@@ -18,7 +18,7 @@ router.get(
   '/user',
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
-    const userId = (req as any).userId;
+    const userId = req.user?.id;
     const days = parseInt(req.query.days as string) || 30;
 
     const analytics = await AnalyticsService.getUserAnalytics(userId, days);
@@ -59,7 +59,7 @@ router.get(
   '/summary',
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
-    const userId = (req as any).userId;
+    const userId = req.user?.id;
     const days = parseInt(req.query.days as string) || 30;
 
     const analytics = await AnalyticsService.getUserAnalytics(userId, days);

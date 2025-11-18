@@ -20,7 +20,7 @@ router.get(
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params;
-    const currentUserId = (req as any).userId;
+    const currentUserId = req.user?.id;
 
     // Check authorization
     if (userId !== currentUserId && (req as any).userRole !== 'admin') {
@@ -80,7 +80,7 @@ router.get(
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params;
-    const currentUserId = (req as any).userId;
+    const currentUserId = req.user?.id;
 
     // Check authorization
     if (userId !== currentUserId && (req as any).userRole !== 'admin') {
@@ -146,7 +146,7 @@ router.post(
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const { userId, responses, timestamp } = req.body;
-    const currentUserId = (req as any).userId;
+    const currentUserId = req.user?.id;
 
     // Check authorization
     if (userId !== currentUserId && (req as any).userRole !== 'admin') {

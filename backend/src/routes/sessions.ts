@@ -19,7 +19,15 @@ router.post(
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const { taskDescription, taskType, taskImportance } = req.body;
-    const userId = (req as any).userId;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     const session = await SessionService.createSession(
       userId,
@@ -77,7 +85,16 @@ router.get(
   '/',
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
-    const userId = (req as any).userId;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
     const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
     const offset = parseInt(req.query.offset as string) || 0;
     const includeInteractions = req.query.includeInteractions === 'true';
@@ -140,7 +157,15 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const { sessionId } = req.params;
     const { userPrompt, aiModel, aiResponse, responseTimeMs } = req.body;
-    const userId = (req as any).userId;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     const interaction = await SessionService.recordInteraction(
       sessionId,
