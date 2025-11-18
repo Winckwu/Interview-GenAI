@@ -5,7 +5,7 @@ import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'ax
  * Handles authentication, error handling, and request/response interceptors
  */
 
-// 使用相对路径，让 Vite 代理处理
+// Use relative paths, let Vite proxy handle it
 const API_BASE_URL = '/api';
 
 /**

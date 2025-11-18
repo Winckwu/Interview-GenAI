@@ -40,14 +40,14 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
 
   const getPatternLabel = (p: string): string => {
     const labels: { [key: string]: string } = {
-      A: '战略分解与控制',
-      B: '迭代优化与调试',
-      C: '自适应调整',
-      D: '深度验证与批判',
-      E: '教学与学习',
-      F: '被动过度依赖⚠️',
+      A: 'Strategic Decomposition & Control',
+      B: 'Iterative Optimization & Calibration',
+      C: 'Adaptive Adjustment',
+      D: 'Deep Verification & Criticism',
+      E: 'Teaching & Learning',
+      F: 'Passive Over-Reliance (⚠️ Risk)',
     };
-    return labels[p] || '未知模式';
+    return labels[p] || 'Unknown Pattern';
   };
 
   const getMetricColor = (value: number): string => {
@@ -58,19 +58,19 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
 
   const getMetricLabel = (metric: string, value: number): string => {
     if (metric === 'aiReliance') {
-      if (value >= 70) return '⚠️ 高度依赖';
-      if (value >= 40) return '📊 中等依赖';
-      return '✅ 低依赖';
+      if (value >= 70) return '⚠️ High Reliance';
+      if (value >= 40) return '📊 Medium Reliance';
+      return '✅ Low Reliance';
     }
     if (metric === 'verificationScore') {
-      if (value >= 70) return '✅ 很好';
-      if (value >= 40) return '📊 一般';
-      return '⚠️ 需改进';
+      if (value >= 70) return '✅ Excellent';
+      if (value >= 40) return '📊 Fair';
+      return '⚠️ Needs Improvement';
     }
     if (metric === 'learningIndex') {
-      if (value >= 70) return '⭐ 优秀';
-      if (value >= 40) return '📈 良好';
-      return '📊 可提升';
+      if (value >= 70) return '⭐ Outstanding';
+      if (value >= 40) return '📈 Good';
+      return '📊 Room for Improvement';
     }
     return '';
   };
@@ -97,7 +97,7 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
         }}
       >
         <h3 style={{ margin: '0', fontSize: '1rem', fontWeight: '600', color: '#1f2937' }}>
-          🎯 模式分析
+          🎯 Pattern Analysis
         </h3>
         {onClose && (
           <button
@@ -124,7 +124,7 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
       <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {isLoading ? (
           <div style={{ textAlign: 'center', color: '#9ca3af', padding: '2rem 0' }}>
-            <p style={{ fontSize: '1rem' }}>🔍 分析中...</p>
+            <p style={{ fontSize: '1rem' }}>🔍 Analyzing...</p>
           </div>
         ) : pattern ? (
           <>
@@ -160,7 +160,7 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
                     {getPatternLabel(pattern.pattern)}
                   </p>
                   <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
-                    当前识别模式
+                    Currently Detected Pattern
                   </p>
                 </div>
               </div>
@@ -168,7 +168,7 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
               {/* Confidence Bar */}
               <div style={{ marginTop: '0.75rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>置信度</span>
+                  <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>Confidence</span>
                   <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#1f2937' }}>
                     {(pattern.confidence * 100).toFixed(0)}%
                   </span>
@@ -198,13 +198,13 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
             {pattern.metrics && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>
-                  📊 本次对话指标
+                  📊 Conversation Metrics
                 </p>
 
                 {/* AI Reliance */}
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                    <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>AI依赖度</span>
+                    <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>AI Reliance</span>
                     <span style={{ fontSize: '0.75rem', fontWeight: '600', color: getMetricColor(pattern.metrics.aiReliance) }}>
                       {pattern.metrics.aiReliance}%
                     </span>
@@ -234,7 +234,7 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
                 {/* Verification Score */}
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                    <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>验证程度</span>
+                    <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>Verification Score</span>
                     <span style={{ fontSize: '0.75rem', fontWeight: '600', color: getMetricColor(pattern.metrics.verificationScore) }}>
                       {pattern.metrics.verificationScore}%
                     </span>
@@ -264,7 +264,7 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
                 {/* Learning Index */}
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                    <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>学习指数</span>
+                    <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>Learning Index</span>
                     <span style={{ fontSize: '0.75rem', fontWeight: '600', color: getMetricColor(pattern.metrics.learningIndex) }}>
                       {pattern.metrics.learningIndex}%
                     </span>
@@ -296,12 +296,12 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
             {/* Smart Feedback */}
             <div style={{ backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.5rem', padding: '0.75rem' }}>
               <p style={{ margin: '0', fontSize: '0.75rem', fontWeight: '600', color: '#15803d', marginBottom: '0.5rem' }}>
-                💡 即时反馈
+                💡 Quick Feedback
               </p>
               <p style={{ margin: '0', fontSize: '0.7rem', color: '#166534', lineHeight: '1.4' }}>
                 {pattern.confidence > 0.75
-                  ? '✓ 模式识别稳定，你的AI使用行为较为一致'
-                  : '📊 模式仍在变化中，继续对话以获得更准确的分析'}
+                  ? '✓ Pattern recognition stable, your AI usage is consistent'
+                  : '📊 Pattern still evolving, continue chatting for more accurate analysis'}
               </p>
             </div>
 
@@ -309,7 +309,7 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
             {pattern.reasoning && pattern.reasoning.length > 0 && (
               <div style={{ backgroundColor: '#fef3c7', border: '1px solid #fcd34d', borderRadius: '0.5rem', padding: '0.75rem' }}>
                 <p style={{ margin: '0', fontSize: '0.75rem', fontWeight: '600', color: '#92400e', marginBottom: '0.5rem' }}>
-                  ⚠️ 改进建议
+                  ⚠️ Improvement Suggestions
                 </p>
                 <ul style={{ margin: '0', paddingLeft: '1.25rem', fontSize: '0.7rem', color: '#b45309', lineHeight: '1.4' }}>
                   {pattern.reasoning.slice(0, 2).map((reason, idx) => (
@@ -344,7 +344,7 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
                 }}
                 title="View detailed pattern analysis"
               >
-                📊 详细分析
+                📊 Detailed Analysis
               </button>
               <button
                 style={{
@@ -367,16 +367,16 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
                 }}
                 title="Export analysis report"
               >
-                📥 导出
+                📥 Export
               </button>
             </div>
           </>
         ) : (
           <div style={{ textAlign: 'center', color: '#9ca3af', padding: '2rem 0' }}>
             <p style={{ fontSize: '1rem', margin: '0' }}>🔍</p>
-            <p style={{ fontSize: '0.75rem', margin: '0.5rem 0 0 0' }}>继续对话</p>
-            <p style={{ fontSize: '0.75rem', margin: '0', color: '#d1d5db' }}>系统将实时分析你的</p>
-            <p style={{ fontSize: '0.75rem', margin: '0', color: '#d1d5db' }}>AI使用模式</p>
+            <p style={{ fontSize: '0.75rem', margin: '0.5rem 0 0 0' }}>Keep Chatting</p>
+            <p style={{ fontSize: '0.75rem', margin: '0', color: '#d1d5db' }}>System will analyze your</p>
+            <p style={{ fontSize: '0.75rem', margin: '0', color: '#d1d5db' }}>AI usage pattern in real-time</p>
           </div>
         )}
       </div>
