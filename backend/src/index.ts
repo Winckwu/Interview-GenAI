@@ -9,6 +9,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
 import pool from './config/database';
+import { initializeDatabase } from './config/initializeDatabase';
 import redisClient from './config/redis';
 import { errorHandler, notFoundHandler, asyncHandler } from './middleware/errorHandler';
 import { authenticateToken } from './middleware/auth';
@@ -154,6 +155,13 @@ let server: any;
 
 export const startServer = async () => {
   try {
+    // Test database connection
+    await pool.query('SELECT NOW()');
+    console.log('✓ Database connected');
+
+    // Initialize database schema and migrations
+    await initializeDatabase();
+
     // Initialize Redis (optional - don't fail if Redis is not available)
     if (NODE_ENV !== 'development') {
       try {
@@ -165,10 +173,6 @@ export const startServer = async () => {
     } else {
       console.log('ℹ Redis skipped in development mode');
     }
-
-    // Test database connection
-    await pool.query('SELECT NOW()');
-    console.log('✓ Database connected');
 
     // Start Express server
     server = app.listen(PORT, () => {
