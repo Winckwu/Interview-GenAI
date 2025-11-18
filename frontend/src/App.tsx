@@ -16,6 +16,7 @@ import AdminPage from './pages/AdminPage';
 import SettingsPage from './pages/SettingsPage';
 import ChatSessionPage from './pages/ChatSessionPage';
 import MetacognitiveAssessmentPage from './pages/MetacognitiveAssessmentPage';
+import DataBrowserPage from './pages/DataBrowserPage';
 
 /**
  * Protected Route wrapper component
@@ -103,6 +104,7 @@ const App: React.FC = () => {
 
           {/* Admin */}
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/data" element={<DataBrowserPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
