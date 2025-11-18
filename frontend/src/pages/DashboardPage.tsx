@@ -4,17 +4,11 @@ import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import { useAuthStore } from '../stores/authStore';
 import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
+import { useSessionStore } from '../stores/sessionStore';
 import api from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
-interface SessionItem {
-  id: string;
-  taskDescription: string;
-  taskType: string;
-  createdAt: string;
-  startedAt: string;
-  endedAt?: string;
-}
+import type { SessionItem } from '../stores/sessionStore';
 
 /**
  * Dashboard Page
@@ -24,10 +18,8 @@ const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { patterns, predictions, evolutions, loading, fetchPatterns, fetchPredictions, fetchEvolutions } = usePatternStore();
+  const { sessions, sessionsLoading, loadSessions, deleteSession: deleteSessionFromStore, error: sessionError } = useSessionStore();
   const [creatingSession, setCreatingSession] = useState(false);
-  const [sessionError, setSessionError] = useState<string | null>(null);
-  const [sessions, setSessions] = useState<SessionItem[]>([]);
-  const [sessionsLoading, setSessionsLoading] = useState(false);
 
   // Handle start new session
   const handleStartSession = async () => {
@@ -49,64 +41,10 @@ const DashboardPage: React.FC = () => {
     }
   };
 
-  // Load recent sessions with valid interactions
+  // Load recent sessions on mount
   useEffect(() => {
-    const loadSessions = async () => {
-      setSessionsLoading(true);
-      try {
-        const response = await api.get('/sessions', { params: { limit: 50, offset: 0 } });
-        if (response.data.data && response.data.data.sessions) {
-          // Remove duplicate sessions by ID
-          const uniqueSessions = Array.from(
-            new Map(response.data.data.sessions.map((session: SessionItem) => [session.id, session])).values()
-          ) as SessionItem[];
-
-          // Filter sessions that have valid interactions (with actual content)
-          const sessionsWithContent = await Promise.all(
-            uniqueSessions.map(async (session) => {
-              try {
-                const interactionsResponse = await api.get('/interactions', {
-                  params: { sessionId: session.id },
-                });
-                const interactions = interactionsResponse.data.data.interactions || [];
-                // Check if session has at least one valid interaction with both user prompt and AI response
-                const validInteractions = interactions.filter(
-                  (interaction: any) =>
-                    interaction.userPrompt && interaction.aiResponse && interaction.sessionId === session.id
-                );
-
-                if (validInteractions.length > 0) {
-                  // Use the first user prompt as the session title (truncate to 50 chars)
-                  const firstPrompt = validInteractions[0].userPrompt;
-                  const title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
-                  return {
-                    ...session,
-                    taskDescription: title,
-                  };
-                }
-                return null;
-              } catch (err) {
-                console.error(`Failed to load interactions for session ${session.id}:`, err);
-                return null;
-              }
-            })
-          );
-
-          // Filter out null values and limit to 10
-          const filteredSessions = sessionsWithContent.filter((s) => s !== null).slice(0, 10) as SessionItem[];
-          // Sort by date descending (newest first)
-          filteredSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
-          setSessions(filteredSessions);
-        }
-      } catch (err: any) {
-        console.error('Failed to load sessions:', err);
-      } finally {
-        setSessionsLoading(false);
-      }
-    };
-
     loadSessions();
-  }, []);
+  }, [loadSessions]);
 
   /**
    * Delete a session from the dashboard
@@ -119,17 +57,9 @@ const DashboardPage: React.FC = () => {
     }
 
     try {
-      // Delete session via API
-      await api.delete(`/sessions/${sessionToDeleteId}`);
-
-      // Remove from sessions list
-      setSessions(sessions.filter((s) => s.id !== sessionToDeleteId));
-
-      // Optional: Show success message
-      console.log('Session deleted successfully');
+      await deleteSessionFromStore(sessionToDeleteId);
     } catch (err: any) {
       console.error('Failed to delete session:', err);
-      setSessionError('Failed to delete session');
     }
   };
 

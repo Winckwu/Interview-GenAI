@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuthStore } from '../stores/authStore';
+import { useSessionStore } from '../stores/sessionStore';
 
 interface Message {
   id: string;
@@ -36,6 +37,7 @@ const ChatSessionPage: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { addInteraction, deleteSession: deleteSessionFromStore } = useSessionStore();
 
   // State management
   const [messages, setMessages] = useState<Message[]>([]);
@@ -224,6 +226,26 @@ const ChatSessionPage: React.FC = () => {
 
       const interaction = interactionResponse.data.data.interaction;
 
+      // Update global session store
+      try {
+        await addInteraction(sessionId, {
+          id: interaction.id,
+          sessionId,
+          userPrompt: userInput,
+          aiResponse: aiContent,
+          aiModel,
+          responseTime,
+          wasVerified: false,
+          wasModified: false,
+          wasRejected: false,
+          confidenceScore: 0.85,
+          createdAt: interaction.createdAt,
+        });
+      } catch (err) {
+        console.warn('Failed to update global session store:', err);
+        // Don't fail the whole operation if global state update fails
+      }
+
       // Add messages to chat
       const userMessage: Message = {
         id: `user-${Date.now()}`,
@@ -335,10 +357,10 @@ const ChatSessionPage: React.FC = () => {
     }
 
     try {
-      // Delete session via API
-      await api.delete(`/sessions/${sessionToDeleteId}`);
+      // Delete from global store (which handles API call and state update)
+      await deleteSessionFromStore(sessionToDeleteId);
 
-      // Remove from sessions list
+      // Remove from local sessions list
       setSessions(sessions.filter((s) => s.id !== sessionToDeleteId));
 
       // If we deleted the current session, go back to dashboard
