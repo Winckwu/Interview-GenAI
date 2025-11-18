@@ -359,6 +359,7 @@ const ChatSessionPage: React.FC = () => {
   const handleNewChat = async () => {
     setCreatingNewSession(true);
     setError(null);
+    console.log('🚀 Creating new chat session...');
     try {
       const response = await api.post('/sessions', {
         taskDescription: 'General AI interaction',
@@ -366,14 +367,31 @@ const ChatSessionPage: React.FC = () => {
         taskImportance: 'medium',
       });
 
+      console.log('✓ New session created:', response.data);
+
+      // Verify the response structure
+      if (!response.data.data || !response.data.data.session) {
+        throw new Error('Invalid response structure: missing session data');
+      }
+
       const newSessionId = response.data.data.session.id;
+      console.log('→ Navigating to new session:', newSessionId);
+
       // Close sidebar and navigate to new session
       setSessionSidebarOpen(false);
       setCreatingNewSession(false); // Reset state before navigating
+
+      // Navigate to the new session
       navigate(`/session/${newSessionId}`);
+      console.log('✓ Navigation completed');
     } catch (err: any) {
-      console.error('Failed to create new session:', err);
-      setError(err.response?.data?.error || 'Failed to create new session');
+      console.error('❌ Failed to create new session:', err);
+      console.error('Error response:', err.response?.data);
+      const errorMsg =
+        err.response?.data?.error ||
+        err.message ||
+        'Failed to create new session. Please check your connection.';
+      setError(errorMsg);
       setCreatingNewSession(false);
     }
   };

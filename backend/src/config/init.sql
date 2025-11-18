@@ -141,3 +141,27 @@ CREATE TABLE IF NOT EXISTS skill_alerts (
 
 CREATE INDEX IF NOT EXISTS idx_skill_alerts_user_id ON skill_alerts(user_id);
 CREATE INDEX IF NOT EXISTS idx_skill_alerts_severity ON skill_alerts(severity);
+
+-- ============================================================================
+-- Metacognitive Assessments
+-- ============================================================================
+
+-- Create assessments table for MR19 metacognitive capability assessments
+CREATE TABLE IF NOT EXISTS assessments (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  planning_score FLOAT,
+  monitoring_score FLOAT,
+  evaluation_score FLOAT,
+  regulation_score FLOAT,
+  overall_score FLOAT,
+  strengths JSONB,
+  areas_for_growth JSONB,
+  recommendations JSONB,
+  assessment_type VARCHAR(50) DEFAULT 'standard',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_assessments_user_id ON assessments(user_id);
+CREATE INDEX IF NOT EXISTS idx_assessments_created_at ON assessments(created_at);

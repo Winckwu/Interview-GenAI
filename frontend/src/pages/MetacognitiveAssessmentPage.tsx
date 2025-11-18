@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
 import { MR19MetacognitiveCapabilityAssessment } from '../components/MR19MetacognitiveCapabilityAssessment';
 import type { MetacognitiveProfile } from '../components/MR19MetacognitiveCapabilityAssessment.utils';
+import api from '../services/api';
 
 /**
  * Metacognitive Assessment Page
@@ -16,10 +17,38 @@ const MetacognitiveAssessmentPage: React.FC = () => {
   const { sessions } = useSessionStore();
   const [assessmentCompleted, setAssessmentCompleted] = useState(false);
   const [profile, setProfile] = useState<MetacognitiveProfile | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
-  const handleAssessmentComplete = (completedProfile: MetacognitiveProfile) => {
+  const handleAssessmentComplete = async (completedProfile: MetacognitiveProfile) => {
     setProfile(completedProfile);
-    setAssessmentCompleted(true);
+    setSaving(true);
+    setSaveError(null);
+
+    try {
+      // Save assessment result to backend
+      if (user?.id) {
+        await api.post('/assessments', {
+          planningScore: completedProfile.scores?.planning || 0,
+          monitoringScore: completedProfile.scores?.monitoring || 0,
+          evaluationScore: completedProfile.scores?.evaluation || 0,
+          regulationScore: completedProfile.scores?.regulation || 0,
+          overallScore: completedProfile.overallScore || 0,
+          strengths: completedProfile.strengths || [],
+          areasForGrowth: completedProfile.areasForGrowth || [],
+          recommendations: completedProfile.recommendations || [],
+          assessmentType: 'standard',
+        });
+      }
+      setAssessmentCompleted(true);
+    } catch (err: any) {
+      console.error('Failed to save assessment:', err);
+      setSaveError('Failed to save assessment results. Please try again.');
+      // Still mark as completed locally even if save fails
+      setAssessmentCompleted(true);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleReturnToDashboard = () => {
@@ -117,41 +146,67 @@ const MetacognitiveAssessmentPage: React.FC = () => {
             <div style={{
               textAlign: 'center',
               padding: '2rem',
-              backgroundColor: '#f0fdf4',
+              backgroundColor: saveError ? '#fef2f2' : '#f0fdf4',
               borderRadius: '8px',
-              border: '1px solid #dcfce7',
+              border: `1px solid ${saveError ? '#dcf2e8' : '#dcfce7'}`,
             }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✓</div>
-              <h2 style={{ margin: '0 0 0.5rem 0', color: '#166534', fontSize: '1.5rem', fontWeight: '600' }}>
-                Assessment Complete!
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>
+                {saveError ? '⚠️' : '✓'}
+              </div>
+              <h2 style={{
+                margin: '0 0 0.5rem 0',
+                color: saveError ? '#991b1b' : '#166534',
+                fontSize: '1.5rem',
+                fontWeight: '600'
+              }}>
+                {saveError ? 'Assessment Saved (Locally)' : 'Assessment Complete!'}
               </h2>
-              <p style={{ margin: '0 0 1.5rem 0', color: '#1f2937', fontSize: '0.9rem' }}>
-                Your metacognitive profile has been analyzed. Check the results above and return to the dashboard to see personalized recommendations.
+              <p style={{
+                margin: '0 0 1.5rem 0',
+                color: '#1f2937',
+                fontSize: '0.9rem'
+              }}>
+                {saveError
+                  ? `${saveError} Your assessment results are saved locally.`
+                  : 'Your metacognitive profile has been analyzed. Check the results above and return to the dashboard to see personalized recommendations.'}
               </p>
+              {saving && (
+                <p style={{ margin: '0 0 1rem 0', color: '#0284c7', fontSize: '0.875rem', fontWeight: '500' }}>
+                  💾 Saving your assessment...
+                </p>
+              )}
               <button
                 onClick={handleReturnToDashboard}
+                disabled={saving}
                 style={{
                   padding: '0.75rem 1.5rem',
-                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  background: saving
+                    ? '#ccc'
+                    : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                   color: '#fff',
                   border: 'none',
                   borderRadius: '6px',
                   fontWeight: '600',
-                  cursor: 'pointer',
+                  cursor: saving ? 'not-allowed' : 'pointer',
                   fontSize: '0.9rem',
                   boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
                   transition: 'all 200ms ease',
+                  opacity: saving ? 0.7 : 1,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                  if (!saving) {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';
+                  if (!saving) {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';
+                  }
                 }}
               >
-                Return to Dashboard
+                {saving ? '💾 Saving...' : 'Return to Dashboard'}
               </button>
             </div>
           )}

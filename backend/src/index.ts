@@ -23,6 +23,7 @@ import evolutionRoutes from './routes/evolution';
 import skillsRoutes from './routes/skills';
 import analyticsRoutes from './routes/analytics';
 import aiRoutes from './routes/ai';
+import assessmentsRoutes from './routes/assessments';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
@@ -122,6 +123,9 @@ app.use('/api/analytics', analyticsRoutes);
 
 // AI Chat routes (secured with authentication)
 app.use('/api/ai', aiRoutes);
+
+// Assessment routes
+app.use('/api/assessments', assessmentsRoutes);
 
 // Placeholder: Predictions endpoint
 app.get('/api/predictions', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
