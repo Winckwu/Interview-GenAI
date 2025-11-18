@@ -44,20 +44,25 @@ class SVMPatternClassifier {
       timeout: 5000,
     });
 
-    this.initialize();
+    // Don't block startup - initialize asynchronously in background
+    this.initialize().catch(() => {
+      // Silently fail - will retry on first use
+    });
   }
 
   /**
    * Initialize classifier and load model info
+   * Silently fails if SVM service not available - will retry on first use
    */
   private async initialize(): Promise<void> {
     try {
       const response = await this.apiClient.get('/model_info');
       this.modelInfo = response.data;
       this.initialized = true;
-      console.log('✅ SVM Classifier initialized');
+      console.log('✅ SVM Classifier initialized successfully');
     } catch (error) {
-      console.error('❌ Failed to initialize SVM Classifier:', error);
+      // Silently fail - SVM service may not be running
+      // Will retry on first prediction attempt
       this.initialized = false;
     }
   }
