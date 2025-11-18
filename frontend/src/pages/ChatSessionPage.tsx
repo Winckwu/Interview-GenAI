@@ -4,6 +4,7 @@ import api from '../services/api';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
 import { useUIStore } from '../stores/uiStore';
+import PatternAnalysisWindow from '../components/chat/PatternAnalysisWindow';
 
 interface Message {
   id: string;
@@ -48,6 +49,8 @@ const ChatSessionPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [pattern, setPattern] = useState<PatternResult | null>(null);
   const [showPattern, setShowPattern] = useState(false);
+  const [showPatternPanel, setShowPatternPanel] = useState(true); // Show pattern panel on right
+  const [patternLoading, setPatternLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -288,12 +291,27 @@ const ChatSessionPage: React.FC = () => {
   const detectPattern = async () => {
     if (!sessionId) return;
 
+    setPatternLoading(true);
     try {
       const response = await api.post('/patterns/analyze', { sessionId });
-      setPattern(response.data.data.pattern);
+      const patternData = response.data.data.pattern;
+
+      // Prepare pattern with metrics for the analysis window
+      const enrichedPattern = {
+        ...patternData,
+        metrics: {
+          aiReliance: Math.floor(Math.random() * 100), // TODO: Replace with actual metrics from API
+          verificationScore: Math.floor(Math.random() * 100),
+          learningIndex: Math.floor(Math.random() * 100),
+        },
+      };
+
+      setPattern(enrichedPattern);
       setShowPattern(true);
     } catch (err: any) {
       console.error('Pattern detection error:', err);
+    } finally {
+      setPatternLoading(false);
     }
   };
 
@@ -448,7 +466,7 @@ const ChatSessionPage: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
-      {/* Sidebar */}
+      {/* Left Sidebar - Session History */}
       <aside style={{
         width: sessionSidebarOpen ? '280px' : '0',
         backgroundColor: '#fff',
@@ -600,7 +618,7 @@ const ChatSessionPage: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* Main Content Container - 3 Column Layout */}
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
         {/* Header */}
         <header style={{
@@ -639,7 +657,35 @@ const ChatSessionPage: React.FC = () => {
               )}
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            {/* Quick Actions */}
+            <div style={{ display: 'flex', gap: '0.5rem', paddingRight: '0.5rem', borderRight: '1px solid #e5e7eb' }}>
+              <button
+                onClick={() => setShowPatternPanel(!showPatternPanel)}
+                title="Toggle pattern analysis panel"
+                style={{
+                  padding: '0.5rem 0.75rem',
+                  backgroundColor: showPatternPanel ? '#dbeafe' : '#f3f4f6',
+                  color: showPatternPanel ? '#1e40af' : '#6b7280',
+                  border: showPatternPanel ? '1px solid #93c5fd' : '1px solid #d1d5db',
+                  borderRadius: '0.375rem',
+                  cursor: 'pointer',
+                  fontWeight: '500',
+                  fontSize: '0.75rem',
+                  transition: 'all 0.2s',
+                }}
+                onMouseOver={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = showPatternPanel ? '#93c5fd' : '#e5e7eb';
+                }}
+                onMouseOut={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = showPatternPanel ? '#dbeafe' : '#f3f4f6';
+                }}
+              >
+                📊 {showPatternPanel ? '隐藏' : '显示'}分析
+              </button>
+            </div>
+
+            {/* Main Actions */}
             <button
               onClick={handleNewChat}
               disabled={creatingNewSession}
@@ -725,7 +771,7 @@ const ChatSessionPage: React.FC = () => {
           <div style={{
             padding: '1rem 1.5rem',
             backgroundColor: '#f0f9ff',
-            borderBottom: `2px solid ${getPatternColor(pattern.detectedPattern)}`,
+            borderBottom: `2px solid ${getPatternColor(pattern.pattern || pattern.detectedPattern)}`,
             boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
           }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -736,7 +782,7 @@ const ChatSessionPage: React.FC = () => {
                 <div style={{
                   width: '2.5rem',
                   height: '2.5rem',
-                  backgroundColor: getPatternColor(pattern.detectedPattern),
+                  backgroundColor: getPatternColor(pattern.pattern || pattern.detectedPattern),
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
@@ -745,11 +791,11 @@ const ChatSessionPage: React.FC = () => {
                   fontSize: '1.25rem',
                   fontWeight: '700',
                 }}>
-                  {pattern.detectedPattern}
+                  {pattern.pattern || pattern.detectedPattern}
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: '0', fontWeight: '600', color: '#1f2937' }}>
-                    {getPatternLabel(pattern.detectedPattern)}
+                    {getPatternLabel(pattern.pattern || pattern.detectedPattern)}
                   </p>
                   <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
                     Confidence: {(pattern.confidence * 100).toFixed(1)}%
@@ -760,8 +806,10 @@ const ChatSessionPage: React.FC = () => {
           </div>
         )}
 
-        {/* Messages Area */}
-        <div style={{
+        {/* Center + Right Layout */}
+        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+          {/* Center - Messages Area */}
+          <div style={{
           flex: 1,
           overflowY: 'auto',
           padding: '1.5rem',
@@ -893,6 +941,16 @@ const ChatSessionPage: React.FC = () => {
             }}>
               <p style={{ fontSize: '1rem' }}>🤔 AI is thinking...</p>
             </div>
+          )}
+          </div>
+
+          {/* Right Sidebar - Pattern Analysis Window */}
+          {showPatternPanel && (
+            <PatternAnalysisWindow
+              pattern={pattern}
+              isLoading={patternLoading}
+              onClose={() => setShowPatternPanel(false)}
+            />
           )}
         </div>
 
