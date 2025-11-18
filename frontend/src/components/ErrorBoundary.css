@@ -1,0 +1,188 @@
+/* Error Boundary Styles */
+
+.error-boundary-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  padding: var(--sp-4);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
+}
+
+.error-boundary-card {
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-8);
+  box-shadow: var(--shadow-2xl);
+  max-width: 500px;
+  width: 100%;
+  border: 2px solid var(--color-danger);
+  text-align: center;
+}
+
+.error-boundary-icon {
+  font-size: 3rem;
+  margin-bottom: var(--sp-4);
+  display: block;
+}
+
+.error-boundary-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-danger);
+  margin: 0 0 var(--sp-4) 0;
+}
+
+.error-boundary-message {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--sp-6) 0;
+  line-height: var(--lh-normal);
+}
+
+.error-boundary-error {
+  background: var(--color-danger-light);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  text-align: left;
+  margin-bottom: var(--sp-6);
+}
+
+.error-boundary-error strong {
+  display: block;
+  margin-bottom: var(--sp-2);
+  color: var(--color-danger);
+}
+
+.error-boundary-error code {
+  display: block;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  word-break: break-word;
+  background: var(--color-bg-secondary);
+  padding: var(--sp-2);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.error-boundary-stack {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  text-align: left;
+  margin-bottom: var(--sp-6);
+  display: none; /* Only show in development */
+}
+
+.error-boundary-stack strong {
+  display: block;
+  margin-bottom: var(--sp-2);
+  color: var(--color-text-primary);
+}
+
+.error-boundary-pre {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  overflow-x: auto;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.error-boundary-actions {
+  display: flex;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
+  justify-content: center;
+}
+
+.error-boundary-retry,
+.error-boundary-home {
+  padding: var(--sp-3) var(--sp-6);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.error-boundary-retry {
+  background: var(--color-primary);
+  color: white;
+}
+
+.error-boundary-retry:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.error-boundary-retry:active {
+  transform: translateY(0);
+}
+
+.error-boundary-home {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.error-boundary-home:hover {
+  background: var(--color-border-light);
+  transform: translateY(-2px);
+}
+
+.error-boundary-home:active {
+  transform: translateY(0);
+}
+
+.error-boundary-hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+.error-boundary-hint a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--fw-semibold);
+  transition: var(--transition-fast);
+}
+
+.error-boundary-hint a:hover {
+  text-decoration: underline;
+  color: var(--color-primary-dark);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .error-boundary-container {
+    padding: var(--sp-4);
+  }
+
+  .error-boundary-card {
+    padding: var(--sp-6);
+  }
+
+  .error-boundary-title {
+    font-size: var(--text-xl);
+  }
+
+  .error-boundary-actions {
+    flex-direction: column;
+  }
+
+  .error-boundary-retry,
+  .error-boundary-home {
+    width: 100%;
+  }
+}
