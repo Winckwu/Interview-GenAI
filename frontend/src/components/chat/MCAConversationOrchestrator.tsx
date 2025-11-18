@@ -68,6 +68,7 @@ interface MCAConversationOrchestratorProps {
   messages: Message[];
   onMRUpdate?: (result: OrchestratorResult) => void;
   enabled?: boolean;
+  classifier?: 'bayesian' | 'svm';  // Which classifier to use
 }
 
 /**
@@ -79,6 +80,7 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
   messages,
   onMRUpdate,
   enabled = true,
+  classifier = 'bayesian',
 }) => {
   const [result, setResult] = useState<OrchestratorResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -107,11 +109,13 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
           sessionId,
         }));
 
-        // Call orchestration endpoint
+        // Call orchestration endpoint with classifier parameter
         const orchestrateResponse = await api.post('/mca/orchestrate', {
           sessionId,
           conversationTurns,
           currentTurnIndex: messages.length - 1,
+        }, {
+          params: { classifier }
         });
 
         const orchestrationResult: OrchestratorResult = {
@@ -147,7 +151,7 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
     // Debounce to avoid too frequent calls
     const timeoutId = setTimeout(processConversation, 300);
     return () => clearTimeout(timeoutId);
-  }, [sessionId, messages, enabled, onMRUpdate]);
+  }, [sessionId, messages, enabled, onMRUpdate, classifier]);
 
   // Return null for non-rendering orchestrator
   // MRs will be passed via onMRUpdate callback
@@ -160,7 +164,8 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
 export const useMCAOrchestrator = (
   sessionId: string,
   messages: Message[],
-  enabled: boolean = true
+  enabled: boolean = true,
+  classifier: 'bayesian' | 'svm' = 'bayesian'
 ) => {
   const [result, setResult] = useState<OrchestratorResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -186,6 +191,8 @@ export const useMCAOrchestrator = (
           sessionId,
           conversationTurns,
           currentTurnIndex: messages.length - 1,
+        }, {
+          params: { classifier }
         });
 
         setResult({
@@ -211,7 +218,7 @@ export const useMCAOrchestrator = (
 
     const timeoutId = setTimeout(processConversation, 300);
     return () => clearTimeout(timeoutId);
-  }, [sessionId, messages, enabled]);
+  }, [sessionId, messages, enabled, classifier]);
 
   return {
     result,

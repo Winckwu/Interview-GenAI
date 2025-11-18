@@ -105,10 +105,10 @@ export class RealtimePatternRecognizer {
 
     // Step 1: Calculate likelihood for each pattern
     const likelihoods = new Map<Pattern, number>();
+    const evidence: string[] = [];
 
     for (const pattern of ['A', 'B', 'C', 'D', 'E', 'F'] as Pattern[]) {
       let likelihood = 1.0;
-      const evidence: string[] = [];
 
       // Check task decomposition
       if (signals.taskDecompositionEvidence === 3) {
@@ -280,4 +280,4 @@ export class RealtimePatternRecognizer {
   }
 }
 
-export default new RealtimePatternRecognizer();
+export default RealtimePatternRecognizer;

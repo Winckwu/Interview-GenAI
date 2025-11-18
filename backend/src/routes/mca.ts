@@ -3,13 +3,18 @@
  *
  * Three-Layer Real-Time Adaptive MR System:
  * Layer 1: Behavior Signal Detection
- * Layer 2: Realtime Pattern Recognition
+ * Layer 2: Pattern Recognition (Bayesian or SVM)
  * Layer 3: Adaptive MR Activation
+ *
+ * Supports two classifiers:
+ * - Bayesian: Fast, no external dependencies
+ * - SVM: ML-based, requires Python microservice on port 5002
  */
 
 import express, { Request, Response } from 'express';
 import BehaviorSignalDetector, { ConversationTurn } from '../services/BehaviorSignalDetector';
 import RealtimePatternRecognizer from '../services/RealtimePatternRecognizer';
+import SVMPatternClassifier from '../services/SVMPatternClassifier';
 import AdaptiveMRActivator from '../services/AdaptiveMRActivator';
 
 const router = express.Router();
@@ -93,6 +98,7 @@ router.get('/status/:sessionId', async (req: Request, res: Response) => {
 router.post('/orchestrate', async (req: Request, res: Response) => {
   try {
     const { sessionId, conversationTurns, currentTurnIndex } = req.body;
+    const { classifier = 'bayesian' } = req.query;
 
     if (!sessionId || !conversationTurns || conversationTurns.length === 0) {
       return res.status(400).json({
@@ -100,12 +106,6 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
         error: 'sessionId and conversationTurns are required',
       });
     }
-
-    // Initialize recognizer for this session if not already done
-    if (!recognizerMap.has(sessionId)) {
-      recognizerMap.set(sessionId, new RealtimePatternRecognizer());
-    }
-    const recognizer = recognizerMap.get(sessionId)!;
 
     // Find the latest user turn to analyze
     const latestUserTurnIndex = Math.max(
@@ -122,6 +122,7 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
           activeMRs: [],
           turnCount: 0,
           isHighRiskF: false,
+          classifier,
         },
       });
     }
@@ -136,8 +137,24 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
       historyTurns as ConversationTurn[]
     );
 
-    // Layer 2: Update pattern probabilities with Bayesian updating
-    const patternEstimate = recognizer.updateProbabilities(signals);
+    // Layer 2: Get pattern estimate using selected classifier
+    let patternEstimate: any;
+    let isHighRiskF: boolean;
+
+    if (classifier === 'svm') {
+      // Use SVM classifier
+      patternEstimate = await SVMPatternClassifier.predictPattern(signals);
+      isHighRiskF = patternEstimate.topPattern === 'F' && patternEstimate.probability > 0.7;
+    } else {
+      // Default: Use Bayesian classifier
+      if (!recognizerMap.has(sessionId)) {
+        const Recognizer = RealtimePatternRecognizer as any;
+        recognizerMap.set(sessionId, new Recognizer());
+      }
+      const recognizer = recognizerMap.get(sessionId)!;
+      patternEstimate = recognizer.updateProbabilities(signals);
+      isHighRiskF = recognizer.isHighRiskF(signals);
+    }
 
     // Layer 3: Determine active MRs based on pattern and signals
     const turnCount = conversationTurns.filter((t: any) => t.userMessage).length;
@@ -147,13 +164,11 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
       turnCount
     );
 
-    // Check for high-risk Pattern F
-    const isHighRiskF = recognizer.isHighRiskF(signals);
-
     // Log this orchestration step
-    console.log(`[MCA:${sessionId}] Turn ${turnCount}:`, {
+    console.log(`[MCA:${sessionId}] Turn ${turnCount} (${classifier}):`, {
       topPattern: patternEstimate.topPattern,
       probability: (patternEstimate.probability * 100).toFixed(1) + '%',
+      confidence: (patternEstimate.confidence * 100).toFixed(1) + '%',
       activeMRCount: activeMRs.length,
       isHighRiskF,
     });
@@ -166,6 +181,7 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
         activeMRs,
         turnCount,
         isHighRiskF,
+        classifier,
       },
     });
   } catch (error: any) {
