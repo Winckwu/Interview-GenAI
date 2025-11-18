@@ -113,6 +113,7 @@ import abtestRoutes from './routes/abtest';
 import assessmentsRoutes from './routes/assessments';
 import usersRoutes from './routes/users';
 import interactionsRoutes from './routes/interactions';
+import aiRoutes from './routes/ai';
 
 // ============================================================================
 // API Routes
@@ -147,6 +148,9 @@ app.use('/api/assessments', assessmentsRoutes);
 
 // Interactions endpoints
 app.use('/api/interactions', interactionsRoutes);
+
+// AI chat and endpoints
+app.use('/api/ai', aiRoutes);
 
 // Placeholder routes - backward compatibility
 app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
