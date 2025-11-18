@@ -87,6 +87,8 @@ import patternsRoutes from './routes/patterns';
 import analyticsRoutes from './routes/analytics';
 import adminRoutes from './routes/admin';
 import abtestRoutes from './routes/abtest';
+import assessmentsRoutes from './routes/assessments';
+import usersRoutes from './routes/users';
 
 // ============================================================================
 // API Routes
@@ -110,15 +112,13 @@ app.use('/api/admin', adminRoutes);
 // A/B testing endpoints
 app.use('/api/ab-test', abtestRoutes);
 
-// Placeholder routes - backward compatibility
-app.get('/api/users/:userId', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
-  res.json({
-    success: true,
-    data: { message: 'User endpoint ready' },
-    timestamp: new Date().toISOString(),
-  });
-}));
+// User management endpoints
+app.use('/api/users', usersRoutes);
 
+// Assessment endpoints
+app.use('/api/assessments', assessmentsRoutes);
+
+// Placeholder routes - backward compatibility
 app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
   res.json({
     success: true,
@@ -132,14 +132,6 @@ app.get('/api/evolution', authenticateToken, asyncHandler(async (_req: Request, 
     success: true,
     data: [],
     message: 'Evolution tracking endpoint ready',
-    timestamp: new Date().toISOString(),
-  });
-}));
-
-app.get('/api/assessments/:userId/latest', authenticateToken, asyncHandler(async (req: Request, res: Response) => {
-  res.json({
-    success: true,
-    data: { message: 'Assessment endpoint ready' },
     timestamp: new Date().toISOString(),
   });
 }));

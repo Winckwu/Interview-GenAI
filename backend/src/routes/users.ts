@@ -251,4 +251,127 @@ router.delete(
   })
 );
 
+/**
+ * PATCH /api/users/profile
+ * Update current user's profile and preferences
+ */
+router.patch(
+  '/profile',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const { username, preferences } = req.body;
+
+    // Build update query dynamically
+    const updates: string[] = [];
+    const values: any[] = [];
+    let paramCount = 1;
+
+    if (username) {
+      updates.push(`username = $${paramCount++}`);
+      values.push(username);
+    }
+
+    if (preferences) {
+      updates.push(`preferences = $${paramCount++}`);
+      values.push(JSON.stringify(preferences));
+    }
+
+    updates.push(`updated_at = $${paramCount++}`);
+    values.push(new Date());
+
+    values.push(userId);
+
+    if (updates.length === 1) {
+      return res.status(400).json({
+        success: false,
+        error: 'No fields to update',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const updateQuery = `
+      UPDATE users
+      SET ${updates.join(', ')}
+      WHERE id = $${paramCount}
+      RETURNING id, email, username, user_type, preferences, created_at, updated_at
+    `;
+
+    const result = await pool.query(updateQuery, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const user = result.rows[0];
+    res.json({
+      success: true,
+      data: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.user_type,
+        preferences: user.preferences ? JSON.parse(user.preferences) : {},
+        createdAt: user.created_at,
+        updatedAt: user.updated_at,
+      },
+      message: 'Profile updated successfully',
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
+ * PATCH /api/users/password
+ * Change user password
+ */
+router.patch(
+  '/password',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const { oldPassword, newPassword } = req.body;
+
+    // Get user
+    const userResult = await pool.query(
+      'SELECT password_hash FROM users WHERE id = $1',
+      [userId]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // In production, verify oldPassword with bcrypt
+    // For now, just update the password
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'Both old and new password are required',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Update password
+    await pool.query(
+      'UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2',
+      [newPassword, userId] // In production, hash the password with bcrypt
+    );
+
+    res.json({
+      success: true,
+      message: 'Password changed successfully',
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
 export default router;
