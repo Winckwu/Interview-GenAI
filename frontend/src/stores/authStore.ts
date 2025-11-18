@@ -56,7 +56,7 @@ export const useAuthStore = create<AuthState>()(
         set({ loading: true, error: null });
         try {
           const response = await api.post('/auth/login', { email, password });
-          const { user, token } = response.data;
+          const { user, token } = response.data.data;
 
           get().setToken(token);
           set({ user, isAuthenticated: true });
@@ -78,7 +78,7 @@ export const useAuthStore = create<AuthState>()(
             password,
             userType,
           });
-          const { user, token } = response.data;
+          const { user, token } = response.data.data;
 
           get().setToken(token);
           set({ user, isAuthenticated: true });
@@ -101,7 +101,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           // Try to verify current token/session
           const response = await api.get('/auth/verify');
-          const { user } = response.data;
+          const { user } = response.data.data;
           set({ user, isAuthenticated: true });
         } catch (error) {
           set({ user: null, isAuthenticated: false, token: null });
