@@ -329,10 +329,10 @@ const DashboardPage: React.FC = () => {
             ✓ Verification Strategy Impact <InfoTooltip text="Compare how different verification strategies impact the quality of your work. Higher verification strategies reduce risk of errors and skill degradation." />
           </h3>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
+            <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 60, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="strategy" />
-              <YAxis label={{ value: 'Quality Impact Score (%)', angle: -90, position: 'insideLeft' }} />
+              <YAxis label={{ value: 'Quality Impact Score (%)', angle: -90, position: 'center', offset: -50 }} />
               <Tooltip
                 formatter={(value: number) => `${value.toFixed(1)}%`}
                 labelFormatter={() => 'Strategy Impact'}
