@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后端管理仪表板</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      background-color: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      color: #1f2937;
+    }
+
+    header .user-info {
+      text-align: right;
+    }
+
+    header .user-info p {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    header .logout-btn {
+      padding: 8px 16px;
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    header .logout-btn:hover {
+      background-color: #dc2626;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .metric-label {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .metric-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: #1f2937;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .info-table tr {
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .info-table td {
+      padding: 12px 0;
+    }
+
+    .info-table td:first-child {
+      color: #6b7280;
+      font-weight: 500;
+      width: 200px;
+    }
+
+    .info-table td:last-child {
+      color: #1f2937;
+      font-weight: 600;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-ok {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .status-error {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .api-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .api-item {
+      padding: 12px;
+      background-color: #f9fafb;
+      border-left: 4px solid #667eea;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .api-method {
+      display: inline-block;
+      padding: 2px 6px;
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-radius: 3px;
+      font-weight: 600;
+      margin-right: 8px;
+      min-width: 50px;
+      text-align: center;
+    }
+
+    .api-path {
+      color: #667eea;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #667eea;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    footer {
+      text-align: center;
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 40px;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>📊 后端管理仪表板</h1>
+      </div>
+      <div class="user-info">
+        <p>欢迎，<strong id="username">管理员</strong></p>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+      </div>
+    </header>
+
+    <!-- System Status -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">系统状态</div>
+        <div class="metric-value" id="systemStatus" style="font-size: 24px;">
+          <span class="loading"></span>加载中...
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">数据库连接</div>
+        <div class="metric-value" id="dbStatus" style="font-size: 24px;">
+          <span class="loading"></span>检查中...
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">API版本</div>
+        <div class="metric-value" style="font-size: 24px; color: #10b981;">v1.0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">启动时间</div>
+        <div class="metric-value" id="uptime" style="font-size: 18px;">-</div>
+      </div>
+    </div>
+
+    <!-- System Info Section -->
+    <div class="section">
+      <h2>系统信息</h2>
+      <table class="info-table">
+        <tr>
+          <td>后端状态</td>
+          <td id="backendStatus">
+            <span class="loading"></span>检查中...
+          </td>
+        </tr>
+        <tr>
+          <td>数据库状态</td>
+          <td id="dbStatusInfo">
+            <span class="loading"></span>检查中...
+          </td>
+        </tr>
+        <tr>
+          <td>环境</td>
+          <td id="environment">-</td>
+        </tr>
+        <tr>
+          <td>启动时间</td>
+          <td id="startTime">-</td>
+        </tr>
+        <tr>
+          <td>当前时间</td>
+          <td id="currentTime">-</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="section">
+      <h2>系统统计</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+        <div>
+          <div class="metric-label">总用户数</div>
+          <div class="metric-value" id="totalUsers" style="font-size: 28px; color: #667eea;">-</div>
+        </div>
+        <div>
+          <div class="metric-label">总会话数</div>
+          <div class="metric-value" id="totalSessions" style="font-size: 28px; color: #10b981;">-</div>
+        </div>
+        <div>
+          <div class="metric-label">总交互数</div>
+          <div class="metric-value" id="totalInteractions" style="font-size: 28px; color: #f59e0b;">-</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Endpoints Section -->
+    <div class="section">
+      <h2>核心API端点</h2>
+      <div class="api-list">
+        <div class="api-item">
+          <span class="api-method">GET</span>
+          <span class="api-path">/health</span>
+          - 健康检查
+        </div>
+        <div class="api-item">
+          <span class="api-method">GET</span>
+          <span class="api-path">/api/admin/dashboard</span>
+          - 管理仪表板数据
+        </div>
+        <div class="api-item">
+          <span class="api-method">GET</span>
+          <span class="api-path">/api/admin/stats</span>
+          - 系统统计信息
+        </div>
+        <div class="api-item">
+          <span class="api-method">GET</span>
+          <span class="api-path">/api/admin/users</span>
+          - 用户列表
+        </div>
+        <div class="api-item">
+          <span class="api-method">POST</span>
+          <span class="api-path">/api/auth/login</span>
+          - 用户登录
+        </div>
+        <div class="api-item">
+          <span class="api-method">GET</span>
+          <span class="api-path">/api/sessions</span>
+          - 工作会话列表
+        </div>
+        <div class="api-item">
+          <span class="api-method">GET</span>
+          <span class="api-path">/api/interactions</span>
+          - AI交互记录
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Start Section -->
+    <div class="section">
+      <h2>快速开始</h2>
+      <p style="color: #6b7280; line-height: 1.6; margin-bottom: 12px;">
+        <strong>前端应用：</strong> <a href="http://localhost:3000" target="_blank" style="color: #667eea; text-decoration: none;">http://localhost:3000</a><br>
+        <strong>API基础URL：</strong> <code style="background: #f9fafb; padding: 2px 6px; border-radius: 3px;">http://localhost:5001/api</code><br>
+        <strong>数据库：</strong> PostgreSQL (interview_genai)<br>
+      </p>
+    </div>
+
+    <footer>
+      <p>Interview-GenAI Backend Management System v1.0</p>
+      <p style="margin-top: 8px;">© 2025 All rights reserved</p>
+    </footer>
+  </div>
+
+  <script>
+    // Check if user is logged in
+    function checkAuth() {
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        window.location.href = '/login.html';
+      }
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem('adminToken');
+      window.location.href = '/login.html';
+    }
+
+    // Load dashboard data
+    async function loadDashboard() {
+      try {
+        // Check auth first
+        checkAuth();
+
+        const token = localStorage.getItem('adminToken');
+
+        // Get dashboard data
+        const dashResponse = await fetch('/api/admin/dashboard', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (dashResponse.ok) {
+          const dashData = await dashResponse.json();
+          if (dashData.success && dashData.data) {
+            document.getElementById('totalUsers').textContent = dashData.data.totalUsers || 0;
+            document.getElementById('totalSessions').textContent = dashData.data.totalSessions || 0;
+            document.getElementById('totalInteractions').textContent = dashData.data.totalInteractions || 0;
+          }
+        }
+
+        // Get health check
+        const healthResponse = await fetch('/health/detailed');
+        if (healthResponse.ok) {
+          const healthData = await healthResponse.json();
+          document.getElementById('systemStatus').innerHTML =
+            healthData.status === 'ok'
+              ? '<span class="status-badge status-ok">✓ 正常</span>'
+              : '<span class="status-badge status-error">✗ 异常</span>';
+          document.getElementById('dbStatusInfo').innerHTML =
+            healthData.database === 'ok'
+              ? '<span class="status-badge status-ok">✓ 已连接</span>'
+              : '<span class="status-badge status-error">✗ 未连接</span>';
+          document.getElementById('backendStatus').innerHTML =
+            healthData.status === 'ok'
+              ? '<span class="status-badge status-ok">✓ 运行中</span>'
+              : '<span class="status-badge status-error">✗ 异常</span>';
+          document.getElementById('dbStatus').innerHTML =
+            healthData.database === 'ok'
+              ? '<span class="status-badge status-ok">✓ 连接正常</span>'
+              : '<span class="status-badge status-error">✗ 连接失败</span>';
+        }
+
+        // Update time info
+        const now = new Date();
+        document.getElementById('currentTime').textContent = now.toLocaleString('zh-CN');
+        document.getElementById('environment').textContent = 'Development';
+
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+        document.getElementById('systemStatus').innerHTML = '<span class="status-badge status-error">✗ 加载失败</span>';
+      }
+    }
+
+    // Load on page load
+    window.addEventListener('load', loadDashboard);
+
+    // Reload every 30 seconds
+    setInterval(loadDashboard, 30000);
+  </script>
+</body>
+</html>

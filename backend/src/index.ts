@@ -8,6 +8,7 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
+import path from 'path';
 import pool from './config/database';
 import { initializeDatabase } from './config/initializeDatabase';
 import redisClient from './config/redis';
@@ -38,10 +39,30 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
+// Static files for admin web interface
+app.use(express.static(path.join(__dirname, '../public')));
+
 // Request logging middleware
 app.use((req: Request, _res: Response, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
+});
+
+// ============================================================================
+// Admin Web Interface Routes
+// ============================================================================
+
+// Redirect root and admin paths to appropriate pages
+app.get('/', (_req: Request, res: Response) => {
+  res.redirect('/login.html');
+});
+
+app.get('/login', (_req: Request, res: Response) => {
+  res.redirect('/login.html');
+});
+
+app.get('/admin', (_req: Request, res: Response) => {
+  res.redirect('/admin-dashboard.html');
 });
 
 // ============================================================================
@@ -87,6 +108,7 @@ import sessionsRoutes from './routes/sessions';
 import patternsRoutes from './routes/patterns';
 import analyticsRoutes from './routes/analytics';
 import adminRoutes from './routes/admin';
+import adminAuthRoutes from './routes/adminAuth';
 import abtestRoutes from './routes/abtest';
 import assessmentsRoutes from './routes/assessments';
 import usersRoutes from './routes/users';
@@ -97,6 +119,9 @@ import usersRoutes from './routes/users';
 
 // Auth routes (public)
 app.use('/api/auth', authRoutes);
+
+// Admin authentication (for web interface)
+app.use('/api/admin/auth', adminAuthRoutes);
 
 // Session management
 app.use('/api/sessions', sessionsRoutes);
