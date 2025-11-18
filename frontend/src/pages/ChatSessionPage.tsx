@@ -127,6 +127,9 @@ const ChatSessionPage: React.FC = () => {
       return;
     }
 
+    // Auto-close sidebar when entering a chat session
+    setSessionSidebarOpen(false);
+
     const loadSessionAndHistory = async () => {
       try {
         // Load session data
@@ -563,31 +566,11 @@ const ChatSessionPage: React.FC = () => {
           )}
         </div>
 
-        {/* New Session Button */}
+        {/* Sidebar Footer - Empty space for balance */}
         <div style={{ padding: '1rem', borderTop: '1px solid #e2e8f0' }}>
-          <button
-            onClick={() => navigate('/dashboard')}
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              backgroundColor: '#3b82f6',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '0.5rem',
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '0.875rem',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseOver={(e) => {
-              (e.target as HTMLButtonElement).style.backgroundColor = '#2563eb';
-            }}
-            onMouseOut={(e) => {
-              (e.target as HTMLButtonElement).style.backgroundColor = '#3b82f6';
-            }}
-          >
-            ➕ New Chat
-          </button>
+          <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '0.75rem' }}>
+            💡 Tip: Click the menu to switch conversations
+          </div>
         </div>
       </aside>
 
@@ -630,23 +613,51 @@ const ChatSessionPage: React.FC = () => {
               )}
             </div>
           </div>
-          <button
-            onClick={endSession}
-            disabled={!sessionActive}
-            style={{
-              padding: '0.5rem 1.25rem',
-              backgroundColor: sessionActive ? '#ef4444' : '#d1d5db',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '0.5rem',
-              cursor: sessionActive ? 'pointer' : 'not-allowed',
-              fontWeight: '500',
-              fontSize: '0.875rem',
-              transition: 'background-color 0.2s',
-            }}
-          >
-            🔚 End Session
-          </button>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <button
+              onClick={() => navigate('/dashboard')}
+              style={{
+                padding: '0.5rem 1.25rem',
+                backgroundColor: '#10b981',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '0.5rem',
+                cursor: 'pointer',
+                fontWeight: '500',
+                fontSize: '0.875rem',
+                transition: 'all 0.2s',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseOver={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#059669';
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(16, 185, 129, 0.3)';
+              }}
+              onMouseOut={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#10b981';
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+              }}
+              title="Start a new conversation"
+            >
+              ➕ New Chat
+            </button>
+            <button
+              onClick={endSession}
+              disabled={!sessionActive}
+              style={{
+                padding: '0.5rem 1.25rem',
+                backgroundColor: sessionActive ? '#ef4444' : '#d1d5db',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '0.5rem',
+                cursor: sessionActive ? 'pointer' : 'not-allowed',
+                fontWeight: '500',
+                fontSize: '0.875rem',
+                transition: 'background-color 0.2s',
+              }}
+            >
+              🔚 End Session
+            </button>
+          </div>
         </header>
 
         {/* Success Message */}
