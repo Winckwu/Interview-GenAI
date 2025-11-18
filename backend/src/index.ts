@@ -85,6 +85,8 @@ app.get('/health/detailed', asyncHandler(async (_req: Request, res: Response) =>
 import sessionsRoutes from './routes/sessions';
 import patternsRoutes from './routes/patterns';
 import analyticsRoutes from './routes/analytics';
+import adminRoutes from './routes/admin';
+import abtestRoutes from './routes/abtest';
 
 // ============================================================================
 // API Routes
@@ -101,6 +103,12 @@ app.use('/api/patterns', patternsRoutes);
 
 // Analytics and dashboard data
 app.use('/api/analytics', analyticsRoutes);
+
+// Admin endpoints
+app.use('/api/admin', adminRoutes);
+
+// A/B testing endpoints
+app.use('/api/ab-test', abtestRoutes);
 
 // Placeholder routes - backward compatibility
 app.get('/api/users/:userId', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
