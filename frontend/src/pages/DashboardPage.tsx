@@ -14,11 +14,22 @@ const DashboardPage: React.FC = () => {
   const { patterns, predictions, evolutions, loading, fetchPatterns, fetchPredictions, fetchEvolutions } = usePatternStore();
 
   useEffect(() => {
-    // Fetch initial data
-    fetchPatterns();
-    fetchPredictions();
-    fetchEvolutions();
-  }, [fetchPatterns, fetchPredictions, fetchEvolutions]);
+    // Fetch initial data only on component mount
+    // Using Zustand store functions which are stable references
+    const loadInitialData = async () => {
+      try {
+        await Promise.all([
+          fetchPatterns(),
+          fetchPredictions(),
+          fetchEvolutions(),
+        ]);
+      } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+      }
+    };
+
+    loadInitialData();
+  }, []);
 
   if (loading) {
     return <LoadingSpinner message="Loading dashboard..." />;
