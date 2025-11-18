@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
+import { useUIStore } from '../stores/uiStore';
 
 interface Message {
   id: string;
@@ -38,6 +39,7 @@ const ChatSessionPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { addInteraction, deleteSession: deleteSessionFromStore } = useSessionStore();
+  const { setSidebarOpen } = useUIStore();
 
   // State management
   const [messages, setMessages] = useState<Message[]>([]);
@@ -383,6 +385,8 @@ const ChatSessionPage: React.FC = () => {
     try {
       await api.patch(`/sessions/${sessionId}`, {});
       setSessionActive(false);
+      // Open main navigation sidebar before returning to dashboard
+      setSidebarOpen(true);
       setTimeout(() => navigate('/dashboard'), 2000);
     } catch (err: any) {
       setError('Failed to end session');
