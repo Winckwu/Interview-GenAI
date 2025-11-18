@@ -56,15 +56,99 @@ const DashboardPage: React.FC = () => {
     { strategy: 'Adaptive', successRate: 73 },
   ];
 
+  // Check if pattern has changed (mock logic for now)
+  const lastKnownPattern = 'B';
+  const patternChanged = dominantPattern !== lastKnownPattern;
+
   return (
-    <div className="page dashboard-page">
-      <div className="page-header">
-        <h1>Dashboard</h1>
-        <p className="page-subtitle">Welcome back, {user?.username}! Here's your AI usage overview.</p>
+    <div className="page dashboard-page" style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '2rem 0' }}>
+      {/* Header Section */}
+      <div style={{ paddingLeft: '2rem', paddingRight: '2rem', marginBottom: '2rem' }}>
+        <div className="page-header" style={{ marginBottom: '1rem' }}>
+          <h1 style={{ margin: '0 0 0.5rem 0', fontSize: '2rem', fontWeight: '700', color: '#1f2937' }}>Dashboard</h1>
+          <p className="page-subtitle" style={{ margin: '0', fontSize: '1rem', color: '#6b7280' }}>
+            欢迎回来，{user?.username}！这是你的AI使用概览。
+          </p>
+        </div>
+
+        {/* Insight Alert Box - High Priority */}
+        {patternChanged && (
+          <div style={{
+            padding: '1.5rem',
+            backgroundColor: '#f0fdf4',
+            border: '2px solid #86efac',
+            borderRadius: '0.75rem',
+            marginBottom: '2rem',
+            boxShadow: '0 2px 8px rgba(16, 185, 129, 0.15)',
+          }}>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+              <div style={{ fontSize: '2rem' }}>⚡</div>
+              <div style={{ flex: 1 }}>
+                <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem', fontWeight: '600', color: '#15803d' }}>
+                  模式识别更新！
+                </h3>
+                <p style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', color: '#166534', lineHeight: '1.5' }}>
+                  你的AI使用模式已从Pattern {lastKnownPattern}更新为Pattern {dominantPattern}，置信度为{(analytics?.confidence || 0.8) * 100}%。
+                  这表明你的AI使用方式正在发生积极变化。
+                </p>
+                <div style={{ display: 'flex', gap: '0.75rem' }}>
+                  <button
+                    onClick={() => window.location.href = '/patterns'}
+                    style={{
+                      padding: '0.5rem 1.25rem',
+                      backgroundColor: '#10b981',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#059669';
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#10b981';
+                    }}
+                  >
+                    查看详情 →
+                  </button>
+                  <button
+                    style={{
+                      padding: '0.5rem 1.25rem',
+                      backgroundColor: 'transparent',
+                      color: '#166534',
+                      border: '1px solid #86efac',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f0fdf4';
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
+                    }}
+                  >
+                    不再提醒
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Key Metrics Cards */}
-      <div className="metrics-grid">
+      <div style={{ paddingLeft: '2rem', paddingRight: '2rem', marginBottom: '2rem' }}>
+        <div className="metrics-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '1.5rem',
+        }}>
         <div className="metric-card">
           <div className="metric-label">Total Sessions</div>
           <div className="metric-value">{totalSessions}</div>
@@ -184,17 +268,150 @@ const DashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="page-actions">
-        <button className="btn btn-primary">
-          <a href="/predictions">Make a New Prediction</a>
-        </button>
-        <button className="btn btn-secondary">
-          <a href="/patterns">View All Patterns</a>
-        </button>
-        <button className="btn btn-secondary">
-          <a href="/evolution">Track Evolution</a>
-        </button>
+      {/* Quick Actions */}
+      <div style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
+        <h2 style={{ margin: '0 0 1.5rem 0', fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>⚡ 快速操作</h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '1rem',
+        }}>
+          {/* Start New Chat */}
+          <button
+            onClick={() => window.location.href = '/chat'}
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#fff',
+              border: '2px solid #3b82f6',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.75rem',
+              textAlign: 'center',
+            }}
+            onMouseOver={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#eff6ff';
+              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.2)';
+            }}
+            onMouseOut={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fff';
+              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+            }}
+          >
+            <span style={{ fontSize: '2rem' }}>💬</span>
+            <div>
+              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>开始对话</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>与AI进行互动</div>
+            </div>
+          </button>
+
+          {/* View Patterns */}
+          <button
+            onClick={() => window.location.href = '/patterns'}
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#fff',
+              border: '2px solid #10b981',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.75rem',
+              textAlign: 'center',
+            }}
+            onMouseOver={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f0fdf4';
+              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.2)';
+            }}
+            onMouseOut={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fff';
+              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+            }}
+          >
+            <span style={{ fontSize: '2rem' }}>📊</span>
+            <div>
+              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>查看模式</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>分析使用模式</div>
+            </div>
+          </button>
+
+          {/* Track Evolution */}
+          <button
+            onClick={() => window.location.href = '/evolution'}
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#fff',
+              border: '2px solid #f59e0b',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.75rem',
+              textAlign: 'center',
+            }}
+            onMouseOver={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fffbeb';
+              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.2)';
+            }}
+            onMouseOut={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fff';
+              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+            }}
+          >
+            <span style={{ fontSize: '2rem' }}>📈</span>
+            <div>
+              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>追踪演进</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>查看学习进度</div>
+            </div>
+          </button>
+
+          {/* Assessment */}
+          <button
+            onClick={() => window.location.href = '/assessment'}
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#fff',
+              border: '2px solid #8b5cf6',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.75rem',
+              textAlign: 'center',
+            }}
+            onMouseOver={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#faf5ff';
+              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.2)';
+            }}
+            onMouseOut={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fff';
+              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+            }}
+          >
+            <span style={{ fontSize: '2rem' }}>🎯</span>
+            <div>
+              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>自我评估</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>了解学习能力</div>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   );
