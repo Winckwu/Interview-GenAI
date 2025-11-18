@@ -33,12 +33,6 @@ export class AnalyticsService {
       return sessionAge < days * 24 * 60 * 60 * 1000;
     });
 
-    const totalSessions = recentSessions.length;
-    const totalInteractions = recentSessions.reduce((sum, s) => {
-      // This is a placeholder - would need to query interactions per session
-      return sum + 0;
-    }, 0);
-
     // Get pattern statistics
     const patternStats = await PatternDetectionService.getUserPatternStats(userId);
     const patternTrend = await PatternDetectionService.getPatternTrends(userId, days);
@@ -48,9 +42,16 @@ export class AnalyticsService {
     let totalModified = 0;
     let interactionCount = 0;
     let modelUsage: Record<string, number> = {};
+    let sessionsWithInteractions = 0; // Only count sessions that have actual interactions
 
     for (const session of recentSessions) {
       const interactions = await SessionService.getSessionInteractions(session.id, 1000);
+
+      // Only count sessions that have at least one interaction
+      if (interactions.length > 0) {
+        sessionsWithInteractions++;
+      }
+
       totalVerified += interactions.filter(i => i.wasVerified).length;
       totalModified += interactions.filter(i => i.wasModified).length;
       interactionCount += interactions.length;
@@ -59,6 +60,9 @@ export class AnalyticsService {
         modelUsage[i.aiModel] = (modelUsage[i.aiModel] || 0) + 1;
       });
     }
+
+    // Use sessions with interactions as totalSessions (not empty sessions)
+    const totalSessions = sessionsWithInteractions;
 
     const verificationRate = interactionCount > 0 ? totalVerified / interactionCount : 0;
     const modificationRate = interactionCount > 0 ? totalModified / interactionCount : 0;
