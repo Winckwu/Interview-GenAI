@@ -4,6 +4,8 @@ import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
 import { MR19MetacognitiveCapabilityAssessment } from '../components/MR19MetacognitiveCapabilityAssessment';
 import type { MetacognitiveProfile } from '../components/MR19MetacognitiveCapabilityAssessment.utils';
+import './MetacognitiveAssessmentPage.css';
+import '../styles/components.css';
 
 /**
  * Metacognitive Assessment Page
@@ -27,71 +29,42 @@ const MetacognitiveAssessmentPage: React.FC = () => {
   };
 
   return (
-    <div className="page">
+    <div className="assessment-page">
       {/* Header */}
-      <div className="page-header" style={{ marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-          <button
-            onClick={() => navigate(-1)}
-            style={{
-              background: 'none',
-              border: 'none',
-              padding: '0.5rem 1rem',
-              cursor: 'pointer',
-              color: '#0284c7',
-              fontSize: '1rem',
-              fontWeight: '500',
-              borderRadius: '6px',
-              transition: 'all 200ms ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f0f9ff';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
-          >
-            ← Back
-          </button>
-        </div>
-        <h1 style={{ margin: '0 0 0.5rem 0', fontSize: '2rem', fontWeight: '700', color: '#1f2937' }}>
+      <div className="assessment-header">
+        <button
+          className="back-button"
+          onClick={() => navigate(-1)}
+        >
+          ← Back
+        </button>
+        <h1>
           🧠 Metacognitive Capability Assessment
         </h1>
-        <p className="page-subtitle" style={{ margin: '0', color: '#666', fontSize: '1rem' }}>
+        <p className="assessment-subtitle">
           Diagnose your metacognitive strengths and areas for growth across 4 key dimensions
         </p>
       </div>
 
       {/* Main Content */}
-      <div style={{
-        maxWidth: '1000px',
-        margin: '0 auto',
-        backgroundColor: '#fff',
-        borderRadius: '12px',
-        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
-        overflow: 'hidden',
-      }}>
+      <div className="assessment-container">
         {/* Assessment Info */}
-        <div style={{
-          padding: '2rem',
-          backgroundColor: '#f0f9ff',
-          borderBottom: '1px solid #e0f2fe',
-        }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-            <div>
-              <h3 style={{ margin: '0 0 1rem 0', color: '#0c4a6e', fontSize: '1rem', fontWeight: '600' }}>
+        <div className="assessment-info">
+          <div className="assessment-info-grid">
+            <div className="info-section">
+              <h3>
                 📋 About This Assessment
               </h3>
-              <p style={{ margin: '0', color: '#1f2937', fontSize: '0.875rem', lineHeight: '1.6' }}>
+              <p>
                 This assessment diagnoses your metacognitive capabilities - how well you plan, monitor, evaluate, and regulate your use of AI.
                 Based on your responses and interaction history, we'll provide personalized recommendations.
               </p>
             </div>
-            <div>
-              <h3 style={{ margin: '0 0 1rem 0', color: '#0c4a6e', fontSize: '1rem', fontWeight: '600' }}>
+            <div className="info-section">
+              <h3>
                 ⏱️ Takes About 10 Minutes
               </h3>
-              <p style={{ margin: '0', color: '#1f2937', fontSize: '0.875rem', lineHeight: '1.6' }}>
+              <p>
                 The assessment includes a brief overview, behavioral analysis, and self-report questions. Your responses are completely private
                 and used only to improve your personalized support.
               </p>
@@ -100,7 +73,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
         </div>
 
         {/* Assessment Component */}
-        <div style={{ padding: '2rem' }}>
+        <div className="assessment-content">
           {!assessmentCompleted ? (
             <MR19MetacognitiveCapabilityAssessment
               userBehaviorHistory={[
@@ -114,45 +87,22 @@ const MetacognitiveAssessmentPage: React.FC = () => {
               allowSelfReport={true}
             />
           ) : (
-            <div style={{
-              textAlign: 'center',
-              padding: '2rem',
-              backgroundColor: '#f0fdf4',
-              borderRadius: '8px',
-              border: '1px solid #dcfce7',
-            }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✓</div>
-              <h2 style={{ margin: '0 0 0.5rem 0', color: '#166534', fontSize: '1.5rem', fontWeight: '600' }}>
+            <div className="completion-screen">
+              <div className="completion-icon">✓</div>
+              <h2 className="completion-title">
                 Assessment Complete!
               </h2>
-              <p style={{ margin: '0 0 1.5rem 0', color: '#1f2937', fontSize: '0.9rem' }}>
+              <p className="completion-message">
                 Your metacognitive profile has been analyzed. Check the results above and return to the dashboard to see personalized recommendations.
               </p>
-              <button
-                onClick={handleReturnToDashboard}
-                style={{
-                  padding: '0.75rem 1.5rem',
-                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '6px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
-                  transition: 'all 200ms ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';
-                }}
-              >
-                Return to Dashboard
-              </button>
+              <div className="completion-action">
+                <button
+                  className="completion-button"
+                  onClick={handleReturnToDashboard}
+                >
+                  Return to Dashboard
+                </button>
+              </div>
             </div>
           )}
         </div>

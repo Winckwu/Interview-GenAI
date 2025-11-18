@@ -1,0 +1,248 @@
+/* ============================================
+   MetacognitiveAssessmentPage Styles
+   ============================================
+
+   Assessment page for metacognitive evaluation.
+   All styles use CSS variables for theming.
+*/
+
+.assessment-page {
+  background-color: var(--color-bg-secondary);
+  min-height: 100vh;
+  padding: var(--sp-8);
+}
+
+.assessment-header {
+  margin-bottom: var(--sp-8);
+}
+
+.assessment-header h1 {
+  margin: 0 0 var(--sp-2) 0;
+  font-size: var(--text-3xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-primary);
+}
+
+.assessment-subtitle {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+}
+
+/* Back button */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: var(--sp-2) var(--sp-4);
+  cursor: pointer;
+  color: var(--color-primary);
+  font-size: var(--text-base);
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-md);
+  transition: var(--transition-base);
+  font-family: inherit;
+  margin-bottom: var(--sp-4);
+}
+
+.back-button:hover {
+  background-color: var(--color-primary-lighter);
+}
+
+.back-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Assessment container */
+.assessment-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* Assessment info section */
+.assessment-info {
+  padding: var(--sp-8);
+  background-color: var(--color-info-light);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.assessment-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+}
+
+.info-section h3 {
+  margin: 0 0 var(--sp-4) 0;
+  color: var(--color-primary-dark);
+  font-size: var(--text-base);
+  font-weight: var(--fw-semibold);
+}
+
+.info-section p {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  line-height: var(--lh-normal);
+}
+
+/* Content section */
+.assessment-content {
+  padding: var(--sp-8);
+}
+
+/* Completion screen */
+.completion-screen {
+  text-align: center;
+  padding: var(--sp-12);
+}
+
+.completion-icon {
+  font-size: 4rem;
+  margin-bottom: var(--sp-4);
+}
+
+.completion-title {
+  margin: 0 0 var(--sp-4) 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-success);
+}
+
+.completion-message {
+  margin: 0 0 var(--sp-6) 0;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.completion-action {
+  display: inline-block;
+}
+
+.completion-button {
+  padding: var(--sp-4) var(--sp-8);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-family: inherit;
+}
+
+.completion-button:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.completion-button:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-md);
+}
+
+.completion-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .assessment-page {
+    padding: var(--sp-4);
+  }
+
+  .assessment-info-grid {
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+  }
+
+  .assessment-header h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .assessment-info {
+    padding: var(--sp-6);
+  }
+
+  .assessment-content {
+    padding: var(--sp-6);
+  }
+
+  .completion-screen {
+    padding: var(--sp-8);
+  }
+}
+
+@media (max-width: 480px) {
+  .assessment-header h1 {
+    font-size: var(--text-xl);
+  }
+
+  .assessment-info {
+    padding: var(--sp-4);
+  }
+
+  .assessment-content {
+    padding: var(--sp-4);
+  }
+
+  .completion-button {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Focus visible for keyboard navigation */
+.back-button:focus-visible,
+.completion-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .back-button,
+  .completion-button {
+    transition: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: more) {
+  .assessment-container {
+    border: 2px solid var(--color-text-primary);
+  }
+
+  .completion-button {
+    border: 2px solid white;
+  }
+}
+
+/* Dark mode (automatically handled by CSS variables) */
+@media (prefers-color-scheme: dark) {
+  /* No changes needed - CSS variables handle dark mode */
+}
