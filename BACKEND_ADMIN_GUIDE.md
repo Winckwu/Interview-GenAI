@@ -1,99 +1,99 @@
-# 后端管理系统 - 快速指南
+# Backend Admin System - Quick Guide
 
-## 🔐 登录信息
+## 🔐 Login Credentials
 
-### 账号
-- **用户名**: `admin01`
-- **密码**: `qweasd`
-
----
-
-## 🌐 访问地址
-
-### 本地开发环境
-```
-后端地址: http://localhost:5001
-登录页面: http://localhost:5001/login.html
-管理仪表板: http://localhost:5001/admin-dashboard.html
-```
-
-### 生产环境
-```
-将 localhost:5001 替换为你的服务器地址
-```
+### Account
+- **Username**: `admin01`
+- **Password**: `qweasd`
 
 ---
 
-## 📝 启动步骤
+## 🌐 Access URLs
 
-### 1. 启动后端服务器
+### Local Development
+```
+Backend URL: http://localhost:5001
+Login Page: http://localhost:5001/login.html
+Admin Dashboard: http://localhost:5001/admin-dashboard.html
+```
+
+### Production
+```
+Replace localhost:5001 with your server address
+```
+
+---
+
+## 📝 Getting Started
+
+### 1. Start Backend Server
 
 ```bash
 cd backend
-npm run dev    # 开发模式
-# 或
-npm start      # 生产模式
+npm run dev    # Development mode
+# or
+npm start      # Production mode
 ```
 
-后端会在 `http://localhost:5001` 启动
+Backend will start at `http://localhost:5001`
 
-### 2. 访问登录页面
+### 2. Open Login Page
 
-在浏览器打开: http://localhost:5001/login.html
+Visit in your browser: http://localhost:5001/login.html
 
-### 3. 输入凭证
+### 3. Enter Credentials
 
-- 用户名: `admin01`
-- 密码: `qweasd`
-- 点击"登录"按钮
+- Username: `admin01`
+- Password: `qweasd`
+- Click "Login" button
 
-### 4. 查看管理仪表板
+### 4. View Admin Dashboard
 
-登录成功后，你会被重定向到管理仪表板，显示:
-- 系统状态
-- 数据库连接状态
-- API版本
-- 用户统计
-- 会话统计
-- 交互统计
-
----
-
-## 🎯 管理仪表板功能
-
-### 系统监控
-- **系统状态**: 实时显示后端是否运行正常
-- **数据库状态**: 显示PostgreSQL连接状态
-- **环境信息**: 当前运行环境 (Development/Production)
-- **时间信息**: 系统启动时间和当前时间
-
-### 数据统计
-- **总用户数**: 系统中注册的用户总数
-- **总会话数**: 所有用户的工作会话总数
-- **总交互数**: 与AI的交互记录总数
-
-### API文档
-在仪表板上显示所有可用的API端点：
-- `/health` - 健康检查
-- `/api/admin/dashboard` - 管理数据
-- `/api/admin/stats` - 系统统计
-- `/api/admin/users` - 用户列表
-- `/api/auth/login` - 用户登录
-- `/api/sessions` - 工作会话
-- `/api/interactions` - AI交互记录
-- 等更多...
-
-### 自动刷新
-- 仪表板每30秒自动刷新一次数据
-- 可以手动点击"刷新"按钮立即更新
+After successful login, you'll be redirected to the admin dashboard showing:
+- System status
+- Database connection status
+- API version
+- User statistics
+- Session statistics
+- Interaction statistics
 
 ---
 
-## 🔑 API端点
+## 🎯 Admin Dashboard Features
 
-### 管理员认证
+### System Monitoring
+- **System Status**: Real-time backend health check
+- **Database Status**: PostgreSQL connection status
+- **Environment Info**: Current environment (Development/Production)
+- **Time Info**: System start time and current time
 
-#### 登录
+### Data Statistics
+- **Total Users**: Total registered users in the system
+- **Total Sessions**: All user work sessions
+- **Total Interactions**: AI interaction records
+
+### API Documentation
+Shows all available API endpoints on the dashboard:
+- `/health` - Health check
+- `/api/admin/dashboard` - Admin data
+- `/api/admin/stats` - System statistics
+- `/api/admin/users` - User list
+- `/api/auth/login` - User login
+- `/api/sessions` - Work sessions
+- `/api/interactions` - AI interaction logs
+- And more...
+
+### Auto Refresh
+- Dashboard auto-refreshes data every 30 seconds
+- Manual refresh button available for immediate updates
+
+---
+
+## 🔑 API Endpoints
+
+### Admin Authentication
+
+#### Login
 ```bash
 POST /api/admin/auth/login
 Content-Type: application/json
@@ -104,11 +104,11 @@ Content-Type: application/json
 }
 ```
 
-**响应**:
+**Response**:
 ```json
 {
   "success": true,
-  "message": "登录成功",
+  "message": "Login successful",
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "user": {
     "username": "admin01",
@@ -118,39 +118,39 @@ Content-Type: application/json
 }
 ```
 
-#### 验证Token
+#### Verify Token
 ```bash
 GET /api/admin/auth/verify
 Authorization: Bearer <token>
 ```
 
-#### 退出登录
+#### Logout
 ```bash
 POST /api/admin/auth/logout
 ```
 
 ---
 
-## 💾 数据持久化
+## 💾 Data Persistence
 
-所有的登录信息和仪表板数据都存储在:
-- **数据库**: PostgreSQL (interview_genai)
-- **Token存储**: 浏览器 localStorage (adminToken)
+All login info and dashboard data are stored in:
+- **Database**: PostgreSQL (interview_genai)
+- **Token Storage**: Browser localStorage (adminToken)
 
 ---
 
-## 🚀 高级功能
+## 🚀 Advanced Features
 
-### 获取系统仪表板数据
+### Get Admin Dashboard Data
 
-需要认证token:
+Requires auth token:
 
 ```bash
 GET /api/admin/dashboard
 Authorization: Bearer <your_token>
 ```
 
-**响应**:
+**Response**:
 ```json
 {
   "success": true,
@@ -177,14 +177,14 @@ Authorization: Bearer <your_token>
 }
 ```
 
-### 获取系统统计
+### Get System Statistics
 
 ```bash
 GET /api/admin/stats
 Authorization: Bearer <your_token>
 ```
 
-### 获取用户列表
+### Get User List
 
 ```bash
 GET /api/admin/users?limit=50&offset=0
@@ -193,72 +193,72 @@ Authorization: Bearer <your_token>
 
 ---
 
-## 🔒 安全性注意
+## 🔒 Security Notes
 
-⚠️ **重要**:
+⚠️ **IMPORTANT**:
 
-1. **修改默认密码**: 在生产环境中，请修改 `backend/src/routes/adminAuth.ts` 中的默认凭证
-2. **使用HTTPS**: 在生产环境中必须使用HTTPS
-3. **JWT密钥**: 修改 `JWT_SECRET` 环境变量为强密钥
-4. **Token过期**: Token有效期为24小时，之后需要重新登录
+1. **Change Default Credentials**: In production, modify `backend/src/routes/adminAuth.ts` with new credentials
+2. **Use HTTPS**: HTTPS is required in production environments
+3. **JWT Secret**: Change `JWT_SECRET` environment variable to a strong key
+4. **Token Expiration**: Tokens expire after 24 hours, requiring re-login
 
-### 修改默认凭证
+### Change Default Credentials
 
-编辑 `backend/src/routes/adminAuth.ts`:
+Edit `backend/src/routes/adminAuth.ts`:
 
 ```typescript
-// 修改这两行
+// Modify these two lines
 const ADMIN_USERNAME = 'your_new_username';
 const ADMIN_PASSWORD = 'your_strong_password';
 ```
 
-然后重启后端服务器。
+Then restart the backend server.
 
 ---
 
-## 📊 前端集成
+## 📊 Frontend Integration
 
-除了后端管理界面外，还有前端应用提供:
+In addition to the backend admin interface, there's also a frontend app:
 
-- **前端地址**: http://localhost:3000
-- **数据浏览器**: http://localhost:3000/data
-  - 查看所有会话
-  - 查看所有交互
-  - 查看所有模式
-  - 查看所有评估结果
-
----
-
-## 🐛 故障排除
-
-### "连接被拒绝"
-- 检查后端是否正在运行: `npm run dev`
-- 检查端口是否正确: 默认5001
-
-### "数据库连接失败"
-- 确保PostgreSQL正在运行
-- 检查数据库凭证在 `.env` 文件中
-- 运行 `createdb interview_genai` 创建数据库
-
-### "登录失败"
-- 确保使用正确的凭证: admin01 / qweasd
-- 检查浏览器控制台是否有错误信息
-- 清除localStorage缓存后重试
-
-### Token过期
-- 自动重定向到登录页面
-- 重新登录获取新token
+- **Frontend URL**: http://localhost:3000
+- **Data Browser**: http://localhost:3000/data
+  - View all sessions
+  - View all interactions
+  - View all patterns
+  - View all assessment results
 
 ---
 
-## 📚 相关文档
+## 🐛 Troubleshooting
 
-- [主快速启动指南](./QUICKSTART.md)
-- [API文档](./QUICKSTART.md#-可用的api端点)
-- [数据库架构](./backend/src/config/init.sql)
+### "Connection Refused"
+- Check if backend is running: `npm run dev`
+- Check if port is correct: default 5001
+
+### "Database Connection Failed"
+- Ensure PostgreSQL is running
+- Check database credentials in `.env` file
+- Run `createdb interview_genai` to create database
+
+### "Login Failed"
+- Ensure correct credentials: admin01 / qweasd
+- Check browser console for error messages
+- Clear localStorage cache and retry
+
+### "Token Expired"
+- You'll be redirected to login page
+- Re-login to get a new token
 
 ---
 
-**最后更新**: 2025-11-18
+## 📚 Related Documentation
+
+- [Main Quick Start Guide](./QUICKSTART.md)
+- [API Documentation](./QUICKSTART.md#-可用的api端点)
+- [Database Schema](./backend/src/config/init.sql)
+
+---
+
+**Last Updated**: 2025-11-18
 
 Happy Coding! 🎉
