@@ -1,0 +1,73 @@
+/**
+ * Chat Session Page Styles
+ * Uses CSS variables for theme support
+ */
+
+.chat-session-container {
+  display: flex;
+  height: 100vh;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color var(--duration-base) var(--easing-ease),
+              color var(--duration-base) var(--easing-ease);
+}
+
+.chat-session-sidebar {
+  background-color: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+}
+
+.chat-session-content {
+  background-color: var(--bg-secondary);
+}
+
+.chat-message-user {
+  background-color: var(--primary-500);
+  color: white;
+}
+
+.chat-message-ai {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.chat-input-area {
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+}
+
+.chat-header {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.session-item {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.session-item-active {
+  background-color: var(--primary-50);
+  border-color: var(--primary-500);
+  color: var(--primary-700);
+}
+
+.pattern-banner {
+  background-color: var(--primary-50);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--primary-500);
+}
+
+.success-message {
+  background-color: var(--success-50);
+  border-bottom: 1px solid var(--success-200);
+  color: var(--success-800);
+}
+
+.error-message {
+  background-color: var(--error-50);
+  border-bottom: 1px solid var(--error-200);
+  color: var(--error-800);
+}

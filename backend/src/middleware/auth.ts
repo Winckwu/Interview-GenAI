@@ -11,6 +11,7 @@ declare global {
         email: string;
         username: string;
         userType: string;
+        role?: string;
       };
     }
   }
@@ -86,4 +87,44 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction): v
     req.user = decoded;
     next();
   });
+};
+
+export const requireRole = (role: string) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      res.status(401).json({
+        success: false,
+        error: 'Access token required',
+        timestamp: new Date().toISOString(),
+      });
+      return;
+    }
+
+    jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
+      if (err) {
+        res.status(403).json({
+          success: false,
+          error: 'Invalid or expired token',
+          timestamp: new Date().toISOString(),
+        });
+        return;
+      }
+
+      const userRole = decoded.role || decoded.userType;
+      if (userRole !== role && role === 'admin') {
+        res.status(403).json({
+          success: false,
+          error: `${role} access required`,
+          timestamp: new Date().toISOString(),
+        });
+        return;
+      }
+
+      req.user = decoded;
+      next();
+    });
+  };
 };

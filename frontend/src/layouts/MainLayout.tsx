@@ -4,6 +4,7 @@ import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
 import NotificationCenter from '../components/layout/NotificationCenter';
 import { useUIStore } from '../stores/uiStore';
+import useTheme from '../hooks/useTheme';
 
 /**
  * Main Layout Component
@@ -11,6 +12,7 @@ import { useUIStore } from '../stores/uiStore';
  */
 const MainLayout: React.FC = () => {
   const { sidebarOpen } = useUIStore();
+  useTheme(); // Apply theme to DOM
 
   return (
     <div className="layout-container">

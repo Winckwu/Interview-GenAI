@@ -21,6 +21,7 @@ const RegisterPage: React.FC = () => {
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
@@ -60,10 +61,10 @@ const RegisterPage: React.FC = () => {
 
     try {
       await register(formData.email, formData.username, formData.password, formData.userType);
-      addNotification('Registration successful! Redirecting to dashboard...', 'success');
+      addNotification('✓ Registration successful! Redirecting to dashboard...', 'success');
       navigate('/');
     } catch (err) {
-      addNotification('Registration failed. Please try again.', 'error');
+      addNotification('✕ Registration failed. Please try again.', 'error');
     }
   };
 
@@ -82,6 +83,17 @@ const RegisterPage: React.FC = () => {
     }
   };
 
+  const getFieldStyle = (fieldName: string) => ({
+    borderColor:
+      focusedField === fieldName
+        ? '#667eea'
+        : formErrors[fieldName]
+        ? '#ef4444'
+        : '#e5e7eb',
+    backgroundColor: focusedField === fieldName ? '#f0f9ff' : '#f9fafb',
+    transition: 'all 150ms ease',
+  });
+
   return (
     <div className="auth-page register-page">
       <div className="auth-card">
@@ -94,16 +106,19 @@ const RegisterPage: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email Address</label>
             <input
               id="email"
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter your email"
+              onFocus={() => setFocusedField('email')}
+              onBlur={() => setFocusedField(null)}
+              placeholder="you@example.com"
               className={formErrors.email ? 'error' : ''}
               disabled={loading}
+              style={getFieldStyle('email')}
             />
             {formErrors.email && <span className="error-message">{formErrors.email}</span>}
           </div>
@@ -116,9 +131,12 @@ const RegisterPage: React.FC = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              onFocus={() => setFocusedField('username')}
+              onBlur={() => setFocusedField(null)}
               placeholder="Choose a username"
               className={formErrors.username ? 'error' : ''}
               disabled={loading}
+              style={getFieldStyle('username')}
             />
             {formErrors.username && <span className="error-message">{formErrors.username}</span>}
           </div>
@@ -130,7 +148,10 @@ const RegisterPage: React.FC = () => {
               name="userType"
               value={formData.userType}
               onChange={handleChange}
+              onFocus={() => setFocusedField('userType')}
+              onBlur={() => setFocusedField(null)}
               disabled={loading}
+              style={getFieldStyle('userType')}
             >
               <option value="efficient">Efficient User (High verification, low AI reliance)</option>
               <option value="struggling">Struggling User (Variable behavior, higher risk)</option>
@@ -146,9 +167,12 @@ const RegisterPage: React.FC = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Create a password"
+              onFocus={() => setFocusedField('password')}
+              onBlur={() => setFocusedField(null)}
+              placeholder="••••••••"
               className={formErrors.password ? 'error' : ''}
               disabled={loading}
+              style={getFieldStyle('password')}
             />
             {formErrors.password && <span className="error-message">{formErrors.password}</span>}
           </div>
@@ -161,15 +185,34 @@ const RegisterPage: React.FC = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              placeholder="Confirm your password"
+              onFocus={() => setFocusedField('confirmPassword')}
+              onBlur={() => setFocusedField(null)}
+              placeholder="••••••••"
               className={formErrors.confirmPassword ? 'error' : ''}
               disabled={loading}
+              style={getFieldStyle('confirmPassword')}
             />
             {formErrors.confirmPassword && <span className="error-message">{formErrors.confirmPassword}</span>}
           </div>
 
-          <button type="submit" className="btn btn-primary btn-large" disabled={loading}>
-            {loading ? 'Creating Account...' : 'Create Account'}
+          <button
+            type="submit"
+            className="btn btn-primary btn-large"
+            disabled={loading}
+            style={{
+              opacity: loading ? 0.7 : 1,
+              transform: loading ? 'scale(0.98)' : 'scale(1)',
+              transition: 'all 150ms ease',
+            }}
+          >
+            {loading ? (
+              <>
+                <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
+                {' Creating Account...'}
+              </>
+            ) : (
+              'Create Account'
+            )}
           </button>
         </form>
 
