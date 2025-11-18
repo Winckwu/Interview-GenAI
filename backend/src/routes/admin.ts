@@ -3,7 +3,7 @@
  * Administrative endpoints for system management and user administration
  */
 
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { authenticateToken } from '../middleware/auth';
 import { asyncHandler } from '../middleware/errorHandler';
 import pool from '../config/database';
@@ -13,7 +13,7 @@ const router = Router();
 /**
  * Middleware to check if user is admin
  */
-const isAdmin = asyncHandler(async (req: Request, res: Response, next) => {
+const isAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const userId = (req as any).userId;
 
   const result = await pool.query(
