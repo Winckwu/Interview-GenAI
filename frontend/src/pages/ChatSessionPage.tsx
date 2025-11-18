@@ -725,7 +725,7 @@ const ChatSessionPage: React.FC = () => {
           <div style={{
             padding: '1rem 1.5rem',
             backgroundColor: '#f0f9ff',
-            borderBottom: `2px solid ${getPatternColor(pattern.pattern)}`,
+            borderBottom: `2px solid ${getPatternColor(pattern.detectedPattern)}`,
             boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
           }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -736,7 +736,7 @@ const ChatSessionPage: React.FC = () => {
                 <div style={{
                   width: '2.5rem',
                   height: '2.5rem',
-                  backgroundColor: getPatternColor(pattern.pattern),
+                  backgroundColor: getPatternColor(pattern.detectedPattern),
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
@@ -745,11 +745,11 @@ const ChatSessionPage: React.FC = () => {
                   fontSize: '1.25rem',
                   fontWeight: '700',
                 }}>
-                  {pattern.pattern}
+                  {pattern.detectedPattern}
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: '0', fontWeight: '600', color: '#1f2937' }}>
-                    {getPatternLabel(pattern.pattern)}
+                    {getPatternLabel(pattern.detectedPattern)}
                   </p>
                   <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
                     Confidence: {(pattern.confidence * 100).toFixed(1)}%
