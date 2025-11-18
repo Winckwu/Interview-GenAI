@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './stores/authStore';
 import MainLayout from './layouts/MainLayout';
@@ -38,15 +38,37 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const App: React.FC = () => {
   const { checkAuth, loading } = useAuthStore();
   const [isInitialized, setIsInitialized] = useState(false);
+  const initRef = useRef(false);
 
   useEffect(() => {
+    // Prevent running checkAuth multiple times (React.StrictMode double-invoke in dev)
+    if (initRef.current) {
+      return;
+    }
+    initRef.current = true;
+
+    let isMounted = true;
+
     const initialize = async () => {
-      await checkAuth();
-      setIsInitialized(true);
+      try {
+        await checkAuth();
+      } catch (error) {
+        console.error('Auth check failed:', error);
+      } finally {
+        // Only set initialized if component is still mounted
+        if (isMounted) {
+          setIsInitialized(true);
+        }
+      }
     };
 
     initialize();
-  }, []);
+
+    // Cleanup function to prevent state update on unmount
+    return () => {
+      isMounted = false;
+    };
+  }, [checkAuth]);
 
   if (!isInitialized || loading) {
     return <LoadingSpinner fullScreen />;
