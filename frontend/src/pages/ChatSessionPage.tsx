@@ -162,6 +162,10 @@ const ChatSessionPage: React.FC = () => {
     // Auto-close sidebar when entering a chat session
     setSessionSidebarOpen(false);
 
+    // Clear pattern and pattern panel when switching sessions
+    setPattern(null);
+    setShowPattern(false);
+
     const loadSessionAndHistory = async () => {
       try {
         // Load session data
@@ -413,6 +417,15 @@ const ChatSessionPage: React.FC = () => {
       });
 
       const newSessionId = response.data.data.session.id;
+
+      // Clear all session state for the new chat
+      setMessages([]);
+      setSessionData(null);
+      setPattern(null);
+      setShowPattern(false);
+      setUserInput('');
+      setSessionActive(true);
+
       // Close sidebar and navigate to new session
       setSessionSidebarOpen(false);
       setCreatingNewSession(false); // Reset state before navigating
