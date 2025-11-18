@@ -23,7 +23,8 @@ import LoadingSpinner from './components/common/LoadingSpinner';
  * Redirects to login if user is not authenticated
  */
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
+  // Use selector to only subscribe to isAuthenticated, not entire store
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -68,7 +69,7 @@ const App: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  }, [checkAuth]);
+  }, []);
 
   if (!isInitialized || loading) {
     return <LoadingSpinner fullScreen />;
