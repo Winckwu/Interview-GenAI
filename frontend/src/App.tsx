@@ -37,12 +37,12 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
  * Main App component with routing configuration
  */
 const App: React.FC = () => {
-  const { checkAuth, loading } = useAuthStore();
+  const { checkAuth, loading, token } = useAuthStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const initRef = useRef(false);
 
   useEffect(() => {
-    console.log('[App.useEffect] Triggered, initRef.current =', initRef.current);
+    console.log('[App.useEffect] Triggered, token present:', !!token);
 
     // Prevent running checkAuth multiple times (React.StrictMode double-invoke in dev)
     if (initRef.current) {
@@ -52,10 +52,17 @@ const App: React.FC = () => {
     initRef.current = true;
     console.log('[App.useEffect] Starting initialization...');
 
+    // If no token stored, skip auth check and go straight to login
+    if (!token) {
+      console.log('[App.initialize] No token found, skipping auth check');
+      setIsInitialized(true);
+      return;
+    }
+
     let isMounted = true;
 
     const initialize = async () => {
-      console.log('[App.initialize] Starting auth check');
+      console.log('[App.initialize] Token found, starting auth check');
       try {
         await checkAuth();
         console.log('[App.initialize] Auth check completed');
@@ -78,6 +85,21 @@ const App: React.FC = () => {
       isMounted = false;
     };
   }, []);
+
+  // If no token, skip to login page immediately
+  if (!token && isInitialized) {
+    return (
+      <Router>
+        <Routes>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Router>
+    );
+  }
 
   if (!isInitialized || loading) {
     return <LoadingSpinner fullScreen />;
