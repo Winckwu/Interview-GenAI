@@ -67,7 +67,7 @@ const DashboardPage: React.FC = () => {
         <div className="page-header" style={{ marginBottom: '1rem' }}>
           <h1 style={{ margin: '0 0 0.5rem 0', fontSize: '2rem', fontWeight: '700', color: '#1f2937' }}>Dashboard</h1>
           <p className="page-subtitle" style={{ margin: '0', fontSize: '1rem', color: '#6b7280' }}>
-            欢迎回来，{user?.username}！这是你的AI使用概览。
+            Welcome back, {user?.username}! Here's your AI usage overview.
           </p>
         </div>
 
@@ -85,11 +85,11 @@ const DashboardPage: React.FC = () => {
               <div style={{ fontSize: '2rem' }}>⚡</div>
               <div style={{ flex: 1 }}>
                 <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem', fontWeight: '600', color: '#15803d' }}>
-                  模式识别更新！
+                  Pattern Recognition Update!
                 </h3>
                 <p style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', color: '#166534', lineHeight: '1.5' }}>
-                  你的AI使用模式已从Pattern {lastKnownPattern}更新为Pattern {dominantPattern}，置信度为{(analytics?.confidence || 0.8) * 100}%。
-                  这表明你的AI使用方式正在发生积极变化。
+                  Your AI usage pattern has been updated from Pattern {lastKnownPattern} to Pattern {dominantPattern} with {(analytics?.confidence || 0.8) * 100}% confidence.
+                  This indicates positive changes in how you're using AI.
                 </p>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button
@@ -112,7 +112,7 @@ const DashboardPage: React.FC = () => {
                       (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#10b981';
                     }}
                   >
-                    查看详情 →
+                    View Details →
                   </button>
                   <button
                     style={{
@@ -133,7 +133,7 @@ const DashboardPage: React.FC = () => {
                       (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
                     }}
                   >
-                    不再提醒
+                    Dismiss
                   </button>
                 </div>
               </div>
@@ -273,7 +273,7 @@ const DashboardPage: React.FC = () => {
 
       {/* Quick Actions */}
       <div style={{ paddingLeft: '2rem', paddingRight: '2rem', marginTop: '2rem', marginBottom: '2rem' }}>
-        <h2 style={{ margin: '0 0 1.5rem 0', fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>⚡ 快速操作</h2>
+        <h2 style={{ margin: '0 0 1.5rem 0', fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>⚡ Quick Actions</h2>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -308,8 +308,8 @@ const DashboardPage: React.FC = () => {
           >
             <span style={{ fontSize: '2rem' }}>💬</span>
             <div>
-              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>开始对话</div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>与AI进行互动</div>
+              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>Start Chat</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Interact with AI</div>
             </div>
           </button>
 
@@ -342,8 +342,8 @@ const DashboardPage: React.FC = () => {
           >
             <span style={{ fontSize: '2rem' }}>📊</span>
             <div>
-              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>查看模式</div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>分析使用模式</div>
+              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>View Patterns</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Analyze usage patterns</div>
             </div>
           </button>
 
@@ -376,8 +376,8 @@ const DashboardPage: React.FC = () => {
           >
             <span style={{ fontSize: '2rem' }}>📈</span>
             <div>
-              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>追踪演进</div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>查看学习进度</div>
+              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>Track Evolution</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>View learning progress</div>
             </div>
           </button>
 
@@ -410,8 +410,8 @@ const DashboardPage: React.FC = () => {
           >
             <span style={{ fontSize: '2rem' }}>🎯</span>
             <div>
-              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>自我评估</div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>了解学习能力</div>
+              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>Self Assessment</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Understand your capabilities</div>
             </div>
           </button>
         </div>

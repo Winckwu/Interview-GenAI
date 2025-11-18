@@ -696,7 +696,7 @@ const ChatSessionPage: React.FC = () => {
                   (e.currentTarget as HTMLButtonElement).style.backgroundColor = showPatternPanel ? '#dbeafe' : '#f3f4f6';
                 }}
               >
-                📊 {showPatternPanel ? '隐藏' : '显示'}分析
+                📊 {showPatternPanel ? 'Hide' : 'Show'} Analysis
               </button>
             </div>
 
