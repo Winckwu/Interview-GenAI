@@ -127,7 +127,22 @@ const ChatSessionPage: React.FC = () => {
   // Load session data and previous interactions on mount
   useEffect(() => {
     if (!sessionId) {
-      navigate('/dashboard');
+      // Auto-create a new session if accessing /chat without sessionId
+      const createAutoSession = async () => {
+        try {
+          const response = await api.post('/sessions', {
+            taskDescription: 'General AI interaction',
+            taskType: 'general',
+            taskImportance: 'medium',
+          });
+          const newSessionId = response.data.data.session.id;
+          navigate(`/session/${newSessionId}`, { replace: true });
+        } catch (err) {
+          console.error('Failed to create auto session:', err);
+          navigate('/dashboard');
+        }
+      };
+      createAutoSession();
       return;
     }
 

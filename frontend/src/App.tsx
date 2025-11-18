@@ -98,6 +98,7 @@ const App: React.FC = () => {
           <Route path="/evolution" element={<EvolutionTrackingPage />} />
           <Route path="/ab-test" element={<ABTestPage />} />
           <Route path="/chat" element={<ChatSessionPage />} />
+          <Route path="/session/:sessionId" element={<ChatSessionPage />} />
           <Route path="/assessment" element={<MetacognitiveAssessmentPage />} />
 
           {/* Admin */}
