@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useUIStore } from '../stores/uiStore';
+import './RegisterPage.css';
+import '../styles/components.css';
 
 /**
  * Register Page
@@ -21,7 +23,6 @@ const RegisterPage: React.FC = () => {
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
@@ -83,17 +84,6 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  const getFieldStyle = (fieldName: string) => ({
-    borderColor:
-      focusedField === fieldName
-        ? '#667eea'
-        : formErrors[fieldName]
-        ? '#ef4444'
-        : '#e5e7eb',
-    backgroundColor: focusedField === fieldName ? '#f0f9ff' : '#f9fafb',
-    transition: 'all 150ms ease',
-  });
-
   return (
     <div className="auth-page register-page">
       <div className="auth-card">
@@ -113,12 +103,9 @@ const RegisterPage: React.FC = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              onFocus={() => setFocusedField('email')}
-              onBlur={() => setFocusedField(null)}
               placeholder="you@example.com"
-              className={formErrors.email ? 'error' : ''}
+              className={`form-input ${formErrors.email ? 'error' : ''}`}
               disabled={loading}
-              style={getFieldStyle('email')}
             />
             {formErrors.email && <span className="error-message">{formErrors.email}</span>}
           </div>
@@ -131,12 +118,9 @@ const RegisterPage: React.FC = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              onFocus={() => setFocusedField('username')}
-              onBlur={() => setFocusedField(null)}
               placeholder="Choose a username"
-              className={formErrors.username ? 'error' : ''}
+              className={`form-input ${formErrors.username ? 'error' : ''}`}
               disabled={loading}
-              style={getFieldStyle('username')}
             />
             {formErrors.username && <span className="error-message">{formErrors.username}</span>}
           </div>
@@ -148,10 +132,8 @@ const RegisterPage: React.FC = () => {
               name="userType"
               value={formData.userType}
               onChange={handleChange}
-              onFocus={() => setFocusedField('userType')}
-              onBlur={() => setFocusedField(null)}
               disabled={loading}
-              style={getFieldStyle('userType')}
+              className="form-input"
             >
               <option value="efficient">Efficient User (High verification, low AI reliance)</option>
               <option value="struggling">Struggling User (Variable behavior, higher risk)</option>
@@ -167,12 +149,9 @@ const RegisterPage: React.FC = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              onFocus={() => setFocusedField('password')}
-              onBlur={() => setFocusedField(null)}
               placeholder="••••••••"
-              className={formErrors.password ? 'error' : ''}
+              className={`form-input ${formErrors.password ? 'error' : ''}`}
               disabled={loading}
-              style={getFieldStyle('password')}
             />
             {formErrors.password && <span className="error-message">{formErrors.password}</span>}
           </div>
@@ -185,29 +164,21 @@ const RegisterPage: React.FC = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              onFocus={() => setFocusedField('confirmPassword')}
-              onBlur={() => setFocusedField(null)}
               placeholder="••••••••"
-              className={formErrors.confirmPassword ? 'error' : ''}
+              className={`form-input ${formErrors.confirmPassword ? 'error' : ''}`}
               disabled={loading}
-              style={getFieldStyle('confirmPassword')}
             />
             {formErrors.confirmPassword && <span className="error-message">{formErrors.confirmPassword}</span>}
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary btn-large"
+            className={`btn btn-primary btn-large ${loading ? 'loading' : ''}`}
             disabled={loading}
-            style={{
-              opacity: loading ? 0.7 : 1,
-              transform: loading ? 'scale(0.98)' : 'scale(1)',
-              transition: 'all 150ms ease',
-            }}
           >
             {loading ? (
               <>
-                <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
+                <span>⏳</span>
                 {' Creating Account...'}
               </>
             ) : (
