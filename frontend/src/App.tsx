@@ -39,11 +39,19 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const App: React.FC = () => {
   const { checkAuth, loading, isAuthenticated, token } = useAuthStore();
   const [isInitialized, setIsInitialized] = useState(false);
+  const initializerRef = React.useRef(false);
 
+  // Only initialize once on app mount (not on every state change)
   useEffect(() => {
     const initialize = async () => {
+      // Prevent double initialization
+      if (initializerRef.current) {
+        return;
+      }
+      initializerRef.current = true;
+
       // Only call checkAuth if user is not already authenticated
-      // (prevents double login issue after successful login)
+      // (restores session from localStorage if available)
       if (!isAuthenticated && !token) {
         await checkAuth();
       }
@@ -51,7 +59,7 @@ const App: React.FC = () => {
     };
 
     initialize();
-  }, [isAuthenticated, token]);
+  }, []); // Empty dependency array - only run once on mount
 
   if (!isInitialized || loading) {
     return <LoadingSpinner fullScreen />;
