@@ -14,6 +14,8 @@ import EvolutionTrackingPage from './pages/EvolutionTrackingPage';
 import ABTestPage from './pages/ABTestPage';
 import AdminPage from './pages/AdminPage';
 import SettingsPage from './pages/SettingsPage';
+import ChatSessionPage from './pages/ChatSessionPage';
+import MetacognitiveAssessmentPage from './pages/MetacognitiveAssessmentPage';
 
 // Components
 import LoadingSpinner from './components/common/LoadingSpinner';
@@ -131,6 +133,8 @@ const App: React.FC = () => {
           <Route path="/predictions" element={<PredictionsPage />} />
           <Route path="/evolution" element={<EvolutionTrackingPage />} />
           <Route path="/ab-test" element={<ABTestPage />} />
+          <Route path="/chat" element={<ChatSessionPage />} />
+          <Route path="/assessment" element={<MetacognitiveAssessmentPage />} />
 
           {/* Admin */}
           <Route path="/admin" element={<AdminPage />} />
