@@ -168,32 +168,32 @@ const DashboardPage: React.FC = () => {
           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
           gap: '1.5rem',
         }}>
-        <div className="metric-card">
-          <div className="metric-label">Total Sessions</div>
+        <div className="metric-card" title="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted.">
+          <div className="metric-label">Total Sessions <span style={{ fontSize: '0.75rem', cursor: 'help' }}>ℹ️</span></div>
           <div className="metric-value">{totalSessions}</div>
           <div className="metric-description">
             {totalInteractions} total interactions recorded
           </div>
         </div>
 
-        <div className="metric-card">
-          <div className="metric-label">Current Pattern</div>
+        <div className="metric-card" title="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles.">
+          <div className="metric-label">Current Pattern <span style={{ fontSize: '0.75rem', cursor: 'help' }}>ℹ️</span></div>
           <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
           <div className="metric-description">
             Primary AI usage pattern detected
           </div>
         </div>
 
-        <div className="metric-card">
-          <div className="metric-label">Verification Rate</div>
+        <div className="metric-card" title="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity.">
+          <div className="metric-label">Verification Rate <span style={{ fontSize: '0.75rem', cursor: 'help' }}>ℹ️</span></div>
           <div className="metric-value">{verificationRate.toFixed(1)}%</div>
           <div className="metric-description">
-            AI outputs verified: {Math.round(verificationRate)}%
+            {verificationRate > 70 ? '✅ Excellent verification level' : verificationRate > 40 ? '📊 Moderate verification' : '⚠️ Low verification - consider increasing'}
           </div>
         </div>
 
-        <div className="metric-card">
-          <div className="metric-label">Average Session</div>
+        <div className="metric-card" title="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving.">
+          <div className="metric-label">Average Session <span style={{ fontSize: '0.75rem', cursor: 'help' }}>ℹ️</span></div>
           <div className="metric-value">{averageSessionDuration}</div>
           <div className="metric-description">
             Minutes per session
@@ -207,7 +207,9 @@ const DashboardPage: React.FC = () => {
       <div className="charts-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
         {/* Weekly Accuracy Trend */}
         <div className="chart-container">
-          <h3>Weekly Accuracy Trend</h3>
+          <h3 title="Shows your verification accuracy over the past weeks. Higher trends indicate you're getting better at verifying AI outputs correctly.">
+            📈 Weekly Accuracy Trend <span style={{ fontSize: '0.75rem', cursor: 'help', marginLeft: '0.5rem' }}>ℹ️</span>
+          </h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={weeklyAccuracyData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -228,7 +230,9 @@ const DashboardPage: React.FC = () => {
 
         {/* Pattern Distribution */}
         <div className="chart-container">
-          <h3>Pattern Distribution</h3>
+          <h3 title="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches.">
+            🎯 Pattern Distribution <span style={{ fontSize: '0.75rem', cursor: 'help', marginLeft: '0.5rem' }}>ℹ️</span>
+          </h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -253,7 +257,9 @@ const DashboardPage: React.FC = () => {
         {/* Intervention Strategy Comparison */}
         <div className="chart-container">
           <div>
-            <h3>Verification Strategy Impact</h3>
+            <h3 title="Compare how different verification strategies impact the quality of your work. Higher verification strategies reduce risk of errors and skill degradation.">
+              ✓ Verification Strategy Impact <span style={{ fontSize: '0.75rem', cursor: 'help', marginLeft: '0.5rem' }}>ℹ️</span>
+            </h3>
             <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '0 0 1rem 0' }}>
               📋 Shows how different levels of AI output verification impact quality of your work.
               Higher verification leads to better outcomes and helps prevent skill degradation.
