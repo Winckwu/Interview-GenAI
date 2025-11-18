@@ -44,39 +44,16 @@ api.interceptors.request.use(
 
 /**
  * Response Interceptor
- * Handles errors and token refresh
+ * Handles errors - simple error handling without token refresh
  */
 api.interceptors.response.use(
   (response) => response,
-  async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
-
-    // Handle 401 Unauthorized - token expired or invalid
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        // Try to refresh token
-        const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {}, {
-          withCredentials: true,
-        });
-
-        const { token } = response.data;
-
-        // Update token in localStorage
-        const authState = JSON.parse(localStorage.getItem('auth-storage') || '{}');
-        authState.state.token = token;
-        localStorage.setItem('auth-storage', JSON.stringify(authState));
-
-        // Retry original request with new token
-        originalRequest.headers.Authorization = `Bearer ${token}`;
-        return api(originalRequest);
-      } catch (refreshError) {
-        // Refresh failed - redirect to login
-        localStorage.removeItem('auth-storage');
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
-      }
+  (error: AxiosError) => {
+    // Handle 401 Unauthorized - just redirect to login
+    if (error.response?.status === 401) {
+      localStorage.removeItem('auth-storage');
+      window.location.href = '/login';
+      return Promise.reject(error);
     }
 
     // Handle 403 Forbidden
