@@ -14,7 +14,7 @@ export type DisplayMode = 'inline' | 'sidebar' | 'modal';
 
 export interface TriggerCondition {
   signal: keyof BehavioralSignals;
-  operator: '<' | '>' | '==' | '!=' | 'in';
+  operator: '<' | '>' | '<=' | '>=' | '==' | '!=' | 'in';
   threshold: number | boolean | string[];
   description: string;
 }
@@ -223,12 +223,19 @@ export class AdaptiveMRActivator {
         return (signalValue as number) < (condition.threshold as number);
       case '>':
         return (signalValue as number) > (condition.threshold as number);
+      case '<=':
+        return (signalValue as number) <= (condition.threshold as number);
+      case '>=':
+        return (signalValue as number) >= (condition.threshold as number);
       case '==':
         return signalValue === condition.threshold;
       case '!=':
         return signalValue !== condition.threshold;
       case 'in':
-        return (condition.threshold as string[]).includes(signalValue as string);
+        if (Array.isArray(condition.threshold)) {
+          return condition.threshold.includes(signalValue as unknown as string);
+        }
+        return false;
       default:
         return false;
     }
