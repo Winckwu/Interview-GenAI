@@ -23,6 +23,7 @@ const DashboardPage: React.FC = () => {
   const { setSidebarOpen } = useUIStore();
   const [creatingSession, setCreatingSession] = useState(false);
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
+  const [lastPatternUpdateTime, setLastPatternUpdateTime] = useState<number>(Date.now());
 
   // Handle start new session
   const handleStartSession = async () => {
@@ -68,6 +69,7 @@ const DashboardPage: React.FC = () => {
   };
 
   // Fetch pattern, prediction, and evolution data on mount and periodically
+  // Only update patterns/predictions/evolutions when new AI interactions are detected
   useEffect(() => {
     const loadAllData = async () => {
       try {
@@ -78,6 +80,8 @@ const DashboardPage: React.FC = () => {
             fetchPredictions(user.id),
             fetchEvolutions(user.id),
           ]);
+          // Update the timestamp of last pattern update
+          setLastPatternUpdateTime(Date.now());
         }
       } catch (err) {
         console.error('Failed to load dashboard data:', err);
@@ -88,13 +92,32 @@ const DashboardPage: React.FC = () => {
     loadAllData();
 
     // Set up interval to refresh data every 30 seconds
-    // This ensures Dashboard shows latest patterns/predictions/evolutions from ChatSessionPage interactions
-    const refreshInterval = setInterval(() => {
-      loadAllData();
+    // But only update patterns/predictions/evolutions if there are new AI interactions
+    const refreshInterval = setInterval(async () => {
+      try {
+        // First, refresh the session list to check for new interactions
+        await loadSessions();
+
+        // Check if there are new interactions since last pattern update
+        // by looking at the most recent session's update time
+        if (sessions.length > 0) {
+          const mostRecentSession = sessions[0]; // Already sorted by date
+          const sessionUpdateTime = new Date(mostRecentSession.startedAt || mostRecentSession.createdAt).getTime();
+
+          // If the most recent session was updated after our last pattern update,
+          // it means there are new interactions, so update the pattern data
+          if (sessionUpdateTime > lastPatternUpdateTime) {
+            console.log('New interactions detected, updating pattern data...');
+            await loadAllData();
+          }
+        }
+      } catch (err) {
+        console.error('Failed to refresh dashboard:', err);
+      }
     }, 30000); // 30 second refresh interval
 
     return () => clearInterval(refreshInterval);
-  }, [user?.id, fetchPatterns, fetchPredictions, fetchEvolutions]);
+  }, [user?.id, fetchPatterns, fetchPredictions, fetchEvolutions, loadSessions, sessions, lastPatternUpdateTime]);
 
   if (loading) {
     return <LoadingSpinner message="Loading dashboard..." />;
@@ -301,8 +324,8 @@ const DashboardPage: React.FC = () => {
               <p>No conversations yet. Start your first chat!</p>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '0' }}>
-              {sessions.map((session, index) => {
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0' }}>
+              {sessions.slice(0, 3).map((session, index) => {
                 const isHoveringCard = hoveredSessionId === session.id;
                 return (
                   <div
