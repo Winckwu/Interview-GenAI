@@ -29,6 +29,13 @@ router.post(
       });
     }
 
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+      });
+    }
+
     // Analyze session
     const detection = await PatternDetectionService.detectSessionPattern(sessionId);
 
@@ -123,6 +130,13 @@ router.get(
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+      });
+    }
 
     const stats = await PatternDetectionService.getUserPatternStats(userId);
     const trends = await PatternDetectionService.getPatternTrends(userId, 7);

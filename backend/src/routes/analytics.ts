@@ -21,6 +21,13 @@ router.get(
     const userId = req.user?.id;
     const days = parseInt(req.query.days as string) || 30;
 
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+      });
+    }
+
     const analytics = await AnalyticsService.getUserAnalytics(userId, days);
 
     res.json({
@@ -61,6 +68,13 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.id;
     const days = parseInt(req.query.days as string) || 30;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+      });
+    }
 
     const analytics = await AnalyticsService.getUserAnalytics(userId, days);
 
