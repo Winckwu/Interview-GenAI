@@ -50,18 +50,23 @@ const App: React.FC = () => {
       }
       initializerRef.current = true;
 
-      // Only call checkAuth if user is not already authenticated
-      // (restores session from localStorage if available)
-      if (!isAuthenticated && !token) {
-        await checkAuth();
-      }
+      // Wait for Zustand persist middleware to hydrate from localStorage
+      // This is important so that token and isAuthenticated are restored
+      // before we check them
+      await new Promise(resolve => setTimeout(resolve, 50));
+
+      // After hydration, we trust the persisted state
+      // If user had a valid token, it's already restored from localStorage
+      // If user didn't have a token, isAuthenticated will be false
+      // No need to call checkAuth - just mark as initialized
+
       setIsInitialized(true);
     };
 
     initialize();
   }, []); // Empty dependency array - only run once on mount
 
-  if (!isInitialized || loading) {
+  if (!isInitialized) {
     return <LoadingSpinner fullScreen />;
   }
 

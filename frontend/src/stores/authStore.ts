@@ -44,7 +44,7 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user) => set({ user, isAuthenticated: user !== null }),
 
       setToken: (token) => {
-        set({ token });
+        set({ token, isAuthenticated: !!token });
         if (token) {
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         } else {
@@ -145,7 +145,14 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({
         token: state.token,
         user: state.user,
+        isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state) => {
+        // After hydrating from localStorage, restore API headers if token exists
+        if (state && state.token) {
+          api.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
+        }
+      },
     }
   )
 );
