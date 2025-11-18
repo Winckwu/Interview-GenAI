@@ -25,7 +25,6 @@ const DashboardPage: React.FC = () => {
   // Handle start new session
   const handleStartSession = async () => {
     setCreatingSession(true);
-    setSessionError(null);
 
     try {
       const response = await api.post('/sessions', {
@@ -37,7 +36,7 @@ const DashboardPage: React.FC = () => {
       const sessionId = response.data.data.session.id;
       navigate(`/session/${sessionId}`);
     } catch (err: any) {
-      setSessionError(err.response?.data?.error || 'Failed to create session');
+      console.error('Failed to create session:', err);
       setCreatingSession(false);
     }
   };
