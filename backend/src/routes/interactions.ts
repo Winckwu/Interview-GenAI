@@ -28,6 +28,14 @@ router.post(
     } = req.body;
 
     // Validation
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
     if (!sessionId || !userPrompt || !aiResponse) {
       return res.status(400).json({
         success: false,
@@ -112,6 +120,14 @@ router.get(
     const { interactionId } = req.params;
     const userId = req.user?.id;
 
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
     const result = await pool.query(
       `SELECT i.id, i.session_id, i.user_prompt, i.ai_response, i.ai_model, i.prompt_word_count,
               i.response_time, i.was_verified, i.was_modified, i.was_rejected, i.confidence_score, i.created_at
@@ -164,6 +180,14 @@ router.patch(
     const { interactionId } = req.params;
     const userId = req.user?.id;
     const { wasVerified, wasModified, wasRejected, confidenceScore } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     // Verify interaction belongs to user
     const check = await pool.query(
@@ -264,6 +288,15 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.id;
     const { sessionId, limit = 50, offset = 0 } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
     const limitNum = Math.min(parseInt(limit as string) || 50, 100);
     const offsetNum = parseInt(offset as string) || 0;
 

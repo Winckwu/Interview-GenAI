@@ -112,6 +112,7 @@ import adminAuthRoutes from './routes/adminAuth';
 import abtestRoutes from './routes/abtest';
 import assessmentsRoutes from './routes/assessments';
 import usersRoutes from './routes/users';
+import interactionsRoutes from './routes/interactions';
 
 // ============================================================================
 // API Routes
@@ -143,6 +144,9 @@ app.use('/api/users', usersRoutes);
 
 // Assessment endpoints
 app.use('/api/assessments', assessmentsRoutes);
+
+// Interactions endpoints
+app.use('/api/interactions', interactionsRoutes);
 
 // Placeholder routes - backward compatibility
 app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
