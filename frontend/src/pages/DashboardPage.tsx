@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAuthStore } from '../stores/authStore';
@@ -6,6 +6,74 @@ import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
 import { useAnalytics, usePatternStats } from '../hooks/useAnalytics';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+
+/**
+ * Tooltip Component for Info Icons
+ */
+interface InfoTooltipProps {
+  text: string;
+}
+
+const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
+  const [show, setShow] = useState(false);
+
+  return (
+    <div
+      style={{ display: 'inline-block', position: 'relative', marginLeft: '0.5rem' }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      <span
+        style={{
+          fontSize: '0.75rem',
+          cursor: 'help',
+          color: '#3b82f6',
+          fontWeight: 'bold',
+        }}
+        title="Click or hover for explanation"
+      >
+        ℹ️
+      </span>
+      {show && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: '-100px',
+            right: '-100px',
+            width: '250px',
+            backgroundColor: '#1f2937',
+            color: '#fff',
+            padding: '0.75rem',
+            borderRadius: '0.5rem',
+            fontSize: '0.75rem',
+            lineHeight: '1.4',
+            zIndex: 1000,
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+            marginBottom: '0.5rem',
+            pointerEvents: 'auto',
+          }}
+        >
+          {text}
+          {/* Tooltip arrow */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '-4px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 0,
+              height: 0,
+              borderLeft: '4px solid transparent',
+              borderRight: '4px solid transparent',
+              borderTop: '4px solid #1f2937',
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
 
 /**
  * Dashboard Page
@@ -169,7 +237,7 @@ const DashboardPage: React.FC = () => {
           gap: '1.5rem',
         }}>
         <div className="metric-card" title="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted.">
-          <div className="metric-label">Total Sessions <span style={{ fontSize: '0.75rem', cursor: 'help' }}>ℹ️</span></div>
+          <div className="metric-label">Total Sessions <InfoTooltip text="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted." /></div>
           <div className="metric-value">{totalSessions}</div>
           <div className="metric-description">
             {totalInteractions} total interactions recorded
@@ -177,7 +245,7 @@ const DashboardPage: React.FC = () => {
         </div>
 
         <div className="metric-card" title="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles.">
-          <div className="metric-label">Current Pattern <span style={{ fontSize: '0.75rem', cursor: 'help' }}>ℹ️</span></div>
+          <div className="metric-label">Current Pattern <InfoTooltip text="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles." /></div>
           <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
           <div className="metric-description">
             Primary AI usage pattern detected
@@ -185,7 +253,7 @@ const DashboardPage: React.FC = () => {
         </div>
 
         <div className="metric-card" title="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity.">
-          <div className="metric-label">Verification Rate <span style={{ fontSize: '0.75rem', cursor: 'help' }}>ℹ️</span></div>
+          <div className="metric-label">Verification Rate <InfoTooltip text="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity." /></div>
           <div className="metric-value">{verificationRate.toFixed(1)}%</div>
           <div className="metric-description">
             {verificationRate > 70 ? '✅ Excellent verification level' : verificationRate > 40 ? '📊 Moderate verification' : '⚠️ Low verification - consider increasing'}
@@ -193,7 +261,7 @@ const DashboardPage: React.FC = () => {
         </div>
 
         <div className="metric-card" title="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving.">
-          <div className="metric-label">Average Session <span style={{ fontSize: '0.75rem', cursor: 'help' }}>ℹ️</span></div>
+          <div className="metric-label">Average Session <InfoTooltip text="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving." /></div>
           <div className="metric-value">{averageSessionDuration}</div>
           <div className="metric-description">
             Minutes per session
@@ -207,8 +275,8 @@ const DashboardPage: React.FC = () => {
       <div className="charts-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
         {/* Weekly Accuracy Trend */}
         <div className="chart-container">
-          <h3 title="Shows your verification accuracy over the past weeks. Higher trends indicate you're getting better at verifying AI outputs correctly.">
-            📈 Weekly Accuracy Trend <span style={{ fontSize: '0.75rem', cursor: 'help', marginLeft: '0.5rem' }}>ℹ️</span>
+          <h3>
+            📈 Weekly Accuracy Trend <InfoTooltip text="Shows your verification accuracy over the past weeks. Higher trends indicate you're getting better at verifying AI outputs correctly." />
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={weeklyAccuracyData}>
@@ -230,8 +298,8 @@ const DashboardPage: React.FC = () => {
 
         {/* Pattern Distribution */}
         <div className="chart-container">
-          <h3 title="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches.">
-            🎯 Pattern Distribution <span style={{ fontSize: '0.75rem', cursor: 'help', marginLeft: '0.5rem' }}>ℹ️</span>
+          <h3>
+            🎯 Pattern Distribution <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." />
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -256,17 +324,11 @@ const DashboardPage: React.FC = () => {
 
         {/* Intervention Strategy Comparison */}
         <div className="chart-container">
-          <div>
-            <h3 title="Compare how different verification strategies impact the quality of your work. Higher verification strategies reduce risk of errors and skill degradation.">
-              ✓ Verification Strategy Impact <span style={{ fontSize: '0.75rem', cursor: 'help', marginLeft: '0.5rem' }}>ℹ️</span>
-            </h3>
-            <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '0 0 1rem 0' }}>
-              📋 Shows how different levels of AI output verification impact quality of your work.
-              Higher verification leads to better outcomes and helps prevent skill degradation.
-            </p>
-          </div>
+          <h3>
+            ✓ Verification Strategy Impact <InfoTooltip text="Compare how different verification strategies impact the quality of your work. Higher verification strategies reduce risk of errors and skill degradation." />
+          </h3>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={interventionData}>
+            <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="strategy" />
               <YAxis label={{ value: 'Quality Impact Score (%)', angle: -90, position: 'insideLeft' }} />
