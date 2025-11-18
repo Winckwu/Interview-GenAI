@@ -88,6 +88,7 @@ const ChatSessionPage: React.FC = () => {
 
   // Verification tools state
   const [showVerificationTools, setShowVerificationTools] = useState(false);
+  const [verificationLogs, setVerificationLogs] = useState<any[]>([]);
 
   // Handle modal MRs display
   useEffect(() => {
@@ -1206,7 +1207,10 @@ const ChatSessionPage: React.FC = () => {
               ✕
             </button>
             <MR11IntegratedVerification
-              onDecisionMade={() => {
+              existingLogs={verificationLogs}
+              onDecisionMade={(log) => {
+                // Add new log to the verification history
+                setVerificationLogs([...verificationLogs, log]);
                 // Optional: Close on decision made
                 // setShowVerificationTools(false);
               }}
