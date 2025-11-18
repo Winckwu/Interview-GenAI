@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>后端管理系统 - 登录</title>
+  <title>Backend Admin - Login</title>
   <style>
     * {
       margin: 0;
@@ -177,7 +177,7 @@
 <body>
   <div class="login-container">
     <div class="login-header">
-      <h1>后端管理系统</h1>
+      <h1>Backend Admin System</h1>
       <p>Interview-GenAI Admin Console</p>
     </div>
 
@@ -186,38 +186,38 @@
 
     <form id="loginForm">
       <div class="form-group">
-        <label for="username">账号</label>
+        <label for="username">Username</label>
         <input
           type="text"
           id="username"
           name="username"
-          placeholder="输入管理员账号"
+          placeholder="Enter admin username"
           autocomplete="off"
           required
         >
       </div>
 
       <div class="form-group">
-        <label for="password">密码</label>
+        <label for="password">Password</label>
         <input
           type="password"
           id="password"
           name="password"
-          placeholder="输入密码"
+          placeholder="Enter password"
           autocomplete="off"
           required
         >
       </div>
 
       <button type="submit" class="login-button" id="loginBtn">
-        登录
+        Login
       </button>
     </form>
 
     <div class="demo-info">
-      <strong>演示账号：</strong><br>
-      账号: <code>admin01</code><br>
-      密码: <code>qweasd</code>
+      <strong>Demo Credentials:</strong><br>
+      Username: <code>admin01</code><br>
+      Password: <code>qweasd</code>
     </div>
   </div>
 
@@ -240,7 +240,7 @@
       // Disable button and show loading state
       loginBtn.disabled = true;
       const originalText = loginBtn.textContent;
-      loginBtn.innerHTML = '<span class="loading"></span>登录中...';
+      loginBtn.innerHTML = '<span class="loading"></span>Logging in...';
 
       try {
         const response = await fetch('/api/admin/auth/login', {
@@ -260,7 +260,7 @@
           }
 
           // Show success message
-          successMessage.textContent = '登录成功，正在跳转...';
+          successMessage.textContent = 'Login successful, redirecting...';
           successMessage.classList.add('show');
 
           // Redirect to dashboard after 1 second
@@ -268,10 +268,10 @@
             window.location.href = '/admin-dashboard';
           }, 1000);
         } else {
-          throw new Error(data.error || '登录失败');
+          throw new Error(data.error || 'Login failed');
         }
       } catch (error) {
-        errorMessage.textContent = error instanceof Error ? error.message : '登录失败，请重试';
+        errorMessage.textContent = error instanceof Error ? error.message : 'Login failed, please try again';
         errorMessage.classList.add('show');
 
         // Re-enable button
@@ -282,6 +282,19 @@
 
     // Auto-focus on load
     document.getElementById('username').focus();
+
+    // Show success message with proper text
+    function updateMessages() {
+      const errorMsg = document.getElementById('errorMessage');
+      const successMsg = document.getElementById('successMessage');
+
+      if (errorMsg.classList.contains('show')) {
+        // Message already set by error handling
+      }
+      if (successMsg.classList.contains('show')) {
+        successMsg.textContent = 'Login successful, redirecting...';
+      }
+    }
   </script>
 </body>
 </html>

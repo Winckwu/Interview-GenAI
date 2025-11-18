@@ -42,7 +42,7 @@ router.post(
     if (!username || !password) {
       return res.status(400).json({
         success: false,
-        error: '账号和密码不能为空',
+        error: 'Username and password cannot be empty',
         timestamp: new Date().toISOString(),
       });
     }
@@ -63,7 +63,7 @@ router.post(
 
       return res.json({
         success: true,
-        message: '登录成功',
+        message: 'Login successful',
         token: token,
         user: {
           username: username,
@@ -78,7 +78,7 @@ router.post(
 
     return res.status(401).json({
       success: false,
-      error: '账号或密码错误',
+      error: 'Invalid username or password',
       timestamp: new Date().toISOString(),
     });
   })
@@ -95,7 +95,7 @@ router.post(
 
     res.json({
       success: true,
-      message: '退出登录成功',
+      message: 'Logout successful',
       timestamp: new Date().toISOString(),
     });
   })
@@ -114,7 +114,7 @@ router.get(
     if (!token) {
       return res.status(401).json({
         success: false,
-        error: '未提供token',
+        error: 'No token provided',
         timestamp: new Date().toISOString(),
       });
     }
@@ -125,14 +125,14 @@ router.get(
       if (decoded.type !== 'admin') {
         return res.status(403).json({
           success: false,
-          error: 'Token类型无效',
+          error: 'Invalid token type',
           timestamp: new Date().toISOString(),
         });
       }
 
       return res.json({
         success: true,
-        message: 'Token有效',
+        message: 'Token is valid',
         user: {
           username: decoded.username,
           role: 'admin',
@@ -142,7 +142,7 @@ router.get(
     } catch (err) {
       return res.status(401).json({
         success: false,
-        error: 'Token无效或已过期',
+        error: 'Invalid or expired token',
         timestamp: new Date().toISOString(),
       });
     }

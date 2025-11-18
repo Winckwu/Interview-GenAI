@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>后端管理仪表板</title>
+  <title>Backend Admin Dashboard</title>
   <style>
     * {
       margin: 0;
@@ -212,64 +212,64 @@
   <div class="container">
     <header>
       <div>
-        <h1>📊 后端管理仪表板</h1>
+        <h1>📊 Backend Admin Dashboard</h1>
       </div>
       <div class="user-info">
-        <p>欢迎，<strong id="username">管理员</strong></p>
-        <button class="logout-btn" onclick="logout()">退出登录</button>
+        <p>Welcome, <strong id="username">Admin</strong></p>
+        <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
     </header>
 
     <!-- System Status -->
     <div class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-label">系统状态</div>
+        <div class="metric-label">System Status</div>
         <div class="metric-value" id="systemStatus" style="font-size: 24px;">
-          <span class="loading"></span>加载中...
+          <span class="loading"></span>Loading...
         </div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">数据库连接</div>
+        <div class="metric-label">Database Connection</div>
         <div class="metric-value" id="dbStatus" style="font-size: 24px;">
-          <span class="loading"></span>检查中...
+          <span class="loading"></span>Checking...
         </div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">API版本</div>
+        <div class="metric-label">API Version</div>
         <div class="metric-value" style="font-size: 24px; color: #10b981;">v1.0</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">启动时间</div>
+        <div class="metric-label">Uptime</div>
         <div class="metric-value" id="uptime" style="font-size: 18px;">-</div>
       </div>
     </div>
 
     <!-- System Info Section -->
     <div class="section">
-      <h2>系统信息</h2>
+      <h2>System Information</h2>
       <table class="info-table">
         <tr>
-          <td>后端状态</td>
+          <td>Backend Status</td>
           <td id="backendStatus">
-            <span class="loading"></span>检查中...
+            <span class="loading"></span>Checking...
           </td>
         </tr>
         <tr>
-          <td>数据库状态</td>
+          <td>Database Status</td>
           <td id="dbStatusInfo">
-            <span class="loading"></span>检查中...
+            <span class="loading"></span>Checking...
           </td>
         </tr>
         <tr>
-          <td>环境</td>
+          <td>Environment</td>
           <td id="environment">-</td>
         </tr>
         <tr>
-          <td>启动时间</td>
+          <td>Start Time</td>
           <td id="startTime">-</td>
         </tr>
         <tr>
-          <td>当前时间</td>
+          <td>Current Time</td>
           <td id="currentTime">-</td>
         </tr>
       </table>
@@ -277,18 +277,18 @@
 
     <!-- Stats Section -->
     <div class="section">
-      <h2>系统统计</h2>
+      <h2>System Statistics</h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
         <div>
-          <div class="metric-label">总用户数</div>
+          <div class="metric-label">Total Users</div>
           <div class="metric-value" id="totalUsers" style="font-size: 28px; color: #667eea;">-</div>
         </div>
         <div>
-          <div class="metric-label">总会话数</div>
+          <div class="metric-label">Total Sessions</div>
           <div class="metric-value" id="totalSessions" style="font-size: 28px; color: #10b981;">-</div>
         </div>
         <div>
-          <div class="metric-label">总交互数</div>
+          <div class="metric-label">Total Interactions</div>
           <div class="metric-value" id="totalInteractions" style="font-size: 28px; color: #f59e0b;">-</div>
         </div>
       </div>
@@ -296,53 +296,53 @@
 
     <!-- API Endpoints Section -->
     <div class="section">
-      <h2>核心API端点</h2>
+      <h2>Core API Endpoints</h2>
       <div class="api-list">
         <div class="api-item">
           <span class="api-method">GET</span>
           <span class="api-path">/health</span>
-          - 健康检查
+          - Health check
         </div>
         <div class="api-item">
           <span class="api-method">GET</span>
           <span class="api-path">/api/admin/dashboard</span>
-          - 管理仪表板数据
+          - Admin dashboard data
         </div>
         <div class="api-item">
           <span class="api-method">GET</span>
           <span class="api-path">/api/admin/stats</span>
-          - 系统统计信息
+          - System statistics
         </div>
         <div class="api-item">
           <span class="api-method">GET</span>
           <span class="api-path">/api/admin/users</span>
-          - 用户列表
+          - User list
         </div>
         <div class="api-item">
           <span class="api-method">POST</span>
           <span class="api-path">/api/auth/login</span>
-          - 用户登录
+          - User login
         </div>
         <div class="api-item">
           <span class="api-method">GET</span>
           <span class="api-path">/api/sessions</span>
-          - 工作会话列表
+          - Work sessions list
         </div>
         <div class="api-item">
           <span class="api-method">GET</span>
           <span class="api-path">/api/interactions</span>
-          - AI交互记录
+          - AI interactions log
         </div>
       </div>
     </div>
 
     <!-- Quick Start Section -->
     <div class="section">
-      <h2>快速开始</h2>
+      <h2>Quick Start</h2>
       <p style="color: #6b7280; line-height: 1.6; margin-bottom: 12px;">
-        <strong>前端应用：</strong> <a href="http://localhost:3000" target="_blank" style="color: #667eea; text-decoration: none;">http://localhost:3000</a><br>
-        <strong>API基础URL：</strong> <code style="background: #f9fafb; padding: 2px 6px; border-radius: 3px;">http://localhost:5001/api</code><br>
-        <strong>数据库：</strong> PostgreSQL (interview_genai)<br>
+        <strong>Frontend App:</strong> <a href="http://localhost:3000" target="_blank" style="color: #667eea; text-decoration: none;">http://localhost:3000</a><br>
+        <strong>API Base URL:</strong> <code style="background: #f9fafb; padding: 2px 6px; border-radius: 3px;">http://localhost:5001/api</code><br>
+        <strong>Database:</strong> PostgreSQL (interview_genai)<br>
       </p>
     </div>
 
@@ -397,30 +397,30 @@
           const healthData = await healthResponse.json();
           document.getElementById('systemStatus').innerHTML =
             healthData.status === 'ok'
-              ? '<span class="status-badge status-ok">✓ 正常</span>'
-              : '<span class="status-badge status-error">✗ 异常</span>';
+              ? '<span class="status-badge status-ok">✓ Healthy</span>'
+              : '<span class="status-badge status-error">✗ Unhealthy</span>';
           document.getElementById('dbStatusInfo').innerHTML =
             healthData.database === 'ok'
-              ? '<span class="status-badge status-ok">✓ 已连接</span>'
-              : '<span class="status-badge status-error">✗ 未连接</span>';
+              ? '<span class="status-badge status-ok">✓ Connected</span>'
+              : '<span class="status-badge status-error">✗ Disconnected</span>';
           document.getElementById('backendStatus').innerHTML =
             healthData.status === 'ok'
-              ? '<span class="status-badge status-ok">✓ 运行中</span>'
-              : '<span class="status-badge status-error">✗ 异常</span>';
+              ? '<span class="status-badge status-ok">✓ Running</span>'
+              : '<span class="status-badge status-error">✗ Error</span>';
           document.getElementById('dbStatus').innerHTML =
             healthData.database === 'ok'
-              ? '<span class="status-badge status-ok">✓ 连接正常</span>'
-              : '<span class="status-badge status-error">✗ 连接失败</span>';
+              ? '<span class="status-badge status-ok">✓ Connected</span>'
+              : '<span class="status-badge status-error">✗ Connection Failed</span>';
         }
 
         // Update time info
         const now = new Date();
-        document.getElementById('currentTime').textContent = now.toLocaleString('zh-CN');
+        document.getElementById('currentTime').textContent = now.toLocaleString('en-US');
         document.getElementById('environment').textContent = 'Development';
 
       } catch (error) {
         console.error('Error loading dashboard:', error);
-        document.getElementById('systemStatus').innerHTML = '<span class="status-badge status-error">✗ 加载失败</span>';
+        document.getElementById('systemStatus').innerHTML = '<span class="status-badge status-error">✗ Failed to load</span>';
       }
     }
 
