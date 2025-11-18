@@ -70,11 +70,21 @@ const DashboardPage: React.FC = () => {
                 });
                 const interactions = interactionsResponse.data.data.interactions || [];
                 // Check if session has at least one valid interaction with both user prompt and AI response
-                const hasValidInteraction = interactions.some(
+                const validInteractions = interactions.filter(
                   (interaction: any) =>
                     interaction.userPrompt && interaction.aiResponse && interaction.sessionId === session.id
                 );
-                return hasValidInteraction ? session : null;
+
+                if (validInteractions.length > 0) {
+                  // Use the first user prompt as the session title (truncate to 50 chars)
+                  const firstPrompt = validInteractions[0].userPrompt;
+                  const title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
+                  return {
+                    ...session,
+                    taskDescription: title,
+                  };
+                }
+                return null;
               } catch (err) {
                 console.error(`Failed to load interactions for session ${session.id}:`, err);
                 return null;
