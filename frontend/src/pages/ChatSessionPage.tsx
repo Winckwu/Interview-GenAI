@@ -61,6 +61,7 @@ const ChatSessionPage: React.FC = () => {
   const [sessionsLoading, setSessionsLoading] = useState(false);
   const [sessionSidebarOpen, setSessionSidebarOpen] = useState(false);
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
+  const [creatingNewSession, setCreatingNewSession] = useState(false);
 
   // Load session list with valid interactions
   useEffect(() => {
@@ -353,6 +354,29 @@ const ChatSessionPage: React.FC = () => {
   };
 
   /**
+   * Create a new chat session
+   */
+  const handleNewChat = async () => {
+    setCreatingNewSession(true);
+    try {
+      const response = await api.post('/sessions', {
+        taskDescription: 'General AI interaction',
+        taskType: 'general',
+        taskImportance: 'medium',
+      });
+
+      const newSessionId = response.data.data.session.id;
+      // Close sidebar and navigate to new session
+      setSessionSidebarOpen(false);
+      navigate(`/session/${newSessionId}`);
+    } catch (err: any) {
+      console.error('Failed to create new session:', err);
+      setError(err.response?.data?.error || 'Failed to create new session');
+      setCreatingNewSession(false);
+    }
+  };
+
+  /**
    * Delete a session from the sidebar
    */
   const deleteSession = async (sessionToDeleteId: string, e: React.MouseEvent) => {
@@ -615,30 +639,36 @@ const ChatSessionPage: React.FC = () => {
           </div>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={handleNewChat}
+              disabled={creatingNewSession}
               style={{
                 padding: '0.5rem 1.25rem',
                 backgroundColor: '#10b981',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '0.5rem',
-                cursor: 'pointer',
+                cursor: creatingNewSession ? 'not-allowed' : 'pointer',
                 fontWeight: '500',
                 fontSize: '0.875rem',
                 transition: 'all 0.2s',
                 whiteSpace: 'nowrap',
+                opacity: creatingNewSession ? 0.7 : 1,
               }}
               onMouseOver={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#059669';
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(16, 185, 129, 0.3)';
+                if (!creatingNewSession) {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#059669';
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(16, 185, 129, 0.3)';
+                }
               }}
               onMouseOut={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#10b981';
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+                if (!creatingNewSession) {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#10b981';
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+                }
               }}
               title="Start a new conversation"
             >
-              ➕ New Chat
+              {creatingNewSession ? '⏳ Creating...' : '➕ New Chat'}
             </button>
             <button
               onClick={endSession}
