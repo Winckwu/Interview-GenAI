@@ -50,7 +50,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
   /**
    * Load recent sessions from API
-   * Filters to only show sessions with valid interactions
+   * Shows all sessions with optional task description from first user interaction
    */
   loadSessions: async () => {
     set({ sessionsLoading: true, error: null });
@@ -62,8 +62,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
           new Map(response.data.data.sessions.map((session: SessionItem) => [session.id, session])).values()
         ) as SessionItem[];
 
-        // Filter sessions that have valid interactions (with actual content)
-        const sessionsWithContent = await Promise.all(
+        // Enhance sessions with first user prompt as title if available
+        const enhancedSessions = await Promise.all(
           uniqueSessions.map(async (session) => {
             try {
               const interactionsResponse = await api.get('/interactions', {
@@ -85,19 +85,20 @@ export const useSessionStore = create<SessionState>((set, get) => ({
                   taskDescription: title,
                 };
               }
-              return null;
+              // Return session with original taskDescription if no interactions yet
+              return session;
             } catch (err) {
               console.error(`Failed to load interactions for session ${session.id}:`, err);
-              return null;
+              // Return session even if interactions fetch fails
+              return session;
             }
           })
         );
 
-        // Filter out null values and limit to 10
-        const filteredSessions = sessionsWithContent.filter((s) => s !== null).slice(0, 10) as SessionItem[];
+        // Keep all sessions and limit to 50
         // Sort by date descending (newest first)
-        filteredSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
-        set({ sessions: filteredSessions });
+        enhancedSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
+        set({ sessions: enhancedSessions.slice(0, 50) });
       }
     } catch (err: any) {
       const errorMsg = err.response?.data?.error || 'Failed to load sessions';

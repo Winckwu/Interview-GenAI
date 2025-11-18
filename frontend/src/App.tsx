@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import ChatSessionPage from './pages/ChatSessionPage';
+import AllSessionsPage from './pages/AllSessionsPage';
 import PatternsPage from './pages/PatternsPage';
 import PredictionsPage from './pages/PredictionsPage';
 import EvolutionTrackingPage from './pages/EvolutionTrackingPage';
@@ -94,6 +95,7 @@ const App: React.FC = () => {
 
           {/* Chat Session */}
           <Route path="/session/:sessionId" element={<ChatSessionPage />} />
+          <Route path="/sessions" element={<AllSessionsPage />} />
 
           {/* Core Features */}
           <Route path="/patterns" element={<PatternsPage />} />
