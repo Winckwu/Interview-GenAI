@@ -32,6 +32,19 @@ interface SessionItem {
 }
 
 /**
+ * Convert string task importance to integer value
+ * Maps user-friendly strings to database integer values
+ */
+const getTaskImportanceValue = (importance: string): number => {
+  const importanceMap: { [key: string]: number } = {
+    'low': 1,
+    'medium': 3,
+    'high': 5,
+  };
+  return importanceMap[importance.toLowerCase()] || 3; // Default to medium (3)
+};
+
+/**
  * Chat Session Page - Improved UI with Session Sidebar
  * Main interface for user-AI interaction with pattern tracking and session history
  */
@@ -133,7 +146,7 @@ const ChatSessionPage: React.FC = () => {
           const response = await api.post('/sessions', {
             taskDescription: 'General AI interaction',
             taskType: 'general',
-            taskImportance: 'medium',
+            taskImportance: getTaskImportanceValue('medium'),
           });
           const newSessionId = response.data.data.session.id;
           navigate(`/session/${newSessionId}`, { replace: true });
@@ -396,7 +409,7 @@ const ChatSessionPage: React.FC = () => {
       const response = await api.post('/sessions', {
         taskDescription: 'General AI interaction',
         taskType: 'general',
-        taskImportance: 'medium',
+        taskImportance: getTaskImportanceValue('medium'),
       });
 
       const newSessionId = response.data.data.session.id;
