@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useUIStore } from '../stores/uiStore';
+import './LoginPage.css';
+import '../styles/components.css';
 
 /**
  * Login Page
@@ -18,7 +20,6 @@ const LoginPage: React.FC = () => {
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
@@ -90,16 +91,9 @@ const LoginPage: React.FC = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              onFocus={() => setFocusedField('email')}
-              onBlur={() => setFocusedField(null)}
               placeholder="you@example.com"
-              className={formErrors.email ? 'error' : ''}
+              className={`form-input ${formErrors.email ? 'error' : ''}`}
               disabled={loading}
-              style={{
-                borderColor: focusedField === 'email' ? '#667eea' : formErrors.email ? '#ef4444' : '#e5e7eb',
-                backgroundColor: focusedField === 'email' ? '#f0f9ff' : '#f9fafb',
-                transition: 'all 150ms ease',
-              }}
             />
             {formErrors.email && <span className="error-message">{formErrors.email}</span>}
           </div>
@@ -112,33 +106,21 @@ const LoginPage: React.FC = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              onFocus={() => setFocusedField('password')}
-              onBlur={() => setFocusedField(null)}
               placeholder="••••••••"
-              className={formErrors.password ? 'error' : ''}
+              className={`form-input ${formErrors.password ? 'error' : ''}`}
               disabled={loading}
-              style={{
-                borderColor: focusedField === 'password' ? '#667eea' : formErrors.password ? '#ef4444' : '#e5e7eb',
-                backgroundColor: focusedField === 'password' ? '#f0f9ff' : '#f9fafb',
-                transition: 'all 150ms ease',
-              }}
             />
             {formErrors.password && <span className="error-message">{formErrors.password}</span>}
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary btn-large"
+            className={`btn btn-primary btn-large ${loading ? 'loading' : ''}`}
             disabled={loading}
-            style={{
-              opacity: loading ? 0.7 : 1,
-              transform: loading ? 'scale(0.98)' : 'scale(1)',
-              transition: 'all 150ms ease',
-            }}
           >
             {loading ? (
               <>
-                <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
+                <span>⏳</span>
                 {' Signing in...'}
               </>
             ) : (
