@@ -38,7 +38,9 @@ router.post(
 
     res.status(201).json({
       success: true,
-      data: session,
+      data: {
+        session,
+      },
       timestamp: new Date().toISOString(),
     });
   })
