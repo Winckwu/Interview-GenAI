@@ -321,8 +321,8 @@ const ChatSessionPage: React.FC = () => {
 
     setPatternLoading(true);
     try {
-      const response = await api.post('/patterns/analyze', { sessionId });
-      const patternData = response.data.data.pattern;
+      const response = await api.post('/patterns/detect', { sessionId });
+      const patternData = response.data.data;
 
       // Prepare pattern with metrics for the analysis window
       const enrichedPattern = {

@@ -110,25 +110,9 @@ export const usePatternStore = create<PatternState>((set, get) => ({
   fetchPredictions: async (userId?: string) => {
     set({ loading: true, error: null });
     try {
-      // Get analytics to populate predictions with session interactions
-      const analyticsResponse = await api.get('/analytics/summary');
-      const analyticsData = analyticsResponse.data.data;
-
-      // Transform interaction stats into predictions format
-      const predictions: Prediction[] = [
-        {
-          id: '1',
-          userId: userId || 'current',
-          taskId: 'default',
-          predictedPattern: analyticsData.dominantPattern,
-          actualPattern: analyticsData.dominantPattern,
-          confidence: 0.85,
-          feedback: 'accurate',
-          isCorrect: true,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ];
+      // Fetch actual predictions from backend
+      const response = await api.get('/predictions');
+      const predictions = response.data.data || [];
 
       set({ predictions });
     } catch (error: any) {

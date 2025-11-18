@@ -221,12 +221,24 @@ export const apiService = {
    * Analytics endpoints
    */
   analytics: {
+    // User analytics
     getUser: (days?: number) => api.get('/analytics/user', { params: { days } }),
 
     getSessionDetails: (sessionId: string) =>
       api.get(`/analytics/session/${sessionId}`),
 
     getSummary: (days?: number) => api.get('/analytics/summary', { params: { days } }),
+
+    // User metrics and patterns analytics
+    userMetrics: (userId: string) =>
+      api.get(`/analytics/users/${userId}`, {}),
+
+    patterns: (params?: any) =>
+      api.get('/analytics/patterns', { params }),
+
+    // Export functionality
+    export: (format: 'csv' | 'json') =>
+      api.get(`/analytics/export?format=${format}`),
   },
 
   /**
@@ -241,23 +253,6 @@ export const apiService = {
 
     getResults: (testId: string) =>
       api.get(`/ab-test/${testId}/results`),
-  },
-
-  /**
-   * Analytics endpoints
-   */
-  analytics: {
-    summary: (params?: any) =>
-      api.get('/analytics/summary', { params }),
-
-    userMetrics: (userId: string) =>
-      api.get(`/analytics/users/${userId}`, {}),
-
-    patterns: (params?: any) =>
-      api.get('/analytics/patterns', { params }),
-
-    export: (format: 'csv' | 'json') =>
-      api.get(`/analytics/export?format=${format}`),
   },
 
   /**
