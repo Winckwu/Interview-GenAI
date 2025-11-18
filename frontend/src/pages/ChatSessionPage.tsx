@@ -20,7 +20,7 @@ interface PatternResult {
 }
 
 /**
- * Chat Session Page
+ * Chat Session Page - Improved UI
  * Main interface for user-AI interaction with pattern tracking
  */
 const ChatSessionPage: React.FC = () => {
@@ -36,6 +36,7 @@ const ChatSessionPage: React.FC = () => {
   const [pattern, setPattern] = useState<PatternResult | null>(null);
   const [showPattern, setShowPattern] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Session metadata
   const [sessionData, setSessionData] = useState<any>(null);
@@ -198,8 +199,8 @@ const ChatSessionPage: React.FC = () => {
         )
       );
 
-      // Show success briefly
-      setError(null);
+      setSuccessMessage('✓ Response marked as verified!');
+      setTimeout(() => setSuccessMessage(null), 2000);
     } catch (err: any) {
       console.error('Verification error:', err);
       const errorMsg = err.response?.data?.error || 'Failed to mark as verified';
@@ -226,8 +227,8 @@ const ChatSessionPage: React.FC = () => {
         )
       );
 
-      // Show success briefly
-      setError(null);
+      setSuccessMessage('✎ Response marked as modified!');
+      setTimeout(() => setSuccessMessage(null), 2000);
     } catch (err: any) {
       console.error('Modification error:', err);
       const errorMsg = err.response?.data?.error || 'Failed to mark as modified';
@@ -254,12 +255,12 @@ const ChatSessionPage: React.FC = () => {
 
   const getPatternColor = (pattern: string): string => {
     const colors: { [key: string]: string } = {
-      A: '#10b981', // green
-      B: '#3b82f6', // blue
-      C: '#f59e0b', // amber
-      D: '#8b5cf6', // purple
-      E: '#ec4899', // pink
-      F: '#ef4444', // red
+      A: '#10b981',
+      B: '#3b82f6',
+      C: '#f59e0b',
+      D: '#8b5cf6',
+      E: '#ec4899',
+      F: '#ef4444',
     };
     return colors[pattern] || '#6b7280';
   };
@@ -277,15 +278,20 @@ const ChatSessionPage: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#f9fafb' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#f8fafc' }}>
       {/* Header */}
-      <div style={{ padding: '1rem', backgroundColor: '#fff', borderBottom: '1px solid #e5e7eb', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+      <header style={{
+        padding: '1.5rem',
+        backgroundColor: '#fff',
+        borderBottom: '1px solid #e2e8f0',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
+      }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1 style={{ margin: '0', fontSize: '1.5rem', fontWeight: '600' }}>Chat Session</h1>
+            <h1 style={{ margin: '0', fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>Chat Session</h1>
             {sessionData && (
               <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
-                Task: {sessionData.taskDescription || 'General Discussion'} • Type: {sessionData.taskType || 'unknown'}
+                📝 {sessionData.taskDescription || 'General Discussion'} • Type: {sessionData.taskType || 'unknown'}
               </p>
             )}
           </div>
@@ -293,152 +299,208 @@ const ChatSessionPage: React.FC = () => {
             onClick={endSession}
             disabled={!sessionActive}
             style={{
-              padding: '0.5rem 1rem',
-              backgroundColor: '#ef4444',
+              padding: '0.5rem 1.25rem',
+              backgroundColor: sessionActive ? '#ef4444' : '#d1d5db',
               color: '#fff',
               border: 'none',
-              borderRadius: '0.375rem',
+              borderRadius: '0.5rem',
               cursor: sessionActive ? 'pointer' : 'not-allowed',
-              opacity: sessionActive ? 1 : 0.5,
+              fontWeight: '500',
+              fontSize: '0.875rem',
+              transition: 'background-color 0.2s',
             }}
           >
-            End Session
+            🔚 End Session
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* Error message */}
-      {error && (
-        <div style={{ padding: '0.75rem 1rem', backgroundColor: '#fee2e2', borderBottom: '1px solid #fecaca', color: '#991b1b' }}>
-          {error}
+      {/* Success Message */}
+      {successMessage && (
+        <div style={{
+          padding: '0.75rem 1.5rem',
+          backgroundColor: '#d1fae5',
+          borderBottom: '1px solid #a7f3d0',
+          color: '#065f46',
+          fontSize: '0.875rem',
+          fontWeight: '500',
+        }}>
+          {successMessage}
         </div>
       )}
 
-      {/* Pattern detection banner */}
+      {/* Error Message */}
+      {error && (
+        <div style={{
+          padding: '0.75rem 1.5rem',
+          backgroundColor: '#fee2e2',
+          borderBottom: '1px solid #fecaca',
+          color: '#991b1b',
+          fontSize: '0.875rem',
+          fontWeight: '500',
+        }}>
+          ❌ {error}
+        </div>
+      )}
+
+      {/* Pattern Detection Banner */}
       {showPattern && pattern && (
-        <div
-          style={{
-            padding: '1rem',
-            backgroundColor: '#f0f9ff',
-            borderBottom: '1px solid #bfdbfe',
-            borderLeft: `4px solid ${getPatternColor(pattern.pattern)}`,
-          }}
-        >
+        <div style={{
+          padding: '1rem 1.5rem',
+          backgroundColor: '#f0f9ff',
+          borderBottom: `2px solid ${getPatternColor(pattern.pattern)}`,
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+        }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1e40af' }}>
-              Pattern Detected
+            <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1e40af' }}>
+              🎯 Pattern Detected
             </h3>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div
-                style={{
-                  width: '3rem',
-                  height: '3rem',
-                  backgroundColor: getPatternColor(pattern.pattern),
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  fontSize: '1.5rem',
-                  fontWeight: '700',
-                }}
-              >
+              <div style={{
+                width: '2.5rem',
+                height: '2.5rem',
+                backgroundColor: getPatternColor(pattern.pattern),
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#fff',
+                fontSize: '1.25rem',
+                fontWeight: '700',
+              }}>
                 {pattern.pattern}
               </div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <p style={{ margin: '0', fontWeight: '600', color: '#1f2937' }}>
                   {getPatternLabel(pattern.pattern)}
                 </p>
                 <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
                   Confidence: {(pattern.confidence * 100).toFixed(1)}%
                 </p>
-                {pattern.reasoning && (
-                  <ul style={{ margin: '0.5rem 0 0 0', paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#4b5563' }}>
-                    {pattern.reasoning.slice(0, 2).map((reason, idx) => (
-                      <li key={idx}>{reason}</li>
-                    ))}
-                  </ul>
-                )}
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Messages area */}
-      <div
-        style={{
-          flex: 1,
-          overflowY: 'auto',
-          padding: '1rem',
-          maxWidth: '1200px',
-          margin: '0 auto',
-          width: '100%',
-        }}
-      >
+      {/* Messages Area */}
+      <div style={{
+        flex: 1,
+        overflowY: 'auto',
+        padding: '1.5rem',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        width: '100%',
+      }}>
         {messages.length === 0 && (
-          <div style={{ textAlign: 'center', color: '#9ca3af', padding: '2rem 0' }}>
+          <div style={{
+            textAlign: 'center',
+            color: '#9ca3af',
+            padding: '3rem 0',
+            fontSize: '0.95rem',
+          }}>
+            <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>💬</p>
             <p>Start by asking a question or describing your task...</p>
           </div>
         )}
 
         {messages.map((message) => (
-          <div
-            key={message.id}
-            style={{
-              marginBottom: '1rem',
-              display: 'flex',
-              justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
-            }}
-          >
-            <div
-              style={{
-                maxWidth: '70%',
-                padding: '0.75rem 1rem',
-                borderRadius: '0.5rem',
-                backgroundColor: message.role === 'user' ? '#3b82f6' : '#e5e7eb',
-                color: message.role === 'user' ? '#fff' : '#1f2937',
-              }}
-            >
-              <p style={{ margin: '0', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{message.content}</p>
-              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', opacity: 0.7 }}>
-                {new Date(message.timestamp).toLocaleTimeString()}
+          <div key={message.id} style={{
+            marginBottom: '1rem',
+            display: 'flex',
+            justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
+            animation: 'fadeIn 0.3s ease-in-out'
+          }}>
+            <div style={{
+              maxWidth: '65%',
+              padding: '1rem',
+              borderRadius: message.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '1rem 1rem 1rem 0.25rem',
+              backgroundColor: message.role === 'user' ? '#3b82f6' : '#fff',
+              color: message.role === 'user' ? '#fff' : '#1f2937',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+              borderLeft: message.role === 'ai' ? `3px solid ${message.wasVerified ? '#10b981' : '#3b82f6'}` : 'none',
+            }}>
+              <p style={{
+                margin: '0',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                lineHeight: '1.5',
+              }}>
+                {message.content}
+              </p>
+              <p style={{
+                margin: '0.75rem 0 0 0',
+                fontSize: '0.75rem',
+                opacity: 0.6,
+              }}>
+                {new Date(message.timestamp).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
               </p>
 
               {/* Action buttons for AI messages */}
               {message.role === 'ai' && (
-                <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                <div style={{
+                  marginTop: '0.75rem',
+                  display: 'flex',
+                  gap: '0.5rem',
+                  paddingTop: '0.75rem',
+                  borderTop: '1px solid rgba(0, 0, 0, 0.05)'
+                }}>
                   <button
                     onClick={() => markAsVerified(message.id)}
                     disabled={updatingMessageId === message.id}
+                    title="Mark this response as verified/correct"
                     style={{
                       fontSize: '0.75rem',
-                      padding: '0.25rem 0.5rem',
-                      backgroundColor: message.wasVerified ? '#10b981' : 'rgba(255,255,255,0.2)',
-                      color: message.wasVerified ? '#fff' : 'currentColor',
+                      padding: '0.4rem 0.75rem',
+                      backgroundColor: message.wasVerified ? '#10b981' : '#f3f4f6',
+                      color: message.wasVerified ? '#fff' : '#374151',
                       border: 'none',
-                      borderRadius: '0.25rem',
+                      borderRadius: '0.375rem',
                       cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
                       opacity: updatingMessageId === message.id ? 0.6 : 1,
+                      fontWeight: '500',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseOver={(e) => {
+                      if (updatingMessageId !== message.id) {
+                        (e.target as HTMLButtonElement).style.backgroundColor = message.wasVerified ? '#059669' : '#e5e7eb';
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      (e.target as HTMLButtonElement).style.backgroundColor = message.wasVerified ? '#10b981' : '#f3f4f6';
                     }}
                   >
-                    {updatingMessageId === message.id ? '⏳ Saving...' : message.wasVerified ? '✓ Verified' : 'Verify'}
+                    {updatingMessageId === message.id ? '⏳ Saving...' : message.wasVerified ? '✓ Verified' : '✓ Verify'}
                   </button>
                   <button
                     onClick={() => markAsModified(message.id)}
                     disabled={updatingMessageId === message.id}
+                    title="Mark this response as modified/learned"
                     style={{
                       fontSize: '0.75rem',
-                      padding: '0.25rem 0.5rem',
-                      backgroundColor: message.wasModified ? '#f59e0b' : 'rgba(255,255,255,0.2)',
-                      color: message.wasModified ? '#fff' : 'currentColor',
+                      padding: '0.4rem 0.75rem',
+                      backgroundColor: message.wasModified ? '#f59e0b' : '#f3f4f6',
+                      color: message.wasModified ? '#fff' : '#374151',
                       border: 'none',
-                      borderRadius: '0.25rem',
+                      borderRadius: '0.375rem',
                       cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
                       opacity: updatingMessageId === message.id ? 0.6 : 1,
+                      fontWeight: '500',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseOver={(e) => {
+                      if (updatingMessageId !== message.id) {
+                        (e.target as HTMLButtonElement).style.backgroundColor = message.wasModified ? '#d97706' : '#e5e7eb';
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      (e.target as HTMLButtonElement).style.backgroundColor = message.wasModified ? '#f59e0b' : '#f3f4f6';
                     }}
                   >
-                    {updatingMessageId === message.id ? '⏳ Saving...' : message.wasModified ? '✎ Modified' : 'Modify'}
+                    {updatingMessageId === message.id ? '⏳ Saving...' : message.wasModified ? '✎ Modified' : '✎ Modify'}
                   </button>
                 </div>
               )}
@@ -447,43 +509,56 @@ const ChatSessionPage: React.FC = () => {
         ))}
 
         {loading && (
-          <div style={{ textAlign: 'center', color: '#9ca3af', padding: '1rem 0' }}>
-            <p>AI is thinking...</p>
+          <div style={{
+            textAlign: 'center',
+            color: '#9ca3af',
+            padding: '1.5rem 0',
+          }}>
+            <p style={{ fontSize: '1rem' }}>🤔 AI is thinking...</p>
           </div>
         )}
       </div>
 
-      {/* Input area */}
-      <div
-        style={{
-          padding: '1rem',
-          backgroundColor: '#fff',
-          borderTop: '1px solid #e5e7eb',
-          boxShadow: '0 -1px 3px rgba(0,0,0,0.1)',
-        }}
-      >
+      {/* Input Area */}
+      <footer style={{
+        padding: '1.5rem',
+        backgroundColor: '#fff',
+        borderTop: '1px solid #e2e8f0',
+        boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.05)',
+      }}>
         <form
           onSubmit={handleSendMessage}
           style={{
             maxWidth: '1200px',
             margin: '0 auto',
             display: 'flex',
-            gap: '0.5rem',
+            gap: '0.75rem',
           }}
         >
           <input
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
-            placeholder="Type your prompt here..."
+            placeholder="Ask a question or describe your task..."
             disabled={!sessionActive || loading}
             style={{
               flex: 1,
               padding: '0.75rem 1rem',
               border: '1px solid #d1d5db',
-              borderRadius: '0.375rem',
-              fontSize: '1rem',
-              opacity: !sessionActive ? 0.5 : 1,
+              borderRadius: '0.5rem',
+              fontSize: '0.95rem',
+              opacity: !sessionActive || loading ? 0.5 : 1,
+              transition: 'border-color 0.2s',
+              outline: 'none',
+              boxShadow: 'none',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = '#3b82f6';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = '#d1d5db';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           />
           <button
@@ -491,19 +566,43 @@ const ChatSessionPage: React.FC = () => {
             disabled={!sessionActive || loading || !userInput.trim()}
             style={{
               padding: '0.75rem 1.5rem',
-              backgroundColor: '#3b82f6',
+              backgroundColor: !sessionActive || loading || !userInput.trim() ? '#d1d5db' : '#3b82f6',
               color: '#fff',
               border: 'none',
-              borderRadius: '0.375rem',
+              borderRadius: '0.5rem',
               cursor: !sessionActive || loading || !userInput.trim() ? 'not-allowed' : 'pointer',
-              fontWeight: '500',
-              opacity: !sessionActive || loading || !userInput.trim() ? 0.5 : 1,
+              fontWeight: '600',
+              fontSize: '0.95rem',
+              transition: 'background-color 0.2s',
+              minWidth: '80px',
+            }}
+            onMouseOver={(e) => {
+              if (!(!sessionActive || loading || !userInput.trim())) {
+                (e.target as HTMLButtonElement).style.backgroundColor = '#2563eb';
+              }
+            }}
+            onMouseOut={(e) => {
+              (e.target as HTMLButtonElement).style.backgroundColor = '#3b82f6';
             }}
           >
-            Send
+            {loading ? '⏳' : '📤'} Send
           </button>
         </form>
-      </div>
+      </footer>
+
+      {/* CSS for animations */}
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 };
