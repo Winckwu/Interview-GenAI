@@ -36,7 +36,7 @@ export const useAnalytics = (days: number = 30): UseAnalyticsReturn => {
     setError(null);
     try {
       const response = await apiService.analytics.getUser(days);
-      setAnalytics(response.data);
+      setAnalytics(response.data.data);
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to fetch analytics';
       setError(errorMsg);
@@ -92,8 +92,8 @@ export const usePatternStats = (userId: string, days: number = 30): UsePatternSt
         apiService.patternDetection.getTrends(userId, days),
       ]);
 
-      setStats(statsResponse.data);
-      setTrends(trendsResponse.data);
+      setStats(statsResponse.data.data);
+      setTrends(trendsResponse.data.data);
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to fetch pattern stats';
       setError(errorMsg);
@@ -156,7 +156,7 @@ export const useSessions = (): UseSessionsReturn => {
     setError(null);
     try {
       const response = await apiService.sessions.list(50, 0);
-      setSessions(response.data);
+      setSessions(response.data.data);
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to fetch sessions';
       setError(errorMsg);
@@ -174,7 +174,7 @@ export const useSessions = (): UseSessionsReturn => {
     ): Promise<Session> => {
       try {
         const response = await apiService.sessions.create(taskDescription, taskType, taskImportance);
-        const newSession = response.data;
+        const newSession = response.data.data;
         setCurrentSession(newSession);
         setSessions(prev => [newSession, ...prev]);
         return newSession;

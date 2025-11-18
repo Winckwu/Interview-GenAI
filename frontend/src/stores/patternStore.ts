@@ -180,7 +180,7 @@ export const usePatternStore = create<PatternState>((set, get) => ({
         context,
       });
 
-      const newPrediction = response.data;
+      const newPrediction = response.data.data;
       set({
         predictions: [...get().predictions, newPrediction],
       });
