@@ -25,12 +25,12 @@ const PatternsPage: React.FC = () => {
 
   const getPatternDescription = (patternType: string): string => {
     const descriptions: Record<string, string> = {
-      A: 'High verification, low AI reliance - Efficient and careful user',
-      B: 'Balanced approach - Mix of verification and AI usage',
-      C: 'Moderate AI reliance - Learning to use AI efficiently',
-      D: 'High AI reliance with some verification - Building competence',
-      E: 'Strategic over-reliance - Using AI as primary tool',
-      F: 'Over-reliance on AI - Risk of dependency',
+      A: 'Strategic Decomposition & Control - Task-focused planning with human oversight. High verification (>70%), maintains skill preservation through boundary maintenance.',
+      B: 'Iterative Refinement & Calibration - Experimental learning through rapid iteration. Accepts initial imperfection, learns from failures, dynamically calibrates trust levels.',
+      C: 'Context-Sensitive Adaptation - Flexible strategy switching based on task characteristics. Dynamically adjusts AI reliance depending on task importance, familiarity, and time pressure.',
+      D: 'Deep Verification & Critical Engagement - Systematic skepticism with high verification (>90%). Multi-tool cross-checking, assumption testing, and critical reasoning.',
+      E: 'Pedagogical Reflection & Self-Monitoring - Learning-oriented with strong metacognitive awareness. Uses AI as teaching tool, maintains learning logs, regularly practices without AI.',
+      F: '⚠️ Ineffective & Passive Usage - High-risk pattern with low verification (<10%). Uncritical acceptance, minimal engagement, and risk of skill degradation.',
     };
     return descriptions[patternType] || 'Unknown pattern';
   };
@@ -89,16 +89,28 @@ const PatternsPage: React.FC = () => {
         <h2>Pattern Guide</h2>
         <div className="guide-grid">
           <div className="guide-card">
-            <h4>Patterns A & B</h4>
-            <p>Efficient usage - Balanced verification and AI reliance. Desired outcome.</p>
+            <h4>Pattern A ⭐⭐⭐⭐⭐</h4>
+            <p>Breaks tasks into clear subtasks with human control. Maintains verification standards and skill preservation through deliberate boundary-setting.</p>
           </div>
           <div className="guide-card">
-            <h4>Patterns C & D</h4>
-            <p>Learning phase - Building confidence with AI. Progressive improvement expected.</p>
+            <h4>Pattern B ⭐⭐⭐⭐</h4>
+            <p>Learns through rapid experimentation and failure. Maintains failure logs and progressively calibrates trust based on success/failure patterns.</p>
           </div>
           <div className="guide-card">
-            <h4>Patterns E & F</h4>
-            <p>Over-reliance - High AI dependency with low verification. Intervention recommended.</p>
+            <h4>Pattern C ⭐⭐⭐⭐</h4>
+            <p>Adapts strategy based on task requirements. Modulates AI reliance dynamically: high for brainstorming, low for critical tasks, medium for routine work.</p>
+          </div>
+          <div className="guide-card">
+            <h4>Pattern D ⭐⭐⭐⭐⭐</h4>
+            <p>Assumes nothing, verifies everything. Uses multi-tool verification, identifies assumptions, constructs counter-examples, and demands explanations.</p>
+          </div>
+          <div className="guide-card">
+            <h4>Pattern E ⭐⭐⭐⭐</h4>
+            <p>Treats AI as a learning tutor, not a task automator. Maintains learning logs and regularly practices without AI to ensure skill retention.</p>
+          </div>
+          <div className="guide-card">
+            <h4>Pattern F ⚠️ Risk</h4>
+            <p>Uncritical adoption with low verification. May lead to skill degradation, false productivity, and unconscious dependence. Requires intervention and awareness.</p>
           </div>
         </div>
       </div>
