@@ -45,7 +45,7 @@ router.post(
 
     // Verify session belongs to user
     const sessionCheck = await pool.query(
-      'SELECT id FROM sessions WHERE id = $1 AND user_id = $2',
+      'SELECT id FROM work_sessions WHERE id = $1 AND user_id = $2',
       [sessionId, userId]
     );
 
