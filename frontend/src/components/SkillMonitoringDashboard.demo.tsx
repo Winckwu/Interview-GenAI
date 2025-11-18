@@ -104,7 +104,7 @@ const ScenarioDemo: React.FC<ScenarioDemoProps> = ({ scenario }) => {
       case 'career-crisis':
         return [
           {
-            name: 'Python编程',
+            name: 'Python Programming',
             category: 'programming' as const,
             baseline: 8.5,
             current: 4.2,
@@ -241,7 +241,7 @@ const ScenarioDemo: React.FC<ScenarioDemoProps> = ({ scenario }) => {
       case 'healthy':
         return [
           {
-            name: 'Python编程',
+            name: 'Python Programming',
             category: 'programming' as const,
             baseline: 8.0,
             current: 7.9,
@@ -284,7 +284,7 @@ const ScenarioDemo: React.FC<ScenarioDemoProps> = ({ scenario }) => {
       case 'mixed':
         return [
           {
-            name: 'Python编程',
+            name: 'Python Programming',
             category: 'programming' as const,
             baseline: 8.5,
             current: 5.8,
@@ -333,7 +333,7 @@ const ScenarioDemo: React.FC<ScenarioDemoProps> = ({ scenario }) => {
     switch (scenarioId) {
       case 'career-crisis':
         return {
-          'Python编程': {
+          'Python Programming': {
             withAI: 95,
             independent: 5,
             lastMonthAverage: 75,
@@ -399,7 +399,7 @@ const ScenarioDemo: React.FC<ScenarioDemoProps> = ({ scenario }) => {
 
       case 'healthy':
         return {
-          'Python编程': {
+          'Python Programming': {
             withAI: 35,
             independent: 65,
             lastMonthAverage: 38,
@@ -421,7 +421,7 @@ const ScenarioDemo: React.FC<ScenarioDemoProps> = ({ scenario }) => {
 
       case 'mixed':
         return {
-          'Python编程': {
+          'Python Programming': {
             withAI: 85,
             independent: 15,
             lastMonthAverage: 65,

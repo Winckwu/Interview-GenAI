@@ -219,11 +219,11 @@ export const MemberCheckInterface: React.FC<MemberCheckInterfaceProps> = ({
           </label>
           <div className="rating-options">
             {[
-              { value: 5, label: '非常准确' },
-              { value: 4, label: '比较准确' },
-              { value: 3, label: '一般' },
-              { value: 2, label: '不太准确' },
-              { value: 1, label: '完全不准确' }
+              { value: 5, label: 'Very Accurate' },
+              { value: 4, label: 'Fairly Accurate' },
+              { value: 3, label: 'Neutral' },
+              { value: 2, label: 'Not Very Accurate' },
+              { value: 1, label: 'Completely Inaccurate' }
             ].map((option) => (
               <label key={option.value} className="radio-option">
                 <input
