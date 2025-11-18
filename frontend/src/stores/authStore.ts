@@ -100,10 +100,13 @@ export const useAuthStore = create<AuthState>()(
         set({ loading: true });
         try {
           // Try to verify current token/session
+          console.log('[checkAuth] Calling /api/auth/verify', new Date().toISOString());
           const response = await api.get('/auth/verify');
           const { user } = response.data.data;
+          console.log('[checkAuth] Success, setting user:', user?.id);
           set({ user, isAuthenticated: true });
-        } catch (error) {
+        } catch (error: any) {
+          console.log('[checkAuth] Failed:', error.message);
           set({ user: null, isAuthenticated: false, token: null });
           delete api.defaults.headers.common['Authorization'];
         } finally {

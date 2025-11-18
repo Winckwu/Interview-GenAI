@@ -31,6 +31,8 @@ api.interceptors.request.use(
       ? JSON.parse(localStorage.getItem('auth-storage') || '{}').state?.token
       : null;
 
+    console.log('[API.request]', config.method?.toUpperCase(), config.url, 'token present:', !!token);
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -47,10 +49,16 @@ api.interceptors.request.use(
  * Handles errors - simple error handling without token refresh
  */
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('[API.response]', response.status, response.config.url);
+    return response;
+  },
   (error: AxiosError) => {
+    console.log('[API.error]', error.response?.status, error.config?.url, error.message);
+
     // Handle 401 Unauthorized - just redirect to login
     if (error.response?.status === 401) {
+      console.log('[API.error] 401 - Redirecting to login');
       localStorage.removeItem('auth-storage');
       window.location.href = '/login';
       return Promise.reject(error);
@@ -58,12 +66,12 @@ api.interceptors.response.use(
 
     // Handle 403 Forbidden
     if (error.response?.status === 403) {
-      console.error('Access denied:', error.response.data);
+      console.error('[API.error] 403 - Access denied:', error.response.data);
     }
 
     // Handle 500+ Server errors
     if (error.response?.status && error.response.status >= 500) {
-      console.error('Server error:', error.response.data);
+      console.error('[API.error] 5xx - Server error:', error.response.data);
     }
 
     return Promise.reject(error);

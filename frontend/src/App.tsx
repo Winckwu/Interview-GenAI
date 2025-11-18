@@ -42,22 +42,29 @@ const App: React.FC = () => {
   const initRef = useRef(false);
 
   useEffect(() => {
+    console.log('[App.useEffect] Triggered, initRef.current =', initRef.current);
+
     // Prevent running checkAuth multiple times (React.StrictMode double-invoke in dev)
     if (initRef.current) {
+      console.log('[App.useEffect] Already initialized, skipping');
       return;
     }
     initRef.current = true;
+    console.log('[App.useEffect] Starting initialization...');
 
     let isMounted = true;
 
     const initialize = async () => {
+      console.log('[App.initialize] Starting auth check');
       try {
         await checkAuth();
+        console.log('[App.initialize] Auth check completed');
       } catch (error) {
-        console.error('Auth check failed:', error);
+        console.error('[App.initialize] Auth check failed:', error);
       } finally {
         // Only set initialized if component is still mounted
         if (isMounted) {
+          console.log('[App.initialize] Setting isInitialized = true');
           setIsInitialized(true);
         }
       }
@@ -67,6 +74,7 @@ const App: React.FC = () => {
 
     // Cleanup function to prevent state update on unmount
     return () => {
+      console.log('[App.cleanup] Component unmounting');
       isMounted = false;
     };
   }, []);
