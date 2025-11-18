@@ -1,7 +1,76 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePatternStore } from '../stores/patternStore';
 import { useAuthStore } from '../stores/authStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+
+/**
+ * Tooltip Component for Info Icons
+ */
+interface InfoTooltipProps {
+  text: string;
+}
+
+const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
+  const [show, setShow] = useState(false);
+
+  return (
+    <div
+      style={{ display: 'inline-block', position: 'relative', marginLeft: '0.5rem' }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      <span
+        style={{
+          fontSize: '0.85rem',
+          cursor: 'help',
+          color: '#3b82f6',
+          fontWeight: 'bold',
+        }}
+        title="Click or hover for explanation"
+      >
+        ℹ️
+      </span>
+      {show && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: '-100px',
+            right: '-100px',
+            width: '250px',
+            backgroundColor: '#1f2937',
+            color: '#fff',
+            padding: '0.75rem',
+            borderRadius: '0.5rem',
+            fontSize: '0.75rem',
+            lineHeight: '1.4',
+            zIndex: 1000,
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+            marginBottom: '0.5rem',
+            pointerEvents: 'auto',
+            textTransform: 'none',
+          }}
+        >
+          {text}
+          {/* Tooltip arrow */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '-4px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 0,
+              height: 0,
+              borderLeft: '4px solid transparent',
+              borderRight: '4px solid transparent',
+              borderTop: '4px solid #1f2937',
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
 
 /**
  * Patterns Page
@@ -100,6 +169,7 @@ const PatternsPage: React.FC = () => {
                 <h3>Pattern {pattern.patternType}</h3>
                 <span className="pattern-badge">
                   Confidence: {(pattern.confidence * 100).toFixed(0)}%
+                  <InfoTooltip text="How confident the system is that this is your dominant pattern (0% = uncertain, 100% = very confident). Based on your interaction history." />
                 </span>
               </div>
 
@@ -111,7 +181,7 @@ const PatternsPage: React.FC = () => {
                 <div className="metric">
                   <span className="label">
                     AI Reliance Score
-                    <span title="How much you depend on AI for task completion (0% = no reliance, 100% = full dependence)">ℹ️</span>
+                    <InfoTooltip text="How much you depend on AI for task completion (0% = no reliance, 100% = full dependence)." />
                   </span>
                   <span className="value">{(pattern.aiRelianceScore * 100).toFixed(0)}%</span>
                   <span className="description">How much you depend on AI (lower is better for learning)</span>
@@ -119,7 +189,7 @@ const PatternsPage: React.FC = () => {
                 <div className="metric">
                   <span className="label">
                     Verification Score
-                    <span title="How thoroughly you verify AI outputs (0% = no verification, 100% = complete verification)">ℹ️</span>
+                    <InfoTooltip text="How thoroughly you verify AI outputs (0% = no verification, 100% = complete verification)." />
                   </span>
                   <span className="value">{(pattern.verificationScore * 100).toFixed(0)}%</span>
                   <span className="description">How thoroughly you verify AI outputs (higher is better)</span>
@@ -127,7 +197,7 @@ const PatternsPage: React.FC = () => {
                 <div className="metric">
                   <span className="label">
                     Context Switching
-                    <span title="How often you change your approach within a task">ℹ️</span>
+                    <InfoTooltip text="How often you change your approach within a task. Lower is more consistent, higher is more experimental." />
                   </span>
                   <span className="value">{pattern.contextSwitchingFrequency.toFixed(2)} times/task</span>
                   <span className="description">How often you change strategy during tasks</span>
