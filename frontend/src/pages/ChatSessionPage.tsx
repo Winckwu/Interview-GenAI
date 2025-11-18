@@ -64,7 +64,11 @@ const ChatSessionPage: React.FC = () => {
       try {
         const response = await api.get('/sessions', { params: { limit: 50, offset: 0 } });
         if (response.data.data && response.data.data.sessions) {
-          setSessions(response.data.data.sessions);
+          // Remove duplicate sessions by ID
+          const uniqueSessions = Array.from(
+            new Map(response.data.data.sessions.map((session: SessionItem) => [session.id, session])).values()
+          );
+          setSessions(uniqueSessions);
         }
       } catch (err: any) {
         console.error('Failed to load sessions:', err);
