@@ -325,6 +325,33 @@ const ChatSessionPage: React.FC = () => {
   };
 
   /**
+   * Delete a session from the sidebar
+   */
+  const deleteSession = async (sessionToDeleteId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigating to the session
+
+    if (!confirm('Are you sure you want to delete this conversation?')) {
+      return;
+    }
+
+    try {
+      // Delete session via API
+      await api.delete(`/sessions/${sessionToDeleteId}`);
+
+      // Remove from sessions list
+      setSessions(sessions.filter((s) => s.id !== sessionToDeleteId));
+
+      // If we deleted the current session, go back to dashboard
+      if (sessionToDeleteId === sessionId) {
+        navigate('/dashboard');
+      }
+    } catch (err: any) {
+      console.error('Failed to delete session:', err);
+      setError('Failed to delete session');
+    }
+  };
+
+  /**
    * End session
    */
   const endSession = async () => {
@@ -410,56 +437,102 @@ const ChatSessionPage: React.FC = () => {
               No conversations yet
             </div>
           ) : (
-            sessions.map((session) => (
-              <button
-                key={session.id}
-                onClick={() => {
-                  navigate(`/session/${session.id}`);
-                  setSidebarOpen(false);
-                }}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem 1rem',
-                  marginBottom: '0.5rem',
-                  border: '1px solid ' + (session.id === sessionId ? '#3b82f6' : '#e5e7eb'),
-                  borderRadius: '0.5rem',
-                  backgroundColor: session.id === sessionId ? '#eff6ff' : '#fff',
-                  color: session.id === sessionId ? '#1e40af' : '#4b5563',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  fontSize: '0.875rem',
-                  fontWeight: session.id === sessionId ? '600' : '500',
-                  transition: 'all 0.2s',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-                title={session.taskDescription}
-                onMouseOver={(e) => {
-                  if (session.id !== sessionId) {
-                    (e.target as HTMLButtonElement).style.backgroundColor = '#f3f4f6';
-                  }
-                }}
-                onMouseOut={(e) => {
-                  if (session.id !== sessionId) {
-                    (e.target as HTMLButtonElement).style.backgroundColor = '#fff';
-                  }
-                }}
-              >
-                <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>
-                  {session.taskDescription.substring(0, 20)}
-                  {session.taskDescription.length > 20 ? '...' : ''}
+            sessions.map((session) => {
+              const [isHovering, setIsHovering] = React.useState(false);
+              return (
+                <div
+                  key={session.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '0.5rem',
+                    position: 'relative',
+                  }}
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
+                >
+                  <button
+                    onClick={() => {
+                      navigate(`/session/${session.id}`);
+                      setSidebarOpen(false);
+                    }}
+                    style={{
+                      flex: 1,
+                      padding: '0.75rem 1rem',
+                      border: '1px solid ' + (session.id === sessionId ? '#3b82f6' : '#e5e7eb'),
+                      borderRadius: '0.5rem',
+                      backgroundColor: session.id === sessionId ? '#eff6ff' : '#fff',
+                      color: session.id === sessionId ? '#1e40af' : '#4b5563',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontSize: '0.875rem',
+                      fontWeight: session.id === sessionId ? '600' : '500',
+                      transition: 'all 0.2s',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                    title={session.taskDescription}
+                    onMouseOver={(e) => {
+                      if (session.id !== sessionId) {
+                        (e.currentTarget.parentElement as HTMLDivElement).style.backgroundColor = 'transparent';
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      if (session.id !== sessionId) {
+                        (e.currentTarget.parentElement as HTMLDivElement).style.backgroundColor = 'transparent';
+                      }
+                    }}
+                  >
+                    <div style={{ fontWeight: '600', marginBottom: '0.25rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {session.taskDescription}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>
+                      {new Date(session.startedAt || session.createdAt).toLocaleDateString([], {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </button>
+                  {isHovering && (
+                    <button
+                      onClick={(e) => deleteSession(session.id, e)}
+                      style={{
+                        padding: '0.5rem 0.625rem',
+                        marginLeft: '0.5rem',
+                        backgroundColor: '#fee2e2',
+                        color: '#991b1b',
+                        border: '1px solid #fecaca',
+                        borderRadius: '0.375rem',
+                        cursor: 'pointer',
+                        fontSize: '1rem',
+                        fontWeight: '600',
+                        transition: 'all 0.2s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minWidth: '2rem',
+                        minHeight: '2rem',
+                        flexShrink: 0,
+                      }}
+                      title="Delete conversation"
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#fecaca';
+                        e.currentTarget.style.borderColor = '#fca5a5';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#fee2e2';
+                        e.currentTarget.style.borderColor = '#fecaca';
+                      }}
+                    >
+                      🗑️
+                    </button>
+                  )}
                 </div>
-                <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>
-                  {new Date(session.startedAt || session.createdAt).toLocaleDateString([], {
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </div>
-              </button>
-            ))
+              );
+            })
           )}
         </div>
 

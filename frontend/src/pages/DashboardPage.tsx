@@ -108,6 +108,31 @@ const DashboardPage: React.FC = () => {
     loadSessions();
   }, []);
 
+  /**
+   * Delete a session from the dashboard
+   */
+  const deleteSession = async (sessionToDeleteId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigating to the session
+
+    if (!confirm('Are you sure you want to delete this conversation?')) {
+      return;
+    }
+
+    try {
+      // Delete session via API
+      await api.delete(`/sessions/${sessionToDeleteId}`);
+
+      // Remove from sessions list
+      setSessions(sessions.filter((s) => s.id !== sessionToDeleteId));
+
+      // Optional: Show success message
+      console.log('Session deleted successfully');
+    } catch (err: any) {
+      console.error('Failed to delete session:', err);
+      setSessionError('Failed to delete session');
+    }
+  };
+
   useEffect(() => {
     // Fetch initial data
     fetchPatterns();
@@ -278,68 +303,117 @@ const DashboardPage: React.FC = () => {
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '0' }}>
-              {sessions.map((session, index) => (
-                <button
-                  key={session.id}
-                  onClick={() => navigate(`/session/${session.id}`)}
-                  style={{
-                    padding: '1.5rem',
-                    border: index % 2 === 0 ? '1px solid #e5e7eb' : '1px solid #e5e7eb',
-                    borderBottom: '1px solid #e5e7eb',
-                    borderRight: index % 2 === 0 ? '1px solid #e5e7eb' : 'none',
-                    background: '#fff',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    transition: 'all 0.2s ease',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.5rem',
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = '#f9fafb';
-                    e.currentTarget.style.borderColor = '#3b82f6';
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = '#fff';
-                    e.currentTarget.style.borderColor = '#e5e7eb';
-                  }}
-                >
-                  <div style={{
-                    fontSize: '0.95rem',
-                    fontWeight: '600',
-                    color: '#1f2937',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}>
-                    {session.taskDescription}
+              {sessions.map((session, index) => {
+                const [isHoveringCard, setIsHoveringCard] = React.useState(false);
+                return (
+                  <div
+                    key={session.id}
+                    style={{
+                      position: 'relative',
+                      border: index % 2 === 0 ? '1px solid #e5e7eb' : '1px solid #e5e7eb',
+                      borderBottom: '1px solid #e5e7eb',
+                      borderRight: index % 2 === 0 ? '1px solid #e5e7eb' : 'none',
+                      background: '#fff',
+                      transition: 'all 0.2s ease',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                    onMouseEnter={() => setIsHoveringCard(true)}
+                    onMouseLeave={() => setIsHoveringCard(false)}
+                  >
+                    <button
+                      onClick={() => navigate(`/session/${session.id}`)}
+                      style={{
+                        padding: '1.5rem',
+                        background: isHoveringCard ? '#f9fafb' : '#fff',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        transition: 'all 0.2s ease',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                        border: 'none',
+                        flex: 1,
+                        borderColor: isHoveringCard ? '#3b82f6' : '#e5e7eb',
+                      }}
+                    >
+                      <div style={{
+                        fontSize: '0.95rem',
+                        fontWeight: '600',
+                        color: '#1f2937',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        {session.taskDescription}
+                      </div>
+                      <div style={{
+                        fontSize: '0.75rem',
+                        color: '#6b7280',
+                        display: 'flex',
+                        gap: '0.5rem',
+                        alignItems: 'center',
+                      }}>
+                        <span>📅</span>
+                        <span>
+                          {new Date(session.startedAt || session.createdAt).toLocaleDateString([], {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      </div>
+                      <div style={{
+                        fontSize: '0.75rem',
+                        color: '#9ca3af',
+                        textTransform: 'capitalize',
+                      }}>
+                        Type: {session.taskType}
+                      </div>
+                    </button>
+                    {isHoveringCard && (
+                      <div style={{
+                        padding: '0.75rem',
+                        borderTop: '1px solid #e5e7eb',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        gap: '0.5rem',
+                        backgroundColor: '#fafafa',
+                      }}>
+                        <button
+                          onClick={(e) => deleteSession(session.id, e)}
+                          style={{
+                            padding: '0.5rem 0.75rem',
+                            backgroundColor: '#fee2e2',
+                            color: '#991b1b',
+                            border: '1px solid #fecaca',
+                            borderRadius: '0.375rem',
+                            cursor: 'pointer',
+                            fontSize: '0.875rem',
+                            fontWeight: '600',
+                            transition: 'all 0.2s',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.375rem',
+                          }}
+                          title="Delete conversation"
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#fecaca';
+                            e.currentTarget.style.borderColor = '#fca5a5';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = '#fee2e2';
+                            e.currentTarget.style.borderColor = '#fecaca';
+                          }}
+                        >
+                          🗑️ Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <div style={{
-                    fontSize: '0.75rem',
-                    color: '#6b7280',
-                    display: 'flex',
-                    gap: '0.5rem',
-                    alignItems: 'center',
-                  }}>
-                    <span>📅</span>
-                    <span>
-                      {new Date(session.startedAt || session.createdAt).toLocaleDateString([], {
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
-                  </div>
-                  <div style={{
-                    fontSize: '0.75rem',
-                    color: '#9ca3af',
-                    textTransform: 'capitalize',
-                  }}>
-                    Type: {session.taskType}
-                  </div>
-                </button>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
