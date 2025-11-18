@@ -41,12 +41,25 @@ async function initializeDatabase() {
     const sqlContent = fs.readFileSync(sqlFilePath, 'utf-8');
     console.log('📄 SQL file loaded');
 
-    // Split SQL statements and execute them
-    // Handle both semicolon-separated and regular statements
-    const statements = sqlContent
-      .split(';')
-      .map(stmt => stmt.trim())
-      .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'));
+    // Split SQL statements by semicolon and clean them
+    const rawStatements = sqlContent.split(';');
+    const statements: string[] = [];
+
+    for (const stmt of rawStatements) {
+      const cleaned = stmt
+        .trim()
+        .split('\n')
+        .filter((line: string) => {
+          const trimmed = line.trim();
+          return trimmed.length > 0 && !trimmed.startsWith('--');
+        })
+        .join('\n')
+        .trim();
+
+      if (cleaned.length > 0) {
+        statements.push(cleaned);
+      }
+    }
 
     console.log(`📋 Found ${statements.length} SQL statements to execute`);
 
@@ -64,6 +77,8 @@ async function initializeDatabase() {
         } else if (error.message.includes('already exists')) {
           console.log(`⚠ Statement ${i + 1}/${statements.length} skipped (object already exists)`);
         } else {
+          console.error(`❌ Statement ${i + 1}/${statements.length} failed:`, error.message);
+          console.error(`Statement:\n${statement}\n`);
           throw error;
         }
       }
