@@ -7,17 +7,18 @@
 export type AIUsagePattern = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
 
 export interface UserBehaviorData {
-  userId: string;
-  totalSessions: number;
-  avgPromptLength: number;
+  totalInteractions: number;
   verificationRate: number; // 0-1
-  iterationRate: number; // 0-1
-  questionsAskedRate: number; // 0-1
-  acceptanceRate: number; // 0-1
-  independenceRate: number; // 0-1
-  reflectionFrequency: number; // 0-1
+  modificationRate: number; // 0-1
+  iterationFrequency: number; // 0-1
+  promptSpecificity: number; // 0-100
+  reflectionDepth: number; // 0-1
+  taskDecompositionScore: number; // 0-1
   strategyDiversity: number; // 0-1
-  totalTimeSpent: number; // minutes
+  independentAttemptRate: number; // 0-1
+  errorAwareness: number; // 0-1
+  crossModelUsage: number; // 0-100
+  trustCalibrationAccuracy: number; // 0-1
 }
 
 export interface PatternAnalysis {
@@ -110,8 +111,8 @@ export class PatternRecognitionEngine {
    * Analyze user behavior and identify primary/secondary patterns
    */
   analyzeUserBehavior(data: UserBehaviorData): PatternAnalysis {
-    if (data.totalSessions < 1) {
-      throw new Error('Insufficient data: minimum 1 session required');
+    if (data.totalInteractions < 1) {
+      throw new Error('Insufficient data: minimum 1 interaction required');
     }
 
     const patternScores = this.calculatePatternScores(data);
@@ -174,91 +175,113 @@ export class PatternRecognitionEngine {
     let metricsMatched = 0;
     let metricsTotal = 0;
 
+    // Map new properties to old pattern definition properties
+    const avgPromptLength = data.promptSpecificity; // 0-100 scale
+    const verificationRate = data.verificationRate; // 0-1
+    const iterationRate = data.iterationFrequency; // 0-1
+    const acceptanceRate = 1 - data.modificationRate; // inverted: not modified = accepted
+    const independenceRate = data.independentAttemptRate; // 0-1
+    const reflectionFrequency = data.reflectionDepth; // 0-1
+    const strategyDiversity = data.strategyDiversity; // 0-1
+    const questionsAskedRate = Math.min(data.errorAwareness, 1); // use error awareness as proxy
+
     // Check each characteristic
     const chars = def.characteristics;
 
     // avgPromptLengthMin
     if ('avgPromptLengthMin' in chars) {
       metricsTotal++;
-      if (data.avgPromptLength >= (chars as any).avgPromptLengthMin) metricsMatched++;
+      if (avgPromptLength >= (chars as any).avgPromptLengthMin) metricsMatched++;
     }
 
     // avgPromptLengthMax
     if ('avgPromptLengthMax' in chars) {
       metricsTotal++;
-      if (data.avgPromptLength <= (chars as any).avgPromptLengthMax) metricsMatched++;
+      if (avgPromptLength <= (chars as any).avgPromptLengthMax) metricsMatched++;
     }
 
     // verificationRateMin
     if ('verificationRateMin' in chars) {
       metricsTotal++;
-      if (data.verificationRate >= (chars as any).verificationRateMin) metricsMatched++;
+      if (verificationRate >= (chars as any).verificationRateMin) metricsMatched++;
     }
 
     // verificationRateMax
     if ('verificationRateMax' in chars) {
       metricsTotal++;
-      if (data.verificationRate <= (chars as any).verificationRateMax) metricsMatched++;
+      if (verificationRate <= (chars as any).verificationRateMax) metricsMatched++;
     }
 
     // iterationRateMin
     if ('iterationRateMin' in chars) {
       metricsTotal++;
-      if (data.iterationRate >= (chars as any).iterationRateMin) metricsMatched++;
+      if (iterationRate >= (chars as any).iterationRateMin) metricsMatched++;
     }
 
     // iterationRateMax
     if ('iterationRateMax' in chars) {
       metricsTotal++;
-      if (data.iterationRate <= (chars as any).iterationRateMax) metricsMatched++;
+      if (iterationRate <= (chars as any).iterationRateMax) metricsMatched++;
     }
 
     // questionsAskedRateMin
     if ('questionsAskedRateMin' in chars) {
       metricsTotal++;
-      if (data.questionsAskedRate >= (chars as any).questionsAskedRateMin) metricsMatched++;
+      if (questionsAskedRate >= (chars as any).questionsAskedRateMin) metricsMatched++;
     }
 
     // questionsAskedRateMax
     if ('questionsAskedRateMax' in chars) {
       metricsTotal++;
-      if (data.questionsAskedRate <= (chars as any).questionsAskedRateMax) metricsMatched++;
+      if (questionsAskedRate <= (chars as any).questionsAskedRateMax) metricsMatched++;
     }
 
     // acceptanceRateMin
     if ('acceptanceRateMin' in chars) {
       metricsTotal++;
-      if (data.acceptanceRate >= (chars as any).acceptanceRateMin) metricsMatched++;
+      if (acceptanceRate >= (chars as any).acceptanceRateMin) metricsMatched++;
     }
 
     // acceptanceRateMax
     if ('acceptanceRateMax' in chars) {
       metricsTotal++;
-      if (data.acceptanceRate <= (chars as any).acceptanceRateMax) metricsMatched++;
+      if (acceptanceRate <= (chars as any).acceptanceRateMax) metricsMatched++;
     }
 
     // independenceRateMin
     if ('independenceRateMin' in chars) {
       metricsTotal++;
-      if (data.independenceRate >= (chars as any).independenceRateMin) metricsMatched++;
+      if (independenceRate >= (chars as any).independenceRateMin) metricsMatched++;
     }
 
     // independenceRateMax
     if ('independenceRateMax' in chars) {
       metricsTotal++;
-      if (data.independenceRate <= (chars as any).independenceRateMax) metricsMatched++;
+      if (independenceRate <= (chars as any).independenceRateMax) metricsMatched++;
     }
 
     // reflectionFrequencyMin
     if ('reflectionFrequencyMin' in chars) {
       metricsTotal++;
-      if (data.reflectionFrequency >= (chars as any).reflectionFrequencyMin) metricsMatched++;
+      if (reflectionFrequency >= (chars as any).reflectionFrequencyMin) metricsMatched++;
+    }
+
+    // reflectionFrequencyMax
+    if ('reflectionFrequencyMax' in chars) {
+      metricsTotal++;
+      if (reflectionFrequency <= (chars as any).reflectionFrequencyMax) metricsMatched++;
     }
 
     // strategyDiversityMin
     if ('strategyDiversityMin' in chars) {
       metricsTotal++;
-      if (data.strategyDiversity >= (chars as any).strategyDiversityMin) metricsMatched++;
+      if (strategyDiversity >= (chars as any).strategyDiversityMin) metricsMatched++;
+    }
+
+    // strategyDiversityMax
+    if ('strategyDiversityMax' in chars) {
+      metricsTotal++;
+      if (strategyDiversity <= (chars as any).strategyDiversityMax) metricsMatched++;
     }
 
     // Calculate percentage match
@@ -275,43 +298,53 @@ export class PatternRecognitionEngine {
   private generateEvidence(data: UserBehaviorData, pattern: AIUsagePattern): string[] {
     const evidence: string[] = [];
 
+    // Map new properties to pattern-friendly names
+    const avgPromptLength = data.promptSpecificity;
+    const verificationRate = data.verificationRate;
+    const iterationRate = data.iterationFrequency;
+    const acceptanceRate = 1 - data.modificationRate;
+    const independenceRate = data.independentAttemptRate;
+    const reflectionFrequency = data.reflectionDepth;
+    const strategyDiversity = data.strategyDiversity;
+    const questionsAskedRate = Math.min(data.errorAwareness, 1);
+
     switch (pattern) {
       case 'A':
-        if (data.avgPromptLength >= 25) evidence.push('Long, detailed prompts indicate planning');
-        if (data.verificationRate >= 0.6) evidence.push('High verification rate shows critical thinking');
-        if (data.iterationRate >= 0.3) evidence.push('Regular iteration refines outputs');
-        if (data.independenceRate >= 0.7) evidence.push('Maintains high independence');
+        if (avgPromptLength >= 25) evidence.push('Long, detailed prompts indicate planning');
+        if (verificationRate >= 0.6) evidence.push('High verification rate shows critical thinking');
+        if (iterationRate >= 0.3) evidence.push('Regular iteration refines outputs');
+        if (independenceRate >= 0.7) evidence.push('Maintains high independence');
         break;
 
       case 'B':
-        if (data.iterationRate >= 0.5) evidence.push('Frequent iteration on outputs');
-        if (data.questionsAskedRate >= 0.4) evidence.push('Asks follow-up questions regularly');
-        if (data.acceptanceRate <= 0.75) evidence.push('Selective acceptance of outputs');
+        if (iterationRate >= 0.5) evidence.push('Frequent iteration on outputs');
+        if (questionsAskedRate >= 0.4) evidence.push('Asks follow-up questions regularly');
+        if (acceptanceRate <= 0.75) evidence.push('Selective acceptance of outputs');
         break;
 
       case 'C':
-        if (data.strategyDiversity >= 0.7) evidence.push('Uses diverse strategies');
-        if (data.avgPromptLength >= 20) evidence.push('Detailed prompt composition');
-        if (data.reflectionFrequency >= 0.4) evidence.push('Regular reflection on approach');
+        if (strategyDiversity >= 0.7) evidence.push('Uses diverse strategies');
+        if (avgPromptLength >= 20) evidence.push('Detailed prompt composition');
+        if (reflectionFrequency >= 0.4) evidence.push('Regular reflection on approach');
         break;
 
       case 'D':
-        if (data.verificationRate >= 0.7) evidence.push('Thorough verification of outputs');
-        if (data.questionsAskedRate >= 0.5) evidence.push('Asks probing questions');
-        if (data.reflectionFrequency >= 0.5) evidence.push('Deep reflection on results');
+        if (verificationRate >= 0.7) evidence.push('Thorough verification of outputs');
+        if (questionsAskedRate >= 0.5) evidence.push('Asks probing questions');
+        if (reflectionFrequency >= 0.5) evidence.push('Deep reflection on results');
         break;
 
       case 'E':
-        if (data.reflectionFrequency >= 0.6) evidence.push('Frequent reflection on learning');
-        if (data.questionsAskedRate >= 0.4) evidence.push('Curiosity-driven questioning');
-        if (data.iterationRate >= 0.4) evidence.push('Iterative approach to learning');
+        if (reflectionFrequency >= 0.6) evidence.push('Frequent reflection on learning');
+        if (questionsAskedRate >= 0.4) evidence.push('Curiosity-driven questioning');
+        if (iterationRate >= 0.4) evidence.push('Iterative approach to learning');
         break;
 
       case 'F':
-        if (data.verificationRate <= 0.2) evidence.push('Minimal verification of outputs');
-        if (data.iterationRate <= 0.1) evidence.push('Little to no iteration');
-        if (data.questionsAskedRate <= 0.2) evidence.push('Rarely questions outputs');
-        if (data.acceptanceRate >= 0.95) evidence.push('Uncritical acceptance of outputs');
+        if (verificationRate <= 0.2) evidence.push('Minimal verification of outputs');
+        if (iterationRate <= 0.1) evidence.push('Little to no iteration');
+        if (questionsAskedRate <= 0.2) evidence.push('Rarely questions outputs');
+        if (acceptanceRate >= 0.95) evidence.push('Uncritical acceptance of outputs');
         break;
     }
 
@@ -368,9 +401,16 @@ export class PatternRecognitionEngine {
    * Assess risk level based on pattern
    */
   private assessRiskLevel(data: UserBehaviorData, pattern: AIUsagePattern): 'low' | 'medium' | 'high' | 'critical' {
+    // Map new properties
+    const verificationRate = data.verificationRate;
+    const iterationRate = data.iterationFrequency;
+    const acceptanceRate = 1 - data.modificationRate;
+    const independenceRate = data.independentAttemptRate;
+    const questionsAskedRate = Math.min(data.errorAwareness, 1);
+
     // Pattern F is always high/critical risk
     if (pattern === 'F') {
-      if (data.verificationRate < 0.05 && data.acceptanceRate > 0.99) {
+      if (verificationRate < 0.05 && acceptanceRate > 0.99) {
         return 'critical';
       }
       return 'high';
@@ -378,11 +418,11 @@ export class PatternRecognitionEngine {
 
     // Check boundary conditions (mixing patterns)
     const riskFactors = [
-      data.verificationRate < 0.2,
-      data.iterationRate < 0.1,
-      data.questionsAskedRate < 0.15,
-      data.acceptanceRate > 0.9,
-      data.independenceRate < 0.3
+      verificationRate < 0.2,
+      iterationRate < 0.1,
+      questionsAskedRate < 0.15,
+      acceptanceRate > 0.9,
+      independenceRate < 0.3
     ];
 
     const riskScore = riskFactors.filter(Boolean).length;
