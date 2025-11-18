@@ -22,6 +22,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       visible: true,
     },
     {
+      label: 'AI Chat',
+      path: '/chat',
+      icon: 'chat',
+      visible: true,
+    },
+    {
       label: 'Patterns',
       path: '/patterns',
       icon: 'patterns',
@@ -43,12 +49,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       label: 'Metacognitive Assessment',
       path: '/assessment',
       icon: 'assessment',
-      visible: true,
-    },
-    {
-      label: 'AI Chat',
-      path: '/chat',
-      icon: 'chat',
       visible: true,
     },
     {
