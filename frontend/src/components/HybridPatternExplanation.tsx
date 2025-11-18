@@ -36,23 +36,23 @@ export const HybridPatternExplanation: React.FC<HybridPatternExplanationProps> =
   return (
     <div className="hybrid-pattern-explanation">
       <div className="hybrid-header">
-        <h3>🎯 混合模式识别</h3>
+        <h3>🎯 Hybrid Pattern Recognition</h3>
         <p className="hybrid-intro">
-          您展现出{primaryName}的主要特征，同时在特定情境下也会采用{secondaryName}的策略。
+          You demonstrate primary characteristics of {primaryName}, while adopting {secondaryName} strategies in specific contexts.
         </p>
       </div>
 
       <div className="hybrid-content">
         {/* Primary Pattern */}
         <div className="pattern-part primary">
-          <div className="pattern-badge">主要模式</div>
+          <div className="pattern-badge">Primary Pattern</div>
           <div className="pattern-card-mini">
             <h4>
               {primaryPattern} - {primaryName}
             </h4>
             <p className="pattern-mini-desc">{primaryDescription}</p>
             <div className="pattern-frequency">
-              <span className="frequency-label">出现频率</span>
+              <span className="frequency-label">Frequency</span>
               <div className="frequency-bar">
                 <div className="frequency-fill" style={{ width: '70%' }}></div>
               </div>
@@ -68,14 +68,14 @@ export const HybridPatternExplanation: React.FC<HybridPatternExplanationProps> =
 
         {/* Secondary Pattern */}
         <div className="pattern-part secondary">
-          <div className="pattern-badge">次要模式</div>
+          <div className="pattern-badge">Secondary Pattern</div>
           <div className="pattern-card-mini">
             <h4>
               {secondaryPattern} - {secondaryName}
             </h4>
             <p className="pattern-mini-desc">{secondaryDescription}</p>
             <div className="pattern-frequency">
-              <span className="frequency-label">出现频率</span>
+              <span className="frequency-label">Frequency</span>
               <div className="frequency-bar">
                 <div className="frequency-fill" style={{ width: '30%' }}></div>
               </div>
@@ -88,7 +88,7 @@ export const HybridPatternExplanation: React.FC<HybridPatternExplanationProps> =
       {/* Hybrid Characteristics */}
       {hybridDescription && (
         <div className="hybrid-characteristics">
-          <h4>💡 混合特征</h4>
+          <h4>💡 Hybrid Characteristics</h4>
           <p className="hybrid-desc">{hybridDescription}</p>
         </div>
       )}
@@ -96,7 +96,7 @@ export const HybridPatternExplanation: React.FC<HybridPatternExplanationProps> =
       {/* Context Switching Triggers */}
       {contextSwitchingTriggers && contextSwitchingTriggers.length > 0 && (
         <div className="context-triggers">
-          <h4>🔄 切换触发条件</h4>
+          <h4>🔄 Context Switching Triggers</h4>
           <ul className="trigger-list">
             {contextSwitchingTriggers.map((trigger, idx) => (
               <li key={idx}>
@@ -107,7 +107,7 @@ export const HybridPatternExplanation: React.FC<HybridPatternExplanationProps> =
             ))}
           </ul>
           <p className="trigger-note">
-            当出现上述情况时，您可能会从{primaryName}切换到{secondaryName}的策略。
+            When these situations occur, you may switch from {primaryName} to {secondaryName} strategies.
           </p>
         </div>
       )}
@@ -115,21 +115,21 @@ export const HybridPatternExplanation: React.FC<HybridPatternExplanationProps> =
       {/* Contextual Behaviors */}
       {contextualBehaviors && Object.keys(contextualBehaviors).length > 0 && (
         <div className="contextual-behaviors">
-          <h4>📊 不同情境下的行为</h4>
+          <h4>📊 Contextual Behaviors</h4>
           <div className="behaviors-grid">
             {Object.entries(contextualBehaviors).map(([context, behavior]) => (
               <div key={context} className="behavior-card">
                 <div className="behavior-context">{formatContextName(context)}</div>
                 <div className="behavior-metric">
-                  <span className="metric-label">采用模式：</span>
+                  <span className="metric-label">Adopted Pattern:</span>
                   <span className="metric-value">{behavior.pattern}</span>
                 </div>
                 <div className="behavior-metric">
-                  <span className="metric-label">查询频率：</span>
+                  <span className="metric-label">Query Frequency:</span>
                   <span className="metric-value">{behavior.queryRatio.toFixed(2)}x</span>
                 </div>
                 <div className="behavior-metric">
-                  <span className="metric-label">验证率：</span>
+                  <span className="metric-label">Verification Rate:</span>
                   <span className="metric-value">{(behavior.verificationRate * 100).toFixed(0)}%</span>
                 </div>
               </div>
@@ -140,16 +140,16 @@ export const HybridPatternExplanation: React.FC<HybridPatternExplanationProps> =
 
       {/* Recommendations */}
       <div className="hybrid-recommendations">
-        <h4>💬 建议</h4>
+        <h4>💬 Recommendations</h4>
         <ul className="recommendation-list">
           <li>
-            📍 记录您的模式切换：了解在什么情境下您会切换到{secondaryName}，这有助于更好地理解自己的工作方式。
+            📍 Track your pattern switching: Understand which contexts trigger switching to {secondaryName}, helping you better understand your own work approach.
           </li>
           <li>
-            🎯 优化切换决策：明确定义什么时候{primaryName}足够，什么时候需要{secondaryName}的更深入策略。
+            🎯 Optimize switching decisions: Clearly define when {primaryName} is sufficient versus when you need {secondaryName}'s deeper strategies.
           </li>
           <li>
-            📈 持续改进：在两种模式之间找到平衡点，既能保持{primaryName}的效率，又能在需要时发挥{secondaryName}的优势。
+            📈 Continuous improvement: Find balance between patterns, maintaining {primaryName}'s efficiency while leveraging {secondaryName}'s strengths when needed.
           </li>
         </ul>
       </div>
@@ -162,18 +162,18 @@ export const HybridPatternExplanation: React.FC<HybridPatternExplanationProps> =
  */
 function formatTrigger(trigger: string): string {
   const triggerMap: Record<string, string> = {
-    'high_complexity': '🔧 任务复杂度增加',
-    'unfamiliar_domain': '🌟 进入不熟悉领域',
-    'task_criticality': '⚠️ 任务重要性提升',
-    'risk_assessment': '🛡️ 需要风险评估',
-    'adaptation_failure': '❌ 适应策略失效',
-    'increased_difficulty': '📈 难度持续增加',
-    'task_familiarity': '✅ 任务熟悉度变化',
-    'confidence_level': '💪 自信心水平变化',
-    'learning_stage': '📚 学习阶段',
-    'knowledge_consolidation': '🧠 知识巩固',
-    'context_change': '🔀 上下文改变',
-    'task_requirement_shift': '🔄 任务需求变化'
+    'high_complexity': '🔧 High Task Complexity',
+    'unfamiliar_domain': '🌟 Unfamiliar Domain',
+    'task_criticality': '⚠️ Task Criticality Increase',
+    'risk_assessment': '🛡️ Risk Assessment Required',
+    'adaptation_failure': '❌ Adaptation Strategy Failed',
+    'increased_difficulty': '📈 Sustained Difficulty Increase',
+    'task_familiarity': '✅ Task Familiarity Change',
+    'confidence_level': '💪 Confidence Level Shift',
+    'learning_stage': '📚 Learning Stage',
+    'knowledge_consolidation': '🧠 Knowledge Consolidation',
+    'context_change': '🔀 Context Change',
+    'task_requirement_shift': '🔄 Task Requirement Shift'
   };
 
   return triggerMap[trigger] || trigger;
@@ -184,16 +184,16 @@ function formatTrigger(trigger: string): string {
  */
 function formatContextName(context: string): string {
   const contextMap: Record<string, string> = {
-    'standard_task': '标准任务',
-    'complex_task': '复杂任务',
-    'iterative_tasks': '迭代任务',
-    'critical_tasks': '关键任务',
-    'familiar_tasks': '熟悉任务',
-    'new_tasks': '新任务',
-    'adaptive_approach': '适应性方法',
-    'fallback_iterative': '迭代降级',
-    'learning_phase': '学习阶段',
-    'application_phase': '应用阶段'
+    'standard_task': 'Standard Task',
+    'complex_task': 'Complex Task',
+    'iterative_tasks': 'Iterative Tasks',
+    'critical_tasks': 'Critical Tasks',
+    'familiar_tasks': 'Familiar Tasks',
+    'new_tasks': 'New Tasks',
+    'adaptive_approach': 'Adaptive Approach',
+    'fallback_iterative': 'Iterative Fallback',
+    'learning_phase': 'Learning Phase',
+    'application_phase': 'Application Phase'
   };
 
   return contextMap[context] || context;
