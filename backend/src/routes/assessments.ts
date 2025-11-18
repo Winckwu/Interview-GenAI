@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { authenticateToken } from '../middleware/auth';
-import { pool } from '../db';
-import { asyncHandler } from '../utils/asyncHandler';
+import pool from '../config/database';
+import { asyncHandler } from '../middleware/errorHandler';
 import { v4 as uuidv4 } from 'uuid';
 
 const router = Router();
