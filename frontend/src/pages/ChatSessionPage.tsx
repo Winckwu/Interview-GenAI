@@ -722,8 +722,8 @@ const ChatSessionPage: React.FC = () => {
                 maxWidth: '65%',
                 padding: '1rem',
                 borderRadius: message.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '1rem 1rem 1rem 0.25rem',
-                backgroundColor: message.role === 'user' ? '#60a5fa' : '#fff',
-                color: message.role === 'user' ? '#fff' : '#1f2937',
+                backgroundColor: message.role === 'user' ? '#93c5fd' : '#fff',
+                color: message.role === 'user' ? '#0c4a6e' : '#1f2937',
                 boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
                 borderLeft: message.role === 'ai' ? `3px solid ${message.wasVerified ? '#10b981' : '#3b82f6'}` : 'none',
               }}>
