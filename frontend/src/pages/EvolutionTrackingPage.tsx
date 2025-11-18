@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { usePatternStore } from '../stores/patternStore';
 import { useAuthStore } from '../stores/authStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useAutoRefresh } from '../hooks/useAutoRefresh';
 
 /**
  * Evolution Tracking Page
  * Monitor how user patterns evolve over time
+ * Data automatically refreshes every 30 seconds to show latest pattern evolution from ChatSessionPage interactions
  */
 const EvolutionTrackingPage: React.FC = () => {
   const { user } = useAuthStore();
   const { evolutions, loading, fetchEvolutions } = usePatternStore();
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchEvolutions(user?.id);
-    }
-  }, [user?.id]);
+  // Auto-refresh evolution data every 30 seconds
+  useAutoRefresh(
+    [() => fetchEvolutions(user?.id || '')],
+    [user?.id, fetchEvolutions]
+  );
 
   if (loading) {
     return <LoadingSpinner message="Loading evolution data..." />;

@@ -1,21 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { usePatternStore } from '../stores/patternStore';
 import { useAuthStore } from '../stores/authStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useAutoRefresh } from '../hooks/useAutoRefresh';
 
 /**
  * Patterns Page
  * View and analyze user AI usage patterns
+ * Data automatically refreshes every 30 seconds to show latest patterns from ChatSessionPage interactions
  */
 const PatternsPage: React.FC = () => {
   const { user } = useAuthStore();
   const { patterns, loading, fetchPatterns } = usePatternStore();
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchPatterns(user?.id);
-    }
-  }, [user?.id]);
+  // Auto-refresh patterns data every 30 seconds
+  useAutoRefresh(
+    [() => fetchPatterns(user?.id || '')],
+    [user?.id, fetchPatterns]
+  );
 
   if (loading) {
     return <LoadingSpinner message="Loading patterns..." />;

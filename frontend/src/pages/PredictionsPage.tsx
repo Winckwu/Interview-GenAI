@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { usePatternStore } from '../stores/patternStore';
 import { useAuthStore } from '../stores/authStore';
 import { useUIStore } from '../stores/uiStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useAutoRefresh } from '../hooks/useAutoRefresh';
 
 /**
  * Predictions Page
  * Create new predictions and view prediction history
+ * Data automatically refreshes every 30 seconds to show latest predictions
  */
 const PredictionsPage: React.FC = () => {
   const { user } = useAuthStore();
@@ -22,11 +24,11 @@ const PredictionsPage: React.FC = () => {
     aiAvailable: true,
   });
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchPredictions(user?.id);
-    }
-  }, [user?.id]);
+  // Auto-refresh predictions data every 30 seconds
+  useAutoRefresh(
+    [() => fetchPredictions(user?.id || '')],
+    [user?.id, fetchPredictions]
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
