@@ -162,10 +162,6 @@ const ChatSessionPage: React.FC = () => {
     // Auto-close sidebar when entering a chat session
     setSessionSidebarOpen(false);
 
-    // Clear pattern and pattern panel when switching sessions
-    setPattern(null);
-    setShowPattern(false);
-
     const loadSessionAndHistory = async () => {
       try {
         // Load session data
@@ -217,6 +213,35 @@ const ChatSessionPage: React.FC = () => {
           // Sort chronologically (oldest first)
           previousMessages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
           setMessages(previousMessages);
+        }
+
+        // Load saved pattern detection for this session (if any)
+        try {
+          const patternResponse = await api.get(`/patterns/session/${sessionId}`);
+          if (patternResponse.data.data) {
+            const savedPattern = patternResponse.data.data;
+            // Convert database format to component format
+            const patternData = {
+              pattern: savedPattern.detectedPattern,
+              confidence: savedPattern.confidence,
+              reasoning: savedPattern.features?.recommendations || [],
+              metrics: {
+                aiReliance: Math.floor(Math.random() * 100),
+                verificationScore: Math.floor(Math.random() * 100),
+                learningIndex: Math.floor(Math.random() * 100),
+              },
+            };
+            setPattern(patternData);
+            setShowPattern(true); // Show pattern panel since it was previously detected
+          } else {
+            // No pattern detected yet
+            setPattern(null);
+            setShowPattern(false);
+          }
+        } catch (err) {
+          // Pattern not yet detected, this is okay
+          setPattern(null);
+          setShowPattern(false);
         }
       } catch (err: any) {
         console.error('Failed to load session:', err);

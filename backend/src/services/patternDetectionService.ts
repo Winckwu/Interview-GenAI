@@ -115,6 +115,21 @@ export class PatternDetectionService {
   }
 
   /**
+   * Get the last pattern detection for a specific session
+   */
+  async getSessionPatternDetection(sessionId: string): Promise<PatternLog | null> {
+    const result = await pool.query(
+      `SELECT * FROM pattern_logs
+       WHERE session_id = $1
+       ORDER BY created_at DESC
+       LIMIT 1`,
+      [sessionId]
+    );
+
+    return result.rows.length > 0 ? this.mapToPatternLog(result.rows[0]) : null;
+  }
+
+  /**
    * Get user's pattern history
    */
   async getUserPatternHistory(userId: string, limit: number = 100): Promise<PatternLog[]> {

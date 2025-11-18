@@ -80,6 +80,43 @@ router.get(
 );
 
 /**
+ * GET /api/patterns/session/:sessionId
+ * Get the last pattern detection for a specific session
+ */
+router.get(
+  '/session/:sessionId',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { sessionId } = req.params;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+      });
+    }
+
+    // Verify session belongs to user
+    const session = await SessionService.getSession(sessionId);
+    if (!session || session.userId !== userId) {
+      return res.status(403).json({
+        success: false,
+        error: 'Session not found or does not belong to user',
+      });
+    }
+
+    const patternLog = await PatternDetectionService.getSessionPatternDetection(sessionId);
+
+    res.json({
+      success: true,
+      data: patternLog || null,
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
  * GET /api/patterns/stats/:userId
  * Get user's pattern statistics
  */
