@@ -1,0 +1,406 @@
+/* ============================================
+   DashboardPage Styles
+   ============================================
+
+   Dashboard showing AI usage patterns overview.
+   All styles use CSS variables for theming.
+*/
+
+.dashboard-page {
+  background-color: var(--color-bg-secondary);
+  min-height: 100vh;
+  padding: var(--sp-8) 0;
+}
+
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--sp-8);
+}
+
+/* ---- Page Header ---- */
+
+.page-header {
+  margin-bottom: var(--sp-8);
+}
+
+.page-header h1 {
+  margin: 0 0 var(--sp-2) 0;
+  font-size: var(--text-3xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-primary);
+}
+
+.page-subtitle {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Insight Alert Box ---- */
+
+.insight-alert {
+  padding: var(--sp-6);
+  background-color: var(--color-success-light);
+  border: 2px solid var(--color-success);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--sp-8);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+}
+
+.alert-header {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: flex-start;
+  margin-bottom: var(--sp-4);
+}
+
+.alert-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-title {
+  margin: 0 0 var(--sp-2) 0;
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  color: #15803d;
+}
+
+.alert-message {
+  margin: 0 0 var(--sp-4) 0;
+  font-size: var(--text-sm);
+  color: #166534;
+  line-height: var(--lh-normal);
+}
+
+.alert-actions {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.alert-button {
+  padding: var(--sp-2) var(--sp-4);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  transition: var(--transition-base);
+  font-family: inherit;
+}
+
+.alert-button-primary {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.alert-button-primary:hover {
+  background-color: #059669;
+}
+
+.alert-button-secondary {
+  background-color: transparent;
+  color: #166534;
+  border: 1px solid var(--color-success);
+}
+
+.alert-button-secondary:hover {
+  background-color: var(--color-success-light);
+}
+
+/* ---- Metrics Grid ---- */
+
+.metrics-section {
+  padding-left: var(--sp-8);
+  padding-right: var(--sp-8);
+  margin-bottom: var(--sp-8);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--sp-6);
+}
+
+.metric-card {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-base);
+}
+
+.metric-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-lighter);
+}
+
+.metric-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--sp-3);
+}
+
+.metric-value {
+  font-size: var(--text-3xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--sp-2);
+}
+
+.metric-description {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Info Tooltip ---- */
+
+.info-tooltip {
+  display: inline-block;
+  position: relative;
+  margin-left: var(--sp-1);
+  cursor: help;
+}
+
+.tooltip-icon {
+  font-size: var(--text-xs);
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+}
+
+.tooltip-content {
+  position: absolute;
+  bottom: 100%;
+  left: -100px;
+  right: -100px;
+  width: 250px;
+  background-color: #1f2937;
+  color: white;
+  padding: var(--sp-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-bottom: var(--sp-2);
+  pointer-events: auto;
+  text-transform: none;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #1f2937;
+}
+
+/* ---- Quick Actions Section ---- */
+
+.quick-actions-section {
+  padding-left: var(--sp-8);
+  padding-right: var(--sp-8);
+  margin-bottom: var(--sp-8);
+}
+
+.quick-actions-card {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8);
+}
+
+.quick-actions-title {
+  margin: 0 0 var(--sp-6) 0;
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-primary);
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--sp-4);
+}
+
+.action-button {
+  padding: var(--sp-4);
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition-base);
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button:hover {
+  background-color: var(--color-primary-lighter);
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+  transform: translateY(-2px);
+}
+
+.action-icon {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--sp-2);
+  display: block;
+}
+
+.action-label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+}
+
+/* ---- Charts Section ---- */
+
+.charts-section {
+  padding-left: var(--sp-8);
+  padding-right: var(--sp-8);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: var(--sp-6);
+}
+
+.chart-container {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-title {
+  margin: 0 0 var(--sp-4) 0;
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-primary);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: var(--sp-4) 0;
+  }
+
+  .dashboard-container,
+  .metrics-section,
+  .quick-actions-section,
+  .charts-section {
+    padding-left: var(--sp-4);
+    padding-right: var(--sp-4);
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .page-header h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .quick-actions-card {
+    padding: var(--sp-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: var(--sp-4);
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .alert-actions {
+    flex-direction: column;
+  }
+
+  .alert-button {
+    width: 100%;
+  }
+
+  .page-header h1 {
+    font-size: var(--text-xl);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+.action-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .metric-card,
+  .action-button,
+  .chart-container {
+    transition: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: more) {
+  .metric-card,
+  .action-button,
+  .chart-container,
+  .quick-actions-card {
+    border-width: 2px;
+  }
+}
+
+/* Dark mode (automatically handled by CSS variables) */
+@media (prefers-color-scheme: dark) {
+  /* No changes needed - CSS variables handle dark mode */
+}

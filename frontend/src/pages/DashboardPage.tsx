@@ -6,6 +6,8 @@ import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
 import { useAnalytics, usePatternStats } from '../hooks/useAnalytics';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import './DashboardPage.css';
+import '../styles/components.css';
 
 /**
  * Tooltip Component for Info Icons
@@ -19,57 +21,20 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
 
   return (
     <div
-      style={{ display: 'inline-block', position: 'relative', marginLeft: '0.5rem' }}
+      className="info-tooltip"
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
       <span
-        style={{
-          fontSize: '0.75rem',
-          cursor: 'help',
-          color: '#3b82f6',
-          fontWeight: 'bold',
-        }}
+        className="tooltip-icon"
         title="Click or hover for explanation"
       >
         ℹ️
       </span>
       {show && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '100%',
-            left: '-100px',
-            right: '-100px',
-            width: '250px',
-            backgroundColor: '#1f2937',
-            color: '#fff',
-            padding: '0.75rem',
-            borderRadius: '0.5rem',
-            fontSize: '0.75rem',
-            lineHeight: '1.4',
-            zIndex: 1000,
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-            marginBottom: '0.5rem',
-            pointerEvents: 'auto',
-            textTransform: 'none',
-          }}
-        >
+        <div className="tooltip-content">
           {text}
-          {/* Tooltip arrow */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '-4px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: 0,
-              height: 0,
-              borderLeft: '4px solid transparent',
-              borderRight: '4px solid transparent',
-              borderTop: '4px solid #1f2937',
-            }}
-          />
+          <div className="tooltip-arrow" />
         </div>
       )}
     </div>
@@ -149,77 +114,38 @@ const DashboardPage: React.FC = () => {
   const patternChanged = dominantPattern !== lastKnownPattern && totalSessions > 0;
 
   return (
-    <div className="page dashboard-page" style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '2rem 0' }}>
+    <div className="dashboard-page">
       {/* Header Section */}
-      <div style={{ paddingLeft: '2rem', paddingRight: '2rem', marginBottom: '2rem' }}>
-        <div className="page-header" style={{ marginBottom: '1rem' }}>
-          <h1 style={{ margin: '0 0 0.5rem 0', fontSize: '2rem', fontWeight: '700', color: '#1f2937' }}>Dashboard</h1>
-          <p className="page-subtitle" style={{ margin: '0', fontSize: '1rem', color: '#6b7280' }}>
+      <div className="dashboard-container" style={{ marginBottom: '2rem' }}>
+        <div className="page-header">
+          <h1>Dashboard</h1>
+          <p className="page-subtitle">
             Welcome back, {user?.username}! Here's your AI usage overview.
           </p>
         </div>
 
         {/* Insight Alert Box - High Priority */}
         {patternChanged && (
-          <div style={{
-            padding: '1.5rem',
-            backgroundColor: '#f0fdf4',
-            border: '2px solid #86efac',
-            borderRadius: '0.75rem',
-            marginBottom: '2rem',
-            boxShadow: '0 2px 8px rgba(16, 185, 129, 0.15)',
-          }}>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-              <div style={{ fontSize: '2rem' }}>⚡</div>
-              <div style={{ flex: 1 }}>
-                <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem', fontWeight: '600', color: '#15803d' }}>
+          <div className="insight-alert">
+            <div className="alert-header">
+              <div className="alert-icon">⚡</div>
+              <div className="alert-content">
+                <h3 className="alert-title">
                   Pattern Recognition Update!
                 </h3>
-                <p style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', color: '#166534', lineHeight: '1.5' }}>
+                <p className="alert-message">
                   Your AI usage pattern has been updated from Pattern {lastKnownPattern} to Pattern {dominantPattern} with {(analytics?.confidence || 0.8) * 100}% confidence.
                   This indicates positive changes in how you're using AI.
                 </p>
-                <div style={{ display: 'flex', gap: '0.75rem' }}>
+                <div className="alert-actions">
                   <button
+                    className="alert-button alert-button-primary"
                     onClick={() => navigate('/patterns')}
-                    style={{
-                      padding: '0.5rem 1.25rem',
-                      backgroundColor: '#10b981',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '0.375rem',
-                      cursor: 'pointer',
-                      fontSize: '0.875rem',
-                      fontWeight: '500',
-                      transition: 'all 0.2s',
-                    }}
-                    onMouseOver={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#059669';
-                    }}
-                    onMouseOut={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#10b981';
-                    }}
                   >
                     View Details →
                   </button>
                   <button
-                    style={{
-                      padding: '0.5rem 1.25rem',
-                      backgroundColor: 'transparent',
-                      color: '#166534',
-                      border: '1px solid #86efac',
-                      borderRadius: '0.375rem',
-                      cursor: 'pointer',
-                      fontSize: '0.875rem',
-                      fontWeight: '500',
-                      transition: 'all 0.2s',
-                    }}
-                    onMouseOver={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f0fdf4';
-                    }}
-                    onMouseOut={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-                    }}
+                    className="alert-button alert-button-secondary"
                   >
                     Dismiss
                   </button>
@@ -231,12 +157,8 @@ const DashboardPage: React.FC = () => {
       </div>
 
       {/* Key Metrics Cards */}
-      <div style={{ paddingLeft: '2rem', paddingRight: '2rem', marginBottom: '2rem' }}>
-        <div className="metrics-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '1.5rem',
-        }}>
+      <div className="metrics-section">
+        <div className="metrics-grid">
         <div className="metric-card" title="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted.">
           <div className="metric-label">Total Sessions <InfoTooltip text="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted." /></div>
           <div className="metric-value">{totalSessions}</div>
@@ -272,11 +194,11 @@ const DashboardPage: React.FC = () => {
       </div>
 
       {/* Charts Section */}
-      <div style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
-      <div className="charts-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+      <div className="charts-section">
+      <div className="charts-grid">
         {/* Weekly Accuracy Trend */}
         <div className="chart-container">
-          <h3>
+          <h3 className="chart-title">
             📈 Weekly Accuracy Trend <InfoTooltip text="Shows your verification accuracy over the past weeks. Higher trends indicate you're getting better at verifying AI outputs correctly." />
           </h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -299,7 +221,7 @@ const DashboardPage: React.FC = () => {
 
         {/* Pattern Distribution */}
         <div className="chart-container">
-          <h3>
+          <h3 className="chart-title">
             🎯 Pattern Distribution <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." />
           </h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -325,7 +247,7 @@ const DashboardPage: React.FC = () => {
 
         {/* Intervention Strategy Comparison */}
         <div className="chart-container">
-          <h3>
+          <h3 className="chart-title">
             ✓ Verification Strategy Impact <InfoTooltip text="Compare how different verification strategies impact the quality of your work. Higher verification strategies reduce risk of errors and skill degradation." />
           </h3>
           <ResponsiveContainer width="100%" height={300}>
