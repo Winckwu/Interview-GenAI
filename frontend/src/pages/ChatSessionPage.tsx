@@ -57,7 +57,7 @@ const ChatSessionPage: React.FC = () => {
   const [sessionsLoading, setSessionsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // Load session list
+  // Load session list with valid interactions
   useEffect(() => {
     const loadSessions = async () => {
       setSessionsLoading(true);
@@ -67,8 +67,33 @@ const ChatSessionPage: React.FC = () => {
           // Remove duplicate sessions by ID
           const uniqueSessions = Array.from(
             new Map(response.data.data.sessions.map((session: SessionItem) => [session.id, session])).values()
+          ) as SessionItem[];
+
+          // Filter sessions that have valid interactions (with actual content)
+          const sessionsWithContent = await Promise.all(
+            uniqueSessions.map(async (session) => {
+              try {
+                const interactionsResponse = await api.get('/interactions', {
+                  params: { sessionId: session.id },
+                });
+                const interactions = interactionsResponse.data.data.interactions || [];
+                // Check if session has at least one valid interaction with both user prompt and AI response
+                const hasValidInteraction = interactions.some(
+                  (interaction: any) =>
+                    interaction.userPrompt && interaction.aiResponse && interaction.sessionId === session.id
+                );
+                return hasValidInteraction ? session : null;
+              } catch (err) {
+                console.error(`Failed to load interactions for session ${session.id}:`, err);
+                return null;
+              }
+            })
           );
-          setSessions(uniqueSessions);
+
+          // Filter out null values and sort by date descending (newest first)
+          const filteredSessions = sessionsWithContent.filter((s) => s !== null) as SessionItem[];
+          filteredSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
+          setSessions(filteredSessions);
         }
       } catch (err: any) {
         console.error('Failed to load sessions:', err);

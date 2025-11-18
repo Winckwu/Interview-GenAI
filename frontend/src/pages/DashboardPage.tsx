@@ -49,20 +49,44 @@ const DashboardPage: React.FC = () => {
     }
   };
 
-  // Load recent sessions
+  // Load recent sessions with valid interactions
   useEffect(() => {
     const loadSessions = async () => {
       setSessionsLoading(true);
       try {
-        const response = await api.get('/sessions', { params: { limit: 10, offset: 0 } });
+        const response = await api.get('/sessions', { params: { limit: 50, offset: 0 } });
         if (response.data.data && response.data.data.sessions) {
-          // Remove duplicate sessions by ID and sort by date
+          // Remove duplicate sessions by ID
           const uniqueSessions = Array.from(
             new Map(response.data.data.sessions.map((session: SessionItem) => [session.id, session])).values()
           ) as SessionItem[];
+
+          // Filter sessions that have valid interactions (with actual content)
+          const sessionsWithContent = await Promise.all(
+            uniqueSessions.map(async (session) => {
+              try {
+                const interactionsResponse = await api.get('/interactions', {
+                  params: { sessionId: session.id },
+                });
+                const interactions = interactionsResponse.data.data.interactions || [];
+                // Check if session has at least one valid interaction with both user prompt and AI response
+                const hasValidInteraction = interactions.some(
+                  (interaction: any) =>
+                    interaction.userPrompt && interaction.aiResponse && interaction.sessionId === session.id
+                );
+                return hasValidInteraction ? session : null;
+              } catch (err) {
+                console.error(`Failed to load interactions for session ${session.id}:`, err);
+                return null;
+              }
+            })
+          );
+
+          // Filter out null values and limit to 10
+          const filteredSessions = sessionsWithContent.filter((s) => s !== null).slice(0, 10) as SessionItem[];
           // Sort by date descending (newest first)
-          uniqueSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
-          setSessions(uniqueSessions);
+          filteredSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
+          setSessions(filteredSessions);
         }
       } catch (err: any) {
         console.error('Failed to load sessions:', err);
