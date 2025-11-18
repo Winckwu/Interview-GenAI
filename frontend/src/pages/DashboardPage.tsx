@@ -3,6 +3,7 @@ import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import { useAuthStore } from '../stores/authStore';
 import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
+import { useAnalytics, usePatternStats } from '../hooks/useAnalytics';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 /**
@@ -11,40 +12,27 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
  */
 const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();
-  const { patterns, predictions, evolutions, loading, fetchPatterns, fetchPredictions, fetchEvolutions } = usePatternStore();
+  const { analytics, loading: analyticsLoading } = useAnalytics(30);
+  const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', 30);
 
   useEffect(() => {
-    // Fetch initial data only on component mount
-    // Using Zustand store functions which are stable references
-    const loadInitialData = async () => {
-      try {
-        await Promise.all([
-          fetchPatterns(),
-          fetchPredictions(),
-          fetchEvolutions(),
-        ]);
-      } catch (error) {
-        console.error('Failed to load dashboard data:', error);
-      }
-    };
-
-    loadInitialData();
+    // Initial data is loaded by hooks automatically
   }, []);
+
+  const loading = analyticsLoading || patternsLoading;
 
   if (loading) {
     return <LoadingSpinner message="Loading dashboard..." />;
   }
 
-  // Calculate metrics
-  const totalPredictions = predictions.length;
-  const correctPredictions = predictions.filter((p) => p.isCorrect).length;
-  const predictionAccuracy = totalPredictions > 0 ? ((correctPredictions / totalPredictions) * 100).toFixed(1) : 0;
-
-  const userPatterns = patterns.filter((p) => p.userId === user?.id) || [];
-  const currentPattern = userPatterns.length > 0 ? userPatterns[0] : null;
-
-  const userEvolutions = evolutions.filter((e) => e.userId === user?.id) || [];
-  const improvementCount = userEvolutions.filter((e) => e.changeType === 'improvement').length;
+  // Use real analytics data
+  const totalSessions = analytics?.totalSessions || 0;
+  const totalInteractions = analytics?.totalInteractions || 0;
+  const averageSessionDuration = analytics?.averageSessionDuration || 0;
+  const dominantPattern = analytics?.dominantPattern || 'A';
+  const patternDistribution = analytics?.patternDistribution || {};
+  const verificationRate = analytics?.verificationRate || 0;
+  const modificationRate = analytics?.modificationRate || 0;
 
   // Mock data for charts (in real app, this would come from API)
   const weeklyAccuracyData = [
@@ -81,35 +69,35 @@ const DashboardPage: React.FC = () => {
       {/* Key Metrics Cards */}
       <div className="metrics-grid">
         <div className="metric-card">
-          <div className="metric-label">Prediction Accuracy</div>
-          <div className="metric-value">{predictionAccuracy}%</div>
+          <div className="metric-label">Total Sessions</div>
+          <div className="metric-value">{totalSessions}</div>
           <div className="metric-description">
-            {correctPredictions} of {totalPredictions} predictions correct
+            {totalInteractions} total interactions recorded
           </div>
         </div>
 
         <div className="metric-card">
           <div className="metric-label">Current Pattern</div>
-          <div className="metric-value">{currentPattern?.patternType || 'N/A'}</div>
+          <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
           <div className="metric-description">
-            Confidence: {currentPattern ? `${(currentPattern.confidence * 100).toFixed(0)}%` : 'No data'}
+            Primary AI usage pattern detected
           </div>
         </div>
 
         <div className="metric-card">
-          <div className="metric-label">Pattern Evolution</div>
-          <div className="metric-value">{userEvolutions.length}</div>
+          <div className="metric-label">Verification Rate</div>
+          <div className="metric-value">{verificationRate.toFixed(1)}%</div>
           <div className="metric-description">
-            {improvementCount} improvements detected
+            AI outputs verified: {Math.round(verificationRate)}%
           </div>
         </div>
 
         <div className="metric-card">
-          <div className="metric-label">User Type</div>
-          <div className="metric-value" style={{ textTransform: 'capitalize' }}>
-            {user?.userType || 'N/A'}
+          <div className="metric-label">Average Session</div>
+          <div className="metric-value">{averageSessionDuration}</div>
+          <div className="metric-description">
+            Minutes per session
           </div>
-          <div className="metric-description">Profile classification</div>
         </div>
       </div>
 
@@ -142,16 +130,19 @@ const DashboardPage: React.FC = () => {
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
-                data={patternDistribution}
+                data={Object.entries(patternDistribution).map(([name, value]) => ({
+                  name: `Pattern ${name}`,
+                  value: Math.round((value as number) * 100),
+                }))}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, value }) => `${name}: ${value}`}
+                label={({ name, value }) => `${name}: ${value}%`}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
               >
-                {patternDistribution.map((entry, index) => (
+                {Object.entries(patternDistribution).map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
@@ -180,16 +171,16 @@ const DashboardPage: React.FC = () => {
           <h3>Quick Stats</h3>
           <div className="stats-list">
             <div className="stat-item">
-              <span className="stat-label">Total Predictions:</span>
-              <span className="stat-value">{totalPredictions}</span>
+              <span className="stat-label">Total Sessions:</span>
+              <span className="stat-value">{totalSessions}</span>
             </div>
             <div className="stat-item">
-              <span className="stat-label">Accurate:</span>
-              <span className="stat-value">{correctPredictions}</span>
+              <span className="stat-label">Total Interactions:</span>
+              <span className="stat-value">{totalInteractions}</span>
             </div>
             <div className="stat-item">
-              <span className="stat-label">Evolution Events:</span>
-              <span className="stat-value">{userEvolutions.length}</span>
+              <span className="stat-label">Modification Rate:</span>
+              <span className="stat-value">{modificationRate.toFixed(1)}%</span>
             </div>
             <div className="stat-item">
               <span className="stat-label">Member Since:</span>

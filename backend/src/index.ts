@@ -80,26 +80,33 @@ app.get('/health/detailed', asyncHandler(async (_req: Request, res: Response) =>
 }));
 
 // ============================================================================
+// Import Routes
+// ============================================================================
+import sessionsRoutes from './routes/sessions';
+import patternsRoutes from './routes/patterns';
+import analyticsRoutes from './routes/analytics';
+
+// ============================================================================
 // API Routes
 // ============================================================================
 
 // Auth routes (public)
 app.use('/api/auth', authRoutes);
 
-// Placeholder routes - to be implemented
+// Session management
+app.use('/api/sessions', sessionsRoutes);
+
+// Pattern detection and analysis
+app.use('/api/patterns', patternsRoutes);
+
+// Analytics and dashboard data
+app.use('/api/analytics', analyticsRoutes);
+
+// Placeholder routes - backward compatibility
 app.get('/api/users/:userId', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
   res.json({
     success: true,
     data: { message: 'User endpoint ready' },
-    timestamp: new Date().toISOString(),
-  });
-}));
-
-app.get('/api/patterns', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
-  res.json({
-    success: true,
-    data: [],
-    message: 'Patterns endpoint ready',
     timestamp: new Date().toISOString(),
   });
 }));
@@ -117,6 +124,14 @@ app.get('/api/evolution', authenticateToken, asyncHandler(async (_req: Request, 
     success: true,
     data: [],
     message: 'Evolution tracking endpoint ready',
+    timestamp: new Date().toISOString(),
+  });
+}));
+
+app.get('/api/assessments/:userId/latest', authenticateToken, asyncHandler(async (req: Request, res: Response) => {
+  res.json({
+    success: true,
+    data: { message: 'Assessment endpoint ready' },
     timestamp: new Date().toISOString(),
   });
 }));

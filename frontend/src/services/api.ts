@@ -181,6 +181,70 @@ export const apiService = {
   },
 
   /**
+   * Session management endpoints
+   */
+  sessions: {
+    create: (taskDescription: string, taskType: string = 'general', taskImportance: number = 3) =>
+      api.post('/sessions', { taskDescription, taskType, taskImportance }),
+
+    get: (sessionId: string) => api.get(`/sessions/${sessionId}`),
+
+    list: (limit?: number, offset?: number) =>
+      api.get('/sessions', { params: { limit, offset } }),
+
+    end: (sessionId: string) => api.post(`/sessions/${sessionId}/end`, {}),
+
+    recordInteraction: (
+      sessionId: string,
+      userPrompt: string,
+      aiModel: string = 'claude-sonnet-4-5',
+      aiResponse?: string,
+      responseTimeMs?: number
+    ) =>
+      api.post(`/sessions/${sessionId}/interactions`, {
+        userPrompt,
+        aiModel,
+        aiResponse,
+        responseTimeMs,
+      }),
+
+    getInteractions: (sessionId: string, limit?: number, offset?: number) =>
+      api.get(`/sessions/${sessionId}/interactions`, { params: { limit, offset } }),
+
+    updateInteraction: (sessionId: string, interactionId: string, data: any) =>
+      api.patch(`/sessions/${sessionId}/interactions/${interactionId}`, data),
+
+    getStats: (sessionId: string) => api.get(`/sessions/${sessionId}/stats`),
+  },
+
+  /**
+   * Pattern detection endpoints
+   */
+  patternDetection: {
+    detect: (sessionId: string) => api.post('/patterns/detect', { sessionId }),
+
+    getHistory: (userId: string, limit?: number) =>
+      api.get(`/patterns/history/${userId}`, { params: { limit } }),
+
+    getStats: (userId: string) => api.get(`/patterns/stats/${userId}`),
+
+    getTrends: (userId: string, days?: number) =>
+      api.get(`/patterns/trends/${userId}`, { params: { days } }),
+  },
+
+  /**
+   * Analytics endpoints
+   */
+  analytics: {
+    getUser: (days?: number) => api.get('/analytics/user', { params: { days } }),
+
+    getSessionDetails: (sessionId: string) =>
+      api.get(`/analytics/session/${sessionId}`),
+
+    getSummary: (days?: number) => api.get('/analytics/summary', { params: { days } }),
+  },
+
+  /**
    * A/B Testing endpoints
    */
   abTest: {
