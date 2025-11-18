@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAuthStore } from '../stores/authStore';
 import { usePatternStore } from '../stores/patternStore';
@@ -11,6 +12,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
  * Main dashboard showing overview of AI usage patterns and system metrics
  */
 const DashboardPage: React.FC = () => {
+  const navigate = useNavigate();
   const { user } = useAuthStore();
   const { analytics, loading: analyticsLoading } = useAnalytics(30);
   const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', 30);
@@ -93,7 +95,7 @@ const DashboardPage: React.FC = () => {
                 </p>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button
-                    onClick={() => window.location.href = '/patterns'}
+                    onClick={() => navigate('/patterns')}
                     style={{
                       padding: '0.5rem 1.25rem',
                       backgroundColor: '#10b981',
@@ -281,7 +283,7 @@ const DashboardPage: React.FC = () => {
         }}>
           {/* Start New Chat */}
           <button
-            onClick={() => window.location.href = '/chat'}
+            onClick={() => navigate('/chat')}
             style={{
               padding: '1.5rem',
               backgroundColor: '#fff',
@@ -315,7 +317,7 @@ const DashboardPage: React.FC = () => {
 
           {/* View Patterns */}
           <button
-            onClick={() => window.location.href = '/patterns'}
+            onClick={() => navigate('/patterns')}
             style={{
               padding: '1.5rem',
               backgroundColor: '#fff',
@@ -349,7 +351,7 @@ const DashboardPage: React.FC = () => {
 
           {/* Track Evolution */}
           <button
-            onClick={() => window.location.href = '/evolution'}
+            onClick={() => navigate('/evolution')}
             style={{
               padding: '1.5rem',
               backgroundColor: '#fff',
@@ -383,7 +385,7 @@ const DashboardPage: React.FC = () => {
 
           {/* Assessment */}
           <button
-            onClick={() => window.location.href = '/assessment'}
+            onClick={() => navigate('/assessment')}
             style={{
               padding: '1.5rem',
               backgroundColor: '#fff',
