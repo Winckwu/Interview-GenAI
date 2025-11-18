@@ -194,19 +194,6 @@ export const apiService = {
   },
 
   /**
-   * Evolution endpoints
-   */
-  evolution: {
-    list: (params?: any) => api.get('/evolution', { params }),
-
-    get: (evolutionId: string) => api.get(`/evolution/${evolutionId}`),
-
-    track: (data: any) => api.post(`/evolution/track`, data),
-
-    stats: (userId: string) => api.get(`/evolution/stats/${userId}`),
-  },
-
-  /**
    * Skills endpoints
    */
   skills: {
@@ -256,6 +243,10 @@ export const apiService = {
 
     analyze: (userId: string) =>
       api.post(`/evolution/analyze`, { userId }),
+
+    track: (data: any) => api.post(`/evolution/track`, data),
+
+    stats: (userId: string) => api.get(`/evolution/stats/${userId}`),
   },
 
   /**

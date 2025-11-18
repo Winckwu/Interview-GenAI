@@ -59,7 +59,7 @@ const ChatSessionPage: React.FC = () => {
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
   const [sessionsLoading, setSessionsLoading] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sessionSidebarOpen, setSessionSidebarOpen] = useState(false);
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
 
   // Load session list with valid interactions
@@ -421,21 +421,21 @@ const ChatSessionPage: React.FC = () => {
     <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
       {/* Sidebar */}
       <aside style={{
-        width: sidebarOpen ? '280px' : '0',
+        width: sessionSidebarOpen ? '280px' : '0',
         backgroundColor: '#fff',
         borderRight: '1px solid #e2e8f0',
         overflowY: 'auto',
         transition: 'width 0.3s ease-in-out',
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: sidebarOpen ? '2px 0 8px rgba(0, 0, 0, 0.08)' : 'none',
+        boxShadow: sessionSidebarOpen ? '2px 0 8px rgba(0, 0, 0, 0.08)' : 'none',
         zIndex: 10,
       }}>
         {/* Sidebar Header */}
         <div style={{ padding: '1.5rem', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3 style={{ margin: '0', fontSize: '1rem', fontWeight: '600', color: '#1f2937' }}>Conversations</h3>
           <button
-            onClick={() => setSidebarOpen(false)}
+            onClick={() => setSessionSidebarOpen(false)}
             style={{
               background: 'none',
               border: 'none',
@@ -481,7 +481,7 @@ const ChatSessionPage: React.FC = () => {
                   <button
                     onClick={() => {
                       navigate(`/session/${session.id}`);
-                      setSidebarOpen(false);
+                      setSessionSidebarOpen(false);
                     }}
                     style={{
                       flex: 1,
@@ -605,7 +605,7 @@ const ChatSessionPage: React.FC = () => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
             <button
-              onClick={() => setSidebarOpen(true)}
+              onClick={() => setSessionSidebarOpen(true)}
               style={{
                 background: 'none',
                 border: 'none',
@@ -613,7 +613,7 @@ const ChatSessionPage: React.FC = () => {
                 fontSize: '1.5rem',
                 color: '#6b7280',
                 padding: '0',
-                display: sidebarOpen ? 'none' : 'flex',
+                display: sessionSidebarOpen ? 'none' : 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
