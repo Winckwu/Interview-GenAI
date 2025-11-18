@@ -489,23 +489,6 @@ const ChatSessionPage: React.FC = () => {
     }
   };
 
-  /**
-   * End session
-   */
-  const endSession = async () => {
-    if (!sessionId) return;
-
-    try {
-      await api.patch(`/sessions/${sessionId}`, {});
-      setSessionActive(false);
-      // Open main navigation sidebar before returning to dashboard
-      setSidebarOpen(true);
-      setTimeout(() => navigate('/dashboard'), 2000);
-    } catch (err: any) {
-      setError('Failed to end session');
-    }
-  };
-
   const getPatternColor = (pattern: string): string => {
     const colors: { [key: string]: string } = {
       A: '#10b981',
@@ -783,23 +766,6 @@ const ChatSessionPage: React.FC = () => {
               title="Start a new conversation"
             >
               {creatingNewSession ? '⏳ Creating...' : '➕ New Chat'}
-            </button>
-            <button
-              onClick={endSession}
-              disabled={!sessionActive}
-              style={{
-                padding: '0.5rem 1.25rem',
-                backgroundColor: sessionActive ? '#ef4444' : '#d1d5db',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '0.5rem',
-                cursor: sessionActive ? 'pointer' : 'not-allowed',
-                fontWeight: '500',
-                fontSize: '0.875rem',
-                transition: 'background-color 0.2s',
-              }}
-            >
-              🔚 End Session
             </button>
           </div>
         </header>
