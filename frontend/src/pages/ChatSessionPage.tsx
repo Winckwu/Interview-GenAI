@@ -99,9 +99,23 @@ const ChatSessionPage: React.FC = () => {
         });
 
         if (interactionsResponse.data.data.interactions && interactionsResponse.data.data.interactions.length > 0) {
+          // Remove duplicate interactions by ID and filter valid interactions
+          const uniqueInteractions = Array.from(
+            new Map(
+              interactionsResponse.data.data.interactions
+                .filter((interaction: any) =>
+                  interaction.id &&
+                  interaction.userPrompt &&
+                  interaction.aiResponse &&
+                  interaction.sessionId === sessionId
+                )
+                .map((interaction: any) => [interaction.id, interaction])
+            ).values()
+          );
+
           // Convert interactions to messages
           const previousMessages: Message[] = [];
-          for (const interaction of interactionsResponse.data.data.interactions) {
+          for (const interaction of uniqueInteractions) {
             // Add user message
             previousMessages.push({
               id: `user-${interaction.id}`,
