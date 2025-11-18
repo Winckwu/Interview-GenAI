@@ -1,0 +1,110 @@
+user_id,pattern,confidence,p1,p2,p3,p4,m1,m2,m3,e1,e2,e3,r1,r2,total_score,is_mixed_pattern,notes
+I001,A,0.9,3,2,2,3,1,3,2,2,2,3,3,2,28,True,Confidence: 90%
+I002,B,0.7,2,2,1,1,1,2,2,2,2,2,3,2,22,False,Confidence: 70%
+I003,D,0.9,2,2,2,2,2,3,2,2,1,3,2,2,25,True,Confidence: 90%
+I004,C,0.9,3,2,2,2,1,2,3,2,1,3,2,3,26,True,Confidence: 90%
+I005,C,0.9,3,2,3,2,2,2,2,2,1,3,3,3,28,True,Confidence: 90%
+I006,E,0.9,2,3,3,3,2,2,3,2,3,3,2,3,31,True,Confidence: 90%
+I007,B,0.5,2,1,2,2,2,1,2,1,2,2,2,2,21,False,Confidence: 50%
+I008,A,0.7,2,1,1,3,1,2,2,1,2,3,2,3,23,False,Confidence: 70%
+I009,B,0.3,2,1,1,2,2,2,1,1,1,2,2,2,19,False,Confidence: 30%
+I010,D,0.7,1,2,1,3,2,3,3,2,1,3,2,3,26,False,Confidence: 70%
+I011,B,0.7,2,2,1,1,2,2,2,2,1,2,2,3,22,False,Confidence: 70%
+I012,C,0.3,2,2,1,2,1,2,2,2,1,2,1,2,20,False,Confidence: 30%
+I013,A,0.85,3,3,3,3,2,3,3,3,3,3,3,3,35,False,Confidence: 85%
+I014,C,0.3,1,2,1,1,1,0,2,1,1,2,1,3,16,False,Confidence: 30%
+I015,C,0.5,1,2,2,1,0,2,2,1,2,2,1,3,19,False,Confidence: 50%
+I016,D,0.9,3,2,3,2,2,3,2,2,2,3,2,2,28,False,Confidence: 90%
+I017,D,0.9,1,2,2,1,0,3,2,2,2,3,1,3,22,False,Confidence: 90%
+I018,D,0.85,2,3,3,3,0,3,3,3,2,3,2,3,30,False,Confidence: 85%
+I019,C,0.85,3,3,3,3,2,3,3,2,2,3,3,3,33,False,Confidence: 85%
+I020,D,0.85,2,2,3,1,2,3,2,3,2,3,3,3,29,False,Confidence: 85%
+I021,C,0.75,1,2,3,3,1,2,2,3,2,2,2,2,25,False,Confidence: 75%
+I022,A,0.85,3,3,3,3,2,2,3,3,2,3,2,2,31,False,Confidence: 85%
+I023,C,0.5,1,2,2,2,0,1,2,2,1,2,1,2,18,False,Confidence: 50%
+I024,A,0.9,2,3,2,1,0,3,3,3,2,3,1,3,26,False,Confidence: 90%
+I025,A,0.85,3,3,3,3,1,3,2,3,2,3,2,3,31,False,Confidence: 85%
+I026,C,0.5,2,2,1,1,0,1,2,2,1,2,2,2,18,False,Confidence: 50%
+I027,A,0.85,2,2,3,3,2,3,2,3,3,3,2,3,31,False,Confidence: 85%
+I028,C,0.6,1,1,1,2,1,2,1,2,2,3,1,3,20,False,Confidence: 60%
+I029,B,0.9,1,1,2,1,2,2,1,2,3,3,2,3,23,False,Confidence: 90%
+I030,F,0.6,1,2,2,1,1,1,1,2,0,1,1,2,15,False,Confidence: 60%
+I031,A,0.85,3,3,2,3,2,3,2,3,3,3,2,3,32,False,Confidence: 85%
+I032,C,0.75,2,2,2,1,2,2,1,2,2,2,1,2,21,False,Confidence: 75%
+I033,C,0.75,2,2,1,2,1,2,2,3,2,3,1,3,24,False,Confidence: 75%
+I034,A,0.85,3,3,3,3,2,3,2,3,3,3,2,3,33,False,Confidence: 85%
+I035,C,0.75,2,2,2,1,2,2,1,2,2,2,2,2,22,False,Confidence: 75%
+I036,C,0.75,2,2,2,1,2,2,1,2,2,2,2,2,22,False,Confidence: 75%
+I037,C,0.75,1,2,1,1,2,3,2,2,2,3,2,2,23,False,Confidence: 75%
+I038,D,0.85,2,3,3,3,2,2,3,2,3,3,3,3,32,False,Confidence: 85%
+I039,C,0.9,1,2,2,1,2,3,1,2,2,2,2,3,23,False,Confidence: 90%
+I040,C,0.9,2,2,2,1,2,2,1,2,2,3,2,3,24,False,Confidence: 90%
+I041,D,0.85,3,2,3,2,2,3,2,3,3,3,3,3,32,False,Confidence: 85%
+I042,C,0.75,2,2,2,1,2,2,1,2,2,2,2,3,23,False,Confidence: 75%
+I043,C,0.85,3,2,3,1,2,3,2,3,2,3,2,2,28,False,Confidence: 85%
+I044,F,0.6,1,2,2,2,1,1,2,2,0,2,1,2,18,False,Confidence: 60%
+I045,A,0.85,3,2,3,3,2,3,2,3,2,3,2,3,31,False,Confidence: 85%
+I046,D,0.85,2,2,2,2,2,3,2,3,3,2,3,3,29,False,Confidence: 85%
+I047,C,0.75,2,2,2,2,2,3,2,2,3,2,3,3,28,False,Confidence: 75%
+I048,C,0.75,2,2,2,1,2,2,2,2,2,2,2,3,24,False,Confidence: 75%
+I049,C,0.75,3,2,1,2,2,2,2,2,2,2,2,2,24,False,Confidence: 75%
+E_TEACH_01,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_02,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_03,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_04,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_05,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_06,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_07,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_08,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_09,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+E_TEACH_10,E,0.68,2,2,2,1,2,2,1,2,3,2,2,2,23,False,"Learning-Focused User: Views AI as teaching tool for deepening understanding, actively reflects on AI explanations, uses AI to explore topics rather than just get answers, learns how AI thinks about problems, improves own thinking through AI interactions"
+F_LAZY_01,F,0.45,1,2,1,0,1,1,1,1,0,1,0,1,10,False,"Lazy Avoidant: Uses AI passively without reviewing outputs, never reflects on quality or mistakes, accepts whatever AI generates, no learning from experience, treats AI as automatic solution provider"
+F_LAZY_02,F,0.45,1,2,1,0,1,1,1,1,0,1,0,1,10,False,"Lazy Avoidant: Uses AI passively without reviewing outputs, never reflects on quality or mistakes, accepts whatever AI generates, no learning from experience, treats AI as automatic solution provider"
+F_LAZY_03,F,0.45,1,2,1,0,1,1,1,1,0,1,0,1,10,False,"Lazy Avoidant: Uses AI passively without reviewing outputs, never reflects on quality or mistakes, accepts whatever AI generates, no learning from experience, treats AI as automatic solution provider"
+F_LAZY_04,F,0.45,1,2,1,0,1,1,1,1,0,1,0,1,10,False,"Lazy Avoidant: Uses AI passively without reviewing outputs, never reflects on quality or mistakes, accepts whatever AI generates, no learning from experience, treats AI as automatic solution provider"
+F_LAZY_05,F,0.45,1,2,1,0,1,1,1,1,0,1,0,1,10,False,"Lazy Avoidant: Uses AI passively without reviewing outputs, never reflects on quality or mistakes, accepts whatever AI generates, no learning from experience, treats AI as automatic solution provider"
+F_NAIVE_01,F,0.4,1,1,0,0,0,0,0,1,0,0,0,1,4,False,"Naive Oversimplifier: Believes AI is infallible and always correct, uses for critical decisions without verification, no awareness of AI hallucinations, never reflects on errors, complete blind trust"
+F_NAIVE_02,F,0.4,1,1,0,0,0,0,0,1,0,0,0,1,4,False,"Naive Oversimplifier: Believes AI is infallible and always correct, uses for critical decisions without verification, no awareness of AI hallucinations, never reflects on errors, complete blind trust"
+F_NAIVE_03,F,0.4,1,1,0,0,0,0,0,1,0,0,0,1,4,False,"Naive Oversimplifier: Believes AI is infallible and always correct, uses for critical decisions without verification, no awareness of AI hallucinations, never reflects on errors, complete blind trust"
+F_NAIVE_04,F,0.4,1,1,0,0,0,0,0,1,0,0,0,1,4,False,"Naive Oversimplifier: Believes AI is infallible and always correct, uses for critical decisions without verification, no awareness of AI hallucinations, never reflects on errors, complete blind trust"
+F_NAIVE_05,F,0.4,1,1,0,0,0,0,0,1,0,0,0,1,4,False,"Naive Oversimplifier: Believes AI is infallible and always correct, uses for critical decisions without verification, no awareness of AI hallucinations, never reflects on errors, complete blind trust"
+F_COST_01,F,0.5,1,2,2,1,1,0,1,1,0,1,0,1,11,False,"Cost-Cutting Sacrificer: Sacrifices quality for cost savings, uses cheapest AI options without quality check, accepts poor outputs to save money, never reflects on reputation damage, willingly cuts corners"
+F_COST_02,F,0.5,1,2,2,1,1,0,1,1,0,1,0,1,11,False,"Cost-Cutting Sacrificer: Sacrifices quality for cost savings, uses cheapest AI options without quality check, accepts poor outputs to save money, never reflects on reputation damage, willingly cuts corners"
+F_COST_03,F,0.5,1,2,2,1,1,0,1,1,0,1,0,1,11,False,"Cost-Cutting Sacrificer: Sacrifices quality for cost savings, uses cheapest AI options without quality check, accepts poor outputs to save money, never reflects on reputation damage, willingly cuts corners"
+F_COST_04,F,0.5,1,2,2,1,1,0,1,1,0,1,0,1,11,False,"Cost-Cutting Sacrificer: Sacrifices quality for cost savings, uses cheapest AI options without quality check, accepts poor outputs to save money, never reflects on reputation damage, willingly cuts corners"
+F_COST_05,F,0.5,1,2,2,1,1,0,1,1,0,1,0,1,11,False,"Cost-Cutting Sacrificer: Sacrifices quality for cost savings, uses cheapest AI options without quality check, accepts poor outputs to save money, never reflects on reputation damage, willingly cuts corners"
+F_DEPEND_01,F,0.55,2,2,1,0,0,1,1,2,0,1,1,3,14,False,"Dependency Denier: Over-relies on AI and loses own skills, unaware of personal capability atrophy, high trust due to lack of self-reflection, no awareness of growing dependency, at risk of sudden incompetence if AI unavailable"
+F_DEPEND_02,F,0.55,2,2,1,0,0,1,1,2,0,1,1,3,14,False,"Dependency Denier: Over-relies on AI and loses own skills, unaware of personal capability atrophy, high trust due to lack of self-reflection, no awareness of growing dependency, at risk of sudden incompetence if AI unavailable"
+F_DEPEND_03,F,0.55,2,2,1,0,0,1,1,2,0,1,1,3,14,False,"Dependency Denier: Over-relies on AI and loses own skills, unaware of personal capability atrophy, high trust due to lack of self-reflection, no awareness of growing dependency, at risk of sudden incompetence if AI unavailable"
+F_DEPEND_04,F,0.55,2,2,1,0,0,1,1,2,0,1,1,3,14,False,"Dependency Denier: Over-relies on AI and loses own skills, unaware of personal capability atrophy, high trust due to lack of self-reflection, no awareness of growing dependency, at risk of sudden incompetence if AI unavailable"
+F_DEPEND_05,F,0.55,2,2,1,0,0,1,1,2,0,1,1,3,14,False,"Dependency Denier: Over-relies on AI and loses own skills, unaware of personal capability atrophy, high trust due to lack of self-reflection, no awareness of growing dependency, at risk of sudden incompetence if AI unavailable"
+B_ITER_01,B,0.75,2,2,1,1,2,2,2,2,2,2,3,2,23,False,"High Iteration Optimizer: Constantly refines prompts through trial-and-error, tests different approaches, adjusts strategy based on results, learns from each iteration, improves through experimentation"
+B_ITER_02,B,0.75,2,2,1,1,2,2,2,2,2,2,3,2,23,False,"High Iteration Optimizer: Constantly refines prompts through trial-and-error, tests different approaches, adjusts strategy based on results, learns from each iteration, improves through experimentation"
+B_ITER_03,B,0.75,2,2,1,1,2,2,2,2,2,2,3,2,23,False,"High Iteration Optimizer: Constantly refines prompts through trial-and-error, tests different approaches, adjusts strategy based on results, learns from each iteration, improves through experimentation"
+B_ITER_04,B,0.75,2,2,1,1,2,2,2,2,2,2,3,2,23,False,"High Iteration Optimizer: Constantly refines prompts through trial-and-error, tests different approaches, adjusts strategy based on results, learns from each iteration, improves through experimentation"
+B_ITER_05,B,0.75,2,2,1,1,2,2,2,2,2,2,3,2,23,False,"High Iteration Optimizer: Constantly refines prompts through trial-and-error, tests different approaches, adjusts strategy based on results, learns from each iteration, improves through experimentation"
+B_ITER_06,B,0.75,2,2,1,1,2,2,2,2,2,2,3,2,23,False,"High Iteration Optimizer: Constantly refines prompts through trial-and-error, tests different approaches, adjusts strategy based on results, learns from each iteration, improves through experimentation"
+B_EVALT_01,B,0.72,2,1,2,1,2,2,1,2,2,2,3,3,23,False,"Iterative with Evaluation: Adjusts strategy based on output quality assessment, iterates to improve results, monitors effectiveness, learns from feedback cycles, cyclical refinement process"
+B_EVALT_02,B,0.72,2,1,2,1,2,2,1,2,2,2,3,3,23,False,"Iterative with Evaluation: Adjusts strategy based on output quality assessment, iterates to improve results, monitors effectiveness, learns from feedback cycles, cyclical refinement process"
+B_EVALT_03,B,0.72,2,1,2,1,2,2,1,2,2,2,3,3,23,False,"Iterative with Evaluation: Adjusts strategy based on output quality assessment, iterates to improve results, monitors effectiveness, learns from feedback cycles, cyclical refinement process"
+B_EVALT_04,B,0.72,2,1,2,1,2,2,1,2,2,2,3,3,23,False,"Iterative with Evaluation: Adjusts strategy based on output quality assessment, iterates to improve results, monitors effectiveness, learns from feedback cycles, cyclical refinement process"
+B_EVALT_05,B,0.72,2,1,2,1,2,2,1,2,2,2,3,3,23,False,"Iterative with Evaluation: Adjusts strategy based on output quality assessment, iterates to improve results, monitors effectiveness, learns from feedback cycles, cyclical refinement process"
+B_CALIB_01,B,0.7,1,2,1,2,2,2,2,2,2,1,3,2,22,False,"Calibration-Focused Optimizer: Adjusts AI interaction style through iteration, calibrates expectations and responses, learns optimal prompting through cycles, improves with repeated interactions, convergence-focused"
+B_CALIB_02,B,0.7,1,2,1,2,2,2,2,2,2,1,3,2,22,False,"Calibration-Focused Optimizer: Adjusts AI interaction style through iteration, calibrates expectations and responses, learns optimal prompting through cycles, improves with repeated interactions, convergence-focused"
+B_CALIB_03,B,0.7,1,2,1,2,2,2,2,2,2,1,3,2,22,False,"Calibration-Focused Optimizer: Adjusts AI interaction style through iteration, calibrates expectations and responses, learns optimal prompting through cycles, improves with repeated interactions, convergence-focused"
+B_CALIB_04,B,0.7,1,2,1,2,2,2,2,2,2,1,3,2,22,False,"Calibration-Focused Optimizer: Adjusts AI interaction style through iteration, calibrates expectations and responses, learns optimal prompting through cycles, improves with repeated interactions, convergence-focused"
+D_VERIF_01,D,0.78,0,1,1,0,3,2,3,3,2,3,2,2,22,False,"Deep Verification: Focuses on checking AI accuracy rather than planning comprehensively, questions outputs thoroughly, verifies facts and claims, critical of AI results, evaluates reasoning quality"
+D_VERIF_02,D,0.78,0,1,1,0,3,2,3,3,2,3,2,2,22,False,"Deep Verification: Focuses on checking AI accuracy rather than planning comprehensively, questions outputs thoroughly, verifies facts and claims, critical of AI results, evaluates reasoning quality"
+D_VERIF_03,D,0.78,0,1,1,0,3,2,3,3,2,3,2,2,22,False,"Deep Verification: Focuses on checking AI accuracy rather than planning comprehensively, questions outputs thoroughly, verifies facts and claims, critical of AI results, evaluates reasoning quality"
+D_VERIF_04,D,0.78,0,1,1,0,3,2,3,3,2,3,2,2,22,False,"Deep Verification: Focuses on checking AI accuracy rather than planning comprehensively, questions outputs thoroughly, verifies facts and claims, critical of AI results, evaluates reasoning quality"
+D_VERIF_05,D,0.78,0,1,1,0,3,2,3,3,2,3,2,2,22,False,"Deep Verification: Focuses on checking AI accuracy rather than planning comprehensively, questions outputs thoroughly, verifies facts and claims, critical of AI results, evaluates reasoning quality"
+D_VERIF_06,D,0.78,0,1,1,0,3,2,3,3,2,3,2,2,22,False,"Deep Verification: Focuses on checking AI accuracy rather than planning comprehensively, questions outputs thoroughly, verifies facts and claims, critical of AI results, evaluates reasoning quality"
+D_CRIT_01,D,0.76,1,0,1,1,3,3,2,3,2,2,2,3,23,False,"Critical Inquiry: Questions AI suggestions without comprehensive planning, challenges assumptions, seeks deeper understanding, scrutinizes logic, skeptical but engaged"
+D_CRIT_02,D,0.76,1,0,1,1,3,3,2,3,2,2,2,3,23,False,"Critical Inquiry: Questions AI suggestions without comprehensive planning, challenges assumptions, seeks deeper understanding, scrutinizes logic, skeptical but engaged"
+D_CRIT_03,D,0.76,1,0,1,1,3,3,2,3,2,2,2,3,23,False,"Critical Inquiry: Questions AI suggestions without comprehensive planning, challenges assumptions, seeks deeper understanding, scrutinizes logic, skeptical but engaged"
+D_CRIT_04,D,0.76,1,0,1,1,3,3,2,3,2,2,2,3,23,False,"Critical Inquiry: Questions AI suggestions without comprehensive planning, challenges assumptions, seeks deeper understanding, scrutinizes logic, skeptical but engaged"
+D_CRIT_05,D,0.76,1,0,1,1,3,3,2,3,2,2,2,3,23,False,"Critical Inquiry: Questions AI suggestions without comprehensive planning, challenges assumptions, seeks deeper understanding, scrutinizes logic, skeptical but engaged"
+D_CRIT_06,D,0.76,1,0,1,1,3,3,2,3,2,2,2,3,23,False,"Critical Inquiry: Questions AI suggestions without comprehensive planning, challenges assumptions, seeks deeper understanding, scrutinizes logic, skeptical but engaged"
+D_MINPL_01,D,0.74,1,1,0,0,2,3,3,3,2,3,1,2,21,False,"Minimal Planning Verifier: Uses AI reactively without upfront planning, focuses on output verification, evaluates results carefully, critical checking without strategic preparation"
+D_MINPL_02,D,0.74,1,1,0,0,2,3,3,3,2,3,1,2,21,False,"Minimal Planning Verifier: Uses AI reactively without upfront planning, focuses on output verification, evaluates results carefully, critical checking without strategic preparation"
+D_MINPL_03,D,0.74,1,1,0,0,2,3,3,3,2,3,1,2,21,False,"Minimal Planning Verifier: Uses AI reactively without upfront planning, focuses on output verification, evaluates results carefully, critical checking without strategic preparation"
