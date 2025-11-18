@@ -181,9 +181,11 @@ const DashboardPage: React.FC = () => {
           </div>
         </div>
       </div>
+      </div>
 
       {/* Charts Section */}
-      <div className="charts-grid">
+      <div style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
+      <div className="charts-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
         {/* Weekly Accuracy Trend */}
         <div className="chart-container">
           <h3>Weekly Accuracy Trend</h3>
@@ -267,9 +269,10 @@ const DashboardPage: React.FC = () => {
           </div>
         </div>
       </div>
+      </div>
 
       {/* Quick Actions */}
-      <div style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
+      <div style={{ paddingLeft: '2rem', paddingRight: '2rem', marginTop: '2rem', marginBottom: '2rem' }}>
         <h2 style={{ margin: '0 0 1.5rem 0', fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>⚡ 快速操作</h2>
         <div style={{
           display: 'grid',
