@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
 import NotificationCenter from '../components/layout/NotificationCenter';
+import NotificationContainer from '../components/notifications/NotificationContainer';
 import { useUIStore } from '../stores/uiStore';
 import useTheme from '../hooks/useTheme';
 
@@ -26,6 +27,9 @@ const MainLayout: React.FC = () => {
         </main>
       </div>
       <NotificationCenter />
+
+      {/* Floating Notifications */}
+      <NotificationContainer />
     </div>
   );
 };
