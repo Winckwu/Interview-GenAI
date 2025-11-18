@@ -49,54 +49,63 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   error: null,
 
   /**
-   * Load recent sessions from API
-   * Filters to only show sessions with valid interactions
+   * Load recent sessions from API with interactions
+   * Optimized: Single API call with includeInteractions=true to avoid N+1 queries
    */
   loadSessions: async () => {
     set({ sessionsLoading: true, error: null });
     try {
-      const response = await api.get('/sessions', { params: { limit: 50, offset: 0 } });
+      // Request sessions with interactions in single call (no N+1 problem)
+      const response = await api.get('/sessions', {
+        params: {
+          limit: 50,
+          offset: 0,
+          includeInteractions: true, // Request interactions in single call
+        }
+      });
+
       if (response.data.data && response.data.data.sessions) {
         // Remove duplicate sessions by ID
         const uniqueSessions = Array.from(
-          new Map(response.data.data.sessions.map((session: SessionItem) => [session.id, session])).values()
-        ) as SessionItem[];
+          new Map(response.data.data.sessions.map((session: any) => [session.id, session])).values()
+        ) as any[];
 
-        // Filter sessions that have valid interactions (with actual content)
-        const sessionsWithContent = await Promise.all(
-          uniqueSessions.map(async (session) => {
-            try {
-              const interactionsResponse = await api.get('/interactions', {
-                params: { sessionId: session.id },
-              });
-              const interactions = interactionsResponse.data.data.interactions || [];
-              // Check if session has at least one valid interaction with both user prompt and AI response
-              const validInteractions = interactions.filter(
-                (interaction: any) =>
-                  interaction.userPrompt && interaction.aiResponse && interaction.sessionId === session.id
-              );
+        // Filter sessions that have valid interactions
+        const filteredSessions = uniqueSessions
+          .map((session: any) => {
+            // Interactions already loaded from single API call
+            const interactions = session.interactions || [];
 
-              if (validInteractions.length > 0) {
-                // Use the first user prompt as the session title (truncate to 50 chars)
-                const firstPrompt = validInteractions[0].userPrompt;
-                const title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
-                return {
-                  ...session,
-                  taskDescription: title,
-                };
-              }
-              return null;
-            } catch (err) {
-              console.error(`Failed to load interactions for session ${session.id}:`, err);
-              return null;
+            // Check if session has at least one valid interaction
+            const validInteractions = interactions.filter(
+              (interaction: any) =>
+                interaction.userPrompt && interaction.aiResponse
+            );
+
+            if (validInteractions.length > 0) {
+              // Use the first user prompt as the session title (truncate to 50 chars)
+              const firstPrompt = validInteractions[0].userPrompt;
+              const title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
+              return {
+                id: session.id,
+                taskDescription: title,
+                taskType: session.taskType || 'general',
+                createdAt: session.createdAt,
+                startedAt: session.startedAt,
+                endedAt: session.endedAt,
+              };
             }
+            return null;
           })
+          .filter((s: any) => s !== null)
+          .slice(0, 10) as SessionItem[];
+
+        // Sort by date descending (newest first)
+        filteredSessions.sort((a, b) =>
+          new Date(b.startedAt || b.createdAt).getTime() -
+          new Date(a.startedAt || a.createdAt).getTime()
         );
 
-        // Filter out null values and limit to 10
-        const filteredSessions = sessionsWithContent.filter((s) => s !== null).slice(0, 10) as SessionItem[];
-        // Sort by date descending (newest first)
-        filteredSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
         set({ sessions: filteredSessions });
       }
     } catch (err: any) {

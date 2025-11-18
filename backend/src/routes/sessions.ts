@@ -70,7 +70,8 @@ router.get(
 
 /**
  * GET /api/sessions
- * Get user's sessions
+ * Get user's sessions with optional interactions
+ * Query param: includeInteractions=true to avoid N+1 queries
  */
 router.get(
   '/',
@@ -79,12 +80,30 @@ router.get(
     const userId = (req as any).userId;
     const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
     const offset = parseInt(req.query.offset as string) || 0;
+    const includeInteractions = req.query.includeInteractions === 'true';
 
     const sessions = await SessionService.getUserSessions(userId, limit, offset);
 
+    let responseData: any = sessions;
+
+    // If interactions requested, fetch them for all sessions
+    if (includeInteractions) {
+      responseData = {
+        sessions: await Promise.all(
+          sessions.map(async (session: any) => ({
+            ...session,
+            interactions: await SessionService.getSessionInteractions(session.id, 100),
+          }))
+        ),
+      };
+    } else {
+      // Standard response format
+      responseData = { sessions };
+    }
+
     res.json({
       success: true,
-      data: sessions,
+      data: responseData,
       pagination: { limit, offset, count: sessions.length },
       timestamp: new Date().toISOString(),
     });
