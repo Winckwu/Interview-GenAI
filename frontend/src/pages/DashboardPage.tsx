@@ -7,9 +7,18 @@ import { useUIStore } from '../stores/uiStore';
 import api from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
+interface SessionItem {
+  id: string;
+  taskDescription: string;
+  taskType: string;
+  createdAt: string;
+  startedAt: string;
+  endedAt?: string;
+}
+
 /**
  * Dashboard Page
- * Main dashboard showing overview of AI usage patterns and system metrics
+ * Main dashboard showing overview of AI usage patterns, system metrics, and recent conversations
  */
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -17,6 +26,8 @@ const DashboardPage: React.FC = () => {
   const { patterns, predictions, evolutions, loading, fetchPatterns, fetchPredictions, fetchEvolutions } = usePatternStore();
   const [creatingSession, setCreatingSession] = useState(false);
   const [sessionError, setSessionError] = useState<string | null>(null);
+  const [sessions, setSessions] = useState<SessionItem[]>([]);
+  const [sessionsLoading, setSessionsLoading] = useState(false);
 
   // Handle start new session
   const handleStartSession = async () => {
@@ -37,6 +48,31 @@ const DashboardPage: React.FC = () => {
       setCreatingSession(false);
     }
   };
+
+  // Load recent sessions
+  useEffect(() => {
+    const loadSessions = async () => {
+      setSessionsLoading(true);
+      try {
+        const response = await api.get('/sessions', { params: { limit: 10, offset: 0 } });
+        if (response.data.data && response.data.data.sessions) {
+          // Remove duplicate sessions by ID and sort by date
+          const uniqueSessions = Array.from(
+            new Map(response.data.data.sessions.map((session: SessionItem) => [session.id, session])).values()
+          ) as SessionItem[];
+          // Sort by date descending (newest first)
+          uniqueSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
+          setSessions(uniqueSessions);
+        }
+      } catch (err: any) {
+        console.error('Failed to load sessions:', err);
+      } finally {
+        setSessionsLoading(false);
+      }
+    };
+
+    loadSessions();
+  }, []);
 
   useEffect(() => {
     // Fetch initial data
@@ -184,6 +220,121 @@ const DashboardPage: React.FC = () => {
           </div>
           <div className="metric-description">Profile classification</div>
         </div>
+      </div>
+
+      {/* Recent Conversations Section */}
+      <div style={{ marginBottom: '2rem' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem', color: '#1f2937' }}>
+          Recent Conversations
+        </h2>
+        <div style={{
+          backgroundColor: '#fff',
+          borderRadius: '0.75rem',
+          border: '1px solid #e5e7eb',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+          overflow: 'hidden',
+        }}>
+          {sessionsLoading ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>
+              Loading conversations...
+            </div>
+          ) : sessions.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>
+              <p>No conversations yet. Start your first chat!</p>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '0' }}>
+              {sessions.map((session, index) => (
+                <button
+                  key={session.id}
+                  onClick={() => navigate(`/session/${session.id}`)}
+                  style={{
+                    padding: '1.5rem',
+                    border: index % 2 === 0 ? '1px solid #e5e7eb' : '1px solid #e5e7eb',
+                    borderBottom: '1px solid #e5e7eb',
+                    borderRight: index % 2 === 0 ? '1px solid #e5e7eb' : 'none',
+                    background: '#fff',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.5rem',
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = '#f9fafb';
+                    e.currentTarget.style.borderColor = '#3b82f6';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = '#fff';
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                  }}
+                >
+                  <div style={{
+                    fontSize: '0.95rem',
+                    fontWeight: '600',
+                    color: '#1f2937',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {session.taskDescription}
+                  </div>
+                  <div style={{
+                    fontSize: '0.75rem',
+                    color: '#6b7280',
+                    display: 'flex',
+                    gap: '0.5rem',
+                    alignItems: 'center',
+                  }}>
+                    <span>📅</span>
+                    <span>
+                      {new Date(session.startedAt || session.createdAt).toLocaleDateString([], {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </span>
+                  </div>
+                  <div style={{
+                    fontSize: '0.75rem',
+                    color: '#9ca3af',
+                    textTransform: 'capitalize',
+                  }}>
+                    Type: {session.taskType}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        {sessions.length > 0 && (
+          <div style={{ marginTop: '1rem', textAlign: 'right' }}>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/sessions');
+              }}
+              style={{
+                fontSize: '0.875rem',
+                color: '#3b82f6',
+                textDecoration: 'none',
+                fontWeight: '500',
+                transition: 'color 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#2563eb';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#3b82f6';
+              }}
+            >
+              View All Conversations →
+            </a>
+          </div>
+        )}
       </div>
 
       {/* Charts Section */}
