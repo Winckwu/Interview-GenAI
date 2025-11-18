@@ -40,6 +40,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       visible: true,
     },
     {
+      label: 'Metacognitive Assessment',
+      path: '/assessment',
+      icon: 'assessment',
+      visible: true,
+    },
+    {
       label: 'A/B Testing',
       path: '/ab-test',
       icon: 'abtest',
@@ -81,6 +87,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
           <circle cx="5" cy="5" r="1" />
           <circle cx="12" cy="12" r="1" />
           <circle cx="19" cy="19" r="1" />
+        </svg>
+      ),
+      assessment: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M9 11l3 3L22 4" />
+          <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
       abtest: (

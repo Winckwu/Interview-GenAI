@@ -12,6 +12,7 @@ import ChatSessionPage from './pages/ChatSessionPage';
 import PatternsPage from './pages/PatternsPage';
 import PredictionsPage from './pages/PredictionsPage';
 import EvolutionTrackingPage from './pages/EvolutionTrackingPage';
+import MetacognitiveAssessmentPage from './pages/MetacognitiveAssessmentPage';
 // import ABTestPage from './pages/ABTestPage'; // Hidden - not yet implemented
 import AdminPage from './pages/AdminPage';
 import SettingsPage from './pages/SettingsPage';
@@ -98,6 +99,7 @@ const App: React.FC = () => {
           <Route path="/patterns" element={<PatternsPage />} />
           <Route path="/predictions" element={<PredictionsPage />} />
           <Route path="/evolution" element={<EvolutionTrackingPage />} />
+          <Route path="/assessment" element={<MetacognitiveAssessmentPage />} />
           {/* <Route path="/ab-test" element={<ABTestPage />} /> */} {/* Hidden - not yet implemented */}
 
           {/* Admin */}

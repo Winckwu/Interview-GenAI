@@ -7,6 +7,7 @@ import { useUIStore } from '../stores/uiStore';
 import { useSessionStore } from '../stores/sessionStore';
 import api from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import PatternSupportPanel from '../components/PatternSupport/PatternSupportPanel';
 
 import type { SessionItem } from '../stores/sessionStore';
 
@@ -275,6 +276,9 @@ const DashboardPage: React.FC = () => {
           <div className="metric-description">Profile classification</div>
         </div>
       </div>
+
+      {/* Pattern Support & Interventions */}
+      <PatternSupportPanel />
 
       {/* Recent Conversations Section */}
       <div style={{ marginBottom: '2rem' }}>
