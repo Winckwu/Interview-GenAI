@@ -11,6 +11,19 @@ interface PatternInfo {
   descriptions: { [key: string]: string };
 }
 
+interface AssessmentResult {
+  id: string;
+  planningScore: number;
+  monitoringScore: number;
+  evaluationScore: number;
+  regulationScore: number;
+  overallScore: number;
+  strengths: string[];
+  areasForGrowth: string[];
+  recommendations: string[];
+  createdAt: string;
+}
+
 /**
  * PatternSupportPanel Component
  * Displays the three core system services:
@@ -23,6 +36,8 @@ const PatternSupportPanel: React.FC = () => {
   const { user } = useAuthStore();
   const { patterns, loading } = usePatternStore();
   const [patternInfo, setPatternInfo] = useState<PatternInfo | null>(null);
+  const [assessment, setAssessment] = useState<AssessmentResult | null>(null);
+  const [assessmentLoading, setAssessmentLoading] = useState(false);
 
   // Get the most recent pattern
   useEffect(() => {
@@ -43,6 +58,28 @@ const PatternSupportPanel: React.FC = () => {
       });
     }
   }, [patterns]);
+
+  // Load the most recent assessment result
+  useEffect(() => {
+    const loadAssessment = async () => {
+      if (!user?.id) return;
+
+      setAssessmentLoading(true);
+      try {
+        const response = await api.get(`/assessments/${user.id}/latest`);
+        if (response.data.data.assessment) {
+          setAssessment(response.data.data.assessment);
+        }
+      } catch (err) {
+        console.error('Failed to load assessment:', err);
+        // Silently fail - assessment is optional
+      } finally {
+        setAssessmentLoading(false);
+      }
+    };
+
+    loadAssessment();
+  }, [user?.id]);
 
   const getPatternColor = (pattern: string): string => {
     const colors: { [key: string]: string } = {
@@ -246,31 +283,163 @@ const PatternSupportPanel: React.FC = () => {
         <h3 style={{ margin: '0 0 0.5rem 0', color: '#0c4a6e', fontSize: '1rem' }}>
           Core Service #3: Metacognitive Assessment Tool (MR19)
         </h3>
-        <p style={{ margin: '0 0 1rem 0', color: '#1f2937', fontSize: '0.875rem', lineHeight: '1.5' }}>
-          Diagnose your metacognitive capabilities across 4 dimensions: <strong>Planning</strong>, <strong>Monitoring</strong>, <strong>Evaluation</strong>, and <strong>Regulation</strong>.
-        </p>
-        <div style={{
-          padding: '1rem',
-          backgroundColor: '#fff',
-          borderRadius: '6px',
-          border: '1px solid #0284c7',
-          fontSize: '0.875rem',
-          color: '#1f2937',
-          lineHeight: '1.6',
-          marginBottom: '1rem',
-        }}>
-          <p style={{ margin: '0 0 0.75rem 0', fontWeight: '500' }}>
-            📊 <strong>What MR19 Does:</strong>
-          </p>
-          <ul style={{ margin: '0', paddingLeft: '1.25rem' }}>
-            <li><strong>Analyzes</strong> your interaction patterns to assess metacognitive dimensions</li>
-            <li><strong>Diagnoses</strong> your strengths and areas for improvement</li>
-            <li><strong>Recommends</strong> specific interventions tailored to your profile</li>
-            <li><strong>Tracks</strong> your metacognitive growth over time</li>
-          </ul>
-        </div>
+
+        {assessment && !assessmentLoading ? (
+          // Show assessment results
+          <div style={{
+            padding: '1rem',
+            backgroundColor: '#fff',
+            borderRadius: '6px',
+            border: '1px solid #0284c7',
+            marginBottom: '1rem',
+          }}>
+            <p style={{ margin: '0 0 0.75rem 0', fontWeight: '600', color: '#0c4a6e', fontSize: '0.9rem' }}>
+              📊 Your Assessment Results
+            </p>
+
+            {/* Scores Grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '0.75rem',
+              marginBottom: '1rem',
+            }}>
+              {[
+                { label: 'Planning', score: assessment.planningScore, icon: '📐' },
+                { label: 'Monitoring', score: assessment.monitoringScore, icon: '👁️' },
+                { label: 'Evaluation', score: assessment.evaluationScore, icon: '⚖️' },
+                { label: 'Regulation', score: assessment.regulationScore, icon: '🔄' },
+              ].map((dim) => (
+                <div key={dim.label} style={{
+                  padding: '0.5rem',
+                  backgroundColor: '#f9fafb',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                }}>
+                  <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>
+                    {dim.icon} {dim.label}
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                  }}>
+                    <div style={{
+                      flex: 1,
+                      height: '6px',
+                      backgroundColor: '#e5e7eb',
+                      borderRadius: '3px',
+                      overflow: 'hidden',
+                    }}>
+                      <div style={{
+                        height: '100%',
+                        width: `${dim.score * 100}%`,
+                        backgroundColor: '#0284c7',
+                        transition: 'width 0.3s ease',
+                      }} />
+                    </div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#0284c7', minWidth: '30px' }}>
+                      {(dim.score * 100).toFixed(0)}%
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Overall Score */}
+            <div style={{
+              padding: '0.75rem',
+              backgroundColor: '#f0f9ff',
+              borderRadius: '4px',
+              marginBottom: '0.75rem',
+              borderLeft: '3px solid #0284c7',
+            }}>
+              <div style={{ fontSize: '0.75rem', color: '#0c4a6e', fontWeight: '600' }}>OVERALL SCORE</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#0284c7' }}>
+                {(assessment.overallScore * 100).toFixed(0)}%
+              </div>
+            </div>
+
+            {/* Strengths */}
+            {assessment.strengths && assessment.strengths.length > 0 && (
+              <div style={{ marginBottom: '0.75rem' }}>
+                <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.8rem', fontWeight: '600', color: '#10b981' }}>
+                  ✓ Strengths
+                </p>
+                <ul style={{
+                  margin: '0',
+                  paddingLeft: '1.25rem',
+                  fontSize: '0.8rem',
+                  color: '#1f2937',
+                }}>
+                  {assessment.strengths.map((s, idx) => (
+                    <li key={idx} style={{ marginBottom: '0.25rem' }}>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Areas for Growth */}
+            {assessment.areasForGrowth && assessment.areasForGrowth.length > 0 && (
+              <div>
+                <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.8rem', fontWeight: '600', color: '#f59e0b' }}>
+                  ⚡ Areas for Growth
+                </p>
+                <ul style={{
+                  margin: '0',
+                  paddingLeft: '1.25rem',
+                  fontSize: '0.8rem',
+                  color: '#1f2937',
+                }}>
+                  {assessment.areasForGrowth.map((a, idx) => (
+                    <li key={idx} style={{ marginBottom: '0.25rem' }}>{a}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div style={{
+              marginTop: '1rem',
+              paddingTop: '0.75rem',
+              borderTop: '1px solid #e5e7eb',
+              fontSize: '0.75rem',
+              color: '#6b7280',
+            }}>
+              📅 Completed on {new Date(assessment.createdAt).toLocaleDateString()}
+            </div>
+          </div>
+        ) : (
+          // Show prompt to take assessment
+          <>
+            <p style={{ margin: '0 0 1rem 0', color: '#1f2937', fontSize: '0.875rem', lineHeight: '1.5' }}>
+              Diagnose your metacognitive capabilities across 4 dimensions: <strong>Planning</strong>, <strong>Monitoring</strong>, <strong>Evaluation</strong>, and <strong>Regulation</strong>.
+            </p>
+            <div style={{
+              padding: '1rem',
+              backgroundColor: '#fff',
+              borderRadius: '6px',
+              border: '1px solid #0284c7',
+              fontSize: '0.875rem',
+              color: '#1f2937',
+              lineHeight: '1.6',
+              marginBottom: '1rem',
+            }}>
+              <p style={{ margin: '0 0 0.75rem 0', fontWeight: '500' }}>
+                📊 <strong>What MR19 Does:</strong>
+              </p>
+              <ul style={{ margin: '0', paddingLeft: '1.25rem' }}>
+                <li><strong>Analyzes</strong> your interaction patterns to assess metacognitive dimensions</li>
+                <li><strong>Diagnoses</strong> your strengths and areas for improvement</li>
+                <li><strong>Recommends</strong> specific interventions tailored to your profile</li>
+                <li><strong>Tracks</strong> your metacognitive growth over time</li>
+              </ul>
+            </div>
+          </>
+        )}
+
         <button
           onClick={() => navigate('/assessment')}
+          disabled={assessmentLoading}
           style={{
             padding: '0.75rem 1.5rem',
             backgroundColor: '#0284c7',
@@ -278,21 +447,26 @@ const PatternSupportPanel: React.FC = () => {
             border: 'none',
             borderRadius: '6px',
             fontWeight: '600',
-            cursor: 'pointer',
+            cursor: assessmentLoading ? 'not-allowed' : 'pointer',
             fontSize: '0.875rem',
             transition: 'all 200ms ease',
             boxShadow: '0 2px 8px rgba(2, 132, 199, 0.3)',
+            opacity: assessmentLoading ? 0.7 : 1,
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#0369a1';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(2, 132, 199, 0.4)';
+            if (!assessmentLoading) {
+              e.currentTarget.style.backgroundColor = '#0369a1';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(2, 132, 199, 0.4)';
+            }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#0284c7';
-            e.currentTarget.style.boxShadow = '0 2px 8px rgba(2, 132, 199, 0.3)';
+            if (!assessmentLoading) {
+              e.currentTarget.style.backgroundColor = '#0284c7';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(2, 132, 199, 0.3)';
+            }
           }}
         >
-          🎯 Take Metacognitive Assessment
+          {assessmentLoading ? '⏳ Loading...' : assessment ? '✓ Retake Assessment' : '🎯 Take Metacognitive Assessment'}
         </button>
       </div>
     </div>

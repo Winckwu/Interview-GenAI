@@ -52,7 +52,10 @@ const MetacognitiveAssessmentPage: React.FC = () => {
   };
 
   const handleReturnToDashboard = () => {
-    navigate('/dashboard');
+    // Add a small delay to ensure backend has processed the save
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 500);
   };
 
   return (
