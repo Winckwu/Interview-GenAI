@@ -39,24 +39,61 @@ const ChatSessionPage: React.FC = () => {
 
   // Session metadata
   const [sessionData, setSessionData] = useState<any>(null);
+  // Track which message is being updated
+  const [updatingMessageId, setUpdatingMessageId] = useState<string | null>(null);
 
-  // Load session data on mount
+  // Load session data and previous interactions on mount
   useEffect(() => {
     if (!sessionId) {
       navigate('/dashboard');
       return;
     }
 
-    const loadSession = async () => {
+    const loadSessionAndHistory = async () => {
       try {
-        const response = await api.get(`/sessions/${sessionId}`);
-        setSessionData(response.data.data.session);
+        // Load session data
+        const sessionResponse = await api.get(`/sessions/${sessionId}`);
+        setSessionData(sessionResponse.data.data.session);
+
+        // Load previous interactions/messages from this session
+        const interactionsResponse = await api.get('/interactions', {
+          params: { sessionId },
+        });
+
+        if (interactionsResponse.data.data.interactions && interactionsResponse.data.data.interactions.length > 0) {
+          // Convert interactions to messages
+          const previousMessages: Message[] = [];
+          for (const interaction of interactionsResponse.data.data.interactions) {
+            // Add user message
+            previousMessages.push({
+              id: `user-${interaction.id}`,
+              role: 'user',
+              content: interaction.userPrompt,
+              timestamp: interaction.createdAt,
+            });
+
+            // Add AI message
+            previousMessages.push({
+              id: interaction.id,
+              role: 'ai',
+              content: interaction.aiResponse,
+              timestamp: interaction.createdAt,
+              wasVerified: interaction.wasVerified,
+              wasModified: interaction.wasModified,
+              wasRejected: interaction.wasRejected,
+            });
+          }
+          // Sort chronologically (oldest first)
+          previousMessages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+          setMessages(previousMessages);
+        }
       } catch (err: any) {
+        console.error('Failed to load session:', err);
         setError(err.response?.data?.error || 'Failed to load session');
       }
     };
 
-    loadSession();
+    loadSessionAndHistory();
   }, [sessionId, navigate]);
 
   /**
@@ -148,15 +185,27 @@ const ChatSessionPage: React.FC = () => {
    * Mark interaction as verified
    */
   const markAsVerified = async (messageId: string) => {
+    setUpdatingMessageId(messageId);
     try {
-      await api.patch(`/interactions/${messageId}`, { wasVerified: true });
+      const response = await api.patch(`/interactions/${messageId}`, { wasVerified: true });
+      const updatedInteraction = response.data.data.interaction;
+
       setMessages((prev) =>
         prev.map((msg) =>
-          msg.id === messageId ? { ...msg, wasVerified: true } : msg
+          msg.id === messageId
+            ? { ...msg, wasVerified: updatedInteraction.wasVerified }
+            : msg
         )
       );
+
+      // Show success briefly
+      setError(null);
     } catch (err: any) {
-      setError('Failed to mark as verified');
+      console.error('Verification error:', err);
+      const errorMsg = err.response?.data?.error || 'Failed to mark as verified';
+      setError(errorMsg);
+    } finally {
+      setUpdatingMessageId(null);
     }
   };
 
@@ -164,15 +213,27 @@ const ChatSessionPage: React.FC = () => {
    * Mark interaction as modified
    */
   const markAsModified = async (messageId: string) => {
+    setUpdatingMessageId(messageId);
     try {
-      await api.patch(`/interactions/${messageId}`, { wasModified: true });
+      const response = await api.patch(`/interactions/${messageId}`, { wasModified: true });
+      const updatedInteraction = response.data.data.interaction;
+
       setMessages((prev) =>
         prev.map((msg) =>
-          msg.id === messageId ? { ...msg, wasModified: true } : msg
+          msg.id === messageId
+            ? { ...msg, wasModified: updatedInteraction.wasModified }
+            : msg
         )
       );
+
+      // Show success briefly
+      setError(null);
     } catch (err: any) {
-      setError('Failed to mark as modified');
+      console.error('Modification error:', err);
+      const errorMsg = err.response?.data?.error || 'Failed to mark as modified';
+      setError(errorMsg);
+    } finally {
+      setUpdatingMessageId(null);
     }
   };
 
@@ -349,6 +410,7 @@ const ChatSessionPage: React.FC = () => {
                 <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
                   <button
                     onClick={() => markAsVerified(message.id)}
+                    disabled={updatingMessageId === message.id}
                     style={{
                       fontSize: '0.75rem',
                       padding: '0.25rem 0.5rem',
@@ -356,13 +418,15 @@ const ChatSessionPage: React.FC = () => {
                       color: message.wasVerified ? '#fff' : 'currentColor',
                       border: 'none',
                       borderRadius: '0.25rem',
-                      cursor: 'pointer',
+                      cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
+                      opacity: updatingMessageId === message.id ? 0.6 : 1,
                     }}
                   >
-                    {message.wasVerified ? '✓ Verified' : 'Verify'}
+                    {updatingMessageId === message.id ? '⏳ Saving...' : message.wasVerified ? '✓ Verified' : 'Verify'}
                   </button>
                   <button
                     onClick={() => markAsModified(message.id)}
+                    disabled={updatingMessageId === message.id}
                     style={{
                       fontSize: '0.75rem',
                       padding: '0.25rem 0.5rem',
@@ -370,10 +434,11 @@ const ChatSessionPage: React.FC = () => {
                       color: message.wasModified ? '#fff' : 'currentColor',
                       border: 'none',
                       borderRadius: '0.25rem',
-                      cursor: 'pointer',
+                      cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
+                      opacity: updatingMessageId === message.id ? 0.6 : 1,
                     }}
                   >
-                    {message.wasModified ? '✎ Modified' : 'Modify'}
+                    {updatingMessageId === message.id ? '⏳ Saving...' : message.wasModified ? '✎ Modified' : 'Modify'}
                   </button>
                 </div>
               )}
