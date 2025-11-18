@@ -255,46 +255,46 @@ export class AdaptiveMRActivator {
     // MR1: Task Decomposition
     if (rule.mrId === 'MR1') {
       if (topPattern === 'F') {
-        return '我注意到你直接要求了完整的解决方案。不如我们先把任务分解成几个小步骤？这样能帮你更好地理解过程。';
+        return 'I notice you\'re asking for a complete solution. Consider breaking this down into smaller steps first. This helps you better understand the process.';
       } else if (signals.taskComplexity > 2) {
-        return '这个任务看起来比较复杂。要不要试试用任务分解工具规划一下步骤？';
+        return 'This task looks complex. Would you like to use task decomposition to plan the steps?';
       }
-      return '建议先分解任务，会更容易管理。';
+      return 'Breaking down the task first makes it easier to manage.';
     }
 
     // MR3: Human Agency Control
     if (rule.mrId === 'MR3') {
-      return '记得明确哪些部分你自己负责，哪些部分AI辅助。这样能帮你保持对工作的掌控。';
+      return 'Remember to clarify which parts you handle and which AI assists with. This helps you maintain control of your work.';
     }
 
     // MR11: Verification Tools
     if (rule.mrId === 'MR11') {
       if (topPattern === 'F') {
-        return '在使用这个输出前，强烈建议先验证一下关键内容。我已准备了验证工具供你使用。';
+        return '⚠️ Before using this output, I strongly recommend verifying the key content. I\'ve prepared verification tools for you.';
       }
-      return '在使用这个输出前，建议先验证一下关键内容。我已准备了验证工具。';
+      return 'Before using this output, I recommend verifying the key content. Verification tools are available.';
     }
 
     // MR13: Uncertainty
     if (rule.mrId === 'MR13') {
-      return '注意：以下部分的置信度可能不够高，建议核实。';
+      return 'Note: Some parts may have lower confidence. I recommend verifying this information.';
     }
 
     // MR16: Skill Degradation
     if (rule.mrId === 'MR16') {
       if (signals.iterationCount === 0) {
-        return '我注意到你接受AI输出后没有进行修改或迭代。为了保持你的技能，建议至少进行一些独立的修改或验证。';
+        return 'I notice you\'re accepting AI outputs without making modifications or iterations. To maintain your skills, try making some independent changes or verification.';
       }
-      return '请注意保持对工作的掌控，避免过度依赖AI。建议多进行一些独立的思考和验证。';
+      return 'Remember to maintain control of your work and avoid over-relying on AI. I recommend more independent thinking and verification.';
     }
 
     // MR18: Over-reliance Warning
     if (rule.mrId === 'MR18') {
-      return '⚠️ 警告：我检测到你正在过度依赖AI。这可能会影响你的技能发展。建议：\n' +
-             '1. 先尝试自己解决问题\n' +
-             '2. 验证AI输出的准确性\n' +
-             '3. 定期不使用AI完成任务\n' +
-             '继续之前，请确认你已理解风险。';
+      return '⚠️ CRITICAL: Over-reliance on AI detected. This may impact your skill development. I recommend:\n' +
+             '1. Try solving problems yourself first\n' +
+             '2. Verify AI output accuracy\n' +
+             '3. Regularly complete tasks without AI\n' +
+             'Please confirm you understand the risks before continuing.';
     }
 
     return rule.description;

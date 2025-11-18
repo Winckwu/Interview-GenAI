@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../stores/authStore';
 import { useUIStore } from '../stores/uiStore';
+import api from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import './DataBrowserPage.css';
 
 /**
  * Data Browser Page
@@ -18,40 +20,47 @@ const DataBrowserPage: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      let endpoint = '';
+      let response;
       switch (activeTab) {
         case 'sessions':
-          endpoint = '/api/sessions';
+          response = await api.get('/sessions');
           break;
         case 'interactions':
-          endpoint = '/api/interactions';
+          response = await api.get('/interactions');
           break;
         case 'patterns':
-          endpoint = '/api/patterns/trends/current';
+          response = await api.get('/patterns/trends/current');
           break;
         case 'assessments':
-          endpoint = `/api/assessments/${user?.id}`;
+          response = await api.get(`/assessments/${user?.id}`);
           break;
+        default:
+          setData([]);
+          return;
       }
 
-      const response = await fetch(endpoint, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      // Handle both array and object responses
+      const result = response.data;
+      let dataArray = [];
 
-      if (response.ok) {
-        const result = await response.json();
-        // Handle both array and object responses
-        const dataArray = Array.isArray(result) ? result : (result.data || result.sessions || result.interactions || []);
-        setData(dataArray);
-      } else {
-        addNotification('Failed to fetch data', 'error');
-        setData([]);
+      if (Array.isArray(result)) {
+        dataArray = result;
+      } else if (result.data && Array.isArray(result.data)) {
+        dataArray = result.data;
+      } else if (result.sessions && Array.isArray(result.sessions)) {
+        dataArray = result.sessions;
+      } else if (result.interactions && Array.isArray(result.interactions)) {
+        dataArray = result.interactions;
+      } else if (result.patterns && Array.isArray(result.patterns)) {
+        dataArray = result.patterns;
+      } else if (result.assessments && Array.isArray(result.assessments)) {
+        dataArray = result.assessments;
       }
-    } catch (err) {
+
+      setData(dataArray);
+    } catch (err: any) {
       console.error('Error fetching data:', err);
-      addNotification('Error fetching data', 'error');
+      addNotification(`Failed to fetch ${activeTab}: ${err.response?.data?.error || err.message}`, 'error');
       setData([]);
     } finally {
       setLoading(false);
@@ -99,20 +108,15 @@ const DataBrowserPage: React.FC = () => {
 
   const renderInteractionData = () => {
     if (data.length === 0) {
-      return <div style={{ padding: '2rem', textAlign: 'center', color: '#999' }}>No interactions found</div>;
+      return <div className="empty-state">No interactions found</div>;
     }
 
     return (
-      <div className="interactions-container" style={{ display: 'grid', gap: '1.5rem' }}>
+      <div className="interactions-container">
         {data.map((interaction: any) => (
           <div
             key={interaction.id}
-            style={{
-              border: '1px solid #e5e7eb',
-              borderRadius: '0.5rem',
-              padding: '1.5rem',
-              backgroundColor: '#f9fafb',
-            }}
+            className="interaction-card"
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <div>
@@ -301,37 +305,12 @@ const DataBrowserPage: React.FC = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div style={{
-        display: 'flex',
-        gap: '1rem',
-        borderBottom: '2px solid #e5e7eb',
-        marginBottom: '2rem',
-      }}>
+      <div className="tab-nav">
         {(['sessions', 'interactions', 'patterns', 'assessments'] as const).map((tab) => (
           <button
             key={tab}
+            className={`${activeTab === tab ? 'active' : ''}`}
             onClick={() => setActiveTab(tab)}
-            style={{
-              padding: '0.75rem 1.5rem',
-              backgroundColor: activeTab === tab ? '#3b82f6' : 'transparent',
-              color: activeTab === tab ? '#fff' : '#6b7280',
-              border: 'none',
-              borderBottom: activeTab === tab ? '3px solid #3b82f6' : 'none',
-              cursor: 'pointer',
-              fontSize: '0.95rem',
-              fontWeight: activeTab === tab ? '600' : '500',
-              transition: 'all 0.2s',
-            }}
-            onMouseOver={(e) => {
-              if (activeTab !== tab) {
-                (e.currentTarget as HTMLButtonElement).style.color = '#1f2937';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (activeTab !== tab) {
-                (e.currentTarget as HTMLButtonElement).style.color = '#6b7280';
-              }
-            }}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </button>
