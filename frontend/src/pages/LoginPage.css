@@ -8,8 +8,6 @@
 
 .login-page {
   min-height: 100vh;
-  width: 75vw;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -305,7 +303,6 @@
 
 @media (max-width: 768px) {
   .login-page {
-    width: 90vw;
     padding: var(--sp-3);
   }
 
@@ -329,10 +326,6 @@
 }
 
 @media (max-width: 480px) {
-  .login-page {
-    width: 100vw;
-  }
-
   .auth-card {
     padding: var(--sp-4);
   }
