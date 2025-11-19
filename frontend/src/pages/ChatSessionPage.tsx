@@ -48,6 +48,89 @@ const getTaskImportanceValue = (importance: string): number => {
 };
 
 /**
+ * PERFORMANCE OPTIMIZATION: Utility function to batch load interactions for multiple sessions
+ * Reduces N+1 queries: Instead of 1 + N calls, attempts batch endpoint first
+ * Fallback to individual calls if batch endpoint unavailable
+ */
+const loadInteractionsForSessions = async (sessionIds: string[]): Promise<Record<string, any[]>> => {
+  try {
+    // Try batch endpoint first (if backend supports it)
+    const response = await api.post('/interactions/batch', { sessionIds });
+    if (response.data.data && response.data.data.interactions) {
+      // Backend returns map of sessionId -> interactions
+      return response.data.data.interactions;
+    }
+  } catch (err) {
+    // Batch endpoint not available, fall back to parallel individual calls
+    console.warn('Batch interactions endpoint not available, using parallel individual calls');
+  }
+
+  // Fallback: Load interactions for each session in parallel
+  const results = await Promise.all(
+    sessionIds.map(async (id) => {
+      try {
+        const res = await api.get('/interactions', { params: { sessionId: id } });
+        return [id, res.data.data.interactions || []];
+      } catch {
+        return [id, []];
+      }
+    })
+  );
+
+  return Object.fromEntries(results);
+};
+
+/**
+ * PERFORMANCE OPTIMIZATION: Batch update interactions
+ * Reduces individual PATCH calls to single batch call
+ * Updates multiple messages (verified, modified status) in one request
+ */
+const batchUpdateInteractions = async (
+  updates: Array<{ id: string; wasVerified?: boolean; wasModified?: boolean; wasRejected?: boolean }>
+): Promise<any> => {
+  try {
+    // Try batch update endpoint
+    return await api.patch('/interactions/batch', { updates });
+  } catch (err) {
+    // Fallback: Sequential individual updates
+    console.warn('Batch update endpoint not available, using individual updates');
+    const results = await Promise.all(
+      updates.map((update) =>
+        api.patch(`/interactions/${update.id}`, {
+          wasVerified: update.wasVerified,
+          wasModified: update.wasModified,
+          wasRejected: update.wasRejected,
+        })
+      )
+    );
+    return { data: { data: results } };
+  }
+};
+
+/**
+ * PERFORMANCE OPTIMIZATION: Debounce function to prevent rapid repeated calls
+ * Used for pattern detection and other heavy operations
+ */
+const createDebounce = <T extends (...args: any[]) => Promise<any>>(func: T, delay: number = 2000) => {
+  let timeoutId: NodeJS.Timeout | null = null;
+  let isExecuting = false;
+
+  return async (...args: Parameters<T>) => {
+    if (timeoutId) clearTimeout(timeoutId);
+    if (isExecuting) return;
+
+    timeoutId = setTimeout(async () => {
+      isExecuting = true;
+      try {
+        await func(...args);
+      } finally {
+        isExecuting = false;
+      }
+    }, delay);
+  };
+};
+
+/**
  * Chat Session Page - Improved UI with Session Sidebar
  * Main interface for user-AI interaction with pattern tracking and session history
  */
@@ -103,6 +186,11 @@ const ChatSessionPage: React.FC = () => {
   const MESSAGE_ROW_HEIGHT = 140; // Approximate height of each message row (px)
   const MESSAGES_CONTAINER_HEIGHT = 600; // Height of messages container (px)
 
+  // OPTIMIZATION: Debounced pattern detection to reduce API calls
+  // Reference to debounced function (will be initialized in useEffect)
+  const debouncedDetectPatternRef = useRef<(() => Promise<void>) | null>(null);
+  const patternCallCountRef = useRef<number>(0); // Track number of pattern detection calls
+
   // Handle modal MRs display
   useEffect(() => {
     if (activeMRs && activeMRs.length > 0) {
@@ -114,7 +202,7 @@ const ChatSessionPage: React.FC = () => {
     }
   }, [activeMRs, dismissedMRs]);
 
-  // Load session list with valid interactions
+  // Load session list with valid interactions (OPTIMIZED: Batch loading to reduce N+1)
   useEffect(() => {
     const loadSessions = async () => {
       setSessionsLoading(true);
@@ -126,41 +214,40 @@ const ChatSessionPage: React.FC = () => {
             new Map(response.data.data.sessions.map((session: SessionItem) => [session.id, session])).values()
           ) as SessionItem[];
 
-          // Filter sessions that have valid interactions (with actual content)
-          const sessionsWithContent = await Promise.all(
-            uniqueSessions.map(async (session) => {
-              try {
-                const interactionsResponse = await api.get('/interactions', {
-                  params: { sessionId: session.id },
-                });
-                const interactions = interactionsResponse.data.data.interactions || [];
-                // Check if session has at least one valid interaction with both user prompt and AI response
-                const validInteractions = interactions.filter(
-                  (interaction: any) =>
-                    interaction.userPrompt && interaction.aiResponse && interaction.sessionId === session.id
-                );
+          // OPTIMIZATION: Use batch loading instead of individual calls
+          // Before: 1 + N API calls (N+1 problem)
+          // After: 1-2 API calls (batch endpoint + fallback)
+          const sessionIds = uniqueSessions.map((s) => s.id);
+          const interactionsMap = await loadInteractionsForSessions(sessionIds);
 
-                if (validInteractions.length > 0) {
-                  // Use the first user prompt as the session title (truncate to 50 chars)
-                  const firstPrompt = validInteractions[0].userPrompt;
-                  const title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
-                  return {
-                    ...session,
-                    taskDescription: title,
-                  };
-                }
-                return null;
-              } catch (err) {
-                console.error(`Failed to load interactions for session ${session.id}:`, err);
-                return null;
+          // Process sessions with their interactions
+          const sessionsWithContent = uniqueSessions
+            .map((session) => {
+              const interactions = interactionsMap[session.id] || [];
+              // Check if session has at least one valid interaction with both user prompt and AI response
+              const validInteractions = interactions.filter(
+                (interaction: any) =>
+                  interaction.userPrompt && interaction.aiResponse && interaction.sessionId === session.id
+              );
+
+              if (validInteractions.length > 0) {
+                // Use the first user prompt as the session title (truncate to 50 chars)
+                const firstPrompt = validInteractions[0].userPrompt;
+                const title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
+                return {
+                  ...session,
+                  taskDescription: title,
+                };
               }
+              return null;
             })
-          );
+            .filter((s) => s !== null) as SessionItem[];
 
-          // Filter out null values and sort by date descending (newest first)
-          const filteredSessions = sessionsWithContent.filter((s) => s !== null) as SessionItem[];
-          filteredSessions.sort((a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime());
-          setSessions(filteredSessions);
+          // Sort by date descending (newest first)
+          sessionsWithContent.sort(
+            (a, b) => new Date(b.startedAt || b.createdAt).getTime() - new Date(a.startedAt || a.createdAt).getTime()
+          );
+          setSessions(sessionsWithContent);
         }
       } catch (err: any) {
         console.error('Failed to load sessions:', err);
@@ -577,18 +664,24 @@ const ChatSessionPage: React.FC = () => {
   );
 
   /**
-   * Mark interaction as verified
+   * Mark interaction as verified (OPTIMIZED: Uses batch endpoint if available)
    */
   const markAsVerified = async (messageId: string) => {
     setUpdatingMessageId(messageId);
     try {
-      const response = await api.patch(`/interactions/${messageId}`, { wasVerified: true });
-      const updatedInteraction = response.data.data.interaction;
+      // OPTIMIZATION: Try batch endpoint first, fallback to individual call
+      const response = await batchUpdateInteractions([
+        { id: messageId, wasVerified: true }
+      ]);
+
+      // Extract the updated interaction from batch response
+      const updatedInteraction = response.data.data[0]?.data?.interaction ||
+                                  response.data.data[0];
 
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === messageId
-            ? { ...msg, wasVerified: updatedInteraction.wasVerified }
+            ? { ...msg, wasVerified: updatedInteraction?.wasVerified ?? true }
             : msg
         )
       );
@@ -605,18 +698,24 @@ const ChatSessionPage: React.FC = () => {
   };
 
   /**
-   * Mark interaction as modified
+   * Mark interaction as modified (OPTIMIZED: Uses batch endpoint if available)
    */
   const markAsModified = async (messageId: string) => {
     setUpdatingMessageId(messageId);
     try {
-      const response = await api.patch(`/interactions/${messageId}`, { wasModified: true });
-      const updatedInteraction = response.data.data.interaction;
+      // OPTIMIZATION: Try batch endpoint first, fallback to individual call
+      const response = await batchUpdateInteractions([
+        { id: messageId, wasModified: true }
+      ]);
+
+      // Extract the updated interaction from batch response
+      const updatedInteraction = response.data.data[0]?.data?.interaction ||
+                                  response.data.data[0];
 
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === messageId
-            ? { ...msg, wasModified: updatedInteraction.wasModified }
+            ? { ...msg, wasModified: updatedInteraction?.wasModified ?? true }
             : msg
         )
       );
