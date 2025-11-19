@@ -374,8 +374,34 @@ export function detectPatternF(
  * Helper: Extract UserSignals from interaction history
  * This would typically be called in ChatSessionPage to prepare data
  */
-export function extractUserSignals(interactions: Interaction[]): UserSignals {
-  if (interactions.length === 0) {
+export function extractUserSignals(messages: any[]): UserSignals {
+  // Handle both Message array (from ChatSessionPage) and Interaction array
+  if (messages.length === 0) {
+    return {
+      averageInputLength: 0,
+      averageAcceptanceSpeed: 0,
+      verificationRate: 0,
+      modificationRate: 0,
+      rejectionRate: 0,
+      inputOutputRatio: 0,
+      lastInteractionGap: 0,
+      sessionBurstiness: 0,
+      totalInteractions: 0,
+      totalVerifications: 0,
+      totalModifications: 0,
+      totalRejections: 0,
+    };
+  }
+
+  // Detect if this is a Message array (mixed user/AI) or Interaction array
+  const isMessageArray = messages.some((m) => m.role === 'user' || m.role === 'ai');
+  const aiMessages = isMessageArray
+    ? messages.filter((m) => m.role === 'ai')
+    : messages;
+
+  const totalInteractionCount = aiMessages.length || messages.length;
+
+  if (totalInteractionCount === 0) {
     return {
       averageInputLength: 0,
       averageAcceptanceSpeed: 0,
@@ -401,40 +427,66 @@ export function extractUserSignals(interactions: Interaction[]): UserSignals {
   let totalInputLengthForRatio = 0;
   let totalOutputLengthForRatio = 0;
 
-  interactions.forEach((interaction) => {
-    if (interaction.wasVerified) totalVerifications++;
-    if (interaction.wasModified) totalModifications++;
-    if (interaction.wasRejected) totalRejections++;
+  if (isMessageArray) {
+    // Process Message array: find paired user/AI messages
+    for (let i = 0; i < aiMessages.length; i++) {
+      const aiMsg = aiMessages[i];
 
-    // Estimate input length (user's input before AI response)
-    // Note: This is a simplification. In real app, store actual input length
-    totalInputLength += (interaction.userInput?.length || 0);
-    totalInputLengthForRatio += (interaction.userInput?.length || 0);
-    totalOutputLengthForRatio += (interaction.aiResponse?.length || 0);
+      // Count verification behaviors
+      if (aiMsg.wasVerified) totalVerifications++;
+      if (aiMsg.wasModified) totalModifications++;
+      if (aiMsg.wasRejected) totalRejections++;
 
-    // Estimate acceptance speed (time from AI response to user action)
-    // Note: In real app, store actual timestamp values
-    totalAcceptanceSpeed += 5000; // Default 5 seconds, should be tracked in DB
-  });
+      // Find paired user message (should be immediately before)
+      const aiMsgIndex = messages.indexOf(aiMsg);
+      let userInputLength = 0;
+      if (aiMsgIndex > 0) {
+        const userMsg = messages[aiMsgIndex - 1];
+        if (userMsg && userMsg.role === 'user') {
+          userInputLength = userMsg.content?.length || 0;
+        }
+      }
 
-  const verificationRate = (totalVerifications / interactions.length) * 100;
-  const modificationRate = (totalModifications / interactions.length) * 100;
-  const rejectionRate = (totalRejections / interactions.length) * 100;
-  const averageInputLength = totalInputLength / interactions.length;
-  const averageAcceptanceSpeed = totalAcceptanceSpeed / interactions.length;
+      totalInputLength += userInputLength;
+      totalInputLengthForRatio += userInputLength;
+      totalOutputLengthForRatio += aiMsg.content?.length || 0;
+      totalAcceptanceSpeed += 5000; // Default 5 seconds
+    }
+  } else {
+    // Process Interaction array (legacy path)
+    messages.forEach((interaction) => {
+      if (interaction.wasVerified) totalVerifications++;
+      if (interaction.wasModified) totalModifications++;
+      if (interaction.wasRejected) totalRejections++;
+
+      totalInputLength += (interaction.userInput?.length || 0);
+      totalInputLengthForRatio += (interaction.userInput?.length || 0);
+      totalOutputLengthForRatio += (interaction.aiResponse?.length || 0);
+      totalAcceptanceSpeed += 5000;
+    });
+  }
+
+  const verificationRate = (totalVerifications / totalInteractionCount) * 100;
+  const modificationRate = (totalModifications / totalInteractionCount) * 100;
+  const rejectionRate = (totalRejections / totalInteractionCount) * 100;
+  const averageInputLength = totalInputLength / totalInteractionCount;
+  const averageAcceptanceSpeed = totalAcceptanceSpeed / totalInteractionCount;
   const inputOutputRatio =
     totalOutputLengthForRatio > 0
       ? totalInputLengthForRatio / totalOutputLengthForRatio
       : 0;
 
   // Calculate session burstiness (0-100)
-  // Burstiness = how concentrated interactions are in time
-  const timestamps = interactions.map((i) => new Date(i.timestamp).getTime());
-  const timeSpanMs = Math.max(...timestamps) - Math.min(...timestamps);
-  const timeSpanHours = timeSpanMs / (1000 * 60 * 60);
+  const timestamps = messages
+    .map((m) => new Date(m.timestamp).getTime())
+    .filter((t) => !isNaN(t));
 
-  // If all within 2 hours, burstiness = 100. If spread over 7 days, = 0
-  const sessionBurstiness = Math.max(0, 100 - (timeSpanHours / 168) * 100); // 168 hours = 7 days
+  let sessionBurstiness = 0;
+  if (timestamps.length > 1) {
+    const timeSpanMs = Math.max(...timestamps) - Math.min(...timestamps);
+    const timeSpanHours = timeSpanMs / (1000 * 60 * 60);
+    sessionBurstiness = Math.max(0, 100 - (timeSpanHours / 168) * 100);
+  }
 
   // Calculate last interaction gap
   const nowMs = Date.now();
@@ -450,7 +502,7 @@ export function extractUserSignals(interactions: Interaction[]): UserSignals {
     inputOutputRatio,
     lastInteractionGap: lastInteractionGapMin,
     sessionBurstiness,
-    totalInteractions: interactions.length,
+    totalInteractions: totalInteractionCount,
     totalVerifications,
     totalModifications,
     totalRejections,
