@@ -1,0 +1,191 @@
+/**
+ * Tier 1 Soft Signal Styles
+ * Non-blocking, gentle information tips
+ */
+
+.tier1-soft-signal {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  margin-bottom: 0.75rem;
+  background-color: #eff6ff;
+  border: 1px solid #93c5fd;
+  border-left: 4px solid #3b82f6;
+  border-radius: 0.5rem;
+  animation: slideInRight 0.3s ease-out;
+  transition: opacity 0.3s ease-in;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.tier1-soft-signal.removing {
+  animation: slideOutRight 0.3s ease-in forwards;
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+}
+
+/* Icon */
+.soft-signal-icon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+/* Content */
+.soft-signal-content {
+  flex: 1;
+}
+
+.soft-signal-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1e40af;
+  margin-bottom: 0.25rem;
+}
+
+.soft-signal-message {
+  font-size: 0.875rem;
+  color: #0c4a6e;
+  line-height: 1.5;
+}
+
+.soft-signal-description {
+  font-size: 0.8rem;
+  color: #0369a1;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Actions */
+.soft-signal-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.soft-signal-btn {
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.soft-signal-btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.soft-signal-btn-primary:hover {
+  background-color: #2563eb;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.soft-signal-btn-primary:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.soft-signal-btn-dismiss {
+  background-color: transparent;
+  color: #0369a1;
+  padding: 0.4rem 0.5rem;
+}
+
+.soft-signal-btn-dismiss:hover {
+  background-color: #dbeafe;
+}
+
+.soft-signal-btn-dismiss:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .tier1-soft-signal {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .soft-signal-title {
+    color: #93c5fd;
+  }
+
+  .soft-signal-message {
+    color: #bfdbfe;
+  }
+
+  .soft-signal-description {
+    color: #7dd3fc;
+  }
+
+  .soft-signal-btn-dismiss {
+    color: #7dd3fc;
+  }
+
+  .soft-signal-btn-dismiss:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .tier1-soft-signal {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .soft-signal-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .soft-signal-btn {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.6rem;
+  }
+}
+
+/* Accessibility: Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .tier1-soft-signal {
+    animation: none;
+  }
+
+  .soft-signal-btn {
+    transition: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .tier1-soft-signal {
+    display: none;
+  }
+}

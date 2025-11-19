@@ -1,0 +1,254 @@
+/**
+ * Tier 2 Medium Alert Styles
+ * More prominent than soft signals, still non-blocking
+ */
+
+.tier2-medium-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  margin-bottom: 0.75rem;
+  background-color: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0.5rem;
+  animation: scaleInAlert 0.3s ease-out;
+  transition: opacity 0.3s ease-in;
+  position: relative;
+}
+
+@keyframes scaleInAlert {
+  from {
+    transform: scale(0.95) translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateX(0);
+    opacity: 1;
+  }
+}
+
+.tier2-medium-alert.removing {
+  animation: slideOutAlert 0.3s ease-in forwards;
+}
+
+@keyframes slideOutAlert {
+  from {
+    transform: scale(1) translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.95) translateX(50px);
+    opacity: 0;
+  }
+}
+
+/* Accent bar */
+.alert-accent-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+/* Icon */
+.medium-alert-icon {
+  flex-shrink: 0;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  animation: pulseIcon 2s ease-in-out infinite;
+}
+
+@keyframes pulseIcon {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Content */
+.medium-alert-content {
+  flex: 1;
+  padding-left: 0.5rem;
+}
+
+.medium-alert-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #92400e;
+  margin-bottom: 0.25rem;
+}
+
+.medium-alert-message {
+  font-size: 0.875rem;
+  color: #78350f;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.medium-alert-description {
+  font-size: 0.8rem;
+  color: #a16207;
+  margin-top: 0.5rem;
+}
+
+/* Actions */
+.medium-alert-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.medium-alert-btn {
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.medium-alert-btn-action {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.medium-alert-btn-action:hover {
+  background-color: #d97706;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+  transform: translateY(-1px);
+}
+
+.medium-alert-btn-action:focus {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+.medium-alert-btn-skip {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.medium-alert-btn-skip:hover {
+  background-color: #fde68a;
+  border-color: #f59e0b;
+}
+
+.medium-alert-btn-skip:focus {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+.medium-alert-btn-dismiss {
+  background-color: transparent;
+  color: #a16207;
+  padding: 0.4rem 0.5rem;
+}
+
+.medium-alert-btn-dismiss:hover {
+  background-color: #fed7aa;
+}
+
+.medium-alert-btn-dismiss:focus {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .tier2-medium-alert {
+    background-color: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .medium-alert-title {
+    color: #fcd34d;
+  }
+
+  .medium-alert-message {
+    color: #fed7aa;
+  }
+
+  .medium-alert-description {
+    color: #fbbf24;
+  }
+
+  .medium-alert-btn-skip {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #fcd34d;
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .medium-alert-btn-skip:hover {
+    background-color: rgba(245, 158, 11, 0.25);
+  }
+
+  .medium-alert-btn-dismiss {
+    color: #fed7aa;
+  }
+
+  .medium-alert-btn-dismiss:hover {
+    background-color: rgba(245, 158, 11, 0.2);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .tier2-medium-alert {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .medium-alert-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .medium-alert-btn {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  .medium-alert-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Accessibility: Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .tier2-medium-alert {
+    animation: none;
+  }
+
+  .medium-alert-icon {
+    animation: none;
+    opacity: 1;
+  }
+
+  .medium-alert-btn {
+    transition: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .tier2-medium-alert {
+    display: none;
+  }
+}
