@@ -91,6 +91,13 @@ const ChatSessionPage: React.FC = () => {
   const [showVerificationTools, setShowVerificationTools] = useState(false);
   const [verificationLogs, setVerificationLogs] = useState<any[]>([]);
 
+  // Pagination state
+  const MESSAGES_PER_PAGE = 20;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [totalMessagesCount, setTotalMessagesCount] = useState(0);
+
   // Virtualized list configuration
   const virtualizedListRef = useRef<any>(null);
   const MESSAGE_ROW_HEIGHT = 140; // Approximate height of each message row (px)
@@ -196,16 +203,48 @@ const ChatSessionPage: React.FC = () => {
         const sessionResponse = await api.get(`/sessions/${sessionId}`);
         setSessionData(sessionResponse.data.data.session);
 
-        // Load previous interactions/messages from this session
+        // Reset pagination for new session
+        setCurrentPage(1);
+        setMessages([]);
+
+        // Load previous interactions/messages from this session (with pagination)
+        await loadMessagesPage(1);
+      } catch (err: any) {
+        console.error('Failed to load session:', err);
+        setError(err.response?.data?.error || 'Failed to load session');
+      }
+    };
+
+    /**
+     * Load a page of messages with pagination
+     * @param page - Page number to load (1-indexed)
+     */
+    const loadMessagesPage = async (page: number) => {
+      try {
+        const isInitialLoad = page === 1;
+        if (!isInitialLoad) {
+          setIsLoadingMore(true);
+        }
+
+        // Load with pagination parameters
         const interactionsResponse = await api.get('/interactions', {
-          params: { sessionId },
+          params: {
+            sessionId,
+            page: page,
+            limit: MESSAGES_PER_PAGE,
+            sort: 'asc', // Oldest first
+          },
         });
 
-        if (interactionsResponse.data.data.interactions && interactionsResponse.data.data.interactions.length > 0) {
+        const responseData = interactionsResponse.data.data;
+        const interactions = responseData.interactions || [];
+        const total = responseData.total || 0;
+
+        if (interactions && interactions.length > 0) {
           // Remove duplicate interactions by ID and filter valid interactions
           const uniqueInteractions = Array.from(
             new Map(
-              interactionsResponse.data.data.interactions
+              interactions
                 .filter((interaction: any) =>
                   interaction.id &&
                   interaction.userPrompt &&
@@ -217,10 +256,10 @@ const ChatSessionPage: React.FC = () => {
           );
 
           // Convert interactions to messages
-          const previousMessages: Message[] = [];
+          const pageMessages: Message[] = [];
           for (const interaction of uniqueInteractions) {
             // Add user message
-            previousMessages.push({
+            pageMessages.push({
               id: `user-${interaction.id}`,
               role: 'user',
               content: interaction.userPrompt,
@@ -228,7 +267,7 @@ const ChatSessionPage: React.FC = () => {
             });
 
             // Add AI message
-            previousMessages.push({
+            pageMessages.push({
               id: interaction.id,
               role: 'ai',
               content: interaction.aiResponse,
@@ -238,42 +277,61 @@ const ChatSessionPage: React.FC = () => {
               wasRejected: interaction.wasRejected,
             });
           }
-          // Sort chronologically (oldest first)
-          previousMessages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-          setMessages(previousMessages);
+
+          // For initial load, replace messages. For loading more, append
+          if (isInitialLoad) {
+            setMessages(pageMessages);
+          } else {
+            setMessages((prev) => [...prev, ...pageMessages]);
+          }
+
+          // Update pagination state
+          setCurrentPage(page);
+          setTotalMessagesCount(total);
+          setHasMoreMessages(page * MESSAGES_PER_PAGE < total);
+        } else {
+          setHasMoreMessages(false);
         }
 
-        // Load saved pattern detection for this session (if any)
-        try {
-          const patternResponse = await api.get(`/patterns/session/${sessionId}`);
-          if (patternResponse.data.data) {
-            const savedPattern = patternResponse.data.data;
-            // Convert database format to component format
-            const patternData = {
-              pattern: savedPattern.detectedPattern,
-              confidence: savedPattern.confidence,
-              reasoning: savedPattern.features?.recommendations || [],
-              metrics: {
-                aiReliance: Math.floor(Math.random() * 100),
-                verificationScore: Math.floor(Math.random() * 100),
-                learningIndex: Math.floor(Math.random() * 100),
-              },
-            };
-            setPattern(patternData);
-            setShowPattern(true); // Show pattern panel since it was previously detected
-          } else {
-            // No pattern detected yet
+        // Load saved pattern detection only on initial load
+        if (isInitialLoad) {
+          try {
+            const patternResponse = await api.get(`/patterns/session/${sessionId}`);
+            if (patternResponse.data.data) {
+              const savedPattern = patternResponse.data.data;
+              // Convert database format to component format
+              const patternData = {
+                pattern: savedPattern.detectedPattern,
+                confidence: savedPattern.confidence,
+                reasoning: savedPattern.features?.recommendations || [],
+                metrics: {
+                  aiReliance: Math.floor(Math.random() * 100),
+                  verificationScore: Math.floor(Math.random() * 100),
+                  learningIndex: Math.floor(Math.random() * 100),
+                },
+              };
+              setPattern(patternData);
+              setShowPattern(true); // Show pattern panel since it was previously detected
+            } else {
+              // No pattern detected yet
+              setPattern(null);
+              setShowPattern(false);
+            }
+          } catch (err) {
+            // Pattern not yet detected, this is okay
             setPattern(null);
             setShowPattern(false);
           }
-        } catch (err) {
-          // Pattern not yet detected, this is okay
-          setPattern(null);
-          setShowPattern(false);
         }
       } catch (err: any) {
-        console.error('Failed to load session:', err);
-        setError(err.response?.data?.error || 'Failed to load session');
+        console.error('Failed to load messages page:', err);
+        if (isInitialLoad) {
+          setError(err.response?.data?.error || 'Failed to load session');
+        }
+      } finally {
+        if (!isInitialLoad) {
+          setIsLoadingMore(false);
+        }
       }
     };
 
@@ -402,6 +460,14 @@ const ChatSessionPage: React.FC = () => {
       setPatternLoading(false);
     }
   };
+
+  /**
+   * Load more messages when user scrolls to end
+   */
+  const loadMoreMessages = useCallback(async () => {
+    if (!hasMoreMessages || isLoadingMore) return;
+    await loadMessagesPage(currentPage + 1);
+  }, [hasMoreMessages, isLoadingMore, currentPage]);
 
   /**
    * Render individual message for virtualized list
@@ -1010,6 +1076,9 @@ const ChatSessionPage: React.FC = () => {
               width="100%"
               itemHeight={MESSAGE_ROW_HEIGHT}
               renderMessage={renderMessage}
+              onLoadMore={loadMoreMessages}
+              isLoading={isLoadingMore}
+              hasMore={hasMoreMessages}
             />
           )}
 
