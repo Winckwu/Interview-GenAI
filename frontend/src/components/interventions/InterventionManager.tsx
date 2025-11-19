@@ -67,7 +67,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   // Initialize session in store
   useEffect(() => {
     store.setCurrentSession(sessionId);
-  }, [sessionId, store]);
+  }, [sessionId]); // Remove store from dependencies to prevent infinite loop
 
   /**
    * Core detection and scheduling logic
