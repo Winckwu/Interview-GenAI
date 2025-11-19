@@ -71,16 +71,26 @@ export class SessionService {
 
   /**
    * Get user sessions
+   * Prioritizes sessions that have interactions
    */
   async getUserSessions(
     userId: string,
     limit: number = 50,
     offset: number = 0
   ): Promise<WorkSession[]> {
+    // Use LEFT JOIN to count interactions and prioritize sessions with content
     const result = await pool.query(
-      `SELECT * FROM work_sessions
-       WHERE user_id = $1
-       ORDER BY created_at DESC
+      `SELECT ws.*, COALESCE(interaction_counts.count, 0) as interaction_count
+       FROM work_sessions ws
+       LEFT JOIN (
+         SELECT session_id, COUNT(*) as count
+         FROM interactions
+         GROUP BY session_id
+       ) interaction_counts ON ws.id = interaction_counts.session_id
+       WHERE ws.user_id = $1
+       ORDER BY
+         CASE WHEN COALESCE(interaction_counts.count, 0) > 0 THEN 0 ELSE 1 END,
+         ws.created_at DESC
        LIMIT $2 OFFSET $3`,
       [userId, limit, offset]
     );
