@@ -162,7 +162,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   /**
    * Create intervention UI based on detection result
    */
-  const createInterventionUI = (detection: any, tier: string, msgs: Message[]) => {
+  const createInterventionUI = useCallback((detection: any, tier: string, msgs: Message[]) => {
     const baseIntervention = {
       id: `intervention-${Date.now()}`,
       mrType:
@@ -184,7 +184,10 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         message: detection.explanation.summary,
         description: `Confidence: ${(detection.confidence * 100).toFixed(0)}%`,
         onDismiss: () => handleDismiss(baseIntervention.mrType),
-        onLearnMore: () => handleLearnMore(baseIntervention.mrType),
+        onLearnMore: () => {
+          console.log(`[createInterventionUI] Soft signal Learn More clicked for ${baseIntervention.mrType}`);
+          handleLearnMore(baseIntervention.mrType);
+        },
       };
     }
 
@@ -196,7 +199,10 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         message: detection.explanation.summary,
         description: `Based on ${detection.layer1.triggeredCount} pattern indicators`,
         actionLabel: 'View Details',
-        onAction: () => handleLearnMore(baseIntervention.mrType),
+        onAction: () => {
+          console.log(`[createInterventionUI] Medium alert action clicked for ${baseIntervention.mrType}`);
+          handleLearnMore(baseIntervention.mrType);
+        },
         onDismiss: () => handleDismiss(baseIntervention.mrType),
         onSkip: () => handleSkip(baseIntervention.mrType),
       };
@@ -240,7 +246,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
       onCancel: () => handleDismiss(baseIntervention.mrType),
     };
-  };
+  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm]);
 
   /**
    * Handle soft signal dismiss
@@ -267,16 +273,19 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
    */
   const handleLearnMore = useCallback(
     (mrType: string) => {
+      console.log(`[handleLearnMore] User clicked Learn More for ${mrType}`);
       store.recordUserAction(mrType, 'acted');
       store.recordEngagement(sessionId, 'engagement');
 
       // Record action in metrics store (compliance action)
       if (lastInterventionId) {
         const timeToAction = Date.now() - interventionStartTime;
+        console.log(`[handleLearnMore] Recording action: ${timeToAction}ms`);
         metricsStore.recordUserAction(sessionId, lastInterventionId, 'acted', timeToAction);
       }
 
       // Could open detailed explanation modal here
+      console.log(`[handleLearnMore] Clearing active intervention`);
       store.clearActiveIntervention();
       onUserAction?.(mrType, 'learn_more');
       setLastInterventionId(null);
