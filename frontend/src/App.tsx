@@ -76,7 +76,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
  * Main App component with routing configuration
  */
 const App: React.FC = () => {
-  const { checkAuth, token } = useAuthStore();
+  const token = useAuthStore((state) => state.token);
   const initRef = useRef(false);
 
   useEffect(() => {
@@ -93,8 +93,8 @@ const App: React.FC = () => {
 
     // Try to verify the token - fire and forget
     // ProtectedRoute will handle redirects if auth fails
-    checkAuth();
-  }, [token, checkAuth]);
+    useAuthStore.getState().checkAuth();
+  }, [token]);
 
   // If no token, show auth routes immediately
   if (!token) {
