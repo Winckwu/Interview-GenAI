@@ -1,13 +1,31 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef, Suspense, lazy } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
 import { useUIStore } from '../stores/uiStore';
-import PatternAnalysisWindow from '../components/chat/PatternAnalysisWindow';
-import { useMCAOrchestrator, MRDisplay, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
-import MR11IntegratedVerification from '../components/MR11IntegratedVerification';
+import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
 import VirtualizedMessageList from '../components/VirtualizedMessageList';
+
+// OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
+// These components are only needed when specific features are active
+const PatternAnalysisWindow = lazy(() => import('../components/chat/PatternAnalysisWindow'));
+const MRDisplay = lazy(() =>
+  import('../components/chat/MCAConversationOrchestrator').then((module) => ({
+    default: module.MRDisplay,
+  }))
+);
+const MR11IntegratedVerification = lazy(() => import('../components/MR11IntegratedVerification'));
+
+/**
+ * OPTIMIZATION: Fallback component for lazy-loaded heavy components
+ * Minimal placeholder while components load
+ */
+const ComponentLoader: React.FC = () => (
+  <div style={{ padding: '1rem', color: '#9ca3af', fontSize: '0.875rem' }}>
+    Loading component...
+  </div>
+);
 
 interface Message {
   id: string;
@@ -1236,22 +1254,26 @@ const ChatSessionPage: React.FC = () => {
                     .filter((mr) => mr.displayMode === 'sidebar' && !dismissedMRs.has(mr.mrId))
                     .map((mr) => (
                       <div key={mr.mrId} style={{ marginBottom: '0.75rem' }}>
-                        <MRDisplay
-                          mr={mr}
-                          onClose={() => setDismissedMRs((prev) => new Set([...prev, mr.mrId]))}
-                        />
+                        <Suspense fallback={<ComponentLoader />}>
+                          <MRDisplay
+                            mr={mr}
+                            onClose={() => setDismissedMRs((prev) => new Set([...prev, mr.mrId]))}
+                          />
+                        </Suspense>
                       </div>
                     ))}
                 </div>
               )}
 
-              {/* Pattern Analysis Window */}
+              {/* Pattern Analysis Window - OPTIMIZATION: Lazy-loaded component */}
               <div style={{ flex: 1, overflowY: 'auto' }}>
-                <PatternAnalysisWindow
-                  pattern={pattern}
-                  isLoading={patternLoading}
-                  onClose={() => setShowPatternPanel(false)}
-                />
+                <Suspense fallback={<ComponentLoader />}>
+                  <PatternAnalysisWindow
+                    pattern={pattern}
+                    isLoading={patternLoading}
+                    onClose={() => setShowPatternPanel(false)}
+                  />
+                </Suspense>
               </div>
             </div>
           )}
@@ -1396,28 +1418,32 @@ const ChatSessionPage: React.FC = () => {
             >
               ✕
             </button>
-            <MR11IntegratedVerification
-              existingLogs={verificationLogs}
-              onDecisionMade={(log) => {
-                // Add new log to the verification history
-                setVerificationLogs([...verificationLogs, log]);
-                // Optional: Close on decision made
-                // setShowVerificationTools(false);
-              }}
-            />
+            <Suspense fallback={<ComponentLoader />}>
+              <MR11IntegratedVerification
+                existingLogs={verificationLogs}
+                onDecisionMade={(log) => {
+                  // Add new log to the verification history
+                  setVerificationLogs([...verificationLogs, log]);
+                  // Optional: Close on decision made
+                  // setShowVerificationTools(false);
+                }}
+              />
+            </Suspense>
           </div>
         </div>
       )}
 
-      {/* Modal MR Display */}
+      {/* Modal MR Display - OPTIMIZATION: Lazy-loaded component */}
       {displayedModalMR && (
-        <MRDisplay
-          mr={displayedModalMR}
-          onClose={() => setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]))}
-          onAcknowledge={() => {
-            setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]));
-          }}
-        />
+        <Suspense fallback={<ComponentLoader />}>
+          <MRDisplay
+            mr={displayedModalMR}
+            onClose={() => setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]))}
+            onAcknowledge={() => {
+              setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]));
+            }}
+          />
+        </Suspense>
       )}
 
       {/* CSS for animations */}
