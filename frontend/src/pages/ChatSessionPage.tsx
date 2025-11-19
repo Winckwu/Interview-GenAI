@@ -5,7 +5,8 @@ import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
 import { useUIStore } from '../stores/uiStore';
 import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
-import VirtualizedMessageList from '../components/VirtualizedMessageList';
+// import VirtualizedMessageList from '../components/VirtualizedMessageList';
+// DISABLED: react-window compatibility issue - using simple list instead
 import EmptyState, { EmptyStateError } from '../components/EmptyState';
 import { SkeletonText, SkeletonCard } from '../components/Skeleton';
 import InterventionManager from '../components/interventions/InterventionManager';
@@ -1250,19 +1251,47 @@ const ChatSessionPage: React.FC = () => {
             </div>
           )}
 
-          {/* Virtualized Message List - Performance optimized */}
+          {/* Simple Message List - Temporary replacement for VirtualizedMessageList */}
           {messages.length > 0 && (
-            <VirtualizedMessageList
-              ref={virtualizedListRef}
-              messages={messages}
-              height={MESSAGES_CONTAINER_HEIGHT}
-              width="100%"
-              itemHeight={MESSAGE_ROW_HEIGHT}
-              renderMessage={renderMessage}
-              onLoadMore={loadMoreMessages}
-              isLoading={isLoadingMore}
-              hasMore={hasMoreMessages}
-            />
+            <div
+              ref={virtualizedListRef as any}
+              style={{
+                flex: 1,
+                overflowY: 'auto',
+                overflowX: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                padding: '0.5rem 0',
+              }}
+            >
+              {messages.map((message, index) => (
+                <div key={message.id}>
+                  {renderMessage(message, index)}
+                </div>
+              ))}
+              {hasMoreMessages && !isLoadingMore && (
+                <button
+                  onClick={loadMoreMessages}
+                  style={{
+                    margin: '1rem auto',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: '#3b82f6',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '0.375rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Load More Messages
+                </button>
+              )}
+              {isLoadingMore && (
+                <div style={{ textAlign: 'center', padding: '1rem', color: '#6b7280' }}>
+                  Loading more messages...
+                </div>
+              )}
+            </div>
           )}
 
           {loading && messages.length > 0 && (
