@@ -89,7 +89,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onUserAction?.(mrType, 'dismiss');
       setLastInterventionId(null);
     },
-    [store, metricsStore, sessionId, lastInterventionId, interventionStartTime, onUserAction]
+    // Note: store and metricsStore are stable Zustand stores, removed from deps to prevent infinite loops
+    [sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
   /**
@@ -114,7 +115,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onUserAction?.(mrType, 'learn_more');
       setLastInterventionId(null);
     },
-    [store, metricsStore, sessionId, lastInterventionId, interventionStartTime, onUserAction]
+    // Note: store and metricsStore are stable Zustand stores, removed from deps to prevent infinite loops
+    [sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
   /**
@@ -134,7 +136,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onUserAction?.(mrType, 'skip');
       setLastInterventionId(null);
     },
-    [store, metricsStore, sessionId, lastInterventionId, interventionStartTime, onUserAction]
+    // Note: store and metricsStore are stable Zustand stores, removed from deps to prevent infinite loops
+    [sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
   /**
@@ -163,7 +166,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onUserAction?.(mrType, selectedValue);
       setLastInterventionId(null);
     },
-    [store, metricsStore, sessionId, lastInterventionId, interventionStartTime, onUserAction]
+    // Note: store and metricsStore are stable Zustand stores, removed from deps to prevent infinite loops
+    [sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
   /**
