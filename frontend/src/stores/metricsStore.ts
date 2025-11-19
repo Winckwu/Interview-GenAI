@@ -61,35 +61,46 @@ export const useMetricsStore = create<MetricsStoreState>((set) => ({
     set((state) => {
       // Calculate real-time sessionMetrics based on recorded interventions
       if (state.currentSessionId && state.currentUserId) {
-        // Calculate metrics with reasonable defaults for ongoing session
-        const records = metricsCollector['interventionRecords']?.get(state.currentSessionId) || [];
-        const totalDisplays = records.length;
+        // Get stored session metrics or calculate from collector
+        const existingMetrics = metricsCollector.getSessionMetrics(state.currentSessionId);
 
-        if (totalDisplays > 0) {
-          const dismissals = records.filter((r: any) => r.userAction === 'dismiss').length;
-          const engagements = records.filter((r: any) => r.userAction === 'acted').length;
-          const compliances = records.filter((r: any) => r.userAction === 'acted').length;
-          const overrides = records.filter((r: any) => r.userAction === 'override').length;
-
-          const sessionMetrics: SessionMetrics = {
-            sessionId: state.currentSessionId,
-            userId: state.currentUserId,
-            totalInterventions: totalDisplays,
-            complianceRate: compliances / totalDisplays,
-            dismissalRate: dismissals / totalDisplays,
-            engagementRate: engagements / totalDisplays,
-            overrideRate: overrides / totalDisplays,
-            avgTimeToAction: records
-              .filter((r: any) => r.timeToAction)
-              .reduce((sum: number, r: any) => sum + (r.timeToAction || 0), 0) / totalDisplays,
-            avgConfidence: records.reduce((sum: number, r: any) => sum + r.confidence, 0) / totalDisplays,
-            fatigueScore: 0,
-            completionRate: 0,
-          };
-
-          console.log('[recordInterventionDisplay] Updated sessionMetrics:', sessionMetrics);
-          return { sessionMetrics };
+        if (existingMetrics) {
+          console.log('[recordInterventionDisplay] Using existing metrics:', existingMetrics);
+          return { sessionMetrics: existingMetrics };
         }
+
+        // Fallback: create minimal metrics for real-time display
+        const sessionMetrics: SessionMetrics = {
+          sessionId: state.currentSessionId,
+          userId: state.currentUserId,
+          startTime: Date.now(),
+          totalDetections: 1,
+          averageConfidence: record.confidence,
+          patternTypeBreakdown: { [record.mrType]: 1 },
+          totalDisplays: 1,
+          tierBreakdown: { [record.tier]: 1 },
+          dismissalCount: 0,
+          dismissalRate: 0,
+          engagementCount: 0,
+          engagementRate: 0,
+          complianceCount: 0,
+          complianceRate: 0,
+          overrideCount: 0,
+          overrideRate: 0,
+          avgTimeToAction: 0,
+          avgDetectionLatency: 0,
+          suppressionEvents: 0,
+          avgFatigueScore: 0,
+          maxFatigueScore: 0,
+          timeUnderFatigue: 0,
+          sessionCompleted: false,
+          droppedOut: false,
+          completionTime: 0,
+          messageCount: record.messageCountAtDisplay || 0,
+        };
+
+        console.log('[recordInterventionDisplay] Created new sessionMetrics:', sessionMetrics);
+        return { sessionMetrics };
       }
       return state;
     });
@@ -103,35 +114,39 @@ export const useMetricsStore = create<MetricsStoreState>((set) => ({
   ) => {
     metricsCollector.recordUserAction(sessionId, interventionId, action, timeToAction);
     set((state) => {
-      // Calculate real-time sessionMetrics based on recorded interventions
+      // Get updated metrics from collector after recording action
       if (state.currentSessionId && state.currentUserId) {
-        const records = metricsCollector['interventionRecords']?.get(state.currentSessionId) || [];
-        const totalDisplays = records.length;
+        const existingMetrics = metricsCollector.getSessionMetrics(state.currentSessionId);
 
-        if (totalDisplays > 0) {
-          const dismissals = records.filter((r: any) => r.userAction === 'dismiss' || r.userAction === 'skip').length;
-          const engagements = records.filter((r: any) => r.userAction === 'acted').length;
-          const compliances = records.filter((r: any) => r.userAction === 'acted').length;
-          const overrides = records.filter((r: any) => r.userAction === 'override').length;
+        if (existingMetrics) {
+          console.log('[recordUserAction] Updated sessionMetrics from collector:', existingMetrics);
+          return { sessionMetrics: existingMetrics };
+        }
 
-          const sessionMetrics: SessionMetrics = {
-            sessionId: state.currentSessionId,
-            userId: state.currentUserId,
-            totalInterventions: totalDisplays,
-            complianceRate: compliances / totalDisplays,
-            dismissalRate: dismissals / totalDisplays,
-            engagementRate: engagements / totalDisplays,
-            overrideRate: overrides / totalDisplays,
-            avgTimeToAction: records
-              .filter((r: any) => r.timeToAction)
-              .reduce((sum: number, r: any) => sum + (r.timeToAction || 0), 0) / totalDisplays,
-            avgConfidence: records.reduce((sum: number, r: any) => sum + r.confidence, 0) / totalDisplays,
-            fatigueScore: 0,
-            completionRate: 0,
-          };
+        // Update current metrics if they exist
+        if (state.sessionMetrics) {
+          const updatedMetrics = { ...state.sessionMetrics };
+          const totalDisplays = updatedMetrics.totalDisplays || 1;
 
-          console.log('[recordUserAction] Updated sessionMetrics:', sessionMetrics);
-          return { sessionMetrics };
+          // Update counts based on action
+          if (action === 'dismiss' || action === 'skip') {
+            updatedMetrics.dismissalCount = (updatedMetrics.dismissalCount || 0) + 1;
+          } else if (action === 'acted') {
+            updatedMetrics.engagementCount = (updatedMetrics.engagementCount || 0) + 1;
+            updatedMetrics.complianceCount = (updatedMetrics.complianceCount || 0) + 1;
+          } else if (action === 'override') {
+            updatedMetrics.overrideCount = (updatedMetrics.overrideCount || 0) + 1;
+          }
+
+          // Recalculate rates
+          updatedMetrics.dismissalRate = updatedMetrics.dismissalCount / totalDisplays;
+          updatedMetrics.engagementRate = updatedMetrics.engagementCount / totalDisplays;
+          updatedMetrics.complianceRate = updatedMetrics.complianceCount / totalDisplays;
+          updatedMetrics.overrideRate = updatedMetrics.overrideCount / totalDisplays;
+          updatedMetrics.avgTimeToAction = timeToAction;
+
+          console.log('[recordUserAction] Updated sessionMetrics:', updatedMetrics);
+          return { sessionMetrics: updatedMetrics };
         }
       }
       return state;
