@@ -1497,6 +1497,84 @@ const ChatSessionPage: React.FC = () => {
                 />
               </div>
 
+              {/* Real-time MR Tools - Synced with conversation */}
+              <div style={{
+                padding: '0.75rem',
+                borderTop: '1px solid #e2e8f0',
+                backgroundColor: '#fff',
+              }}>
+                <h3 style={{
+                  margin: '0 0 0.75rem 0',
+                  fontSize: '0.75rem',
+                  fontWeight: '600',
+                  color: '#6b7280',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}>
+                  🔄 Real-time Analysis
+                </h3>
+
+                {/* MR8: Task Recognition - Compact */}
+                {messages.length >= 2 && (
+                  <div style={{ marginBottom: '0.5rem' }}>
+                    <Suspense fallback={<ComponentLoader />}>
+                      <MR8TaskCharacteristicRecognition
+                        taskDescription={
+                          sessionData?.taskDescription ||
+                          messages.find(m => m.role === 'user')?.content ||
+                          ''
+                        }
+                        onAnalysisComplete={(analysis) => {
+                          console.log('Real-time task analysis:', analysis);
+                        }}
+                      />
+                    </Suspense>
+                  </div>
+                )}
+
+                {/* MR9: Trust Calibration - Compact */}
+                {messages.length >= 1 && (
+                  <div style={{ marginBottom: '0.5rem' }}>
+                    <Suspense fallback={<ComponentLoader />}>
+                      <MR9DynamicTrustCalibration
+                        taskType={sessionData?.taskType || 'general'}
+                        aiConfidence={0.75}
+                        criticality="medium"
+                        userHistory={[]}
+                        onTrustScoreUpdate={(score) => {
+                          console.log('Trust score:', score);
+                        }}
+                      />
+                    </Suspense>
+                  </div>
+                )}
+
+                {/* Quick access to more tools */}
+                <button
+                  onClick={() => setShowMRToolsPanel(true)}
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem',
+                    backgroundColor: '#f3f4f6',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '0.375rem',
+                    cursor: 'pointer',
+                    fontSize: '0.75rem',
+                    color: '#6b7280',
+                    fontWeight: '500',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = '#e5e7eb';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = '#f3f4f6';
+                  }}
+                >
+                  🧠 Open All MR Tools
+                </button>
+              </div>
+
               {/* Sidebar MRs - Keep existing recommendations */}
               {activeMRs && activeMRs.some((mr) => mr.displayMode === 'sidebar') && (
                 <div style={{
