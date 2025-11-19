@@ -1684,15 +1684,15 @@ const ChatSessionPage: React.FC = () => {
                       {activeMRTool === 'mr4-roles' && <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} />}
                       {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} />}
                       {activeMRTool === 'mr6-models' && <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />}
-                      {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning sessionId={sessionId || ''} onLearningComplete={(l) => console.log('Learning:', l)} />}
+                      {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning onIterationLogged={(log) => console.log('Learning:', log)} />}
                       {activeMRTool === 'mr10-cost' && <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />}
                       {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
-                      {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding content={messages[messages.length - 1]?.content || ''} taskType={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
+                      {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding aiOutput={messages[messages.length - 1]?.content || ''} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
                       {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty content={messages[messages.length - 1]?.content || ''} onUncertaintyAcknowledged={(u) => console.log('Uncertainty:', u)} />}
                       {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} />}
                       {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} />}
                       {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention sessionId={sessionId || ''} onExerciseComplete={(e) => console.log('Exercise:', e)} />}
-                      {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization sessionId={sessionId || ''} />}
+                      {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization userId={user?.id || sessionId || ''} />}
                     </Suspense>
                   </div>
                 </div>

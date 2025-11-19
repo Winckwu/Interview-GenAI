@@ -910,3 +910,110 @@
     width: 100%;
   }
 }
+
+/* ============================================
+   Practice Mode Panel
+   ============================================ */
+
+.mr15-practice-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.mr15-practice-modal {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: mr15-practice-slide-in 0.3s ease-out;
+}
+
+@keyframes mr15-practice-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mr15-practice-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.mr15-practice-strategy {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.1rem;
+  color: #374151;
+  font-weight: 500;
+  padding: 0.75rem;
+  background: #f0fdf4;
+  border-radius: 0.5rem;
+  border-left: 4px solid #16a34a;
+}
+
+.mr15-practice-guidance,
+.mr15-practice-tips {
+  margin-bottom: 1.5rem;
+}
+
+.mr15-practice-guidance h4,
+.mr15-practice-tips h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.mr15-practice-guidance ol,
+.mr15-practice-tips ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.mr15-practice-guidance li,
+.mr15-practice-tips li {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.mr15-practice-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.mr15-btn-practice-done {
+  padding: 0.75rem 2rem;
+  background: #16a34a;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.mr15-btn-practice-done:hover {
+  background: #15803d;
+}

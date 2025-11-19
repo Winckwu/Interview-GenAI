@@ -480,13 +480,19 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
         {activeTab === 'achievements' && (
           <div className="mr7-achievements">
             <div className="mr7-badges-grid">
-              {badges.map(badge => (
+              {badges.map(badge => {
+                // Extract emoji and text from badge name (e.g., "🎓 Reflective Learner")
+                const emojiMatch = badge.name.match(/^(\p{Emoji})\s*/u);
+                const emoji = emojiMatch ? emojiMatch[1] : '🏆';
+                const title = badge.name.replace(/^\p{Emoji}\s*/u, '');
+
+                return (
                 <div
                   key={badge.id}
                   className={`mr7-badge-card ${badge.unlockedAt ? 'unlocked' : 'locked'}`}
                 >
-                  <div className="mr7-badge-icon">{badge.name}</div>
-                  <h4 className="mr7-badge-title">{badge.name}</h4>
+                  <div className="mr7-badge-icon">{emoji}</div>
+                  <h4 className="mr7-badge-title">{title}</h4>
                   <p className="mr7-badge-description">{badge.description}</p>
                   <div className="mr7-badge-progress">
                     <div className="mr7-progress-bar">
@@ -505,7 +511,8 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
                     </div>
                   )}
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

@@ -87,6 +87,7 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
   const [practiceMode, setPracticeMode] = useState(false);
+  const [practicingStrategy, setPracticingStrategy] = useState<string | null>(null);
 
   /**
    * Initialize scaffold level based on user data
@@ -169,11 +170,20 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
    */
   const handlePracticeStrategy = useCallback((strategy: string) => {
     setPracticeMode(true);
+    setPracticingStrategy(strategy);
 
     if (onStrategyPracticed) {
       onStrategyPracticed(strategy);
     }
   }, [onStrategyPracticed]);
+
+  /**
+   * Handle closing practice mode
+   */
+  const handleClosePractice = useCallback(() => {
+    setPracticeMode(false);
+    setPracticingStrategy(null);
+  }, []);
 
   /**
    * Handle case study selection
@@ -490,6 +500,44 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
 
       {/* Just-in-time prompt */}
       {renderJustInTimePrompt()}
+
+      {/* Practice Mode Panel */}
+      {practiceMode && practicingStrategy && (
+        <div className="mr15-practice-overlay" onClick={handleClosePractice}>
+          <div className="mr15-practice-modal" onClick={e => e.stopPropagation()}>
+            <h3 className="mr15-practice-title">🎯 Practice Mode Active</h3>
+            <p className="mr15-practice-strategy">Practicing: {practicingStrategy}</p>
+
+            <div className="mr15-practice-guidance">
+              <h4>Practice Steps:</h4>
+              <ol>
+                <li>In your next AI interaction, consciously apply this strategy</li>
+                <li>Before submitting your prompt, check if you've applied the strategy</li>
+                <li>After getting the response, reflect on how the strategy helped</li>
+                <li>Note what worked well and what to improve</li>
+              </ol>
+            </div>
+
+            <div className="mr15-practice-tips">
+              <h4>Tips:</h4>
+              <ul>
+                <li>Start with simple tasks to build the habit</li>
+                <li>Don't try to use all strategies at once</li>
+                <li>Reflect after each practice session</li>
+              </ul>
+            </div>
+
+            <div className="mr15-practice-actions">
+              <button
+                className="mr15-btn-practice-done"
+                onClick={handleClosePractice}
+              >
+                Done Practicing
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
