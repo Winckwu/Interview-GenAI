@@ -115,7 +115,7 @@ const COMMON_FAILURE_PATTERNS: Record<string, FailurePattern> = {
 };
 
 // Achievement criteria
-const ACHIEVEMENT_BADGES: AchievementBadge[] = [
+export const ACHIEVEMENT_BADGES: AchievementBadge[] = [
   {
     id: 'first_learning_log',
     name: '🎓 Reflective Learner',
