@@ -1049,7 +1049,55 @@ const ChatSessionPage: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
+    <>
+      {/* CSS overrides for MR components in sidebar - make them compact */}
+      <style>{`
+        /* Compact MR components for sidebar display */
+        [class*="mr"][class*="-container"] {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+        [class*="mr"][class*="-header"] {
+          margin-bottom: 0.75rem !important;
+          padding-bottom: 0.5rem !important;
+        }
+        [class*="mr"][class*="-title"] {
+          font-size: 0.85rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+        [class*="mr"][class*="-subtitle"] {
+          font-size: 0.7rem !important;
+        }
+        [class*="mr"] h1 {
+          font-size: 0.85rem !important;
+        }
+        [class*="mr"] h2 {
+          font-size: 0.8rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+        [class*="mr"] h3 {
+          font-size: 0.75rem !important;
+        }
+        [class*="mr"] p, [class*="mr"] li, [class*="mr"] span {
+          font-size: 0.7rem !important;
+          line-height: 1.4 !important;
+        }
+        [class*="mr"] button {
+          font-size: 0.7rem !important;
+          padding: 0.35rem 0.5rem !important;
+        }
+        [class*="mr"] input, [class*="mr"] textarea, [class*="mr"] select {
+          font-size: 0.7rem !important;
+          padding: 0.35rem !important;
+        }
+        [class*="mr"][class*="-progress-bar"] {
+          margin-bottom: 0.75rem !important;
+        }
+        [class*="mr"][class*="-step-label"] {
+          font-size: 0.6rem !important;
+        }
+      `}</style>
+      <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
       {/* Left Sidebar - Session History */}
       <aside style={{
         width: sessionSidebarOpen ? '280px' : '0',
@@ -1905,6 +1953,7 @@ const ChatSessionPage: React.FC = () => {
         }
       `}</style>
     </div>
+    </>
   );
 };
 
