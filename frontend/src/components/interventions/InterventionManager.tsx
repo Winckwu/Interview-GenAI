@@ -346,7 +346,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   // Initialize session in store
   useEffect(() => {
     store.setCurrentSession(sessionId);
-  }, [sessionId, store]);
+  }, [sessionId]);
 
   /**
    * Handle backend MCA orchestrator MRs
@@ -395,7 +395,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     // Display the intervention
     store.setActiveIntervention(intervention);
     onInterventionDisplayed?.(intervention.tier, topMR.mrId);
-  }, [activeMRs, lastDisplayedMRId, convertActiveMRToIntervention, metricsStore, sessionId, messages.length, store, onInterventionDisplayed]);
+  }, [activeMRs, lastDisplayedMRId, convertActiveMRToIntervention, sessionId, messages.length, onInterventionDisplayed]);
 
   /**
    * Core detection and scheduling logic - Frontend fallback
@@ -482,7 +482,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [messages, minMessagesForDetection, isAnalyzing, store, metricsStore, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI]);
+  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI]);
 
   /**
    * Render active intervention
