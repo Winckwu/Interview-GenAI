@@ -1,0 +1,118 @@
+/**
+ * Skeleton Loading Styles
+ * Placeholder animations while content loads
+ */
+
+.skeleton {
+  background-color: var(--color-bg-secondary, #f3f4f6);
+  border-radius: var(--radius-md, 8px);
+  display: inline-block;
+}
+
+/* Skeleton Variants */
+.skeleton-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2, 8px);
+}
+
+.skeleton-text .skeleton {
+  border-radius: var(--radius-sm, 6px);
+  height: 20px;
+}
+
+.skeleton-circular {
+  border-radius: 50%;
+}
+
+.skeleton-rectangular {
+  border-radius: var(--radius-lg, 12px);
+}
+
+/* Animation - Pulse */
+.skeleton-pulse {
+  animation: skeleton-pulse 2s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Animation - Wave */
+.skeleton-wave {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-secondary, #f3f4f6) 25%,
+    var(--color-bg-tertiary, #e5e7eb) 50%,
+    var(--color-bg-secondary, #f3f4f6) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-wave 2s infinite;
+}
+
+@keyframes skeleton-wave {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Animation - None */
+.skeleton-none {
+  animation: none;
+}
+
+/* Skeleton Card */
+.skeleton-card {
+  border-radius: var(--radius-lg, 12px);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+  background-color: var(--color-bg-primary, #ffffff);
+}
+
+.skeleton-card .skeleton:first-child {
+  width: 100%;
+  border-radius: 0;
+}
+
+/* Utility Classes */
+.mb-2 {
+  margin-bottom: var(--spacing-2, 8px);
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background-color: var(--color-bg-secondary, #2d2d2d);
+  }
+
+  .skeleton-wave {
+    background: linear-gradient(
+      90deg,
+      var(--color-bg-secondary, #2d2d2d) 25%,
+      var(--color-bg-tertiary, #404040) 50%,
+      var(--color-bg-secondary, #2d2d2d) 75%
+    );
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-pulse,
+  .skeleton-wave {
+    animation: none;
+    opacity: 0.7;
+  }
+}

@@ -1,0 +1,113 @@
+/**
+ * Empty State Styles
+ */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-12, 48px) var(--spacing-6, 24px);
+  text-align: center;
+  min-height: 300px;
+  background-color: var(--color-bg-secondary, #f9fafb);
+  border-radius: var(--radius-lg, 12px);
+  border: 1px dashed var(--color-border, #e5e7eb);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-6, 24px);
+  opacity: 0.8;
+}
+
+.empty-state-title {
+  font-size: var(--text-xl, 1.25rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-text-primary, #1f2937);
+  margin: 0 0 var(--spacing-2, 8px) 0;
+}
+
+.empty-state-description {
+  font-size: var(--text-base, 1rem);
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 var(--spacing-6, 24px) 0;
+  max-width: 400px;
+}
+
+.empty-state-action {
+  padding: var(--spacing-2, 8px) var(--spacing-6, 24px);
+  font-size: var(--text-base, 1rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: white;
+  background-color: var(--color-primary, #3b82f6);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  transition: all var(--transition-base, 250ms ease);
+}
+
+.empty-state-action:hover {
+  background-color: var(--color-primary-dark, #1d4ed8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.empty-state-action:active {
+  transform: translateY(0);
+}
+
+.empty-state-action:focus {
+  outline: 2px solid var(--color-primary, #3b82f6);
+  outline-offset: 2px;
+}
+
+.empty-state-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .empty-state {
+    background-color: var(--color-bg-secondary, #1e293b);
+    border-color: var(--color-border, #334155);
+  }
+
+  .empty-state-title {
+    color: var(--color-text-primary, #f1f5f9);
+  }
+
+  .empty-state-description {
+    color: var(--color-text-secondary, #cbd5e1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .empty-state {
+    min-height: 200px;
+    padding: var(--spacing-8, 32px) var(--spacing-4, 16px);
+  }
+
+  .empty-state-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-4, 16px);
+  }
+
+  .empty-state-title {
+    font-size: var(--text-lg, 1.125rem);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .empty-state-action {
+    transition: none;
+  }
+
+  .empty-state-action:hover {
+    transform: none;
+  }
+}
