@@ -2,6 +2,8 @@
  * MR14: Guided Reflection Mechanism - Utilities
  */
 
+import { apiService } from '../services/api';
+
 export interface ReflectionPrompt {
   id: string;
   text?: string;
@@ -126,4 +128,30 @@ export function analyzeReflectionDepth(reflections: Record<string, string>): Ref
   return { level, indicators, recommendations };
 }
 
-export default { generateReflectionPrompts, analyzeReflectionDepth };
+/**
+ * Generate personalized reflection questions using GPT API
+ */
+export interface PersonalizedReflection {
+  immediate: Array<{ question: string; purpose: string }>;
+  structured: Array<{ question: string; purpose: string }>;
+  metacognitive: Array<{ question: string; purpose: string }>;
+  insights: string[];
+  growthAreas: string[];
+}
+
+export async function generatePersonalizedReflection(
+  messages: Array<{ role: string; content: string }>,
+  sessionContext?: string
+): Promise<PersonalizedReflection | null> {
+  try {
+    const response = await apiService.ai.generateReflection(messages, sessionContext);
+    if (response.data?.success && response.data?.data) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.warn('[MR14] GPT reflection generation failed:', error);
+  }
+  return null;
+}
+
+export default { generateReflectionPrompts, analyzeReflectionDepth, generatePersonalizedReflection };

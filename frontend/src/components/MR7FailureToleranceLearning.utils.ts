@@ -6,6 +6,8 @@
  * iterative refinement.
  */
 
+import { apiService } from '../services/api';
+
 export interface FailedIteration {
   id: string;
   taskDescription: string;
@@ -170,12 +172,46 @@ const SUCCESS_STATISTICS = [
 ];
 
 /**
- * Identify failure patterns from an iteration
+ * Identify failure patterns from an iteration - uses GPT API with fallback
  */
-export function analyzeFailure(
+export async function analyzeFailure(
   iteration: FailedIteration,
   previousAttempts: FailedIteration[] = []
-): FailureAnalysis {
+): Promise<FailureAnalysis> {
+  // Try GPT-powered analysis
+  try {
+    const response = await apiService.ai.analyzeFailure(
+      iteration.taskDescription,
+      iteration.rejectionReason || 'Output not satisfactory',
+      iteration.aiResponse,
+      previousAttempts.map(a => ({ task: a.taskDescription, issue: a.rejectionReason }))
+    );
+
+    if (response.data?.success && response.data?.data) {
+      const aiData = response.data.data;
+
+      const patterns: FailurePattern[] = [{
+        pattern: aiData.category || 'unknown',
+        frequency: 1,
+        examples: aiData.patterns || [],
+        preventionTip: aiData.improvedPrompt || 'Try a different approach'
+      }];
+
+      const insights = (aiData.learningPoints || []).map((lp: any) => lp.point);
+      insights.unshift(aiData.rootCause || 'Analysis complete');
+
+      return {
+        iterationId: iteration.id,
+        failurePatterns: patterns,
+        learningInsights: insights,
+        recoveryStrategies: aiData.preventionStrategies || []
+      };
+    }
+  } catch (error) {
+    console.warn('[MR7] GPT failure analysis failed, using local fallback:', error);
+  }
+
+  // Fallback to local analysis
   const patterns: FailurePattern[] = [];
   const insights: string[] = [];
   const strategies: string[] = [];

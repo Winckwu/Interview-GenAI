@@ -8,6 +8,8 @@
  * - Scaffold level calculation
  */
 
+import { apiService } from '../services/api';
+
 export type DecompositionStrategy = 'sequential' | 'parallel' | 'hierarchical';
 
 export interface DecompositionDimension {
@@ -35,9 +37,24 @@ export interface TaskDecomposition {
 }
 
 /**
- * Analyze task dimensions
+ * Analyze task dimensions - uses GPT API with fallback to local analysis
  */
 export async function analyzeTaskDimensions(task: string): Promise<DecompositionDimension[]> {
+  try {
+    // Try GPT-powered analysis
+    const response = await apiService.ai.decompose(task, 'sequential');
+    if (response.data?.success && response.data?.data?.dimensions) {
+      return response.data.data.dimensions.map((d: any) => ({
+        name: d.name,
+        value: d.value,
+        analysis: d.analysis
+      }));
+    }
+  } catch (error) {
+    console.warn('[MR1] GPT analysis failed, using local fallback:', error);
+  }
+
+  // Fallback to local analysis
   return [
     {
       name: '🎯 Scope',
@@ -68,12 +85,38 @@ export async function analyzeTaskDimensions(task: string): Promise<Decomposition
 }
 
 /**
- * Generate initial decomposition based on strategy
+ * Generate initial decomposition based on strategy - uses GPT API with fallback
  */
 export async function generateInitialDecomposition(
   task: string,
   strategy: DecompositionStrategy
 ): Promise<TaskDecomposition> {
+  try {
+    // Try GPT-powered decomposition
+    const response = await apiService.ai.decompose(task, strategy);
+    if (response.data?.success && response.data?.data?.subtasks) {
+      const aiSubtasks = response.data.data.subtasks.map((s: any, idx: number) => ({
+        id: s.id || `st-${idx}`,
+        description: s.title || s.description,
+        dependencies: s.dependencies || [],
+        verificationMethod: s.verificationMethod || 'Review and verify completion',
+        userApproved: false,
+        estimatedTime: parseInt(s.estimatedTime) || 30,
+        difficulty: s.difficulty || 'medium'
+      }));
+
+      return {
+        originalTask: task,
+        suggestedSubtasks: aiSubtasks,
+        decompositionStrategy: strategy,
+        userModifications: []
+      };
+    }
+  } catch (error) {
+    console.warn('[MR1] GPT decomposition failed, using local fallback:', error);
+  }
+
+  // Fallback to local decomposition
   let subtasks: SubtaskItem[] = [];
 
   if (strategy === 'sequential') {

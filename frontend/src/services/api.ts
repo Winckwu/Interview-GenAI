@@ -271,6 +271,49 @@ export const apiService = {
     updateSystemConfig: (config: any) =>
       api.patch('/admin/config', config),
   },
+
+  /**
+   * AI/MR endpoints - GPT-powered MR tools
+   */
+  ai: {
+    // Basic chat
+    chat: (userPrompt: string, conversationHistory: any[] = []) =>
+      api.post('/ai/chat', { userPrompt, conversationHistory }),
+
+    // Get available models
+    getModels: () => api.get('/ai/models'),
+
+    // Health check
+    healthCheck: () => api.post('/ai/health', {}),
+
+    // MR1: Task Decomposition
+    decompose: (task: string, strategy: string = 'sequential') =>
+      api.post('/ai/mr/decompose', { task, strategy }),
+
+    // MR5: Generate Variants
+    generateVariants: (prompt: string, count: number = 3) =>
+      api.post('/ai/mr/variants', { prompt, count }),
+
+    // MR7: Failure Analysis
+    analyzeFailure: (task: string, issue: string, originalPrompt?: string, previousFailures?: any[]) =>
+      api.post('/ai/mr/failure-analysis', { task, issue, originalPrompt, previousFailures }),
+
+    // MR12: Critical Analysis
+    criticalAnalysis: (content: string, taskType: string = 'general') =>
+      api.post('/ai/mr/critical-analysis', { content, taskType }),
+
+    // MR13: Uncertainty Analysis
+    analyzeUncertainty: (content: string) =>
+      api.post('/ai/mr/uncertainty', { content }),
+
+    // MR14: Generate Reflection
+    generateReflection: (messages: any[], sessionContext?: string) =>
+      api.post('/ai/mr/reflection', { messages, sessionContext }),
+
+    // MR15: Recommend Strategy
+    recommendStrategy: (taskType: string, taskDescription?: string, userLevel?: string) =>
+      api.post('/ai/mr/strategy', { taskType, taskDescription, userLevel }),
+  },
 };
 
 export default api;

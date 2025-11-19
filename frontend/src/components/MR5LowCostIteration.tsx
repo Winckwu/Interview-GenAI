@@ -116,27 +116,31 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   const handleGenerateVariants = useCallback(async () => {
     setGeneratingVariants(true);
 
-    // Simulate variant generation with different temperatures
-    const newVariants = generateVariants({
-      prompt: initialPrompt,
-      count: variantCount,
-      temperatureRange,
-      baseVariant: conversationHistory[conversationHistory.length - 1]?.content || '',
-    });
+    try {
+      // Generate variants using GPT API
+      const newVariants = await generateVariants({
+        prompt: initialPrompt,
+        count: variantCount,
+        temperatureRange,
+        baseVariant: conversationHistory[conversationHistory.length - 1]?.content || '',
+      });
 
-    setVariants(newVariants);
-    onVariantsGenerated?.(newVariants);
+      setVariants(newVariants);
+      onVariantsGenerated?.(newVariants);
 
-    // Update active branch
-    if (activeBranchId) {
-      setBranches(prev =>
-        prev.map(b =>
-          b.id === activeBranchId ? { ...b, variantsCount: newVariants.length } : b
-        )
-      );
+      // Update active branch
+      if (activeBranchId) {
+        setBranches(prev =>
+          prev.map(b =>
+            b.id === activeBranchId ? { ...b, variantsCount: newVariants.length } : b
+          )
+        );
+      }
+    } catch (error) {
+      console.error('[MR5] Failed to generate variants:', error);
+    } finally {
+      setGeneratingVariants(false);
     }
-
-    setGeneratingVariants(false);
   }, [initialPrompt, conversationHistory, variantCount, temperatureRange, activeBranchId, onVariantsGenerated]);
 
   /**

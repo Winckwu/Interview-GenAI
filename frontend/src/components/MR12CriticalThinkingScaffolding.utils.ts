@@ -2,6 +2,8 @@
  * MR12: Critical Thinking Scaffolding - Utilities
  */
 
+import { apiService } from '../services/api';
+
 export type DomainType = 'code' | 'writing' | 'analysis' | 'math' | 'general';
 
 export interface CriticalQuestion {
@@ -134,4 +136,35 @@ export function assessCriticalThinking(
   };
 }
 
-export default { generateCriticalQuestions, getDomainChecklist, assessCriticalThinking };
+/**
+ * AI-powered critical analysis of content - uses GPT API
+ */
+export interface AIContentAnalysis {
+  overallScore: number;
+  issues: Array<{
+    type: string;
+    severity: string;
+    location: string;
+    explanation: string;
+    suggestion: string;
+  }>;
+  strengths: string[];
+  recommendations: string[];
+}
+
+export async function analyzeContentCritically(
+  content: string,
+  taskType: string = 'general'
+): Promise<AIContentAnalysis | null> {
+  try {
+    const response = await apiService.ai.criticalAnalysis(content, taskType);
+    if (response.data?.success && response.data?.data) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.warn('[MR12] GPT critical analysis failed:', error);
+  }
+  return null;
+}
+
+export default { generateCriticalQuestions, getDomainChecklist, assessCriticalThinking, analyzeContentCritically };

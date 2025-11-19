@@ -5,6 +5,8 @@
  * Address the universal user frustration (98%) with AI "pretending to be certain".
  */
 
+import { apiService } from '../services/api';
+
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 export type UncertaintyReason = 'limited-training-data' | 'knowledge-cutoff' | 'conflicting-sources' | 'reasoning-step' | 'domain-complexity' | 'not-trained';
 export type SourceType = 'training-data' | 'reasoning' | 'retrieval' | 'unknown';
@@ -72,12 +74,51 @@ const KNOWLEDGE_BOUNDARY_LABELS: Record<KnowledgeBoundary, string> = {
 };
 
 /**
- * Analyze output and estimate confidence by sentence
+ * Analyze output and estimate confidence by sentence - uses GPT API with fallback
  */
-export function analyzeUncertainty(
+export async function analyzeUncertainty(
   text: string,
   topic: string = 'general'
-): OutputUncertainty {
+): Promise<OutputUncertainty> {
+  // Try GPT-powered analysis
+  try {
+    const response = await apiService.ai.analyzeUncertainty(text);
+    if (response.data?.success && response.data?.data) {
+      const aiData = response.data.data;
+
+      // Map AI response to our format
+      const sentenceConfidences: SentenceConfidence[] = (aiData.uncertainAreas || []).map((area: any, idx: number) => ({
+        id: `sentence-${Date.now()}-${idx}`,
+        text: area.text,
+        confidence: (area.confidence || 50) / 100,
+        level: getConfidenceLevel((area.confidence || 50) / 100),
+        reasons: [mapUncertaintyType(area.type)],
+        sourceType: 'reasoning' as SourceType,
+        knowledgeBoundary: 'uncertain' as KnowledgeBoundary,
+        requiresVerification: true,
+        alternativesPossible: true
+      }));
+
+      const overallConfidence = (aiData.overallConfidence || 50) / 100;
+
+      return {
+        id: `uncertainty-${Date.now()}`,
+        fullText: text,
+        overallConfidence,
+        overallLevel: getConfidenceLevel(overallConfidence),
+        sentences: sentenceConfidences,
+        keyUncertainties: sentenceConfidences.map((s: SentenceConfidence) => s.text),
+        knowledgeCutoff: 'January 2024',
+        disclaimers: [aiData.summary || ''],
+        verificationStrategies: (aiData.uncertainAreas || []).map((a: any) => a.verificationSuggestion).filter(Boolean),
+        expertConsultationNeeded: overallConfidence < 0.5
+      };
+    }
+  } catch (error) {
+    console.warn('[MR13] GPT uncertainty analysis failed, using local fallback:', error);
+  }
+
+  // Fallback to local analysis
   const sentences = splitIntoSentences(text);
   const sentenceConfidences = sentences.map((sentence, idx) =>
     analyzeSentenceConfidence(sentence, idx, topic)
@@ -119,6 +160,20 @@ export function analyzeUncertainty(
     verificationStrategies,
     expertConsultationNeeded
   };
+}
+
+/**
+ * Map AI uncertainty type to our enum
+ */
+function mapUncertaintyType(type: string): UncertaintyReason {
+  const typeMap: Record<string, UncertaintyReason> = {
+    'speculation': 'reasoning-step',
+    'estimate': 'domain-complexity',
+    'assumption': 'limited-training-data',
+    'outdated': 'knowledge-cutoff',
+    'unverified': 'conflicting-sources'
+  };
+  return typeMap[type] || 'domain-complexity';
 }
 
 /**

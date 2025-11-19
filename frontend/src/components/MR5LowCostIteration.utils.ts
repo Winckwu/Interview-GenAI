@@ -9,6 +9,8 @@
  * - Recommending promising branches
  */
 
+import { apiService } from '../services/api';
+
 /**
  * Reference to parent conversation point
  */
@@ -83,26 +85,45 @@ export interface BranchTree {
 }
 
 /**
- * Generate multiple variants with different temperature settings
+ * Generate multiple variants with different temperature settings - uses GPT API
  */
-export function generateVariants(options: {
+export async function generateVariants(options: {
   prompt: string;
   count: number;
   temperatureRange: { min: number; max: number };
   baseVariant: string;
-}): IterationVariant[] {
-  const { prompt, count, temperatureRange, baseVariant } = options;
+}): Promise<IterationVariant[]> {
+  const { prompt, count, temperatureRange } = options;
 
+  try {
+    // Try GPT-powered variant generation
+    const response = await apiService.ai.generateVariants(prompt, count);
+    if (response.data?.success && response.data?.data?.variants) {
+      return response.data.data.variants.map((v: any, idx: number) => ({
+        id: v.id || `variant-${Date.now()}-${idx}`,
+        content: v.content,
+        temperature: temperatureRange.min + (idx / Math.max(count - 1, 1)) * (temperatureRange.max - temperatureRange.min),
+        prompt,
+        generatedAt: new Date(),
+        style: v.style,
+        characteristics: v.characteristics
+      }));
+    }
+  } catch (error) {
+    console.warn('[MR5] GPT variant generation failed, using local fallback:', error);
+  }
+
+  // Fallback to local generation
   const variants: IterationVariant[] = [];
 
   for (let i = 0; i < count; i++) {
     // Interpolate temperature across range
-    const temperature = temperatureRange.min + (i / (count - 1)) * (temperatureRange.max - temperatureRange.min);
+    const temperature = temperatureRange.min + (i / Math.max(count - 1, 1)) * (temperatureRange.max - temperatureRange.min);
 
     // Simulate variant generation
     const variant: IterationVariant = {
       id: `variant-${Date.now()}-${i}`,
-      content: generateVariantContent(baseVariant, temperature),
+      content: generateVariantContent(options.baseVariant, temperature),
       temperature,
       prompt,
       generatedAt: new Date(),

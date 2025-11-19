@@ -9,6 +9,8 @@
  * - Just-in-time prompts
  */
 
+import { apiService } from '../services/api';
+
 export type StrategyCategory = 'planning' | 'monitoring' | 'evaluation' | 'regulation';
 
 /**
@@ -647,6 +649,46 @@ export function getRecommendedStrategies(
   return recommendations;
 }
 
+/**
+ * AI-powered strategy recommendation based on task - uses GPT API
+ */
+export interface AIStrategyRecommendation {
+  primaryStrategy: {
+    name: string;
+    description: string;
+    steps: string[];
+    benefits: string[];
+    whenToUse: string;
+  };
+  alternativeStrategies: Array<{
+    name: string;
+    description: string;
+    tradeoffs: string;
+  }>;
+  pitfalls: string[];
+  checkpoints: Array<{ when: string; check: string }>;
+  adaptations: {
+    beginner: string;
+    advanced: string;
+  };
+}
+
+export async function getAIStrategyRecommendation(
+  taskType: string,
+  taskDescription?: string,
+  userLevel?: string
+): Promise<AIStrategyRecommendation | null> {
+  try {
+    const response = await apiService.ai.recommendStrategy(taskType, taskDescription, userLevel);
+    if (response.data?.success && response.data?.data) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.warn('[MR15] GPT strategy recommendation failed:', error);
+  }
+  return null;
+}
+
 export default {
   STRATEGY_LIBRARY,
   CASE_STUDIES,
@@ -654,5 +696,6 @@ export default {
   JUST_IN_TIME_PROMPTS,
   calculateScaffoldLevel,
   getJustInTimePrompt,
-  getRecommendedStrategies
+  getRecommendedStrategies,
+  getAIStrategyRecommendation
 };
