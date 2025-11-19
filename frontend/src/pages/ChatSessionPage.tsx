@@ -978,148 +978,111 @@ const ChatSessionPage: React.FC = () => {
 
   return (
     <>
-      {/* CSS overrides for MR components in sidebar - make them compact */}
+      {/* CSS overrides for MR components in sidebar - readable but compact */}
       <style>{`
-        /* Global sidebar MR component styles - prevent horizontal scroll */
+        /* Global sidebar MR component styles */
         [class*="mr"][class*="-container"],
         [class*="mr"][class*="Container"] {
-          padding: 0.4rem !important;
-          max-width: 100% !important;
-          width: 100% !important;
+          padding: 0.5rem !important;
           box-sizing: border-box !important;
-          overflow-x: hidden !important;
         }
 
-        /* Headers - compact */
+        /* Headers */
         [class*="mr"][class*="-header"],
         [class*="mr"][class*="Header"] {
-          margin-bottom: 0.4rem !important;
-          padding-bottom: 0.3rem !important;
+          margin-bottom: 0.5rem !important;
+          padding-bottom: 0.4rem !important;
         }
 
-        /* Titles - much smaller for sidebar */
+        /* Titles - readable size */
         [class*="mr"][class*="-title"],
         [class*="mr"][class*="Title"] {
-          font-size: 0.7rem !important;
-          margin-bottom: 0.2rem !important;
-          line-height: 1.2 !important;
+          font-size: 0.8rem !important;
+          margin-bottom: 0.3rem !important;
+          line-height: 1.3 !important;
         }
 
         [class*="mr"][class*="-subtitle"],
         [class*="mr"][class*="Subtitle"] {
-          font-size: 0.6rem !important;
+          font-size: 0.7rem !important;
         }
 
-        /* All headings - reduced */
+        /* All headings */
         [class*="mr"] h1 {
+          font-size: 0.85rem !important;
+          margin: 0 0 0.4rem 0 !important;
+        }
+        [class*="mr"] h2 {
+          font-size: 0.8rem !important;
+          margin: 0 0 0.35rem 0 !important;
+        }
+        [class*="mr"] h3 {
           font-size: 0.75rem !important;
           margin: 0 0 0.3rem 0 !important;
         }
-        [class*="mr"] h2 {
+        [class*="mr"] h4, [class*="mr"] h5, [class*="mr"] h6 {
           font-size: 0.7rem !important;
           margin: 0 0 0.25rem 0 !important;
         }
-        [class*="mr"] h3, [class*="mr"] h4, [class*="mr"] h5, [class*="mr"] h6 {
-          font-size: 0.65rem !important;
-          margin: 0 0 0.2rem 0 !important;
+
+        /* Body text - readable */
+        [class*="mr"] p, [class*="mr"] li, [class*="mr"] span, [class*="mr"] label {
+          font-size: 0.7rem !important;
+          line-height: 1.4 !important;
         }
 
-        /* Body text - smaller */
-        [class*="mr"] p, [class*="mr"] li, [class*="mr"] span, [class*="mr"] label, [class*="mr"] div {
-          font-size: 0.6rem !important;
-          line-height: 1.3 !important;
-        }
-
-        /* Buttons - compact */
+        /* Buttons */
         [class*="mr"] button {
-          font-size: 0.55rem !important;
-          padding: 0.2rem 0.35rem !important;
-          min-height: unset !important;
+          font-size: 0.65rem !important;
+          padding: 0.3rem 0.5rem !important;
         }
 
-        /* Inputs - compact */
+        /* Inputs */
         [class*="mr"] input, [class*="mr"] textarea, [class*="mr"] select {
-          font-size: 0.6rem !important;
-          padding: 0.25rem !important;
+          font-size: 0.7rem !important;
+          padding: 0.35rem !important;
         }
 
         /* Progress and steps */
-        [class*="mr"][class*="-progress"],
-        [class*="mr"][class*="Progress"] {
-          margin-bottom: 0.3rem !important;
-        }
         [class*="mr"][class*="-step"],
         [class*="mr"][class*="Step"] {
-          font-size: 0.5rem !important;
+          font-size: 0.6rem !important;
         }
 
-        /* Cards and sections - tighter */
+        /* Cards and sections */
         [class*="mr"][class*="-card"],
         [class*="mr"][class*="Card"],
         [class*="mr"][class*="-section"],
         [class*="mr"][class*="Section"] {
-          padding: 0.3rem !important;
-          margin-bottom: 0.3rem !important;
+          padding: 0.4rem !important;
+          margin-bottom: 0.4rem !important;
         }
 
         /* Badge styles */
         [class*="mr"][class*="-badge"],
         [class*="mr"][class*="Badge"] {
-          font-size: 0.5rem !important;
-          padding: 0.1rem 0.2rem !important;
+          font-size: 0.6rem !important;
+          padding: 0.15rem 0.3rem !important;
         }
 
-        /* Grid and flex gaps - tighter */
-        [class*="mr"] .grid,
-        [class*="mr"] [style*="display: grid"],
-        [class*="mr"] [style*="display:grid"] {
-          gap: 0.2rem !important;
-        }
-        [class*="mr"] [style*="gap"] {
-          gap: 0.15rem !important;
-        }
-
-        /* Overflow and word wrap */
-        [class*="mr"] {
-          word-wrap: break-word !important;
-          overflow-wrap: break-word !important;
-        }
-
-        /* Tables - compact */
+        /* Tables */
         [class*="mr"] table {
-          font-size: 0.55rem !important;
-          width: 100% !important;
+          font-size: 0.65rem !important;
         }
         [class*="mr"] th, [class*="mr"] td {
-          padding: 0.15rem !important;
+          padding: 0.25rem !important;
         }
 
-        /* Lists - tighter */
+        /* Lists */
         [class*="mr"] ul, [class*="mr"] ol {
-          padding-left: 0.8rem !important;
-          margin: 0.15rem 0 !important;
+          padding-left: 1rem !important;
+          margin: 0.25rem 0 !important;
         }
 
-        /* Dividers */
-        [class*="mr"] hr {
-          margin: 0.3rem 0 !important;
-        }
-
-        /* SVG icons and emojis */
+        /* SVG icons */
         [class*="mr"] svg {
-          width: 0.6rem !important;
-          height: 0.6rem !important;
-        }
-
-        /* Specific fixes for known issues */
-        /* MR7 - hide duplicate badge */
-        [class*="mr7"] [class*="badge"]:nth-child(2) {
-          display: none !important;
-        }
-
-        /* Ensure no horizontal scroll anywhere */
-        [class*="mr"] * {
-          max-width: 100% !important;
+          width: 0.75rem !important;
+          height: 0.75rem !important;
         }
       `}</style>
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
