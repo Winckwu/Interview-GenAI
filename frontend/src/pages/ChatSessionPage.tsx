@@ -1748,14 +1748,40 @@ const ChatSessionPage: React.FC = () => {
                         console.log(`📊 User action: ${action} on ${mrType}`);
                         // Open corresponding MR tool when user clicks "View Details" or "Learn More"
                         if (action === 'learn_more' || action === 'acted') {
-                          // Map MR types to activeMRTool values
+                          // Comprehensive mapping for all MR types (handles various naming formats)
                           const mrToolMap: Record<string, ActiveMRTool> = {
-                            'MR11_IntegratedVerification': 'mr11-verify',
+                            // Pattern-based interventions
                             'MR13_Uncertainty': 'mr13-uncertainty',
-                            'MR18_OverDependence': 'mr17-visualization', // Show learning progress for over-dependence
-                            'MR_PATTERN_F_BARRIER': 'mr14-reflection', // Show reflection for pattern F
+                            'MR18_OverDependence': 'mr17-visualization',
+                            'MR_PATTERN_F_BARRIER': 'mr14-reflection',
+                            // Backend MR IDs (both simple and descriptive formats)
+                            'MR1': 'mr1-decomposition', 'MR1_TaskDecomposition': 'mr1-decomposition',
+                            'MR2': 'mr2-transparency', 'MR2_ProcessTransparency': 'mr2-transparency',
+                            'MR3': 'mr3-agency', 'MR3_HumanAgency': 'mr3-agency',
+                            'MR4': 'mr4-roles', 'MR4_RoleDefinition': 'mr4-roles',
+                            'MR5': 'mr5-iteration', 'MR5_LowCostIteration': 'mr5-iteration',
+                            'MR6': 'mr6-models', 'MR6_CrossModel': 'mr6-models',
+                            'MR7': 'mr7-failure', 'MR7_FailureTolerance': 'mr7-failure',
+                            'MR10': 'mr10-cost', 'MR10_CostBenefit': 'mr10-cost',
+                            'MR11': 'mr11-verify', 'MR11_IntegratedVerification': 'mr11-verify',
+                            'MR12': 'mr12-critical', 'MR12_CriticalThinking': 'mr12-critical',
+                            'MR13': 'mr13-uncertainty', 'MR13_TransparentUncertainty': 'mr13-uncertainty',
+                            'MR14': 'mr14-reflection', 'MR14_GuidedReflection': 'mr14-reflection',
+                            'MR15': 'mr15-strategies', 'MR15_MetacognitiveStrategy': 'mr15-strategies',
+                            'MR16': 'mr16-atrophy', 'MR16_SkillAtrophy': 'mr16-atrophy',
+                            'MR17': 'mr17-visualization', 'MR17_LearningVisualization': 'mr17-visualization',
                           };
-                          const tool = mrToolMap[mrType];
+
+                          let tool = mrToolMap[mrType];
+
+                          // Fallback: try to extract MR number from string
+                          if (!tool) {
+                            const match = mrType.match(/MR(\d+)/);
+                            if (match) {
+                              tool = mrToolMap[`MR${match[1]}`];
+                            }
+                          }
+
                           if (tool) {
                             setActiveMRTool(tool);
                             setShowPatternPanel(true);
