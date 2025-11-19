@@ -46,9 +46,34 @@
   height: fit-content;
 }
 
+.mr6-prompt-input,
 .mr6-model-selector,
 .mr6-metric-selector {
   margin-bottom: 1.5rem;
+}
+
+.mr6-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--mr6-border, #e0e0e0);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+  background: var(--mr6-bg, #ffffff);
+  color: var(--mr6-text, #1a1a1a);
+  box-sizing: border-box;
+}
+
+.mr6-textarea:focus {
+  outline: none;
+  border-color: var(--mr6-accent, #0066ff);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+.mr6-textarea::placeholder {
+  color: var(--mr6-secondary, #666);
+  font-style: italic;
 }
 
 .mr6-label {

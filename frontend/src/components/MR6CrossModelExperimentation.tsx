@@ -55,21 +55,22 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
     'tokenCount',
     'quality',
   ]);
+  const [userPrompt, setUserPrompt] = useState(prompt);
 
   const recommendedModel = useMemo(() => {
     return recommendModel(taskType);
   }, [taskType]);
 
   const handleRunExperiment = useCallback(async () => {
-    if (!prompt) return;
+    if (!userPrompt) return;
 
     setIsLoading(true);
     // Simulate model calls
     setTimeout(() => {
       const outputs: Record<ModelType, string> = {
-        gpt4: `GPT-4 Response to: ${prompt}\n[Comprehensive output with code examples]`,
-        claude: `Claude Response to: ${prompt}\n[Analytical perspective with safety considerations]`,
-        gemini: `Gemini Response to: ${prompt}\n[Real-time informed response with long context support]`,
+        gpt4: `GPT-4 Response to: ${userPrompt}\n[Comprehensive output with code examples]`,
+        claude: `Claude Response to: ${userPrompt}\n[Analytical perspective with safety considerations]`,
+        gemini: `Gemini Response to: ${userPrompt}\n[Real-time informed response with long context support]`,
       };
 
       setModelOutputs(outputs);
@@ -81,7 +82,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
 
       setIsLoading(false);
     }, 1000);
-  }, [prompt, selectedModels, taskType, onComparisonComplete]);
+  }, [userPrompt, selectedModels, taskType, onComparisonComplete]);
 
   return (
     <div className="mr6-container">
@@ -92,6 +93,17 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
 
       <div className="mr6-layout">
         <div className="mr6-controls">
+          <div className="mr6-prompt-input">
+            <h3 className="mr6-label">Your Prompt</h3>
+            <textarea
+              className="mr6-textarea"
+              placeholder="Enter your prompt here to compare how different models respond..."
+              value={userPrompt}
+              onChange={e => setUserPrompt(e.target.value)}
+              rows={3}
+            />
+          </div>
+
           <div className="mr6-model-selector">
             <h3 className="mr6-label">Select Models</h3>
             <div className="mr6-model-grid">
@@ -146,7 +158,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
           <button
             className="mr6-run-btn"
             onClick={handleRunExperiment}
-            disabled={isLoading || !prompt || selectedModels.length === 0}
+            disabled={isLoading || !userPrompt || selectedModels.length === 0}
           >
             {isLoading ? '⏳ Running Experiment...' : '▶️ Run Comparison'}
           </button>
