@@ -1464,8 +1464,11 @@ const ChatSessionPage: React.FC = () => {
           {showPatternPanel && (
             <div style={{
               width: '380px',
+              minWidth: '380px',
+              maxWidth: '380px',
               borderLeft: '1px solid #e2e8f0',
               overflowY: 'auto',
+              overflowX: 'hidden',
               display: 'flex',
               flexDirection: 'column',
               backgroundColor: '#f9fafb',
@@ -1502,6 +1505,7 @@ const ChatSessionPage: React.FC = () => {
                 padding: '0.75rem',
                 borderTop: '1px solid #e2e8f0',
                 backgroundColor: '#fff',
+                overflow: 'hidden',
               }}>
                 <h3 style={{
                   margin: '0 0 0.75rem 0',
@@ -1516,7 +1520,12 @@ const ChatSessionPage: React.FC = () => {
 
                 {/* MR8: Task Recognition - Compact */}
                 {messages.length >= 2 && (
-                  <div style={{ marginBottom: '0.5rem' }}>
+                  <div style={{
+                    marginBottom: '0.5rem',
+                    overflow: 'hidden',
+                    maxWidth: '100%',
+                    fontSize: '0.75rem',
+                  }}>
                     <Suspense fallback={<ComponentLoader />}>
                       <MR8TaskCharacteristicRecognition
                         taskDescription={
@@ -1534,7 +1543,12 @@ const ChatSessionPage: React.FC = () => {
 
                 {/* MR9: Trust Calibration - Compact */}
                 {messages.length >= 1 && (
-                  <div style={{ marginBottom: '0.5rem' }}>
+                  <div style={{
+                    marginBottom: '0.5rem',
+                    overflow: 'hidden',
+                    maxWidth: '100%',
+                    fontSize: '0.75rem',
+                  }}>
                     <Suspense fallback={<ComponentLoader />}>
                       <MR9DynamicTrustCalibration
                         taskType={sessionData?.taskType || 'general'}
@@ -1790,7 +1804,11 @@ const ChatSessionPage: React.FC = () => {
 
             {activeMRTool === 'none' ? (
               /* MR Tools Selection Grid */
-              <div style={{ padding: '1.5rem' }}>
+              <div style={{
+                padding: '1.5rem',
+                overflow: 'auto',
+                maxHeight: 'calc(90vh - 100px)',
+              }}>
                 {/* Phase 1: Foundation */}
                 <h3 style={{ margin: '0 0 1rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>
                   Phase 1: Foundation Components
@@ -1983,7 +2001,11 @@ const ChatSessionPage: React.FC = () => {
               </div>
             ) : (
               /* Active MR Tool Display */
-              <div style={{ padding: '1.5rem' }}>
+              <div style={{
+                padding: '1.5rem',
+                overflow: 'auto',
+                maxHeight: 'calc(90vh - 100px)',
+              }}>
                 <Suspense fallback={<ComponentLoader />}>
                   {activeMRTool === 'mr1-decomposition' && (
                     <MR1TaskDecompositionScaffold
