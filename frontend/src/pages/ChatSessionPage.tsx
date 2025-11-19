@@ -310,15 +310,13 @@ const ChatSessionPage: React.FC = () => {
   const [displayedModalMR, setDisplayedModalMR] = useState<ActiveMR | null>(null);
   const [dismissedMRs, setDismissedMRs] = useState<Set<string>>(new Set());
 
-  // Verification tools state
-  const [showVerificationTools, setShowVerificationTools] = useState(false);
+  // Verification tools state (logs stored for MR11)
   const [verificationLogs, setVerificationLogs] = useState<any[]>([]);
 
   // MR Tools Panel state - Controls which MR tool is active
-  // Note: MR8, MR9, MR11, MR18, MR19 are automatic/backend systems, not manual tools
+  // Note: MR8, MR9, MR18, MR19 are automatic/backend systems, not manual tools
   // MR8 - Auto task detection, MR9 - Auto trust calibration
-  // MR11 - Has dedicated Verify button, MR18 - Auto warning in Interventions
-  // MR19 - Auto assessment in Metrics
+  // MR18 - Auto warning in Interventions, MR19 - Auto assessment in Metrics
   type ActiveMRTool =
     | 'none'
     | 'mr1-decomposition'
@@ -329,6 +327,7 @@ const ChatSessionPage: React.FC = () => {
     | 'mr6-models'
     | 'mr7-failure'
     | 'mr10-cost'
+    | 'mr11-verify'
     | 'mr12-critical'
     | 'mr13-uncertainty'
     | 'mr14-reflection'
@@ -1573,7 +1572,7 @@ const ChatSessionPage: React.FC = () => {
                       gridTemplateColumns: 'repeat(4, 1fr)',
                       gap: '0.25rem',
                     }}>
-                      {/* User-facing MR tools only. MR8/9/11/18/19 are automatic backend systems */}
+                      {/* User-facing MR tools only. MR8/9/18/19 are automatic backend systems */}
                       <button onClick={() => setActiveMRTool('mr1-decomposition')} title="Task Decomposition - Break down complex tasks" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr1-decomposition' ? '#dcfce7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>📋 1</button>
                       <button onClick={() => setActiveMRTool('mr2-transparency')} title="Process Transparency - View AI reasoning" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr2-transparency' ? '#dbeafe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🔍 2</button>
                       <button onClick={() => setActiveMRTool('mr3-agency')} title="Agency Control - Control AI intervention" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr3-agency' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🎛️ 3</button>
@@ -1582,6 +1581,7 @@ const ChatSessionPage: React.FC = () => {
                       <button onClick={() => setActiveMRTool('mr6-models')} title="Cross-Model - Compare AI models" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr6-models' ? '#fce7f3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🤖 6</button>
                       <button onClick={() => setActiveMRTool('mr7-failure')} title="Failure Tolerance - Learn from mistakes" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr7-failure' ? '#fef9c3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💡 7</button>
                       <button onClick={() => setActiveMRTool('mr10-cost')} title="Cost-Benefit Analysis - Evaluate AI assistance value" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr10-cost' ? '#e0e7ff' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💰 10</button>
+                      <button onClick={() => setActiveMRTool('mr11-verify')} title="Integrated Verification - Verify AI outputs" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr11-verify' ? '#d1fae5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>✅ 11</button>
                       <button onClick={() => setActiveMRTool('mr12-critical')} title="Critical Thinking - Socratic questions" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr12-critical' ? '#ede9fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🧐 12</button>
                       <button onClick={() => setActiveMRTool('mr13-uncertainty')} title="Transparent Uncertainty - Show confidence levels" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr13-uncertainty' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>❓ 13</button>
                       <button onClick={() => setActiveMRTool('mr14-reflection')} title="Guided Reflection - Learning reflection" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr14-reflection' ? '#ccfbf1' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💭 14</button>
@@ -1613,6 +1613,7 @@ const ChatSessionPage: React.FC = () => {
                     {activeMRTool === 'mr6-models' && <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />}
                     {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning sessionId={sessionId || ''} onLearningComplete={(l) => console.log('Learning:', l)} />}
                     {activeMRTool === 'mr10-cost' && <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />}
+                    {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
                     {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding content={messages[messages.length - 1]?.content || ''} taskType={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
                     {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty content={messages[messages.length - 1]?.content || ''} onUncertaintyAcknowledged={(u) => console.log('Uncertainty:', u)} />}
                     {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} />}
@@ -1793,31 +1794,6 @@ const ChatSessionPage: React.FC = () => {
               }}
             />
             <button
-              type="button"
-              onClick={() => setShowVerificationTools(true)}
-              title="Open verification tools to verify AI-generated code, math, citations, facts, or text"
-              style={{
-                padding: '0.75rem 1.5rem',
-                backgroundColor: '#8b5cf6',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '0.5rem',
-                cursor: 'pointer',
-                fontWeight: '600',
-                fontSize: '0.95rem',
-                transition: 'background-color 0.2s',
-                minWidth: '80px',
-              }}
-              onMouseOver={(e) => {
-                (e.target as HTMLButtonElement).style.backgroundColor = '#7c3aed';
-              }}
-              onMouseOut={(e) => {
-                (e.target as HTMLButtonElement).style.backgroundColor = '#8b5cf6';
-              }}
-            >
-              🔍 Verify
-            </button>
-            <button
               type="submit"
               disabled={!sessionActive || loading || !userInput.trim()}
               style={{
@@ -1846,78 +1822,6 @@ const ChatSessionPage: React.FC = () => {
           </form>
         </footer>
       </div>
-
-
-      {/* Verification Tools Modal */}
-      {showVerificationTools && (
-        <div
-          role="presentation"
-          onClick={() => setShowVerificationTools(false)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 2000,
-            overflowY: 'auto',
-            padding: '2rem',
-          }}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="verification-tools-title"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              backgroundColor: '#fff',
-              borderRadius: '0.75rem',
-              maxWidth: '900px',
-              width: '100%',
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              boxShadow: '0 20px 25px rgba(0, 0, 0, 0.15)',
-              position: 'relative',
-            }}
-          >
-            <div id="verification-tools-title" style={{ display: 'none' }}>
-              Verification Tools and Decision Making Framework
-            </div>
-            <button
-              onClick={() => setShowVerificationTools(false)}
-              aria-label="Close verification tools modal"
-              style={{
-                position: 'absolute',
-                top: '1rem',
-                right: '1rem',
-                background: 'none',
-                border: 'none',
-                fontSize: '1.5rem',
-                cursor: 'pointer',
-                zIndex: 10,
-              }}
-              title="Close verification tools"
-            >
-              ✕
-            </button>
-            <Suspense fallback={<ComponentLoader />}>
-              <MR11IntegratedVerification
-                existingLogs={verificationLogs}
-                onDecisionMade={(log) => {
-                  // Add new log to the verification history
-                  setVerificationLogs([...verificationLogs, log]);
-                  // Optional: Close on decision made
-                  // setShowVerificationTools(false);
-                }}
-              />
-            </Suspense>
-          </div>
-        </div>
-      )}
 
       {/* Modal MR Display - OPTIMIZATION: Lazy-loaded component */}
       {displayedModalMR && (
