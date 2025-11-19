@@ -1342,6 +1342,7 @@ const ChatSessionPage: React.FC = () => {
                   sessionId={sessionId || ''}
                   messages={messages}
                   minMessagesForDetection={3}
+                  activeMRs={activeMRs}
                   onInterventionDisplayed={(tier, mrType) => {
                     console.log(`✅ Intervention displayed: ${tier} (${mrType})`);
                   }}
