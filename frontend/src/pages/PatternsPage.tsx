@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePatternStore } from '../stores/patternStore';
 import { useAuthStore } from '../stores/authStore';
 import { useMetricsStore } from '../stores/metricsStore';
