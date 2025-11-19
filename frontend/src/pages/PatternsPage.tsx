@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { usePatternStore } from '../stores/patternStore';
 import { useAuthStore } from '../stores/authStore';
 import { useMetricsStore } from '../stores/metricsStore';
-import { metricsCollector } from '../utils/MetricsCollector';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import './PatternsPage.css';
 
@@ -82,8 +81,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
 const PatternsPage: React.FC = () => {
   const { user } = useAuthStore();
   const { patterns, loading, fetchPatterns } = usePatternStore();
-  const { systemMetrics, alerts } = useMetricsStore();
-  const [refreshKey, setRefreshKey] = useState(0);
+  const { alerts } = useMetricsStore();
 
   useEffect(() => {
     if (user?.id) {
@@ -91,29 +89,11 @@ const PatternsPage: React.FC = () => {
     }
   }, [user?.id]);
 
-  // Auto-refresh metrics every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRefreshKey((k) => k + 1);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
   if (loading) {
     return <LoadingSpinner message="Loading patterns..." />;
   }
 
   const userPatterns = patterns.filter((p) => p.userId === user?.id);
-  const systemMetricsData = systemMetrics || {
-    totalDetections: 0,
-    totalInterventions: 0,
-    complianceRate: 0,
-    dismissalRate: 0,
-    engagementRate: 0,
-    overrideRate: 0,
-    completionRate: 0,
-    dropoutRate: 0,
-  };
   const recentAlerts = (alerts || []).slice(0, 5);
 
   // Get dominant pattern (highest confidence)
@@ -439,170 +419,6 @@ const PatternsPage: React.FC = () => {
               <li><strong>1.0-2.0</strong>: Some adjustments (adaptive)</li>
               <li><strong>&gt;2.0</strong>: Frequent changes (experimental or uncertain)</li>
             </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Real-Time System Metrics Section */}
-      <div key={refreshKey} style={{
-        backgroundColor: '#f3f4f6',
-        border: '1px solid #d1d5db',
-        borderRadius: '0.5rem',
-        padding: '1.5rem',
-        marginBottom: '2rem',
-      }}>
-        <h3 style={{ margin: '0 0 1.5rem 0', color: '#1f2937', fontSize: '1rem' }}>📈 Real-Time System Metrics</h3>
-
-        {/* KPI Cards Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
-          {/* Compliance Rate */}
-          <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-              Compliance Rate
-              <InfoTooltip text="Percentage of intervention displays where users took action (acted/engaged)." />
-            </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#059669', marginBottom: '0.5rem' }}>
-              {((systemMetricsData.complianceRate || 0) * 100).toFixed(1)}%
-            </div>
-            <div style={{
-              height: '0.375rem',
-              backgroundColor: '#d1fae5',
-              borderRadius: '0.25rem',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                backgroundColor: '#059669',
-                width: `${Math.min((systemMetricsData.complianceRate || 0) * 100, 100)}%`,
-                transition: 'width 0.3s ease'
-              }} />
-            </div>
-          </div>
-
-          {/* Dismissal Rate */}
-          <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-              Dismissal Rate
-              <InfoTooltip text="Percentage of intervention displays where users dismissed the message (lower is better)." />
-            </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d97706', marginBottom: '0.5rem' }}>
-              {((systemMetricsData.dismissalRate || 0) * 100).toFixed(1)}%
-            </div>
-            <div style={{
-              height: '0.375rem',
-              backgroundColor: '#fed7aa',
-              borderRadius: '0.25rem',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                backgroundColor: '#d97706',
-                width: `${Math.min((systemMetricsData.dismissalRate || 0) * 100, 100)}%`,
-                transition: 'width 0.3s ease'
-              }} />
-            </div>
-          </div>
-
-          {/* Engagement Rate */}
-          <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-              Engagement Rate
-              <InfoTooltip text="Percentage of users who clicked 'Learn More' to understand intervention recommendations." />
-            </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2563eb', marginBottom: '0.5rem' }}>
-              {((systemMetricsData.engagementRate || 0) * 100).toFixed(1)}%
-            </div>
-            <div style={{
-              height: '0.375rem',
-              backgroundColor: '#bfdbfe',
-              borderRadius: '0.25rem',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                backgroundColor: '#2563eb',
-                width: `${Math.min((systemMetricsData.engagementRate || 0) * 100, 100)}%`,
-                transition: 'width 0.3s ease'
-              }} />
-            </div>
-          </div>
-
-          {/* Override Rate */}
-          <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-              Override Rate
-              <InfoTooltip text="Percentage of users who proceeded despite interventions (indicates false positives or user disagreement)." />
-            </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#7c3aed', marginBottom: '0.5rem' }}>
-              {((systemMetricsData.overrideRate || 0) * 100).toFixed(1)}%
-            </div>
-            <div style={{
-              height: '0.375rem',
-              backgroundColor: '#ddd6fe',
-              borderRadius: '0.25rem',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                backgroundColor: '#7c3aed',
-                width: `${Math.min((systemMetricsData.overrideRate || 0) * 100, 100)}%`,
-                transition: 'width 0.3s ease'
-              }} />
-            </div>
-          </div>
-
-          {/* Completion Rate */}
-          <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-              Completion Rate
-              <InfoTooltip text="Percentage of sessions that were completed (not abandoned)." />
-            </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#0891b2', marginBottom: '0.5rem' }}>
-              {((systemMetricsData.completionRate || 0) * 100).toFixed(1)}%
-            </div>
-            <div style={{
-              height: '0.375rem',
-              backgroundColor: '#cffafe',
-              borderRadius: '0.25rem',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                backgroundColor: '#0891b2',
-                width: `${Math.min((systemMetricsData.completionRate || 0) * 100, 100)}%`,
-                transition: 'width 0.3s ease'
-              }} />
-            </div>
-          </div>
-        </div>
-
-        {/* Detection Statistics */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-          <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-              Total Pattern Detections
-            </div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1f2937' }}>
-              {systemMetricsData.totalDetections || 0}
-            </div>
-          </div>
-
-          <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-              Total Interventions Shown
-            </div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1f2937' }}>
-              {systemMetricsData.totalInterventions || 0}
-            </div>
-          </div>
-
-          <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-              Dropout Rate
-            </div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#dc2626' }}>
-              {((systemMetricsData.dropoutRate || 0) * 100).toFixed(1)}%
-            </div>
           </div>
         </div>
       </div>
