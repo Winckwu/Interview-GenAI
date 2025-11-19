@@ -36,7 +36,7 @@ const Header: React.FC = () => {
         </button>
 
         <Link to="/" className="header-logo">
-          <h1>Interview-GenAI</h1>
+          <h1>AI Pattern Recognition System</h1>
         </Link>
       </div>
 

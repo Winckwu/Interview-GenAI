@@ -77,7 +77,7 @@ const LoginPage: React.FC = () => {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Welcome Back</h2>
-          <p>Sign in to your Interview-GenAI account</p>
+          <p>Sign in to your AI Pattern Recognition System account</p>
         </div>
 
         {error && <div className="auth-error">{error}</div>}

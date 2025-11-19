@@ -89,7 +89,7 @@ const RegisterPage: React.FC = () => {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Create Account</h2>
-          <p>Join Interview-GenAI to track your AI usage patterns</p>
+          <p>Join AI Pattern Recognition System to track your AI usage patterns</p>
         </div>
 
         {error && <div className="auth-error">{error}</div>}
