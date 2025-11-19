@@ -304,6 +304,8 @@ router.get(
         [sessionId, userId]
       );
 
+      console.log(`[interactions] Session check for ${sessionId} by user ${userId}: ${sessionCheck.rows.length} rows`);
+
       if (sessionCheck.rows.length === 0) {
         return res.status(403).json({
           success: false,
@@ -320,8 +322,11 @@ router.get(
 
     // Get total count for pagination
     const countQuery = `SELECT COUNT(*) as total FROM interactions i ${whereClause}`;
-    const countResult = await pool.query(countQuery, params.slice(0, paramCount - 1));
+    const countParams = params.slice(0, paramCount - 1);
+    console.log(`[interactions] Count query: ${countQuery}, params: ${JSON.stringify(countParams)}`);
+    const countResult = await pool.query(countQuery, countParams);
     const total = parseInt(countResult.rows[0].total, 10);
+    console.log(`[interactions] Total count: ${total}`);
 
     // Get paginated results
     const dataQuery = `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
@@ -332,7 +337,9 @@ router.get(
                        ORDER BY i.created_at DESC LIMIT $${paramCount++} OFFSET $${paramCount}`;
     params.push(limitNum, offsetNum);
 
+    console.log(`[interactions] Data query: ${dataQuery}, params: ${JSON.stringify(params)}`);
     const result = await pool.query(dataQuery, params);
+    console.log(`[interactions] Result rows: ${result.rows.length}`);
 
     res.json({
       success: true,
