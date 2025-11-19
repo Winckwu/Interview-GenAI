@@ -8,6 +8,9 @@ import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversation
 import VirtualizedMessageList from '../components/VirtualizedMessageList';
 import EmptyState, { EmptyStateError } from '../components/EmptyState';
 import { SkeletonText, SkeletonCard } from '../components/Skeleton';
+import InterventionManager from '../components/interventions/InterventionManager';
+import { MonitoringDashboard } from '../components/monitoring/MonitoringDashboard';
+import { useMetricsStore } from '../stores/metricsStore';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -160,6 +163,8 @@ const ChatSessionPage: React.FC = () => {
   const { user } = useAuthStore();
   const { addInteraction, deleteSession: deleteSessionFromStore } = useSessionStore();
   const { setSidebarOpen } = useUIStore();
+  const metricsStore = useMetricsStore();
+  const [sessionStartTime] = useState(Date.now());
 
   // State management
   const [messages, setMessages] = useState<Message[]>([]);
@@ -210,6 +215,13 @@ const ChatSessionPage: React.FC = () => {
   // Reference to debounced function (will be initialized in useEffect)
   const debouncedDetectPatternRef = useRef<(() => Promise<void>) | null>(null);
   const patternCallCountRef = useRef<number>(0); // Track number of pattern detection calls
+
+  // Initialize metrics for this session
+  useEffect(() => {
+    if (sessionId && user?.id) {
+      metricsStore.setCurrentSession(sessionId, user.id);
+    }
+  }, [sessionId, user?.id, metricsStore]);
 
   // Handle modal MRs display
   useEffect(() => {
@@ -581,6 +593,20 @@ const ChatSessionPage: React.FC = () => {
     // Create debounced version of detectPattern with 2 second delay
     debouncedDetectPatternRef.current = createDebounce(detectPattern, 2000);
   }, []);
+
+  /**
+   * Finalize session metrics when component unmounts
+   * Called when user leaves the chat
+   */
+  useEffect(() => {
+    return () => {
+      if (sessionId) {
+        const completionTime = Date.now() - sessionStartTime;
+        const completed = sessionActive; // true if session is still active
+        metricsStore.completeSession(messages.length, completed, completionTime);
+      }
+    };
+  }, [sessionId, sessionStartTime, sessionActive, messages.length, metricsStore]);
 
   /**
    * Load more messages when user scrolls to end
@@ -1260,20 +1286,47 @@ const ChatSessionPage: React.FC = () => {
           )}
           </div>
 
-          {/* Right Sidebar - Pattern Analysis Window & MR Panel */}
+          {/* Right Sidebar - Week 1-4: Intervention Manager & Monitoring Dashboard */}
           {showPatternPanel && (
             <div style={{
-              width: '320px',
+              width: '380px',
               borderLeft: '1px solid #e2e8f0',
               overflowY: 'auto',
               display: 'flex',
               flexDirection: 'column',
               backgroundColor: '#f9fafb',
+              gap: '0.5rem',
             }}>
-              {/* Sidebar MRs */}
+              {/* Intervention Manager - Detects Pattern F and displays Tier 1/2/3 */}
+              <div style={{ padding: '0.75rem', borderBottom: '1px solid #e2e8f0' }}>
+                <InterventionManager
+                  sessionId={sessionId || ''}
+                  messages={messages}
+                  minMessagesForDetection={5}
+                  onInterventionDisplayed={(tier, mrType) => {
+                    console.log(`✅ Intervention displayed: ${tier} (${mrType})`);
+                  }}
+                  onUserAction={(mrType, action) => {
+                    console.log(`📊 User action: ${action} on ${mrType}`);
+                  }}
+                />
+              </div>
+
+              {/* Monitoring Dashboard - Real-time metrics and alerts */}
+              <div style={{ flex: 1, overflowY: 'auto', padding: '0.75rem' }}>
+                <MonitoringDashboard
+                  sessionId={sessionId}
+                  refreshIntervalMs={5000}
+                  showAlerts={true}
+                  compactMode={false}
+                />
+              </div>
+
+              {/* Sidebar MRs - Keep existing recommendations */}
               {activeMRs && activeMRs.some((mr) => mr.displayMode === 'sidebar') && (
                 <div style={{
                   padding: '1rem',
+                  borderTop: '1px solid #e2e8f0',
                   borderBottom: '1px solid #e2e8f0',
                 }}>
                   <h3 style={{
@@ -1300,17 +1353,6 @@ const ChatSessionPage: React.FC = () => {
                     ))}
                 </div>
               )}
-
-              {/* Pattern Analysis Window - OPTIMIZATION: Lazy-loaded component */}
-              <div style={{ flex: 1, overflowY: 'auto' }}>
-                <Suspense fallback={<ComponentLoader />}>
-                  <PatternAnalysisWindow
-                    pattern={pattern}
-                    isLoading={patternLoading}
-                    onClose={() => setShowPatternPanel(false)}
-                  />
-                </Suspense>
-              </div>
             </div>
           )}
         </div>
