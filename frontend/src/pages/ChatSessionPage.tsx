@@ -1347,7 +1347,7 @@ const ChatSessionPage: React.FC = () => {
                   sessionId={sessionId}
                   refreshIntervalMs={5000}
                   showAlerts={true}
-                  compactMode={false}
+                  compactMode={true}
                 />
               </div>
 

@@ -42,6 +42,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
   const [sessionMetrics, setSessionMetrics] = useState<SessionMetrics | null>(null);
   const [alerts, setAlerts] = useState<SystemAlert[]>([]);
   const [expandedAlerts, setExpandedAlerts] = useState<Set<string>>(new Set());
+  const [alertsExpanded, setAlertsExpanded] = useState<boolean>(!compactMode); // Collapsed by default in compact mode
 
   // Refresh metrics periodically
   useEffect(() => {
@@ -94,7 +95,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
   const metrics = sessionMetrics || systemMetrics;
 
   return (
-    <div className="monitoring-dashboard">
+    <div className={`monitoring-dashboard ${compactMode ? 'compact-mode' : ''}`}>
       {/* Header */}
       <div className="dashboard-header">
         <h3 className="dashboard-title">
@@ -321,8 +322,14 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
       {/* Recent Alerts */}
       {showAlerts && alerts.length > 0 && (
         <div className="section alerts-section">
-          <div className="section-header">
-            <h4 className="section-title">⚠️ Recent Alerts ({alerts.length})</h4>
+          <div
+            className="section-header"
+            onClick={() => setAlertsExpanded(!alertsExpanded)}
+            style={{ cursor: 'pointer', userSelect: 'none' }}
+          >
+            <h4 className="section-title">
+              {alertsExpanded ? '▼' : '▶'} ⚠️ Recent Alerts ({alerts.length})
+            </h4>
             {alerts.some((a) => !a.acknowledged) && (
               <div className="alert-indicator">
                 {alerts.filter((a) => !a.acknowledged).length} unread
@@ -330,7 +337,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
             )}
           </div>
 
-          <div className="alerts-list">
+          {alertsExpanded && <div className="alerts-list">
             {alerts.map((alert) => (
               <div
                 key={alert.id}
@@ -376,7 +383,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
                 )}
               </div>
             ))}
-          </div>
+          </div>}
         </div>
       )}
 
