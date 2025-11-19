@@ -1634,11 +1634,11 @@ const ChatSessionPage: React.FC = () => {
                   </div>
                   {/* Tool Content */}
                   <div style={{
-                    padding: '1rem',
+                    padding: '0.75rem',
                     maxHeight: '50vh',
                     overflowY: 'auto',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.4',
                   }}>
                     <Suspense fallback={<ComponentLoader />}>
                       {/* User-facing MR tools only */}
