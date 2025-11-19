@@ -12,6 +12,31 @@
   padding: var(--sp-8) 0;
 }
 
+/* Skeleton placeholder for metric cards during loading */
+.metric-card.skeleton-placeholder {
+  background: linear-gradient(90deg, var(--color-bg-primary) 25%, var(--color-bg-tertiary, #e5e7eb) 50%, var(--color-bg-primary) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 2s infinite;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metric-card.skeleton-placeholder {
+    animation: none;
+    background: var(--color-bg-tertiary, #e5e7eb);
+  }
+}
+
 .dashboard-container {
   max-width: 1400px;
   margin: 0 auto;

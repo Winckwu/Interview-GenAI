@@ -6,6 +6,7 @@ import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
 import { useAnalytics, usePatternStats } from '../hooks/useAnalytics';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import ChartSkeleton, { ChartSkeletonGroup } from '../components/ChartSkeleton';
 import './DashboardPage.css';
 import '../styles/components.css';
 
@@ -56,10 +57,6 @@ const DashboardPage: React.FC = () => {
   }, []);
 
   const loading = analyticsLoading || patternsLoading;
-
-  if (loading) {
-    return <LoadingSpinner message="Loading dashboard..." />;
-  }
 
   // Use real analytics data
   const totalSessions = analytics?.totalSessions || 0;
@@ -159,138 +156,158 @@ const DashboardPage: React.FC = () => {
       {/* Key Metrics Cards */}
       <div className="metrics-section">
         <div className="metrics-grid">
-        <div className="metric-card" title="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted.">
-          <div className="metric-label">Total Sessions <InfoTooltip text="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted." /></div>
-          <div className="metric-value">{totalSessions}</div>
-          <div className="metric-description">
-            {totalInteractions} total interactions recorded
-          </div>
-        </div>
+          {loading ? (
+            <>
+              <div className="metric-card skeleton-placeholder" style={{ minHeight: '150px' }}></div>
+              <div className="metric-card skeleton-placeholder" style={{ minHeight: '150px' }}></div>
+              <div className="metric-card skeleton-placeholder" style={{ minHeight: '150px' }}></div>
+              <div className="metric-card skeleton-placeholder" style={{ minHeight: '150px' }}></div>
+            </>
+          ) : (
+            <>
+              <div className="metric-card" title="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted.">
+                <div className="metric-label">Total Sessions <InfoTooltip text="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted." /></div>
+                <div className="metric-value">{totalSessions}</div>
+                <div className="metric-description">
+                  {totalInteractions} total interactions recorded
+                </div>
+              </div>
 
-        <div className="metric-card" title="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles.">
-          <div className="metric-label">Current Pattern <InfoTooltip text="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles." /></div>
-          <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
-          <div className="metric-description">
-            Primary AI usage pattern detected
-          </div>
-        </div>
+              <div className="metric-card" title="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles.">
+                <div className="metric-label">Current Pattern <InfoTooltip text="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles." /></div>
+                <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
+                <div className="metric-description">
+                  Primary AI usage pattern detected
+                </div>
+              </div>
 
-        <div className="metric-card" title="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity.">
-          <div className="metric-label">Verification Rate <InfoTooltip text="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity." /></div>
-          <div className="metric-value">{verificationRate.toFixed(1)}%</div>
-          <div className="metric-description">
-            {verificationRate > 70 ? '✅ Excellent verification level' : verificationRate > 40 ? '📊 Moderate verification' : '⚠️ Low verification - consider increasing'}
-          </div>
-        </div>
+              <div className="metric-card" title="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity.">
+                <div className="metric-label">Verification Rate <InfoTooltip text="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity." /></div>
+                <div className="metric-value">{verificationRate.toFixed(1)}%</div>
+                <div className="metric-description">
+                  {verificationRate > 70 ? '✅ Excellent verification level' : verificationRate > 40 ? '📊 Moderate verification' : '⚠️ Low verification - consider increasing'}
+                </div>
+              </div>
 
-        <div className="metric-card" title="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving.">
-          <div className="metric-label">Average Session <InfoTooltip text="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving." /></div>
-          <div className="metric-value">{averageSessionDuration}</div>
-          <div className="metric-description">
-            Minutes per session
-          </div>
+              <div className="metric-card" title="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving.">
+                <div className="metric-label">Average Session <InfoTooltip text="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving." /></div>
+                <div className="metric-value">{averageSessionDuration}</div>
+                <div className="metric-description">
+                  Minutes per session
+                </div>
+              </div>
+            </>
+          )}
         </div>
-      </div>
       </div>
 
       {/* Charts Section */}
       <div className="charts-section">
       <div className="charts-grid">
-        {/* Weekly Accuracy Trend */}
-        <div className="chart-container">
-          <h3 className="chart-title">
-            📈 Weekly Accuracy Trend <InfoTooltip text="Shows your verification accuracy over the past weeks. Higher trends indicate you're getting better at verifying AI outputs correctly." />
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={weeklyAccuracyData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="week" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="accuracy"
-                stroke="#3b82f6"
-                strokeWidth={2}
-                dot={{ fill: '#3b82f6' }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        {loading ? (
+          <>
+            <ChartSkeleton type="line" height={300} />
+            <ChartSkeleton type="pie" height={300} />
+          </>
+        ) : (
+          <>
+            {/* Weekly Accuracy Trend */}
+            <div className="chart-container">
+              <h3 className="chart-title">
+                📈 Weekly Accuracy Trend <InfoTooltip text="Shows your verification accuracy over the past weeks. Higher trends indicate you're getting better at verifying AI outputs correctly." />
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={weeklyAccuracyData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="week" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="accuracy"
+                    stroke="#3b82f6"
+                    strokeWidth={2}
+                    dot={{ fill: '#3b82f6' }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
 
-        {/* Pattern Distribution */}
-        <div className="chart-container">
-          <h3 className="chart-title">
-            🎯 Pattern Distribution <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." />
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={patternDistributionChart}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, value }) => `${name}: ${value}%`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {patternDistributionChart.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+            {/* Pattern Distribution */}
+            <div className="chart-container">
+              <h3 className="chart-title">
+                🎯 Pattern Distribution <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." />
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={patternDistributionChart}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, value }) => `${name}: ${value}%`}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {patternDistributionChart.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
 
-        {/* Intervention Strategy Comparison */}
-        <div className="chart-container">
-          <h3 className="chart-title">
-            ✓ Verification Strategy Impact <InfoTooltip text="Compare how different verification strategies impact the quality of your work. Higher verification strategies reduce risk of errors and skill degradation." />
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 60, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="strategy" />
-              <YAxis label={{ value: 'Quality Impact Score (%)', angle: -90, position: 'center', offset: -50 }} />
-              <Tooltip
-                formatter={(value: number) => `${value.toFixed(1)}%`}
-                labelFormatter={() => 'Strategy Impact'}
-              />
-              <Bar dataKey="successRate" fill="#10b981" name="Quality Impact" />
-            </BarChart>
-          </ResponsiveContainer>
-          <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#475569' }}>
-            <p style={{ margin: '0.5rem 0' }}>💡 <strong>Low Verification:</strong> Quick decisions but higher risk of missed errors</p>
-            <p style={{ margin: '0.5rem 0' }}>💡 <strong>Medium Verification:</strong> Balanced approach with selective spot-checks</p>
-            <p style={{ margin: '0.5rem 0' }}>💡 <strong>High Verification:</strong> Thorough review (recommended) - ensures quality and skill preservation</p>
-          </div>
-        </div>
+            {/* Intervention Strategy Comparison */}
+            <div className="chart-container">
+              <h3 className="chart-title">
+                ✓ Verification Strategy Impact <InfoTooltip text="Compare how different verification strategies impact the quality of your work. Higher verification strategies reduce risk of errors and skill degradation." />
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 60, bottom: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="strategy" />
+                  <YAxis label={{ value: 'Quality Impact Score (%)', angle: -90, position: 'center', offset: -50 }} />
+                  <Tooltip
+                    formatter={(value: number) => `${value.toFixed(1)}%`}
+                    labelFormatter={() => 'Strategy Impact'}
+                  />
+                  <Bar dataKey="successRate" fill="#10b981" name="Quality Impact" />
+                </BarChart>
+              </ResponsiveContainer>
+              <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#475569' }}>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Low Verification:</strong> Quick decisions but higher risk of missed errors</p>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Medium Verification:</strong> Balanced approach with selective spot-checks</p>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>High Verification:</strong> Thorough review (recommended) - ensures quality and skill preservation</p>
+              </div>
+            </div>
 
-        {/* Quick Stats */}
-        <div className="chart-container stats-container">
-          <h3>Quick Stats</h3>
-          <div className="stats-list">
-            <div className="stat-item">
-              <span className="stat-label">Total Sessions:</span>
-              <span className="stat-value">{totalSessions}</span>
+            {/* Quick Stats */}
+            <div className="chart-container stats-container">
+              <h3>Quick Stats</h3>
+              <div className="stats-list">
+                <div className="stat-item">
+                  <span className="stat-label">Total Sessions:</span>
+                  <span className="stat-value">{totalSessions}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Total Interactions:</span>
+                  <span className="stat-value">{totalInteractions}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Modification Rate:</span>
+                  <span className="stat-value">{modificationRate.toFixed(1)}%</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Member Since:</span>
+                  <span className="stat-value">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</span>
+                </div>
+              </div>
             </div>
-            <div className="stat-item">
-              <span className="stat-label">Total Interactions:</span>
-              <span className="stat-value">{totalInteractions}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Modification Rate:</span>
-              <span className="stat-value">{modificationRate.toFixed(1)}%</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Member Since:</span>
-              <span className="stat-value">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</span>
-            </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
       </div>
 

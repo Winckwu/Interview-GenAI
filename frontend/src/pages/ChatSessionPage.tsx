@@ -6,6 +6,8 @@ import { useSessionStore } from '../stores/sessionStore';
 import { useUIStore } from '../stores/uiStore';
 import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
 import VirtualizedMessageList from '../components/VirtualizedMessageList';
+import EmptyState, { EmptyStateError } from '../components/EmptyState';
+import { SkeletonText, SkeletonCard } from '../components/Skeleton';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -887,13 +889,23 @@ const ChatSessionPage: React.FC = () => {
         {/* Sessions List */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '0.75rem' }}>
           {sessionsLoading ? (
-            <div style={{ padding: '1rem', textAlign: 'center', color: '#9ca3af', fontSize: '0.875rem' }}>
-              Loading...
+            <div style={{ padding: '0.75rem' }}>
+              <SkeletonCard />
+              <div style={{ marginTop: '0.75rem' }}>
+                <SkeletonCard />
+              </div>
+              <div style={{ marginTop: '0.75rem' }}>
+                <SkeletonCard />
+              </div>
             </div>
           ) : sessions.length === 0 ? (
-            <div style={{ padding: '1rem', textAlign: 'center', color: '#9ca3af', fontSize: '0.875rem' }}>
-              No conversations yet
-            </div>
+            <EmptyState
+              icon="💬"
+              title="No conversations yet"
+              description="Start a new conversation to get going"
+              action={{ label: 'New conversation', onClick: handleNewChat }}
+              className="sessions-empty-state"
+            />
           ) : (
             sessions.map((session) => {
               const isHovering = hoveredSessionId === session.id;
@@ -1186,15 +1198,13 @@ const ChatSessionPage: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
         }}>
-          {messages.length === 0 && (
-            <div style={{
-              textAlign: 'center',
-              color: '#9ca3af',
-              padding: '3rem 0',
-              fontSize: '0.95rem',
-            }}>
-              <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>💬</p>
-              <p>Start by asking a question or describing your task...</p>
+          {messages.length === 0 && !loading && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+              <EmptyState
+                icon="💬"
+                title="Start your conversation"
+                description="Ask a question or describe your task to get AI assistance"
+              />
             </div>
           )}
 
@@ -1213,13 +1223,23 @@ const ChatSessionPage: React.FC = () => {
             />
           )}
 
-          {loading && (
+          {loading && messages.length > 0 && (
             <div style={{
-              textAlign: 'center',
-              color: '#9ca3af',
-              padding: '1.5rem 0',
+              display: 'flex',
+              justifyContent: 'flex-start',
+              padding: '1.5rem 0.5rem',
+              animation: 'fadeIn 0.3s ease-in-out',
             }}>
-              <p style={{ fontSize: '1rem' }}>🤔 AI is thinking...</p>
+              <div style={{
+                maxWidth: '65%',
+                padding: '1rem',
+                borderRadius: '1rem 1rem 1rem 0.25rem',
+                backgroundColor: '#fff',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                borderLeft: '3px solid #3b82f6',
+              }}>
+                <SkeletonText lines={3} className="mb-2" />
+              </div>
             </div>
           )}
           </div>

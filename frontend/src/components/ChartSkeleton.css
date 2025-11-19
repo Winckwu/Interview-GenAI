@@ -1,0 +1,48 @@
+/**
+ * Chart Skeleton Styles
+ * Placeholder animations for loading charts
+ */
+
+.chart-skeleton {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pulse animation for subtle loading state */
+@keyframes chart-skeleton-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.chart-skeleton.pulse {
+  animation: chart-skeleton-pulse 2s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-skeleton {
+    min-height: 250px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .chart-skeleton {
+    background-color: var(--color-bg-primary, #1e293b);
+    border-color: var(--color-border, #334155);
+  }
+}
+
+/* Accessibility - reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .chart-skeleton {
+    animation: none;
+  }
+}
