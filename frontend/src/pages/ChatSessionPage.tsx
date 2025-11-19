@@ -869,6 +869,7 @@ const ChatSessionPage: React.FC = () => {
           <h3 style={{ margin: '0', fontSize: '1rem', fontWeight: '600', color: '#1f2937' }}>Conversations</h3>
           <button
             onClick={() => setSessionSidebarOpen(false)}
+            aria-label="Close conversations sidebar"
             style={{
               background: 'none',
               border: 'none',
@@ -969,6 +970,7 @@ const ChatSessionPage: React.FC = () => {
                   {isHovering && (
                     <button
                       onClick={(e) => deleteSession(session.id, e)}
+                      aria-label={`Delete conversation: ${session.taskDescription}`}
                       style={{
                         padding: '0.5rem 0.625rem',
                         marginLeft: '0.5rem',
@@ -1029,6 +1031,7 @@ const ChatSessionPage: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
             <button
               onClick={() => setSessionSidebarOpen(true)}
+              aria-label="Open conversations sidebar"
               style={{
                 background: 'none',
                 border: 'none',
@@ -1058,6 +1061,7 @@ const ChatSessionPage: React.FC = () => {
             <div style={{ display: 'flex', gap: '0.5rem', paddingRight: '0.5rem', borderRight: '1px solid #e5e7eb' }}>
               <button
                 onClick={() => setShowPatternPanel(!showPatternPanel)}
+                aria-label={`${showPatternPanel ? 'Hide' : 'Show'} pattern analysis panel`}
                 title="Toggle pattern analysis panel"
                 style={{
                   padding: '0.5rem 0.75rem',
@@ -1119,28 +1123,38 @@ const ChatSessionPage: React.FC = () => {
 
         {/* Success Message */}
         {successMessage && (
-          <div style={{
-            padding: '0.75rem 1.5rem',
-            backgroundColor: '#d1fae5',
-            borderBottom: '1px solid #a7f3d0',
-            color: '#065f46',
-            fontSize: '0.875rem',
-            fontWeight: '500',
-          }}>
+          <div
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#d1fae5',
+              borderBottom: '1px solid #a7f3d0',
+              color: '#065f46',
+              fontSize: '0.875rem',
+              fontWeight: '500',
+            }}
+          >
             {successMessage}
           </div>
         )}
 
         {/* Error Message */}
         {error && (
-          <div style={{
-            padding: '0.75rem 1.5rem',
-            backgroundColor: '#fee2e2',
-            borderBottom: '1px solid #fecaca',
-            color: '#991b1b',
-            fontSize: '0.875rem',
-            fontWeight: '500',
-          }}>
+          <div
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#fee2e2',
+              borderBottom: '1px solid #fecaca',
+              color: '#991b1b',
+              fontSize: '0.875rem',
+              fontWeight: '500',
+            }}
+          >
             ❌ {error}
           </div>
         )}
@@ -1398,32 +1412,46 @@ const ChatSessionPage: React.FC = () => {
 
       {/* Verification Tools Modal */}
       {showVerificationTools && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 2000,
-          overflowY: 'auto',
-          padding: '2rem',
-        }}>
-          <div style={{
-            backgroundColor: '#fff',
-            borderRadius: '0.75rem',
-            maxWidth: '900px',
-            width: '100%',
-            maxHeight: '90vh',
+        <div
+          role="presentation"
+          onClick={() => setShowVerificationTools(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 2000,
             overflowY: 'auto',
-            boxShadow: '0 20px 25px rgba(0, 0, 0, 0.15)',
-            position: 'relative',
-          }}>
+            padding: '2rem',
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="verification-tools-title"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: '#fff',
+              borderRadius: '0.75rem',
+              maxWidth: '900px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxShadow: '0 20px 25px rgba(0, 0, 0, 0.15)',
+              position: 'relative',
+            }}
+          >
+            <div id="verification-tools-title" style={{ display: 'none' }}>
+              Verification Tools and Decision Making Framework
+            </div>
             <button
               onClick={() => setShowVerificationTools(false)}
+              aria-label="Close verification tools modal"
               style={{
                 position: 'absolute',
                 top: '1rem',
@@ -1456,13 +1484,30 @@ const ChatSessionPage: React.FC = () => {
       {/* Modal MR Display - OPTIMIZATION: Lazy-loaded component */}
       {displayedModalMR && (
         <Suspense fallback={<ComponentLoader />}>
-          <MRDisplay
-            mr={displayedModalMR}
-            onClose={() => setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]))}
-            onAcknowledge={() => {
-              setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]));
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`mr-modal-${displayedModalMR.mrId}`}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 2001,
             }}
-          />
+          >
+            <div id={`mr-modal-${displayedModalMR.mrId}`} style={{ display: 'none' }}>
+              {displayedModalMR.title || 'Recommendation'}
+            </div>
+            <MRDisplay
+              mr={displayedModalMR}
+              onClose={() => setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]))}
+              onAcknowledge={() => {
+                setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]));
+              }}
+            />
+          </div>
         </Suspense>
       )}
 

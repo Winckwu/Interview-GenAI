@@ -12,6 +12,7 @@ import '../styles/components.css';
 
 /**
  * Tooltip Component for Info Icons
+ * Accessible to both mouse and keyboard users
  */
 interface InfoTooltipProps {
   text: string;
@@ -19,6 +20,15 @@ interface InfoTooltipProps {
 
 const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
   const [show, setShow] = useState(false);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setShow(!show);
+    } else if (e.key === 'Escape') {
+      setShow(false);
+    }
+  };
 
   return (
     <div
@@ -28,12 +38,19 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
     >
       <span
         className="tooltip-icon"
+        role="button"
+        tabIndex={0}
+        aria-label="More information"
+        aria-expanded={show}
         title="Click or hover for explanation"
+        onKeyDown={handleKeyDown}
+        onClick={() => setShow(!show)}
+        style={{ cursor: 'pointer' }}
       >
         ℹ️
       </span>
       {show && (
-        <div className="tooltip-content">
+        <div className="tooltip-content" role="tooltip">
           {text}
           <div className="tooltip-arrow" />
         </div>
@@ -138,11 +155,17 @@ const DashboardPage: React.FC = () => {
                   <button
                     className="alert-button alert-button-primary"
                     onClick={() => navigate('/patterns')}
+                    aria-label="View pattern change details"
                   >
                     View Details →
                   </button>
                   <button
                     className="alert-button alert-button-secondary"
+                    onClick={() => {
+                      // Dismiss the alert by updating the "last known pattern"
+                      // In a real app, this would update localStorage or state
+                    }}
+                    aria-label="Dismiss pattern recognition update notification"
                   >
                     Dismiss
                   </button>
