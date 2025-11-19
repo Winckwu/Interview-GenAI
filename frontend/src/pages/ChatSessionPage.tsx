@@ -80,6 +80,43 @@ const MR14GuidedReflectionMechanism = lazy(() =>
 );
 const MR11IntegratedVerification = lazy(() => import('../components/MR11IntegratedVerification'));
 
+// Additional MR Components
+const MR7FailureToleranceLearning = lazy(() =>
+  import('../components/MR7FailureToleranceLearning').then((module) => ({
+    default: module.MR7FailureToleranceLearning,
+  }))
+);
+const MR10CostBenefitAnalysis = lazy(() =>
+  import('../components/MR10CostBenefitAnalysis').then((module) => ({
+    default: module.MR10CostBenefitAnalysis,
+  }))
+);
+const MR13TransparentUncertainty = lazy(() =>
+  import('../components/MR13TransparentUncertainty').then((module) => ({
+    default: module.MR13TransparentUncertainty,
+  }))
+);
+const MR16SkillAtrophyPrevention = lazy(() =>
+  import('../components/MR16SkillAtrophyPrevention').then((module) => ({
+    default: module.MR16SkillAtrophyPrevention,
+  }))
+);
+const MR17LearningProcessVisualization = lazy(() =>
+  import('../components/MR17LearningProcessVisualization').then((module) => ({
+    default: module.MR17LearningProcessVisualization,
+  }))
+);
+const MR18OverRelianceWarning = lazy(() =>
+  import('../components/MR18OverRelianceWarning').then((module) => ({
+    default: module.MR18OverRelianceWarning,
+  }))
+);
+const MR19MetacognitiveCapabilityAssessment = lazy(() =>
+  import('../components/MR19MetacognitiveCapabilityAssessment').then((module) => ({
+    default: module.MR19MetacognitiveCapabilityAssessment,
+  }))
+);
+
 /**
  * OPTIMIZATION: Fallback component for lazy-loaded heavy components
  * Minimal placeholder while components load
@@ -286,11 +323,19 @@ const ChatSessionPage: React.FC = () => {
     | 'mr4-roles'
     | 'mr5-iteration'
     | 'mr6-models'
+    | 'mr7-failure'
     | 'mr8-task'
     | 'mr9-trust'
+    | 'mr10-cost'
+    | 'mr11-verify'
     | 'mr12-critical'
+    | 'mr13-uncertainty'
     | 'mr14-reflection'
-    | 'mr15-strategies';
+    | 'mr15-strategies'
+    | 'mr16-atrophy'
+    | 'mr17-visualization'
+    | 'mr18-overreliance'
+    | 'mr19-assessment';
   const [activeMRTool, setActiveMRTool] = useState<ActiveMRTool>('none');
   const [showMRToolsPanel, setShowMRToolsPanel] = useState(false);
 
@@ -1526,21 +1571,29 @@ const ChatSessionPage: React.FC = () => {
                   <div style={{ padding: '0 0.75rem 0.75rem 0.75rem' }}>
                     <div style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gridTemplateColumns: 'repeat(5, 1fr)',
                       gap: '0.25rem',
                     }}>
-                      <button onClick={() => setActiveMRTool('mr1-decomposition')} title="Task Decomposition - Break down complex tasks" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr1-decomposition' ? '#dcfce7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>📋 MR1</button>
-                      <button onClick={() => setActiveMRTool('mr2-transparency')} title="Process Transparency - View AI reasoning" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr2-transparency' ? '#dbeafe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🔍 MR2</button>
-                      <button onClick={() => setActiveMRTool('mr3-agency')} title="Agency Control - Control AI intervention" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr3-agency' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎛️ MR3</button>
-                      <button onClick={() => setActiveMRTool('mr4-roles')} title="Role Definition - Define AI roles" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr4-roles' ? '#ffedd5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎭 MR4</button>
-                      <button onClick={() => setActiveMRTool('mr5-iteration')} title="Low-Cost Iteration - Branch conversations" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr5-iteration' ? '#e0f2fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🔄 MR5</button>
-                      <button onClick={() => setActiveMRTool('mr6-models')} title="Cross-Model - Compare AI models" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr6-models' ? '#fce7f3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🤖 MR6</button>
-                      <button onClick={() => setActiveMRTool('mr8-task')} title="Task Recognition - Analyze task type" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr8-task' ? '#d1fae5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎯 MR8</button>
-                      <button onClick={() => setActiveMRTool('mr9-trust')} title="Trust Calibration - Calibrate trust scores" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr9-trust' ? '#fee2e2' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>⚖️ MR9</button>
-                      <button onClick={() => setActiveMRTool('mr12-critical')} title="Critical Thinking - Socratic questions" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr12-critical' ? '#ede9fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🧐 MR12</button>
-                      <button onClick={() => setActiveMRTool('mr14-reflection')} title="Guided Reflection - Learning reflection" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr14-reflection' ? '#ccfbf1' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>💭 MR14</button>
-                      <button onClick={() => setActiveMRTool('mr15-strategies')} title="Strategy Guide - AI collaboration strategies" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr15-strategies' ? '#f3e8ff' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>📚 MR15</button>
-                      <button onClick={() => setActiveMRTool('none')} title="Close MR tool" style={{ padding: '0.5rem', backgroundColor: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>✕</button>
+                      <button onClick={() => setActiveMRTool('mr1-decomposition')} title="Task Decomposition - Break down complex tasks" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr1-decomposition' ? '#dcfce7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>📋 1</button>
+                      <button onClick={() => setActiveMRTool('mr2-transparency')} title="Process Transparency - View AI reasoning" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr2-transparency' ? '#dbeafe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🔍 2</button>
+                      <button onClick={() => setActiveMRTool('mr3-agency')} title="Agency Control - Control AI intervention" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr3-agency' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🎛️ 3</button>
+                      <button onClick={() => setActiveMRTool('mr4-roles')} title="Role Definition - Define AI roles" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr4-roles' ? '#ffedd5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🎭 4</button>
+                      <button onClick={() => setActiveMRTool('mr5-iteration')} title="Low-Cost Iteration - Branch conversations" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr5-iteration' ? '#e0f2fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🔄 5</button>
+                      <button onClick={() => setActiveMRTool('mr6-models')} title="Cross-Model - Compare AI models" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr6-models' ? '#fce7f3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🤖 6</button>
+                      <button onClick={() => setActiveMRTool('mr7-failure')} title="Failure Tolerance - Learn from mistakes" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr7-failure' ? '#fef9c3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💡 7</button>
+                      <button onClick={() => setActiveMRTool('mr8-task')} title="Task Recognition - Analyze task type" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr8-task' ? '#d1fae5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🎯 8</button>
+                      <button onClick={() => setActiveMRTool('mr9-trust')} title="Trust Calibration - Calibrate trust scores" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr9-trust' ? '#fee2e2' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>⚖️ 9</button>
+                      <button onClick={() => setActiveMRTool('mr10-cost')} title="Cost-Benefit Analysis - Evaluate AI assistance value" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr10-cost' ? '#e0e7ff' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💰 10</button>
+                      <button onClick={() => setActiveMRTool('mr11-verify')} title="Integrated Verification - Verify AI outputs" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr11-verify' ? '#d1fae5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>✅ 11</button>
+                      <button onClick={() => setActiveMRTool('mr12-critical')} title="Critical Thinking - Socratic questions" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr12-critical' ? '#ede9fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🧐 12</button>
+                      <button onClick={() => setActiveMRTool('mr13-uncertainty')} title="Transparent Uncertainty - Show confidence levels" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr13-uncertainty' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>❓ 13</button>
+                      <button onClick={() => setActiveMRTool('mr14-reflection')} title="Guided Reflection - Learning reflection" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr14-reflection' ? '#ccfbf1' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💭 14</button>
+                      <button onClick={() => setActiveMRTool('mr15-strategies')} title="Strategy Guide - AI collaboration strategies" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr15-strategies' ? '#f3e8ff' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>📚 15</button>
+                      <button onClick={() => setActiveMRTool('mr16-atrophy')} title="Skill Atrophy Prevention - Maintain your skills" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr16-atrophy' ? '#fecaca' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💪 16</button>
+                      <button onClick={() => setActiveMRTool('mr17-visualization')} title="Learning Visualization - Track learning progress" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr17-visualization' ? '#bfdbfe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>📈 17</button>
+                      <button onClick={() => setActiveMRTool('mr18-overreliance')} title="Over-Reliance Warning - Detect excessive AI dependence" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr18-overreliance' ? '#fed7aa' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>⚠️ 18</button>
+                      <button onClick={() => setActiveMRTool('mr19-assessment')} title="Capability Assessment - Evaluate metacognitive abilities" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr19-assessment' ? '#c7d2fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🎓 19</button>
+                      <button onClick={() => setActiveMRTool('none')} title="Close MR tool" style={{ padding: '0.4rem', backgroundColor: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>✕</button>
                     </div>
                   </div>
                 )}
@@ -1562,11 +1615,19 @@ const ChatSessionPage: React.FC = () => {
                     {activeMRTool === 'mr4-roles' && <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} />}
                     {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} />}
                     {activeMRTool === 'mr6-models' && <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />}
+                    {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning sessionId={sessionId || ''} onLearningComplete={(l) => console.log('Learning:', l)} />}
                     {activeMRTool === 'mr8-task' && <MR8TaskCharacteristicRecognition taskDescription={sessionData?.taskDescription || userInput || ''} onAnalysisComplete={(a) => console.log('Analysis:', a)} />}
                     {activeMRTool === 'mr9-trust' && <MR9DynamicTrustCalibration taskType={sessionData?.taskType || 'general'} aiConfidence={0.75} criticality="medium" userHistory={[]} onTrustScoreUpdate={(s) => console.log('Trust:', s)} />}
+                    {activeMRTool === 'mr10-cost' && <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />}
+                    {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
                     {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding content={messages[messages.length - 1]?.content || ''} taskType={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
+                    {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty content={messages[messages.length - 1]?.content || ''} onUncertaintyAcknowledged={(u) => console.log('Uncertainty:', u)} />}
                     {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} />}
                     {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} />}
+                    {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention sessionId={sessionId || ''} onExerciseComplete={(e) => console.log('Exercise:', e)} />}
+                    {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization sessionId={sessionId || ''} />}
+                    {activeMRTool === 'mr18-overreliance' && <MR18OverRelianceWarning sessionId={sessionId || ''} messages={messages} onWarningAcknowledged={(w) => console.log('Warning:', w)} />}
+                    {activeMRTool === 'mr19-assessment' && <MR19MetacognitiveCapabilityAssessment sessionId={sessionId || ''} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
                   </Suspense>
                 </div>
               )}
