@@ -103,7 +103,7 @@ const MR16SkillAtrophyPrevention = lazy(() =>
 );
 const MR17LearningProcessVisualization = lazy(() =>
   import('../components/MR17LearningProcessVisualization').then((module) => ({
-    default: module.MR17LearningProcessVisualization,
+    default: module.default,
   }))
 );
 const MR18OverRelianceWarning = lazy(() =>
