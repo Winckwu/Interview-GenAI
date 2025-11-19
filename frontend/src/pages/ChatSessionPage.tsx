@@ -294,6 +294,11 @@ const ChatSessionPage: React.FC = () => {
   const [activeMRTool, setActiveMRTool] = useState<ActiveMRTool>('none');
   const [showMRToolsPanel, setShowMRToolsPanel] = useState(false);
 
+  // Independent collapse states for sidebar sections
+  const [showMRToolsSection, setShowMRToolsSection] = useState(true);
+  const [showInterventionSection, setShowInterventionSection] = useState(false);
+  const [showMetricsSection, setShowMetricsSection] = useState(false);
+
   // MR3 Agency Control state
   const [interventionLevel, setInterventionLevel] = useState<'passive' | 'suggestive' | 'proactive'>('suggestive');
 
@@ -1234,7 +1239,10 @@ const ChatSessionPage: React.FC = () => {
                 📊 {showPatternPanel ? 'Hide' : 'Show'} Analysis
               </button>
               <button
-                onClick={() => setShowPatternPanel(true)}
+                onClick={() => {
+                  setShowPatternPanel(true);
+                  setShowMRToolsSection(true);
+                }}
                 aria-label="Open MR tools panel"
                 title="Metacognitive collaboration tools"
                 style={{
@@ -1474,60 +1482,92 @@ const ChatSessionPage: React.FC = () => {
               backgroundColor: '#f9fafb',
               height: '100%',
             }}>
-              {/* MR Tools Quick Access */}
+              {/* Sidebar Header with Close Button */}
               <div style={{
                 padding: '0.75rem',
                 borderBottom: '1px solid #e2e8f0',
                 backgroundColor: '#fff',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
               }}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '0.5rem',
+                <h3 style={{
+                  margin: 0,
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  color: '#1f2937',
                 }}>
-                  <h3 style={{
-                    margin: 0,
+                  Analysis Panel
+                </h3>
+                <button
+                  onClick={() => setShowPatternPanel(false)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    color: '#9ca3af',
+                    padding: '0.25rem',
+                  }}
+                  title="Close sidebar"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* MR Tools Quick Access - Collapsible */}
+              <div style={{
+                borderBottom: '1px solid #e2e8f0',
+                backgroundColor: '#fff',
+              }}>
+                <button
+                  onClick={() => setShowMRToolsSection(!showMRToolsSection)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span style={{
                     fontSize: '0.75rem',
                     fontWeight: '600',
                     color: '#6b7280',
                     textTransform: 'uppercase',
                   }}>
                     🧠 MR Tools
-                  </h3>
-                  <button
-                    onClick={() => setShowPatternPanel(false)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '1rem',
-                      color: '#9ca3af',
-                      padding: '0.25rem',
-                    }}
-                    title="Close sidebar"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(4, 1fr)',
-                  gap: '0.25rem',
-                }}>
-                  <button onClick={() => setActiveMRTool('mr1-decomposition')} title="Task Decomposition - Break down complex tasks" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr1-decomposition' ? '#dcfce7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>📋 MR1</button>
-                  <button onClick={() => setActiveMRTool('mr2-transparency')} title="Process Transparency - View AI reasoning" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr2-transparency' ? '#dbeafe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🔍 MR2</button>
-                  <button onClick={() => setActiveMRTool('mr3-agency')} title="Agency Control - Control AI intervention" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr3-agency' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎛️ MR3</button>
-                  <button onClick={() => setActiveMRTool('mr4-roles')} title="Role Definition - Define AI roles" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr4-roles' ? '#ffedd5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎭 MR4</button>
-                  <button onClick={() => setActiveMRTool('mr5-iteration')} title="Low-Cost Iteration - Branch conversations" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr5-iteration' ? '#e0f2fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🔄 MR5</button>
-                  <button onClick={() => setActiveMRTool('mr6-models')} title="Cross-Model - Compare AI models" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr6-models' ? '#fce7f3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🤖 MR6</button>
-                  <button onClick={() => setActiveMRTool('mr8-task')} title="Task Recognition - Analyze task type" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr8-task' ? '#d1fae5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎯 MR8</button>
-                  <button onClick={() => setActiveMRTool('mr9-trust')} title="Trust Calibration - Calibrate trust scores" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr9-trust' ? '#fee2e2' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>⚖️ MR9</button>
-                  <button onClick={() => setActiveMRTool('mr12-critical')} title="Critical Thinking - Socratic questions" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr12-critical' ? '#ede9fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🧐 MR12</button>
-                  <button onClick={() => setActiveMRTool('mr14-reflection')} title="Guided Reflection - Learning reflection" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr14-reflection' ? '#ccfbf1' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>💭 MR14</button>
-                  <button onClick={() => setActiveMRTool('mr15-strategies')} title="Strategy Guide - AI collaboration strategies" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr15-strategies' ? '#f3e8ff' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>📚 MR15</button>
-                  <button onClick={() => setActiveMRTool('none')} title="Close MR tool" style={{ padding: '0.5rem', backgroundColor: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>✕</button>
-                </div>
+                  </span>
+                  <span style={{ color: '#9ca3af', fontSize: '0.75rem' }}>
+                    {showMRToolsSection ? '▼' : '▶'}
+                  </span>
+                </button>
+                {showMRToolsSection && (
+                  <div style={{ padding: '0 0.75rem 0.75rem 0.75rem' }}>
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: '0.25rem',
+                    }}>
+                      <button onClick={() => setActiveMRTool('mr1-decomposition')} title="Task Decomposition - Break down complex tasks" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr1-decomposition' ? '#dcfce7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>📋 MR1</button>
+                      <button onClick={() => setActiveMRTool('mr2-transparency')} title="Process Transparency - View AI reasoning" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr2-transparency' ? '#dbeafe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🔍 MR2</button>
+                      <button onClick={() => setActiveMRTool('mr3-agency')} title="Agency Control - Control AI intervention" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr3-agency' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎛️ MR3</button>
+                      <button onClick={() => setActiveMRTool('mr4-roles')} title="Role Definition - Define AI roles" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr4-roles' ? '#ffedd5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎭 MR4</button>
+                      <button onClick={() => setActiveMRTool('mr5-iteration')} title="Low-Cost Iteration - Branch conversations" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr5-iteration' ? '#e0f2fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🔄 MR5</button>
+                      <button onClick={() => setActiveMRTool('mr6-models')} title="Cross-Model - Compare AI models" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr6-models' ? '#fce7f3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🤖 MR6</button>
+                      <button onClick={() => setActiveMRTool('mr8-task')} title="Task Recognition - Analyze task type" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr8-task' ? '#d1fae5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🎯 MR8</button>
+                      <button onClick={() => setActiveMRTool('mr9-trust')} title="Trust Calibration - Calibrate trust scores" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr9-trust' ? '#fee2e2' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>⚖️ MR9</button>
+                      <button onClick={() => setActiveMRTool('mr12-critical')} title="Critical Thinking - Socratic questions" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr12-critical' ? '#ede9fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>🧐 MR12</button>
+                      <button onClick={() => setActiveMRTool('mr14-reflection')} title="Guided Reflection - Learning reflection" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr14-reflection' ? '#ccfbf1' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>💭 MR14</button>
+                      <button onClick={() => setActiveMRTool('mr15-strategies')} title="Strategy Guide - AI collaboration strategies" style={{ padding: '0.5rem', backgroundColor: activeMRTool === 'mr15-strategies' ? '#f3e8ff' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>📚 MR15</button>
+                      <button onClick={() => setActiveMRTool('none')} title="Close MR tool" style={{ padding: '0.5rem', backgroundColor: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', textAlign: 'center' }}>✕</button>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Active MR Tool Display in Sidebar */}
@@ -1555,30 +1595,96 @@ const ChatSessionPage: React.FC = () => {
                 </div>
               )}
 
-              {/* Intervention Manager - Detects Pattern F and displays Tier 1/2/3 */}
-              <div style={{ padding: '0.75rem', borderBottom: '1px solid #e2e8f0' }}>
-                <InterventionManager
-                  sessionId={sessionId || ''}
-                  messages={messages}
-                  minMessagesForDetection={3}
-                  activeMRs={activeMRs}
-                  onInterventionDisplayed={(tier, mrType) => {
-                    console.log(`✅ Intervention displayed: ${tier} (${mrType})`);
+              {/* Intervention Manager - Collapsible */}
+              <div style={{
+                borderBottom: '1px solid #e2e8f0',
+                backgroundColor: '#fff',
+              }}>
+                <button
+                  onClick={() => setShowInterventionSection(!showInterventionSection)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
                   }}
-                  onUserAction={(mrType, action) => {
-                    console.log(`📊 User action: ${action} on ${mrType}`);
-                  }}
-                />
+                >
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                  }}>
+                    🔔 Interventions
+                  </span>
+                  <span style={{ color: '#9ca3af', fontSize: '0.75rem' }}>
+                    {showInterventionSection ? '▼' : '▶'}
+                  </span>
+                </button>
+                {showInterventionSection && (
+                  <div style={{ padding: '0 0.75rem 0.75rem 0.75rem' }}>
+                    <InterventionManager
+                      sessionId={sessionId || ''}
+                      messages={messages}
+                      minMessagesForDetection={3}
+                      activeMRs={activeMRs}
+                      onInterventionDisplayed={(tier, mrType) => {
+                        console.log(`✅ Intervention displayed: ${tier} (${mrType})`);
+                      }}
+                      onUserAction={(mrType, action) => {
+                        console.log(`📊 User action: ${action} on ${mrType}`);
+                      }}
+                    />
+                  </div>
+                )}
               </div>
 
-              {/* Monitoring Dashboard - Real-time metrics and alerts */}
-              <div style={{ padding: '0.75rem' }}>
-                <MonitoringDashboard
-                  sessionId={sessionId}
-                  refreshIntervalMs={5000}
-                  showAlerts={true}
-                  compactMode={true}
-                />
+              {/* Monitoring Dashboard - Collapsible */}
+              <div style={{
+                borderBottom: '1px solid #e2e8f0',
+                backgroundColor: '#fff',
+              }}>
+                <button
+                  onClick={() => setShowMetricsSection(!showMetricsSection)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                  }}>
+                    📊 System Metrics
+                  </span>
+                  <span style={{ color: '#9ca3af', fontSize: '0.75rem' }}>
+                    {showMetricsSection ? '▼' : '▶'}
+                  </span>
+                </button>
+                {showMetricsSection && (
+                  <div style={{ padding: '0 0.75rem 0.75rem 0.75rem' }}>
+                    <MonitoringDashboard
+                      sessionId={sessionId}
+                      refreshIntervalMs={5000}
+                      showAlerts={true}
+                      compactMode={true}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Sidebar MRs - Keep existing recommendations */}
