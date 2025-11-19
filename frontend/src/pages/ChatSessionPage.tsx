@@ -1597,30 +1597,68 @@ const ChatSessionPage: React.FC = () => {
               {/* Active MR Tool Display in Sidebar */}
               {activeMRTool !== 'none' && (
                 <div style={{
-                  padding: '0.75rem',
                   borderBottom: '1px solid #e2e8f0',
                   backgroundColor: '#fff',
-                  maxHeight: '400px',
-                  overflowY: 'auto',
                 }}>
-                  <Suspense fallback={<ComponentLoader />}>
-                    {/* User-facing MR tools only */}
-                    {activeMRTool === 'mr1-decomposition' && <MR1TaskDecompositionScaffold sessionId={sessionId || ''} onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)} />}
-                    {activeMRTool === 'mr2-transparency' && <MR2ProcessTransparency sessionId={sessionId || ''} versions={messages.map((m, i) => ({ id: m.id, content: m.content, timestamp: m.timestamp, author: m.role, changeType: i === 0 ? 'initial' : 'modification' }))} onVersionSelect={(v) => console.log('Version:', v)} />}
-                    {activeMRTool === 'mr3-agency' && <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />}
-                    {activeMRTool === 'mr4-roles' && <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} />}
-                    {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} />}
-                    {activeMRTool === 'mr6-models' && <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />}
-                    {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning sessionId={sessionId || ''} onLearningComplete={(l) => console.log('Learning:', l)} />}
-                    {activeMRTool === 'mr10-cost' && <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />}
-                    {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
-                    {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding content={messages[messages.length - 1]?.content || ''} taskType={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
-                    {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty content={messages[messages.length - 1]?.content || ''} onUncertaintyAcknowledged={(u) => console.log('Uncertainty:', u)} />}
-                    {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} />}
-                    {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} />}
-                    {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention sessionId={sessionId || ''} onExerciseComplete={(e) => console.log('Exercise:', e)} />}
-                    {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization sessionId={sessionId || ''} />}
-                  </Suspense>
+                  {/* Active Tool Header */}
+                  <div style={{
+                    padding: '0.5rem 0.75rem',
+                    backgroundColor: '#f0fdf4',
+                    borderBottom: '1px solid #dcfce7',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                    <span style={{
+                      fontSize: '0.7rem',
+                      fontWeight: '600',
+                      color: '#166534',
+                      textTransform: 'uppercase',
+                    }}>
+                      Active: MR{activeMRTool.split('-')[0].replace('mr', '')}
+                    </span>
+                    <button
+                      onClick={() => setActiveMRTool('none')}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontSize: '0.75rem',
+                        color: '#166534',
+                        padding: '0.125rem 0.25rem',
+                      }}
+                      title="Close tool"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  {/* Tool Content */}
+                  <div style={{
+                    padding: '1rem',
+                    maxHeight: '50vh',
+                    overflowY: 'auto',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5',
+                  }}>
+                    <Suspense fallback={<ComponentLoader />}>
+                      {/* User-facing MR tools only */}
+                      {activeMRTool === 'mr1-decomposition' && <MR1TaskDecompositionScaffold sessionId={sessionId || ''} onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)} />}
+                      {activeMRTool === 'mr2-transparency' && <MR2ProcessTransparency sessionId={sessionId || ''} versions={messages.map((m, i) => ({ id: m.id, content: m.content, timestamp: m.timestamp, author: m.role, changeType: i === 0 ? 'initial' : 'modification' }))} onVersionSelect={(v) => console.log('Version:', v)} />}
+                      {activeMRTool === 'mr3-agency' && <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />}
+                      {activeMRTool === 'mr4-roles' && <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} />}
+                      {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} />}
+                      {activeMRTool === 'mr6-models' && <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />}
+                      {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning sessionId={sessionId || ''} onLearningComplete={(l) => console.log('Learning:', l)} />}
+                      {activeMRTool === 'mr10-cost' && <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />}
+                      {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
+                      {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding content={messages[messages.length - 1]?.content || ''} taskType={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
+                      {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty content={messages[messages.length - 1]?.content || ''} onUncertaintyAcknowledged={(u) => console.log('Uncertainty:', u)} />}
+                      {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} />}
+                      {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} />}
+                      {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention sessionId={sessionId || ''} onExerciseComplete={(e) => console.log('Exercise:', e)} />}
+                      {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization sessionId={sessionId || ''} />}
+                    </Suspense>
+                  </div>
                 </div>
               )}
 
