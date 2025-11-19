@@ -92,7 +92,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         const detection = detectPatternF(signals, messages);
 
         // Only proceed if pattern detected with meaningful confidence
-        if (detection.confidence < 0.4) {
+        // Lowered threshold to 0.2 (1 rule triggered) for easier testing
+        if (detection.confidence < 0.2) {
           setIsAnalyzing(false);
           return;
         }
