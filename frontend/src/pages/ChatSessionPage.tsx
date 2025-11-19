@@ -618,6 +618,76 @@ const ChatSessionPage: React.FC = () => {
   }, [hasMoreMessages, isLoadingMore, currentPage]);
 
   /**
+   * Mark interaction as verified (OPTIMIZED: Uses batch endpoint if available)
+   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
+   */
+  const markAsVerified = useCallback(async (messageId: string) => {
+    setUpdatingMessageId(messageId);
+    try {
+      // OPTIMIZATION: Try batch endpoint first, fallback to individual call
+      const response = await batchUpdateInteractions([
+        { id: messageId, wasVerified: true }
+      ]);
+
+      // Extract the updated interaction from batch response
+      const updatedInteraction = response.data.data[0]?.data?.interaction ||
+                                  response.data.data[0];
+
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === messageId
+            ? { ...msg, wasVerified: updatedInteraction?.wasVerified ?? true }
+            : msg
+        )
+      );
+
+      setSuccessMessage('✓ Response marked as verified!');
+      setTimeout(() => setSuccessMessage(null), 2000);
+    } catch (err: any) {
+      console.error('Verification error:', err);
+      const errorMsg = err.response?.data?.error || 'Failed to mark as verified';
+      setError(errorMsg);
+    } finally {
+      setUpdatingMessageId(null);
+    }
+  }, []);
+
+  /**
+   * Mark interaction as modified (OPTIMIZED: Uses batch endpoint if available)
+   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
+   */
+  const markAsModified = useCallback(async (messageId: string) => {
+    setUpdatingMessageId(messageId);
+    try {
+      // OPTIMIZATION: Try batch endpoint first, fallback to individual call
+      const response = await batchUpdateInteractions([
+        { id: messageId, wasModified: true }
+      ]);
+
+      // Extract the updated interaction from batch response
+      const updatedInteraction = response.data.data[0]?.data?.interaction ||
+                                  response.data.data[0];
+
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === messageId
+            ? { ...msg, wasModified: updatedInteraction?.wasModified ?? true }
+            : msg
+        )
+      );
+
+      setSuccessMessage('✎ Response marked as modified!');
+      setTimeout(() => setSuccessMessage(null), 2000);
+    } catch (err: any) {
+      console.error('Modification error:', err);
+      const errorMsg = err.response?.data?.error || 'Failed to mark as modified';
+      setError(errorMsg);
+    } finally {
+      setUpdatingMessageId(null);
+    }
+  }, []);
+
+  /**
    * Render individual message for virtualized list
    * Optimized version that maintains all functionality without performance overhead
    */
@@ -723,76 +793,6 @@ const ChatSessionPage: React.FC = () => {
     ),
     [updatingMessageId, markAsVerified, markAsModified]
   );
-
-  /**
-   * Mark interaction as verified (OPTIMIZED: Uses batch endpoint if available)
-   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
-   */
-  const markAsVerified = useCallback(async (messageId: string) => {
-    setUpdatingMessageId(messageId);
-    try {
-      // OPTIMIZATION: Try batch endpoint first, fallback to individual call
-      const response = await batchUpdateInteractions([
-        { id: messageId, wasVerified: true }
-      ]);
-
-      // Extract the updated interaction from batch response
-      const updatedInteraction = response.data.data[0]?.data?.interaction ||
-                                  response.data.data[0];
-
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === messageId
-            ? { ...msg, wasVerified: updatedInteraction?.wasVerified ?? true }
-            : msg
-        )
-      );
-
-      setSuccessMessage('✓ Response marked as verified!');
-      setTimeout(() => setSuccessMessage(null), 2000);
-    } catch (err: any) {
-      console.error('Verification error:', err);
-      const errorMsg = err.response?.data?.error || 'Failed to mark as verified';
-      setError(errorMsg);
-    } finally {
-      setUpdatingMessageId(null);
-    }
-  }, []);
-
-  /**
-   * Mark interaction as modified (OPTIMIZED: Uses batch endpoint if available)
-   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
-   */
-  const markAsModified = useCallback(async (messageId: string) => {
-    setUpdatingMessageId(messageId);
-    try {
-      // OPTIMIZATION: Try batch endpoint first, fallback to individual call
-      const response = await batchUpdateInteractions([
-        { id: messageId, wasModified: true }
-      ]);
-
-      // Extract the updated interaction from batch response
-      const updatedInteraction = response.data.data[0]?.data?.interaction ||
-                                  response.data.data[0];
-
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === messageId
-            ? { ...msg, wasModified: updatedInteraction?.wasModified ?? true }
-            : msg
-        )
-      );
-
-      setSuccessMessage('✎ Response marked as modified!');
-      setTimeout(() => setSuccessMessage(null), 2000);
-    } catch (err: any) {
-      console.error('Modification error:', err);
-      const errorMsg = err.response?.data?.error || 'Failed to mark as modified';
-      setError(errorMsg);
-    } finally {
-      setUpdatingMessageId(null);
-    }
-  }, []);
 
   /**
    * Create a new chat session
