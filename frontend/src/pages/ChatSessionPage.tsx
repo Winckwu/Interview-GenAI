@@ -222,7 +222,7 @@ const ChatSessionPage: React.FC = () => {
     if (sessionId && user?.id) {
       metricsStore.setCurrentSession(sessionId, user.id);
     }
-  }, [sessionId, user?.id, metricsStore]);
+  }, [sessionId, user?.id]);
 
   // Handle modal MRs display
   useEffect(() => {
