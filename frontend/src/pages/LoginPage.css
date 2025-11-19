@@ -66,7 +66,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.25);
   width: 100%;
-  max-width: 420px;
+  max-width: min(75vw, 900px);
   animation: slideUp 0.3s ease-out;
   position: relative;
   z-index: 10;
@@ -306,6 +306,7 @@
   }
 
   .auth-card {
+    max-width: min(90vw, 600px);
     padding: var(--sp-6);
     box-shadow: var(--shadow-lg);
   }
