@@ -523,26 +523,32 @@ const PatternsPage: React.FC = () => {
         <div className="guide-grid">
           <div className="guide-card">
             <h4>Pattern A ⭐⭐⭐⭐⭐</h4>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Strategic Decomposition & Control</p>
             <p>Breaks tasks into clear subtasks with human control. Maintains verification standards and skill preservation through deliberate boundary-setting.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern B ⭐⭐⭐⭐</h4>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Iterative Optimization & Calibration</p>
             <p>Learns through rapid experimentation and failure. Maintains failure logs and progressively calibrates trust based on success/failure patterns.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern C ⭐⭐⭐⭐</h4>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Adaptive Adjustment</p>
             <p>Adapts strategy based on task requirements. Modulates AI reliance dynamically: high for brainstorming, low for critical tasks, medium for routine work.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern D ⭐⭐⭐⭐⭐</h4>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Deep Verification & Criticism</p>
             <p>Assumes nothing, verifies everything. Uses multi-tool verification, identifies assumptions, constructs counter-examples, and demands explanations.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern E ⭐⭐⭐⭐</h4>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Teaching & Learning</p>
             <p>Treats AI as a learning tutor, not a task automator. Maintains learning logs and regularly practices without AI to ensure skill retention.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern F ⚠️ Risk</h4>
+            <p style={{ fontSize: '0.875rem', color: '#dc2626', fontWeight: '600', marginBottom: '0.5rem' }}>Passive Over-Reliance</p>
             <p>Uncritical adoption with low verification. May lead to skill degradation, false productivity, and unconscious dependence. Requires intervention and awareness.</p>
           </div>
         </div>
