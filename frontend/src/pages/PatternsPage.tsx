@@ -116,6 +116,42 @@ const PatternsPage: React.FC = () => {
   };
   const recentAlerts = (alerts || []).slice(0, 5);
 
+  // Get dominant pattern (highest confidence)
+  const dominantPattern = userPatterns.length > 0
+    ? userPatterns.reduce((prev, current) =>
+        (prev.confidence > current.confidence) ? prev : current
+      )
+    : null;
+
+  // Get sorted patterns for timeline (most recent first)
+  const patternTimeline = [...userPatterns].sort((a, b) =>
+    new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
+
+  const getPatternColor = (patternType: string): string => {
+    const colors: { [key: string]: string } = {
+      A: '#10b981',
+      B: '#3b82f6',
+      C: '#f59e0b',
+      D: '#8b5cf6',
+      E: '#ec4899',
+      F: '#ef4444',
+    };
+    return colors[patternType] || '#6b7280';
+  };
+
+  const getPatternLabel = (patternType: string): string => {
+    const labels: { [key: string]: string } = {
+      A: 'Strategic Decomposition & Control',
+      B: 'Iterative Refinement & Calibration',
+      C: 'Context-Sensitive Adaptation',
+      D: 'Deep Verification & Critical Engagement',
+      E: 'Pedagogical Reflection & Self-Monitoring',
+      F: 'Ineffective & Passive Usage',
+    };
+    return labels[patternType] || 'Unknown Pattern';
+  };
+
   const getPatternDescription = (patternType: string): string => {
     const descriptions: Record<string, string> = {
       A: 'Strategic Decomposition & Control - Task-focused planning with human oversight. High verification (>70%), maintains skill preservation through boundary maintenance.',
@@ -134,6 +170,232 @@ const PatternsPage: React.FC = () => {
         <h1>AI Usage Patterns</h1>
         <p className="page-subtitle">Understand your AI usage behavior and patterns</p>
       </div>
+
+      {/* Pattern Evolution Section */}
+      {dominantPattern && (
+        <div style={{
+          backgroundColor: '#fafbfc',
+          border: '2px solid #0ea5e9',
+          borderRadius: '0.5rem',
+          padding: '1.5rem',
+          marginBottom: '2rem',
+        }}>
+          <h3 style={{ margin: '0 0 1.5rem 0', color: '#0369a1', fontSize: '1rem' }}>🎯 Your Pattern Evolution</h3>
+
+          {/* Current Dominant Pattern Card */}
+          <div style={{
+            padding: '1.5rem',
+            backgroundColor: '#fff',
+            border: `3px solid ${getPatternColor(dominantPattern.patternType)}`,
+            borderRadius: '0.5rem',
+            marginBottom: '1.5rem',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+              <div
+                style={{
+                  width: '3rem',
+                  height: '3rem',
+                  backgroundColor: getPatternColor(dominantPattern.patternType),
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontSize: '1.5rem',
+                  fontWeight: '700',
+                  flexShrink: 0,
+                }}
+              >
+                {dominantPattern.patternType}
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ margin: '0', fontWeight: '700', fontSize: '1.1rem', color: '#1f2937' }}>
+                  Pattern {dominantPattern.patternType}
+                </p>
+                <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
+                  {getPatternLabel(dominantPattern.patternType)}
+                </p>
+              </div>
+            </div>
+
+            {/* Confidence Bar */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '500' }}>Confidence Level</span>
+                <span style={{ fontSize: '0.875rem', fontWeight: '700', color: getPatternColor(dominantPattern.patternType) }}>
+                  {(dominantPattern.confidence * 100).toFixed(0)}%
+                </span>
+              </div>
+              <div style={{
+                width: '100%',
+                height: '0.5rem',
+                backgroundColor: '#e5e7eb',
+                borderRadius: '0.25rem',
+                overflow: 'hidden',
+              }}>
+                <div style={{
+                  width: `${dominantPattern.confidence * 100}%`,
+                  height: '100%',
+                  backgroundColor: getPatternColor(dominantPattern.patternType),
+                  transition: 'width 0.3s ease',
+                }} />
+              </div>
+            </div>
+
+            {/* Key Metrics Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
+              {/* AI Reliance Score */}
+              <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '0.375rem' }}>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
+                  AI Reliance
+                </div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#dc2626', marginBottom: '0.5rem' }}>
+                  {(dominantPattern.aiRelianceScore * 100).toFixed(0)}%
+                </div>
+                <div style={{
+                  height: '0.25rem',
+                  backgroundColor: '#fee2e2',
+                  borderRadius: '0.125rem',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    height: '100%',
+                    backgroundColor: '#dc2626',
+                    width: `${Math.min(dominantPattern.aiRelianceScore * 100, 100)}%`,
+                  }} />
+                </div>
+                <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.7rem', color: '#6b7280' }}>
+                  {dominantPattern.aiRelianceScore > 0.7 ? '⚠️ High' : dominantPattern.aiRelianceScore > 0.4 ? '📊 Medium' : '✅ Low'}
+                </p>
+              </div>
+
+              {/* Verification Score */}
+              <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '0.375rem' }}>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
+                  Verification Score
+                </div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#059669', marginBottom: '0.5rem' }}>
+                  {(dominantPattern.verificationScore * 100).toFixed(0)}%
+                </div>
+                <div style={{
+                  height: '0.25rem',
+                  backgroundColor: '#dcfce7',
+                  borderRadius: '0.125rem',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    height: '100%',
+                    backgroundColor: '#059669',
+                    width: `${Math.min(dominantPattern.verificationScore * 100, 100)}%`,
+                  }} />
+                </div>
+                <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.7rem', color: '#6b7280' }}>
+                  {dominantPattern.verificationScore > 0.7 ? '✅ Excellent' : dominantPattern.verificationScore > 0.4 ? '📊 Fair' : '⚠️ Needs Help'}
+                </p>
+              </div>
+
+              {/* Context Switching */}
+              <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '0.375rem' }}>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
+                  Context Switching
+                </div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2563eb', marginBottom: '0.5rem' }}>
+                  {dominantPattern.contextSwitchingFrequency.toFixed(2)}x
+                </div>
+                <div style={{
+                  height: '0.25rem',
+                  backgroundColor: '#dbeafe',
+                  borderRadius: '0.125rem',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    height: '100%',
+                    backgroundColor: '#2563eb',
+                    width: `${Math.min((dominantPattern.contextSwitchingFrequency / 3) * 100, 100)}%`,
+                  }} />
+                </div>
+                <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.7rem', color: '#6b7280' }}>
+                  {dominantPattern.contextSwitchingFrequency < 1 ? '✅ Stable' : dominantPattern.contextSwitchingFrequency < 2 ? '📈 Adaptive' : '⚡ Experimental'}
+                </p>
+              </div>
+            </div>
+
+            {/* Last Updated */}
+            <div style={{ marginTop: '1rem', fontSize: '0.75rem', color: '#9ca3af' }}>
+              Last updated: {new Date(dominantPattern.updatedAt).toLocaleDateString()} at {new Date(dominantPattern.updatedAt).toLocaleTimeString()}
+            </div>
+          </div>
+
+          {/* Pattern Timeline */}
+          {patternTimeline.length > 1 && (
+            <div style={{
+              padding: '1rem',
+              backgroundColor: '#f9fafb',
+              border: '1px solid #e5e7eb',
+              borderRadius: '0.375rem',
+            }}>
+              <h4 style={{ margin: '0 0 1rem 0', color: '#1f2937', fontSize: '0.875rem', fontWeight: '600' }}>
+                📅 Pattern History
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {patternTimeline.slice(0, 5).map((p, idx) => (
+                  <div
+                    key={p.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                      padding: '0.75rem',
+                      backgroundColor: '#fff',
+                      borderRadius: '0.375rem',
+                      border: '1px solid #e5e7eb',
+                    }}
+                  >
+                    {/* Timeline badge */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '2rem',
+                        height: '2rem',
+                        backgroundColor: getPatternColor(p.patternType),
+                        borderRadius: '50%',
+                        color: '#fff',
+                        fontWeight: '700',
+                        fontSize: '0.875rem',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {p.patternType}
+                    </div>
+
+                    {/* Pattern info */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: '0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
+                        Pattern {p.patternType} · {(p.confidence * 100).toFixed(0)}% confidence
+                      </p>
+                      <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
+                        {idx === 0 ? 'Current' : 'Previous'} • {new Date(p.updatedAt).toLocaleDateString()}
+                      </p>
+                    </div>
+
+                    {/* Metrics summary */}
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', fontSize: '0.75rem', color: '#6b7280' }}>
+                      <div title="AI Reliance">
+                        {(p.aiRelianceScore * 100).toFixed(0)}% reliance
+                      </div>
+                      <div title="Verification Score">
+                        {(p.verificationScore * 100).toFixed(0)}% verified
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Metrics Explanation Section */}
       <div style={{
