@@ -88,10 +88,6 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
     setAlerts([...alerts]); // Trigger re-render
   };
 
-  if (compactMode && !sessionMetrics) {
-    return null; // Don't show in compact mode if no session metrics
-  }
-
   const metrics = sessionMetrics || systemMetrics;
 
   return (
