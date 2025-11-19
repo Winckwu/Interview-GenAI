@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuthStore } from '../stores/authStore';
@@ -7,6 +7,7 @@ import { useUIStore } from '../stores/uiStore';
 import PatternAnalysisWindow from '../components/chat/PatternAnalysisWindow';
 import { useMCAOrchestrator, MRDisplay, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
 import MR11IntegratedVerification from '../components/MR11IntegratedVerification';
+import VirtualizedMessageList from '../components/VirtualizedMessageList';
 
 interface Message {
   id: string;
@@ -89,6 +90,11 @@ const ChatSessionPage: React.FC = () => {
   // Verification tools state
   const [showVerificationTools, setShowVerificationTools] = useState(false);
   const [verificationLogs, setVerificationLogs] = useState<any[]>([]);
+
+  // Virtualized list configuration
+  const virtualizedListRef = useRef<any>(null);
+  const MESSAGE_ROW_HEIGHT = 140; // Approximate height of each message row (px)
+  const MESSAGES_CONTAINER_HEIGHT = 600; // Height of messages container (px)
 
   // Handle modal MRs display
   useEffect(() => {
@@ -396,6 +402,113 @@ const ChatSessionPage: React.FC = () => {
       setPatternLoading(false);
     }
   };
+
+  /**
+   * Render individual message for virtualized list
+   * Optimized version that maintains all functionality without performance overhead
+   */
+  const renderMessage = useCallback(
+    (message: Message, index: number) => (
+      <div
+        key={message.id}
+        style={{
+          marginBottom: '1rem',
+          display: 'flex',
+          justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
+          animation: 'fadeIn 0.3s ease-in-out',
+          padding: '0 0.5rem',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '65%',
+            padding: '1rem',
+            borderRadius: message.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '1rem 1rem 1rem 0.25rem',
+            backgroundColor: message.role === 'user' ? '#93c5fd' : '#fff',
+            color: message.role === 'user' ? '#0c4a6e' : '#1f2937',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+            borderLeft: message.role === 'ai' ? `3px solid ${message.wasVerified ? '#10b981' : '#3b82f6'}` : 'none',
+          }}
+        >
+          <p
+            style={{
+              margin: '0',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word',
+              lineHeight: '1.5',
+            }}
+          >
+            {message.content}
+          </p>
+          <p
+            style={{
+              margin: '0.75rem 0 0 0',
+              fontSize: '0.75rem',
+              opacity: 0.6,
+            }}
+          >
+            {new Date(message.timestamp).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </p>
+
+          {/* Action buttons for AI messages */}
+          {message.role === 'ai' && (
+            <div
+              style={{
+                marginTop: '0.75rem',
+                display: 'flex',
+                gap: '0.5rem',
+                paddingTop: '0.75rem',
+                borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+              }}
+            >
+              <button
+                onClick={() => markAsVerified(message.id)}
+                disabled={updatingMessageId === message.id}
+                title="✓ VERIFY: Confirm this AI response is correct and helpful."
+                style={{
+                  fontSize: '0.75rem',
+                  padding: '0.4rem 0.75rem',
+                  backgroundColor: message.wasVerified ? '#10b981' : '#f3f4f6',
+                  color: message.wasVerified ? '#fff' : '#374151',
+                  border: 'none',
+                  borderRadius: '0.375rem',
+                  cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
+                  opacity: updatingMessageId === message.id ? 0.6 : 1,
+                  fontWeight: '500',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {updatingMessageId === message.id ? '⏳ Saving...' : message.wasVerified ? '✓ Verified' : '✓ Verify'}
+              </button>
+              <button
+                onClick={() => markAsModified(message.id)}
+                disabled={updatingMessageId === message.id}
+                title="✎ MODIFY: Check this if you edited or improved the AI's response."
+                style={{
+                  fontSize: '0.75rem',
+                  padding: '0.4rem 0.75rem',
+                  backgroundColor: message.wasModified ? '#f59e0b' : '#f3f4f6',
+                  color: message.wasModified ? '#fff' : '#374151',
+                  border: 'none',
+                  borderRadius: '0.375rem',
+                  cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
+                  opacity: updatingMessageId === message.id ? 0.6 : 1,
+                  fontWeight: '500',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {updatingMessageId === message.id ? '⏳ Saving...' : message.wasModified ? '✎ Modified' : '✎ Modify'}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    ),
+    [updatingMessageId, markAsVerified, markAsModified]
+  );
 
   /**
    * Mark interaction as verified
@@ -868,11 +981,13 @@ const ChatSessionPage: React.FC = () => {
           {/* Center - Messages Area */}
           <div style={{
           flex: 1,
-          overflowY: 'auto',
+          overflowY: 'hidden', // Let VirtualizedMessageList handle scrolling
           padding: '1.5rem',
           maxWidth: '1200px',
           margin: '0 auto',
           width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
         }}>
           {messages.length === 0 && (
             <div style={{
@@ -886,124 +1001,17 @@ const ChatSessionPage: React.FC = () => {
             </div>
           )}
 
-          {messages.map((message) => (
-            <div key={message.id} style={{
-              marginBottom: '1rem',
-              display: 'flex',
-              justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
-              animation: 'fadeIn 0.3s ease-in-out'
-            }}>
-              <div style={{
-                maxWidth: '65%',
-                padding: '1rem',
-                borderRadius: message.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '1rem 1rem 1rem 0.25rem',
-                backgroundColor: message.role === 'user' ? '#93c5fd' : '#fff',
-                color: message.role === 'user' ? '#0c4a6e' : '#1f2937',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                borderLeft: message.role === 'ai' ? `3px solid ${message.wasVerified ? '#10b981' : '#3b82f6'}` : 'none',
-              }}>
-                <p style={{
-                  margin: '0',
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-word',
-                  lineHeight: '1.5',
-                }}>
-                  {message.content}
-                </p>
-                <p style={{
-                  margin: '0.75rem 0 0 0',
-                  fontSize: '0.75rem',
-                  opacity: 0.6,
-                }}>
-                  {new Date(message.timestamp).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </p>
-
-                {/* Action buttons for AI messages */}
-                {message.role === 'ai' && (
-                  <div style={{
-                    marginTop: '0.75rem',
-                    display: 'flex',
-                    gap: '0.5rem',
-                    paddingTop: '0.75rem',
-                    borderTop: '1px solid rgba(0, 0, 0, 0.05)'
-                  }}>
-                    <button
-                      onClick={() => markAsVerified(message.id)}
-                      disabled={updatingMessageId === message.id}
-                      title="✓ VERIFY: Confirm this AI response is correct and helpful. This feedback helps us understand what quality looks like."
-                      style={{
-                        fontSize: '0.75rem',
-                        padding: '0.4rem 0.75rem',
-                        backgroundColor: message.wasVerified ? '#10b981' : '#f3f4f6',
-                        color: message.wasVerified ? '#fff' : '#374151',
-                        border: 'none',
-                        borderRadius: '0.375rem',
-                        cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
-                        opacity: updatingMessageId === message.id ? 0.6 : 1,
-                        fontWeight: '500',
-                        transition: 'all 0.2s',
-                      }}
-                      onMouseOver={(e) => {
-                        if (updatingMessageId !== message.id) {
-                          (e.target as HTMLButtonElement).style.backgroundColor = message.wasVerified ? '#059669' : '#e5e7eb';
-                        }
-                      }}
-                      onMouseOut={(e) => {
-                        (e.target as HTMLButtonElement).style.backgroundColor = message.wasVerified ? '#10b981' : '#f3f4f6';
-                      }}
-                    >
-                      {updatingMessageId === message.id ? '⏳ Saving...' : message.wasVerified ? '✓ Verified' : '✓ Verify'}
-                    </button>
-                    <button
-                      onClick={() => markAsModified(message.id)}
-                      disabled={updatingMessageId === message.id}
-                      title="✎ MODIFY: Check this if you edited, rewrote, or improved the AI's response. This shows you're actively learning and not just copying."
-                      style={{
-                        fontSize: '0.75rem',
-                        padding: '0.4rem 0.75rem',
-                        backgroundColor: message.wasModified ? '#f59e0b' : '#f3f4f6',
-                        color: message.wasModified ? '#fff' : '#374151',
-                        border: 'none',
-                        borderRadius: '0.375rem',
-                        cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
-                        opacity: updatingMessageId === message.id ? 0.6 : 1,
-                        fontWeight: '500',
-                        transition: 'all 0.2s',
-                      }}
-                      onMouseOver={(e) => {
-                        if (updatingMessageId !== message.id) {
-                          (e.target as HTMLButtonElement).style.backgroundColor = message.wasModified ? '#d97706' : '#e5e7eb';
-                        }
-                      }}
-                      onMouseOut={(e) => {
-                        (e.target as HTMLButtonElement).style.backgroundColor = message.wasModified ? '#f59e0b' : '#f3f4f6';
-                      }}
-                    >
-                      {updatingMessageId === message.id ? '⏳ Saving...' : message.wasModified ? '✎ Modified' : '✎ Modify'}
-                    </button>
-                  </div>
-                )}
-              </div>
-              {/* Inline MRs - displayed after AI messages */}
-              {message.role === 'ai' && activeMRs && activeMRs.length > 0 && (
-                <>
-                  {activeMRs
-                    .filter((mr) => mr.displayMode === 'inline')
-                    .map((mr) => (
-                      <div key={mr.mrId} style={{ marginTop: '0.75rem' }}>
-                        <MRDisplay
-                          mr={mr}
-                          onClose={() => setDismissedMRs((prev) => new Set([...prev, mr.mrId]))}
-                        />
-                      </div>
-                    ))}
-                </>
-              )}
-            </div>
-          ))}
+          {/* Virtualized Message List - Performance optimized */}
+          {messages.length > 0 && (
+            <VirtualizedMessageList
+              ref={virtualizedListRef}
+              messages={messages}
+              height={MESSAGES_CONTAINER_HEIGHT}
+              width="100%"
+              itemHeight={MESSAGE_ROW_HEIGHT}
+              renderMessage={renderMessage}
+            />
+          )}
 
           {loading && (
             <div style={{

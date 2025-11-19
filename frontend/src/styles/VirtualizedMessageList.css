@@ -1,0 +1,161 @@
+/* ============================================
+   Virtualized Message List Styles
+   ============================================
+
+   Optimized CSS for react-window virtualization.
+   Minimal overhead, maximum performance.
+*/
+
+.virtualized-message-list-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Important: let react-window handle scrolling */
+  background-color: var(--color-bg-primary, #ffffff);
+}
+
+/* Message row styling */
+.virtualized-message-row {
+  width: 100%;
+  padding: 0; /* Let message component handle padding */
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  box-sizing: border-box;
+
+  /* Optimize rendering */
+  contain: layout style paint;
+  will-change: transform;
+}
+
+.virtualized-message-row:last-child {
+  border-bottom: none;
+}
+
+/* Loading indicator */
+.virtualized-message-loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-secondary, #f9fafb);
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.loader-spinner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2, 8px);
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.875rem;
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Load more button */
+.virtualized-message-loadmore {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-secondary, #f9fafb);
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  padding: var(--sp-4, 16px);
+}
+
+.loadmore-button {
+  padding: var(--sp-2, 8px) var(--sp-4, 16px);
+  background-color: var(--color-primary, #667eea);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md, 6px);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms ease;
+
+  /* Optimize button performance */
+  contain: layout style;
+}
+
+.loadmore-button:hover:not(:disabled) {
+  background-color: var(--color-primary-dark, #5568d3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.loadmore-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.loadmore-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loadmore-button:focus {
+  outline: 2px solid var(--color-primary, #667eea);
+  outline-offset: 2px;
+}
+
+/* Accessibility: Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+  .loader-spinner {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .loadmore-button {
+    transition: background-color 150ms ease;
+  }
+
+  .loadmore-button:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .virtualized-message-list-container {
+    background-color: var(--color-bg-primary, #1a1a1a);
+  }
+
+  .virtualized-message-row {
+    border-bottom-color: var(--color-border, #374151);
+  }
+
+  .virtualized-message-loader,
+  .virtualized-message-loadmore {
+    background-color: var(--color-bg-secondary, #2d2d2d);
+    border-color: var(--color-border, #374151);
+  }
+
+  .loader-spinner {
+    color: var(--color-text-secondary, #9ca3af);
+  }
+}
+
+/* Performance optimization: GPU acceleration */
+.virtualized-message-list-container {
+  transform: translateZ(0); /* Enable hardware acceleration */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Print styles */
+@media print {
+  .virtualized-message-list-container {
+    height: auto;
+    overflow: visible;
+  }
+
+  .virtualized-message-row {
+    page-break-inside: avoid;
+  }
+}
