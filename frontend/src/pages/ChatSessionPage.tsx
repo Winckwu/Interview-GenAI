@@ -315,6 +315,10 @@ const ChatSessionPage: React.FC = () => {
   const [verificationLogs, setVerificationLogs] = useState<any[]>([]);
 
   // MR Tools Panel state - Controls which MR tool is active
+  // Note: MR8, MR9, MR11, MR18, MR19 are automatic/backend systems, not manual tools
+  // MR8 - Auto task detection, MR9 - Auto trust calibration
+  // MR11 - Has dedicated Verify button, MR18 - Auto warning in Interventions
+  // MR19 - Auto assessment in Metrics
   type ActiveMRTool =
     | 'none'
     | 'mr1-decomposition'
@@ -324,18 +328,13 @@ const ChatSessionPage: React.FC = () => {
     | 'mr5-iteration'
     | 'mr6-models'
     | 'mr7-failure'
-    | 'mr8-task'
-    | 'mr9-trust'
     | 'mr10-cost'
-    | 'mr11-verify'
     | 'mr12-critical'
     | 'mr13-uncertainty'
     | 'mr14-reflection'
     | 'mr15-strategies'
     | 'mr16-atrophy'
-    | 'mr17-visualization'
-    | 'mr18-overreliance'
-    | 'mr19-assessment';
+    | 'mr17-visualization';
   const [activeMRTool, setActiveMRTool] = useState<ActiveMRTool>('none');
   const [showMRToolsPanel, setShowMRToolsPanel] = useState(false);
 
@@ -1571,9 +1570,10 @@ const ChatSessionPage: React.FC = () => {
                   <div style={{ padding: '0 0.75rem 0.75rem 0.75rem' }}>
                     <div style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(5, 1fr)',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
                       gap: '0.25rem',
                     }}>
+                      {/* User-facing MR tools only. MR8/9/11/18/19 are automatic backend systems */}
                       <button onClick={() => setActiveMRTool('mr1-decomposition')} title="Task Decomposition - Break down complex tasks" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr1-decomposition' ? '#dcfce7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>📋 1</button>
                       <button onClick={() => setActiveMRTool('mr2-transparency')} title="Process Transparency - View AI reasoning" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr2-transparency' ? '#dbeafe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🔍 2</button>
                       <button onClick={() => setActiveMRTool('mr3-agency')} title="Agency Control - Control AI intervention" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr3-agency' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🎛️ 3</button>
@@ -1581,18 +1581,13 @@ const ChatSessionPage: React.FC = () => {
                       <button onClick={() => setActiveMRTool('mr5-iteration')} title="Low-Cost Iteration - Branch conversations" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr5-iteration' ? '#e0f2fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🔄 5</button>
                       <button onClick={() => setActiveMRTool('mr6-models')} title="Cross-Model - Compare AI models" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr6-models' ? '#fce7f3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🤖 6</button>
                       <button onClick={() => setActiveMRTool('mr7-failure')} title="Failure Tolerance - Learn from mistakes" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr7-failure' ? '#fef9c3' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💡 7</button>
-                      <button onClick={() => setActiveMRTool('mr8-task')} title="Task Recognition - Analyze task type" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr8-task' ? '#d1fae5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🎯 8</button>
-                      <button onClick={() => setActiveMRTool('mr9-trust')} title="Trust Calibration - Calibrate trust scores" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr9-trust' ? '#fee2e2' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>⚖️ 9</button>
                       <button onClick={() => setActiveMRTool('mr10-cost')} title="Cost-Benefit Analysis - Evaluate AI assistance value" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr10-cost' ? '#e0e7ff' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💰 10</button>
-                      <button onClick={() => setActiveMRTool('mr11-verify')} title="Integrated Verification - Verify AI outputs" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr11-verify' ? '#d1fae5' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>✅ 11</button>
                       <button onClick={() => setActiveMRTool('mr12-critical')} title="Critical Thinking - Socratic questions" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr12-critical' ? '#ede9fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🧐 12</button>
                       <button onClick={() => setActiveMRTool('mr13-uncertainty')} title="Transparent Uncertainty - Show confidence levels" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr13-uncertainty' ? '#fef3c7' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>❓ 13</button>
                       <button onClick={() => setActiveMRTool('mr14-reflection')} title="Guided Reflection - Learning reflection" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr14-reflection' ? '#ccfbf1' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💭 14</button>
                       <button onClick={() => setActiveMRTool('mr15-strategies')} title="Strategy Guide - AI collaboration strategies" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr15-strategies' ? '#f3e8ff' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>📚 15</button>
                       <button onClick={() => setActiveMRTool('mr16-atrophy')} title="Skill Atrophy Prevention - Maintain your skills" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr16-atrophy' ? '#fecaca' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>💪 16</button>
                       <button onClick={() => setActiveMRTool('mr17-visualization')} title="Learning Visualization - Track learning progress" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr17-visualization' ? '#bfdbfe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>📈 17</button>
-                      <button onClick={() => setActiveMRTool('mr18-overreliance')} title="Over-Reliance Warning - Detect excessive AI dependence" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr18-overreliance' ? '#fed7aa' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>⚠️ 18</button>
-                      <button onClick={() => setActiveMRTool('mr19-assessment')} title="Capability Assessment - Evaluate metacognitive abilities" style={{ padding: '0.4rem', backgroundColor: activeMRTool === 'mr19-assessment' ? '#c7d2fe' : '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>🎓 19</button>
                       <button onClick={() => setActiveMRTool('none')} title="Close MR tool" style={{ padding: '0.4rem', backgroundColor: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.6rem', textAlign: 'center' }}>✕</button>
                     </div>
                   </div>
@@ -1609,6 +1604,7 @@ const ChatSessionPage: React.FC = () => {
                   overflowY: 'auto',
                 }}>
                   <Suspense fallback={<ComponentLoader />}>
+                    {/* User-facing MR tools only */}
                     {activeMRTool === 'mr1-decomposition' && <MR1TaskDecompositionScaffold sessionId={sessionId || ''} onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)} />}
                     {activeMRTool === 'mr2-transparency' && <MR2ProcessTransparency sessionId={sessionId || ''} versions={messages.map((m, i) => ({ id: m.id, content: m.content, timestamp: m.timestamp, author: m.role, changeType: i === 0 ? 'initial' : 'modification' }))} onVersionSelect={(v) => console.log('Version:', v)} />}
                     {activeMRTool === 'mr3-agency' && <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />}
@@ -1616,18 +1612,13 @@ const ChatSessionPage: React.FC = () => {
                     {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} />}
                     {activeMRTool === 'mr6-models' && <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />}
                     {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning sessionId={sessionId || ''} onLearningComplete={(l) => console.log('Learning:', l)} />}
-                    {activeMRTool === 'mr8-task' && <MR8TaskCharacteristicRecognition taskDescription={sessionData?.taskDescription || userInput || ''} onAnalysisComplete={(a) => console.log('Analysis:', a)} />}
-                    {activeMRTool === 'mr9-trust' && <MR9DynamicTrustCalibration taskType={sessionData?.taskType || 'general'} aiConfidence={0.75} criticality="medium" userHistory={[]} onTrustScoreUpdate={(s) => console.log('Trust:', s)} />}
                     {activeMRTool === 'mr10-cost' && <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />}
-                    {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
                     {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding content={messages[messages.length - 1]?.content || ''} taskType={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
                     {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty content={messages[messages.length - 1]?.content || ''} onUncertaintyAcknowledged={(u) => console.log('Uncertainty:', u)} />}
                     {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} />}
                     {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} />}
                     {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention sessionId={sessionId || ''} onExerciseComplete={(e) => console.log('Exercise:', e)} />}
                     {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization sessionId={sessionId || ''} />}
-                    {activeMRTool === 'mr18-overreliance' && <MR18OverRelianceWarning sessionId={sessionId || ''} messages={messages} onWarningAcknowledged={(w) => console.log('Warning:', w)} />}
-                    {activeMRTool === 'mr19-assessment' && <MR19MetacognitiveCapabilityAssessment sessionId={sessionId || ''} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
                   </Suspense>
                 </div>
               )}
