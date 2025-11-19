@@ -626,7 +626,7 @@ const ChatSessionPage: React.FC = () => {
     try {
       // OPTIMIZATION: Try batch endpoint first, fallback to individual call
       const response = await batchUpdateInteractions([
-        { id: messageId, wasVerified: true }
+        { id: messageId, wasVerified: true, wasModified: false, wasRejected: false }
       ]);
 
       // Extract the updated interaction from batch response
@@ -636,7 +636,12 @@ const ChatSessionPage: React.FC = () => {
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === messageId
-            ? { ...msg, wasVerified: updatedInteraction?.wasVerified ?? true }
+            ? {
+                ...msg,
+                wasVerified: updatedInteraction?.wasVerified ?? true,
+                wasModified: updatedInteraction?.wasModified ?? false,
+                wasRejected: updatedInteraction?.wasRejected ?? false,
+              }
             : msg
         )
       );
@@ -661,7 +666,7 @@ const ChatSessionPage: React.FC = () => {
     try {
       // OPTIMIZATION: Try batch endpoint first, fallback to individual call
       const response = await batchUpdateInteractions([
-        { id: messageId, wasModified: true }
+        { id: messageId, wasModified: true, wasVerified: false, wasRejected: false }
       ]);
 
       // Extract the updated interaction from batch response
@@ -671,7 +676,12 @@ const ChatSessionPage: React.FC = () => {
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === messageId
-            ? { ...msg, wasModified: updatedInteraction?.wasModified ?? true }
+            ? {
+                ...msg,
+                wasModified: updatedInteraction?.wasModified ?? true,
+                wasVerified: updatedInteraction?.wasVerified ?? false,
+                wasRejected: updatedInteraction?.wasRejected ?? false,
+              }
             : msg
         )
       );
