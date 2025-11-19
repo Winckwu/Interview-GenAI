@@ -508,6 +508,20 @@ export class MetricsCollector {
     message: string,
     sessionId?: string
   ) {
+    // Check if a similar alert was triggered recently (within last 30 seconds)
+    const thirtySecondsAgo = Date.now() - 30000;
+    const recentSimilarAlert = this.alerts.find(
+      (alert) =>
+        alert.type === type &&
+        alert.timestamp > thirtySecondsAgo &&
+        alert.sessionId === sessionId
+    );
+
+    // Skip duplicate alerts within 30 seconds
+    if (recentSimilarAlert) {
+      return;
+    }
+
     const alert: SystemAlert = {
       id: `alert-${Date.now()}-${Math.random()}`,
       timestamp: Date.now(),
