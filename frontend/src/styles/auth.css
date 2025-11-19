@@ -14,7 +14,7 @@
 
 .auth-container {
   width: 75vw;
-  max-width: 100%;
+  margin: 0 auto;
 }
 
 .auth-content {
@@ -207,6 +207,6 @@
 
   .auth-container {
     width: 90vw;
-    max-width: 100%;
+    margin: 0 auto;
   }
 }
