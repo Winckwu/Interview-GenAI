@@ -18,6 +18,7 @@
   overflow: hidden;
   padding: var(--sp-4);
   font-family: inherit;
+  border-radius: 24px;
 }
 
 /* Decorative background elements */
