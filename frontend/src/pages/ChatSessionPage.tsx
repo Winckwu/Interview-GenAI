@@ -24,98 +24,26 @@ const MRDisplay = lazy(() =>
 );
 
 // MR Components - Lazy loaded for performance
-// Phase 1: Foundation Components
+// All MR components use export default, so we use simplified lazy imports
 const MR1TaskDecompositionScaffold = lazy(() => import('../components/MR1TaskDecompositionScaffold'));
-const MR2ProcessTransparency = lazy(() =>
-  import('../components/MR2ProcessTransparency').then((module) => ({
-    default: module.MR2ProcessTransparency,
-  }))
-);
-const MR3HumanAgencyControl = lazy(() =>
-  import('../components/MR3HumanAgencyControl').then((module) => ({
-    default: module.MR3HumanAgencyControl,
-  }))
-);
-const MR15MetacognitiveStrategyGuide = lazy(() =>
-  import('../components/MR15MetacognitiveStrategyGuide').then((module) => ({
-    default: module.MR15MetacognitiveStrategyGuide,
-  }))
-);
-
-// Phase 2: Adaptive Intelligence
-const MR4RoleDefinitionGuidance = lazy(() =>
-  import('../components/MR4RoleDefinitionGuidance').then((module) => ({
-    default: module.MR4RoleDefinitionGuidance,
-  }))
-);
-const MR5LowCostIteration = lazy(() =>
-  import('../components/MR5LowCostIteration').then((module) => ({
-    default: module.MR5LowCostIteration,
-  }))
-);
-const MR6CrossModelExperimentation = lazy(() =>
-  import('../components/MR6CrossModelExperimentation').then((module) => ({
-    default: module.MR6CrossModelExperimentation,
-  }))
-);
-const MR8TaskCharacteristicRecognition = lazy(() =>
-  import('../components/MR8TaskCharacteristicRecognition').then((module) => ({
-    default: module.MR8TaskCharacteristicRecognition,
-  }))
-);
-const MR9DynamicTrustCalibration = lazy(() =>
-  import('../components/MR9DynamicTrustCalibration').then((module) => ({
-    default: module.MR9DynamicTrustCalibration,
-  }))
-);
-const MR12CriticalThinkingScaffolding = lazy(() =>
-  import('../components/MR12CriticalThinkingScaffolding').then((module) => ({
-    default: module.MR12CriticalThinkingScaffolding,
-  }))
-);
-const MR14GuidedReflectionMechanism = lazy(() =>
-  import('../components/MR14GuidedReflectionMechanism').then((module) => ({
-    default: module.MR14GuidedReflectionMechanism,
-  }))
-);
+const MR2ProcessTransparency = lazy(() => import('../components/MR2ProcessTransparency'));
+const MR3HumanAgencyControl = lazy(() => import('../components/MR3HumanAgencyControl'));
+const MR4RoleDefinitionGuidance = lazy(() => import('../components/MR4RoleDefinitionGuidance'));
+const MR5LowCostIteration = lazy(() => import('../components/MR5LowCostIteration'));
+const MR6CrossModelExperimentation = lazy(() => import('../components/MR6CrossModelExperimentation'));
+const MR7FailureToleranceLearning = lazy(() => import('../components/MR7FailureToleranceLearning'));
+const MR8TaskCharacteristicRecognition = lazy(() => import('../components/MR8TaskCharacteristicRecognition'));
+const MR9DynamicTrustCalibration = lazy(() => import('../components/MR9DynamicTrustCalibration'));
+const MR10CostBenefitAnalysis = lazy(() => import('../components/MR10CostBenefitAnalysis'));
 const MR11IntegratedVerification = lazy(() => import('../components/MR11IntegratedVerification'));
-
-// Additional MR Components
-const MR7FailureToleranceLearning = lazy(() =>
-  import('../components/MR7FailureToleranceLearning').then((module) => ({
-    default: module.MR7FailureToleranceLearning,
-  }))
-);
-const MR10CostBenefitAnalysis = lazy(() =>
-  import('../components/MR10CostBenefitAnalysis').then((module) => ({
-    default: module.MR10CostBenefitAnalysis,
-  }))
-);
-const MR13TransparentUncertainty = lazy(() =>
-  import('../components/MR13TransparentUncertainty').then((module) => ({
-    default: module.MR13TransparentUncertainty,
-  }))
-);
-const MR16SkillAtrophyPrevention = lazy(() =>
-  import('../components/MR16SkillAtrophyPrevention').then((module) => ({
-    default: module.MR16SkillAtrophyPrevention,
-  }))
-);
-const MR17LearningProcessVisualization = lazy(() =>
-  import('../components/MR17LearningProcessVisualization').then((module) => ({
-    default: module.default,
-  }))
-);
-const MR18OverRelianceWarning = lazy(() =>
-  import('../components/MR18OverRelianceWarning').then((module) => ({
-    default: module.MR18OverRelianceWarning,
-  }))
-);
-const MR19MetacognitiveCapabilityAssessment = lazy(() =>
-  import('../components/MR19MetacognitiveCapabilityAssessment').then((module) => ({
-    default: module.MR19MetacognitiveCapabilityAssessment,
-  }))
-);
+const MR12CriticalThinkingScaffolding = lazy(() => import('../components/MR12CriticalThinkingScaffolding'));
+const MR13TransparentUncertainty = lazy(() => import('../components/MR13TransparentUncertainty'));
+const MR14GuidedReflectionMechanism = lazy(() => import('../components/MR14GuidedReflectionMechanism'));
+const MR15MetacognitiveStrategyGuide = lazy(() => import('../components/MR15MetacognitiveStrategyGuide'));
+const MR16SkillAtrophyPrevention = lazy(() => import('../components/MR16SkillAtrophyPrevention'));
+const MR17LearningProcessVisualization = lazy(() => import('../components/MR17LearningProcessVisualization'));
+const MR18OverRelianceWarning = lazy(() => import('../components/MR18OverRelianceWarning'));
+const MR19MetacognitiveCapabilityAssessment = lazy(() => import('../components/MR19MetacognitiveCapabilityAssessment'));
 
 /**
  * OPTIMIZATION: Fallback component for lazy-loaded heavy components
