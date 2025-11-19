@@ -251,7 +251,7 @@ const ChatSessionPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [pattern, setPattern] = useState<PatternResult | null>(null);
   const [showPattern, setShowPattern] = useState(false);
-  const [showPatternPanel, setShowPatternPanel] = useState(true); // Show pattern panel on right
+  const [showPatternPanel, setShowPatternPanel] = useState(false); // Right panel collapsed by default
   const [patternLoading, setPatternLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
