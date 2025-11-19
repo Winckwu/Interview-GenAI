@@ -1746,6 +1746,22 @@ const ChatSessionPage: React.FC = () => {
                       }}
                       onUserAction={(mrType, action) => {
                         console.log(`📊 User action: ${action} on ${mrType}`);
+                        // Open corresponding MR tool when user clicks "View Details" or "Learn More"
+                        if (action === 'learn_more' || action === 'acted') {
+                          // Map MR types to activeMRTool values
+                          const mrToolMap: Record<string, ActiveMRTool> = {
+                            'MR11_IntegratedVerification': 'mr11-verify',
+                            'MR13_Uncertainty': 'mr13-uncertainty',
+                            'MR18_OverDependence': 'mr17-visualization', // Show learning progress for over-dependence
+                            'MR_PATTERN_F_BARRIER': 'mr14-reflection', // Show reflection for pattern F
+                          };
+                          const tool = mrToolMap[mrType];
+                          if (tool) {
+                            setActiveMRTool(tool);
+                            setShowPatternPanel(true);
+                            setShowMRToolsSection(true);
+                          }
+                        }
                       }}
                     />
                   </div>
