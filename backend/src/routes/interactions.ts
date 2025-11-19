@@ -290,6 +290,22 @@ router.get(
     const limitNum = Math.min(parseInt(limit as string) || 50, 100);
     const offsetNum = parseInt(offset as string) || 0;
 
+    // DEBUG: Check total interactions for this user (regardless of session)
+    const debugTotal = await pool.query(
+      'SELECT COUNT(*) as total FROM interactions WHERE user_id = $1',
+      [userId]
+    );
+    console.log(`[interactions] DEBUG: Total interactions for user ${userId}: ${debugTotal.rows[0].total}`);
+
+    // DEBUG: Show which session_ids have interactions
+    if (parseInt(debugTotal.rows[0].total) > 0) {
+      const debugSessions = await pool.query(
+        'SELECT DISTINCT session_id, COUNT(*) as count FROM interactions WHERE user_id = $1 GROUP BY session_id LIMIT 10',
+        [userId]
+      );
+      console.log(`[interactions] DEBUG: Sessions with interactions: ${JSON.stringify(debugSessions.rows)}`);
+    }
+
     // Build base query conditions
     let whereClause = 'WHERE i.user_id = $1';
     let params: any[] = [userId];
