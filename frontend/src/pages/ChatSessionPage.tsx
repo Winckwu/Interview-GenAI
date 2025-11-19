@@ -80,33 +80,48 @@ const getTaskImportanceValue = (importance: string): number => {
 const loadInteractionsForSessions = async (sessionIds: string[]): Promise<Record<string, any[]>> => {
   try {
     // Try batch endpoint first (if backend supports it)
+    console.log(`[loadInteractionsForSessions] Attempting batch load for ${sessionIds.length} sessions`);
     const response = await api.post('/interactions/batch', { sessionIds });
     if (response.data.data && response.data.data.interactions) {
       // Backend returns map of sessionId -> interactions
+      console.log('[loadInteractionsForSessions] Batch endpoint succeeded');
       return response.data.data.interactions;
     }
-  } catch (err) {
-    // Batch endpoint not available, fall back to parallel individual calls
-    console.warn('Batch interactions endpoint not available, using parallel individual calls');
+  } catch (err: any) {
+    // Batch endpoint not available, fall back to sequential individual calls
+    console.warn(`[loadInteractionsForSessions] Batch endpoint failed (${err.status || 'unknown error'}), using sequential fallback`);
   }
 
-  // Fallback: Load interactions for each session in parallel
-  const results = await Promise.all(
-    sessionIds.map(async (id) => {
-      try {
-        const res = await api.get('/interactions', { params: { sessionId: id } });
-        const interactions = res.data.data.interactions || [];
-        console.log(`[loadInteractionsForSessions] Session ${id}: loaded ${interactions.length} interactions`);
-        return [id, interactions];
-      } catch (err: any) {
-        console.error(`[loadInteractionsForSessions] Failed to load interactions for session ${id}:`, err.message);
-        return [id, []];
-      }
-    })
-  );
+  // Fallback: Load interactions sequentially (not in parallel) to reduce server load
+  // Limit to 5 concurrent requests maximum using a queue-like approach
+  const CONCURRENT_LIMIT = 5;
+  const interactionsMap: Record<string, any[]> = {};
 
-  const interactionsMap = Object.fromEntries(results);
-  console.log('[loadInteractionsForSessions] Final map:', interactionsMap);
+  for (let i = 0; i < sessionIds.length; i += CONCURRENT_LIMIT) {
+    const batch = sessionIds.slice(i, i + CONCURRENT_LIMIT);
+    console.log(`[loadInteractionsForSessions] Loading batch ${Math.floor(i / CONCURRENT_LIMIT) + 1} with ${batch.length} sessions`);
+
+    const results = await Promise.all(
+      batch.map(async (id) => {
+        try {
+          const res = await api.get('/interactions', { params: { sessionId: id } });
+          const interactions = res.data.data.interactions || [];
+          console.log(`[loadInteractionsForSessions] Session ${id}: loaded ${interactions.length} interactions`);
+          return [id, interactions];
+        } catch (err: any) {
+          console.error(`[loadInteractionsForSessions] Failed to load interactions for session ${id}:`, err.message);
+          return [id, []];
+        }
+      })
+    );
+
+    // Add to map
+    results.forEach(([id, interactions]) => {
+      interactionsMap[id] = interactions;
+    });
+  }
+
+  console.log(`[loadInteractionsForSessions] Completed loading all ${sessionIds.length} sessions`);
   return interactionsMap;
 };
 
@@ -242,7 +257,12 @@ const ChatSessionPage: React.FC = () => {
   }, [activeMRs, dismissedMRs]);
 
   // Load session list with valid interactions (OPTIMIZED: Batch loading to reduce N+1)
+  const loadSessionsRef = useRef(false);
   useEffect(() => {
+    // Prevent multiple calls (React StrictMode compatibility)
+    if (loadSessionsRef.current) return;
+    loadSessionsRef.current = true;
+
     const loadSessions = async () => {
       setSessionsLoading(true);
       try {
@@ -257,6 +277,7 @@ const ChatSessionPage: React.FC = () => {
           // Before: 1 + N API calls (N+1 problem)
           // After: 1-2 API calls (batch endpoint + fallback)
           const sessionIds = uniqueSessions.map((s) => s.id);
+          console.log(`[ChatSessionPage] Loading ${sessionIds.length} sessions`);
           const interactionsMap = await loadInteractionsForSessions(sessionIds);
 
           // Process sessions with their interactions
