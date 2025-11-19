@@ -95,14 +95,19 @@ const loadInteractionsForSessions = async (sessionIds: string[]): Promise<Record
     sessionIds.map(async (id) => {
       try {
         const res = await api.get('/interactions', { params: { sessionId: id } });
-        return [id, res.data.data.interactions || []];
-      } catch {
+        const interactions = res.data.data.interactions || [];
+        console.log(`[loadInteractionsForSessions] Session ${id}: loaded ${interactions.length} interactions`);
+        return [id, interactions];
+      } catch (err: any) {
+        console.error(`[loadInteractionsForSessions] Failed to load interactions for session ${id}:`, err.message);
         return [id, []];
       }
     })
   );
 
-  return Object.fromEntries(results);
+  const interactionsMap = Object.fromEntries(results);
+  console.log('[loadInteractionsForSessions] Final map:', interactionsMap);
+  return interactionsMap;
 };
 
 /**
@@ -265,6 +270,7 @@ const ChatSessionPage: React.FC = () => {
               );
 
               if (validInteractions.length > 0) {
+                console.log(`[loadSessions] Session ${session.id}: Has ${validInteractions.length} valid interactions - DISPLAYING`);
                 // Use the first user prompt as the session title (truncate to 50 chars)
                 const firstPrompt = validInteractions[0].userPrompt;
                 const title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
@@ -273,6 +279,7 @@ const ChatSessionPage: React.FC = () => {
                   taskDescription: title,
                 };
               }
+              console.log(`[loadSessions] Session ${session.id}: Has ${interactions.length} interactions but ${validInteractions.length} valid - FILTERING OUT`);
               return null;
             })
             .filter((s) => s !== null) as SessionItem[];
