@@ -9,7 +9,8 @@ import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversation
 // DISABLED: react-window compatibility issue - using simple list instead
 import EmptyState, { EmptyStateError } from '../components/EmptyState';
 import { SkeletonText, SkeletonCard } from '../components/Skeleton';
-import InterventionManager from '../components/interventions/InterventionManager';
+// import InterventionManager from '../components/interventions/InterventionManager';
+// DISABLED: Causes infinite loop - needs to be refactored without zustand circular updates
 import { MonitoringDashboard } from '../components/monitoring/MonitoringDashboard';
 import { useMetricsStore } from '../stores/metricsStore';
 
@@ -1326,7 +1327,7 @@ const ChatSessionPage: React.FC = () => {
               backgroundColor: '#f9fafb',
               gap: '0.5rem',
             }}>
-              {/* Intervention Manager - Detects Pattern F and displays Tier 1/2/3 */}
+              {/* Intervention Manager - DISABLED temporarily due to infinite loop
               <div style={{ padding: '0.75rem', borderBottom: '1px solid #e2e8f0' }}>
                 <InterventionManager
                   sessionId={sessionId || ''}
@@ -1340,6 +1341,7 @@ const ChatSessionPage: React.FC = () => {
                   }}
                 />
               </div>
+              */}
 
               {/* Monitoring Dashboard - Real-time metrics and alerts */}
               <div style={{ flex: 1, overflowY: 'auto', padding: '0.75rem' }}>
