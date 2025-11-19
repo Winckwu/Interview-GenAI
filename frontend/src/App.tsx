@@ -77,6 +77,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
  */
 const App: React.FC = () => {
   const token = useAuthStore((state) => state.token);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const loading = useAuthStore((state) => state.loading);
   const initRef = useRef(false);
 
   useEffect(() => {
@@ -94,10 +96,46 @@ const App: React.FC = () => {
     // Try to verify the token - fire and forget
     // ProtectedRoute will handle redirects if auth fails
     useAuthStore.getState().checkAuth();
-  }, [token]);
+  }, []); // Empty deps - only run once on mount
 
-  // If no token, show auth routes immediately
-  if (!token) {
+  // Show loading state while checking auth
+  if (loading && token) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          backgroundColor: '#f3f4f6',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              border: '4px solid #e5e7eb',
+              borderTop: '4px solid #667eea',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+              margin: '0 auto 1rem',
+            }}
+          />
+          <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>Verifying session...</p>
+          <style>{`
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
+      </div>
+    );
+  }
+
+  // If no token or auth check failed, show auth routes
+  if (!token || !isAuthenticated) {
     return (
       <Router>
         <Routes>
