@@ -11,6 +11,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { metricsCollector, SystemMetrics, SessionMetrics, SystemAlert } from '../../utils/MetricsCollector';
+import { useMetricsStore } from '../../stores/metricsStore';
 import './MonitoringDashboard.css';
 
 // KPI Tooltip Descriptions
@@ -38,38 +39,46 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
   showAlerts = true,
   compactMode = false,
 }) => {
+  // Subscribe to metrics store for real-time updates
+  const storeSessionMetrics = useMetricsStore((state) => state.sessionMetrics);
+  const storeAlerts = useMetricsStore((state) => state.alerts);
+  const refreshMetrics = useMetricsStore((state) => state.refreshMetrics);
+
   const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(null);
   const [sessionMetrics, setSessionMetrics] = useState<SessionMetrics | null>(null);
   const [alerts, setAlerts] = useState<SystemAlert[]>([]);
   const [expandedAlerts, setExpandedAlerts] = useState<Set<string>>(new Set());
   const [alertsExpanded, setAlertsExpanded] = useState<boolean>(!compactMode); // Collapsed by default in compact mode
 
-  // Refresh metrics periodically
+  // Update sessionMetrics from store when it changes
+  useEffect(() => {
+    if (storeSessionMetrics) {
+      console.log('[MonitoringDashboard] Received sessionMetrics from store:', storeSessionMetrics);
+      setSessionMetrics(storeSessionMetrics);
+    }
+  }, [storeSessionMetrics]);
+
+  // Update alerts from store when they change
+  useEffect(() => {
+    if (storeAlerts && storeAlerts.length > 0) {
+      console.log('[MonitoringDashboard] Updated alerts from store:', storeAlerts.length);
+      setAlerts(storeAlerts);
+    }
+  }, [storeAlerts]);
+
+  // Refresh metrics periodically from metricsCollector
   useEffect(() => {
     const interval = setInterval(() => {
       setSystemMetrics(metricsCollector.getSystemMetrics());
-      setAlerts(metricsCollector.getAlerts(5)); // Last 5 alerts
-
-      if (sessionId) {
-        const metrics = metricsCollector.getSessionMetrics(sessionId);
-        if (metrics) {
-          setSessionMetrics(metrics);
-        }
-      }
+      refreshMetrics(); // Trigger metricsStore refresh
     }, refreshIntervalMs);
 
     // Initial fetch
     setSystemMetrics(metricsCollector.getSystemMetrics());
-    if (sessionId) {
-      const metrics = metricsCollector.getSessionMetrics(sessionId);
-      if (metrics) {
-        setSessionMetrics(metrics);
-      }
-    }
-    setAlerts(metricsCollector.getAlerts(5));
+    refreshMetrics();
 
     return () => clearInterval(interval);
-  }, [sessionId, refreshIntervalMs]);
+  }, [refreshIntervalMs, refreshMetrics]);
 
   const toggleAlert = (alertId: string) => {
     setExpandedAlerts((prev) => {

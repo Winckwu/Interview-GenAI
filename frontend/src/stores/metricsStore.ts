@@ -58,9 +58,41 @@ export const useMetricsStore = create<MetricsStoreState>((set) => ({
 
   recordInterventionDisplay: (record: Omit<InterventionRecord, 'id'>) => {
     metricsCollector.recordInterventionDisplay(record);
-    set((state) => ({
-      ...state, // Trigger re-render
-    }));
+    set((state) => {
+      // Calculate real-time sessionMetrics based on recorded interventions
+      if (state.currentSessionId && state.currentUserId) {
+        // Calculate metrics with reasonable defaults for ongoing session
+        const records = metricsCollector['interventionRecords']?.get(state.currentSessionId) || [];
+        const totalDisplays = records.length;
+
+        if (totalDisplays > 0) {
+          const dismissals = records.filter((r: any) => r.userAction === 'dismiss').length;
+          const engagements = records.filter((r: any) => r.userAction === 'acted').length;
+          const compliances = records.filter((r: any) => r.userAction === 'acted').length;
+          const overrides = records.filter((r: any) => r.userAction === 'override').length;
+
+          const sessionMetrics: SessionMetrics = {
+            sessionId: state.currentSessionId,
+            userId: state.currentUserId,
+            totalInterventions: totalDisplays,
+            complianceRate: compliances / totalDisplays,
+            dismissalRate: dismissals / totalDisplays,
+            engagementRate: engagements / totalDisplays,
+            overrideRate: overrides / totalDisplays,
+            avgTimeToAction: records
+              .filter((r: any) => r.timeToAction)
+              .reduce((sum: number, r: any) => sum + (r.timeToAction || 0), 0) / totalDisplays,
+            avgConfidence: records.reduce((sum: number, r: any) => sum + r.confidence, 0) / totalDisplays,
+            fatigueScore: 0,
+            completionRate: 0,
+          };
+
+          console.log('[recordInterventionDisplay] Updated sessionMetrics:', sessionMetrics);
+          return { sessionMetrics };
+        }
+      }
+      return state;
+    });
   },
 
   recordUserAction: (
@@ -70,9 +102,40 @@ export const useMetricsStore = create<MetricsStoreState>((set) => ({
     timeToAction: number
   ) => {
     metricsCollector.recordUserAction(sessionId, interventionId, action, timeToAction);
-    set((state) => ({
-      ...state,
-    }));
+    set((state) => {
+      // Calculate real-time sessionMetrics based on recorded interventions
+      if (state.currentSessionId && state.currentUserId) {
+        const records = metricsCollector['interventionRecords']?.get(state.currentSessionId) || [];
+        const totalDisplays = records.length;
+
+        if (totalDisplays > 0) {
+          const dismissals = records.filter((r: any) => r.userAction === 'dismiss' || r.userAction === 'skip').length;
+          const engagements = records.filter((r: any) => r.userAction === 'acted').length;
+          const compliances = records.filter((r: any) => r.userAction === 'acted').length;
+          const overrides = records.filter((r: any) => r.userAction === 'override').length;
+
+          const sessionMetrics: SessionMetrics = {
+            sessionId: state.currentSessionId,
+            userId: state.currentUserId,
+            totalInterventions: totalDisplays,
+            complianceRate: compliances / totalDisplays,
+            dismissalRate: dismissals / totalDisplays,
+            engagementRate: engagements / totalDisplays,
+            overrideRate: overrides / totalDisplays,
+            avgTimeToAction: records
+              .filter((r: any) => r.timeToAction)
+              .reduce((sum: number, r: any) => sum + (r.timeToAction || 0), 0) / totalDisplays,
+            avgConfidence: records.reduce((sum: number, r: any) => sum + r.confidence, 0) / totalDisplays,
+            fatigueScore: 0,
+            completionRate: 0,
+          };
+
+          console.log('[recordUserAction] Updated sessionMetrics:', sessionMetrics);
+          return { sessionMetrics };
+        }
+      }
+      return state;
+    });
   },
 
   recordDetectionLatency: (latencyMs: number) => {
