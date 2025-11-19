@@ -980,49 +980,146 @@ const ChatSessionPage: React.FC = () => {
     <>
       {/* CSS overrides for MR components in sidebar - make them compact */}
       <style>{`
-        /* Compact MR components for sidebar display */
-        [class*="mr"][class*="-container"] {
-          padding: 0.5rem !important;
+        /* Global sidebar MR component styles - prevent horizontal scroll */
+        [class*="mr"][class*="-container"],
+        [class*="mr"][class*="Container"] {
+          padding: 0.4rem !important;
           max-width: 100% !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+          overflow-x: hidden !important;
         }
-        [class*="mr"][class*="-header"] {
-          margin-bottom: 0.75rem !important;
-          padding-bottom: 0.5rem !important;
+
+        /* Headers - compact */
+        [class*="mr"][class*="-header"],
+        [class*="mr"][class*="Header"] {
+          margin-bottom: 0.4rem !important;
+          padding-bottom: 0.3rem !important;
         }
-        [class*="mr"][class*="-title"] {
-          font-size: 0.85rem !important;
-          margin-bottom: 0.25rem !important;
-        }
-        [class*="mr"][class*="-subtitle"] {
+
+        /* Titles - much smaller for sidebar */
+        [class*="mr"][class*="-title"],
+        [class*="mr"][class*="Title"] {
           font-size: 0.7rem !important;
+          margin-bottom: 0.2rem !important;
+          line-height: 1.2 !important;
         }
+
+        [class*="mr"][class*="-subtitle"],
+        [class*="mr"][class*="Subtitle"] {
+          font-size: 0.6rem !important;
+        }
+
+        /* All headings - reduced */
         [class*="mr"] h1 {
-          font-size: 0.85rem !important;
+          font-size: 0.75rem !important;
+          margin: 0 0 0.3rem 0 !important;
         }
         [class*="mr"] h2 {
-          font-size: 0.8rem !important;
-          margin-bottom: 0.5rem !important;
-        }
-        [class*="mr"] h3 {
-          font-size: 0.75rem !important;
-        }
-        [class*="mr"] p, [class*="mr"] li, [class*="mr"] span {
           font-size: 0.7rem !important;
-          line-height: 1.4 !important;
+          margin: 0 0 0.25rem 0 !important;
         }
-        [class*="mr"] button {
-          font-size: 0.7rem !important;
-          padding: 0.35rem 0.5rem !important;
+        [class*="mr"] h3, [class*="mr"] h4, [class*="mr"] h5, [class*="mr"] h6 {
+          font-size: 0.65rem !important;
+          margin: 0 0 0.2rem 0 !important;
         }
-        [class*="mr"] input, [class*="mr"] textarea, [class*="mr"] select {
-          font-size: 0.7rem !important;
-          padding: 0.35rem !important;
-        }
-        [class*="mr"][class*="-progress-bar"] {
-          margin-bottom: 0.75rem !important;
-        }
-        [class*="mr"][class*="-step-label"] {
+
+        /* Body text - smaller */
+        [class*="mr"] p, [class*="mr"] li, [class*="mr"] span, [class*="mr"] label, [class*="mr"] div {
           font-size: 0.6rem !important;
+          line-height: 1.3 !important;
+        }
+
+        /* Buttons - compact */
+        [class*="mr"] button {
+          font-size: 0.55rem !important;
+          padding: 0.2rem 0.35rem !important;
+          min-height: unset !important;
+        }
+
+        /* Inputs - compact */
+        [class*="mr"] input, [class*="mr"] textarea, [class*="mr"] select {
+          font-size: 0.6rem !important;
+          padding: 0.25rem !important;
+        }
+
+        /* Progress and steps */
+        [class*="mr"][class*="-progress"],
+        [class*="mr"][class*="Progress"] {
+          margin-bottom: 0.3rem !important;
+        }
+        [class*="mr"][class*="-step"],
+        [class*="mr"][class*="Step"] {
+          font-size: 0.5rem !important;
+        }
+
+        /* Cards and sections - tighter */
+        [class*="mr"][class*="-card"],
+        [class*="mr"][class*="Card"],
+        [class*="mr"][class*="-section"],
+        [class*="mr"][class*="Section"] {
+          padding: 0.3rem !important;
+          margin-bottom: 0.3rem !important;
+        }
+
+        /* Badge styles */
+        [class*="mr"][class*="-badge"],
+        [class*="mr"][class*="Badge"] {
+          font-size: 0.5rem !important;
+          padding: 0.1rem 0.2rem !important;
+        }
+
+        /* Grid and flex gaps - tighter */
+        [class*="mr"] .grid,
+        [class*="mr"] [style*="display: grid"],
+        [class*="mr"] [style*="display:grid"] {
+          gap: 0.2rem !important;
+        }
+        [class*="mr"] [style*="gap"] {
+          gap: 0.15rem !important;
+        }
+
+        /* Overflow and word wrap */
+        [class*="mr"] {
+          word-wrap: break-word !important;
+          overflow-wrap: break-word !important;
+        }
+
+        /* Tables - compact */
+        [class*="mr"] table {
+          font-size: 0.55rem !important;
+          width: 100% !important;
+        }
+        [class*="mr"] th, [class*="mr"] td {
+          padding: 0.15rem !important;
+        }
+
+        /* Lists - tighter */
+        [class*="mr"] ul, [class*="mr"] ol {
+          padding-left: 0.8rem !important;
+          margin: 0.15rem 0 !important;
+        }
+
+        /* Dividers */
+        [class*="mr"] hr {
+          margin: 0.3rem 0 !important;
+        }
+
+        /* SVG icons and emojis */
+        [class*="mr"] svg {
+          width: 0.6rem !important;
+          height: 0.6rem !important;
+        }
+
+        /* Specific fixes for known issues */
+        /* MR7 - hide duplicate badge */
+        [class*="mr7"] [class*="badge"]:nth-child(2) {
+          display: none !important;
+        }
+
+        /* Ensure no horizontal scroll anywhere */
+        [class*="mr"] * {
+          max-width: 100% !important;
         }
       `}</style>
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
