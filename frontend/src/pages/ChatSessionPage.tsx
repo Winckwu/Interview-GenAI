@@ -342,10 +342,10 @@ const ChatSessionPage: React.FC = () => {
           const sessionsWithContent = uniqueSessions
             .map((session) => {
               const interactions = interactionsMap[session.id] || [];
-              // Check if session has at least one valid interaction with both user prompt and AI response
+              // Check if session has at least one interaction with user prompt
               const validInteractions = interactions.filter(
                 (interaction: any) =>
-                  interaction.userPrompt && interaction.aiResponse && interaction.sessionId === session.id
+                  interaction.userPrompt && interaction.userPrompt.trim()
               );
 
               if (validInteractions.length > 0) {
@@ -357,6 +357,11 @@ const ChatSessionPage: React.FC = () => {
                   ...session,
                   taskDescription: title,
                 };
+              }
+              // Also show sessions with taskDescription even if no interactions yet
+              if (session.taskDescription && session.taskDescription !== 'General AI interaction') {
+                console.log(`[loadSessions] Session ${session.id}: No interactions but has taskDescription - DISPLAYING`);
+                return session;
               }
               console.log(`[loadSessions] Session ${session.id}: Has ${interactions.length} interactions but ${validInteractions.length} valid - FILTERING OUT`);
               return null;
