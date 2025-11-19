@@ -1684,7 +1684,25 @@ const ChatSessionPage: React.FC = () => {
                     <Suspense fallback={<ComponentLoader />}>
                       {/* User-facing MR tools only */}
                       {activeMRTool === 'mr1-decomposition' && <MR1TaskDecompositionScaffold sessionId={sessionId || ''} onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)} />}
-                      {activeMRTool === 'mr2-transparency' && <MR2ProcessTransparency sessionId={sessionId || ''} versions={messages.map((m, i) => ({ id: m.id, content: m.content, timestamp: new Date(m.timestamp), author: m.role, changeType: i === 0 ? 'initial' : 'modification' }))} onVersionSelect={(v) => console.log('Version:', v)} />}
+                      {activeMRTool === 'mr2-transparency' && <MR2ProcessTransparency sessionId={sessionId || ''} versions={
+                        // Transform messages into InteractionVersion format
+                        // Pair up user messages with their AI responses
+                        messages.reduce((acc: any[], msg, i) => {
+                          if (msg.role === 'user' && i + 1 < messages.length && messages[i + 1].role === 'ai') {
+                            const aiMsg = messages[i + 1];
+                            acc.push({
+                              id: aiMsg.id,
+                              timestamp: new Date(msg.timestamp),
+                              promptVersion: Math.floor(i / 2) + 1,
+                              userPrompt: msg.content,
+                              aiOutput: aiMsg.content,
+                              modelName: 'AI Assistant',
+                              confidenceScore: 0.85,
+                            });
+                          }
+                          return acc;
+                        }, [])
+                      } onVersionSelect={(v) => console.log('Version:', v)} />}
                       {activeMRTool === 'mr3-agency' && <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />}
                       {activeMRTool === 'mr4-roles' && <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} />}
                       {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} />}
