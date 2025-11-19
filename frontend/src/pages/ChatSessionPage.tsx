@@ -1215,33 +1215,9 @@ const ChatSessionPage: React.FC = () => {
             {/* Quick Actions */}
             <div style={{ display: 'flex', gap: '0.5rem', paddingRight: '0.5rem', borderRight: '1px solid #e5e7eb' }}>
               <button
-                onClick={() => setShowPatternPanel(!showPatternPanel)}
-                aria-label={`${showPatternPanel ? 'Hide' : 'Show'} pattern analysis panel`}
-                title="Toggle pattern analysis panel"
-                style={{
-                  padding: '0.5rem 0.75rem',
-                  backgroundColor: showPatternPanel ? '#dbeafe' : '#f3f4f6',
-                  color: showPatternPanel ? '#1e40af' : '#6b7280',
-                  border: showPatternPanel ? '1px solid #93c5fd' : '1px solid #d1d5db',
-                  borderRadius: '0.375rem',
-                  cursor: 'pointer',
-                  fontWeight: '500',
-                  fontSize: '0.75rem',
-                  transition: 'all 0.2s',
-                }}
-                onMouseOver={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = showPatternPanel ? '#93c5fd' : '#e5e7eb';
-                }}
-                onMouseOut={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = showPatternPanel ? '#dbeafe' : '#f3f4f6';
-                }}
-              >
-                📊 {showPatternPanel ? 'Hide' : 'Show'} Analysis
-              </button>
-              <button
                 onClick={() => {
-                  setShowPatternPanel(true);
-                  setShowMRToolsSection(true);
+                  setShowPatternPanel(!showPatternPanel);
+                  if (!showPatternPanel) setShowMRToolsSection(true);
                 }}
                 aria-label="Open MR tools panel"
                 title="Metacognitive collaboration tools"
