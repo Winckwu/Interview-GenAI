@@ -290,23 +290,31 @@ router.get(
     const limitNum = Math.min(parseInt(limit as string) || 50, 100);
     const offsetNum = parseInt(offset as string) || 0;
 
-    let query = `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
-                        i.response_time_ms, i.was_verified, i.was_modified,
-                        i.was_rejected, i.created_at, i.updated_at
-                 FROM interactions i
-                 WHERE i.user_id = $1`;
+    // Build base query conditions
+    let whereClause = 'WHERE i.user_id = $1';
     const params: any[] = [userId];
     let paramCount = 2;
 
     if (sessionId) {
-      query += ` AND i.session_id = $${paramCount++}`;
+      whereClause += ` AND i.session_id = $${paramCount++}`;
       params.push(sessionId);
     }
 
-    query += ` ORDER BY i.created_at DESC LIMIT $${paramCount++} OFFSET $${paramCount}`;
+    // Get total count for pagination
+    const countQuery = `SELECT COUNT(*) as total FROM interactions i ${whereClause}`;
+    const countResult = await pool.query(countQuery, params.slice(0, paramCount - 1));
+    const total = parseInt(countResult.rows[0].total, 10);
+
+    // Get paginated results
+    const dataQuery = `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
+                              i.response_time_ms, i.was_verified, i.was_modified,
+                              i.was_rejected, i.created_at, i.updated_at
+                       FROM interactions i
+                       ${whereClause}
+                       ORDER BY i.created_at DESC LIMIT $${paramCount++} OFFSET $${paramCount}`;
     params.push(limitNum, offsetNum);
 
-    const result = await pool.query(query, params);
+    const result = await pool.query(dataQuery, params);
 
     res.json({
       success: true,
@@ -325,6 +333,7 @@ router.get(
           createdAt: i.created_at,
           updatedAt: i.updated_at,
         })),
+        total: total,
       },
       count: result.rows.length,
       timestamp: new Date().toISOString(),

@@ -346,13 +346,13 @@ const ChatSessionPage: React.FC = () => {
           setIsLoadingMore(true);
         }
 
-        // Load with pagination parameters
+        // Load with pagination parameters (convert page to offset)
+        const offset = (page - 1) * MESSAGES_PER_PAGE;
         const interactionsResponse = await api.get('/interactions', {
           params: {
             sessionId,
-            page: page,
             limit: MESSAGES_PER_PAGE,
-            sort: 'asc', // Oldest first
+            offset: offset,
           },
         });
 
