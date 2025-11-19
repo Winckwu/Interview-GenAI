@@ -13,6 +13,18 @@ import React, { useState, useEffect } from 'react';
 import { metricsCollector, SystemMetrics, SessionMetrics, SystemAlert } from '../../utils/MetricsCollector';
 import './MonitoringDashboard.css';
 
+// KPI Tooltip Descriptions
+const KPI_TOOLTIPS = {
+  compliance: 'Percentage of AI suggestions users followed without dismissing them',
+  dismissal: 'Percentage of AI suggestions users actively dismissed or overrode',
+  engagement: 'User interaction rate with the intervention system',
+  override: 'Percentage of AI suggestions users explicitly bypassed or contradicted',
+  fatigue: 'Mental fatigue score (0-100) based on accumulated interaction load',
+  detections: 'Total number of AI usage patterns detected in this session',
+  completion: 'Percentage of started sessions that were completed',
+  latency: 'Time taken to detect patterns (milliseconds)',
+};
+
 export interface MonitoringDashboardProps {
   refreshIntervalMs?: number; // Default: 5000ms (5 seconds)
   sessionId?: string; // If provided, show session-level metrics
@@ -96,7 +108,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
       {/* KPI Cards */}
       <div className="kpi-grid">
         {/* Compliance Rate */}
-        <div className="kpi-card">
+        <div className="kpi-card" title={KPI_TOOLTIPS.compliance}>
           <div className="kpi-label">✅ Compliance Rate</div>
           <div className="kpi-value">
             {sessionMetrics
@@ -123,7 +135,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
         </div>
 
         {/* Dismissal Rate */}
-        <div className="kpi-card">
+        <div className="kpi-card" title={KPI_TOOLTIPS.dismissal}>
           <div className="kpi-label">❌ Dismissal Rate</div>
           <div className="kpi-value">
             {sessionMetrics
@@ -150,7 +162,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
         </div>
 
         {/* Engagement Rate */}
-        <div className="kpi-card">
+        <div className="kpi-card" title={KPI_TOOLTIPS.engagement}>
           <div className="kpi-label">👥 Engagement Rate</div>
           <div className="kpi-value">
             {sessionMetrics
@@ -172,7 +184,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
         </div>
 
         {/* Override Rate */}
-        <div className="kpi-card">
+        <div className="kpi-card" title={KPI_TOOLTIPS.override}>
           <div className="kpi-label">🚀 Override Rate</div>
           <div className="kpi-value">
             {sessionMetrics
@@ -195,7 +207,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
 
         {/* Fatigue Score */}
         {sessionMetrics && (
-          <div className="kpi-card">
+          <div className="kpi-card" title={KPI_TOOLTIPS.fatigue}>
             <div className="kpi-label">😴 Fatigue Score</div>
             <div className="kpi-value">
               {sessionMetrics.avgFatigueScore.toFixed(0)} / 100
@@ -216,7 +228,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
 
         {/* Detection Count */}
         {sessionMetrics && (
-          <div className="kpi-card">
+          <div className="kpi-card" title={KPI_TOOLTIPS.detections}>
             <div className="kpi-label">🎯 Detections</div>
             <div className="kpi-value">{sessionMetrics.totalDetections}</div>
             <div className="kpi-detail">
@@ -228,7 +240,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
         {/* System Health */}
         {systemMetrics && !sessionMetrics && (
           <>
-            <div className="kpi-card">
+            <div className="kpi-card" title={KPI_TOOLTIPS.completion}>
               <div className="kpi-label">🏥 Completion Rate</div>
               <div className="kpi-value">
                 {(systemMetrics.completionRate * 100).toFixed(1)}%
@@ -243,7 +255,7 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
               </div>
             </div>
 
-            <div className="kpi-card">
+            <div className="kpi-card" title={KPI_TOOLTIPS.latency}>
               <div className="kpi-label">⏱️ Detection Latency (P95)</div>
               <div className="kpi-value">{systemMetrics.p95DetectionLatency.toFixed(0)}ms</div>
               <div className="kpi-detail">

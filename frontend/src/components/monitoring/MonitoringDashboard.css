@@ -24,6 +24,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: nowrap;
+  gap: 1rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
@@ -84,6 +86,13 @@
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border-left: 4px solid #3b82f6;
+  cursor: help;
+  position: relative;
+}
+
+.kpi-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.2s ease;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -91,6 +100,10 @@
     background: #2d3748;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     border-left-color: #60a5fa;
+  }
+
+  .kpi-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   }
 }
 
