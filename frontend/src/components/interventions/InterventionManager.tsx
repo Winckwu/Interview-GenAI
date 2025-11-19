@@ -72,11 +72,6 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const [interventionStartTime, setInterventionStartTime] = useState<number>(0);
   const [lastDisplayedMRId, setLastDisplayedMRId] = useState<string | null>(null);
 
-  // Initialize session in store
-  useEffect(() => {
-    store.setCurrentSession(sessionId);
-  }, [sessionId]); // Remove store from dependencies to prevent infinite loop
-
   /**
    * Handle soft signal dismiss
    */
@@ -259,6 +254,101 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   );
 
   /**
+   * Create intervention UI based on detection result
+   * Defined before useEffects to avoid TDZ (Temporal Dead Zone) errors
+   */
+  const createInterventionUI = useCallback((detection: any, tier: string, msgs: Message[]) => {
+    const baseIntervention = {
+      id: `intervention-${Date.now()}`,
+      mrType:
+        tier === 'hard'
+          ? 'MR_PATTERN_F_BARRIER'
+          : tier === 'medium'
+            ? 'MR18_OverDependence'
+            : 'MR13_Uncertainty',
+      tier: tier as 'soft' | 'medium' | 'hard',
+      confidence: detection.confidence,
+      timestamp: Date.now(),
+    };
+
+    if (tier === 'soft') {
+      return {
+        ...baseIntervention,
+        icon: '📊',
+        title: 'Pattern Insight',
+        message: detection.explanation.summary,
+        description: `Confidence: ${(detection.confidence * 100).toFixed(0)}%`,
+        onDismiss: () => handleDismiss(baseIntervention.mrType),
+        onLearnMore: () => {
+          console.log(`[createInterventionUI] Soft signal Learn More clicked for ${baseIntervention.mrType}`);
+          handleLearnMore(baseIntervention.mrType);
+        },
+      };
+    }
+
+    if (tier === 'medium') {
+      return {
+        ...baseIntervention,
+        icon: '⚠️',
+        title: 'Review Recommended',
+        message: detection.explanation.summary,
+        description: `Based on ${detection.layer1.triggeredCount} pattern indicators`,
+        actionLabel: 'View Details',
+        onAction: () => {
+          console.log(`[createInterventionUI] Medium alert action clicked for ${baseIntervention.mrType}`);
+          handleLearnMore(baseIntervention.mrType);
+        },
+        onDismiss: () => handleDismiss(baseIntervention.mrType),
+        onSkip: () => handleSkip(baseIntervention.mrType),
+      };
+    }
+
+    // Hard barrier
+    const options: BarrierOption[] = [
+      {
+        label: '✓ I will verify it carefully',
+        value: 'verify',
+        description: 'Review the response for accuracy before accepting',
+      },
+      {
+        label: '✎ I will modify it before use',
+        value: 'modify',
+        description: 'Edit or improve the response',
+      },
+      {
+        label: '↻ I will reject and re-ask',
+        value: 'reject',
+        description: 'Ask the AI to regenerate the response',
+      },
+      {
+        label: '→ I understand risks, proceed anyway',
+        value: 'override',
+        description: 'Accept the response as-is',
+      },
+    ];
+
+    return {
+      ...baseIntervention,
+      icon: '🚨',
+      title: 'Safety Check Required',
+      message:
+        'We detected a pattern suggesting this response should be verified before use in real-world context.',
+      description: detection.explanation.triggeredRuleDetails
+        .map((r: any) => r.ruleName)
+        .join(', '),
+      options,
+      isDangerous: true,
+      onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
+      onCancel: () => handleDismiss(baseIntervention.mrType),
+    };
+  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm]);
+
+  // Initialize session in store
+  useEffect(() => {
+    store.setCurrentSession(sessionId);
+  }, [sessionId, store]);
+
+  /**
    * Handle backend MCA orchestrator MRs
    * Priority: Backend MRs > Frontend detection
    */
@@ -393,95 +483,6 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     return () => clearTimeout(timer);
   }, [messages, minMessagesForDetection, isAnalyzing, store, metricsStore, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI]);
-
-  /**
-   * Create intervention UI based on detection result
-   */
-  const createInterventionUI = useCallback((detection: any, tier: string, msgs: Message[]) => {
-    const baseIntervention = {
-      id: `intervention-${Date.now()}`,
-      mrType:
-        tier === 'hard'
-          ? 'MR_PATTERN_F_BARRIER'
-          : tier === 'medium'
-            ? 'MR18_OverDependence'
-            : 'MR13_Uncertainty',
-      tier: tier as 'soft' | 'medium' | 'hard',
-      confidence: detection.confidence,
-      timestamp: Date.now(),
-    };
-
-    if (tier === 'soft') {
-      return {
-        ...baseIntervention,
-        icon: '📊',
-        title: 'Pattern Insight',
-        message: detection.explanation.summary,
-        description: `Confidence: ${(detection.confidence * 100).toFixed(0)}%`,
-        onDismiss: () => handleDismiss(baseIntervention.mrType),
-        onLearnMore: () => {
-          console.log(`[createInterventionUI] Soft signal Learn More clicked for ${baseIntervention.mrType}`);
-          handleLearnMore(baseIntervention.mrType);
-        },
-      };
-    }
-
-    if (tier === 'medium') {
-      return {
-        ...baseIntervention,
-        icon: '⚠️',
-        title: 'Review Recommended',
-        message: detection.explanation.summary,
-        description: `Based on ${detection.layer1.triggeredCount} pattern indicators`,
-        actionLabel: 'View Details',
-        onAction: () => {
-          console.log(`[createInterventionUI] Medium alert action clicked for ${baseIntervention.mrType}`);
-          handleLearnMore(baseIntervention.mrType);
-        },
-        onDismiss: () => handleDismiss(baseIntervention.mrType),
-        onSkip: () => handleSkip(baseIntervention.mrType),
-      };
-    }
-
-    // Hard barrier
-    const options: BarrierOption[] = [
-      {
-        label: '✓ I will verify it carefully',
-        value: 'verify',
-        description: 'Review the response for accuracy before accepting',
-      },
-      {
-        label: '✎ I will modify it before use',
-        value: 'modify',
-        description: 'Edit or improve the response',
-      },
-      {
-        label: '↻ I will reject and re-ask',
-        value: 'reject',
-        description: 'Ask the AI to regenerate the response',
-      },
-      {
-        label: '→ I understand risks, proceed anyway',
-        value: 'override',
-        description: 'Accept the response as-is',
-      },
-    ];
-
-    return {
-      ...baseIntervention,
-      icon: '🚨',
-      title: 'Safety Check Required',
-      message:
-        'We detected a pattern suggesting this response should be verified before use in real-world context.',
-      description: detection.explanation.triggeredRuleDetails
-        .map((r: any) => r.ruleName)
-        .join(', '),
-      options,
-      isDangerous: true,
-      onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
-      onCancel: () => handleDismiss(baseIntervention.mrType),
-    };
-  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm]);
 
   /**
    * Render active intervention
