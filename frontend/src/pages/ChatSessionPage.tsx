@@ -1743,6 +1743,8 @@ const ChatSessionPage: React.FC = () => {
                       activeMRs={activeMRs}
                       onInterventionDisplayed={(tier, mrType) => {
                         console.log(`✅ Intervention displayed: ${tier} (${mrType})`);
+                        // Auto-expand intervention section when intervention is shown
+                        setShowInterventionSection(true);
                       }}
                       onUserAction={(mrType, action) => {
                         console.log(`📊 User action: ${action} on ${mrType}`);
