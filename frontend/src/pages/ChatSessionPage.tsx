@@ -341,8 +341,8 @@ const ChatSessionPage: React.FC = () => {
      * @param page - Page number to load (1-indexed)
      */
     const loadMessagesPage = async (page: number) => {
+      const isInitialLoad = page === 1;
       try {
-        const isInitialLoad = page === 1;
         if (!isInitialLoad) {
           setIsLoadingMore(true);
         }
