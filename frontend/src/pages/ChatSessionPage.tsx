@@ -12,6 +12,7 @@ import { SkeletonText, SkeletonCard } from '../components/Skeleton';
 import InterventionManager from '../components/interventions/InterventionManager';
 import { MonitoringDashboard } from '../components/monitoring/MonitoringDashboard';
 import { useMetricsStore } from '../stores/metricsStore';
+import MarkdownText from '../components/common/MarkdownText';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -732,7 +733,7 @@ const ChatSessionPage: React.FC = () => {
               lineHeight: '1.5',
             }}
           >
-            {message.content}
+            <MarkdownText content={message.content} />
           </p>
           <p
             style={{
