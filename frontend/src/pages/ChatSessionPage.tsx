@@ -699,8 +699,9 @@ const ChatSessionPage: React.FC = () => {
 
   /**
    * Mark interaction as verified (OPTIMIZED: Uses batch endpoint if available)
+   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
    */
-  const markAsVerified = async (messageId: string) => {
+  const markAsVerified = useCallback(async (messageId: string) => {
     setUpdatingMessageId(messageId);
     try {
       // OPTIMIZATION: Try batch endpoint first, fallback to individual call
@@ -729,12 +730,13 @@ const ChatSessionPage: React.FC = () => {
     } finally {
       setUpdatingMessageId(null);
     }
-  };
+  }, []);
 
   /**
    * Mark interaction as modified (OPTIMIZED: Uses batch endpoint if available)
+   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
    */
-  const markAsModified = async (messageId: string) => {
+  const markAsModified = useCallback(async (messageId: string) => {
     setUpdatingMessageId(messageId);
     try {
       // OPTIMIZATION: Try batch endpoint first, fallback to individual call
@@ -763,7 +765,7 @@ const ChatSessionPage: React.FC = () => {
     } finally {
       setUpdatingMessageId(null);
     }
-  };
+  }, []);
 
   /**
    * Create a new chat session

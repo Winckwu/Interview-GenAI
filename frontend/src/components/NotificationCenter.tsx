@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import './NotificationCenter.css';
 
 export interface Notification {
@@ -126,29 +126,61 @@ export interface NotificationStore {
  * Hook to use the notification store
  * Must be used within a NotificationProvider context
  */
+/**
+ * Implementation note: This is a template for notification management.
+ * In a real application, use a state management solution (Zustand, Redux, Context)
+ * with proper cleanup of timeouts when notifications are dismissed.
+ *
+ * Example with React Context + useReducer:
+ * - Track timeout IDs for each notification
+ * - Clear timeout when notification is dismissed manually
+ * - Allow callbacks to handle dismissal and cleanup
+ */
 export const useNotifications = (): NotificationStore => {
   // This would normally come from a context/state management
   // For now, we'll document the expected interface
   // Implementation depends on your state management solution (Zustand, Redux, etc.)
 
+  // In production, maintain a Map of notification IDs to timeout IDs
+  const timeoutMap = new Map<string, NodeJS.Timeout>();
+
   const addNotification = useCallbackHook((notification: Omit<Notification, 'id'>) => {
     const id = `notification-${Date.now()}-${Math.random()}`;
 
-    // Auto-dismiss if duration is set
+    // Auto-dismiss if duration is set (0 = permanent)
     if (notification.duration !== undefined && notification.duration > 0) {
-      setTimeout(() => {
-        // Dismiss notification (implementation depends on state management)
+      // IMPORTANT: In production, store this timeout ID to clear it on manual dismiss
+      const timeoutId = setTimeout(() => {
+        // Call dismissNotification through state management
+        // dismissNotification(id);
+        timeoutMap.delete(id);
       }, notification.duration);
+
+      timeoutMap.set(id, timeoutId);
     }
 
     return id;
   }, []);
 
+  // Ensure timeouts are cleared when dismissing
+  const dismissNotification = useCallbackHook((id: string) => {
+    const timeoutId = timeoutMap.get(id);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutMap.delete(id);
+    }
+    // Call actual dismiss logic through state management
+  }, []);
+
   return {
     notifications: [],
     addNotification,
-    dismissNotification: () => {},
-    clearNotifications: () => {},
+    dismissNotification,
+    clearNotifications: () => {
+      // Clear all pending timeouts
+      timeoutMap.forEach((timeoutId) => clearTimeout(timeoutId));
+      timeoutMap.clear();
+    },
   };
 };
 

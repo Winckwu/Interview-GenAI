@@ -60,7 +60,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   useEffect(() => {
     if (isOpen) {
       // Focus the cancel button by default (safer UX for destructive dialogs)
-      setTimeout(() => {
+      const focusTimeoutId = setTimeout(() => {
         if (isDangerous) {
           cancelButtonRef.current?.focus();
         } else {
@@ -84,6 +84,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
 
       document.addEventListener('keydown', handleKeyDown);
       return () => {
+        clearTimeout(focusTimeoutId);
         document.removeEventListener('keydown', handleKeyDown);
         document.body.style.overflow = '';
       };

@@ -78,7 +78,7 @@ const VirtualizedMessageList = React.forwardRef<List<Message>, VirtualizedMessag
           return (
             <div style={style} className="virtualized-message-loader">
               <div className="loader-spinner">
-                <span>⏳ 加载中...</span>
+                <span>⏳ Loading...</span>
               </div>
             </div>
           );
@@ -93,7 +93,7 @@ const VirtualizedMessageList = React.forwardRef<List<Message>, VirtualizedMessag
                 disabled={isLoading}
                 className="loadmore-button"
               >
-                加载更多消息
+                Load more messages
               </button>
             </div>
           );
