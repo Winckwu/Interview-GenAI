@@ -24,6 +24,7 @@ import {
   calculateSuppressionExpiry,
 } from '../../utils/InterventionScheduler';
 import { useInterventionStore } from '../../stores/interventionStore';
+import { useMetricsStore } from '../../stores/metricsStore';
 import Tier1SoftSignal from './Tier1SoftSignal';
 import Tier2MediumAlert from './Tier2MediumAlert';
 import Tier3HardBarrier, { BarrierOption } from './Tier3HardBarrier';
@@ -62,7 +63,10 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   minMessagesForDetection = 5,
 }) => {
   const store = useInterventionStore();
+  const metricsStore = useMetricsStore();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [lastInterventionId, setLastInterventionId] = useState<string | null>(null);
+  const [interventionStartTime, setInterventionStartTime] = useState<number>(0);
 
   // Initialize session in store
   useEffect(() => {
@@ -119,6 +123,22 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
           messages
         );
 
+        // Record intervention display in metrics
+        metricsStore.recordInterventionDisplay({
+          sessionId,
+          timestamp: Date.now(),
+          mrType: intervention.mrType,
+          patternType: detection.patternType || 'Pattern F',
+          confidence: detection.confidence,
+          triggeredRules: detection.layer1?.triggeredRules || [],
+          tier: decision.tier as 'soft' | 'medium' | 'hard',
+          messageCountAtDisplay: messages.length,
+        });
+
+        // Track intervention for later action recording
+        setLastInterventionId(intervention.id);
+        setInterventionStartTime(Date.now());
+
         // Display the intervention
         store.setActiveIntervention(intervention);
         onInterventionDisplayed?.(decision.tier, intervention.mrType);
@@ -136,7 +156,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [messages, minMessagesForDetection, isAnalyzing, store, onInterventionDisplayed]);
+  }, [messages, minMessagesForDetection, isAnalyzing, store, metricsStore, sessionId, onInterventionDisplayed]);
 
   /**
    * Create intervention UI based on detection result
@@ -227,10 +247,18 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const handleDismiss = useCallback(
     (mrType: string) => {
       store.recordUserAction(mrType, 'dismiss');
+
+      // Record action in metrics store
+      if (lastInterventionId) {
+        const timeToAction = Date.now() - interventionStartTime;
+        metricsStore.recordUserAction(sessionId, lastInterventionId, 'dismiss', timeToAction);
+      }
+
       store.clearActiveIntervention();
       onUserAction?.(mrType, 'dismiss');
+      setLastInterventionId(null);
     },
-    [store, onUserAction]
+    [store, metricsStore, sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
   /**
@@ -240,11 +268,19 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     (mrType: string) => {
       store.recordUserAction(mrType, 'acted');
       store.recordEngagement(sessionId, 'engagement');
+
+      // Record action in metrics store (compliance action)
+      if (lastInterventionId) {
+        const timeToAction = Date.now() - interventionStartTime;
+        metricsStore.recordUserAction(sessionId, lastInterventionId, 'acted', timeToAction);
+      }
+
       // Could open detailed explanation modal here
       store.clearActiveIntervention();
       onUserAction?.(mrType, 'learn_more');
+      setLastInterventionId(null);
     },
-    [store, sessionId, onUserAction]
+    [store, metricsStore, sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
   /**
@@ -253,10 +289,18 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const handleSkip = useCallback(
     (mrType: string) => {
       store.recordUserAction(mrType, 'skip');
+
+      // Record action in metrics store (skip is same as dismiss for metrics)
+      if (lastInterventionId) {
+        const timeToAction = Date.now() - interventionStartTime;
+        metricsStore.recordUserAction(sessionId, lastInterventionId, 'dismiss', timeToAction);
+      }
+
       store.clearActiveIntervention();
       onUserAction?.(mrType, 'skip');
+      setLastInterventionId(null);
     },
-    [store, onUserAction]
+    [store, metricsStore, sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
   /**
@@ -264,6 +308,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
    */
   const handleBarrierConfirm = useCallback(
     async (selectedValue: string, mrType: string) => {
+      const action: 'acted' | 'override' = selectedValue === 'override' ? 'override' : 'acted';
+
       if (selectedValue === 'override') {
         // User chose to proceed anyway - valuable metacognitive data
         store.recordUserAction(mrType, 'override');
@@ -273,10 +319,17 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         store.recordEngagement(sessionId, 'compliance');
       }
 
+      // Record action in metrics store
+      if (lastInterventionId) {
+        const timeToAction = Date.now() - interventionStartTime;
+        metricsStore.recordUserAction(sessionId, lastInterventionId, action, timeToAction);
+      }
+
       store.clearActiveIntervention();
       onUserAction?.(mrType, selectedValue);
+      setLastInterventionId(null);
     },
-    [store, sessionId, onUserAction]
+    [store, metricsStore, sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
   /**
