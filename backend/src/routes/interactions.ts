@@ -292,12 +292,30 @@ router.get(
 
     // Build base query conditions
     let whereClause = 'WHERE i.user_id = $1';
-    const params: any[] = [userId];
+    let params: any[] = [userId];
     let paramCount = 2;
 
+    // If sessionId provided, verify ownership then query by session_id only
+    // This matches SessionService.getSessionInteractions behavior
     if (sessionId) {
-      whereClause += ` AND i.session_id = $${paramCount++}`;
-      params.push(sessionId);
+      // Verify session belongs to user
+      const sessionCheck = await pool.query(
+        'SELECT id FROM work_sessions WHERE id = $1 AND user_id = $2',
+        [sessionId, userId]
+      );
+
+      if (sessionCheck.rows.length === 0) {
+        return res.status(403).json({
+          success: false,
+          error: 'Session not found or does not belong to user',
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      // Query by session_id only (consistent with AnalyticsService)
+      whereClause = 'WHERE i.session_id = $1';
+      params = [sessionId];
+      paramCount = 2;
     }
 
     // Get total count for pagination
