@@ -607,7 +607,7 @@ const ChatSessionPage: React.FC = () => {
         metricsStore.completeSession(messages.length, completed, completionTime);
       }
     };
-  }, [sessionId, sessionStartTime, sessionActive, messages.length, metricsStore]);
+  }, [sessionId, sessionStartTime, sessionActive, messages.length]);
 
   /**
    * Load more messages when user scrolls to end
