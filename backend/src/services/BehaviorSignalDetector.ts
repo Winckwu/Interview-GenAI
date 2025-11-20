@@ -327,19 +327,26 @@ export class BehaviorSignalDetector {
   private inferTaskComplexity(message: string): number {
     const complexityIndicators = [
       { pattern: /复杂|难|困难|不容易/gi, weight: 1 },
-      { pattern: /多个|多个维度|综合|交叉/gi, weight: 1 },
-      { pattern: /长|详细|完整/gi, weight: 0.5 },
+      { pattern: /多个|多种|综合|交叉|集成/gi, weight: 1 },
+      { pattern: /长|详细|完整|全面/gi, weight: 0.5 },
       { pattern: /creative|complex|difficult/gi, weight: 1 },
+      { pattern: /系统|平台|应用|网站|项目/gi, weight: 0.5 },
+      { pattern: /包含|需要|功能|模块|组件/gi, weight: 0.3 },
     ];
 
-    const wordCount = message.split(/\s+/).length;
-    const wordComplexity = Math.min(wordCount / 30, 1); // normalize by ~30 words
+    // Count characters properly for Chinese text (not whitespace-based)
+    const charCount = message.replace(/\s/g, '').length;
+    const charComplexity = Math.min(charCount / 50, 1); // normalize by ~50 chars
+
+    // Count enumerated items (Chinese 、 or commas) - indicates multiple features
+    const enumCount = (message.match(/、|，/g) || []).length;
+    const enumComplexity = Math.min(enumCount * 0.3, 1.5); // each item adds 0.3, max 1.5
 
     const indicatorWeight = complexityIndicators
       .filter(ind => ind.pattern.test(message))
       .reduce((sum, ind) => sum + ind.weight, 0);
 
-    return Math.min(indicatorWeight + wordComplexity, 3);
+    return Math.min(indicatorWeight + charComplexity + enumComplexity, 3);
   }
 
   /**
