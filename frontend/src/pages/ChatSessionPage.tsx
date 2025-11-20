@@ -835,12 +835,16 @@ const ChatSessionPage: React.FC = () => {
 
   /**
    * Mark interaction as modified (starts editing mode)
+   * Opens MR5 immediately so user can view history while editing
    * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
    */
   const markAsModified = useCallback((messageId: string) => {
     const message = messages.find(m => m.id === messageId);
     if (message) {
       startEditingMessage(messageId, message.content);
+      // Open MR5 immediately so user can view history while editing
+      setActiveMRTool('mr5-iteration');
+      setShowMRToolsSection(true);
     }
   }, [messages, startEditingMessage]);
 
