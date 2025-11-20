@@ -17,6 +17,7 @@ import RealtimePatternRecognizer from '../services/RealtimePatternRecognizer';
 import SVMPatternClassifier from '../services/SVMPatternClassifier';
 import AdaptiveMRActivator from '../services/AdaptiveMRActivator';
 import UnifiedMCAAnalyzer from '../services/UnifiedMCAAnalyzer';
+import pool from '../config/database';
 
 const router = express.Router();
 
@@ -319,6 +320,165 @@ router.get('/patterns/:sessionId', async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: 'Failed to get MCA patterns',
+    });
+  }
+});
+
+/**
+ * GET /mca/transitions/:userId
+ * Get all pattern transitions for a user
+ */
+router.get('/transitions/:userId', async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { limit = '50', daysBack = '30' } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID is required',
+      });
+    }
+
+    const result = await pool.query(
+      `SELECT
+        id,
+        user_id,
+        session_id,
+        from_pattern,
+        to_pattern,
+        transition_type,
+        confidence,
+        severity,
+        trigger_factors,
+        turn_number,
+        message_count,
+        session_elapsed_ms,
+        created_at
+       FROM pattern_transitions
+       WHERE user_id = $1
+       AND created_at > NOW() - INTERVAL '${parseInt(daysBack as string)} days'
+       ORDER BY created_at DESC
+       LIMIT $2`,
+      [userId, parseInt(limit as string)]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        userId,
+        transitions: result.rows,
+        count: result.rows.length
+      }
+    });
+  } catch (error: any) {
+    console.error('MCA transitions error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get pattern transitions',
+    });
+  }
+});
+
+/**
+ * GET /mca/transitions/critical/:userId
+ * Get critical/high severity transitions that need intervention
+ */
+router.get('/transitions/critical/:userId', async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { daysBack = '7' } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID is required',
+      });
+    }
+
+    const result = await pool.query(
+      `SELECT
+        id,
+        user_id,
+        session_id,
+        from_pattern,
+        to_pattern,
+        transition_type,
+        confidence,
+        severity,
+        trigger_factors,
+        turn_number,
+        created_at
+       FROM pattern_transitions
+       WHERE user_id = $1
+       AND severity IN ('critical', 'high')
+       AND created_at > NOW() - INTERVAL '${parseInt(daysBack as string)} days'
+       ORDER BY created_at DESC`,
+      [userId]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        userId,
+        criticalTransitions: result.rows,
+        count: result.rows.length
+      }
+    });
+  } catch (error: any) {
+    console.error('MCA critical transitions error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get critical transitions',
+    });
+  }
+});
+
+/**
+ * GET /mca/transitions/session/:sessionId
+ * Get all pattern transitions for a specific session
+ */
+router.get('/transitions/session/:sessionId', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+
+    if (!sessionId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Session ID is required',
+      });
+    }
+
+    const result = await pool.query(
+      `SELECT
+        id,
+        from_pattern,
+        to_pattern,
+        transition_type,
+        confidence,
+        severity,
+        trigger_factors,
+        turn_number,
+        created_at
+       FROM pattern_transitions
+       WHERE session_id = $1
+       ORDER BY turn_number ASC`,
+      [sessionId]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        sessionId,
+        transitions: result.rows,
+        count: result.rows.length
+      }
+    });
+  } catch (error: any) {
+    console.error('MCA session transitions error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get session transitions',
     });
   }
 });

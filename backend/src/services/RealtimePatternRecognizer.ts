@@ -6,6 +6,7 @@
 
 import { BehavioralSignals } from './BehaviorSignalDetector';
 import PatternHistoryService from './PatternHistoryService';
+import PatternTransitionDetector, { PatternTransition } from './PatternTransitionDetector';
 
 export type Pattern = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
 
@@ -90,6 +91,9 @@ export class RealtimePatternRecognizer {
   private sessionStartTime: number = Date.now();
   private initialized: boolean = false;
 
+  // Pattern transition detection
+  private transitionDetector: PatternTransitionDetector;
+
   /**
    * Constructor - creates recognizer for a specific user session
    * Call initialize() before first use to load historical prior
@@ -100,6 +104,9 @@ export class RealtimePatternRecognizer {
   constructor(userId: string, sessionId: string) {
     this.userId = userId;
     this.sessionId = sessionId;
+
+    // Initialize transition detector
+    this.transitionDetector = new PatternTransitionDetector(userId, sessionId);
 
     // Start with uniform prior (will be replaced in initialize())
     this.patternProbabilities = new Map([
@@ -261,7 +268,8 @@ export class RealtimePatternRecognizer {
       console.error('[RealtimePatternRecognizer] Failed to record pattern:', err);
     });
 
-    return {
+    // Create estimate object
+    const estimate: PatternEstimate = {
       topPattern,
       probability: topProbability,
       confidence,
@@ -269,6 +277,45 @@ export class RealtimePatternRecognizer {
       needMoreData: confidence < 0.3 && this.turnCount < 10,
       evidence: evidence,
     };
+
+    // ✨ NEW: Detect pattern transitions (A→B/D/F monitoring)
+    const transition = this.transitionDetector.detectTransition(
+      estimate,
+      signals,
+      {
+        messageCount: this.turnCount,
+        taskComplexity: signals.taskComplexity,
+        timeElapsed: Date.now() - this.sessionStartTime
+      }
+    );
+
+    // If transition detected, log it
+    if (transition) {
+      this.handlePatternTransition(transition);
+    }
+
+    return estimate;
+  }
+
+  /**
+   * Handle detected pattern transitions
+   * Logs transition and can trigger interventions
+   */
+  private handlePatternTransition(transition: PatternTransition): void {
+    console.log(`🔄 [PatternTransition] ${transition.fromPattern} → ${transition.toPattern}`);
+    console.log(`   Type: ${transition.transitionType}, Severity: ${transition.severity}`);
+    console.log(`   Confidence: ${(transition.confidence * 100).toFixed(1)}%`);
+    console.log(`   Trigger Factors:`, transition.triggerFactors);
+
+    // For critical regressions (A→F), log warning
+    if (transition.severity === 'critical') {
+      console.warn(`⚠️  CRITICAL: User degraded from expert (A) to passive (F)!`);
+    }
+
+    // Store in evidence log
+    this.evidenceLog.push(
+      `Transition: ${transition.fromPattern}→${transition.toPattern} (${transition.severity})`
+    );
   }
 
   /**
