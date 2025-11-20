@@ -13,6 +13,13 @@ import InterventionManager from '../components/interventions/InterventionManager
 import { MonitoringDashboard } from '../components/monitoring/MonitoringDashboard';
 import { useMetricsStore } from '../stores/metricsStore';
 import MarkdownText from '../components/common/MarkdownText';
+import {
+  orchestrateMRActivation,
+  calculateMessageTrustScore,
+  getTrustLevel,
+  type OrchestrationResult,
+  type OrchestrationContext,
+} from '../utils/MROrchestrator';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -239,6 +246,10 @@ const ChatSessionPage: React.FC = () => {
   // Track MR6 multi-model comparison suggestions
   const [comparisonSuggestedMessages, setComparisonSuggestedMessages] = useState<Set<string>>(new Set());
   const [showMR6Suggestion, setShowMR6Suggestion] = useState<string | null>(null);
+  // Track MR9 Dynamic Orchestration - Trust-based MR activation
+  const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
+  const [orchestrationResults, setOrchestrationResults] = useState<Map<string, any>>(new Map());
+  const [showTrustIndicator, setShowTrustIndicator] = useState<boolean>(true);
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
@@ -1121,6 +1132,82 @@ const ChatSessionPage: React.FC = () => {
   }, [messages, openMR6CrossModel]);
 
   /**
+   * MR9 Dynamic Orchestration: Calculate trust score and recommend MR tools
+   * Runs automatically for each AI message
+   */
+  const orchestrateForMessage = useCallback((message: Message, index: number): OrchestrationResult | null => {
+    // Only orchestrate for AI messages
+    if (message.role !== 'ai') return null;
+
+    // Check if we already have orchestration for this message
+    if (orchestrationResults.has(message.id)) {
+      return orchestrationResults.get(message.id);
+    }
+
+    // Calculate trust score
+    const trustScore = calculateMessageTrustScore({
+      taskType: sessionData?.taskType || 'general',
+      taskCriticality: sessionData?.taskImportance === 3 ? 'high' : sessionData?.taskImportance === 2 ? 'medium' : 'low',
+      aiConfidenceScore: 0.7, // Default, can be enhanced with MR13 integration
+      messageWasVerified: message.wasVerified || false,
+      messageWasModified: message.wasModified || false,
+      userValidationHistory: [], // Can be enhanced with persistent storage
+    });
+
+    // Store trust score
+    setMessageTrustScores((prev) => new Map(prev).set(message.id, trustScore));
+
+    // Orchestrate MR activation
+    const context: OrchestrationContext = {
+      trustScore,
+      taskType: sessionData?.taskType || 'general',
+      taskCriticality: sessionData?.taskImportance === 3 ? 'high' : sessionData?.taskImportance === 2 ? 'medium' : 'low',
+      messageWasModified: message.wasModified || false,
+      messageWasVerified: message.wasVerified || false,
+      consecutiveUnverified: consecutiveNoVerify,
+      aiConfidenceScore: 0.7,
+      hasUncertainty: false, // Can be enhanced with MR13 integration
+    };
+
+    const result = orchestrateMRActivation(context);
+
+    // Store orchestration result
+    setOrchestrationResults((prev) => new Map(prev).set(message.id, result));
+
+    return result;
+  }, [sessionData, consecutiveNoVerify, orchestrationResults, messageTrustScores]);
+
+  /**
+   * Get trust badge color and label based on trust score
+   */
+  const getTrustBadge = useCallback((trustScore: number) => {
+    const trustLevel = getTrustLevel(trustScore);
+
+    if (trustLevel === 'high') {
+      return {
+        color: '#10b981',
+        bgColor: '#d1fae5',
+        label: 'High Trust',
+        icon: '✅',
+      };
+    } else if (trustLevel === 'medium') {
+      return {
+        color: '#f59e0b',
+        bgColor: '#fef3c7',
+        label: 'Medium Trust',
+        icon: '⚡',
+      };
+    } else {
+      return {
+        color: '#ef4444',
+        bgColor: '#fee2e2',
+        label: 'Low Trust',
+        icon: '⚠️',
+      };
+    }
+  }, []);
+
+  /**
    * Render individual message for virtualized list
    * Optimized version that maintains all functionality without performance overhead
    */
@@ -1223,6 +1310,64 @@ const ChatSessionPage: React.FC = () => {
               minute: '2-digit',
             })}
           </p>
+
+          {/* MR9 Trust Indicator - Shows trust level for AI messages */}
+          {message.role === 'ai' && showTrustIndicator && (() => {
+            const orchestrationResult = orchestrateForMessage(message, index);
+            if (!orchestrationResult) return null;
+
+            const trustScore = messageTrustScores.get(message.id) || 0;
+            const badge = getTrustBadge(trustScore);
+
+            return (
+              <div
+                style={{
+                  marginTop: '0.75rem',
+                  padding: '0.5rem 0.75rem',
+                  backgroundColor: badge.bgColor,
+                  borderRadius: '0.375rem',
+                  border: `1px solid ${badge.color}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  fontSize: '0.75rem',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span>{badge.icon}</span>
+                  <span style={{ fontWeight: '600', color: badge.color }}>{badge.label}</span>
+                  <span style={{ opacity: 0.7 }}>({trustScore.toFixed(0)}%)</span>
+                </div>
+                {orchestrationResult.recommendations.length > 0 && (
+                  <button
+                    onClick={() => {
+                      const topRec = orchestrationResult.recommendations[0];
+                      if (topRec.tool === 'mr11-verify') openMR11Verification();
+                      else if (topRec.tool === 'mr12-critical') setActiveMRTool('mr12-critical');
+                      else if (topRec.tool === 'mr6-models') openMR6CrossModel();
+                      else if (topRec.tool === 'mr14-reflection') openMR14Reflection();
+                      else if (topRec.tool === 'mr13-uncertainty') setActiveMRTool('mr13-uncertainty');
+                      else if (topRec.tool === 'mr5-iteration') openMR5Iteration();
+                      setShowMRToolsSection(true);
+                    }}
+                    style={{
+                      fontSize: '0.7rem',
+                      padding: '0.25rem 0.5rem',
+                      backgroundColor: badge.color,
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '0.25rem',
+                      cursor: 'pointer',
+                      fontWeight: '500',
+                    }}
+                    title={orchestrationResult.recommendations[0].reason}
+                  >
+                    {orchestrationResult.recommendations[0].icon} {orchestrationResult.recommendations[0].toolName}
+                  </button>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Action buttons for AI messages */}
           {message.role === 'ai' && (
@@ -1455,7 +1600,7 @@ const ChatSessionPage: React.FC = () => {
         </div>
       </div>
     ),
-    [updatingMessageId, markAsVerified, markAsModified, editingMessageId, editedContent, saveEditedMessage, cancelEditingMessage, reflectedMessages, showQuickReflection, handleQuickReflection, shouldSuggestMR6, showMR6Suggestion, handleMR6Suggestion]
+    [updatingMessageId, markAsVerified, markAsModified, editingMessageId, editedContent, saveEditedMessage, cancelEditingMessage, reflectedMessages, showQuickReflection, handleQuickReflection, shouldSuggestMR6, showMR6Suggestion, handleMR6Suggestion, showTrustIndicator, orchestrateForMessage, messageTrustScores, getTrustBadge, openMR11Verification, openMR6CrossModel, openMR14Reflection, openMR5Iteration, setActiveMRTool, setShowMRToolsSection]
   );
 
   /**
