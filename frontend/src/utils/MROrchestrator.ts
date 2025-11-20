@@ -12,7 +12,7 @@
  * and recommending appropriate MR interventions based on context.
  */
 
-import { calculateTrustScore, TrustProfile } from '../components/MR9DynamicTrustCalibration.utils';
+import { calculateTrustScore, TrustProfile } from '../components/mr/MR9DynamicTrustCalibration/utils';
 
 export type MRToolType =
   | 'mr1-decomposition'

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
-import { MR19MetacognitiveCapabilityAssessment } from '../components/MR19MetacognitiveCapabilityAssessment';
-import type { MetacognitiveProfile } from '../components/MR19MetacognitiveCapabilityAssessment.utils';
+import { MR19MetacognitiveCapabilityAssessment } from '../components/mr/MR19MetacognitiveCapabilityAssessment';
+import type { MetacognitiveProfile } from '../components/mr/MR19MetacognitiveCapabilityAssessment/utils';
 import './MetacognitiveAssessmentPage.css';
 import '../styles/components.css';
 
