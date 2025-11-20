@@ -76,7 +76,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
    * Handle version selection
    */
   const handleVersionSelect = useCallback(
-    (versionId: string) => {
+    (versionId: string, switchToView?: ViewMode) => {
       setSelectedVersionId(versionId);
       const selectedVersion = versions.find(v => v.id === versionId);
 
@@ -95,6 +95,11 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
         if (selectedVersion.reasoning) {
           const cot = extractChainOfThought(selectedVersion.reasoning);
           setChainOfThought(cot);
+        }
+
+        // Switch view if requested
+        if (switchToView) {
+          setViewMode(switchToView);
         }
 
         if (onVersionSelect) {
@@ -185,9 +190,10 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
                 {event.versionId && (
                   <button
                     className="mr2-btn-view"
-                    onClick={() => handleVersionSelect(event.versionId)}
+                    onClick={() => handleVersionSelect(event.versionId!, 'diff')}
+                    title="查看此版本的详细变更"
                   >
-                    View Version
+                    查看版本详情
                   </button>
                 )}
               </div>
@@ -353,12 +359,12 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
             className={`mr2-version-selector ${selectedVersionId === v1Id ? 'active' : ''}`}
             onClick={() => handleVersionSelect(v1Id)}
           >
-            Version {v1.promptVersion}
+            <div className="mr2-version-label">版本 {v1.promptVersion} (较早版本)</div>
             <span className="mr2-time-ago">
               {((new Date(v2.timestamp).getTime() - new Date(v1.timestamp).getTime()) / 1000 / 60).toFixed(
                 0
               )}{' '}
-              min ago
+              分钟前
             </span>
           </button>
 
@@ -366,8 +372,8 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
             className={`mr2-version-selector ${selectedVersionId === v2Id ? 'active' : ''}`}
             onClick={() => handleVersionSelect(v2Id)}
           >
-            Version {v2.promptVersion} (Latest)
-            <span className="mr2-time-current">Now</span>
+            <div className="mr2-version-label">版本 {v2.promptVersion} (最新版本)</div>
+            <span className="mr2-time-current">当前</span>
           </button>
         </div>
 
@@ -388,12 +394,20 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
 
         <div className="mr2-comparison-content">
           <div className="mr2-comparison-side">
-            <h3>Version {v1.promptVersion}</h3>
+            <h3>版本 {v1.promptVersion} <span className="mr2-version-tag">(较早)</span></h3>
+            <div className="mr2-comparison-meta">
+              <span>模型: {v1.modelName}</span>
+              <span>时间: {new Date(v1.timestamp).toLocaleString()}</span>
+            </div>
             <div className="mr2-comparison-text">{v1.aiOutput}</div>
           </div>
 
           <div className="mr2-comparison-side">
-            <h3>Version {v2.promptVersion}</h3>
+            <h3>版本 {v2.promptVersion} <span className="mr2-version-tag">(最新)</span></h3>
+            <div className="mr2-comparison-meta">
+              <span>模型: {v2.modelName}</span>
+              <span>时间: {new Date(v2.timestamp).toLocaleString()}</span>
+            </div>
             <div className="mr2-comparison-text">{v2.aiOutput}</div>
           </div>
         </div>
@@ -482,8 +496,11 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
               <span className="mr2-version-time">
                 {new Date(version.timestamp).toLocaleTimeString()}
               </span>
-              {version.confidenceScore && (
-                <span className={`mr2-version-confidence mr2-conf-${Math.round(version.confidenceScore * 10) * 10}`}>
+              {version.confidenceScore !== undefined && (
+                <span
+                  className={`mr2-version-confidence mr2-conf-${Math.round(version.confidenceScore * 10) * 10}`}
+                  title={`AI置信度评分：${(version.confidenceScore * 100).toFixed(0)}%（基于模型输出的确定性）`}
+                >
                   {(version.confidenceScore * 100).toFixed(0)}%
                 </span>
               )}

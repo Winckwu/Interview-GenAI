@@ -152,7 +152,9 @@ export function extractChainOfThought(reasoningText: string): ChainOfThoughtStep
       steps.push({
         type: `Step ${++stepNum}`,
         reasoning: match[2].trim(),
-        confidence: 0.7 + Math.random() * 0.2 // Placeholder confidence
+        // NOTE: 这是示例/占位符置信度分数 (70-90%)
+        // 在实际应用中，应从AI模型的输出中获取真实的置信度评分
+        confidence: 0.7 + Math.random() * 0.2
       });
     }
   } else {
@@ -160,6 +162,8 @@ export function extractChainOfThought(reasoningText: string): ChainOfThoughtStep
     steps.push({
       type: 'Reasoning',
       reasoning: reasoningText,
+      // NOTE: 这是示例/占位符置信度分数 (75%)
+      // 在实际应用中，应从AI模型的输出中获取真实的置信度评分
       confidence: 0.75
     });
   }
