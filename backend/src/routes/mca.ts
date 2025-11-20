@@ -149,13 +149,13 @@ router.get('/status/:sessionId', async (req: Request, res: Response) => {
  */
 router.post('/orchestrate', async (req: Request, res: Response) => {
   try {
-    const { sessionId, conversationTurns, currentTurnIndex } = req.body;
+    const { sessionId, userId, conversationTurns, currentTurnIndex } = req.body;
     const { classifier = 'bayesian' } = req.query;
 
-    if (!sessionId || !conversationTurns || conversationTurns.length === 0) {
+    if (!sessionId || !userId || !conversationTurns || conversationTurns.length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'sessionId and conversationTurns are required',
+        error: 'sessionId, userId, and conversationTurns are required',
       });
     }
 
@@ -200,8 +200,9 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
     } else {
       // Default: Use Bayesian classifier
       if (!recognizerMap.has(sessionId)) {
-        const Recognizer = RealtimePatternRecognizer as any;
-        recognizerMap.set(sessionId, new Recognizer());
+        const recognizer = new RealtimePatternRecognizer(userId, sessionId);
+        await recognizer.initialize(); // Load historical prior
+        recognizerMap.set(sessionId, recognizer);
       }
       const recognizer = recognizerMap.get(sessionId)!;
       patternEstimate = recognizer.updateProbabilities(signals);

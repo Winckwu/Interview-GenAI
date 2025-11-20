@@ -117,8 +117,9 @@ async function evaluateBayesian(): Promise<void> {
     const data = parseCSV(csvPath);
     console.log(`📈 Dataset size: ${data.length} samples\n`);
 
-    // 初始化识别器
-    const recognizer = new RealtimePatternRecognizer();
+    // 初始化识别器 (使用虚拟用户ID进行评估，确保从均匀先验开始)
+    const recognizer = new RealtimePatternRecognizer('eval-user', `eval-session-${datasetName}`);
+    await recognizer.initialize(); // Will use uniform prior for eval-user (no history)
 
     // 统计变量
     const predictions: Array<{
