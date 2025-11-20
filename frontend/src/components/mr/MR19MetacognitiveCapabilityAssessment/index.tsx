@@ -28,8 +28,8 @@ import {
   calculateProfile,
   getAdaptationRecommendations,
   getDimensionScore,
-} from './MR19MetacognitiveCapabilityAssessment.utils';
-import './MR19MetacognitiveCapabilityAssessment.css';
+} from './utils';
+import './styles.css';
 
 /**
  * Props for MR19 component

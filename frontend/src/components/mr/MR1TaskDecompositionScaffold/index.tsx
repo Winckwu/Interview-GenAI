@@ -13,28 +13,27 @@
  */
 
 import React, { useState, useCallback, useRef } from 'react';
-import './MR1TaskDecompositionScaffold.css';
+import './styles.css';
 import {
   generateInitialDecomposition,
   analyzeTaskDimensions,
   calculateScaffoldLevel,
-  validateDecomposition,
-  type TaskDecomposition,
-  type DecompositionDimension
-} from './MR1TaskDecompositionScaffold.utils';
+  validateDecomposition
+} from './utils';
+import type {
+  SubtaskItem,
+  DecompositionStrategy,
+  TaskDecomposition,
+  DecompositionDimension
+} from './types';
 
-export interface SubtaskItem {
-  id: string;
-  description: string;
-  dependencies: string[]; // IDs of subtasks that must complete first
-  verificationMethod: string;
-  userApproved: boolean;
-  userModification?: string;
-  estimatedTime?: number; // minutes
-  difficulty?: 'low' | 'medium' | 'high';
-}
-
-export type DecompositionStrategy = 'sequential' | 'parallel' | 'hierarchical';
+// Re-export types for external consumers
+export type {
+  SubtaskItem,
+  DecompositionStrategy,
+  TaskDecomposition,
+  DecompositionDimension
+};
 
 interface DecompositionState {
   originalTask: string;

@@ -23,8 +23,8 @@ import {
   TrustProfile,
   VerificationStrategy,
   TaskTypeAccuracy,
-} from './MR9DynamicTrustCalibration.utils';
-import './MR9DynamicTrustCalibration.css';
+} from './utils';
+import './styles.css';
 
 /**
  * Props for MR9 component

@@ -23,7 +23,7 @@ import {
   getAtrophyColor,
   isAssessmentDue,
   acknowledgeAtrophyWarning
-} from './MR16SkillAtrophyPrevention.utils';
+} from './utils';
 
 interface MR16Props {
   userId: string;

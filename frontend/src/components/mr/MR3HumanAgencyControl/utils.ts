@@ -8,7 +8,7 @@
  * - Session tracking
  */
 
-import { InterventionLevel } from './MR3HumanAgencyControl';
+import { InterventionLevel } from './index';
 
 /**
  * Agency score levels

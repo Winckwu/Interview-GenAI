@@ -34,8 +34,8 @@ import {
   getWarningColor,
   acknowledgeWarning,
   checkCorrectiveAction
-} from './MR18OverRelianceWarning.utils';
-import './MR18OverRelianceWarning.css';
+} from './utils';
+import './styles.css';
 
 interface MR18Props {
   onWarningDetected?: (warning: OverRelianceWarning) => void;

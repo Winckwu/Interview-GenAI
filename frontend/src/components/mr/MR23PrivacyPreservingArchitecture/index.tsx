@@ -24,7 +24,7 @@ import {
   recommendPrivacyMode,
   getPrivacyPolicyTemplate,
   validatePrivacyCompliance
-} from './MR23PrivacyPreservingArchitecture.utils';
+} from './utils';
 
 interface MR23Props {
   userId: string;

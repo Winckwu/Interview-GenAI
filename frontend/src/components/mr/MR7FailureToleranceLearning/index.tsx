@@ -35,8 +35,8 @@ import {
   updateAchievementProgress,
   getSuccessExpectation,
   ACHIEVEMENT_BADGES
-} from './MR7FailureToleranceLearning.utils';
-import './MR7FailureToleranceLearning.css';
+} from './utils';
+import './styles.css';
 
 interface MR7Props {
   onIterationLogged?: (log: LearningLog) => void;

@@ -19,7 +19,7 @@ import {
   calculateMetacognitiveMetrics,
   identifyLearningMilestones,
   getLearningFeedback
-} from './MR17LearningProcessVisualization.utils';
+} from './utils';
 
 interface MR17Props {
   userId: string;

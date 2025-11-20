@@ -16,8 +16,8 @@ import {
   ReflectionLog,
   generateReflectionPrompts,
   analyzeReflectionDepth,
-} from './MR14GuidedReflectionMechanism.utils';
-import './MR14GuidedReflectionMechanism.css';
+} from './utils';
+import './styles.css';
 
 interface MR14Props {
   conversationSummary?: string;

@@ -13,7 +13,7 @@
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
-import './MR15MetacognitiveStrategyGuide.css';
+import './styles.css';
 import {
   STRATEGY_LIBRARY,
   CASE_STUDIES,
@@ -23,7 +23,7 @@ import {
   getRecommendedStrategies,
   type StrategyCategory,
   type CaseStudy
-} from './MR15MetacognitiveStrategyGuide.utils';
+} from './utils';
 
 /**
  * User competency level for scaffold fading

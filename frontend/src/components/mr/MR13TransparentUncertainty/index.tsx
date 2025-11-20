@@ -35,8 +35,8 @@ import {
   getConfidenceColor,
   getUncertaintyExplanation,
   getKnowledgeBoundaryDescription
-} from './MR13TransparentUncertainty.utils';
-import './MR13TransparentUncertainty.css';
+} from './utils';
+import './styles.css';
 
 interface MR13Props {
   onAnalysisComplete?: (uncertainty: OutputUncertainty) => void;

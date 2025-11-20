@@ -8,33 +8,21 @@
  * - Scaffold level calculation
  */
 
-import { apiService } from '../services/api';
+import { apiService } from '../../../services/api';
+import type {
+  DecompositionStrategy,
+  DecompositionDimension,
+  SubtaskItem,
+  TaskDecomposition
+} from './types';
 
-export type DecompositionStrategy = 'sequential' | 'parallel' | 'hierarchical';
-
-export interface DecompositionDimension {
-  name: string;
-  value: string;
-  analysis?: string;
-}
-
-export interface SubtaskItem {
-  id: string;
-  description: string;
-  dependencies: string[];
-  verificationMethod: string;
-  userApproved: boolean;
-  userModification?: string;
-  estimatedTime?: number;
-  difficulty?: 'low' | 'medium' | 'high';
-}
-
-export interface TaskDecomposition {
-  originalTask: string;
-  suggestedSubtasks: SubtaskItem[];
-  decompositionStrategy: DecompositionStrategy;
-  userModifications: string[];
-}
+// Re-export types for backwards compatibility
+export type {
+  DecompositionStrategy,
+  DecompositionDimension,
+  SubtaskItem,
+  TaskDecomposition
+};
 
 /**
  * Analyze task dimensions - uses GPT API with fallback to local analysis

@@ -23,8 +23,8 @@ import {
   getRolesByTaskType,
   ALL_ROLES,
   RoleContext,
-} from './MR4RoleDefinitionGuidance.utils';
-import './MR4RoleDefinitionGuidance.css';
+} from './utils';
+import './styles.css';
 
 /**
  * Props for MR4 component

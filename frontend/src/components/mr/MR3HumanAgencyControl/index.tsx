@@ -13,14 +13,14 @@
  */
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import './MR3HumanAgencyControl.css';
+import './styles.css';
 import {
   getInterventionLabel,
   calculateAIAgencyRisk,
   formatTimestamp,
   storeHumanVersionSnapshot,
   retrieveHumanVersionHistory
-} from './MR3HumanAgencyControl.utils';
+} from './utils';
 
 export type InterventionLevel = 'passive' | 'suggestive' | 'proactive';
 

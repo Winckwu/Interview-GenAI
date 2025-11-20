@@ -20,7 +20,7 @@
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
-import './MR8TaskCharacteristicRecognition.css';
+import './styles.css';
 import {
   analyzeTaskCharacteristics,
   detectTaskType,
@@ -33,7 +33,7 @@ import {
   type TaskCharacteristics,
   type TaskType,
   type AdaptationRecommendation
-} from './MR8TaskCharacteristicRecognition.utils';
+} from './utils';
 
 export type CriticalityLevel = 'low' | 'medium' | 'high';
 export type FamiliarityLevel = 'familiar' | 'moderate' | 'unfamiliar';

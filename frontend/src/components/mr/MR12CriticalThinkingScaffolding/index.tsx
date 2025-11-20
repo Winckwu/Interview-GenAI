@@ -17,8 +17,8 @@ import {
   assessCriticalThinking,
   CriticalAssessment,
   DomainType,
-} from './MR12CriticalThinkingScaffolding.utils';
-import './MR12CriticalThinkingScaffolding.css';
+} from './utils';
+import './styles.css';
 
 interface MR12Props {
   aiOutput?: string;

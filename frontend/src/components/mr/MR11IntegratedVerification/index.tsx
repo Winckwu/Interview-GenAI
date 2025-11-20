@@ -36,8 +36,8 @@ import {
   getActionRecommendation,
   getWorkflowGuidance,
   VERIFICATION_TOOLS
-} from './MR11IntegratedVerification.utils';
-import './MR11IntegratedVerification.css';
+} from './utils';
+import './styles.css';
 
 interface MR11Props {
   onDecisionMade?: (log: VerificationLog) => void;

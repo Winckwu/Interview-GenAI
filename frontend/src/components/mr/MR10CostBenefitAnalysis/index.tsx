@@ -35,8 +35,8 @@ import {
   estimateLearningCost,
   getDeadlineGuidance,
   assessQualityRisk
-} from './MR10CostBenefitAnalysis.utils';
-import './MR10CostBenefitAnalysis.css';
+} from './utils';
+import './styles.css';
 
 interface MR10Props {
   onDecisionMade?: (log: DecisionLog) => void;
