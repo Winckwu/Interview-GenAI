@@ -36,6 +36,7 @@ interface MR4Props {
   selectedRoles?: AIRole[];
   allowMultipleRoles?: boolean;
   showExamples?: boolean;
+  onOpenMR8?: () => void; // NEW: Callback to open MR8 task characteristic recognition
 }
 
 /**
@@ -50,6 +51,7 @@ export const MR4RoleDefinitionGuidance: React.FC<MR4Props> = ({
   selectedRoles: initialRoles = [],
   allowMultipleRoles = true,
   showExamples = true,
+  onOpenMR8,
 }) => {
   // State management
   const [selectedRoles, setSelectedRoles] = useState<AIRole[]>(initialRoles);
@@ -320,6 +322,39 @@ export const MR4RoleDefinitionGuidance: React.FC<MR4Props> = ({
             </li>
           </ul>
         </div>
+
+        {/* MR Integration: Recommend task characteristic analysis after role definition */}
+        {onOpenMR8 && (
+          <div style={{
+            backgroundColor: '#f0fdf4',
+            border: '2px solid #16a34a',
+            borderRadius: '0.5rem',
+            padding: '1rem',
+            margin: '1rem 0',
+          }}>
+            <h3 style={{ margin: '0 0 0.5rem 0', color: '#166534' }}>
+              🎯 下一步建议：识别任务特征
+            </h3>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+              您已定义好AI角色！接下来建议分析任务的特征（如紧急度、熟悉度、复杂度等），系统将根据这些特征智能推荐最适合的协作模式和辅助工具。
+            </p>
+            <button
+              onClick={onOpenMR8}
+              style={{
+                backgroundColor: '#16a34a',
+                color: 'white',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: '500',
+              }}
+              title="打开任务特征识别 - 获得智能协作建议"
+            >
+              🎯 分析任务特征 (MR8)
+            </button>
+          </div>
+        )}
 
         <div className="mr4-buttons-group">
           <button className="mr4-back-btn" onClick={() => setActiveTab('details')}>

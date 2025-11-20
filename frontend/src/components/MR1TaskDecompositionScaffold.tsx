@@ -51,6 +51,7 @@ interface MR1Props {
   onStrategySelected?: (strategy: DecompositionStrategy) => void;
   initialTask?: string;
   onHistoryChange?: (history: TaskDecomposition[]) => void;
+  onOpenMR4?: () => void; // NEW: Callback to open MR4 role definition
 }
 
 export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
@@ -58,7 +59,8 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   onTaskAnalyzed,
   onStrategySelected,
   initialTask = '',
-  onHistoryChange
+  onHistoryChange,
+  onOpenMR4
 }) => {
   // State management
   const [state, setState] = useState<DecompositionState>({
@@ -435,6 +437,39 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
           </div>
         </div>
       </div>
+
+      {/* MR Integration: Recommend role definition after decomposition */}
+      {onOpenMR4 && (
+        <div style={{
+          backgroundColor: '#e0f2fe',
+          border: '2px solid #0284c7',
+          borderRadius: '0.5rem',
+          padding: '1rem',
+          margin: '1rem 0',
+        }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: '#075985' }}>
+            💡 下一步建议：定义AI角色
+          </h3>
+          <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+            您已经成功分解了任务！现在建议定义AI在每个子任务中应该扮演的角色（如代码助手、审查者、导师等），这将帮助您更有效地协作。
+          </p>
+          <button
+            onClick={onOpenMR4}
+            style={{
+              backgroundColor: '#0284c7',
+              color: 'white',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.375rem',
+              border: 'none',
+              cursor: 'pointer',
+              fontWeight: '500',
+            }}
+            title="打开AI角色定义工具 - 明确AI在任务中的职责"
+          >
+            🎭 定义AI角色 (MR4)
+          </button>
+        </div>
+      )}
 
       <div className="mr1-next-steps">
         <h3>Next Steps:</h3>

@@ -925,6 +925,56 @@ const ChatSessionPage: React.FC = () => {
   }, []);
 
   /**
+   * Open MR4 for role definition (from task decomposition)
+   */
+  const openMR4RoleDefinition = useCallback(() => {
+    setActiveMRTool('mr4-roles');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开AI角色定义 (MR4)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR8 for task characteristic recognition (from role definition)
+   */
+  const openMR8TaskRecognition = useCallback(() => {
+    setActiveMRTool('mr8-recognition');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开任务特征识别 (MR8)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR3 for agency control
+   */
+  const openMR3AgencyControl = useCallback(() => {
+    setActiveMRTool('mr3-agency');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开人机协作控制 (MR3)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR9 for trust calibration
+   */
+  const openMR9TrustCalibration = useCallback(() => {
+    setActiveMRTool('mr9-trust');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开信任校准 (MR9)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR15 for strategy guide
+   */
+  const openMR15StrategyGuide = useCallback(() => {
+    setActiveMRTool('mr15-strategies');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开策略指南 (MR15)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
    * Mark interaction as modified (starts editing mode)
    * Opens MR5 immediately so user can view history while editing
    * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
@@ -3079,7 +3129,7 @@ const ChatSessionPage: React.FC = () => {
                   }}>
                     <Suspense fallback={<ComponentLoader />}>
                       {/* User-facing MR tools only */}
-                      {activeMRTool === 'mr1-decomposition' && <MR1TaskDecompositionScaffold sessionId={sessionId || ''} onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)} />}
+                      {activeMRTool === 'mr1-decomposition' && <MR1TaskDecompositionScaffold sessionId={sessionId || ''} onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)} onOpenMR4={openMR4RoleDefinition} />}
                       {activeMRTool === 'mr2-transparency' && <MR2ProcessTransparency sessionId={sessionId || ''} versions={
                         // Transform messages into InteractionVersion format
                         // Pair up user messages with their AI responses
@@ -3100,10 +3150,11 @@ const ChatSessionPage: React.FC = () => {
                         }, [])
                       } onVersionSelect={(v) => console.log('Version:', v)} />}
                       {activeMRTool === 'mr3-agency' && <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />}
-                      {activeMRTool === 'mr4-roles' && <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} />}
+                      {activeMRTool === 'mr4-roles' && <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} onOpenMR8={openMR8TaskRecognition} />}
                       {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} />}
                       {activeMRTool === 'mr6-models' && <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />}
                       {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning onIterationLogged={(log) => console.log('Learning:', log)} />}
+                      {activeMRTool === 'mr8-recognition' && <MR8TaskCharacteristicRecognition onTaskProfileDetected={(p) => console.log('Task Profile:', p)} onOpenMR3={openMR3AgencyControl} onOpenMR5={openMR5Iteration} onOpenMR9={openMR9TrustCalibration} onOpenMR11={openMR11Verification} onOpenMR14={openMR14Reflection} onOpenMR15={openMR15StrategyGuide} />}
                       {activeMRTool === 'mr10-cost' && <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />}
                       {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
                       {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding aiOutput={messages[messages.length - 1]?.content || ''} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}

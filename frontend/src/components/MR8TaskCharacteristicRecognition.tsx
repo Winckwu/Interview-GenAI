@@ -57,13 +57,26 @@ interface MR8Props {
   onAdaptationRecommended?: (recommendations: AdaptationRecommendation[]) => void;
   onUserApproval?: (profile: TaskProfile) => void;
   initialTask?: string;
+  // NEW: Callbacks to open specific MR tools based on recommendations
+  onOpenMR3?: () => void; // Agency control
+  onOpenMR5?: () => void; // Iteration support
+  onOpenMR9?: () => void; // Trust calibration
+  onOpenMR11?: () => void; // Verification
+  onOpenMR14?: () => void; // Reflection
+  onOpenMR15?: () => void; // Strategy guide
 }
 
 export const MR8TaskCharacteristicRecognition: React.FC<MR8Props> = ({
   onTaskProfileDetected,
   onAdaptationRecommended,
   onUserApproval,
-  initialTask = ''
+  initialTask = '',
+  onOpenMR3,
+  onOpenMR5,
+  onOpenMR9,
+  onOpenMR11,
+  onOpenMR14,
+  onOpenMR15
 }) => {
   // State management
   const [taskDescription, setTaskDescription] = useState(initialTask);
@@ -130,6 +143,21 @@ export const MR8TaskCharacteristicRecognition: React.FC<MR8Props> = ({
       return newSet;
     });
   }, []);
+
+  /**
+   * Get callback handler for opening recommended component
+   */
+  const getOpenToolHandler = useCallback((componentName: string): (() => void) | null => {
+    const mapping: Record<string, (() => void) | undefined> = {
+      'agency-control': onOpenMR3,
+      'iteration-support': onOpenMR5,
+      'trust-calibration': onOpenMR9,
+      'verification': onOpenMR11,
+      'reflection': onOpenMR14,
+      'strategy-guide': onOpenMR15
+    };
+    return mapping[componentName] || null;
+  }, [onOpenMR3, onOpenMR5, onOpenMR9, onOpenMR11, onOpenMR14, onOpenMR15]);
 
   /**
    * User adjusts detected characteristic
@@ -464,6 +492,28 @@ export const MR8TaskCharacteristicRecognition: React.FC<MR8Props> = ({
                   <span className="mr8-impact-label">Impact:</span>
                   <span className="mr8-impact-value">{rec.expectedImpact}</span>
                 </div>
+
+                {/* MR Integration: Add button to open recommended tool */}
+                {getOpenToolHandler(rec.component) && (
+                  <button
+                    className="mr8-rec-open-tool-btn"
+                    onClick={getOpenToolHandler(rec.component)!}
+                    style={{
+                      marginTop: '0.5rem',
+                      padding: '0.375rem 0.75rem',
+                      backgroundColor: '#3b82f6',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                    }}
+                    title={`打开${rec.title}工具`}
+                  >
+                    🔧 打开推荐工具
+                  </button>
+                )}
               </div>
             </div>
           ))}
