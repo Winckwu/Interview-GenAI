@@ -2,7 +2,7 @@
  * MR2: Process Transparency - Utilities for diff, timeline, and export
  */
 
-import { InteractionVersion } from './MR2ProcessTransparency';
+import { InteractionVersion } from './index';
 
 export interface VersionSnapshot {
   id: string;

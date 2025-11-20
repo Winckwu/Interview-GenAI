@@ -27,8 +27,8 @@ import {
   compareBranches,
   getPromissingBranches,
   ParentReference,
-} from './MR5LowCostIteration.utils';
-import './MR5LowCostIteration.css';
+} from './utils';
+import './styles.css';
 
 /**
  * Props for MR5 component

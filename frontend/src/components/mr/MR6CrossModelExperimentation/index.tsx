@@ -24,8 +24,8 @@ import {
   trackModelPerformance,
   ModelType,
   ComparisonMetrics,
-} from './MR6CrossModelExperimentation.utils';
-import './MR6CrossModelExperimentation.css';
+} from './utils';
+import './styles.css';
 
 interface MR6Props {
   prompt?: string;

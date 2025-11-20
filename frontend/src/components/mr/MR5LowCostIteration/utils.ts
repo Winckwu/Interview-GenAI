@@ -9,7 +9,7 @@
  * - Recommending promising branches
  */
 
-import { apiService } from '../services/api';
+import { apiService } from '../../../services/api';
 
 /**
  * Reference to parent conversation point

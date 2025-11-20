@@ -53,11 +53,11 @@ const MRDisplay = lazy(() =>
 // MR Components - Lazy loaded for performance
 // All MR components use export default, so we use simplified lazy imports
 const MR1TaskDecompositionScaffold = lazy(() => import('../components/MR1TaskDecompositionScaffold'));
-const MR2ProcessTransparency = lazy(() => import('../components/MR2ProcessTransparency'));
+const MR2ProcessTransparency = lazy(() => import('../components/mr/MR2ProcessTransparency'));
 const MR3HumanAgencyControl = lazy(() => import('../components/MR3HumanAgencyControl'));
 const MR4RoleDefinitionGuidance = lazy(() => import('../components/MR4RoleDefinitionGuidance'));
-const MR5LowCostIteration = lazy(() => import('../components/MR5LowCostIteration'));
-const MR6CrossModelExperimentation = lazy(() => import('../components/MR6CrossModelExperimentation'));
+const MR5LowCostIteration = lazy(() => import('../components/mr/MR5LowCostIteration'));
+const MR6CrossModelExperimentation = lazy(() => import('../components/mr/MR6CrossModelExperimentation'));
 const MR7FailureToleranceLearning = lazy(() => import('../components/MR7FailureToleranceLearning'));
 const MR8TaskCharacteristicRecognition = lazy(() => import('../components/MR8TaskCharacteristicRecognition'));
 const MR9DynamicTrustCalibration = lazy(() => import('../components/MR9DynamicTrustCalibration'));

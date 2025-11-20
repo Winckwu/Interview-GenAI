@@ -2,7 +2,7 @@
  * MR6: Cross-Model Experimentation - Utilities
  */
 
-import { apiService } from '../services/api';
+import { apiService } from '../../../services/api';
 
 export type ModelType = 'gpt-4o' | 'gpt-4o-mini' | 'gpt-3.5-turbo';
 

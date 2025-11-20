@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import './MR2ProcessTransparency.css';
+import './styles.css';
 import {
   generateDiff,
   createTimeline,
@@ -26,7 +26,7 @@ import {
   type DiffChange,
   type TimelineEvent,
   type ChainOfThoughtStep
-} from './MR2ProcessTransparency.utils';
+} from './utils';
 
 export interface InteractionVersion {
   id: string;
