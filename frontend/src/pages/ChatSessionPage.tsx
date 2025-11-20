@@ -229,6 +229,12 @@ const ChatSessionPage: React.FC = () => {
   // Track which message is being edited (inline editing)
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editedContent, setEditedContent] = useState<string>('');
+  // Track quick reflections on messages (MR14)
+  const [reflectedMessages, setReflectedMessages] = useState<Set<string>>(new Set());
+  const [showQuickReflection, setShowQuickReflection] = useState<string | null>(null);
+  // Track problem behavior detection (MR15)
+  const [consecutiveNoVerify, setConsecutiveNoVerify] = useState(0);
+  const [shortPromptCount, setShortPromptCount] = useState(0);
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
@@ -567,6 +573,26 @@ const ChatSessionPage: React.FC = () => {
 
     if (!userInput.trim() || !sessionId) return;
 
+    // Problem behavior detection: Track short prompts (MR15)
+    const trimmedInput = userInput.trim();
+    if (trimmedInput.length < 15) {
+      setShortPromptCount((prev) => {
+        const newCount = prev + 1;
+        // After 3 consecutive short prompts, suggest better prompting strategies
+        if (newCount >= 3) {
+          setActiveMRTool('mr15-strategies');
+          setShowMRToolsSection(true);
+          setSuccessMessage('Tip: More detailed prompts often lead to better AI responses. Check out prompting strategies!');
+          setTimeout(() => setSuccessMessage(null), 4000);
+          return 0; // Reset counter after showing suggestion
+        }
+        return newCount;
+      });
+    } else {
+      // Reset short prompt counter if user writes a decent prompt
+      setShortPromptCount(0);
+    }
+
     setLoading(true);
     setError(null);
 
@@ -849,6 +875,49 @@ const ChatSessionPage: React.FC = () => {
   }, [messages, startEditingMessage]);
 
   /**
+   * Handle quick reflection response (MR14)
+   * Tracks reflection patterns and detects problem behaviors
+   */
+  const handleQuickReflection = useCallback((messageId: string, response: 'confident' | 'needs-verify' | 'uncertain' | 'skip') => {
+    // Mark message as reflected
+    setReflectedMessages((prev) => new Set([...prev, messageId]));
+    setShowQuickReflection(null);
+
+    // Track problem behaviors for MR15
+    if (response === 'confident') {
+      // User is confident but hasn't verified - potential over-reliance
+      const message = messages.find(m => m.id === messageId);
+      if (message && !message.wasVerified) {
+        setConsecutiveNoVerify((prev) => {
+          const newCount = prev + 1;
+          // After 3 consecutive "confident without verify", suggest MR15
+          if (newCount >= 3) {
+            setActiveMRTool('mr15-strategies');
+            setShowMRToolsSection(true);
+            setSuccessMessage('Consider using metacognitive strategies to verify AI outputs');
+            setTimeout(() => setSuccessMessage(null), 3000);
+          }
+          return newCount;
+        });
+      }
+    } else if (response === 'needs-verify') {
+      // Good behavior - user recognizes need to verify
+      setConsecutiveNoVerify(0);
+      // Open MR11 verification tool
+      setActiveMRTool('mr11-verify');
+      setShowMRToolsSection(true);
+    } else if (response === 'uncertain') {
+      // User is uncertain - encourage verification
+      setConsecutiveNoVerify(0);
+      setActiveMRTool('mr11-verify');
+      setShowMRToolsSection(true);
+      setSuccessMessage('Good awareness! Use verification tools to validate the response.');
+      setTimeout(() => setSuccessMessage(null), 3000);
+    }
+    // 'skip' just dismisses without tracking
+  }, [messages]);
+
+  /**
    * Render individual message for virtualized list
    * Optimized version that maintains all functionality without performance overhead
    */
@@ -1003,10 +1072,111 @@ const ChatSessionPage: React.FC = () => {
               </button>
             </div>
           )}
+
+          {/* Quick Reflection Prompt (MR14) - Shows after AI messages */}
+          {message.role === 'ai' && !reflectedMessages.has(message.id) && (
+            <div
+              style={{
+                marginTop: '0.75rem',
+                padding: '0.75rem',
+                backgroundColor: '#fef3c7',
+                borderRadius: '0.5rem',
+                border: '1px solid #fcd34d',
+              }}
+            >
+              {showQuickReflection === message.id ? (
+                <div>
+                  <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.8rem', fontWeight: '500', color: '#92400e' }}>
+                    Quick Reflection
+                  </p>
+                  <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.75rem', color: '#78350f' }}>
+                    How confident are you in this response? What would you verify?
+                  </p>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button
+                      onClick={() => handleQuickReflection(message.id, 'confident')}
+                      style={{
+                        fontSize: '0.7rem',
+                        padding: '0.3rem 0.6rem',
+                        backgroundColor: '#10b981',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '0.25rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Confident
+                    </button>
+                    <button
+                      onClick={() => handleQuickReflection(message.id, 'needs-verify')}
+                      style={{
+                        fontSize: '0.7rem',
+                        padding: '0.3rem 0.6rem',
+                        backgroundColor: '#f59e0b',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '0.25rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Need to Verify
+                    </button>
+                    <button
+                      onClick={() => handleQuickReflection(message.id, 'uncertain')}
+                      style={{
+                        fontSize: '0.7rem',
+                        padding: '0.3rem 0.6rem',
+                        backgroundColor: '#ef4444',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '0.25rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Uncertain
+                    </button>
+                    <button
+                      onClick={() => handleQuickReflection(message.id, 'skip')}
+                      style={{
+                        fontSize: '0.7rem',
+                        padding: '0.3rem 0.6rem',
+                        backgroundColor: '#e5e7eb',
+                        color: '#6b7280',
+                        border: 'none',
+                        borderRadius: '0.25rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Skip
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowQuickReflection(message.id)}
+                  style={{
+                    width: '100%',
+                    fontSize: '0.75rem',
+                    padding: '0.4rem',
+                    backgroundColor: 'transparent',
+                    color: '#92400e',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.25rem',
+                  }}
+                >
+                  <span>Take a moment to reflect on this response</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     ),
-    [updatingMessageId, markAsVerified, markAsModified, editingMessageId, editedContent, saveEditedMessage, cancelEditingMessage]
+    [updatingMessageId, markAsVerified, markAsModified, editingMessageId, editedContent, saveEditedMessage, cancelEditingMessage, reflectedMessages, showQuickReflection, handleQuickReflection]
   );
 
   /**
@@ -1040,6 +1210,23 @@ const ChatSessionPage: React.FC = () => {
       console.error('Failed to create new session:', err);
       setError(err.response?.data?.error || 'Failed to create new session');
       setCreatingNewSession(false);
+    }
+  };
+
+  /**
+   * End conversation and trigger full reflection (MR14)
+   * Opens the reflection mechanism for comprehensive session review
+   */
+  const handleEndAndReflect = () => {
+    // Only show reflection if there are messages in the conversation
+    if (messages.length > 0) {
+      setActiveMRTool('mr14-reflection');
+      setShowMRToolsSection(true);
+      setSuccessMessage('Take a moment to reflect on this conversation before starting a new one.');
+      setTimeout(() => setSuccessMessage(null), 4000);
+    } else {
+      // No messages to reflect on, just start new chat
+      handleNewChat();
     }
   };
 
@@ -2371,6 +2558,38 @@ const ChatSessionPage: React.FC = () => {
             </div>
 
             {/* Main Actions */}
+            <button
+              onClick={handleEndAndReflect}
+              disabled={messages.length === 0}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: '#f59e0b',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '0.5rem',
+                cursor: messages.length === 0 ? 'not-allowed' : 'pointer',
+                fontWeight: '500',
+                fontSize: '0.875rem',
+                transition: 'all 0.2s',
+                whiteSpace: 'nowrap',
+                opacity: messages.length === 0 ? 0.5 : 1,
+              }}
+              onMouseOver={(e) => {
+                if (messages.length > 0) {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#d97706';
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(245, 158, 11, 0.3)';
+                }
+              }}
+              onMouseOut={(e) => {
+                if (messages.length > 0) {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f59e0b';
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+                }
+              }}
+              title="End conversation and reflect on your learning"
+            >
+              End & Reflect
+            </button>
             <button
               onClick={handleNewChat}
               disabled={creatingNewSession}
