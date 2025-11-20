@@ -36,6 +36,11 @@ import MessageList from '../components/MessageList';
 import { type TrustBadge, type MRRecommendation } from '../components/TrustIndicator';
 import { type ReflectionResponse } from '../components/QuickReflection';
 
+// Phase 3 Refactoring: Panel Components
+import SessionSidebar, { type SessionItem } from '../components/SessionSidebar';
+import MRToolsPanel from '../components/MRToolsPanel';
+import GlobalRecommendationPanel from '../components/GlobalRecommendationPanel';
+
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
 const PatternAnalysisWindow = lazy(() => import('../components/chat/PatternAnalysisWindow'));
