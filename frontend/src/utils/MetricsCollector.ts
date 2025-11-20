@@ -355,7 +355,7 @@ export class MetricsCollector {
     this.sessionMetrics.set(sessionId, metrics);
 
     // Check thresholds and trigger alerts
-    if (dismissalRate > this.thresholds.dismissalRateHigh) {
+    if (dismissalRate > this.thresholds.dismissalRateHigh && totalDisplays > 0) {
       this.triggerAlert(
         'high_dismissal',
         'warning',
@@ -364,7 +364,7 @@ export class MetricsCollector {
       );
     }
 
-    if (complianceRate < this.thresholds.complianceRateLow) {
+    if (complianceRate < this.thresholds.complianceRateLow && totalDisplays > 0) {
       this.triggerAlert(
         'low_compliance',
         'warning',
