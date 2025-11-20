@@ -7,6 +7,7 @@
  * - Load More button for pagination
  *
  * Extracted from ChatSessionPage.tsx as part of Phase 2 refactoring.
+ * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
 import React, { useCallback } from 'react';
@@ -14,6 +15,7 @@ import MessageItem, { type Message } from './MessageItem';
 import TrustIndicator, { type TrustBadge, type MRRecommendation } from './TrustIndicator';
 import QuickReflection, { type ReflectionResponse } from './QuickReflection';
 import MR6Suggestion from './MR6Suggestion';
+import styles from './MessageList.module.css';
 
 export interface MessageListProps {
   messages: Message[];
@@ -143,14 +145,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   }, [shouldSuggestMR6, showMR6Suggestion, onExpandMR6Suggestion, onMR6SuggestionAccept, onMR6SuggestionDismiss]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-        padding: '0.5rem 0',
-      }}
-    >
+    <div className={styles.messagesContainer}>
       {messages.map((message, index) => (
         <div key={message.id}>
           <MessageItem
@@ -175,17 +170,7 @@ export const MessageList: React.FC<MessageListProps> = ({
       {hasMoreMessages && !isLoadingMore && (
         <button
           onClick={onLoadMore}
-          style={{
-            margin: '1rem auto',
-            padding: '0.5rem 1rem',
-            backgroundColor: '#3b82f6',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '0.375rem',
-            cursor: 'pointer',
-            fontSize: '0.875rem',
-            fontWeight: '500',
-          }}
+          className={styles.loadMoreButton}
         >
           Load More Messages
         </button>
@@ -193,7 +178,7 @@ export const MessageList: React.FC<MessageListProps> = ({
 
       {/* Loading Indicator */}
       {isLoadingMore && (
-        <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af', fontSize: '0.875rem' }}>
+        <div className={styles.loadingIndicator}>
           Loading more messages...
         </div>
       )}

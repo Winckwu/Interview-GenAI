@@ -5,9 +5,11 @@
  * when iteration is detected (message was modified or iteration keywords found).
  *
  * Extracted from ChatSessionPage.tsx as part of Phase 2 refactoring.
+ * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
 import React from 'react';
+import styles from './MR6Suggestion.module.css';
 
 export interface MR6SuggestionProps {
   messageId: string;
@@ -25,51 +27,26 @@ export const MR6Suggestion: React.FC<MR6SuggestionProps> = ({
   onDismiss,
 }) => {
   return (
-    <div
-      style={{
-        marginTop: '0.75rem',
-        padding: '0.75rem',
-        backgroundColor: '#dbeafe',
-        borderRadius: '0.5rem',
-        border: '2px solid #3b82f6',
-      }}
-    >
+    <div className={styles.container}>
       {isExpanded ? (
         <div>
-          <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1e40af' }}>
+          <h4 className={styles.title}>
             🔄 Compare Multiple AI Models
           </h4>
-          <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.75rem', color: '#1e3a8a', lineHeight: '1.4' }}>
+          <p className={styles.description}>
             You're iterating on this response! Try comparing outputs from GPT-4, Claude, and Gemini to find the best solution. Different models excel at different tasks.
           </p>
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <div className={styles.buttonGroup}>
             <button
               onClick={onAccept}
-              style={{
-                fontSize: '0.75rem',
-                padding: '0.5rem 0.75rem',
-                backgroundColor: '#3b82f6',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '0.375rem',
-                cursor: 'pointer',
-                fontWeight: '500',
-              }}
+              className={`${styles.button} ${styles.primaryButton}`}
               title="Open Multi-Model Comparison (MR6)"
             >
               🔄 Compare Models (MR6)
             </button>
             <button
               onClick={onDismiss}
-              style={{
-                fontSize: '0.75rem',
-                padding: '0.5rem 0.75rem',
-                backgroundColor: '#e5e7eb',
-                color: '#6b7280',
-                border: 'none',
-                borderRadius: '0.375rem',
-                cursor: 'pointer',
-              }}
+              className={`${styles.button} ${styles.secondaryButton}`}
             >
               Not Now
             </button>
@@ -78,20 +55,7 @@ export const MR6Suggestion: React.FC<MR6SuggestionProps> = ({
       ) : (
         <button
           onClick={onExpand}
-          style={{
-            width: '100%',
-            fontSize: '0.75rem',
-            padding: '0.4rem',
-            backgroundColor: 'transparent',
-            color: '#1e40af',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.25rem',
-            fontWeight: '500',
-          }}
+          className={styles.collapseButton}
         >
           <span>💡 Try comparing multiple AI models for better results</span>
         </button>

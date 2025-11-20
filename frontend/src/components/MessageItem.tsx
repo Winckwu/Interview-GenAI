@@ -9,10 +9,12 @@
  * - Intervention panels (Trust Indicator, Quick Reflection, MR6 Suggestions)
  *
  * Extracted from ChatSessionPage.tsx as part of Phase 2 refactoring.
+ * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
 import React from 'react';
 import MarkdownText from './common/MarkdownText';
+import styles from './MessageItem.module.css';
 
 export interface Message {
   id: string;
@@ -61,25 +63,11 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   mr6Suggestion,
 }) => {
   return (
-    <div
-      style={{
-        marginBottom: '1rem',
-        display: 'flex',
-        justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
-        animation: 'fadeIn 0.3s ease-in-out',
-        padding: '0 0.5rem',
-      }}
-    >
+    <div className={`${styles.messageContainer} ${styles[message.role]}`}>
       <div
-        style={{
-          maxWidth: '65%',
-          padding: '1rem',
-          borderRadius: message.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '1rem 1rem 1rem 0.25rem',
-          backgroundColor: message.role === 'user' ? '#93c5fd' : '#fff',
-          color: message.role === 'user' ? '#0c4a6e' : '#1f2937',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-          borderLeft: message.role === 'ai' ? `3px solid ${message.wasVerified ? '#10b981' : '#3b82f6'}` : 'none',
-        }}
+        className={`${styles.messageBubble} ${styles[message.role]} ${
+          message.role === 'ai' ? (message.wasVerified ? styles.verified : styles.unverified) : ''
+        }`}
       >
         {/* Message Content or Editing UI */}
         {isEditing ? (
@@ -87,74 +75,33 @@ export const MessageItem: React.FC<MessageItemProps> = ({
             <textarea
               value={editedContent}
               onChange={(e) => onEditContentChange(e.target.value)}
-              style={{
-                width: '100%',
-                minHeight: '150px',
-                padding: '0.75rem',
-                border: '2px solid #3b82f6',
-                borderRadius: '0.5rem',
-                fontSize: '0.875rem',
-                lineHeight: '1.5',
-                resize: 'vertical',
-                fontFamily: 'inherit',
-              }}
+              className={styles.editTextarea}
               autoFocus
             />
-            <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+            <div className={styles.editButtonGroup}>
               <button
                 onClick={onSaveEdit}
                 disabled={isUpdating}
-                style={{
-                  fontSize: '0.75rem',
-                  padding: '0.4rem 0.75rem',
-                  backgroundColor: '#10b981',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '0.375rem',
-                  cursor: 'pointer',
-                  fontWeight: '500',
-                }}
+                className={`${styles.editButton} ${styles.saveButton}`}
               >
                 {isUpdating ? '⏳ Saving...' : '💾 Save'}
               </button>
               <button
                 onClick={onCancelEdit}
-                style={{
-                  fontSize: '0.75rem',
-                  padding: '0.4rem 0.75rem',
-                  backgroundColor: '#f3f4f6',
-                  color: '#374151',
-                  border: 'none',
-                  borderRadius: '0.375rem',
-                  cursor: 'pointer',
-                  fontWeight: '500',
-                }}
+                className={`${styles.editButton} ${styles.cancelButton}`}
               >
                 ✕ Cancel
               </button>
             </div>
           </div>
         ) : (
-          <p
-            style={{
-              margin: '0',
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-              lineHeight: '1.5',
-            }}
-          >
+          <div>
             <MarkdownText content={message.content} />
-          </p>
+          </div>
         )}
 
         {/* Timestamp */}
-        <p
-          style={{
-            margin: '0.75rem 0 0 0',
-            fontSize: '0.75rem',
-            opacity: 0.6,
-          }}
-        >
+        <p className={styles.timestamp}>
           {new Date(message.timestamp).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
@@ -166,31 +113,13 @@ export const MessageItem: React.FC<MessageItemProps> = ({
 
         {/* Action Buttons for AI Messages */}
         {message.role === 'ai' && (
-          <div
-            style={{
-              marginTop: '0.75rem',
-              display: 'flex',
-              gap: '0.5rem',
-              paddingTop: '0.75rem',
-              borderTop: '1px solid rgba(0, 0, 0, 0.05)',
-            }}
-          >
+          <div className={styles.actionButtons}>
             <button
               onClick={onVerify}
               disabled={isUpdating}
               title="✓ VERIFY: Confirm this AI response is correct and helpful."
-              style={{
-                fontSize: '0.75rem',
-                padding: '0.4rem 0.75rem',
-                backgroundColor: message.wasVerified ? '#10b981' : '#f3f4f6',
-                color: message.wasVerified ? '#fff' : '#374151',
-                border: 'none',
-                borderRadius: '0.375rem',
-                cursor: isUpdating ? 'not-allowed' : 'pointer',
-                opacity: isUpdating ? 0.6 : 1,
-                fontWeight: '500',
-                transition: 'all 0.2s',
-              }}
+              className={`${styles.actionButton} ${message.wasVerified ? styles.verifiedBadge : styles.verifyButton}`}
+              style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
             >
               {isUpdating ? '⏳ Saving...' : message.wasVerified ? '✓ Verified' : '✓ Verify'}
             </button>
@@ -198,18 +127,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               onClick={onModify}
               disabled={isUpdating}
               title="✎ MODIFY: Check this if you edited or improved the AI's response."
-              style={{
-                fontSize: '0.75rem',
-                padding: '0.4rem 0.75rem',
-                backgroundColor: message.wasModified ? '#f59e0b' : '#f3f4f6',
-                color: message.wasModified ? '#fff' : '#374151',
-                border: 'none',
-                borderRadius: '0.375rem',
-                cursor: isUpdating ? 'not-allowed' : 'pointer',
-                opacity: isUpdating ? 0.6 : 1,
-                fontWeight: '500',
-                transition: 'all 0.2s',
-              }}
+              className={`${styles.actionButton} ${message.wasModified ? styles.modifiedBadge : styles.modifyButton}`}
+              style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
             >
               {isUpdating ? '⏳ Saving...' : message.wasModified ? '✎ Modified' : '✎ Modify'}
             </button>
