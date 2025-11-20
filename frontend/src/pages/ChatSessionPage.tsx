@@ -31,6 +31,11 @@ import { useMessages, type Message } from '../hooks/useMessages';
 import { useMRTools, type ActiveMRTool } from '../hooks/useMRTools';
 import { useGlobalRecommendations } from '../hooks/useGlobalRecommendations';
 
+// Phase 2 Refactoring: Message Components
+import MessageList from '../components/MessageList';
+import { type TrustBadge, type MRRecommendation } from '../components/TrustIndicator';
+import { type ReflectionResponse } from '../components/QuickReflection';
+
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
 const PatternAnalysisWindow = lazy(() => import('../components/chat/PatternAnalysisWindow'));
@@ -921,6 +926,19 @@ const ChatSessionPage: React.FC = () => {
   }, [messages, openMR6CrossModel]);
 
   /**
+   * Handle trust indicator recommendation click (MR9)
+   */
+  const handleTrustRecommendationClick = useCallback((recommendation: MRRecommendation) => {
+    if (recommendation.tool === 'mr11-verify') openMR11Verification();
+    else if (recommendation.tool === 'mr12-critical') setActiveMRTool('mr12-critical');
+    else if (recommendation.tool === 'mr6-models') openMR6CrossModel();
+    else if (recommendation.tool === 'mr14-reflection') openMR14Reflection();
+    else if (recommendation.tool === 'mr13-uncertainty') setActiveMRTool('mr13-uncertainty');
+    else if (recommendation.tool === 'mr5-iteration') openMR5Iteration();
+    setShowMRToolsSection(true);
+  }, [openMR11Verification, setActiveMRTool, openMR6CrossModel, openMR14Reflection, openMR5Iteration, setShowMRToolsSection]);
+
+  /**
    * MR9 Dynamic Orchestration: Calculate trust score and recommend MR tools
    * Runs automatically for each AI message
    */
@@ -996,401 +1014,20 @@ const ChatSessionPage: React.FC = () => {
     }
   }, []);
 
-  /**
-   * Render individual message for virtualized list
-   * Optimized version that maintains all functionality without performance overhead
-   */
-  const renderMessage = useCallback(
-    (message: Message, index: number) => (
-      <div
-        key={message.id}
-        style={{
-          marginBottom: '1rem',
-          display: 'flex',
-          justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
-          animation: 'fadeIn 0.3s ease-in-out',
-          padding: '0 0.5rem',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '65%',
-            padding: '1rem',
-            borderRadius: message.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '1rem 1rem 1rem 0.25rem',
-            backgroundColor: message.role === 'user' ? '#93c5fd' : '#fff',
-            color: message.role === 'user' ? '#0c4a6e' : '#1f2937',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-            borderLeft: message.role === 'ai' ? `3px solid ${message.wasVerified ? '#10b981' : '#3b82f6'}` : 'none',
-          }}
-        >
-          {editingMessageId === message.id ? (
-            <div>
-              <textarea
-                value={editedContent}
-                onChange={(e) => setEditedContent(e.target.value)}
-                style={{
-                  width: '100%',
-                  minHeight: '150px',
-                  padding: '0.75rem',
-                  border: '2px solid #3b82f6',
-                  borderRadius: '0.5rem',
-                  fontSize: '0.875rem',
-                  lineHeight: '1.5',
-                  resize: 'vertical',
-                  fontFamily: 'inherit',
-                }}
-                autoFocus
-              />
-              <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
-                <button
-                  onClick={() => saveEditedMessage(message.id)}
-                  disabled={updatingMessageId === message.id}
-                  style={{
-                    fontSize: '0.75rem',
-                    padding: '0.4rem 0.75rem',
-                    backgroundColor: '#10b981',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '0.375rem',
-                    cursor: 'pointer',
-                    fontWeight: '500',
-                  }}
-                >
-                  {updatingMessageId === message.id ? '⏳ Saving...' : '💾 Save'}
-                </button>
-                <button
-                  onClick={cancelEditingMessage}
-                  style={{
-                    fontSize: '0.75rem',
-                    padding: '0.4rem 0.75rem',
-                    backgroundColor: '#f3f4f6',
-                    color: '#374151',
-                    border: 'none',
-                    borderRadius: '0.375rem',
-                    cursor: 'pointer',
-                    fontWeight: '500',
-                  }}
-                >
-                  ✕ Cancel
-                </button>
-              </div>
-            </div>
-          ) : (
-            <p
-              style={{
-                margin: '0',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word',
-                lineHeight: '1.5',
-              }}
-            >
-              <MarkdownText content={message.content} />
-            </p>
-          )}
-          <p
-            style={{
-              margin: '0.75rem 0 0 0',
-              fontSize: '0.75rem',
-              opacity: 0.6,
-            }}
-          >
-            {new Date(message.timestamp).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </p>
 
-          {/* MR9 Trust Indicator - Shows trust level for AI messages */}
-          {message.role === 'ai' && showTrustIndicator && (() => {
-            const orchestrationResult = orchestrateForMessage(message, index);
-            if (!orchestrationResult) return null;
+  // ========================================================
+  // PHASE 2 REFACTORING: Removed renderMessage Function
+  // ========================================================
+  // The renderMessage function (~395 lines) has been extracted to:
+  //   - MessageList component (message list orchestration)
+  //   - MessageItem component (individual message display)
+  //   - TrustIndicator component (MR9 trust calibration)
+  //   - QuickReflection component (MR14 reflection prompts)
+  //   - MR6Suggestion component (cross-model comparison suggestions)
+  //
+  // All message rendering logic is now handled by these components.
+  // ========================================================
 
-            const trustScore = messageTrustScores.get(message.id) || 0;
-            const badge = getTrustBadge(trustScore);
-
-            return (
-              <div
-                style={{
-                  marginTop: '0.75rem',
-                  padding: '0.5rem 0.75rem',
-                  backgroundColor: badge.bgColor,
-                  borderRadius: '0.375rem',
-                  border: `1px solid ${badge.color}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  fontSize: '0.75rem',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span>{badge.icon}</span>
-                  <span style={{ fontWeight: '600', color: badge.color }}>{badge.label}</span>
-                  <span style={{ opacity: 0.7 }}>({trustScore.toFixed(0)}%)</span>
-                </div>
-                {orchestrationResult.recommendations.length > 0 && (
-                  <button
-                    onClick={() => {
-                      const topRec = orchestrationResult.recommendations[0];
-                      if (topRec.tool === 'mr11-verify') openMR11Verification();
-                      else if (topRec.tool === 'mr12-critical') setActiveMRTool('mr12-critical');
-                      else if (topRec.tool === 'mr6-models') openMR6CrossModel();
-                      else if (topRec.tool === 'mr14-reflection') openMR14Reflection();
-                      else if (topRec.tool === 'mr13-uncertainty') setActiveMRTool('mr13-uncertainty');
-                      else if (topRec.tool === 'mr5-iteration') openMR5Iteration();
-                      setShowMRToolsSection(true);
-                    }}
-                    style={{
-                      fontSize: '0.7rem',
-                      padding: '0.25rem 0.5rem',
-                      backgroundColor: badge.color,
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '0.25rem',
-                      cursor: 'pointer',
-                      fontWeight: '500',
-                    }}
-                    title={orchestrationResult.recommendations[0].reason}
-                  >
-                    {orchestrationResult.recommendations[0].icon} {orchestrationResult.recommendations[0].toolName}
-                  </button>
-                )}
-              </div>
-            );
-          })()}
-
-          {/* Action buttons for AI messages */}
-          {message.role === 'ai' && (
-            <div
-              style={{
-                marginTop: '0.75rem',
-                display: 'flex',
-                gap: '0.5rem',
-                paddingTop: '0.75rem',
-                borderTop: '1px solid rgba(0, 0, 0, 0.05)',
-              }}
-            >
-              <button
-                onClick={() => markAsVerified(message.id)}
-                disabled={updatingMessageId === message.id}
-                title="✓ VERIFY: Confirm this AI response is correct and helpful."
-                style={{
-                  fontSize: '0.75rem',
-                  padding: '0.4rem 0.75rem',
-                  backgroundColor: message.wasVerified ? '#10b981' : '#f3f4f6',
-                  color: message.wasVerified ? '#fff' : '#374151',
-                  border: 'none',
-                  borderRadius: '0.375rem',
-                  cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
-                  opacity: updatingMessageId === message.id ? 0.6 : 1,
-                  fontWeight: '500',
-                  transition: 'all 0.2s',
-                }}
-              >
-                {updatingMessageId === message.id ? '⏳ Saving...' : message.wasVerified ? '✓ Verified' : '✓ Verify'}
-              </button>
-              <button
-                onClick={() => markAsModified(message.id)}
-                disabled={updatingMessageId === message.id}
-                title="✎ MODIFY: Check this if you edited or improved the AI's response."
-                style={{
-                  fontSize: '0.75rem',
-                  padding: '0.4rem 0.75rem',
-                  backgroundColor: message.wasModified ? '#f59e0b' : '#f3f4f6',
-                  color: message.wasModified ? '#fff' : '#374151',
-                  border: 'none',
-                  borderRadius: '0.375rem',
-                  cursor: updatingMessageId === message.id ? 'not-allowed' : 'pointer',
-                  opacity: updatingMessageId === message.id ? 0.6 : 1,
-                  fontWeight: '500',
-                  transition: 'all 0.2s',
-                }}
-              >
-                {updatingMessageId === message.id ? '⏳ Saving...' : message.wasModified ? '✎ Modified' : '✎ Modify'}
-              </button>
-            </div>
-          )}
-
-          {/* Quick Reflection Prompt (MR14) - Shows after AI messages */}
-          {message.role === 'ai' && !reflectedMessages.has(message.id) && (
-            <div
-              style={{
-                marginTop: '0.75rem',
-                padding: '0.75rem',
-                backgroundColor: '#fef3c7',
-                borderRadius: '0.5rem',
-                border: '1px solid #fcd34d',
-              }}
-            >
-              {showQuickReflection === message.id ? (
-                <div>
-                  <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.8rem', fontWeight: '500', color: '#92400e' }}>
-                    Quick Reflection
-                  </p>
-                  <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.75rem', color: '#78350f' }}>
-                    How confident are you in this response? What would you verify?
-                  </p>
-                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    <button
-                      onClick={() => handleQuickReflection(message.id, 'confident')}
-                      style={{
-                        fontSize: '0.7rem',
-                        padding: '0.3rem 0.6rem',
-                        backgroundColor: '#10b981',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '0.25rem',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      Confident
-                    </button>
-                    <button
-                      onClick={() => handleQuickReflection(message.id, 'needs-verify')}
-                      style={{
-                        fontSize: '0.7rem',
-                        padding: '0.3rem 0.6rem',
-                        backgroundColor: '#f59e0b',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '0.25rem',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      Need to Verify
-                    </button>
-                    <button
-                      onClick={() => handleQuickReflection(message.id, 'uncertain')}
-                      style={{
-                        fontSize: '0.7rem',
-                        padding: '0.3rem 0.6rem',
-                        backgroundColor: '#ef4444',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '0.25rem',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      Uncertain
-                    </button>
-                    <button
-                      onClick={() => handleQuickReflection(message.id, 'skip')}
-                      style={{
-                        fontSize: '0.7rem',
-                        padding: '0.3rem 0.6rem',
-                        backgroundColor: '#e5e7eb',
-                        color: '#6b7280',
-                        border: 'none',
-                        borderRadius: '0.25rem',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      Skip
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setShowQuickReflection(message.id)}
-                  style={{
-                    width: '100%',
-                    fontSize: '0.75rem',
-                    padding: '0.4rem',
-                    backgroundColor: 'transparent',
-                    color: '#92400e',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.25rem',
-                  }}
-                >
-                  <span>Take a moment to reflect on this response</span>
-                </button>
-              )}
-            </div>
-          )}
-
-          {/* MR6 Multi-Model Comparison Suggestion - Shows after AI messages when iteration detected */}
-          {shouldSuggestMR6(message, index) && (
-            <div
-              style={{
-                marginTop: '0.75rem',
-                padding: '0.75rem',
-                backgroundColor: '#dbeafe',
-                borderRadius: '0.5rem',
-                border: '2px solid #3b82f6',
-              }}
-            >
-              {showMR6Suggestion === message.id ? (
-                <div>
-                  <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1e40af' }}>
-                    🔄 Compare Multiple AI Models
-                  </h4>
-                  <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.75rem', color: '#1e3a8a', lineHeight: '1.4' }}>
-                    You're iterating on this response! Try comparing outputs from GPT-4, Claude, and Gemini to find the best solution. Different models excel at different tasks.
-                  </p>
-                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    <button
-                      onClick={() => handleMR6Suggestion(message.id, 'accept')}
-                      style={{
-                        fontSize: '0.75rem',
-                        padding: '0.5rem 0.75rem',
-                        backgroundColor: '#3b82f6',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '0.375rem',
-                        cursor: 'pointer',
-                        fontWeight: '500',
-                      }}
-                      title="Open Multi-Model Comparison (MR6)"
-                    >
-                      🔄 Compare Models (MR6)
-                    </button>
-                    <button
-                      onClick={() => handleMR6Suggestion(message.id, 'dismiss')}
-                      style={{
-                        fontSize: '0.75rem',
-                        padding: '0.5rem 0.75rem',
-                        backgroundColor: '#e5e7eb',
-                        color: '#6b7280',
-                        border: 'none',
-                        borderRadius: '0.375rem',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      Not Now
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setShowMR6Suggestion(message.id)}
-                  style={{
-                    width: '100%',
-                    fontSize: '0.75rem',
-                    padding: '0.4rem',
-                    backgroundColor: 'transparent',
-                    color: '#1e40af',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.25rem',
-                    fontWeight: '500',
-                  }}
-                >
-                  <span>💡 Try comparing multiple AI models for better results</span>
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    ),
-    [updatingMessageId, markAsVerified, markAsModified, editingMessageId, editedContent, saveEditedMessage, cancelEditingMessage, reflectedMessages, showQuickReflection, handleQuickReflection, shouldSuggestMR6, showMR6Suggestion, handleMR6Suggestion, showTrustIndicator, orchestrateForMessage, messageTrustScores, getTrustBadge, openMR11Verification, openMR6CrossModel, openMR14Reflection, openMR5Iteration, setActiveMRTool, setShowMRToolsSection]
-  );
 
   /**
    * Create a new chat session
@@ -3008,7 +2645,7 @@ const ChatSessionPage: React.FC = () => {
             </div>
           )}
 
-          {/* Simple Message List - Temporary replacement for VirtualizedMessageList */}
+          {/* Phase 2 Refactoring: MessageList Component */}
           {messages.length > 0 && (
             <div
               ref={virtualizedListRef as any}
@@ -3016,38 +2653,36 @@ const ChatSessionPage: React.FC = () => {
                 flex: 1,
                 overflowY: 'auto',
                 overflowX: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                padding: '0.5rem 0',
               }}
             >
-              {messages.map((message, index) => (
-                <div key={message.id}>
-                  {renderMessage(message, index)}
-                </div>
-              ))}
-              {hasMoreMessages && !isLoadingMore && (
-                <button
-                  onClick={loadMoreMessages}
-                  style={{
-                    margin: '1rem auto',
-                    padding: '0.5rem 1rem',
-                    backgroundColor: '#3b82f6',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '0.375rem',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Load More Messages
-                </button>
-              )}
-              {isLoadingMore && (
-                <div style={{ textAlign: 'center', padding: '1rem', color: '#6b7280' }}>
-                  Loading more messages...
-                </div>
-              )}
+              <MessageList
+                messages={messages}
+                editingMessageId={editingMessageId}
+                editedContent={editedContent}
+                updatingMessageId={updatingMessageId}
+                onEditContentChange={setEditedContent}
+                onSaveEdit={saveEditedMessage}
+                onCancelEdit={cancelEditingMessage}
+                onVerify={markAsVerified}
+                onModify={markAsModified}
+                showTrustIndicator={showTrustIndicator}
+                messageTrustScores={messageTrustScores}
+                getTrustBadge={getTrustBadge}
+                orchestrateForMessage={orchestrateForMessage}
+                onTrustRecommendationClick={handleTrustRecommendationClick}
+                reflectedMessages={reflectedMessages}
+                showQuickReflection={showQuickReflection}
+                onExpandQuickReflection={setShowQuickReflection}
+                onQuickReflectionRespond={handleQuickReflection}
+                shouldSuggestMR6={shouldSuggestMR6}
+                showMR6Suggestion={showMR6Suggestion}
+                onExpandMR6Suggestion={setShowMR6Suggestion}
+                onMR6SuggestionAccept={(id) => handleMR6Suggestion(id, 'accept')}
+                onMR6SuggestionDismiss={(id) => handleMR6Suggestion(id, 'dismiss')}
+                hasMoreMessages={hasMoreMessages}
+                isLoadingMore={isLoadingMore}
+                onLoadMore={loadMoreMessages}
+              />
             </div>
           )}
 
