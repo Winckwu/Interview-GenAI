@@ -23,12 +23,14 @@ interface MR14Props {
   conversationSummary?: string;
   onReflectionComplete?: (log: ReflectionLog) => void;
   showMetacognitive?: boolean;
+  onOpenMR15?: () => void; // NEW: Callback to open MR15 metacognitive strategy guide
 }
 
 export const MR14GuidedReflectionMechanism: React.FC<MR14Props> = ({
   conversationSummary = '',
   onReflectionComplete,
   showMetacognitive = true,
+  onOpenMR15,
 }) => {
   const [stage, setStage] = useState<'immediate' | 'structured' | 'metacognitive' | 'complete'>(
     'immediate'
@@ -149,6 +151,39 @@ export const MR14GuidedReflectionMechanism: React.FC<MR14Props> = ({
               <h2>Reflection Complete!</h2>
               <p>Your reflection has been saved to your learning log.</p>
             </div>
+
+            {/* MR Integration: Recommend strategy learning after reflection */}
+            {onOpenMR15 && (
+              <div style={{
+                backgroundColor: '#fef3c7',
+                border: '2px solid #f59e0b',
+                borderRadius: '0.5rem',
+                padding: '1rem',
+                margin: '1.5rem 0',
+              }}>
+                <h3 style={{ margin: '0 0 0.5rem 0', color: '#92400e' }}>
+                  📚 下一步建议：学习元认知策略
+                </h3>
+                <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+                  您已完成反思！现在是学习元认知策略的好时机。系统会教您如何更有效地规划、监控、评估和调整与AI的协作，帮助您成为更高效的AI用户。
+                </p>
+                <button
+                  onClick={onOpenMR15}
+                  style={{
+                    backgroundColor: '#f59e0b',
+                    color: 'white',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '0.375rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                  }}
+                  title="打开元认知策略指南 - 学习高效AI协作策略"
+                >
+                  📚 学习元认知策略 (MR15)
+                </button>
+              </div>
+            )}
           </div>
         );
 

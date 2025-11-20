@@ -61,6 +61,9 @@ interface MR15Props {
   suggestionsCount?: number;
   verificationRate?: number; // 0-1
   iterationRate?: number; // 0-1
+
+  // NEW: Callback to open MR19 metacognitive capability assessment
+  onOpenMR19?: () => void;
 }
 
 export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
@@ -71,7 +74,8 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
   sessionDuration = 0,
   suggestionsCount = 0,
   verificationRate = 0.5,
-  iterationRate = 0.3
+  iterationRate = 0.3,
+  onOpenMR19
 }) => {
   // State management
   const [selectedCategory, setSelectedCategory] = useState<StrategyCategory>('planning');
@@ -449,6 +453,39 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
             {scaffoldLevel === 'low' && 'You\'re learning fundamentals. Detailed guidance provided.'}
           </p>
         </div>
+
+        {/* MR Integration: Recommend capability assessment after learning strategies */}
+        {onOpenMR19 && completedLessons.size >= 3 && (
+          <div style={{
+            backgroundColor: '#dbeafe',
+            border: '2px solid #3b82f6',
+            borderRadius: '0.5rem',
+            padding: '1rem',
+            margin: '1.5rem 0',
+          }}>
+            <h3 style={{ margin: '0 0 0.5rem 0', color: '#1e40af' }}>
+              🎯 下一步建议：评估元认知能力
+            </h3>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+              您已学习了 {completedLessons.size} 个策略！现在建议进行元认知能力评估，系统将分析您在规划、监控、评估和调整四个维度的能力，并为您提供个性化的改进建议。
+            </p>
+            <button
+              onClick={onOpenMR19}
+              style={{
+                backgroundColor: '#3b82f6',
+                color: 'white',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: '500',
+              }}
+              title="打开元认知能力评估 - 了解您的优势和待提升领域"
+            >
+              🎯 评估我的元认知能力 (MR19)
+            </button>
+          </div>
+        )}
       </div>
     );
   };

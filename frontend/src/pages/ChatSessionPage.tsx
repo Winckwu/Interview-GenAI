@@ -975,6 +975,16 @@ const ChatSessionPage: React.FC = () => {
   }, []);
 
   /**
+   * Open MR19 for metacognitive capability assessment
+   */
+  const openMR19CapabilityAssessment = useCallback(() => {
+    setActiveMRTool('mr19-assessment');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开元认知能力评估 (MR19)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
    * Mark interaction as modified (starts editing mode)
    * Opens MR5 immediately so user can view history while editing
    * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
@@ -3159,8 +3169,8 @@ const ChatSessionPage: React.FC = () => {
                       {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
                       {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding aiOutput={messages[messages.length - 1]?.content || ''} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
                       {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty onAnalysisComplete={(u) => console.log('Uncertainty:', u)} onOpenMR11={openMR11Verification} onOpenMR6={openMR6CrossModel} />}
-                      {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} />}
-                      {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} />}
+                      {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} onOpenMR15={openMR15StrategyGuide} />}
+                      {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} onOpenMR19={openMR19CapabilityAssessment} />}
                       {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention sessionId={sessionId || ''} onExerciseComplete={(e) => console.log('Exercise:', e)} />}
                       {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization userId={user?.id || sessionId || ''} />}
                     </Suspense>
