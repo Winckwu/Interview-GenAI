@@ -746,6 +746,10 @@ const ChatSessionPage: React.FC = () => {
 
       setSuccessMessage('✓ Response marked as verified!');
       setTimeout(() => setSuccessMessage(null), 2000);
+
+      // Open MR11 Integrated Verification tool for detailed verification workflow
+      setActiveMRTool('mr11-verify');
+      setShowMRToolsSection(true);
     } catch (err: any) {
       console.error('Verification error:', err);
       const errorMsg = err.response?.data?.error || 'Failed to mark as verified';
@@ -786,6 +790,10 @@ const ChatSessionPage: React.FC = () => {
 
       setSuccessMessage('✎ Response marked as modified!');
       setTimeout(() => setSuccessMessage(null), 2000);
+
+      // Open MR5 Low Cost Iteration tool for tracking iteration history
+      setActiveMRTool('mr5-iteration');
+      setShowMRToolsSection(true);
     } catch (err: any) {
       console.error('Modification error:', err);
       const errorMsg = err.response?.data?.error || 'Failed to mark as modified';
