@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef, Suspense, lazy } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import api from '../services/api';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
@@ -203,6 +203,7 @@ const createDebounce = <T extends (...args: any[]) => Promise<any>>(func: T, del
 const ChatSessionPage: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuthStore();
   const { addInteraction, deleteSession: deleteSessionFromStore } = useSessionStore();
   const { setSidebarOpen } = useUIStore();
@@ -383,6 +384,11 @@ const ChatSessionPage: React.FC = () => {
 
     loadSessions();
   }, []);
+
+  // Auto-close sidebar when route changes (e.g., clicking AI Chat navigation)
+  useEffect(() => {
+    setSessionSidebarOpen(false);
+  }, [location.pathname]);
 
   // Load session data and previous interactions on mount
   useEffect(() => {
