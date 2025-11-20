@@ -20,6 +20,16 @@ import {
   type OrchestrationResult,
   type OrchestrationContext,
 } from '../utils/MROrchestrator';
+import {
+  generateMRRecommendations,
+  analyzeBehaviorPattern,
+  determineSessionPhase,
+  generateWelcomeMessage,
+  getChainCompletionStatus,
+  type UserContext,
+  type MRRecommendationSet,
+  type UserExperienceLevel,
+} from '../utils/GlobalMRRecommendationEngine';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -250,6 +260,11 @@ const ChatSessionPage: React.FC = () => {
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
   const [orchestrationResults, setOrchestrationResults] = useState<Map<string, any>>(new Map());
   const [showTrustIndicator, setShowTrustIndicator] = useState<boolean>(true);
+  // Global MR Recommendation System
+  const [mrRecommendations, setMRRecommendations] = useState<MRRecommendationSet[]>([]);
+  const [showRecommendationPanel, setShowRecommendationPanel] = useState<boolean>(true);
+  const [expandedRecommendation, setExpandedRecommendation] = useState<string | null>(null);
+  const [usedMRTools, setUsedMRTools] = useState<string[]>([]);
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
@@ -579,6 +594,55 @@ const ChatSessionPage: React.FC = () => {
 
     loadSessionAndHistory();
   }, [sessionId, navigate]);
+
+  /**
+   * Global MR Recommendation System: Generate recommendations based on user context
+   */
+  useEffect(() => {
+    if (!sessionData) return;
+
+    // Build user context
+    const verifiedCount = messages.filter(m => m.role === 'ai' && m.wasVerified).length;
+    const modifiedCount = messages.filter(m => m.role === 'ai' && m.wasModified).length;
+
+    const userContext: UserContext = {
+      userId: user?.id,
+      experienceLevel: 'intermediate' as UserExperienceLevel, // Can be enhanced with user profile
+      taskType: sessionData.taskType || 'general',
+      taskCriticality: sessionData.taskImportance === 3 ? 'high' : sessionData.taskImportance === 2 ? 'medium' : 'low',
+      sessionPhase: determineSessionPhase({
+        userId: user?.id,
+        experienceLevel: 'intermediate',
+        taskType: sessionData.taskType || 'general',
+        taskCriticality: sessionData.taskImportance === 3 ? 'high' : sessionData.taskImportance === 2 ? 'medium' : 'low',
+        sessionPhase: 'active',
+        messageCount: messages.length,
+        verifiedCount,
+        modifiedCount,
+        consecutiveUnverified: consecutiveNoVerify,
+        hasUsedMRTools: usedMRTools,
+      }),
+      messageCount: messages.length,
+      verifiedCount,
+      modifiedCount,
+      consecutiveUnverified: consecutiveNoVerify,
+      hasUsedMRTools: usedMRTools,
+    };
+
+    // Generate recommendations
+    const recommendations = generateMRRecommendations(userContext);
+    setMRRecommendations(recommendations);
+  }, [messages, sessionData, user, consecutiveNoVerify, usedMRTools]);
+
+  /**
+   * Track when MR tools are opened
+   */
+  const trackMRToolUsage = useCallback((toolId: string) => {
+    setUsedMRTools(prev => {
+      if (prev.includes(toolId)) return prev;
+      return [...prev, toolId];
+    });
+  }, []);
 
   /**
    * Send user prompt and get AI response from OpenAI API
