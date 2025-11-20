@@ -1889,58 +1889,135 @@ const ChatSessionPage: React.FC = () => {
         }
 
         .mr17-container {
-          gap: 0.5rem !important;
+          gap: 0.35rem !important;
         }
 
         .mr17-feedback-banner {
-          padding: 0.5rem !important;
+          padding: 0.4rem !important;
+          border-left-width: 2px !important;
         }
 
         .mr17-feedback-banner p {
-          font-size: 0.6rem !important;
-        }
-
-        .mr17-nav-tabs {
-          gap: 0.25rem !important;
-        }
-
-        .mr17-nav-tab {
-          padding: 0.35rem 0.5rem !important;
-          font-size: 0.6rem !important;
-        }
-
-        .mr17-section {
-          padding: 0.5rem !important;
-        }
-
-        .mr17-section h3 {
-          font-size: 0.75rem !important;
-          margin-bottom: 0.4rem !important;
-        }
-
-        .mr17-chart-container {
-          height: 120px !important;
-        }
-
-        .mr17-metric-card {
-          padding: 0.4rem !important;
-        }
-
-        .mr17-metric-value {
-          font-size: 1rem !important;
-        }
-
-        .mr17-metric-label {
           font-size: 0.55rem !important;
         }
 
-        .mr17-skill-item {
+        .mr17-nav-tabs {
+          gap: 0.2rem !important;
+          padding-bottom: 0.4rem !important;
+          margin-bottom: 0.4rem !important;
+        }
+
+        .mr17-nav-tab, .mr17-tab {
+          padding: 0.25rem 0.4rem !important;
+          font-size: 0.55rem !important;
+        }
+
+        /* Key fix: reduce section backgrounds to prevent overlap */
+        .mr17-section {
           padding: 0.4rem !important;
+          margin-bottom: 0.35rem !important;
+          border-radius: 4px !important;
+          box-shadow: none !important;
+        }
+
+        .mr17-section h3 {
+          font-size: 0.7rem !important;
+          margin-bottom: 0.3rem !important;
+        }
+
+        .mr17-section h4 {
+          font-size: 0.65rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+
+        /* Tab content spacing */
+        .mr17-tab-content {
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 0.35rem !important;
+        }
+
+        /* Stats grid - compact */
+        .mr17-stats {
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 0.3rem !important;
+        }
+
+        .mr17-stat {
+          padding: 0.35rem !important;
+          gap: 0.2rem !important;
+          border-radius: 4px !important;
+        }
+
+        .mr17-stat .label {
+          font-size: 0.45rem !important;
+        }
+
+        .mr17-stat .value {
+          font-size: 0.85rem !important;
+        }
+
+        /* Milestones - compact */
+        .mr17-milestones-list {
+          grid-template-columns: 1fr !important;
+          gap: 0.3rem !important;
+        }
+
+        .mr17-milestone {
+          padding: 0.35rem !important;
+          border-left-width: 2px !important;
+          border-radius: 4px !important;
+        }
+
+        .mr17-milestone-title {
           font-size: 0.6rem !important;
         }
 
+        .mr17-milestone-date {
+          font-size: 0.5rem !important;
+        }
+
+        .mr17-chart-container {
+          height: 100px !important;
+        }
+
+        .mr17-metric-card {
+          padding: 0.35rem !important;
+        }
+
+        .mr17-metric-value {
+          font-size: 0.9rem !important;
+        }
+
+        .mr17-metric-label {
+          font-size: 0.5rem !important;
+        }
+
+        .mr17-skill-item {
+          padding: 0.3rem !important;
+          font-size: 0.55rem !important;
+        }
+
         .mr17-progress-bar {
-          height: 6px !important;
+          height: 4px !important;
+        }
+
+        /* Empty state - compact */
+        .mr17-empty-state, .mr17-empty-message {
+          padding: 0.75rem !important;
+          font-size: 0.55rem !important;
+        }
+
+        /* Knowledge graph section */
+        .mr17-graph-container {
+          height: 120px !important;
+          margin-bottom: 0.3rem !important;
+        }
+
+        /* Skills list */
+        .mr17-skills-grid {
+          grid-template-columns: 1fr !important;
+          gap: 0.25rem !important;
         }
       `}</style>
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
