@@ -27,7 +27,7 @@ import {
 } from '../utils/GlobalMRRecommendationEngine';
 
 // Phase 1 Refactoring: Custom Hooks
-import { useMessages, type Message } from '../hooks/useMessages';
+import { useMessages, type Message, MESSAGES_PER_PAGE } from '../hooks/useMessages';
 import { useMRTools, type ActiveMRTool } from '../hooks/useMRTools';
 import { useGlobalRecommendations } from '../hooks/useGlobalRecommendations';
 
@@ -291,9 +291,13 @@ const ChatSessionPage: React.FC = () => {
     editingMessageId,
     editedContent,
     currentPage,
+    setCurrentPage,
     hasMoreMessages,
+    setHasMoreMessages,
     isLoadingMore,
+    setIsLoadingMore,
     totalMessagesCount,
+    setTotalMessagesCount,
     handleSendMessage: sendMessage,
     markAsVerified,
     markAsModified: markAsModifiedBase,

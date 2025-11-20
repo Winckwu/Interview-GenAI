@@ -66,13 +66,17 @@ export interface UseMessagesReturn {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   setSuccessMessage: React.Dispatch<React.SetStateAction<string | null>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  setHasMoreMessages: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoadingMore: React.Dispatch<React.SetStateAction<boolean>>;
+  setTotalMessagesCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 // ============================================================
 // UTILITIES
 // ============================================================
 
-const MESSAGES_PER_PAGE = 20;
+export const MESSAGES_PER_PAGE = 20;
 
 /**
  * Batch update interactions to reduce API calls
@@ -458,6 +462,10 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     setMessages,
     setError,
     setSuccessMessage,
+    setCurrentPage,
+    setHasMoreMessages,
+    setIsLoadingMore,
+    setTotalMessagesCount,
   };
 }
 
