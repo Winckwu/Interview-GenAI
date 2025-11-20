@@ -755,287 +755,52 @@ const ChatSessionPage: React.FC = () => {
     };
   }, [sessionId, sessionStartTime, sessionActive, messages.length]);
 
-  /**
-   * Load more messages when user scrolls to end
-   */
-  const loadMoreMessages = useCallback(async () => {
-    if (!hasMoreMessages || isLoadingMore) return;
-    await loadMessagesPage(currentPage + 1);
-  }, [hasMoreMessages, isLoadingMore, currentPage]);
+
+  // ========================================================
+  // PHASE 1 REFACTORING: Removed Duplicate Functions
+  // ========================================================
+  // The following functions have been extracted to custom hooks:
+  //
+  // FROM useMessages hook (messagesHook):
+  //   - loadMoreMessages
+  //   - markAsVerified  
+  //   - startEditingMessage
+  //   - saveEditedMessage
+  //   - cancelEditingMessage
+  //   - markAsModified (base version, wrapped below)
+  //
+  // FROM useMRTools hook (mrToolsHook):
+  //   - openMR1Decomposition
+  //   - openMR2History
+  //   - openMR3AgencyControl
+  //   - openMR4RoleDefinition
+  //   - openMR5Iteration
+  //   - openMR6CrossModel
+  //   - openMR7FailureLearning
+  //   - openMR8TaskRecognition
+  //   - openMR9TrustCalibration
+  //   - openMR10CostBenefit
+  //   - openMR11Verification
+  //   - openMR12CriticalThinking
+  //   - openMR13Uncertainty
+  //   - openMR14Reflection
+  //   - openMR15StrategyGuide
+  //   - openMR16SkillAtrophy
+  //   - openMR17LearningVisualization
+  //   - openMR19CapabilityAssessment
+  // ========================================================
 
   /**
-   * Mark interaction as verified (OPTIMIZED: Uses batch endpoint if available)
-   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
-   */
-  const markAsVerified = useCallback(async (messageId: string) => {
-    setUpdatingMessageId(messageId);
-    try {
-      // OPTIMIZATION: Try batch endpoint first, fallback to individual call
-      const response = await batchUpdateInteractions([
-        { id: messageId, wasVerified: true, wasModified: false, wasRejected: false }
-      ]);
-
-      // Extract the updated interaction from batch response
-      const updatedInteraction = response.data.data[0]?.data?.interaction ||
-                                  response.data.data[0];
-
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === messageId
-            ? {
-                ...msg,
-                wasVerified: updatedInteraction?.wasVerified ?? true,
-                wasModified: updatedInteraction?.wasModified ?? false,
-                wasRejected: updatedInteraction?.wasRejected ?? false,
-              }
-            : msg
-        )
-      );
-
-      setSuccessMessage('✓ Response marked as verified!');
-      setTimeout(() => setSuccessMessage(null), 2000);
-
-      // Open MR11 Integrated Verification tool for detailed verification workflow
-      setActiveMRTool('mr11-verify');
-      setShowMRToolsSection(true);
-    } catch (err: any) {
-      console.error('Verification error:', err);
-      const errorMsg = err.response?.data?.error || 'Failed to mark as verified';
-      setError(errorMsg);
-    } finally {
-      setUpdatingMessageId(null);
-    }
-  }, []);
-
-  /**
-   * Start editing mode for a message
-   * Allows user to directly modify AI output
-   */
-  const startEditingMessage = useCallback((messageId: string, content: string) => {
-    setEditingMessageId(messageId);
-    setEditedContent(content);
-  }, []);
-
-  /**
-   * Cancel editing mode
-   */
-  const cancelEditingMessage = useCallback(() => {
-    setEditingMessageId(null);
-    setEditedContent('');
-  }, []);
-
-  /**
-   * Save edited content and mark as modified
-   */
-  const saveEditedMessage = useCallback(async (messageId: string) => {
-    setUpdatingMessageId(messageId);
-    try {
-      // Update the message content in local state
-      const originalContent = messages.find(m => m.id === messageId)?.content || '';
-
-      // Only proceed if content was actually changed
-      if (editedContent === originalContent) {
-        cancelEditingMessage();
-        setUpdatingMessageId(null);
-        return;
-      }
-
-      // Update message content locally first
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === messageId
-            ? {
-                ...msg,
-                content: editedContent,
-                wasModified: true,
-                wasVerified: false,
-                wasRejected: false,
-              }
-            : msg
-        )
-      );
-
-      // Mark as modified in backend
-      await batchUpdateInteractions([
-        { id: messageId, wasModified: true, wasVerified: false, wasRejected: false }
-      ]);
-
-      setSuccessMessage('✓ 修改已保存！请选择下一步操作：');
-      setShowModifiedChoiceUI(true);
-
-      // Auto-hide choice UI after 10 seconds (user can still manually select)
-      setTimeout(() => {
-        setShowModifiedChoiceUI(false);
-        setSuccessMessage(null);
-      }, 10000);
-
-      // Exit editing mode
-      cancelEditingMessage();
-    } catch (err: any) {
-      console.error('Save edit error:', err);
-      const errorMsg = err.response?.data?.error || 'Failed to save modification';
-      setError(errorMsg);
-    } finally {
-      setUpdatingMessageId(null);
-    }
-  }, [editedContent, messages, cancelEditingMessage]);
-
-  /**
-   * Open MR5 for iteration after modifying a message
-   */
-  const openMR5Iteration = useCallback(() => {
-    setActiveMRTool('mr5-iteration');
-    setShowMRToolsSection(true);
-    setShowModifiedChoiceUI(false);
-    setSuccessMessage('✓ 已打开迭代工具 (MR5)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR2 for viewing modification history
-   */
-  const openMR2History = useCallback(() => {
-    setActiveMRTool('mr2-transparency');
-    setShowMRToolsSection(true);
-    setShowModifiedChoiceUI(false);
-    setSuccessMessage('✓ 已打开变更历史 (MR2)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR11 for integrated verification
-   */
-  const openMR11Verification = useCallback(() => {
-    setActiveMRTool('mr11-verify');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开验证工具 (MR11)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR6 for cross-model experimentation
-   */
-  const openMR6CrossModel = useCallback(() => {
-    setActiveMRTool('mr6-models');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开跨模型对比 (MR6)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR12 for critical thinking scaffolding
-   */
-  const openMR12CriticalThinking = useCallback(() => {
-    setActiveMRTool('mr12-critical');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已激活批判性思维 (MR12)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR14 for guided reflection
-   */
-  const openMR14Reflection = useCallback(() => {
-    setActiveMRTool('mr14-reflection');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开引导反思 (MR14)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR4 for role definition (from task decomposition)
-   */
-  const openMR4RoleDefinition = useCallback(() => {
-    setActiveMRTool('mr4-roles');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开AI角色定义 (MR4)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR8 for task characteristic recognition (from role definition)
-   */
-  const openMR8TaskRecognition = useCallback(() => {
-    setActiveMRTool('mr8-recognition');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开任务特征识别 (MR8)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR3 for agency control
-   */
-  const openMR3AgencyControl = useCallback(() => {
-    setActiveMRTool('mr3-agency');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开人机协作控制 (MR3)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR9 for trust calibration
-   */
-  const openMR9TrustCalibration = useCallback(() => {
-    setActiveMRTool('mr9-trust');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开信任校准 (MR9)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR15 for strategy guide
-   */
-  const openMR15StrategyGuide = useCallback(() => {
-    setActiveMRTool('mr15-strategies');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开策略指南 (MR15)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR16 for skill atrophy prevention
-   */
-  const openMR16SkillAtrophy = useCallback(() => {
-    setActiveMRTool('mr16-atrophy');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开技能萎缩预防 (MR16)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR17 for learning visualization
-   */
-  const openMR17LearningVisualization = useCallback(() => {
-    setActiveMRTool('mr17-visualization');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开学习过程可视化 (MR17)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Open MR19 for metacognitive capability assessment
-   */
-  const openMR19CapabilityAssessment = useCallback(() => {
-    setActiveMRTool('mr19-assessment');
-    setShowMRToolsSection(true);
-    setSuccessMessage('✓ 已打开元认知能力评估 (MR19)');
-    setTimeout(() => setSuccessMessage(null), 2000);
-  }, []);
-
-  /**
-   * Mark interaction as modified (starts editing mode)
-   * Opens MR5 immediately so user can view history while editing
-   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
+   * markAsModified Wrapper - Adds MR5 opening logic to hook's markAsModified
+   * Opens MR5 immediately so user can view iteration history while editing
    */
   const markAsModified = useCallback((messageId: string) => {
-    const message = messages.find(m => m.id === messageId);
-    if (message) {
-      startEditingMessage(messageId, message.content);
-      // Open MR5 immediately so user can view history while editing
-      setActiveMRTool('mr5-iteration');
-      setShowMRToolsSection(true);
-    }
-  }, [messages, startEditingMessage]);
+    // Call hook's base markAsModified function
+    markAsModifiedBase(messageId);
+    // Open MR5 for iteration workflow
+    openMR5Iteration();
+  }, [markAsModifiedBase, openMR5Iteration]);
+
 
   /**
    * Handle quick reflection response (MR14)
