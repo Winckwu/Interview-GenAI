@@ -1323,6 +1323,527 @@ const ChatSessionPage: React.FC = () => {
           max-height: 150px !important;
           font-size: 0.6rem !important;
         }
+
+        /* MR1 Task Decomposition - Compact Sidebar Styles */
+        .mr1-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr1-header {
+          margin-bottom: 0.5rem !important;
+          padding-bottom: 0.5rem !important;
+          text-align: left !important;
+        }
+
+        .mr1-title {
+          font-size: 0.85rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+
+        .mr1-subtitle {
+          font-size: 0.65rem !important;
+        }
+
+        .mr1-progress-bar {
+          margin-bottom: 0.75rem !important;
+          padding-bottom: 0.75rem !important;
+          gap: 0.25rem !important;
+        }
+
+        .mr1-progress-item {
+          height: 3px !important;
+        }
+
+        .mr1-step-label {
+          font-size: 0.5rem !important;
+          top: 6px !important;
+        }
+
+        .mr1-step h2 {
+          font-size: 0.75rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr1-task-input {
+          height: 80px !important;
+          padding: 0.5rem !important;
+          font-size: 0.65rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr1-subtask-list {
+          gap: 0.35rem !important;
+        }
+
+        .mr1-subtask-item {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr1-btn, .mr1-btn-primary, .mr1-btn-secondary {
+          padding: 0.35rem 0.5rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        /* MR3 Human Agency Control - Compact Sidebar Styles */
+        .mr3-container {
+          padding: 0.5rem !important;
+          gap: 0.5rem !important;
+        }
+
+        .mr3-header {
+          padding-bottom: 0.35rem !important;
+          gap: 0.5rem !important;
+        }
+
+        .mr3-title {
+          font-size: 0.8rem !important;
+        }
+
+        .mr3-panel {
+          gap: 0.75rem !important;
+        }
+
+        .mr3-intervention-control {
+          gap: 0.5rem !important;
+        }
+
+        .mr3-level-option {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr3-suggestion-card {
+          padding: 0.5rem !important;
+        }
+
+        .mr3-suggestion-title {
+          font-size: 0.7rem !important;
+        }
+
+        .mr3-suggestion-text {
+          font-size: 0.6rem !important;
+        }
+
+        /* MR4 Role Definition - Compact Sidebar Styles */
+        .mr4-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr4-header {
+          margin-bottom: 0.5rem !important;
+          padding-bottom: 0.5rem !important;
+        }
+
+        .mr4-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr4-role-grid {
+          grid-template-columns: 1fr !important;
+          gap: 0.5rem !important;
+        }
+
+        .mr4-role-card {
+          padding: 0.5rem !important;
+        }
+
+        .mr4-role-name {
+          font-size: 0.7rem !important;
+        }
+
+        .mr4-role-description {
+          font-size: 0.6rem !important;
+        }
+
+        /* MR5 Low-Cost Iteration - Compact Sidebar Styles */
+        .mr5-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr5-header {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr5-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr5-branch-list {
+          gap: 0.35rem !important;
+        }
+
+        .mr5-branch-item {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr5-btn {
+          padding: 0.35rem 0.5rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        /* MR6 Cross-Model Experimentation - Compact Sidebar Styles */
+        .mr6-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr6-header {
+          margin-bottom: 0.5rem !important;
+          padding-bottom: 0.5rem !important;
+        }
+
+        .mr6-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr6-subtitle {
+          font-size: 0.65rem !important;
+        }
+
+        .mr6-layout {
+          display: block !important;
+          grid-template-columns: 1fr !important;
+        }
+
+        .mr6-controls {
+          padding: 0.5rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr6-textarea {
+          font-size: 0.6rem !important;
+          padding: 0.4rem !important;
+        }
+
+        .mr6-label {
+          font-size: 0.7rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr6-model-checkbox, .mr6-metric-checkbox {
+          font-size: 0.6rem !important;
+          gap: 0.4rem !important;
+        }
+
+        .mr6-results {
+          padding: 0.5rem !important;
+        }
+
+        .mr6-result-card {
+          padding: 0.5rem !important;
+        }
+
+        /* MR7 Failure Tolerance - Compact Sidebar Styles */
+        .mr7-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr7-header {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr7-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr7-log-list {
+          gap: 0.35rem !important;
+        }
+
+        .mr7-log-item {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        /* MR10 Cost-Benefit Analysis - Compact Sidebar Styles */
+        .mr10-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr10-header {
+          margin-bottom: 0.5rem !important;
+          padding-bottom: 0.5rem !important;
+        }
+
+        .mr10-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr10-subtitle {
+          font-size: 0.65rem !important;
+        }
+
+        .mr10-tabs {
+          gap: 0.25rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr10-tab {
+          padding: 0.35rem 0.5rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr10-form-group {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr10-input, .mr10-select, .mr10-textarea {
+          padding: 0.35rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr10-result-card {
+          padding: 0.5rem !important;
+        }
+
+        .mr10-chart {
+          height: 150px !important;
+        }
+
+        /* MR11 Integrated Verification - Compact Sidebar Styles */
+        .mr11-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr11-header {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr11-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr11-log-list {
+          gap: 0.35rem !important;
+        }
+
+        .mr11-log-item {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr11-btn {
+          padding: 0.35rem 0.5rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        /* MR12 Critical Thinking - Compact Sidebar Styles */
+        .mr12-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr12-header {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr12-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr12-question-list {
+          gap: 0.35rem !important;
+        }
+
+        .mr12-question-item {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        /* MR13 Transparent Uncertainty - Compact Sidebar Styles */
+        .mr13-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr13-header {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr13-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr13-confidence-bar {
+          height: 8px !important;
+        }
+
+        .mr13-uncertainty-item {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        /* MR14 Guided Reflection - Compact Sidebar Styles */
+        .mr14-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr14-header {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr14-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr14-prompt-card {
+          padding: 0.5rem !important;
+        }
+
+        .mr14-prompt-text {
+          font-size: 0.6rem !important;
+        }
+
+        .mr14-response-input {
+          font-size: 0.6rem !important;
+          padding: 0.4rem !important;
+        }
+
+        /* MR15 Metacognitive Strategy - Compact Sidebar Styles */
+        .mr15-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr15-header {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr15-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr15-strategy-list {
+          gap: 0.35rem !important;
+        }
+
+        .mr15-strategy-card {
+          padding: 0.4rem !important;
+        }
+
+        .mr15-strategy-name {
+          font-size: 0.7rem !important;
+        }
+
+        .mr15-strategy-description {
+          font-size: 0.6rem !important;
+        }
+
+        /* MR16 Skill Atrophy Prevention - Compact Sidebar Styles */
+        .mr16-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr16-header {
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr16-title {
+          font-size: 0.85rem !important;
+        }
+
+        .mr16-skill-grid {
+          grid-template-columns: 1fr !important;
+          gap: 0.35rem !important;
+        }
+
+        .mr16-skill-card {
+          padding: 0.4rem !important;
+        }
+
+        .mr16-skill-name {
+          font-size: 0.7rem !important;
+        }
+
+        .mr16-exercise-btn {
+          padding: 0.3rem 0.4rem !important;
+          font-size: 0.55rem !important;
+        }
+
+        /* MR17 Learning Process Visualization - Compact Sidebar Styles */
+        .mr17-learning-visualization {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr17-header {
+          margin-bottom: 0.5rem !important;
+          padding-bottom: 0.5rem !important;
+        }
+
+        .mr17-header h2 {
+          font-size: 0.85rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+
+        .mr17-header p {
+          font-size: 0.6rem !important;
+        }
+
+        .mr17-container {
+          gap: 0.5rem !important;
+        }
+
+        .mr17-feedback-banner {
+          padding: 0.5rem !important;
+        }
+
+        .mr17-feedback-banner p {
+          font-size: 0.6rem !important;
+        }
+
+        .mr17-nav-tabs {
+          gap: 0.25rem !important;
+        }
+
+        .mr17-nav-tab {
+          padding: 0.35rem 0.5rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr17-section {
+          padding: 0.5rem !important;
+        }
+
+        .mr17-section h3 {
+          font-size: 0.75rem !important;
+          margin-bottom: 0.4rem !important;
+        }
+
+        .mr17-chart-container {
+          height: 120px !important;
+        }
+
+        .mr17-metric-card {
+          padding: 0.4rem !important;
+        }
+
+        .mr17-metric-value {
+          font-size: 1rem !important;
+        }
+
+        .mr17-metric-label {
+          font-size: 0.55rem !important;
+        }
+
+        .mr17-skill-item {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr17-progress-bar {
+          height: 6px !important;
+        }
       `}</style>
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
       {/* Left Sidebar - Session History */}
