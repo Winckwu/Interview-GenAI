@@ -175,8 +175,9 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
    */
   const convertActiveMRToIntervention = useCallback(
     (mr: ActiveMR) => {
-      const tier: 'soft' | 'medium' | 'hard' =
-        mr.urgency === 'enforce' ? 'hard' : mr.urgency === 'remind' ? 'medium' : 'soft';
+      // Use tier from unified analysis if available, otherwise infer from urgency
+      const tier: 'soft' | 'medium' | 'hard' = mr.tier ||
+        (mr.urgency === 'enforce' ? 'hard' : mr.urgency === 'remind' ? 'medium' : 'soft');
 
       const baseIntervention = {
         id: `intervention-${mr.mrId}`,
@@ -184,6 +185,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         tier,
         confidence: 0.7, // Backend MR confidence is implicit in its activation
         timestamp: Date.now(),
+        content: mr.content, // Pre-generated content from unified GPT analysis
       };
 
       if (tier === 'soft') {

@@ -53,6 +53,9 @@ export interface ActiveMR {
   displayMode: 'inline' | 'sidebar' | 'modal';
   message: string;
   priority: number;
+  // Pre-generated content from unified GPT analysis
+  tier?: 'soft' | 'medium' | 'hard';
+  content?: any;
 }
 
 export interface OrchestratorResult {
@@ -68,7 +71,8 @@ interface MCAConversationOrchestratorProps {
   messages: Message[];
   onMRUpdate?: (result: OrchestratorResult) => void;
   enabled?: boolean;
-  classifier?: 'bayesian' | 'svm';  // Which classifier to use
+  classifier?: 'bayesian' | 'svm' | 'gpt';  // Which classifier to use (gpt = unified analysis)
+  taskType?: string;  // For unified GPT analysis context
 }
 
 /**
@@ -81,6 +85,7 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
   onMRUpdate,
   enabled = true,
   classifier = 'bayesian',
+  taskType,
 }) => {
   const [result, setResult] = useState<OrchestratorResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -100,31 +105,98 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
       setError(null);
 
       try {
-        // Convert messages to conversation turns for backend processing
-        const conversationTurns = messages.map((msg, index) => ({
-          id: msg.id,
-          userMessage: msg.role === 'user' ? msg.content : '',
-          aiResponse: msg.role === 'ai' ? msg.content : undefined,
-          timestamp: new Date(msg.timestamp),
-          sessionId,
-        }));
+        let orchestrationResult: OrchestratorResult;
 
-        // Call orchestration endpoint with classifier parameter
-        const orchestrateResponse = await api.post('/mca/orchestrate', {
-          sessionId,
-          conversationTurns,
-          currentTurnIndex: messages.length - 1,
-        }, {
-          params: { classifier }
-        });
+        if (classifier === 'gpt') {
+          // Use unified GPT analysis for accurate detection + pre-generated content
+          const latestUserMessage = [...messages].reverse().find(m => m.role === 'user');
+          if (!latestUserMessage) {
+            setLoading(false);
+            return;
+          }
 
-        const orchestrationResult: OrchestratorResult = {
-          signals: orchestrateResponse.data.data.signals || null,
-          pattern: orchestrateResponse.data.data.pattern || null,
-          activeMRs: orchestrateResponse.data.data.activeMRs || [],
-          turnCount: orchestrateResponse.data.data.turnCount || messages.filter(m => m.role === 'user').length,
-          isHighRiskF: orchestrateResponse.data.data.isHighRiskF || false,
-        };
+          const conversationHistory = messages.map(m => ({
+            role: m.role,
+            content: m.content,
+          }));
+
+          const analyzeResponse = await api.post('/mca/analyze', {
+            sessionId,
+            userMessage: latestUserMessage.content,
+            conversationHistory,
+            taskType,
+            turnCount: messages.filter(m => m.role === 'user').length,
+          });
+
+          const data = analyzeResponse.data.data;
+
+          // Convert unified analysis result to orchestrator result
+          const activeMRs: ActiveMR[] = (data.activeMRs || []).map((mr: any) => ({
+            mrId: mr.mrId,
+            name: mr.mrId,
+            urgency: mr.tier === 'hard' ? 'enforce' : mr.tier === 'medium' ? 'remind' : 'observe',
+            displayMode: mr.tier === 'hard' ? 'modal' : 'sidebar',
+            message: mr.message,
+            priority: mr.priority === 'high' ? 3 : mr.priority === 'medium' ? 2 : 1,
+            tier: mr.tier,
+            content: mr.content,
+          }));
+
+          orchestrationResult = {
+            signals: data.signals ? {
+              taskDecompositionEvidence: data.signals.taskDecompositionEvidence,
+              goalClarityScore: data.signals.goalClarity,
+              strategyMentioned: data.signals.strategyMentioned,
+              preparationActions: [],
+              verificationAttempted: data.signals.verificationIntent,
+              qualityCheckMentioned: false,
+              contextAwarenessIndicator: 0,
+              outputEvaluationPresent: false,
+              reflectionDepth: data.signals.reflectionDepth,
+              capabilityJudgmentShown: false,
+              iterationCount: 0,
+              trustCalibrationEvidence: [],
+              taskComplexity: data.signals.taskComplexity,
+              aiRelianceDegree: data.signals.aiRelianceDegree,
+            } : null,
+            pattern: data.pattern ? {
+              topPattern: data.pattern.pattern,
+              probability: data.pattern.confidence,
+              confidence: data.pattern.confidence,
+              probabilities: {},
+              needMoreData: false,
+              evidence: [data.pattern.reasoning],
+            } : null,
+            activeMRs,
+            turnCount: messages.filter(m => m.role === 'user').length,
+            isHighRiskF: data.pattern?.pattern === 'F' && data.pattern?.confidence > 0.7,
+          };
+        } else {
+          // Use traditional orchestration (bayesian/svm)
+          const conversationTurns = messages.map((msg, index) => ({
+            id: msg.id,
+            userMessage: msg.role === 'user' ? msg.content : '',
+            aiResponse: msg.role === 'ai' ? msg.content : undefined,
+            timestamp: new Date(msg.timestamp),
+            sessionId,
+          }));
+
+          const orchestrateResponse = await api.post('/mca/orchestrate', {
+            sessionId,
+            conversationTurns,
+            currentTurnIndex: messages.length - 1,
+          }, {
+            params: { classifier }
+          });
+
+          orchestrationResult = {
+            signals: orchestrateResponse.data.data.signals || null,
+            pattern: orchestrateResponse.data.data.pattern || null,
+            activeMRs: orchestrateResponse.data.data.activeMRs || [],
+            turnCount: orchestrateResponse.data.data.turnCount || messages.filter(m => m.role === 'user').length,
+            isHighRiskF: orchestrateResponse.data.data.isHighRiskF || false,
+          };
+        }
 
         setResult(orchestrationResult);
 
@@ -151,7 +223,7 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
     // Debounce to avoid too frequent calls
     const timeoutId = setTimeout(processConversation, 300);
     return () => clearTimeout(timeoutId);
-  }, [sessionId, messages, enabled, onMRUpdate, classifier]);
+  }, [sessionId, messages, enabled, onMRUpdate, classifier, taskType]);
 
   // Return null for non-rendering orchestrator
   // MRs will be passed via onMRUpdate callback
@@ -165,7 +237,8 @@ export const useMCAOrchestrator = (
   sessionId: string,
   messages: Message[],
   enabled: boolean = true,
-  classifier: 'bayesian' | 'svm' = 'bayesian'
+  classifier: 'bayesian' | 'svm' | 'gpt' = 'bayesian',
+  taskType?: string
 ) => {
   const [result, setResult] = useState<OrchestratorResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -179,29 +252,99 @@ export const useMCAOrchestrator = (
       setLoading(true);
 
       try {
-        const conversationTurns = messages.map((msg) => ({
-          id: msg.id,
-          userMessage: msg.role === 'user' ? msg.content : '',
-          aiResponse: msg.role === 'ai' ? msg.content : undefined,
-          timestamp: new Date(msg.timestamp),
-          sessionId,
-        }));
+        let orchestrationResult: OrchestratorResult;
 
-        const orchestrateResponse = await api.post('/mca/orchestrate', {
-          sessionId,
-          conversationTurns,
-          currentTurnIndex: messages.length - 1,
-        }, {
-          params: { classifier }
-        });
+        if (classifier === 'gpt') {
+          // Use unified GPT analysis
+          const latestUserMessage = [...messages].reverse().find(m => m.role === 'user');
+          if (!latestUserMessage) {
+            setLoading(false);
+            return;
+          }
 
-        setResult({
-          signals: orchestrateResponse.data.data.signals || null,
-          pattern: orchestrateResponse.data.data.pattern || null,
-          activeMRs: orchestrateResponse.data.data.activeMRs || [],
-          turnCount: orchestrateResponse.data.data.turnCount || messages.filter(m => m.role === 'user').length,
-          isHighRiskF: orchestrateResponse.data.data.isHighRiskF || false,
-        });
+          const conversationHistory = messages.map(m => ({
+            role: m.role,
+            content: m.content,
+          }));
+
+          const analyzeResponse = await api.post('/mca/analyze', {
+            sessionId,
+            userMessage: latestUserMessage.content,
+            conversationHistory,
+            taskType,
+            turnCount: messages.filter(m => m.role === 'user').length,
+          });
+
+          const data = analyzeResponse.data.data;
+
+          const activeMRs: ActiveMR[] = (data.activeMRs || []).map((mr: any) => ({
+            mrId: mr.mrId,
+            name: mr.mrId,
+            urgency: mr.tier === 'hard' ? 'enforce' : mr.tier === 'medium' ? 'remind' : 'observe',
+            displayMode: mr.tier === 'hard' ? 'modal' : 'sidebar',
+            message: mr.message,
+            priority: mr.priority === 'high' ? 3 : mr.priority === 'medium' ? 2 : 1,
+            tier: mr.tier,
+            content: mr.content,
+          }));
+
+          orchestrationResult = {
+            signals: data.signals ? {
+              taskDecompositionEvidence: data.signals.taskDecompositionEvidence,
+              goalClarityScore: data.signals.goalClarity,
+              strategyMentioned: data.signals.strategyMentioned,
+              preparationActions: [],
+              verificationAttempted: data.signals.verificationIntent,
+              qualityCheckMentioned: false,
+              contextAwarenessIndicator: 0,
+              outputEvaluationPresent: false,
+              reflectionDepth: data.signals.reflectionDepth,
+              capabilityJudgmentShown: false,
+              iterationCount: 0,
+              trustCalibrationEvidence: [],
+              taskComplexity: data.signals.taskComplexity,
+              aiRelianceDegree: data.signals.aiRelianceDegree,
+            } : null,
+            pattern: data.pattern ? {
+              topPattern: data.pattern.pattern,
+              probability: data.pattern.confidence,
+              confidence: data.pattern.confidence,
+              probabilities: {},
+              needMoreData: false,
+              evidence: [data.pattern.reasoning],
+            } : null,
+            activeMRs,
+            turnCount: messages.filter(m => m.role === 'user').length,
+            isHighRiskF: data.pattern?.pattern === 'F' && data.pattern?.confidence > 0.7,
+          };
+        } else {
+          // Use traditional orchestration
+          const conversationTurns = messages.map((msg) => ({
+            id: msg.id,
+            userMessage: msg.role === 'user' ? msg.content : '',
+            aiResponse: msg.role === 'ai' ? msg.content : undefined,
+            timestamp: new Date(msg.timestamp),
+            sessionId,
+          }));
+
+          const orchestrateResponse = await api.post('/mca/orchestrate', {
+            sessionId,
+            conversationTurns,
+            currentTurnIndex: messages.length - 1,
+          }, {
+            params: { classifier }
+          });
+
+          orchestrationResult = {
+            signals: orchestrateResponse.data.data.signals || null,
+            pattern: orchestrateResponse.data.data.pattern || null,
+            activeMRs: orchestrateResponse.data.data.activeMRs || [],
+            turnCount: orchestrateResponse.data.data.turnCount || messages.filter(m => m.role === 'user').length,
+            isHighRiskF: orchestrateResponse.data.data.isHighRiskF || false,
+          };
+        }
+
+        setResult(orchestrationResult);
       } catch (err) {
         console.error('Orchestration error:', err);
         setResult({
@@ -218,7 +361,7 @@ export const useMCAOrchestrator = (
 
     const timeoutId = setTimeout(processConversation, 300);
     return () => clearTimeout(timeoutId);
-  }, [sessionId, messages, enabled, classifier]);
+  }, [sessionId, messages, enabled, classifier, taskType]);
 
   return {
     result,

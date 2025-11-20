@@ -16,8 +16,60 @@ import BehaviorSignalDetector, { ConversationTurn } from '../services/BehaviorSi
 import RealtimePatternRecognizer from '../services/RealtimePatternRecognizer';
 import SVMPatternClassifier from '../services/SVMPatternClassifier';
 import AdaptiveMRActivator from '../services/AdaptiveMRActivator';
+import UnifiedMCAAnalyzer from '../services/UnifiedMCAAnalyzer';
 
 const router = express.Router();
+
+/**
+ * POST /mca/analyze
+ * Unified MCA analysis using GPT - single API call for:
+ * 1. Accurate behavioral signal detection
+ * 2. Pattern classification
+ * 3. MR activation with pre-generated content
+ */
+router.post('/analyze', async (req: Request, res: Response) => {
+  try {
+    const { sessionId, userMessage, conversationHistory, taskType, turnCount } = req.body;
+
+    if (!sessionId || !userMessage) {
+      return res.status(400).json({
+        success: false,
+        error: 'Session ID and user message are required',
+      });
+    }
+
+    console.log(`[MCA:Unified:${sessionId}] Analyzing message with GPT...`);
+
+    // Perform unified analysis
+    const result = await UnifiedMCAAnalyzer.analyze(
+      userMessage,
+      conversationHistory || [],
+      { taskType, turnCount }
+    );
+
+    console.log(`[MCA:Unified:${sessionId}] Analysis complete:`, {
+      pattern: result.pattern.pattern,
+      confidence: (result.pattern.confidence * 100).toFixed(1) + '%',
+      activeMRs: result.activeMRs.map(mr => mr.mrId),
+      signals: {
+        complexity: result.signals.taskComplexity,
+        decomposition: result.signals.taskDecompositionEvidence,
+        reliance: result.signals.aiRelianceDegree,
+      }
+    });
+
+    res.json({
+      success: true,
+      data: result,
+    });
+  } catch (error: any) {
+    console.error('MCA unified analysis error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to perform unified MCA analysis',
+    });
+  }
+});
 
 // Store recognizers per session
 const recognizerMap = new Map<string, RealtimePatternRecognizer>();
