@@ -234,8 +234,8 @@ const ChatSessionPage: React.FC = () => {
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
   const [creatingNewSession, setCreatingNewSession] = useState(false);
 
-  // MCA orchestration states
-  const { result: mcaResult, activeMRs } = useMCAOrchestrator(sessionId || '', messages, true);
+  // MCA orchestration states - Use GPT for accurate signal detection and pre-generated MR content
+  const { result: mcaResult, activeMRs } = useMCAOrchestrator(sessionId || '', messages, true, 'gpt');
   const [displayedModalMR, setDisplayedModalMR] = useState<ActiveMR | null>(null);
   const [dismissedMRs, setDismissedMRs] = useState<Set<string>>(new Set());
 
