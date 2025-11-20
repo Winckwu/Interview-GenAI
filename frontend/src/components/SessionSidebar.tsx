@@ -8,11 +8,13 @@
  * - New conversation button
  *
  * Extracted from ChatSessionPage.tsx as part of Phase 3 refactoring.
+ * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
 import React from 'react';
 import EmptyState from './EmptyState';
 import { SkeletonCard } from './Skeleton';
+import styles from './SessionSidebar.module.css';
 
 export interface SessionItem {
   id: string;
@@ -56,46 +58,14 @@ export const SessionSidebar: React.FC<SessionSidebarProps> = ({
   onHoverSession,
 }) => {
   return (
-    <aside
-      style={{
-        width: isOpen ? '280px' : '0',
-        backgroundColor: '#fff',
-        borderRight: '1px solid #e2e8f0',
-        overflowY: 'auto',
-        transition: 'width 0.3s ease-in-out',
-        display: 'flex',
-        flexDirection: 'column',
-        boxShadow: isOpen ? '2px 0 8px rgba(0, 0, 0, 0.08)' : 'none',
-        zIndex: 10,
-      }}
-    >
+    <aside className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}>
       {/* Sidebar Header */}
-      <div
-        style={{
-          padding: '1.5rem',
-          borderBottom: '1px solid #e2e8f0',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <h3 style={{ margin: '0', fontSize: '1rem', fontWeight: '600', color: '#1f2937' }}>
-          Conversations
-        </h3>
+      <div className={styles.header}>
+        <h3 className={styles.headerTitle}>Conversations</h3>
         <button
           onClick={onClose}
           aria-label="Close conversations sidebar"
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '1.25rem',
-            color: '#6b7280',
-            padding: '0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          className={styles.closeButton}
           title="Close sidebar"
         >
           ✕
@@ -103,14 +73,14 @@ export const SessionSidebar: React.FC<SessionSidebarProps> = ({
       </div>
 
       {/* Sessions List */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '0.75rem' }}>
+      <div className={styles.sessionsList}>
         {sessionsLoading ? (
-          <div style={{ padding: '0.75rem' }}>
+          <div className={styles.loadingContainer}>
             <SkeletonCard />
-            <div style={{ marginTop: '0.75rem' }}>
+            <div className={styles.skeletonSpacer}>
               <SkeletonCard />
             </div>
-            <div style={{ marginTop: '0.75rem' }}>
+            <div className={styles.skeletonSpacer}>
               <SkeletonCard />
             </div>
           </div>
@@ -130,47 +100,19 @@ export const SessionSidebar: React.FC<SessionSidebarProps> = ({
             return (
               <div
                 key={session.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '0.5rem',
-                  position: 'relative',
-                }}
+                className={styles.sessionItemContainer}
                 onMouseEnter={() => onHoverSession(session.id)}
                 onMouseLeave={() => onHoverSession(null)}
               >
                 <button
                   onClick={() => onSessionClick(session.id)}
-                  style={{
-                    flex: 1,
-                    padding: '0.75rem 1rem',
-                    border: `1px solid ${isActive ? '#3b82f6' : '#e5e7eb'}`,
-                    borderRadius: '0.5rem',
-                    backgroundColor: isActive ? '#eff6ff' : '#fff',
-                    color: isActive ? '#1e40af' : '#4b5563',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    fontSize: '0.875rem',
-                    fontWeight: isActive ? '600' : '500',
-                    transition: 'all 0.2s',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
+                  className={`${styles.sessionButton} ${isActive ? styles.active : ''}`}
                   title={session.taskDescription}
                 >
-                  <div
-                    style={{
-                      fontWeight: '600',
-                      marginBottom: '0.25rem',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
+                  <div className={styles.sessionTitle}>
                     {session.taskDescription}
                   </div>
-                  <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>
+                  <div className={styles.sessionTimestamp}>
                     {new Date(session.startedAt || session.createdAt).toLocaleDateString([], {
                       month: 'short',
                       day: 'numeric',
@@ -183,33 +125,8 @@ export const SessionSidebar: React.FC<SessionSidebarProps> = ({
                   <button
                     onClick={(e) => onDeleteSession(session.id, e)}
                     aria-label={`Delete conversation: ${session.taskDescription}`}
-                    style={{
-                      padding: '0.5rem 0.625rem',
-                      marginLeft: '0.5rem',
-                      backgroundColor: '#fee2e2',
-                      color: '#991b1b',
-                      border: '1px solid #fecaca',
-                      borderRadius: '0.375rem',
-                      cursor: 'pointer',
-                      fontSize: '1rem',
-                      fontWeight: '600',
-                      transition: 'all 0.2s',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      minWidth: '2rem',
-                      minHeight: '2rem',
-                      flexShrink: 0,
-                    }}
+                    className={styles.deleteButton}
                     title="Delete conversation"
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#fecaca';
-                      e.currentTarget.style.borderColor = '#fca5a5';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#fee2e2';
-                      e.currentTarget.style.borderColor = '#fecaca';
-                    }}
                   >
                     🗑️
                   </button>
@@ -221,8 +138,8 @@ export const SessionSidebar: React.FC<SessionSidebarProps> = ({
       </div>
 
       {/* Sidebar Footer */}
-      <div style={{ padding: '1rem', borderTop: '1px solid #e2e8f0' }}>
-        <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '0.75rem' }}>
+      <div className={styles.footer}>
+        <div className={styles.footerTip}>
           💡 Tip: Click the menu to switch conversations
         </div>
       </div>

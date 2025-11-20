@@ -1,0 +1,306 @@
+/**
+ * GlobalRecommendationPanel CSS Module
+ *
+ * Extracted from inline styles in GlobalRecommendationPanel.tsx
+ * Phase 4: Style Extraction
+ */
+
+/* ========================================
+   Main Panel Container
+   ======================================== */
+
+.panel {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 420px;
+  max-width: calc(100vw - 4rem);
+  max-height: calc(100vh - 4rem);
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* ========================================
+   Panel Header
+   ======================================== */
+
+.header {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerTitle {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.headerSubtitle {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: #9ca3af;
+  padding: 0.25rem;
+}
+
+.closeButton:hover {
+  color: #6b7280;
+}
+
+/* ========================================
+   Welcome Message & Stats Section
+   ======================================== */
+
+.welcomeSection {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #eff6ff;
+}
+
+.welcomeMessage {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8125rem;
+  color: #1e40af;
+  line-height: 1.5;
+}
+
+.statsContainer {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* ========================================
+   Recommendations List
+   ======================================== */
+
+.recommendationsList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #9ca3af;
+}
+
+.emptyIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.emptyTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.emptySubtitle {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* ========================================
+   Recommendation Card
+   ======================================== */
+
+.card {
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cardHeaderContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.cardIcon {
+  font-size: 1.25rem;
+}
+
+.cardTitleContainer {
+  flex: 1;
+}
+
+.cardTitle {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.cardMeta {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.expandIcon {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin-left: 0.5rem;
+}
+
+/* ========================================
+   Card Body (Expanded Content)
+   ======================================== */
+
+.cardBody {
+  padding: 0.75rem;
+}
+
+.description {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.8125rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.section {
+  margin-bottom: 0.75rem;
+}
+
+.sectionLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.375rem;
+}
+
+.sectionContent {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.benefit {
+  font-size: 0.75rem;
+  color: #059669;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* ========================================
+   Tool Badges
+   ======================================== */
+
+.toolBadgesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.toolBadge {
+  padding: 0.25rem 0.5rem;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+  color: #374151;
+}
+
+/* ========================================
+   Action Buttons
+   ======================================== */
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.activateButton {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  color: #fff;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.activateButton:hover {
+  opacity: 0.9;
+}
+
+.dismissButton {
+  padding: 0.5rem 0.75rem;
+  background-color: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.dismissButton:hover {
+  background-color: #e5e7eb;
+}
+
+/* ========================================
+   Priority Badges
+   ======================================== */
+
+.priorityBadge {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  border-radius: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.priorityBadge.critical {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.priorityBadge.high {
+  background-color: #fed7aa;
+  color: #9a3412;
+}
+
+.priorityBadge.medium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.priorityBadge.low {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
