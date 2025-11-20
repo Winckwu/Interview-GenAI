@@ -221,6 +221,7 @@ const ChatSessionPage: React.FC = () => {
   const [patternLoading, setPatternLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [showModifiedChoiceUI, setShowModifiedChoiceUI] = useState(false);
 
   // Session metadata
   const [sessionData, setSessionData] = useState<any>(null);
@@ -841,12 +842,14 @@ const ChatSessionPage: React.FC = () => {
         { id: messageId, wasModified: true, wasVerified: false, wasRejected: false }
       ]);
 
-      setSuccessMessage('✎ Response modified and saved!');
-      setTimeout(() => setSuccessMessage(null), 2000);
+      setSuccessMessage('✓ 修改已保存！请选择下一步操作：');
+      setShowModifiedChoiceUI(true);
 
-      // Open MR5 Low Cost Iteration tool for tracking iteration history
-      setActiveMRTool('mr5-iteration');
-      setShowMRToolsSection(true);
+      // Auto-hide choice UI after 10 seconds (user can still manually select)
+      setTimeout(() => {
+        setShowModifiedChoiceUI(false);
+        setSuccessMessage(null);
+      }, 10000);
 
       // Exit editing mode
       cancelEditingMessage();
@@ -858,6 +861,28 @@ const ChatSessionPage: React.FC = () => {
       setUpdatingMessageId(null);
     }
   }, [editedContent, messages, cancelEditingMessage]);
+
+  /**
+   * Open MR5 for iteration after modifying a message
+   */
+  const openMR5Iteration = useCallback(() => {
+    setActiveMRTool('mr5-iteration');
+    setShowMRToolsSection(true);
+    setShowModifiedChoiceUI(false);
+    setSuccessMessage('✓ 已打开迭代工具 (MR5)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR2 for viewing modification history
+   */
+  const openMR2History = useCallback(() => {
+    setActiveMRTool('mr2-transparency');
+    setShowMRToolsSection(true);
+    setShowModifiedChoiceUI(false);
+    setSuccessMessage('✓ 已打开变更历史 (MR2)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
 
   /**
    * Mark interaction as modified (starts editing mode)
@@ -2640,7 +2665,76 @@ const ChatSessionPage: React.FC = () => {
               fontWeight: '500',
             }}
           >
-            {successMessage}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              <span>{successMessage}</span>
+
+              {/* Choice buttons for modified content */}
+              {showModifiedChoiceUI && (
+                <div style={{ display: 'flex', gap: '0.5rem', marginLeft: 'auto' }}>
+                  <button
+                    onClick={openMR5Iteration}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      backgroundColor: '#10b981',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      transition: 'all 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#059669';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                      (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(16, 185, 129, 0.3)';
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#10b981';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                      (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+                    }}
+                    title="继续迭代优化 - 尝试不同方向和变体"
+                  >
+                    🌳 继续迭代 (MR5)
+                  </button>
+
+                  <button
+                    onClick={openMR2History}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      backgroundColor: '#3b82f6',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      transition: 'all 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#2563eb';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                      (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(59, 130, 246, 0.3)';
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#3b82f6';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                      (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+                    }}
+                    title="查看变更历史 - 回顾修改记录和diff"
+                  >
+                    📊 查看历史 (MR2)
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
