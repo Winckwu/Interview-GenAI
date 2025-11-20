@@ -187,12 +187,44 @@ export class AdaptiveMRActivator {
 
       if (!conditionsMet) continue;
 
-      // 3. Create active MR
+      // 3. ✨ Adjust urgency based on task risk level
+      let adjustedUrgency = rule.urgency;
+
+      // Pattern A + High Risk Task → upgrade observe to remind
+      if (patternEstimate.topPattern === 'A' &&
+          signals.taskRiskLevel === 'high' &&
+          rule.urgency === 'observe') {
+        adjustedUrgency = 'remind';
+        console.log(`🔼 [RiskAdjustment] Pattern A in high-risk task: upgrading ${rule.mrId} from observe to remind`);
+      }
+
+      // Pattern A + Critical Risk Task → upgrade observe to enforce
+      if (patternEstimate.topPattern === 'A' &&
+          signals.taskRiskLevel === 'critical' &&
+          rule.urgency === 'observe') {
+        adjustedUrgency = 'enforce';
+        console.log(`🔼 [RiskAdjustment] Pattern A in critical-risk task: upgrading ${rule.mrId} from observe to enforce`);
+      }
+
+      // Pattern F + High/Critical Risk → force enforce
+      if (patternEstimate.topPattern === 'F' &&
+          (signals.taskRiskLevel === 'high' || signals.taskRiskLevel === 'critical')) {
+        adjustedUrgency = 'enforce';
+        console.log(`🚨 [RiskAdjustment] Pattern F in high-risk task: forcing enforce for ${rule.mrId}`);
+      }
+
+      // Any pattern + Critical Risk → upgrade at least to remind
+      if (signals.taskRiskLevel === 'critical' && adjustedUrgency === 'observe') {
+        adjustedUrgency = 'remind';
+        console.log(`🔼 [RiskAdjustment] Critical-risk task: upgrading ${rule.mrId} from observe to remind`);
+      }
+
+      // 4. Create active MR with adjusted urgency
       const activeMR: ActiveMR = {
         mrId: rule.mrId,
         name: rule.name,
-        urgency: rule.urgency,
-        displayMode: this.determineDisplayMode(rule.urgency),
+        urgency: adjustedUrgency,  // ✅ Use adjusted urgency
+        displayMode: this.determineDisplayMode(adjustedUrgency),
         message: this.generateContextualMessage(
           rule,
           signals,

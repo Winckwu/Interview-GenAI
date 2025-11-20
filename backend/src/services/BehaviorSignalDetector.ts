@@ -17,6 +17,14 @@ export interface ConversationTurn {
   sessionId: string;
 }
 
+export interface RiskFactors {
+  domainCriticality: number;       // 0-3: domain criticality (medical/legal/financial=3)
+  consequenceSeverity: number;     // 0-3: consequence severity
+  timeConstraint: boolean;         // time pressure indicator
+  stakeholders: number;            // 0-3: number of stakeholders inferred
+  isPublicFacing: boolean;         // public-facing task indicator
+}
+
 export interface BehavioralSignals {
   // Planning signals (P1-P4)
   taskDecompositionEvidence: number;      // 0-3: evidence of breaking task into parts
@@ -41,6 +49,10 @@ export interface BehavioralSignals {
   // Additional signals
   taskComplexity: number;                 // 0-3: inferred task complexity
   aiRelianceDegree: number;               // 0-3: extent of AI reliance in request
+
+  // ✨ NEW: Task risk assessment
+  taskRiskLevel: 'low' | 'medium' | 'high' | 'critical';  // comprehensive risk level
+  riskFactors: RiskFactors;               // detailed risk breakdown
 }
 
 export class BehaviorSignalDetector {
@@ -94,6 +106,9 @@ export class BehaviorSignalDetector {
       // Additional features
       taskComplexity: this.inferTaskComplexity(userMsg),
       aiRelianceDegree: this.inferAIReliance(userMsg),
+
+      // ✨ NEW: Task risk assessment
+      ...this.assessTaskRisk(userMsg),
     };
   }
 
@@ -374,6 +389,166 @@ export class BehaviorSignalDetector {
     if (hasHighReliance) return 3;
     if (hasHighReliance && !hasLowReliance) return 2;
     return 1; // neutral
+  }
+
+  /**
+   * ✨ NEW: Assess task risk level based on multiple factors
+   * Returns: { taskRiskLevel, riskFactors }
+   */
+  private assessTaskRisk(message: string): {
+    taskRiskLevel: 'low' | 'medium' | 'high' | 'critical';
+    riskFactors: RiskFactors;
+  } {
+    // 1. Detect domain criticality
+    const domainCriticality = this.detectDomainCriticality(message);
+
+    // 2. Detect consequence severity
+    const consequenceSeverity = this.detectConsequenceSeverity(message);
+
+    // 3. Detect time constraints
+    const timeConstraint = this.detectTimeConstraint(message);
+
+    // 4. Infer stakeholders
+    const stakeholders = this.inferStakeholders(message);
+
+    // 5. Detect public-facing
+    const isPublicFacing = this.detectPublicFacing(message);
+
+    const riskFactors: RiskFactors = {
+      domainCriticality,
+      consequenceSeverity,
+      timeConstraint,
+      stakeholders,
+      isPublicFacing
+    };
+
+    // 6. Calculate comprehensive risk score
+    const riskScore = this.calculateRiskScore(riskFactors);
+
+    // 7. Classify risk level
+    let taskRiskLevel: 'low' | 'medium' | 'high' | 'critical';
+    if (riskScore >= 9) taskRiskLevel = 'critical';
+    else if (riskScore >= 6) taskRiskLevel = 'high';
+    else if (riskScore >= 3) taskRiskLevel = 'medium';
+    else taskRiskLevel = 'low';
+
+    return { taskRiskLevel, riskFactors };
+  }
+
+  /**
+   * Detect domain criticality (medical/legal/financial/safety)
+   * Returns: 0-3
+   */
+  private detectDomainCriticality(message: string): number {
+    const criticalDomains = {
+      medical: ['medical', 'diagnosis', 'treatment', 'patient', 'health', 'disease', '症状', '诊断', '治疗', '病人'],
+      legal: ['legal', 'contract', 'lawsuit', 'compliance', 'regulation', '法律', '合同', '诉讼', '法规'],
+      financial: ['financial', 'investment', 'tax', 'audit', 'accounting', '财务', '投资', '税务', '审计'],
+      safety: ['safety', 'risk', 'hazard', 'accident', 'critical', '安全', '风险', '危险', '事故']
+    };
+
+    let score = 0;
+    Object.values(criticalDomains).forEach(keywords => {
+      if (keywords.some(kw => message.includes(kw))) {
+        score += 1;
+      }
+    });
+
+    return Math.min(score, 3);
+  }
+
+  /**
+   * Detect consequence severity
+   * Returns: 0-3
+   */
+  private detectConsequenceSeverity(message: string): number {
+    const severityIndicators = [
+      { keywords: ['critical', 'essential', 'must', 'important', '关键', '重要', '必须'], score: 1 },
+      { keywords: ['impact', 'consequence', 'affect', 'loss', '影响', '后果', '损失'], score: 1 },
+      { keywords: ['life', 'health', 'harm', 'damage', '生命', '健康', '损害'], score: 2 },
+      { keywords: ['irreversible', 'permanent', 'fatal', 'catastrophic', '不可逆', '永久', '致命'], score: 3 }
+    ];
+
+    let maxScore = 0;
+    severityIndicators.forEach(indicator => {
+      if (indicator.keywords.some(kw => message.includes(kw))) {
+        maxScore = Math.max(maxScore, indicator.score);
+      }
+    });
+
+    return maxScore;
+  }
+
+  /**
+   * Detect time constraints/urgency
+   * Returns: boolean
+   */
+  private detectTimeConstraint(message: string): boolean {
+    const timeKeywords = [
+      'urgent', 'asap', 'immediately', 'today', 'deadline', 'rush', 'emergency',
+      '紧急', '急', '马上', '立即', '今天', '明天', '截止'
+    ];
+
+    return timeKeywords.some(kw => message.includes(kw));
+  }
+
+  /**
+   * Infer number of stakeholders
+   * Returns: 0-3
+   */
+  private inferStakeholders(message: string): number {
+    const stakeholderIndicators = [
+      { keywords: ['team', 'organization', 'group', '团队', '组织'], count: 1 },
+      { keywords: ['client', 'user', 'customer', 'users', '客户', '用户'], count: 2 },
+      { keywords: ['public', 'society', 'community', 'citizens', '公众', '大众', '社会'], count: 3 }
+    ];
+
+    let maxCount = 0;
+    stakeholderIndicators.forEach(indicator => {
+      if (indicator.keywords.some(kw => message.includes(kw))) {
+        maxCount = Math.max(maxCount, indicator.count);
+      }
+    });
+
+    return maxCount;
+  }
+
+  /**
+   * Detect if task is public-facing
+   * Returns: boolean
+   */
+  private detectPublicFacing(message: string): boolean {
+    const publicKeywords = [
+      'publish', 'public', 'release', 'advertise', 'display', 'announcement',
+      '发布', '公开', '宣传', '广告', '展示', '公告'
+    ];
+
+    return publicKeywords.some(kw => message.includes(kw));
+  }
+
+  /**
+   * Calculate comprehensive risk score
+   * Returns: 0-12
+   */
+  private calculateRiskScore(factors: RiskFactors): number {
+    let score = 0;
+
+    // Domain criticality (0-3)
+    score += factors.domainCriticality;
+
+    // Consequence severity (0-3)
+    score += factors.consequenceSeverity;
+
+    // Time constraint (+2)
+    if (factors.timeConstraint) score += 2;
+
+    // Stakeholders (0-3)
+    score += factors.stakeholders;
+
+    // Public-facing (+1)
+    if (factors.isPublicFacing) score += 1;
+
+    return score;
   }
 }
 
