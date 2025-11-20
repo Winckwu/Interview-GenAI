@@ -1,53 +1,69 @@
-# Documentation Index - Predictions, Patterns & Evolution
+# Documentation Index - Interview-GenAI MCA System
 
-This index helps you quickly find the information you need about the system's data structures and data flow.
+Welcome to the Interview-GenAI documentation. All documentation has been reorganized into the `docs/` directory for better organization.
+
+## 📚 Main Documentation Hub
+
+**→ See [docs/README.md](./docs/README.md) for the complete documentation index**
 
 ## Quick Navigation
 
 ### Start Here
-- **New to the system?** → Read `COMPREHENSIVE_SUMMARY.md` first (5 min read)
-- **Need specific code?** → Use `FILE_LOCATIONS_REFERENCE.md` to find files
-- **Want detailed explanations?** → Read `DATA_FLOW_OVERVIEW.md`
+- **New to the system?** → Read [docs/reports/COMPREHENSIVE_SUMMARY.md](./docs/reports/COMPREHENSIVE_SUMMARY.md) first (5 min read)
+- **Want to get started quickly?** → Check [docs/setup/QUICKSTART.md](./docs/setup/QUICKSTART.md)
+- **Need specific code locations?** → Use [docs/reports/FILE_LOCATIONS_REFERENCE.md](./docs/reports/FILE_LOCATIONS_REFERENCE.md)
+- **Want detailed explanations?** → Read [docs/architecture/DATA_FLOW_OVERVIEW.md](./docs/architecture/DATA_FLOW_OVERVIEW.md)
 
 ---
 
-## The 3 Documentation Files
+## Documentation Categories
 
-### 1. COMPREHENSIVE_SUMMARY.md
-**Purpose**: High-level overview and entry point
-**Length**: 3-5 min read
-**Best for**: Quick understanding of the system, key insights, development tips
+### 📚 [Setup & Installation](./docs/setup/)
+Guides for setting up and configuring the system
+- Complete setup guide
+- Quickstart guides
+- Platform-specific fixes
 
-**Sections**:
+### 🏗️ [System Architecture](./docs/architecture/)
+Technical architecture and design documentation
 - System architecture overview
-- The 6 AI usage patterns explained
-- Feature detection explanation
-- Evolution tracking overview
-- Prediction system status (placeholder)
-- Dashboard display breakdown
-- Database tables summary
-- Key insights for development
+- Database schema
+- Data flow diagrams
+- Complete system strategies
 
-**Start with this if you want to**: Understand the big picture before diving into code
+### 📖 [User Guides](./docs/guides/)
+How-to guides for using system features
+- Chat features guide
+- Pattern detection guide
+- Verification tools
+- Troubleshooting
 
----
+### 🚀 [Implementation Phases](./docs/phases/)
+Documentation for each development phase
+- Phase completion summaries
+- Implementation guides
+- Verification checklists
 
-### 2. DATA_FLOW_OVERVIEW.md
-**Purpose**: Complete technical reference
-**Length**: 20-30 min read
-**Best for**: Understanding architecture, API endpoints, algorithm details
+### 🧩 [Components & MR](./docs/components/)
+MR (Metacognitive Regulation) component documentation
+- 19 Meta-requirements specifications
+- Frontend component specs
+- MR design rationale
+- See also: [frontend/src/components/mr/README.md](./frontend/src/components/mr/README.md)
 
-**Sections**:
-1. **Core Data Structures** (5 interfaces: Pattern, Prediction, Evolution, Interaction, FeatureVector)
-2. **API Endpoints** (Patterns, Evolution, Predictions, Analytics - with request/response examples)
-3. **Data Flow Diagram** (Visual representation of complete flow)
-4. **Pattern Detection Algorithm** (Rule-based logic with thresholds)
-5. **Evolution Tracking** (Change type detection and statistics)
-6. **Prediction System** (Current placeholder + expected implementation)
-7. **Dashboard Data Loading** (How frontend loads and displays data)
-8. **Database Schema** (SQL table definitions)
-9. **Key Data Relationships** (Entity relationship diagram)
-10. **Summary** (Step-by-step flow + key insights)
+### 🔬 [Research](./docs/research/)
+Research papers and empirical foundations
+- MCA system research paper
+- Empirical foundation supplements
+- Pattern definitions
+- Member check validation
+
+### 📊 [Reports & Status](./docs/reports/)
+Project reports, summaries, and validation
+- Comprehensive summary
+- Executive summary
+- System validation reports
+- Optimization results
 
 **Start with this if you want to**: Deep technical understanding of how the system works
 
