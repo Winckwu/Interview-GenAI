@@ -236,6 +236,9 @@ const ChatSessionPage: React.FC = () => {
   // Track problem behavior detection (MR15)
   const [consecutiveNoVerify, setConsecutiveNoVerify] = useState(0);
   const [shortPromptCount, setShortPromptCount] = useState(0);
+  // Track MR6 multi-model comparison suggestions
+  const [comparisonSuggestedMessages, setComparisonSuggestedMessages] = useState<Set<string>>(new Set());
+  const [showMR6Suggestion, setShowMR6Suggestion] = useState<string | null>(null);
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
@@ -1043,6 +1046,81 @@ const ChatSessionPage: React.FC = () => {
   }, [messages]);
 
   /**
+   * Detect if MR6 (multi-model comparison) should be suggested
+   * Triggers when:
+   * - Message was modified (iteration signal)
+   * - User message contains iteration keywords
+   * - AI response contains multiple options/approaches
+   */
+  const shouldSuggestMR6 = useCallback((message: Message, index: number): boolean => {
+    // Don't suggest if already suggested for this message
+    if (comparisonSuggestedMessages.has(message.id)) {
+      return false;
+    }
+
+    // Only suggest for AI messages
+    if (message.role !== 'ai') {
+      return false;
+    }
+
+    // Check if this message was marked as modified (strong iteration signal)
+    if (message.wasModified) {
+      return true;
+    }
+
+    // Check user message for iteration keywords
+    if (index > 0 && messages[index - 1]?.role === 'user') {
+      const userMessage = messages[index - 1].content.toLowerCase();
+      const iterationKeywords = [
+        '试试', '再', '换', '比较', '对比', '另一个', '其他',
+        '优化', '改进', '迭代', '修改', '调整', '还有', '或者',
+        'try', 'another', 'compare', 'versus', 'vs', 'alternative',
+        'optimize', 'improve', 'iterate', 'modify', 'adjust', 'refine'
+      ];
+
+      if (iterationKeywords.some(keyword => userMessage.includes(keyword))) {
+        return true;
+      }
+    }
+
+    // Check if AI response contains multiple approaches/options
+    const content = message.content.toLowerCase();
+    const multiOptionIndicators = [
+      '方案', '选项', '方法', 'option', 'approach', 'alternative', 'method',
+      '第一', '第二', '第三', 'first', 'second', 'third',
+      '或者', '另一种', 'or you could', 'alternatively', 'or'
+    ];
+
+    const hasMultipleOptions = multiOptionIndicators.filter(
+      indicator => content.includes(indicator)
+    ).length >= 2;
+
+    return hasMultipleOptions;
+  }, [messages, comparisonSuggestedMessages]);
+
+  /**
+   * Handle MR6 suggestion interaction
+   */
+  const handleMR6Suggestion = useCallback((messageId: string, action: 'accept' | 'dismiss') => {
+    // Mark message as suggested
+    setComparisonSuggestedMessages((prev) => new Set([...prev, messageId]));
+    setShowMR6Suggestion(null);
+
+    if (action === 'accept') {
+      // Extract the prompt from the user message before this AI message
+      const aiMsgIndex = messages.findIndex(m => m.id === messageId);
+      const userPrompt = aiMsgIndex > 0 && messages[aiMsgIndex - 1]?.role === 'user'
+        ? messages[aiMsgIndex - 1].content
+        : '';
+
+      // Open MR6 with the prompt
+      openMR6CrossModel();
+      setSuccessMessage('💡 Compare responses from multiple AI models to find the best solution');
+      setTimeout(() => setSuccessMessage(null), 3000);
+    }
+  }, [messages, openMR6CrossModel]);
+
+  /**
    * Render individual message for virtualized list
    * Optimized version that maintains all functionality without performance overhead
    */
@@ -1298,10 +1376,86 @@ const ChatSessionPage: React.FC = () => {
               )}
             </div>
           )}
+
+          {/* MR6 Multi-Model Comparison Suggestion - Shows after AI messages when iteration detected */}
+          {shouldSuggestMR6(message, index) && (
+            <div
+              style={{
+                marginTop: '0.75rem',
+                padding: '0.75rem',
+                backgroundColor: '#dbeafe',
+                borderRadius: '0.5rem',
+                border: '2px solid #3b82f6',
+              }}
+            >
+              {showMR6Suggestion === message.id ? (
+                <div>
+                  <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1e40af' }}>
+                    🔄 Compare Multiple AI Models
+                  </h4>
+                  <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.75rem', color: '#1e3a8a', lineHeight: '1.4' }}>
+                    You're iterating on this response! Try comparing outputs from GPT-4, Claude, and Gemini to find the best solution. Different models excel at different tasks.
+                  </p>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button
+                      onClick={() => handleMR6Suggestion(message.id, 'accept')}
+                      style={{
+                        fontSize: '0.75rem',
+                        padding: '0.5rem 0.75rem',
+                        backgroundColor: '#3b82f6',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '0.375rem',
+                        cursor: 'pointer',
+                        fontWeight: '500',
+                      }}
+                      title="Open Multi-Model Comparison (MR6)"
+                    >
+                      🔄 Compare Models (MR6)
+                    </button>
+                    <button
+                      onClick={() => handleMR6Suggestion(message.id, 'dismiss')}
+                      style={{
+                        fontSize: '0.75rem',
+                        padding: '0.5rem 0.75rem',
+                        backgroundColor: '#e5e7eb',
+                        color: '#6b7280',
+                        border: 'none',
+                        borderRadius: '0.375rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Not Now
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowMR6Suggestion(message.id)}
+                  style={{
+                    width: '100%',
+                    fontSize: '0.75rem',
+                    padding: '0.4rem',
+                    backgroundColor: 'transparent',
+                    color: '#1e40af',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.25rem',
+                    fontWeight: '500',
+                  }}
+                >
+                  <span>💡 Try comparing multiple AI models for better results</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     ),
-    [updatingMessageId, markAsVerified, markAsModified, editingMessageId, editedContent, saveEditedMessage, cancelEditingMessage, reflectedMessages, showQuickReflection, handleQuickReflection]
+    [updatingMessageId, markAsVerified, markAsModified, editingMessageId, editedContent, saveEditedMessage, cancelEditingMessage, reflectedMessages, showQuickReflection, handleQuickReflection, shouldSuggestMR6, showMR6Suggestion, handleMR6Suggestion]
   );
 
   /**
@@ -3161,7 +3315,7 @@ const ChatSessionPage: React.FC = () => {
                       } onVersionSelect={(v) => console.log('Version:', v)} />}
                       {activeMRTool === 'mr3-agency' && <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />}
                       {activeMRTool === 'mr4-roles' && <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} onOpenMR8={openMR8TaskRecognition} />}
-                      {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} />}
+                      {activeMRTool === 'mr5-iteration' && <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} onOpenMR6={openMR6CrossModel} />}
                       {activeMRTool === 'mr6-models' && <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />}
                       {activeMRTool === 'mr7-failure' && <MR7FailureToleranceLearning onIterationLogged={(log) => console.log('Learning:', log)} />}
                       {activeMRTool === 'mr8-recognition' && <MR8TaskCharacteristicRecognition onTaskProfileDetected={(p) => console.log('Task Profile:', p)} onOpenMR3={openMR3AgencyControl} onOpenMR5={openMR5Iteration} onOpenMR9={openMR9TrustCalibration} onOpenMR11={openMR11Verification} onOpenMR14={openMR14Reflection} onOpenMR15={openMR15StrategyGuide} />}

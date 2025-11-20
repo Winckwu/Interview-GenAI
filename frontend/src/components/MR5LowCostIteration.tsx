@@ -39,6 +39,7 @@ interface MR5Props {
   onBranchCreated?: (branch: ConversationBranch) => void;
   onVariantsGenerated?: (variants: IterationVariant[]) => void;
   onComparisonMade?: (comparison: VariantComparison) => void;
+  onOpenMR6?: () => void;
   allowBranching?: boolean;
   maxBranches?: number;
 }
@@ -54,6 +55,7 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   onBranchCreated,
   onVariantsGenerated,
   onComparisonMade,
+  onOpenMR6,
   allowBranching = true,
   maxBranches = 10,
 }) => {
@@ -461,6 +463,39 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
                 📊 Compare {selectedComparisonVariants.length} Variants
               </button>
             )}
+
+            {/* MR Integration: Recommend cross-model comparison after generating variants */}
+            {onOpenMR6 && variants.length >= 2 && (
+              <div style={{
+                backgroundColor: '#dbeafe',
+                border: '2px solid #3b82f6',
+                borderRadius: '0.5rem',
+                padding: '1rem',
+                margin: '1.5rem 0 0 0',
+              }}>
+                <h3 style={{ margin: '0 0 0.5rem 0', color: '#1e40af' }}>
+                  🔄 Next Step: Compare Across AI Models
+                </h3>
+                <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+                  You've generated {variants.length} variants! Now try getting the same prompt from different AI models (GPT-4, Claude, Gemini). Each model has unique strengths - comparing them helps you find the best solution.
+                </p>
+                <button
+                  onClick={onOpenMR6}
+                  style={{
+                    backgroundColor: '#3b82f6',
+                    color: 'white',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '0.375rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                  }}
+                  title="Open Multi-Model Comparison - Compare outputs from GPT-4, Claude, and Gemini"
+                >
+                  🔄 Compare AI Models (MR6)
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -505,6 +540,39 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
             </div>
           ))}
         </div>
+
+        {/* MR Integration: Recommend cross-model comparison in comparison view */}
+        {onOpenMR6 && variantsToCompare.length >= 2 && (
+          <div style={{
+            backgroundColor: '#dbeafe',
+            border: '2px solid #3b82f6',
+            borderRadius: '0.5rem',
+            padding: '1rem',
+            margin: '1.5rem 0',
+          }}>
+            <h3 style={{ margin: '0 0 0.5rem 0', color: '#1e40af' }}>
+              💡 Want More Perspectives?
+            </h3>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+              You're comparing variants from temperature variations. Try comparing outputs from completely different AI models (GPT-4, Claude, Gemini) to get diverse perspectives and approaches to your problem.
+            </p>
+            <button
+              onClick={onOpenMR6}
+              style={{
+                backgroundColor: '#3b82f6',
+                color: 'white',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: '500',
+              }}
+              title="Open Multi-Model Comparison - Get diverse perspectives from different AI models"
+            >
+              🔄 Compare AI Models (MR6)
+            </button>
+          </div>
+        )}
       </div>
     );
   };
