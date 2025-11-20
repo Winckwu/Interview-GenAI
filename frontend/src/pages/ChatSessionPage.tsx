@@ -226,6 +226,9 @@ const ChatSessionPage: React.FC = () => {
   const [sessionData, setSessionData] = useState<any>(null);
   // Track which message is being updated
   const [updatingMessageId, setUpdatingMessageId] = useState<string | null>(null);
+  // Track which message is being edited (inline editing)
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [editedContent, setEditedContent] = useState<string>('');
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
@@ -760,48 +763,86 @@ const ChatSessionPage: React.FC = () => {
   }, []);
 
   /**
-   * Mark interaction as modified (OPTIMIZED: Uses batch endpoint if available)
-   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
+   * Start editing mode for a message
+   * Allows user to directly modify AI output
    */
-  const markAsModified = useCallback(async (messageId: string) => {
+  const startEditingMessage = useCallback((messageId: string, content: string) => {
+    setEditingMessageId(messageId);
+    setEditedContent(content);
+  }, []);
+
+  /**
+   * Cancel editing mode
+   */
+  const cancelEditingMessage = useCallback(() => {
+    setEditingMessageId(null);
+    setEditedContent('');
+  }, []);
+
+  /**
+   * Save edited content and mark as modified
+   */
+  const saveEditedMessage = useCallback(async (messageId: string) => {
     setUpdatingMessageId(messageId);
     try {
-      // OPTIMIZATION: Try batch endpoint first, fallback to individual call
-      const response = await batchUpdateInteractions([
-        { id: messageId, wasModified: true, wasVerified: false, wasRejected: false }
-      ]);
+      // Update the message content in local state
+      const originalContent = messages.find(m => m.id === messageId)?.content || '';
 
-      // Extract the updated interaction from batch response
-      const updatedInteraction = response.data.data[0]?.data?.interaction ||
-                                  response.data.data[0];
+      // Only proceed if content was actually changed
+      if (editedContent === originalContent) {
+        cancelEditingMessage();
+        setUpdatingMessageId(null);
+        return;
+      }
 
+      // Update message content locally first
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === messageId
             ? {
                 ...msg,
-                wasModified: updatedInteraction?.wasModified ?? true,
-                wasVerified: updatedInteraction?.wasVerified ?? false,
-                wasRejected: updatedInteraction?.wasRejected ?? false,
+                content: editedContent,
+                wasModified: true,
+                wasVerified: false,
+                wasRejected: false,
               }
             : msg
         )
       );
 
-      setSuccessMessage('✎ Response marked as modified!');
+      // Mark as modified in backend
+      await batchUpdateInteractions([
+        { id: messageId, wasModified: true, wasVerified: false, wasRejected: false }
+      ]);
+
+      setSuccessMessage('✎ Response modified and saved!');
       setTimeout(() => setSuccessMessage(null), 2000);
 
       // Open MR5 Low Cost Iteration tool for tracking iteration history
       setActiveMRTool('mr5-iteration');
       setShowMRToolsSection(true);
+
+      // Exit editing mode
+      cancelEditingMessage();
     } catch (err: any) {
-      console.error('Modification error:', err);
-      const errorMsg = err.response?.data?.error || 'Failed to mark as modified';
+      console.error('Save edit error:', err);
+      const errorMsg = err.response?.data?.error || 'Failed to save modification';
       setError(errorMsg);
     } finally {
       setUpdatingMessageId(null);
     }
-  }, []);
+  }, [editedContent, messages, cancelEditingMessage]);
+
+  /**
+   * Mark interaction as modified (starts editing mode)
+   * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
+   */
+  const markAsModified = useCallback((messageId: string) => {
+    const message = messages.find(m => m.id === messageId);
+    if (message) {
+      startEditingMessage(messageId, message.content);
+    }
+  }, [messages, startEditingMessage]);
 
   /**
    * Render individual message for virtualized list
@@ -830,16 +871,70 @@ const ChatSessionPage: React.FC = () => {
             borderLeft: message.role === 'ai' ? `3px solid ${message.wasVerified ? '#10b981' : '#3b82f6'}` : 'none',
           }}
         >
-          <p
-            style={{
-              margin: '0',
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-              lineHeight: '1.5',
-            }}
-          >
-            <MarkdownText content={message.content} />
-          </p>
+          {editingMessageId === message.id ? (
+            <div>
+              <textarea
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+                style={{
+                  width: '100%',
+                  minHeight: '150px',
+                  padding: '0.75rem',
+                  border: '2px solid #3b82f6',
+                  borderRadius: '0.5rem',
+                  fontSize: '0.875rem',
+                  lineHeight: '1.5',
+                  resize: 'vertical',
+                  fontFamily: 'inherit',
+                }}
+                autoFocus
+              />
+              <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                <button
+                  onClick={() => saveEditedMessage(message.id)}
+                  disabled={updatingMessageId === message.id}
+                  style={{
+                    fontSize: '0.75rem',
+                    padding: '0.4rem 0.75rem',
+                    backgroundColor: '#10b981',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '0.375rem',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                  }}
+                >
+                  {updatingMessageId === message.id ? '⏳ Saving...' : '💾 Save'}
+                </button>
+                <button
+                  onClick={cancelEditingMessage}
+                  style={{
+                    fontSize: '0.75rem',
+                    padding: '0.4rem 0.75rem',
+                    backgroundColor: '#f3f4f6',
+                    color: '#374151',
+                    border: 'none',
+                    borderRadius: '0.375rem',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                  }}
+                >
+                  ✕ Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p
+              style={{
+                margin: '0',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                lineHeight: '1.5',
+              }}
+            >
+              <MarkdownText content={message.content} />
+            </p>
+          )}
           <p
             style={{
               margin: '0.75rem 0 0 0',
@@ -907,7 +1002,7 @@ const ChatSessionPage: React.FC = () => {
         </div>
       </div>
     ),
-    [updatingMessageId, markAsVerified, markAsModified]
+    [updatingMessageId, markAsVerified, markAsModified, editingMessageId, editedContent, saveEditedMessage, cancelEditingMessage]
   );
 
   /**
