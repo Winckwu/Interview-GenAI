@@ -123,4 +123,168 @@ export const getModelInfo = () => {
   };
 };
 
-export default { callOpenAI, getModelInfo };
+/**
+ * Generate multiple variants with different parameters
+ * @param userPrompt - User's message
+ * @param variants - Array of variant configurations
+ * @returns Array of AI responses with different parameters
+ */
+export const generateBatchVariants = async (
+  userPrompt: string,
+  conversationHistory: Array<{ role: string; content: string }> = [],
+  variants: Array<{
+    temperature?: number;
+    style?: string;
+    maxTokens?: number;
+  }> = []
+): Promise<Array<AIResponse & { variantConfig: any }>> => {
+  try {
+    // If no variants specified, use default presets
+    if (variants.length === 0) {
+      variants = [
+        { temperature: 0.3, style: 'precise', maxTokens: 2000 },
+        { temperature: 0.7, style: 'balanced', maxTokens: 2000 },
+        { temperature: 0.9, style: 'creative', maxTokens: 2000 },
+      ];
+    }
+
+    // Build base messages
+    const baseMessages: any[] = [
+      {
+        role: 'system',
+        content: `You are a helpful AI assistant. Be concise, accurate, and provide clear explanations.
+                  Help users think critically about their tasks and learn from your responses.`,
+      },
+      ...conversationHistory,
+      {
+        role: 'user',
+        content: userPrompt,
+      },
+    ];
+
+    // Generate all variants in parallel
+    const variantPromises = variants.map(async (variant) => {
+      // Adjust system prompt based on style
+      let systemPrompt = baseMessages[0].content;
+      if (variant.style === 'formal') {
+        systemPrompt += ' Use formal, professional language.';
+      } else if (variant.style === 'casual') {
+        systemPrompt += ' Use casual, friendly language.';
+      } else if (variant.style === 'technical') {
+        systemPrompt += ' Use technical, detailed language with precise terminology.';
+      } else if (variant.style === 'creative') {
+        systemPrompt += ' Be creative and think outside the box.';
+      } else if (variant.style === 'precise') {
+        systemPrompt += ' Be extremely precise and accurate. Stick to facts.';
+      }
+
+      const messages = [
+        { role: 'system', content: systemPrompt },
+        ...baseMessages.slice(1),
+      ];
+
+      const response = await client.chat.completions.create({
+        model: MODEL,
+        messages,
+        temperature: variant.temperature ?? 0.7,
+        max_tokens: variant.maxTokens ?? 2000,
+        top_p: 0.9,
+      });
+
+      const aiMessage = response.choices[0]?.message?.content || '';
+
+      return {
+        content: aiMessage,
+        model: MODEL,
+        usage: {
+          promptTokens: response.usage?.prompt_tokens || 0,
+          completionTokens: response.usage?.completion_tokens || 0,
+          totalTokens: response.usage?.total_tokens || 0,
+        },
+        variantConfig: variant,
+      };
+    });
+
+    return await Promise.all(variantPromises);
+  } catch (error: any) {
+    console.error('Batch Variants Generation Error:', error);
+    throw new Error(`Failed to generate batch variants: ${error.message}`);
+  }
+};
+
+/**
+ * Call multiple AI models in parallel for comparison
+ * @param userPrompt - User's message
+ * @param models - Array of model IDs to use
+ * @returns Array of responses from different models
+ */
+export const callMultipleModels = async (
+  userPrompt: string,
+  conversationHistory: Array<{ role: string; content: string }> = [],
+  models: string[] = []
+): Promise<Array<AIResponse & { modelId: string; latency: number }>> => {
+  try {
+    // If no models specified, use defaults
+    if (models.length === 0) {
+      models = ['gpt-4o-mini', 'gpt-3.5-turbo'];
+    }
+
+    // Filter to only OpenAI models (Claude/Gemini would need separate API clients)
+    const supportedModels = models.filter((m) =>
+      ['gpt-4o', 'gpt-4-turbo', 'gpt-4o-mini', 'gpt-3.5-turbo', 'gpt-4'].includes(m)
+    );
+
+    if (supportedModels.length === 0) {
+      throw new Error('No supported models specified');
+    }
+
+    // Build messages
+    const messages: any[] = [
+      {
+        role: 'system',
+        content: `You are a helpful AI assistant. Be concise, accurate, and provide clear explanations.
+                  Help users think critically about their tasks and learn from your responses.`,
+      },
+      ...conversationHistory,
+      {
+        role: 'user',
+        content: userPrompt,
+      },
+    ];
+
+    // Call all models in parallel
+    const modelPromises = supportedModels.map(async (modelId) => {
+      const startTime = Date.now();
+
+      const response = await client.chat.completions.create({
+        model: modelId,
+        messages,
+        temperature: 0.7,
+        max_tokens: 2000,
+        top_p: 0.9,
+      });
+
+      const latency = Date.now() - startTime;
+      const aiMessage = response.choices[0]?.message?.content || '';
+
+      return {
+        content: aiMessage,
+        model: modelId,
+        modelId,
+        latency,
+        usage: {
+          promptTokens: response.usage?.prompt_tokens || 0,
+          completionTokens: response.usage?.completion_tokens || 0,
+          totalTokens: response.usage?.total_tokens || 0,
+        },
+      };
+    });
+
+    return await Promise.all(modelPromises);
+  } catch (error: any) {
+    console.error('Multi-Model Call Error:', error);
+    throw new Error(`Failed to call multiple models: ${error.message}`);
+  }
+};
+
+export default { callOpenAI, getModelInfo, generateBatchVariants, callMultipleModels };

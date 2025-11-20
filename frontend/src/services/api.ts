@@ -313,6 +313,26 @@ export const apiService = {
     // MR15: Recommend Strategy
     recommendStrategy: (taskType: string, taskDescription?: string, userLevel?: string) =>
       api.post('/ai/mr/strategy', { taskType, taskDescription, userLevel }),
+
+    // NEW: Batch Variants with Temperature & Style (MR5)
+    batchVariants: (
+      userPrompt: string,
+      conversationHistory: any[] = [],
+      variants: Array<{
+        temperature?: number;
+        style?: string;
+        maxTokens?: number;
+      }> = []
+    ) =>
+      api.post('/ai/batch-variants', { userPrompt, conversationHistory, variants }),
+
+    // NEW: Multi-Model Comparison (MR6)
+    multiModel: (
+      userPrompt: string,
+      conversationHistory: any[] = [],
+      models: string[] = []
+    ) =>
+      api.post('/ai/multi-model', { userPrompt, conversationHistory, models }),
   },
 };
 

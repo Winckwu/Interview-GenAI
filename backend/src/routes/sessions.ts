@@ -255,4 +255,160 @@ router.get(
   })
 );
 
+/**
+ * GET /api/sessions/:sessionId/export
+ * Export session history to JSON, Markdown, or PDF
+ * Supports MR2: Process Transparency
+ */
+router.get(
+  '/:sessionId/export',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { sessionId } = req.params;
+    const format = (req.query.format as string) || 'json';
+
+    // Get session and interactions
+    const session = await SessionService.getSession(sessionId);
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        error: 'Session not found',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const interactions = await SessionService.getSessionInteractions(sessionId, 1000);
+
+    // Export based on format
+    if (format === 'json') {
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', `attachment; filename="session-${sessionId}.json"`);
+      return res.json({
+        session,
+        interactions,
+        exportedAt: new Date().toISOString(),
+      });
+    } else if (format === 'markdown') {
+      res.setHeader('Content-Type', 'text/markdown');
+      res.setHeader('Content-Disposition', `attachment; filename="session-${sessionId}.md"`);
+
+      let markdown = `# Session Export: ${session.taskDescription || 'Untitled'}\n\n`;
+      markdown += `**Session ID**: ${session.id}\n`;
+      markdown += `**Task Type**: ${session.taskType || 'General'}\n`;
+      markdown += `**Started**: ${new Date(session.createdAt).toLocaleString()}\n`;
+      markdown += `**Total Interactions**: ${interactions.length}\n\n`;
+      markdown += `---\n\n`;
+
+      interactions.forEach((interaction: any, idx: number) => {
+        markdown += `## Interaction ${idx + 1}\n\n`;
+        markdown += `**Time**: ${new Date(interaction.createdAt).toLocaleString()}\n`;
+        markdown += `**Model**: ${interaction.aiModel || 'N/A'}\n`;
+        markdown += `**Response Time**: ${interaction.responseTime || 'N/A'}ms\n\n`;
+
+        markdown += `### User Prompt\n\n${interaction.userPrompt}\n\n`;
+        markdown += `### AI Response\n\n${interaction.aiResponse}\n\n`;
+
+        if (interaction.wasVerified || interaction.wasModified || interaction.wasRejected) {
+          markdown += `**Status**: `;
+          if (interaction.wasVerified) markdown += `✓ Verified `;
+          if (interaction.wasModified) markdown += `✎ Modified `;
+          if (interaction.wasRejected) markdown += `✗ Rejected `;
+          markdown += `\n\n`;
+        }
+
+        markdown += `---\n\n`;
+      });
+
+      markdown += `\n*Exported at ${new Date().toISOString()}*\n`;
+      return res.send(markdown);
+    } else if (format === 'pdf') {
+      // Simple PDF generation using html-like approach
+      // For a quick implementation, we'll use a text-based PDF
+      try {
+        const PDFDocument = require('pdfkit');
+        const doc = new PDFDocument({ margin: 50 });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="session-${sessionId}.pdf"`);
+
+        doc.pipe(res);
+
+        // Title
+        doc.fontSize(20).text(`Session Export: ${session.taskDescription || 'Untitled'}`, { align: 'center' });
+        doc.moveDown(0.5);
+
+        // Metadata
+        doc.fontSize(10).text(`Session ID: ${session.id}`, { align: 'left' });
+        doc.text(`Task Type: ${session.taskType || 'General'}`);
+        doc.text(`Started: ${new Date(session.createdAt).toLocaleString()}`);
+        doc.text(`Total Interactions: ${interactions.length}`);
+        doc.moveDown(1);
+
+        // Horizontal line
+        doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+        doc.moveDown(1);
+
+        // Interactions
+        interactions.forEach((interaction: any, idx: number) => {
+          if (doc.y > 700) {
+            doc.addPage();
+          }
+
+          doc.fontSize(14).text(`Interaction ${idx + 1}`, { underline: true });
+          doc.moveDown(0.3);
+
+          doc.fontSize(9)
+            .text(`Time: ${new Date(interaction.createdAt).toLocaleString()}`)
+            .text(`Model: ${interaction.aiModel || 'N/A'}`)
+            .text(`Response Time: ${interaction.responseTime || 'N/A'}ms`);
+
+          doc.moveDown(0.5);
+
+          doc.fontSize(11).text('User Prompt:', { bold: true });
+          doc.fontSize(10).text(interaction.userPrompt || 'N/A', { align: 'justify' });
+          doc.moveDown(0.5);
+
+          doc.fontSize(11).text('AI Response:', { bold: true });
+          const aiText = interaction.aiResponse || 'N/A';
+          // Truncate very long responses to prevent PDF issues
+          const truncatedText = aiText.length > 1500 ? aiText.substring(0, 1500) + '...[truncated]' : aiText;
+          doc.fontSize(10).text(truncatedText, { align: 'justify' });
+
+          if (interaction.wasVerified || interaction.wasModified || interaction.wasRejected) {
+            doc.moveDown(0.3);
+            let status = 'Status: ';
+            if (interaction.wasVerified) status += '✓ Verified ';
+            if (interaction.wasModified) status += '✎ Modified ';
+            if (interaction.wasRejected) status += '✗ Rejected';
+            doc.fontSize(9).text(status, { italic: true });
+          }
+
+          doc.moveDown(0.8);
+          doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+          doc.moveDown(0.8);
+        });
+
+        // Footer
+        doc.fontSize(8).text(`Exported at ${new Date().toISOString()}`, { align: 'center' });
+
+        doc.end();
+      } catch (error: any) {
+        console.error('PDF Generation Error:', error);
+        return res.status(500).json({
+          success: false,
+          error: 'Failed to generate PDF',
+          details: error.message,
+          timestamp: new Date().toISOString(),
+        });
+      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid format. Use json, markdown, or pdf',
+        timestamp: new Date().toISOString(),
+      });
+    }
+  })
+);
+
 export default router;

@@ -119,12 +119,19 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
     setGeneratingVariants(true);
 
     try {
-      // Generate variants using GPT API
+      // Convert conversation history to API format
+      const apiHistory = conversationHistory.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content,
+      }));
+
+      // Generate variants using GPT API with conversation context
       const newVariants = await generateVariants({
         prompt: initialPrompt,
         count: variantCount,
         temperatureRange,
         baseVariant: conversationHistory[conversationHistory.length - 1]?.content || '',
+        conversationHistory: apiHistory,
       });
 
       setVariants(newVariants);
@@ -407,17 +414,49 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
             <h4 className="mr5-variants-title">Generated Variants ({variants.length})</h4>
 
             <div className="mr5-variants-grid">
-              {variants.map((variant, idx) => (
+              {variants.map((variant: any, idx) => (
                 <div
                   key={variant.id}
                   className={`mr5-variant-card ${selectedComparisonVariants.includes(variant.id) ? 'selected' : ''}`}
                 >
                   <div className="mr5-variant-header">
                     <span className="mr5-variant-label">Variant {idx + 1}</span>
-                    <span className="mr5-variant-temp">T: {variant.temperature.toFixed(1)}</span>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      {variant.style && (
+                        <span
+                          className="mr5-variant-style"
+                          style={{
+                            fontSize: '0.75rem',
+                            padding: '0.125rem 0.5rem',
+                            backgroundColor: '#e0e7ff',
+                            color: '#4338ca',
+                            borderRadius: '0.25rem',
+                            fontWeight: '500',
+                          }}
+                        >
+                          {variant.style}
+                        </span>
+                      )}
+                      <span className="mr5-variant-temp">T: {variant.temperature.toFixed(1)}</span>
+                    </div>
                   </div>
 
                   <p className="mr5-variant-content">{variant.content.substring(0, 150)}...</p>
+
+                  {variant.tokenUsage && (
+                    <div
+                      style={{
+                        fontSize: '0.75rem',
+                        color: '#6b7280',
+                        marginTop: '0.5rem',
+                        display: 'flex',
+                        gap: '1rem',
+                      }}
+                    >
+                      <span>📊 {variant.tokenUsage.totalTokens} tokens</span>
+                      <span>💰 ~${((variant.tokenUsage.totalTokens / 1000) * 0.00015).toFixed(4)}</span>
+                    </div>
+                  )}
 
                   <div className="mr5-variant-rating">
                     <button

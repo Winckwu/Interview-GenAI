@@ -19,7 +19,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import {
   ModelComparison,
   ModelPerformance,
-  compareModelOutputs,
+  callMultipleModels,
   recommendModel,
   trackModelPerformance,
   ModelType,
@@ -30,6 +30,7 @@ import './MR6CrossModelExperimentation.css';
 interface MR6Props {
   prompt?: string;
   taskType?: string;
+  conversationHistory?: Array<{ role: 'user' | 'ai'; content: string }>;
   onModelSelected?: (model: ModelType) => void;
   onComparisonComplete?: (comparison: ModelComparison) => void;
   availableModels?: ModelType[];
@@ -38,22 +39,18 @@ interface MR6Props {
 export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
   prompt = '',
   taskType = 'general',
+  conversationHistory = [],
   onModelSelected,
   onComparisonComplete,
-  availableModels = ['gpt4', 'claude', 'gemini'],
+  availableModels = ['gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo'],
 }) => {
   const [selectedModels, setSelectedModels] = useState<ModelType[]>(availableModels);
-  const [modelOutputs, setModelOutputs] = useState<Record<ModelType, string>>({
-    gpt4: '',
-    claude: '',
-    gemini: '',
-  });
   const [comparison, setComparison] = useState<ModelComparison | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMetrics, setSelectedMetrics] = useState<(keyof ComparisonMetrics)[]>([
     'speed',
     'tokenCount',
-    'quality',
+    'cost',
   ]);
   const [userPrompt, setUserPrompt] = useState(prompt);
 
@@ -65,24 +62,29 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
     if (!userPrompt) return;
 
     setIsLoading(true);
-    // Simulate model calls
-    setTimeout(() => {
-      const outputs: Record<ModelType, string> = {
-        gpt4: `GPT-4 Response to: ${userPrompt}\n[Comprehensive output with code examples]`,
-        claude: `Claude Response to: ${userPrompt}\n[Analytical perspective with safety considerations]`,
-        gemini: `Gemini Response to: ${userPrompt}\n[Real-time informed response with long context support]`,
-      };
 
-      setModelOutputs(outputs);
+    try {
+      // Convert conversation history to API format
+      const apiHistory = conversationHistory.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content,
+      }));
 
-      // Compare outputs
-      const comp = compareModelOutputs(selectedModels, outputs, taskType);
+      // Call the multi-model API
+      const comp = await callMultipleModels(
+        userPrompt,
+        apiHistory,
+        selectedModels
+      );
+
       setComparison(comp);
       onComparisonComplete?.(comp);
-
+    } catch (error) {
+      console.error('[MR6] Failed to run experiment:', error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
-  }, [userPrompt, selectedModels, taskType, onComparisonComplete]);
+    }
+  }, [userPrompt, conversationHistory, selectedModels, onComparisonComplete]);
 
   return (
     <div className="mr6-container">
@@ -121,9 +123,9 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
                     }}
                   />
                   <span className="mr6-model-name">
-                    {model === 'gpt4' && '🤖 GPT-4'}
-                    {model === 'claude' && '🧠 Claude'}
-                    {model === 'gemini' && '✨ Gemini'}
+                    {model === 'gpt-4o' && '🤖 GPT-4o (Most Capable)'}
+                    {model === 'gpt-4o-mini' && '⚡ GPT-4o Mini (Fast & Balanced)'}
+                    {model === 'gpt-3.5-turbo' && '🚀 GPT-3.5 Turbo (Fastest)'}
                   </span>
                   {model === recommendedModel && (
                     <span className="mr6-recommended">Recommended</span>
@@ -136,7 +138,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
           <div className="mr6-metric-selector">
             <h3 className="mr6-label">Compare by:</h3>
             <div className="mr6-metric-checkboxes">
-              {(['speed', 'tokenCount', 'quality', 'relevance'] as const).map(metric => (
+              {(['speed', 'tokenCount', 'cost', 'quality'] as const).map(metric => (
                 <label key={metric} className="mr6-metric-checkbox">
                   <input
                     type="checkbox"
@@ -169,62 +171,81 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
             <h2 className="mr6-comparison-title">Comparison Results</h2>
 
             <div className="mr6-outputs-grid">
-              {selectedModels.map(model => (
-                <div key={model} className="mr6-output-card">
-                  <h3 className="mr6-output-title">
-                    {model === 'gpt4' && '🤖 GPT-4'}
-                    {model === 'claude' && '🧠 Claude'}
-                    {model === 'gemini' && '✨ Gemini'}
-                  </h3>
+              {selectedModels.map(model => {
+                const modelMetrics = comparison.metrics[model];
+                const modelOutput = comparison.outputs[model];
 
-                  <div className="mr6-metrics">
-                    {selectedMetrics.includes('speed') && (
-                      <div className="mr6-metric">
-                        <span>Speed:</span>
-                        <span className="mr6-metric-value">
-                          {Math.random().toFixed(2)}s
+                return (
+                  <div key={model} className="mr6-output-card">
+                    <h3 className="mr6-output-title">
+                      {model === 'gpt-4o' && '🤖 GPT-4o'}
+                      {model === 'gpt-4o-mini' && '⚡ GPT-4o Mini'}
+                      {model === 'gpt-3.5-turbo' && '🚀 GPT-3.5 Turbo'}
+                      {model === comparison.bestModel && (
+                        <span style={{ marginLeft: '0.5rem', fontSize: '0.875rem', color: '#10b981' }}>
+                          ✓ Best
                         </span>
-                      </div>
-                    )}
-                    {selectedMetrics.includes('tokenCount') && (
-                      <div className="mr6-metric">
-                        <span>Tokens:</span>
-                        <span className="mr6-metric-value">
-                          {Math.round(Math.random() * 500) + 200}
-                        </span>
-                      </div>
-                    )}
-                    {selectedMetrics.includes('quality') && (
-                      <div className="mr6-metric">
-                        <span>Quality:</span>
-                        <span className="mr6-metric-value">
-                          {'⭐'.repeat(Math.round(Math.random() * 5))}
-                        </span>
-                      </div>
-                    )}
+                      )}
+                    </h3>
+
+                    <div className="mr6-metrics">
+                      {selectedMetrics.includes('speed') && modelMetrics && (
+                        <div className="mr6-metric">
+                          <span>⚡ Speed:</span>
+                          <span className="mr6-metric-value">
+                            {modelMetrics.speed.toFixed(2)}s
+                          </span>
+                        </div>
+                      )}
+                      {selectedMetrics.includes('tokenCount') && modelMetrics && (
+                        <div className="mr6-metric">
+                          <span>📊 Tokens:</span>
+                          <span className="mr6-metric-value">
+                            {modelMetrics.tokenCount}
+                          </span>
+                        </div>
+                      )}
+                      {selectedMetrics.includes('cost') && modelMetrics && (
+                        <div className="mr6-metric">
+                          <span>💰 Cost:</span>
+                          <span className="mr6-metric-value">
+                            ${modelMetrics.cost.toFixed(4)}
+                          </span>
+                        </div>
+                      )}
+                      {selectedMetrics.includes('quality') && modelMetrics && (
+                        <div className="mr6-metric">
+                          <span>⭐ Quality:</span>
+                          <span className="mr6-metric-value">
+                            {modelMetrics.quality > 0 ? `${modelMetrics.quality.toFixed(1)}/5` : 'Rate below'}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mr6-output-content">
+                      <p>{modelOutput || 'No output available'}</p>
+                    </div>
+
+                    <button
+                      className="mr6-select-btn"
+                      onClick={() => onModelSelected?.(model)}
+                    >
+                      Select This Output
+                    </button>
                   </div>
-
-                  <div className="mr6-output-content">
-                    <p>{modelOutputs[model]}</p>
-                  </div>
-
-                  <button
-                    className="mr6-select-btn"
-                    onClick={() => onModelSelected?.(model)}
-                  >
-                    Select This Output
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="mr6-recommendation-box">
-              <h3 className="mr6-recommendation-title">💡 Best Choice</h3>
-              <p className="mr6-recommendation-text">
-                {comparison.bestModel === 'gpt4' && 'GPT-4 excels at coding and comprehensive tasks'}
-                {comparison.bestModel === 'claude' && 'Claude provides the most thorough analysis'}
-                {comparison.bestModel === 'gemini' && 'Gemini offers the longest context window'}
-              </p>
+              <h3 className="mr6-recommendation-title">💡 Recommendation</h3>
+              <p className="mr6-recommendation-text">{comparison.reasoning}</p>
+              {comparison.recommendedFor.length > 0 && (
+                <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+                  <strong>Best for:</strong> {comparison.recommendedFor.join(', ')}
+                </div>
+              )}
             </div>
           </div>
         ) : (
@@ -235,30 +256,33 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
       </div>
 
       <div className="mr6-model-guide">
-        <h3 className="mr6-guide-title">Model Strengths</h3>
+        <h3 className="mr6-guide-title">Model Comparison Guide</h3>
         <div className="mr6-guide-grid">
           <div className="mr6-guide-card">
-            <h4>🤖 GPT-4</h4>
+            <h4>🤖 GPT-4o</h4>
             <ul>
-              <li>Comprehensive problem-solving</li>
-              <li>Code generation and debugging</li>
-              <li>Creative writing</li>
+              <li><strong>Best for:</strong> Complex reasoning, coding, creative writing</li>
+              <li><strong>Speed:</strong> Medium (~2-3s)</li>
+              <li><strong>Cost:</strong> $0.015/$0.06 per 1K tokens</li>
+              <li><strong>Quality:</strong> Highest accuracy</li>
             </ul>
           </div>
           <div className="mr6-guide-card">
-            <h4>🧠 Claude</h4>
+            <h4>⚡ GPT-4o Mini</h4>
             <ul>
-              <li>Deep analysis and reasoning</li>
-              <li>Safety-conscious responses</li>
-              <li>Nuanced explanations</li>
+              <li><strong>Best for:</strong> General tasks, quick answers, code review</li>
+              <li><strong>Speed:</strong> Fast (~1.5-2s)</li>
+              <li><strong>Cost:</strong> $0.00015/$0.0006 per 1K tokens</li>
+              <li><strong>Quality:</strong> Good balance</li>
             </ul>
           </div>
           <div className="mr6-guide-card">
-            <h4>✨ Gemini</h4>
+            <h4>🚀 GPT-3.5 Turbo</h4>
             <ul>
-              <li>Long context support</li>
-              <li>Real-time information</li>
-              <li>Multi-modal capabilities</li>
+              <li><strong>Best for:</strong> Simple questions, quick facts, translation</li>
+              <li><strong>Speed:</strong> Very fast (~1s)</li>
+              <li><strong>Cost:</strong> $0.0005/$0.0015 per 1K tokens</li>
+              <li><strong>Quality:</strong> Good for simple tasks</li>
             </ul>
           </div>
         </div>

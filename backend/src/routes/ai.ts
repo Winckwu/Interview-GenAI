@@ -1,7 +1,7 @@
 import express, { Router, Request, Response } from 'express';
 import { authenticateToken } from '../middleware/auth';
 import { asyncHandler } from '../middleware/errorHandler';
-import { callOpenAI, getModelInfo } from '../services/aiService';
+import { callOpenAI, getModelInfo, generateBatchVariants, callMultipleModels } from '../services/aiService';
 
 const router: Router = express.Router();
 
@@ -583,6 +583,145 @@ Return ONLY valid JSON, no markdown.`;
       res.status(500).json({
         success: false,
         error: error.message || 'Failed to recommend strategy',
+        timestamp: new Date().toISOString(),
+      });
+    }
+  })
+);
+
+/**
+ * POST /api/ai/batch-variants
+ * Generate multiple variants with different parameters (temperature, style)
+ * Supports MR5: Low-Cost Iteration Mechanism
+ */
+router.post(
+  '/batch-variants',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { userPrompt, conversationHistory = [], variants = [] } = req.body;
+
+    // Validation
+    if (!userPrompt || userPrompt.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'User prompt is required',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    if (userPrompt.length > 4000) {
+      return res.status(400).json({
+        success: false,
+        error: 'Prompt too long (max 4000 characters)',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    try {
+      const startTime = Date.now();
+      const responses = await generateBatchVariants(userPrompt, conversationHistory, variants);
+      const totalTime = Date.now() - startTime;
+
+      res.json({
+        success: true,
+        data: {
+          variants: responses.map((r, idx) => ({
+            id: `variant-${idx + 1}`,
+            content: r.content,
+            model: r.model,
+            config: r.variantConfig,
+            usage: r.usage,
+          })),
+          totalTime,
+          count: responses.length,
+        },
+        message: `Generated ${responses.length} variants successfully`,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      console.error('Batch Variants Error:', error);
+
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Failed to generate batch variants',
+        timestamp: new Date().toISOString(),
+      });
+    }
+  })
+);
+
+/**
+ * POST /api/ai/multi-model
+ * Call multiple AI models in parallel for comparison
+ * Supports MR6: Cross-Model Experimentation
+ */
+router.post(
+  '/multi-model',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { userPrompt, conversationHistory = [], models = [] } = req.body;
+
+    // Validation
+    if (!userPrompt || userPrompt.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'User prompt is required',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    if (userPrompt.length > 4000) {
+      return res.status(400).json({
+        success: false,
+        error: 'Prompt too long (max 4000 characters)',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    try {
+      const startTime = Date.now();
+      const responses = await callMultipleModels(userPrompt, conversationHistory, models);
+      const totalTime = Date.now() - startTime;
+
+      // Calculate cost estimates (simplified)
+      const costEstimates: Record<string, any> = {
+        'gpt-4o': { input: 0.015, output: 0.06 },
+        'gpt-4-turbo': { input: 0.01, output: 0.03 },
+        'gpt-4o-mini': { input: 0.00015, output: 0.0006 },
+        'gpt-3.5-turbo': { input: 0.0005, output: 0.0015 },
+      };
+
+      res.json({
+        success: true,
+        data: {
+          comparisons: responses.map((r, idx) => {
+            const costs = costEstimates[r.modelId] || { input: 0, output: 0 };
+            const estimatedCost =
+              (r.usage.promptTokens / 1000) * costs.input +
+              (r.usage.completionTokens / 1000) * costs.output;
+
+            return {
+              id: `model-${idx + 1}`,
+              modelId: r.modelId,
+              modelName: r.model,
+              content: r.content,
+              latency: r.latency,
+              usage: r.usage,
+              estimatedCost: estimatedCost.toFixed(4),
+            };
+          }),
+          totalTime,
+          count: responses.length,
+        },
+        message: `Compared ${responses.length} models successfully`,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      console.error('Multi-Model Error:', error);
+
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Failed to call multiple models',
         timestamp: new Date().toISOString(),
       });
     }

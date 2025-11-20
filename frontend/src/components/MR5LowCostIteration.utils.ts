@@ -92,25 +92,54 @@ export async function generateVariants(options: {
   count: number;
   temperatureRange: { min: number; max: number };
   baseVariant: string;
+  conversationHistory?: Array<{ role: string; content: string }>;
 }): Promise<IterationVariant[]> {
-  const { prompt, count, temperatureRange } = options;
+  const { prompt, count, temperatureRange, conversationHistory = [] } = options;
 
   try {
-    // Try GPT-powered variant generation
-    const response = await apiService.ai.generateVariants(prompt, count);
+    // Build variant configurations based on count and temperature range
+    const variantConfigs = [];
+    const styles = ['precise', 'balanced', 'creative', 'technical', 'formal', 'casual'];
+
+    for (let i = 0; i < count; i++) {
+      // Interpolate temperature across range
+      const temperature = temperatureRange.min + (i / Math.max(count - 1, 1)) * (temperatureRange.max - temperatureRange.min);
+
+      // Select style based on temperature
+      let style = 'balanced';
+      if (temperature < 0.3) style = 'precise';
+      else if (temperature < 0.5) style = 'formal';
+      else if (temperature < 0.7) style = 'balanced';
+      else if (temperature < 0.85) style = 'creative';
+      else style = 'technical';
+
+      variantConfigs.push({
+        temperature,
+        style,
+        maxTokens: 2000,
+      });
+    }
+
+    // Call the new batch-variants endpoint
+    const response = await apiService.ai.batchVariants(
+      prompt,
+      conversationHistory,
+      variantConfigs
+    );
+
     if (response.data?.success && response.data?.data?.variants) {
-      return response.data.data.variants.map((v: any, idx: number) => ({
-        id: v.id || `variant-${Date.now()}-${idx}`,
+      return response.data.data.variants.map((v: any) => ({
+        id: v.id || `variant-${Date.now()}-${Math.random()}`,
         content: v.content,
-        temperature: temperatureRange.min + (idx / Math.max(count - 1, 1)) * (temperatureRange.max - temperatureRange.min),
+        temperature: v.config?.temperature || 0.7,
         prompt,
         generatedAt: new Date(),
-        style: v.style,
-        characteristics: v.characteristics
+        style: v.config?.style,
+        tokenUsage: v.usage,
       }));
     }
   } catch (error) {
-    console.warn('[MR5] GPT variant generation failed, using local fallback:', error);
+    console.warn('[MR5] Batch variant generation failed, using local fallback:', error);
   }
 
   // Fallback to local generation

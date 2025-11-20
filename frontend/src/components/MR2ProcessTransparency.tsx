@@ -137,13 +137,72 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
    * Handle export
    */
   const handleExport = useCallback(
-    (format: 'json' | 'markdown' | 'pdf') => {
-      const exported = exportInteractionHistory(versions, format);
-      if (onExport) {
-        onExport(exported);
+    async (format: 'json' | 'markdown' | 'pdf') => {
+      if (format === 'pdf') {
+        // For PDF, call the backend export endpoint
+        if (!sessionId) {
+          console.error('[MR2] Cannot export PDF: No session ID provided');
+          alert('Session ID is required for PDF export');
+          return;
+        }
+
+        try {
+          // Open PDF in new window using backend endpoint
+          const token = localStorage.getItem('auth-storage')
+            ? JSON.parse(localStorage.getItem('auth-storage') || '{}').state?.token
+            : null;
+
+          const url = `/api/sessions/${sessionId}/export?format=pdf`;
+          const headers: Record<string, string> = {};
+          if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+          }
+
+          // Download PDF
+          const response = await fetch(url, { headers });
+          if (!response.ok) {
+            throw new Error(`PDF export failed: ${response.statusText}`);
+          }
+
+          const blob = await response.blob();
+          const downloadUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = downloadUrl;
+          link.download = `session-${sessionId}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(downloadUrl);
+
+          if (onExport) {
+            onExport({ format: 'pdf', sessionId });
+          }
+        } catch (error) {
+          console.error('[MR2] PDF export failed:', error);
+          alert('Failed to export PDF. Please try again.');
+        }
+      } else {
+        // For JSON and Markdown, use local export
+        const exported = exportInteractionHistory(versions, format);
+        if (onExport) {
+          onExport(exported);
+        } else {
+          // Fallback: download as file
+          const blob = new Blob([exported], {
+            type: format === 'json' ? 'application/json' : 'text/markdown'
+          });
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `session-${sessionId}.${format === 'json' ? 'json' : 'md'}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        }
       }
     },
-    [versions, onExport]
+    [versions, sessionId, onExport]
   );
 
   /**
@@ -542,6 +601,13 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
           </button>
           <button className="mr2-btn-export" onClick={() => handleExport('json')}>
             📋 Export JSON
+          </button>
+          <button
+            className="mr2-btn-export mr2-btn-pdf"
+            onClick={() => handleExport('pdf')}
+            title="Export session history to PDF (includes all interactions and metadata)"
+          >
+            📕 Export PDF
           </button>
         </div>
       </div>
