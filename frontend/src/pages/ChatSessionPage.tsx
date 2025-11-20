@@ -286,7 +286,7 @@ const ChatSessionPage: React.FC = () => {
     totalMessagesCount,
     handleSendMessage: sendMessage,
     markAsVerified,
-    markAsModified,
+    markAsModified: markAsModifiedBase,
     startEditingMessage,
     saveEditedMessage,
     cancelEditingMessage,
