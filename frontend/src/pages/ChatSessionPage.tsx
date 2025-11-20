@@ -1681,6 +1681,104 @@ const ChatSessionPage: React.FC = () => {
           font-size: 0.6rem !important;
         }
 
+        /* MR13 Analyze Response - vertical layout */
+        .mr13-analyze {
+          grid-template-columns: 1fr !important;
+          gap: 0.75rem !important;
+        }
+
+        .mr13-form {
+          padding: 0.5rem !important;
+          gap: 0.5rem !important;
+        }
+
+        .mr13-form-group {
+          gap: 0.25rem !important;
+        }
+
+        .mr13-label {
+          font-size: 0.65rem !important;
+        }
+
+        .mr13-textarea, .mr13-select {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr13-analyze-btn {
+          padding: 0.4rem 0.75rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr13-tips {
+          padding: 0.5rem !important;
+        }
+
+        .mr13-tips h3 {
+          font-size: 0.7rem !important;
+          margin-bottom: 0.4rem !important;
+        }
+
+        .mr13-tips ul {
+          gap: 0.35rem !important;
+          padding-left: 1rem !important;
+        }
+
+        .mr13-tips li {
+          font-size: 0.55rem !important;
+        }
+
+        /* MR13 Results grid - vertical */
+        .mr13-results-grid {
+          grid-template-columns: 1fr !important;
+          gap: 0.5rem !important;
+        }
+
+        .mr13-result-card {
+          padding: 0.5rem !important;
+        }
+
+        .mr13-result-header {
+          margin-bottom: 0.35rem !important;
+        }
+
+        .mr13-result-title {
+          font-size: 0.7rem !important;
+        }
+
+        .mr13-result-content {
+          font-size: 0.6rem !important;
+        }
+
+        /* MR13 Tabs */
+        .mr13-tabs {
+          gap: 0.25rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr13-tab {
+          padding: 0.35rem 0.5rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        /* MR13 Metrics grid */
+        .mr13-metrics-grid {
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 0.35rem !important;
+        }
+
+        .mr13-metric-card {
+          padding: 0.4rem !important;
+        }
+
+        .mr13-metric-value {
+          font-size: 0.9rem !important;
+        }
+
+        .mr13-metric-label {
+          font-size: 0.5rem !important;
+        }
+
         /* MR14 Guided Reflection - Compact Sidebar Styles */
         .mr14-container {
           padding: 0.5rem !important;
