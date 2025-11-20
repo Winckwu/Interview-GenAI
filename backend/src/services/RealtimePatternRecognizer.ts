@@ -5,6 +5,7 @@
  */
 
 import { BehavioralSignals } from './BehaviorSignalDetector';
+import PatternHistoryService from './PatternHistoryService';
 
 export type Pattern = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
 
@@ -78,22 +79,77 @@ const SIGNAL_LIKELIHOODS: Record<Pattern, Record<string, number>> = {
 };
 
 export class RealtimePatternRecognizer {
-  /**
-   * Initialize with uniform prior distribution
-   * Each pattern equally likely initially
-   */
-  private patternProbabilities: Map<Pattern, number> = new Map([
-    ['A', 0.20],
-    ['B', 0.20],
-    ['C', 0.20],
-    ['D', 0.20],
-    ['E', 0.20],
-    // F starts very low (0% prior, only updates based on evidence)
-  ]);
-
+  private patternProbabilities: Map<Pattern, number>;
   private turnCount: number = 0;
   private signalHistory: BehavioralSignals[] = [];
   private evidenceLog: string[] = [];
+
+  // Session context
+  private userId: string;
+  private sessionId: string;
+  private sessionStartTime: number = Date.now();
+  private initialized: boolean = false;
+
+  /**
+   * Constructor - creates recognizer for a specific user session
+   * Call initialize() before first use to load historical prior
+   *
+   * @param userId - User ID for cross-session memory
+   * @param sessionId - Current session ID
+   */
+  constructor(userId: string, sessionId: string) {
+    this.userId = userId;
+    this.sessionId = sessionId;
+
+    // Start with uniform prior (will be replaced in initialize())
+    this.patternProbabilities = new Map([
+      ['A', 1 / 6],
+      ['B', 1 / 6],
+      ['C', 1 / 6],
+      ['D', 1 / 6],
+      ['E', 1 / 6],
+      ['F', 1 / 6],
+    ]);
+  }
+
+  /**
+   * Initialize recognizer with historical prior
+   * MUST be called before first updateProbabilities()
+   *
+   * Loads user's historical pattern distribution to accelerate convergence
+   */
+  async initialize(): Promise<void> {
+    if (this.initialized) {
+      console.warn('[RealtimePatternRecognizer] Already initialized');
+      return;
+    }
+
+    try {
+      // Load historical prior
+      const historicalPrior = await PatternHistoryService.getUserPatternPrior(this.userId);
+
+      // Update initial probabilities
+      (['A', 'B', 'C', 'D', 'E', 'F'] as Pattern[]).forEach(pattern => {
+        this.patternProbabilities.set(pattern, historicalPrior[pattern]);
+      });
+
+      console.log(`[RealtimePatternRecognizer] Initialized for user ${this.userId} with historical prior:`, historicalPrior);
+
+      // Get dominant pattern info for logging
+      const dominant = await PatternHistoryService.getDominantPattern(this.userId);
+      if (dominant) {
+        console.log(`   Dominant pattern: ${dominant.pattern} (confidence=${dominant.confidence.toFixed(2)}, stability=${dominant.stability.toFixed(2)})`);
+      } else {
+        console.log('   No dominant pattern found (new user or insufficient data)');
+      }
+
+      this.initialized = true;
+    } catch (error) {
+      console.error('[RealtimePatternRecognizer] Error initializing:', error);
+      // Continue with uniform prior on error
+      this.initialized = true;
+    }
+  }
 
   /**
    * Update pattern probabilities based on observed behavioral signals
@@ -192,6 +248,18 @@ export class RealtimePatternRecognizer {
       `Turn ${this.turnCount}: Top=${topPattern} (${(topProbability * 100).toFixed(1)}%), ` +
       `Confidence=${(confidence * 100).toFixed(1)}%, Evidence: ${evidence.join(' | ')}`
     );
+
+    // ✨ NEW: Record pattern detection to database (async, non-blocking)
+    const probabilitiesObject = Object.fromEntries(this.patternProbabilities) as Record<Pattern, number>;
+    PatternHistoryService.recordPatternDetection(
+      this.userId,
+      this.sessionId,
+      topPattern,
+      topProbability,
+      probabilitiesObject
+    ).catch((err: any) => {
+      console.error('[RealtimePatternRecognizer] Failed to record pattern:', err);
+    });
 
     return {
       topPattern,
