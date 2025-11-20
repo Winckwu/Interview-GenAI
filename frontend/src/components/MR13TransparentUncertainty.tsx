@@ -41,13 +41,17 @@ import './MR13TransparentUncertainty.css';
 interface MR13Props {
   onAnalysisComplete?: (uncertainty: OutputUncertainty) => void;
   existingHistory?: ConfidenceHistory[];
+  onOpenMR11?: () => void; // Callback to open MR11 verification tools
+  onOpenMR6?: () => void;  // Callback to open MR6 cross-model experimentation
 }
 
 type TabType = 'analyze' | 'display' | 'history' | 'guidelines';
 
 const MR13TransparentUncertainty: React.FC<MR13Props> = ({
   onAnalysisComplete,
-  existingHistory = []
+  existingHistory = [],
+  onOpenMR11,
+  onOpenMR6
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('analyze');
   const [history, setHistory] = useState<ConfidenceHistory[]>(existingHistory);
@@ -265,6 +269,81 @@ const MR13TransparentUncertainty: React.FC<MR13Props> = ({
               <div className="mr13-cutoff-info">
                 <strong>📅 Knowledge Cutoff:</strong> {uncertainty.knowledgeCutoff}
               </div>
+
+              {/* MR Integration: Recommend verification when confidence is low */}
+              {uncertainty.overallConfidence < 0.6 && (
+                <div className="mr13-recommendation-panel" style={{
+                  backgroundColor: '#fef3c7',
+                  border: '2px solid #f59e0b',
+                  borderRadius: '0.5rem',
+                  padding: '1rem',
+                  margin: '1rem 0',
+                }}>
+                  <h4 style={{ margin: '0 0 0.5rem 0', color: '#92400e' }}>
+                    ⚠️ 低置信度警告 - 建议验证
+                  </h4>
+                  <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+                    AI对此回答的置信度较低（{Math.round(uncertainty.overallConfidence * 100)}%）。
+                    建议使用验证工具或尝试其他模型来确认信息的准确性。
+                  </p>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    {onOpenMR11 && (
+                      <button
+                        onClick={onOpenMR11}
+                        style={{
+                          padding: '0.5rem 1rem',
+                          backgroundColor: '#3b82f6',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '0.375rem',
+                          cursor: 'pointer',
+                          fontSize: '0.875rem',
+                          fontWeight: '600',
+                          transition: 'all 0.2s',
+                        }}
+                        onMouseOver={(e) => {
+                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#2563eb';
+                          (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                        }}
+                        onMouseOut={(e) => {
+                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#3b82f6';
+                          (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                        }}
+                        title="打开集成验证工具 - 一键验证代码、事实、数学等"
+                      >
+                        🔍 使用验证工具 (MR11)
+                      </button>
+                    )}
+                    {onOpenMR6 && (
+                      <button
+                        onClick={onOpenMR6}
+                        style={{
+                          padding: '0.5rem 1rem',
+                          backgroundColor: '#8b5cf6',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '0.375rem',
+                          cursor: 'pointer',
+                          fontSize: '0.875rem',
+                          fontWeight: '600',
+                          transition: 'all 0.2s',
+                        }}
+                        onMouseOver={(e) => {
+                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#7c3aed';
+                          (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                        }}
+                        onMouseOut={(e) => {
+                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#8b5cf6';
+                          (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                        }}
+                        title="尝试其他AI模型 - 对比GPT、Claude、Gemini的回答"
+                      >
+                        🔄 试试其他模型 (MR6)
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Key Uncertainties */}
               {uncertainty.keyUncertainties.length > 0 && (

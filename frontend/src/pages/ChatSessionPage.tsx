@@ -885,6 +885,46 @@ const ChatSessionPage: React.FC = () => {
   }, []);
 
   /**
+   * Open MR11 for integrated verification
+   */
+  const openMR11Verification = useCallback(() => {
+    setActiveMRTool('mr11-verify');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开验证工具 (MR11)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR6 for cross-model experimentation
+   */
+  const openMR6CrossModel = useCallback(() => {
+    setActiveMRTool('mr6-models');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开跨模型对比 (MR6)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR12 for critical thinking scaffolding
+   */
+  const openMR12CriticalThinking = useCallback(() => {
+    setActiveMRTool('mr12-critical');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已激活批判性思维 (MR12)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR14 for guided reflection
+   */
+  const openMR14Reflection = useCallback(() => {
+    setActiveMRTool('mr14-reflection');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开引导反思 (MR14)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
    * Mark interaction as modified (starts editing mode)
    * Opens MR5 immediately so user can view history while editing
    * Wrapped with useCallback to prevent unnecessary re-renders in dependent components
@@ -3067,7 +3107,7 @@ const ChatSessionPage: React.FC = () => {
                       {activeMRTool === 'mr10-cost' && <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />}
                       {activeMRTool === 'mr11-verify' && <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />}
                       {activeMRTool === 'mr12-critical' && <MR12CriticalThinkingScaffolding aiOutput={messages[messages.length - 1]?.content || ''} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />}
-                      {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty content={messages[messages.length - 1]?.content || ''} onUncertaintyAcknowledged={(u) => console.log('Uncertainty:', u)} />}
+                      {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty onAnalysisComplete={(u) => console.log('Uncertainty:', u)} onOpenMR11={openMR11Verification} onOpenMR6={openMR6CrossModel} />}
                       {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} />}
                       {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} />}
                       {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention sessionId={sessionId || ''} onExerciseComplete={(e) => console.log('Exercise:', e)} />}

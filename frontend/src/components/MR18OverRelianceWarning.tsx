@@ -41,6 +41,9 @@ interface MR18Props {
   onWarningDetected?: (warning: OverRelianceWarning) => void;
   existingSessions?: UsageSession[];
   existingWarnings?: OverRelianceWarning[];
+  onOpenMR12?: () => void; // Callback to open MR12 critical thinking scaffolding
+  onOpenMR14?: () => void; // Callback to open MR14 guided reflection mechanism
+  onOpenMR11?: () => void; // Callback to open MR11 verification tools
 }
 
 type TabType = 'behavior' | 'warnings' | 'resources' | 'progress';
@@ -48,7 +51,10 @@ type TabType = 'behavior' | 'warnings' | 'resources' | 'progress';
 const MR18OverRelianceWarning: React.FC<MR18Props> = ({
   onWarningDetected,
   existingSessions = [],
-  existingWarnings = []
+  existingWarnings = [],
+  onOpenMR12,
+  onOpenMR14,
+  onOpenMR11
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('behavior');
   const [sessions, setSessions] = useState<UsageSession[]>(existingSessions);
@@ -159,6 +165,97 @@ const MR18OverRelianceWarning: React.FC<MR18Props> = ({
             <p className="mr18-warning-message">
               {getWarningMessage(currentWarning.interventionLevel)}
             </p>
+
+            {/* MR Integration: Recommend improvement tools */}
+            <div style={{ margin: '1rem 0', padding: '0.75rem', backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: '0.375rem' }}>
+              <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600' }}>
+                💡 建议采取的行动：
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {onOpenMR12 && (
+                  <button
+                    onClick={onOpenMR12}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      backgroundColor: '#10b981',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#059669';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#10b981';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                    }}
+                    title="激活批判性思维工具 - 学习质疑和评估AI输出"
+                  >
+                    🧠 激活批判性思维 (MR12)
+                  </button>
+                )}
+                {onOpenMR14 && (
+                  <button
+                    onClick={onOpenMR14}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      backgroundColor: '#f59e0b',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#d97706';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f59e0b';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                    }}
+                    title="开始引导反思 - 培养元认知意识"
+                  >
+                    💭 开始反思 (MR14)
+                  </button>
+                )}
+                {onOpenMR11 && (
+                  <button
+                    onClick={onOpenMR11}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      backgroundColor: '#3b82f6',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#2563eb';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#3b82f6';
+                      (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                    }}
+                    title="使用验证工具 - 培养验证习惯"
+                  >
+                    🔍 学习验证 (MR11)
+                  </button>
+                )}
+              </div>
+            </div>
+
             <button
               className="mr18-acknowledge-btn"
               onClick={() => handleAcknowledgeWarning(currentWarning.id)}
