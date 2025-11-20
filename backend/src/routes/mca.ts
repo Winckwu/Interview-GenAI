@@ -483,4 +483,154 @@ router.get('/transitions/session/:sessionId', async (req: Request, res: Response
   }
 });
 
+/**
+ * GET /mca/stability/:userId
+ * Get pattern stability snapshots for a user
+ */
+router.get('/stability/:userId', async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { limit = '50', daysBack = '7' } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID is required',
+      });
+    }
+
+    const result = await pool.query(
+      `SELECT
+        id,
+        session_id,
+        dominant_pattern,
+        stability_score,
+        streak_length,
+        volatility,
+        trend_direction,
+        turn_number,
+        created_at
+       FROM pattern_stability_snapshots
+       WHERE user_id = $1
+       AND created_at > NOW() - INTERVAL '${parseInt(daysBack as string)} days'
+       ORDER BY created_at DESC
+       LIMIT $2`,
+      [userId, parseInt(limit as string)]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        userId,
+        snapshots: result.rows,
+        count: result.rows.length
+      }
+    });
+  } catch (error: any) {
+    console.error('MCA stability error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get stability snapshots',
+    });
+  }
+});
+
+/**
+ * GET /mca/stability/session/:sessionId
+ * Get pattern stability evolution for a specific session
+ */
+router.get('/stability/session/:sessionId', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+
+    if (!sessionId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Session ID is required',
+      });
+    }
+
+    const result = await pool.query(
+      `SELECT
+        id,
+        dominant_pattern,
+        stability_score,
+        streak_length,
+        volatility,
+        trend_direction,
+        turn_number,
+        created_at
+       FROM pattern_stability_snapshots
+       WHERE session_id = $1
+       ORDER BY turn_number ASC`,
+      [sessionId]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        sessionId,
+        snapshots: result.rows,
+        count: result.rows.length
+      }
+    });
+  } catch (error: any) {
+    console.error('MCA session stability error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get session stability',
+    });
+  }
+});
+
+/**
+ * GET /mca/stability/unstable/:userId
+ * Get sessions with unstable/oscillating patterns
+ */
+router.get('/stability/unstable/:userId', async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { daysBack = '7' } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID is required',
+      });
+    }
+
+    const result = await pool.query(
+      `SELECT
+        session_id,
+        dominant_pattern,
+        AVG(stability_score) as avg_stability,
+        AVG(volatility) as avg_volatility,
+        MAX(created_at) as last_updated
+       FROM pattern_stability_snapshots
+       WHERE user_id = $1
+       AND created_at > NOW() - INTERVAL '${parseInt(daysBack as string)} days'
+       AND (stability_score < 0.5 OR trend_direction IN ('oscillating', 'diverging'))
+       GROUP BY session_id, dominant_pattern
+       ORDER BY avg_stability ASC
+       LIMIT 20`,
+      [userId]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        userId,
+        unstableSessions: result.rows,
+        count: result.rows.length
+      }
+    });
+  } catch (error: any) {
+    console.error('MCA unstable sessions error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get unstable sessions',
+    });
+  }
+});
+
 export default router;
