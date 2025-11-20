@@ -25,12 +25,16 @@ interface MR17Props {
   userId: string;
   onMilestoneAchieved?: (milestone: LearningMilestone) => void;
   onSessionLogged?: (session: LearningSession) => void;
+  onOpenMR19?: () => void;
+  onOpenMR16?: () => void;
 }
 
 const MR17LearningProcessVisualization: React.FC<MR17Props> = ({
   userId,
   onMilestoneAchieved,
-  onSessionLogged
+  onSessionLogged,
+  onOpenMR19,
+  onOpenMR16
 }) => {
   const [sessions, setSessions] = useState<LearningSession[]>([]);
   const [activeTab, setActiveTab] = useState<'overview' | 'capabilities' | 'knowledge' | 'metacognitive'>('overview');
@@ -491,6 +495,40 @@ const MR17LearningProcessVisualization: React.FC<MR17Props> = ({
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* MR Integration: Recommend capability assessment after milestones */}
+        {onOpenMR19 && milestones.length >= 3 && (
+          <div style={{
+            backgroundColor: '#fef3c7',
+            border: '2px solid #f59e0b',
+            borderRadius: '0.5rem',
+            padding: '1rem',
+            margin: '1.5rem 0',
+            maxWidth: '800px',
+          }}>
+            <h3 style={{ margin: '0 0 0.5rem 0', color: '#92400e' }}>
+              🎯 Next Step: Assess Your Metacognitive Capabilities
+            </h3>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+              You've achieved {milestones.length} learning milestones! Now it's time to assess your metacognitive capabilities (planning, monitoring, evaluation, regulation) to understand your strengths and areas for growth.
+            </p>
+            <button
+              onClick={onOpenMR19}
+              style={{
+                backgroundColor: '#f59e0b',
+                color: 'white',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: '500',
+              }}
+              title="Open Metacognitive Capability Assessment - Understand your learning strengths"
+            >
+              🎯 Assess My Capabilities (MR19)
+            </button>
           </div>
         )}
 

@@ -30,6 +30,8 @@ interface MR16Props {
   onWarningDetected?: (warning: SkillAtrophyWarning) => void;
   onMaintenancePlanGenerated?: (plan: MaintenancePlan) => void;
   onSkillAssessment?: (baseline: SkillBaseline) => void;
+  onOpenMR17?: () => void;
+  onOpenMR19?: () => void;
 }
 
 interface SkillTracking {
@@ -44,7 +46,9 @@ const MR16SkillAtrophyPrevention: React.FC<MR16Props> = ({
   userId,
   onWarningDetected,
   onMaintenancePlanGenerated,
-  onSkillAssessment
+  onSkillAssessment,
+  onOpenMR17,
+  onOpenMR19
 }) => {
   const [skills, setSkills] = useState<Map<string, SkillTracking>>(new Map());
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
@@ -489,6 +493,39 @@ const MR16SkillAtrophyPrevention: React.FC<MR16Props> = ({
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* MR Integration: Recommend learning visualization after maintenance plan */}
+            {onOpenMR17 && currentTracking.maintenancePlan && currentTracking.maintenancePlan.progressPercentage >= 50 && (
+              <div style={{
+                backgroundColor: '#f0fdf4',
+                border: '2px solid #22c55e',
+                borderRadius: '0.5rem',
+                padding: '1rem',
+                margin: '1.5rem 0',
+              }}>
+                <h3 style={{ margin: '0 0 0.5rem 0', color: '#166534' }}>
+                  📊 Next Step: Visualize Your Learning Progress
+                </h3>
+                <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+                  You've made great progress on your maintenance plan ({currentTracking.maintenancePlan.progressPercentage}%)! Track your skill development trajectory with detailed learning visualizations to see how far you've come.
+                </p>
+                <button
+                  onClick={onOpenMR17}
+                  style={{
+                    backgroundColor: '#22c55e',
+                    color: 'white',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '0.375rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                  }}
+                  title="Open Learning Process Visualization - See your skill growth over time"
+                >
+                  📊 Visualize Learning (MR17)
+                </button>
               </div>
             )}
           </>

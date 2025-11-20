@@ -43,6 +43,8 @@ interface MR19Props {
   onAssessmentComplete?: (profile: MetacognitiveProfile) => void;
   showRecommendations?: boolean;
   allowSelfReport?: boolean;
+  onOpenMR16?: () => void;
+  onOpenMR17?: () => void;
 }
 
 /**
@@ -58,6 +60,8 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
   onAssessmentComplete,
   showRecommendations = true,
   allowSelfReport = true,
+  onOpenMR16,
+  onOpenMR17,
 }) => {
   // State management
   const [assessmentMode, setAssessmentMode] = useState<AssessmentMode>('overview');
@@ -512,6 +516,40 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
         {assessmentMode === 'results' && renderResults()}
         {assessmentMode === 'recommendations' && renderRecommendations()}
       </div>
+
+      {/* MR Integration: Recommend skill monitoring after assessment */}
+      {onOpenMR16 && profile && assessmentMode === 'results' && (
+        <div style={{
+          backgroundColor: '#ede9fe',
+          border: '2px solid #8b5cf6',
+          borderRadius: '0.5rem',
+          padding: '1rem',
+          margin: '1.5rem 0',
+          maxWidth: '800px',
+        }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: '#5b21b6' }}>
+            ⚠️ Next Step: Monitor Your Skills
+          </h3>
+          <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
+            You've completed your metacognitive assessment! Now monitor your skills over time to prevent atrophy. The system will track your independence levels and alert you before capabilities fade.
+          </p>
+          <button
+            onClick={onOpenMR16}
+            style={{
+              backgroundColor: '#8b5cf6',
+              color: 'white',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.375rem',
+              border: 'none',
+              cursor: 'pointer',
+              fontWeight: '500',
+            }}
+            title="Open Skill Atrophy Prevention - Monitor and maintain your capabilities"
+          >
+            ⚠️ Monitor Skills (MR16)
+          </button>
+        </div>
+      )}
 
       <div className="mr19-footer-info">
         <p className="mr19-footer-text">

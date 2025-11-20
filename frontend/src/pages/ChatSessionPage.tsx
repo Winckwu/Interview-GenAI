@@ -989,6 +989,26 @@ const ChatSessionPage: React.FC = () => {
   }, []);
 
   /**
+   * Open MR16 for skill atrophy prevention
+   */
+  const openMR16SkillAtrophy = useCallback(() => {
+    setActiveMRTool('mr16-atrophy');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开技能萎缩预防 (MR16)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
+   * Open MR17 for learning visualization
+   */
+  const openMR17LearningVisualization = useCallback(() => {
+    setActiveMRTool('mr17-visualization');
+    setShowMRToolsSection(true);
+    setSuccessMessage('✓ 已打开学习过程可视化 (MR17)');
+    setTimeout(() => setSuccessMessage(null), 2000);
+  }, []);
+
+  /**
    * Open MR19 for metacognitive capability assessment
    */
   const openMR19CapabilityAssessment = useCallback(() => {
@@ -3470,8 +3490,9 @@ const ChatSessionPage: React.FC = () => {
                       {activeMRTool === 'mr13-uncertainty' && <MR13TransparentUncertainty onAnalysisComplete={(u) => console.log('Uncertainty:', u)} onOpenMR11={openMR11Verification} onOpenMR6={openMR6CrossModel} />}
                       {activeMRTool === 'mr14-reflection' && <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} onOpenMR15={openMR15StrategyGuide} />}
                       {activeMRTool === 'mr15-strategies' && <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} onOpenMR19={openMR19CapabilityAssessment} />}
-                      {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention sessionId={sessionId || ''} onExerciseComplete={(e) => console.log('Exercise:', e)} />}
-                      {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization userId={user?.id || sessionId || ''} />}
+                      {activeMRTool === 'mr16-atrophy' && <MR16SkillAtrophyPrevention userId={user?.id || sessionId || ''} onOpenMR17={openMR17LearningVisualization} onOpenMR19={openMR19CapabilityAssessment} />}
+                      {activeMRTool === 'mr17-visualization' && <MR17LearningProcessVisualization userId={user?.id || sessionId || ''} onOpenMR19={openMR19CapabilityAssessment} onOpenMR16={openMR16SkillAtrophy} />}
+                      {activeMRTool === 'mr19-assessment' && <MR19MetacognitiveCapabilityAssessment userBehaviorHistory={[]} onOpenMR16={openMR16SkillAtrophy} onOpenMR17={openMR17LearningVisualization} />}
                     </Suspense>
                   </div>
                 </div>
