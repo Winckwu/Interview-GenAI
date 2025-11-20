@@ -21,15 +21,15 @@ import {
   type OrchestrationContext,
 } from '../utils/MROrchestrator';
 import {
-  generateMRRecommendations,
-  analyzeBehaviorPattern,
-  determineSessionPhase,
-  generateWelcomeMessage,
-  getChainCompletionStatus,
   type UserContext,
   type MRRecommendationSet,
   type UserExperienceLevel,
 } from '../utils/GlobalMRRecommendationEngine';
+
+// Phase 1 Refactoring: Custom Hooks
+import { useMessages, type Message } from '../hooks/useMessages';
+import { useMRTools, type ActiveMRTool } from '../hooks/useMRTools';
+import { useGlobalRecommendations } from '../hooks/useGlobalRecommendations';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -72,15 +72,7 @@ const ComponentLoader: React.FC = () => (
   </div>
 );
 
-interface Message {
-  id: string;
-  role: 'user' | 'ai';
-  content: string;
-  timestamp: string;
-  wasVerified?: boolean;
-  wasModified?: boolean;
-  wasRejected?: boolean;
-}
+// Message interface now imported from useMessages hook
 
 interface PatternResult {
   pattern: string;
@@ -227,44 +219,154 @@ const ChatSessionPage: React.FC = () => {
   const metricsStore = useMetricsStore();
   const [sessionStartTime] = useState(Date.now());
 
-  // State management
-  const [messages, setMessages] = useState<Message[]>([]);
+  // ========================================================
+  // PHASE 1 REFACTORING: Custom Hooks Integration
+  // ========================================================
+
+  // Session metadata (needed by hooks)
+  const [sessionData, setSessionData] = useState<any>(null);
+
+  // Hook 1: Messages Management
+  const messagesHook = useMessages({
+    sessionId: sessionId || '',
+    onSendSuccess: (interaction) => {
+      // Track message send in metrics
+      metricsStore.trackInteraction('send');
+    },
+    onVerifySuccess: () => {
+      // Reset consecutive unverified counter
+      setConsecutiveNoVerify(0);
+    },
+    onModifySuccess: () => {
+      setShowModifiedChoiceUI(true);
+      setTimeout(() => setShowModifiedChoiceUI(false), 10000);
+    },
+    onError: (errorMsg) => {
+      console.error('Messages hook error:', errorMsg);
+    },
+  });
+
+  // Hook 2: MR Tools Management
+  const mrToolsHook = useMRTools({
+    onToolOpened: (toolId) => {
+      // Track MR tool usage in metrics
+      metricsStore.trackInteraction('mr_tool_open');
+    },
+    onSuccessMessage: (msg) => {
+      // Show success messages from MR tool operations
+      messagesHook.setSuccessMessage(msg);
+    },
+  });
+
+  // Hook 3: Global Recommendations
+  const recommendationsHook = useGlobalRecommendations({
+    sessionData,
+    messages: messagesHook.messages,
+    userId: user?.id,
+    experienceLevel: 'intermediate',
+    consecutiveUnverified: 0, // Will be tracked separately
+    usedMRTools: mrToolsHook.usedMRTools,
+  });
+
+  // Destructure hook returns for easy access
+  const {
+    messages,
+    setMessages,
+    loading,
+    error,
+    setError,
+    successMessage,
+    setSuccessMessage,
+    updatingMessageId,
+    editingMessageId,
+    editedContent,
+    currentPage,
+    hasMoreMessages,
+    isLoadingMore,
+    totalMessagesCount,
+    handleSendMessage: sendMessage,
+    markAsVerified,
+    markAsModified,
+    startEditingMessage,
+    saveEditedMessage,
+    cancelEditingMessage,
+    loadMessagesPage,
+    loadMoreMessages,
+  } = messagesHook;
+
+  const {
+    activeMRTool,
+    setActiveMRTool,
+    showMRToolsSection,
+    setShowMRToolsSection,
+    showMRToolsPanel,
+    setShowMRToolsPanel,
+    interventionLevel,
+    setInterventionLevel,
+    conversationBranches,
+    setConversationBranches,
+    verificationLogs,
+    setVerificationLogs,
+    usedMRTools,
+    trackMRToolUsage,
+    openMR1Decomposition,
+    openMR2History,
+    openMR3AgencyControl,
+    openMR4RoleDefinition,
+    openMR5Iteration,
+    openMR6CrossModel,
+    openMR7FailureLearning,
+    openMR8TaskRecognition,
+    openMR9TrustCalibration,
+    openMR10CostBenefit,
+    openMR11Verification,
+    openMR12CriticalThinking,
+    openMR13Uncertainty,
+    openMR14Reflection,
+    openMR15StrategyGuide,
+    openMR16SkillAtrophy,
+    openMR17LearningVisualization,
+    openMR19CapabilityAssessment,
+  } = mrToolsHook;
+
+  const {
+    recommendations: mrRecommendations,
+    showRecommendationPanel,
+    setShowRecommendationPanel,
+    expandedRecommendation,
+    setExpandedRecommendation,
+    activateRecommendation,
+    dismissRecommendation,
+  } = recommendationsHook;
+
+  // ========================================================
+  // Remaining State (not yet extracted to hooks)
+  // ========================================================
+
   const [userInput, setUserInput] = useState('');
   const [sessionActive, setSessionActive] = useState(true);
-  const [loading, setLoading] = useState(false);
   const [pattern, setPattern] = useState<PatternResult | null>(null);
   const [showPattern, setShowPattern] = useState(false);
-  const [showPatternPanel, setShowPatternPanel] = useState(false); // Right panel collapsed by default
+  const [showPatternPanel, setShowPatternPanel] = useState(false);
   const [patternLoading, setPatternLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showModifiedChoiceUI, setShowModifiedChoiceUI] = useState(false);
 
-  // Session metadata
-  const [sessionData, setSessionData] = useState<any>(null);
-  // Track which message is being updated
-  const [updatingMessageId, setUpdatingMessageId] = useState<string | null>(null);
-  // Track which message is being edited (inline editing)
-  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
-  const [editedContent, setEditedContent] = useState<string>('');
   // Track quick reflections on messages (MR14)
   const [reflectedMessages, setReflectedMessages] = useState<Set<string>>(new Set());
   const [showQuickReflection, setShowQuickReflection] = useState<string | null>(null);
+
   // Track problem behavior detection (MR15)
   const [consecutiveNoVerify, setConsecutiveNoVerify] = useState(0);
   const [shortPromptCount, setShortPromptCount] = useState(0);
+
   // Track MR6 multi-model comparison suggestions
   const [comparisonSuggestedMessages, setComparisonSuggestedMessages] = useState<Set<string>>(new Set());
   const [showMR6Suggestion, setShowMR6Suggestion] = useState<string | null>(null);
+
   // Track MR9 Dynamic Orchestration - Trust-based MR activation
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
   const [orchestrationResults, setOrchestrationResults] = useState<Map<string, any>>(new Map());
   const [showTrustIndicator, setShowTrustIndicator] = useState<boolean>(true);
-  // Global MR Recommendation System
-  const [mrRecommendations, setMRRecommendations] = useState<MRRecommendationSet[]>([]);
-  const [showRecommendationPanel, setShowRecommendationPanel] = useState<boolean>(true);
-  const [expandedRecommendation, setExpandedRecommendation] = useState<string | null>(null);
-  const [usedMRTools, setUsedMRTools] = useState<string[]>([]);
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
@@ -278,53 +380,12 @@ const ChatSessionPage: React.FC = () => {
   const [displayedModalMR, setDisplayedModalMR] = useState<ActiveMR | null>(null);
   const [dismissedMRs, setDismissedMRs] = useState<Set<string>>(new Set());
 
-  // Verification tools state (logs stored for MR11)
-  const [verificationLogs, setVerificationLogs] = useState<any[]>([]);
-
-  // MR Tools Panel state - Controls which MR tool is active
-  // Note: MR8, MR9, MR18, MR19 are automatic/backend systems, not manual tools
-  // MR8 - Auto task detection, MR9 - Auto trust calibration
-  // MR18 - Auto warning in Interventions, MR19 - Auto assessment in Metrics
-  type ActiveMRTool =
-    | 'none'
-    | 'mr1-decomposition'
-    | 'mr2-transparency'
-    | 'mr3-agency'
-    | 'mr4-roles'
-    | 'mr5-iteration'
-    | 'mr6-models'
-    | 'mr7-failure'
-    | 'mr10-cost'
-    | 'mr11-verify'
-    | 'mr12-critical'
-    | 'mr13-uncertainty'
-    | 'mr14-reflection'
-    | 'mr15-strategies'
-    | 'mr16-atrophy'
-    | 'mr17-visualization';
-  const [activeMRTool, setActiveMRTool] = useState<ActiveMRTool>('none');
-  const [showMRToolsPanel, setShowMRToolsPanel] = useState(false);
-
-  // Independent collapse states for sidebar sections
-  const [showMRToolsSection, setShowMRToolsSection] = useState(true);
-  const [showInterventionSection, setShowInterventionSection] = useState(false);
-  const [showMetricsSection, setShowMetricsSection] = useState(false);
-
-  // MR3 Agency Control state
-  const [interventionLevel, setInterventionLevel] = useState<'passive' | 'suggestive' | 'proactive'>('suggestive');
-
-  // MR5 Iteration state
-  const [conversationBranches, setConversationBranches] = useState<any[]>([]);
-
   // MR2 Transparency versions
   const [interactionVersions, setInteractionVersions] = useState<any[]>([]);
 
-  // Pagination state
-  const MESSAGES_PER_PAGE = 20;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [hasMoreMessages, setHasMoreMessages] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [totalMessagesCount, setTotalMessagesCount] = useState(0);
+  // Independent collapse states for sidebar sections
+  const [showInterventionSection, setShowInterventionSection] = useState(false);
+  const [showMetricsSection, setShowMetricsSection] = useState(false);
 
   // Virtualized list configuration
   const virtualizedListRef = useRef<any>(null);
@@ -595,57 +656,12 @@ const ChatSessionPage: React.FC = () => {
     loadSessionAndHistory();
   }, [sessionId, navigate]);
 
-  /**
-   * Global MR Recommendation System: Generate recommendations based on user context
-   */
-  useEffect(() => {
-    if (!sessionData) return;
-
-    // Build user context
-    const verifiedCount = messages.filter(m => m.role === 'ai' && m.wasVerified).length;
-    const modifiedCount = messages.filter(m => m.role === 'ai' && m.wasModified).length;
-
-    const userContext: UserContext = {
-      userId: user?.id,
-      experienceLevel: 'intermediate' as UserExperienceLevel, // Can be enhanced with user profile
-      taskType: sessionData.taskType || 'general',
-      taskCriticality: sessionData.taskImportance === 3 ? 'high' : sessionData.taskImportance === 2 ? 'medium' : 'low',
-      sessionPhase: determineSessionPhase({
-        userId: user?.id,
-        experienceLevel: 'intermediate',
-        taskType: sessionData.taskType || 'general',
-        taskCriticality: sessionData.taskImportance === 3 ? 'high' : sessionData.taskImportance === 2 ? 'medium' : 'low',
-        sessionPhase: 'active',
-        messageCount: messages.length,
-        verifiedCount,
-        modifiedCount,
-        consecutiveUnverified: consecutiveNoVerify,
-        hasUsedMRTools: usedMRTools,
-      }),
-      messageCount: messages.length,
-      verifiedCount,
-      modifiedCount,
-      consecutiveUnverified: consecutiveNoVerify,
-      hasUsedMRTools: usedMRTools,
-    };
-
-    // Generate recommendations
-    const recommendations = generateMRRecommendations(userContext);
-    setMRRecommendations(recommendations);
-  }, [messages, sessionData, user, consecutiveNoVerify, usedMRTools]);
+  // Global MR Recommendation System now handled by useGlobalRecommendations hook
+  // trackMRToolUsage now handled by useMRTools hook
 
   /**
-   * Track when MR tools are opened
-   */
-  const trackMRToolUsage = useCallback((toolId: string) => {
-    setUsedMRTools(prev => {
-      if (prev.includes(toolId)) return prev;
-      return [...prev, toolId];
-    });
-  }, []);
-
-  /**
-   * Send user prompt and get AI response from OpenAI API
+   * Send user prompt and get AI response - Wrapper for useMessages hook
+   * Adds short prompt tracking logic before calling hook's sendMessage
    */
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -672,91 +688,15 @@ const ChatSessionPage: React.FC = () => {
       setShortPromptCount(0);
     }
 
-    setLoading(true);
-    setError(null);
+    // Call hook's sendMessage
+    await sendMessage(userInput, messages);
 
-    try {
-      // Call AI API endpoint (backend securely handles OpenAI key)
-      const startTime = Date.now();
-      const aiApiResponse = await api.post('/ai/chat', {
-        userPrompt: userInput,
-        conversationHistory: messages.map((m) => ({
-          role: m.role === 'user' ? 'user' : 'assistant',
-          content: m.content,
-        })),
-      });
+    // Clear input after sending
+    setUserInput('');
 
-      const responseTime = Date.now() - startTime;
-      const aiContent = aiApiResponse.data.data.response.content;
-      const aiModel = aiApiResponse.data.data.response.model;
-
-      // Log interaction to backend
-      const interactionResponse = await api.post('/interactions', {
-        sessionId,
-        userPrompt: userInput,
-        aiResponse: aiContent,
-        aiModel,
-        responseTime,
-        wasVerified: false,
-        wasModified: false,
-        wasRejected: false,
-        confidenceScore: 0.85,
-      });
-
-      const interaction = interactionResponse.data.data.interaction;
-
-      // Update global session store
-      try {
-        await addInteraction(sessionId, {
-          id: interaction.id,
-          sessionId,
-          userPrompt: userInput,
-          aiResponse: aiContent,
-          aiModel,
-          responseTime,
-          wasVerified: false,
-          wasModified: false,
-          wasRejected: false,
-          confidenceScore: 0.85,
-          createdAt: interaction.createdAt,
-        });
-      } catch (err) {
-        console.warn('Failed to update global session store:', err);
-        // Don't fail the whole operation if global state update fails
-      }
-
-      // Add messages to chat
-      const userMessage: Message = {
-        id: `user-${Date.now()}`,
-        role: 'user',
-        content: userInput,
-        timestamp: new Date().toISOString(),
-      };
-
-      const aiMessage: Message = {
-        id: interaction.id,
-        role: 'ai',
-        content: aiContent,
-        timestamp: interaction.createdAt,
-        wasVerified: interaction.wasVerified || false,
-        wasModified: interaction.wasModified || false,
-        wasRejected: interaction.wasRejected || false,
-      };
-
-      setMessages((prev) => [...prev, userMessage, aiMessage]);
-      setUserInput('');
-
-      // OPTIMIZATION: Use debounced pattern detection (instead of calling every message)
-      // Reduces pattern API calls significantly while still maintaining real-time pattern detection
-      // Before: Every message → detectPattern() call
-      // After: Debounced to 2 second intervals → ~68% reduction in pattern API calls
-      if (messages.length >= 4 && debouncedDetectPatternRef.current) {
-        await debouncedDetectPatternRef.current();
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to send message');
-    } finally {
-      setLoading(false);
+    // OPTIMIZATION: Use debounced pattern detection
+    if (messages.length >= 4 && debouncedDetectPatternRef.current) {
+      await debouncedDetectPatternRef.current();
     }
   };
 
