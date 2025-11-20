@@ -1089,6 +1089,240 @@ const ChatSessionPage: React.FC = () => {
           width: 0.75rem !important;
           height: 0.75rem !important;
         }
+
+        /* MR2 Process Transparency - Compact Sidebar Styles */
+        .mr2-container {
+          padding: 0.5rem !important;
+          max-width: 100% !important;
+        }
+
+        .mr2-header {
+          margin-bottom: 0.75rem !important;
+          padding-bottom: 0.5rem !important;
+        }
+
+        .mr2-title {
+          font-size: 0.85rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+
+        .mr2-subtitle {
+          font-size: 0.65rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        /* MR2 View tabs - compact horizontal layout */
+        .mr2-view-tabs {
+          display: flex !important;
+          flex-wrap: wrap !important;
+          gap: 0.25rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr2-tab {
+          padding: 0.35rem 0.5rem !important;
+          font-size: 0.6rem !important;
+          border-radius: 4px !important;
+        }
+
+        /* MR2 Content area - single column for sidebar */
+        .mr2-content-area {
+          display: block !important;
+          grid-template-columns: 1fr !important;
+        }
+
+        .mr2-main-view {
+          padding: 0.5rem !important;
+          min-height: auto !important;
+          border-radius: 4px !important;
+        }
+
+        /* MR2 Timeline - compact */
+        .mr2-timeline-view h2 {
+          font-size: 0.75rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr2-timeline-event {
+          gap: 0.5rem !important;
+          margin-bottom: 0.75rem !important;
+        }
+
+        .mr2-timeline-marker {
+          width: 20px !important;
+        }
+
+        .mr2-marker-dot {
+          width: 8px !important;
+          height: 8px !important;
+          border-width: 2px !important;
+          box-shadow: 0 0 0 2px var(--mr2-accent, #0066ff) !important;
+        }
+
+        .mr2-timeline-event:not(:last-child) .mr2-timeline-marker::after {
+          top: 16px !important;
+          height: 40px !important;
+        }
+
+        .mr2-timeline-content {
+          padding: 0.5rem !important;
+          border-left-width: 2px !important;
+        }
+
+        .mr2-event-header {
+          margin-bottom: 0.35rem !important;
+          gap: 0.5rem !important;
+        }
+
+        .mr2-event-title {
+          font-size: 0.7rem !important;
+        }
+
+        .mr2-event-time {
+          font-size: 0.6rem !important;
+        }
+
+        .mr2-event-description {
+          font-size: 0.65rem !important;
+          margin-bottom: 0.35rem !important;
+          line-height: 1.3 !important;
+          max-height: 60px !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+        }
+
+        .mr2-event-changes {
+          gap: 0.35rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr2-change-badge {
+          padding: 0.15rem 0.4rem !important;
+          font-size: 0.55rem !important;
+          border-radius: 8px !important;
+        }
+
+        .mr2-btn-view {
+          padding: 0.3rem 0.5rem !important;
+          font-size: 0.6rem !important;
+          border-radius: 3px !important;
+        }
+
+        /* MR2 Version selector panel - compact */
+        .mr2-version-selector-panel {
+          padding: 0.5rem !important;
+          max-height: 150px !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr2-version-selector-panel h3 {
+          font-size: 0.7rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .mr2-version-item {
+          padding: 0.4rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        .mr2-version-num {
+          font-size: 0.6rem !important;
+        }
+
+        .mr2-version-time {
+          font-size: 0.55rem !important;
+        }
+
+        .mr2-version-confidence {
+          padding: 0.15rem 0.3rem !important;
+          font-size: 0.55rem !important;
+        }
+
+        /* MR2 Metrics - compact grid */
+        .mr2-metrics-grid {
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 0.5rem !important;
+          margin-bottom: 0.75rem !important;
+        }
+
+        .mr2-metric-card {
+          padding: 0.5rem !important;
+        }
+
+        .mr2-metric-label {
+          font-size: 0.55rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+
+        .mr2-metric-value {
+          font-size: 1rem !important;
+        }
+
+        /* MR2 Diff view - compact */
+        .mr2-diff-stats {
+          grid-template-columns: repeat(3, 1fr) !important;
+          gap: 0.5rem !important;
+          margin-bottom: 0.75rem !important;
+        }
+
+        .mr2-stat {
+          padding: 0.5rem !important;
+        }
+
+        .mr2-stat-label {
+          font-size: 0.55rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+
+        .mr2-stat-value {
+          font-size: 0.9rem !important;
+        }
+
+        .mr2-diff-item {
+          padding: 0.5rem !important;
+          gap: 0.5rem !important;
+        }
+
+        .mr2-diff-type-badge {
+          font-size: 0.5rem !important;
+          padding: 0.15rem 0.3rem !important;
+        }
+
+        .mr2-diff-content {
+          font-size: 0.6rem !important;
+        }
+
+        .mr2-diff-text {
+          padding: 0.3rem !important;
+          font-size: 0.6rem !important;
+        }
+
+        /* MR2 Export buttons - compact */
+        .mr2-actions {
+          gap: 0.35rem !important;
+        }
+
+        .mr2-btn-export {
+          padding: 0.35rem 0.5rem !important;
+          font-size: 0.6rem !important;
+          border-radius: 4px !important;
+        }
+
+        /* MR2 Comparison view - stack vertically */
+        .mr2-comparison-header,
+        .mr2-comparison-content {
+          grid-template-columns: 1fr !important;
+          gap: 0.5rem !important;
+        }
+
+        .mr2-comparison-side {
+          padding: 0.5rem !important;
+        }
+
+        .mr2-comparison-text {
+          max-height: 150px !important;
+          font-size: 0.6rem !important;
+        }
       `}</style>
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8fafc' }}>
       {/* Left Sidebar - Session History */}
