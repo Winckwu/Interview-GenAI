@@ -1,0 +1,78 @@
+/**
+ * QuickReflection CSS Module
+ * Phase 4: Style Extraction
+ */
+
+.container {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background-color: #fef3c7;
+  border-radius: 0.5rem;
+  border: 1px solid #fcd34d;
+}
+
+.title {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #92400e;
+}
+
+.prompt {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.75rem;
+  color: #78350f;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.button {
+  font-size: 0.7rem;
+  padding: 0.3rem 0.6rem;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.buttonConfident {
+  background-color: #10b981;
+}
+
+.buttonVerify {
+  background-color: #f59e0b;
+}
+
+.buttonUncertain {
+  background-color: #ef4444;
+}
+
+.buttonSkip {
+  background-color: #6b7280;
+}
+
+.collapseButton {
+  font-size: 0.7rem;
+  padding: 0.3rem 0.6rem;
+  background-color: #fff;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.15s;
+}
+
+.collapseButton:hover {
+  background-color: #fef9c3;
+}

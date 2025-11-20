@@ -1,0 +1,42 @@
+/**
+ * TrustIndicator CSS Module
+ * Phase 4: Style Extraction
+ */
+
+.container {
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  background-color: #eff6ff;
+  border-left: 3px solid #3b82f6;
+  border-radius: 0.25rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge {
+  font-weight: 600;
+}
+
+.score {
+  opacity: 0.7;
+}
+
+.recommendation {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #1e40af;
+  padding: 0.5rem;
+  background-color: #dbeafe;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  border: 1px solid #93c5fd;
+  transition: background-color 0.15s;
+}
+
+.recommendation:hover {
+  background-color: #bfdbfe;
+}

@@ -1,0 +1,159 @@
+/**
+ * MRToolsPanel CSS Module
+ *
+ * Extracted from inline styles in MRToolsPanel.tsx
+ * Phase 4: Style Extraction
+ */
+
+/* ========================================
+   MR Tools Section Container
+   ======================================== */
+
+.toolsSection {
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #fff;
+}
+
+/* ========================================
+   Toggle Button
+   ======================================== */
+
+.toggleButton {
+  width: 100%;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.toggleButton:hover {
+  background-color: #f9fafb;
+}
+
+.toggleLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.toggleIcon {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+/* ========================================
+   Tools Grid Container
+   ======================================== */
+
+.gridContainer {
+  padding: 0 0.75rem 0.75rem 0.75rem;
+}
+
+.toolsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
+}
+
+/* ========================================
+   Tool Buttons
+   ======================================== */
+
+.toolButton {
+  padding: 0.4rem;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.6rem;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.toolButton:hover {
+  background-color: #e5e7eb;
+  transform: scale(1.05);
+}
+
+.toolButton:active {
+  transform: scale(0.98);
+}
+
+.closeToolButton {
+  padding: 0.4rem;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.6rem;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.closeToolButton:hover {
+  background-color: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+/* ========================================
+   Active Tool Display
+   ======================================== */
+
+.activeToolSection {
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #fff;
+}
+
+.activeToolHeader {
+  padding: 0.5rem 0.75rem;
+  background-color: #f0fdf4;
+  border-bottom: 1px solid #dcfce7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.activeToolLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #166534;
+  text-transform: uppercase;
+}
+
+.activeToolCloseButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: #166534;
+  padding: 0.125rem 0.25rem;
+  transition: opacity 0.15s;
+}
+
+.activeToolCloseButton:hover {
+  opacity: 0.7;
+}
+
+.activeToolContent {
+  padding: 0.75rem;
+  max-height: 50vh;
+  overflow-y: auto;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* ========================================
+   Loading Component
+   ======================================== */
+
+.loadingComponent {
+  padding: 1rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}

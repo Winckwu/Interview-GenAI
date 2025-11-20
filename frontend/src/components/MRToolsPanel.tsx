@@ -6,10 +6,12 @@
  * - Active MR tool display area with lazy-loaded components
  *
  * Extracted from ChatSessionPage.tsx as part of Phase 3 refactoring.
+ * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
 import React, { Suspense } from 'react';
 import { type ActiveMRTool } from '../hooks/useMRTools';
+import styles from './MRToolsPanel.module.css';
 
 export interface MRToolsPanelProps {
   // MR Tools state
@@ -26,7 +28,7 @@ export interface MRToolsPanelProps {
 }
 
 const ComponentLoader: React.FC = () => (
-  <div style={{ padding: '1rem', color: '#9ca3af', fontSize: '0.875rem' }}>
+  <div className={styles.loadingComponent}>
     Loading component...
   </div>
 );
@@ -61,63 +63,30 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
   return (
     <>
       {/* MR Tools Quick Access - Collapsible */}
-      <div
-        style={{
-          borderBottom: '1px solid #e2e8f0',
-          backgroundColor: '#fff',
-        }}
-      >
+      <div className={styles.toolsSection}>
         <button
           onClick={onToggleMRToolsSection}
-          style={{
-            width: '100%',
-            padding: '0.75rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            textAlign: 'left',
-          }}
+          className={styles.toggleButton}
         >
-          <span
-            style={{
-              fontSize: '0.75rem',
-              fontWeight: '600',
-              color: '#6b7280',
-              textTransform: 'uppercase',
-            }}
-          >
+          <span className={styles.toggleLabel}>
             🧠 MR Tools
           </span>
-          <span style={{ color: '#9ca3af', fontSize: '0.75rem' }}>
+          <span className={styles.toggleIcon}>
             {showMRToolsSection ? '▼' : '▶'}
           </span>
         </button>
         {showMRToolsSection && (
-          <div style={{ padding: '0 0.75rem 0.75rem 0.75rem' }}>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '0.25rem',
-              }}
-            >
+          <div className={styles.gridContainer}>
+            <div className={styles.toolsGrid}>
               {/* User-facing MR tools only. MR8/9/18/19 are automatic backend systems */}
               {mrTools.map((tool) => (
                 <button
                   key={tool.id}
                   onClick={() => onToolChange(tool.id)}
                   title={tool.title}
+                  className={styles.toolButton}
                   style={{
-                    padding: '0.4rem',
-                    backgroundColor: activeMRTool === tool.id ? tool.color : '#f3f4f6',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '0.25rem',
-                    cursor: 'pointer',
-                    fontSize: '0.6rem',
-                    textAlign: 'center',
+                    backgroundColor: activeMRTool === tool.id ? tool.color : undefined,
                   }}
                 >
                   {tool.label}
@@ -126,15 +95,7 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
               <button
                 onClick={() => onToolChange('none')}
                 title="Close MR tool"
-                style={{
-                  padding: '0.4rem',
-                  backgroundColor: '#f3f4f6',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '0.25rem',
-                  cursor: 'pointer',
-                  fontSize: '0.6rem',
-                  textAlign: 'center',
-                }}
+                className={styles.closeToolButton}
               >
                 ✕
               </button>
@@ -145,58 +106,22 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
 
       {/* Active MR Tool Display */}
       {activeMRTool !== 'none' && (
-        <div
-          style={{
-            borderBottom: '1px solid #e2e8f0',
-            backgroundColor: '#fff',
-          }}
-        >
+        <div className={styles.activeToolSection}>
           {/* Active Tool Header */}
-          <div
-            style={{
-              padding: '0.5rem 0.75rem',
-              backgroundColor: '#f0fdf4',
-              borderBottom: '1px solid #dcfce7',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '0.7rem',
-                fontWeight: '600',
-                color: '#166534',
-                textTransform: 'uppercase',
-              }}
-            >
+          <div className={styles.activeToolHeader}>
+            <span className={styles.activeToolLabel}>
               Active: MR{activeMRTool.split('-')[0].replace('mr', '')}
             </span>
             <button
               onClick={() => onToolChange('none')}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '0.75rem',
-                color: '#166534',
-                padding: '0.125rem 0.25rem',
-              }}
+              className={styles.activeToolCloseButton}
               title="Close tool"
             >
               ✕
             </button>
           </div>
           {/* Tool Content */}
-          <div
-            style={{
-              padding: '0.75rem',
-              maxHeight: '50vh',
-              overflowY: 'auto',
-              fontSize: '0.75rem',
-              lineHeight: '1.4',
-            }}
-          >
+          <div className={styles.activeToolContent}>
             <Suspense fallback={loadingFallback}>
               {renderActiveTool()}
             </Suspense>
