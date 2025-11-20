@@ -333,10 +333,10 @@ export const MR4RoleDefinitionGuidance: React.FC<MR4Props> = ({
             margin: '1rem 0',
           }}>
             <h3 style={{ margin: '0 0 0.5rem 0', color: '#166534' }}>
-              🎯 下一步建议：识别任务特征
+              🎯 Next Step: Analyze Task Characteristics
             </h3>
             <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
-              您已定义好AI角色！接下来建议分析任务的特征（如紧急度、熟悉度、复杂度等），系统将根据这些特征智能推荐最适合的协作模式和辅助工具。
+              AI roles defined! Now analyze your task's characteristics (criticality, familiarity, time pressure, complexity). The system will intelligently recommend the most suitable collaboration modes and support tools.
             </p>
             <button
               onClick={onOpenMR8}
@@ -349,9 +349,9 @@ export const MR4RoleDefinitionGuidance: React.FC<MR4Props> = ({
                 cursor: 'pointer',
                 fontWeight: '500',
               }}
-              title="打开任务特征识别 - 获得智能协作建议"
+              title="Open Task Characteristic Recognition - Get smart collaboration recommendations"
             >
-              🎯 分析任务特征 (MR8)
+              🎯 Analyze Task Characteristics (MR8)
             </button>
           </div>
         )}

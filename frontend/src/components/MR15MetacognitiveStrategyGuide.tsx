@@ -464,10 +464,10 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
             margin: '1.5rem 0',
           }}>
             <h3 style={{ margin: '0 0 0.5rem 0', color: '#1e40af' }}>
-              🎯 下一步建议：评估元认知能力
+              🎯 Next Step: Assess Metacognitive Capabilities
             </h3>
             <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
-              您已学习了 {completedLessons.size} 个策略！现在建议进行元认知能力评估，系统将分析您在规划、监控、评估和调整四个维度的能力，并为您提供个性化的改进建议。
+              You've learned {completedLessons.size} strategies! Now assess your metacognitive capabilities across four dimensions (Planning, Monitoring, Evaluation, Regulation). The system will provide personalized recommendations for improvement.
             </p>
             <button
               onClick={onOpenMR19}
@@ -480,9 +480,9 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
                 cursor: 'pointer',
                 fontWeight: '500',
               }}
-              title="打开元认知能力评估 - 了解您的优势和待提升领域"
+              title="Open Metacognitive Capability Assessment - Understand your strengths and growth areas"
             >
-              🎯 评估我的元认知能力 (MR19)
+              🎯 Assess My Capabilities (MR19)
             </button>
           </div>
         )}

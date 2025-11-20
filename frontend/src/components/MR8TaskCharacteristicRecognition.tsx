@@ -509,9 +509,9 @@ export const MR8TaskCharacteristicRecognition: React.FC<MR8Props> = ({
                       fontSize: '0.875rem',
                       fontWeight: '500',
                     }}
-                    title={`打开${rec.title}工具`}
+                    title={`Open ${rec.title} tool`}
                   >
-                    🔧 打开推荐工具
+                    🔧 Open Tool
                   </button>
                 )}
               </div>

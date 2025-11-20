@@ -162,10 +162,10 @@ export const MR14GuidedReflectionMechanism: React.FC<MR14Props> = ({
                 margin: '1.5rem 0',
               }}>
                 <h3 style={{ margin: '0 0 0.5rem 0', color: '#92400e' }}>
-                  📚 下一步建议：学习元认知策略
+                  📚 Next Step: Learn Metacognitive Strategies
                 </h3>
                 <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
-                  您已完成反思！现在是学习元认知策略的好时机。系统会教您如何更有效地规划、监控、评估和调整与AI的协作，帮助您成为更高效的AI用户。
+                  Reflection complete! Now is a great time to learn metacognitive strategies. The system will teach you how to effectively plan, monitor, evaluate, and regulate your AI collaboration, helping you become a more effective AI user.
                 </p>
                 <button
                   onClick={onOpenMR15}
@@ -178,9 +178,9 @@ export const MR14GuidedReflectionMechanism: React.FC<MR14Props> = ({
                     cursor: 'pointer',
                     fontWeight: '500',
                   }}
-                  title="打开元认知策略指南 - 学习高效AI协作策略"
+                  title="Open Metacognitive Strategy Guide - Learn effective AI collaboration strategies"
                 >
-                  📚 学习元认知策略 (MR15)
+                  📚 Learn Metacognitive Strategies (MR15)
                 </button>
               </div>
             )}

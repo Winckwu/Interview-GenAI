@@ -448,10 +448,10 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
           margin: '1rem 0',
         }}>
           <h3 style={{ margin: '0 0 0.5rem 0', color: '#075985' }}>
-            💡 下一步建议：定义AI角色
+            💡 Next Step: Define AI Roles
           </h3>
           <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem' }}>
-            您已经成功分解了任务！现在建议定义AI在每个子任务中应该扮演的角色（如代码助手、审查者、导师等），这将帮助您更有效地协作。
+            Task decomposition complete! Now define what role(s) AI should play for each subtask (e.g., coding assistant, reviewer, tutor). This clarifies expectations and improves collaboration effectiveness.
           </p>
           <button
             onClick={onOpenMR4}
@@ -464,9 +464,9 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
               cursor: 'pointer',
               fontWeight: '500',
             }}
-            title="打开AI角色定义工具 - 明确AI在任务中的职责"
+            title="Open AI Role Definition - Clarify AI's responsibilities in your task"
           >
-            🎭 定义AI角色 (MR4)
+            🎭 Define AI Roles (MR4)
           </button>
         </div>
       )}
