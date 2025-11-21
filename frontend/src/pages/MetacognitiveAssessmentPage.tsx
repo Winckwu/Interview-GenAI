@@ -627,10 +627,10 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                     onClick={handleViewHistory}
                     disabled={saving}
                     style={{
-                      backgroundColor: '#fff',
-                      color: '#059669',
-                      border: '2px solid #059669',
-                      fontWeight: 600,
+                      backgroundColor: '#047857',
+                      color: '#fff',
+                      border: '2px solid #047857',
+                      fontWeight: 700,
                       fontSize: '1rem',
                     }}
                   >
@@ -642,10 +642,10 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                   onClick={handleRetakeAssessment}
                   disabled={saving}
                   style={{
-                    backgroundColor: '#fff',
-                    color: '#4338ca',
+                    backgroundColor: '#4338ca',
+                    color: '#fff',
                     border: '2px solid #4338ca',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     fontSize: '1rem',
                   }}
                 >
@@ -663,13 +663,22 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                   border: '1px solid #e5e7eb'
                 }}>
                   <h3 style={{
-                    margin: '0 0 1rem 0',
+                    margin: '0 0 0.5rem 0',
                     fontSize: '1.25rem',
                     fontWeight: 600,
                     color: '#1f2937'
                   }}>
                     📚 Assessment History
                   </h3>
+                  <p style={{
+                    margin: '0 0 1.5rem 0',
+                    fontSize: '0.875rem',
+                    color: '#6b7280',
+                    lineHeight: 1.5
+                  }}>
+                    💡 <strong>How to read the scores:</strong> The percentage shows your average across all 4 dimensions
+                    (Planning, Monitoring, Evaluation, Regulation). Click any assessment to view its detailed breakdown.
+                  </p>
                   <div style={{
                     display: 'grid',
                     gap: '0.75rem'
@@ -690,71 +699,134 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                           key={assessment.id}
                           onClick={() => handleSelectHistoryItem(assessment)}
                           style={{
-                            padding: '1rem 1.25rem',
+                            padding: '1.25rem',
                             backgroundColor: isSelected ? '#eef2ff' : '#fff',
-                            border: isSelected ? '2px solid #818cf8' : '2px solid #e5e7eb',
+                            border: isSelected ? '3px solid #6366f1' : '2px solid #e5e7eb',
                             borderRadius: '0.5rem',
                             cursor: 'pointer',
                             textAlign: 'left',
                             transition: 'all 0.2s',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
+                            display: 'block',
+                            width: '100%',
+                            boxShadow: isSelected ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
                           }}
                           onMouseEnter={(e) => {
                             if (!isSelected) {
-                              e.currentTarget.style.borderColor = '#d1d5db';
-                              e.currentTarget.style.backgroundColor = '#f9fafb';
+                              e.currentTarget.style.borderColor = '#6366f1';
+                              e.currentTarget.style.backgroundColor = '#fafafa';
+                              e.currentTarget.style.boxShadow = '0 2px 4px -1px rgba(0, 0, 0, 0.1)';
                             }
                           }}
                           onMouseLeave={(e) => {
                             if (!isSelected) {
                               e.currentTarget.style.borderColor = '#e5e7eb';
                               e.currentTarget.style.backgroundColor = '#fff';
+                              e.currentTarget.style.boxShadow = 'none';
                             }
                           }}
                         >
-                          <div style={{ flex: 1 }}>
-                            <div style={{
-                              fontSize: '1rem',
-                              fontWeight: 600,
-                              color: isSelected ? '#4338ca' : '#1f2937',
-                              marginBottom: '0.25rem'
-                            }}>
-                              {index === 0 ? '🌟 Latest' : `Assessment #${assessments.length - index}`}
-                              {isSelected && ' (Currently Viewing)'}
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                            <div style={{ flex: 1 }}>
+                              <div style={{
+                                fontSize: '1.125rem',
+                                fontWeight: 700,
+                                color: isSelected ? '#4338ca' : '#1f2937',
+                                marginBottom: '0.25rem'
+                              }}>
+                                {index === 0 ? '🌟 Latest' : `Assessment #${assessments.length - index}`}
+                                {isSelected && ' ✓'}
+                              </div>
+                              <div style={{
+                                fontSize: '0.875rem',
+                                color: '#6b7280'
+                              }}>
+                                {date.toLocaleDateString('en-US', {
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </div>
                             </div>
                             <div style={{
-                              fontSize: '0.875rem',
-                              color: '#6b7280'
+                              textAlign: 'right'
                             }}>
-                              {date.toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
+                              <div style={{
+                                fontSize: '2rem',
+                                fontWeight: 700,
+                                color: avgScore >= 0.75 ? '#059669' : avgScore >= 0.5 ? '#f59e0b' : '#ef4444',
+                                lineHeight: 1
+                              }}>
+                                {(avgScore * 100).toFixed(0)}%
+                              </div>
+                              <div style={{
+                                fontSize: '0.75rem',
+                                color: '#9ca3af',
+                                marginTop: '0.25rem',
+                                fontWeight: 600
+                              }}>
+                                Average Score
+                              </div>
                             </div>
                           </div>
                           <div style={{
-                            textAlign: 'right'
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(2, 1fr)',
+                            gap: '0.5rem',
+                            paddingTop: '0.75rem',
+                            borderTop: '1px solid #e5e7eb'
                           }}>
-                            <div style={{
-                              fontSize: '1.5rem',
-                              fontWeight: 700,
-                              color: avgScore >= 0.75 ? '#059669' : avgScore >= 0.5 ? '#f59e0b' : '#ef4444'
-                            }}>
-                              {(avgScore * 100).toFixed(0)}%
+                            <div style={{ fontSize: '0.8125rem' }}>
+                              <span style={{ color: '#6b7280' }}>📋 Planning:</span>
+                              <span style={{ fontWeight: 600, marginLeft: '0.25rem', color: '#1f2937' }}>
+                                {((assessment.planningScore || 0) * 100).toFixed(0)}%
+                              </span>
                             </div>
-                            <div style={{
-                              fontSize: '0.75rem',
-                              color: '#9ca3af',
-                              marginTop: '0.125rem'
-                            }}>
-                              Overall
+                            <div style={{ fontSize: '0.8125rem' }}>
+                              <span style={{ color: '#6b7280' }}>👁️ Monitoring:</span>
+                              <span style={{ fontWeight: 600, marginLeft: '0.25rem', color: '#1f2937' }}>
+                                {((assessment.monitoringScore || 0) * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                            <div style={{ fontSize: '0.8125rem' }}>
+                              <span style={{ color: '#6b7280' }}>⚖️ Evaluation:</span>
+                              <span style={{ fontWeight: 600, marginLeft: '0.25rem', color: '#1f2937' }}>
+                                {((assessment.evaluationScore || 0) * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                            <div style={{ fontSize: '0.8125rem' }}>
+                              <span style={{ color: '#6b7280' }}>🔄 Regulation:</span>
+                              <span style={{ fontWeight: 600, marginLeft: '0.25rem', color: '#1f2937' }}>
+                                {((assessment.regulationScore || 0) * 100).toFixed(0)}%
+                              </span>
                             </div>
                           </div>
+                          {!isSelected && (
+                            <div style={{
+                              marginTop: '0.75rem',
+                              fontSize: '0.8125rem',
+                              color: '#6366f1',
+                              fontWeight: 600,
+                              textAlign: 'center'
+                            }}>
+                              👆 Click to view details
+                            </div>
+                          )}
+                          {isSelected && (
+                            <div style={{
+                              marginTop: '0.75rem',
+                              fontSize: '0.8125rem',
+                              color: '#4338ca',
+                              fontWeight: 600,
+                              textAlign: 'center',
+                              backgroundColor: '#e0e7ff',
+                              padding: '0.5rem',
+                              borderRadius: '0.25rem'
+                            }}>
+                              ✓ Currently viewing this assessment
+                            </div>
+                          )}
                         </button>
                       );
                     })}
