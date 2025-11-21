@@ -130,107 +130,306 @@ const PatternsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Confidence Bar */}
+            {/* Confidence and Stability Bars */}
             <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '500' }}>Confidence Level</span>
-                <span style={{ fontSize: '0.875rem', fontWeight: '700', color: getPatternColor(dominantPattern.patternType) }}>
-                  {(dominantPattern.confidence * 100).toFixed(0)}%
-                </span>
+              {/* Confidence Level */}
+              <div style={{ marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600' }}>
+                    Confidence
+                    <InfoTooltip content="How confident we are in this pattern classification based on your usage data" />
+                  </span>
+                  <span style={{ fontSize: '1rem', fontWeight: '700', color: getPatternColor(dominantPattern.patternType) }}>
+                    {dominantPattern.confidence > 0 ? `${(dominantPattern.confidence * 100).toFixed(0)}%` : 'N/A'}
+                  </span>
+                </div>
+                {dominantPattern.confidence > 0 ? (
+                  <div style={{
+                    width: '100%',
+                    height: '0.625rem',
+                    backgroundColor: '#e5e7eb',
+                    borderRadius: '0.5rem',
+                    overflow: 'hidden',
+                    boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)'
+                  }}>
+                    <div style={{
+                      width: `${dominantPattern.confidence * 100}%`,
+                      height: '100%',
+                      background: `linear-gradient(90deg, ${getPatternColor(dominantPattern.patternType)}, ${getPatternColor(dominantPattern.patternType)}dd)`,
+                      transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                      boxShadow: `0 0 8px ${getPatternColor(dominantPattern.patternType)}66`
+                    }} />
+                  </div>
+                ) : (
+                  <div style={{
+                    padding: '0.5rem 0.75rem',
+                    backgroundColor: '#fef3c7',
+                    borderLeft: '3px solid #f59e0b',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.8125rem',
+                    color: '#92400e'
+                  }}>
+                    ⚠️ Not enough usage data yet to determine confidence level
+                  </div>
+                )}
               </div>
-              <div style={{
-                width: '100%',
-                height: '0.5rem',
-                backgroundColor: '#e5e7eb',
-                borderRadius: '0.25rem',
-                overflow: 'hidden',
-              }}>
-                <div style={{
-                  width: `${dominantPattern.confidence * 100}%`,
-                  height: '100%',
-                  backgroundColor: getPatternColor(dominantPattern.patternType),
-                  transition: 'width 0.3s ease',
-                }} />
-              </div>
+
+              {/* Pattern Stability (NEW) */}
+              {dominantPattern.stability !== undefined && (
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600' }}>
+                      Stability
+                      <InfoTooltip content="How consistently you exhibit this pattern over time" />
+                    </span>
+                    <span style={{ fontSize: '1rem', fontWeight: '700', color: '#059669' }}>
+                      {(dominantPattern.stability * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                  <div style={{
+                    width: '100%',
+                    height: '0.625rem',
+                    backgroundColor: '#e5e7eb',
+                    borderRadius: '0.5rem',
+                    overflow: 'hidden',
+                    boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)'
+                  }}>
+                    <div style={{
+                      width: `${dominantPattern.stability * 100}%`,
+                      height: '100%',
+                      background: 'linear-gradient(90deg, #059669, #10b981)',
+                      transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                      boxShadow: '0 0 8px #05966966'
+                    }} />
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Key Metrics Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
+            {/* Key Metrics Grid - Improved Design */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.875rem', marginBottom: '1rem' }}>
               {/* AI Reliance Score */}
-              <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '0.375rem' }}>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-                  AI Reliance
+              <div style={{
+                padding: '1.25rem',
+                background: dominantPattern.aiRelianceScore !== undefined
+                  ? 'linear-gradient(135deg, #fff5f5 0%, #fff 100%)'
+                  : '#f9fafb',
+                border: dominantPattern.aiRelianceScore !== undefined
+                  ? '2px solid #fecaca'
+                  : '2px dashed #d1d5db',
+                borderRadius: '0.75rem',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                if (dominantPattern.aiRelianceScore !== undefined) {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(220, 38, 38, 0.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                  <span style={{ fontSize: '0.8125rem', color: '#6b7280', fontWeight: '600', letterSpacing: '0.025em' }}>
+                    AI Reliance
+                  </span>
+                  <span style={{ fontSize: '0.75rem', padding: '0.125rem 0.5rem', backgroundColor: '#fee2e2', color: '#991b1b', borderRadius: '0.25rem', fontWeight: '600' }}>
+                    {dominantPattern.aiRelianceScore !== undefined
+                      ? (dominantPattern.aiRelianceScore > 0.7 ? 'HIGH' : dominantPattern.aiRelianceScore > 0.4 ? 'MED' : 'LOW')
+                      : 'N/A'}
+                  </span>
                 </div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#dc2626', marginBottom: '0.5rem' }}>
-                  {(dominantPattern.aiRelianceScore * 100).toFixed(0)}%
-                </div>
-                <div style={{
-                  height: '0.25rem',
-                  backgroundColor: '#fee2e2',
-                  borderRadius: '0.125rem',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    height: '100%',
-                    backgroundColor: '#dc2626',
-                    width: `${Math.min(dominantPattern.aiRelianceScore * 100, 100)}%`,
-                  }} />
-                </div>
-                <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.7rem', color: '#6b7280' }}>
-                  {dominantPattern.aiRelianceScore > 0.7 ? '⚠️ High' : dominantPattern.aiRelianceScore > 0.4 ? '📊 Medium' : '✅ Low'}
-                </p>
+                {dominantPattern.aiRelianceScore !== undefined ? (
+                  <>
+                    <div style={{ fontSize: '2rem', fontWeight: '800', color: '#dc2626', marginBottom: '0.75rem', lineHeight: 1 }}>
+                      {(dominantPattern.aiRelianceScore * 100).toFixed(0)}%
+                    </div>
+                    <div style={{
+                      height: '0.375rem',
+                      backgroundColor: '#fee2e2',
+                      borderRadius: '0.25rem',
+                      overflow: 'hidden'
+                    }}>
+                      <div style={{
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #dc2626, #ef4444)',
+                        width: `${Math.min(dominantPattern.aiRelianceScore * 100, 100)}%`,
+                        transition: 'width 0.5s ease'
+                      }} />
+                    </div>
+                    <p style={{ margin: '0.625rem 0 0 0', fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+                      {dominantPattern.aiRelianceScore > 0.7
+                        ? 'Consider reducing AI dependency'
+                        : dominantPattern.aiRelianceScore > 0.4
+                        ? 'Balanced AI usage'
+                        : 'Low dependence on AI'}
+                    </p>
+                  </>
+                ) : (
+                  <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
+                    No data available
+                  </p>
+                )}
               </div>
 
               {/* Verification Score */}
-              <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '0.375rem' }}>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-                  Verification Score
+              <div style={{
+                padding: '1.25rem',
+                background: dominantPattern.verificationScore !== undefined
+                  ? 'linear-gradient(135deg, #f0fdf4 0%, #fff 100%)'
+                  : '#f9fafb',
+                border: dominantPattern.verificationScore !== undefined
+                  ? '2px solid #bbf7d0'
+                  : '2px dashed #d1d5db',
+                borderRadius: '0.75rem',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                if (dominantPattern.verificationScore !== undefined) {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(5, 150, 105, 0.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                  <span style={{ fontSize: '0.8125rem', color: '#6b7280', fontWeight: '600', letterSpacing: '0.025em' }}>
+                    Verification
+                  </span>
+                  <span style={{ fontSize: '0.75rem', padding: '0.125rem 0.5rem', backgroundColor: '#dcfce7', color: '#14532d', borderRadius: '0.25rem', fontWeight: '600' }}>
+                    {dominantPattern.verificationScore !== undefined
+                      ? (dominantPattern.verificationScore > 0.7 ? 'GOOD' : dominantPattern.verificationScore > 0.4 ? 'FAIR' : 'LOW')
+                      : 'N/A'}
+                  </span>
                 </div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#059669', marginBottom: '0.5rem' }}>
-                  {(dominantPattern.verificationScore * 100).toFixed(0)}%
-                </div>
-                <div style={{
-                  height: '0.25rem',
-                  backgroundColor: '#dcfce7',
-                  borderRadius: '0.125rem',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    height: '100%',
-                    backgroundColor: '#059669',
-                    width: `${Math.min(dominantPattern.verificationScore * 100, 100)}%`,
-                  }} />
-                </div>
-                <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.7rem', color: '#6b7280' }}>
-                  {dominantPattern.verificationScore > 0.7 ? '✅ Excellent' : dominantPattern.verificationScore > 0.4 ? '📊 Fair' : '⚠️ Needs Help'}
-                </p>
+                {dominantPattern.verificationScore !== undefined ? (
+                  <>
+                    <div style={{ fontSize: '2rem', fontWeight: '800', color: '#059669', marginBottom: '0.75rem', lineHeight: 1 }}>
+                      {(dominantPattern.verificationScore * 100).toFixed(0)}%
+                    </div>
+                    <div style={{
+                      height: '0.375rem',
+                      backgroundColor: '#dcfce7',
+                      borderRadius: '0.25rem',
+                      overflow: 'hidden'
+                    }}>
+                      <div style={{
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #059669, #10b981)',
+                        width: `${Math.min(dominantPattern.verificationScore * 100, 100)}%`,
+                        transition: 'width 0.5s ease'
+                      }} />
+                    </div>
+                    <p style={{ margin: '0.625rem 0 0 0', fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+                      {dominantPattern.verificationScore > 0.7
+                        ? 'Excellent verification habits'
+                        : dominantPattern.verificationScore > 0.4
+                        ? 'Room for improvement'
+                        : 'Need to verify more often'}
+                    </p>
+                  </>
+                ) : (
+                  <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
+                    No data available
+                  </p>
+                )}
               </div>
 
               {/* Context Switching */}
-              <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '0.375rem' }}>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.5rem' }}>
-                  Context Switching
+              <div style={{
+                padding: '1.25rem',
+                background: dominantPattern.contextSwitchingFrequency !== undefined
+                  ? 'linear-gradient(135deg, #eff6ff 0%, #fff 100%)'
+                  : '#f9fafb',
+                border: dominantPattern.contextSwitchingFrequency !== undefined
+                  ? '2px solid #bfdbfe'
+                  : '2px dashed #d1d5db',
+                borderRadius: '0.75rem',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                if (dominantPattern.contextSwitchingFrequency !== undefined) {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(37, 99, 235, 0.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                  <span style={{ fontSize: '0.8125rem', color: '#6b7280', fontWeight: '600', letterSpacing: '0.025em' }}>
+                    Context Switch
+                  </span>
+                  <span style={{ fontSize: '0.75rem', padding: '0.125rem 0.5rem', backgroundColor: '#dbeafe', color: '#1e3a8a', borderRadius: '0.25rem', fontWeight: '600' }}>
+                    {dominantPattern.contextSwitchingFrequency !== undefined
+                      ? (dominantPattern.contextSwitchingFrequency < 1 ? 'STABLE' : dominantPattern.contextSwitchingFrequency < 2 ? 'ADAPT' : 'HIGH')
+                      : 'N/A'}
+                  </span>
                 </div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2563eb', marginBottom: '0.5rem' }}>
-                  {dominantPattern.contextSwitchingFrequency.toFixed(2)}x
-                </div>
-                <div style={{
-                  height: '0.25rem',
-                  backgroundColor: '#dbeafe',
-                  borderRadius: '0.125rem',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    height: '100%',
-                    backgroundColor: '#2563eb',
-                    width: `${Math.min((dominantPattern.contextSwitchingFrequency / 3) * 100, 100)}%`,
-                  }} />
-                </div>
-                <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.7rem', color: '#6b7280' }}>
-                  {dominantPattern.contextSwitchingFrequency < 1 ? '✅ Stable' : dominantPattern.contextSwitchingFrequency < 2 ? '📈 Adaptive' : '⚡ Experimental'}
-                </p>
+                {dominantPattern.contextSwitchingFrequency !== undefined ? (
+                  <>
+                    <div style={{ fontSize: '2rem', fontWeight: '800', color: '#2563eb', marginBottom: '0.75rem', lineHeight: 1 }}>
+                      {dominantPattern.contextSwitchingFrequency.toFixed(2)}
+                      <span style={{ fontSize: '1rem', fontWeight: '600', color: '#6b7280', marginLeft: '0.25rem' }}>×/task</span>
+                    </div>
+                    <div style={{
+                      height: '0.375rem',
+                      backgroundColor: '#dbeafe',
+                      borderRadius: '0.25rem',
+                      overflow: 'hidden'
+                    }}>
+                      <div style={{
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #2563eb, #3b82f6)',
+                        width: `${Math.min((dominantPattern.contextSwitchingFrequency / 3) * 100, 100)}%`,
+                        transition: 'width 0.5s ease'
+                      }} />
+                    </div>
+                    <p style={{ margin: '0.625rem 0 0 0', fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+                      {dominantPattern.contextSwitchingFrequency < 1
+                        ? 'Consistent approach'
+                        : dominantPattern.contextSwitchingFrequency < 2
+                        ? 'Adaptable strategy'
+                        : 'Highly experimental'}
+                    </p>
+                  </>
+                ) : (
+                  <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
+                    No data available
+                  </p>
+                )}
               </div>
             </div>
+
+            {/* Pattern Streak (NEW) */}
+            {dominantPattern.streakLength !== undefined && dominantPattern.streakLength > 0 && (
+              <div style={{
+                padding: '1rem 1.25rem',
+                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)',
+                border: '2px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '0.75rem',
+                marginBottom: '1rem'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <span style={{ fontSize: '1.5rem' }}>🔥</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '0.875rem', fontWeight: '700', color: '#8b5cf6', marginBottom: '0.125rem' }}>
+                      {dominantPattern.streakLength} Session Streak
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                      You've maintained Pattern {dominantPattern.patternType} for {dominantPattern.streakLength} consecutive sessions
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Last Updated */}
             <div style={{ marginTop: '1rem', fontSize: '0.75rem', color: '#9ca3af' }}>

@@ -6,9 +6,12 @@ export interface Pattern {
   userId: string;
   patternType: 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
   confidence: number;
+  stability?: number; // 0-1: Pattern stability over time
   aiRelianceScore: number;
   verificationScore: number;
   contextSwitchingFrequency: number;
+  streakLength?: number; // Consecutive sessions with same pattern
+  trendDirection?: 'converging' | 'diverging' | 'oscillating' | 'stable';
   metrics: Record<string, number>;
   createdAt: string;
   updatedAt: string;
@@ -81,10 +84,17 @@ export const usePatternStore = create<PatternState>((set, get) => ({
               id: '1',
               userId: userId || 'current',
               patternType: statsData.dominantPattern as 'A' | 'B' | 'C' | 'D' | 'E' | 'F',
-              confidence: statsData.patterns?.[statsData.dominantPattern]?.avgConfidence || 0.5,
-              aiRelianceScore: 0.5, // 0-1 range for 50%
-              verificationScore: 0.5, // 0-1 range for 50%
-              contextSwitchingFrequency: 1,
+              confidence: statsData.patterns?.[statsData.dominantPattern]?.avgConfidence || 0,
+              stability: statsData.patterns?.[statsData.dominantPattern]?.stability,
+              // Extract real metrics from API response
+              aiRelianceScore: statsData.patterns?.[statsData.dominantPattern]?.aiReliance ??
+                               statsData.metrics?.aiRelianceScore,
+              verificationScore: statsData.patterns?.[statsData.dominantPattern]?.verification ??
+                                statsData.metrics?.verificationScore,
+              contextSwitchingFrequency: statsData.patterns?.[statsData.dominantPattern]?.contextSwitching ??
+                                        statsData.metrics?.contextSwitchingFrequency,
+              streakLength: statsData.patterns?.[statsData.dominantPattern]?.streakLength,
+              trendDirection: statsData.patterns?.[statsData.dominantPattern]?.trend,
               metrics: statsData.distribution || {},
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),
