@@ -80,17 +80,26 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
   const behavioralAssessment = useMemo(() => {
     if (userBehaviorHistory.length === 0) return null;
 
+    // Check if user has any meaningful interaction history (count > 0)
+    // This ensures we enable behavioral analysis if the user has used the system,
+    // even if specific metacognitive patterns weren't detected
+    const hasMeaningfulHistory = userBehaviorHistory.some(behavior => behavior.count > 0);
+
+    if (!hasMeaningfulHistory) {
+      console.log('No interaction history found (all counts are 0), skipping behavioral analysis');
+      return null;
+    }
+
     const assessment = assessMetacognitiveDimensions(userBehaviorHistory);
 
-    // Check if we have real behavioral data (not just default placeholders)
-    // Default placeholders have: score=0.5, confidence=0.3, indicators=[]
+    // Additional check: ensure assessment has valid data
+    // Accept data with confidence >= 0.3 (not just >) to include minimal but valid data
     const hasRealData = Object.values(assessment).some(
-      dim => dim.confidence > 0.3 || dim.indicators.length > 0
+      dim => dim.confidence >= 0.3 || dim.indicators.length > 0
     );
 
-    // If no real behavioral data, return null to skip behavioral analysis
     if (!hasRealData) {
-      console.log('No valid behavioral data found, skipping behavioral analysis');
+      console.log('No valid behavioral data found after assessment, skipping behavioral analysis');
       return null;
     }
 
