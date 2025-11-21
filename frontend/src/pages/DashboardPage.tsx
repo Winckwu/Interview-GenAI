@@ -67,16 +67,19 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { analytics, loading: analyticsLoading } = useAnalytics(30);
-  const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', 30);
+
+  // Date range state - default to 7 days
+  const [dateRange, setDateRange] = useState<number>(7);
+
+  const { analytics, loading: analyticsLoading } = useAnalytics(dateRange);
+  const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', dateRange);
   const [verificationStrategyData, setVerificationStrategyData] = useState<any[]>([]);
 
   useEffect(() => {
-    // Initial data is loaded by hooks automatically
-    // Fetch verification strategy data
+    // Fetch verification strategy data when date range changes
     const fetchVerificationStrategy = async () => {
       try {
-        const response = await apiService.analytics.getVerificationStrategy(30);
+        const response = await apiService.analytics.getVerificationStrategy(dateRange);
         setVerificationStrategyData(response.data.data);
       } catch (error) {
         console.error('Failed to fetch verification strategy data:', error);
@@ -85,7 +88,7 @@ const DashboardPage: React.FC = () => {
       }
     };
     fetchVerificationStrategy();
-  }, []);
+  }, [dateRange]);
 
   const loading = analyticsLoading || patternsLoading;
 
@@ -233,6 +236,39 @@ const DashboardPage: React.FC = () => {
 
       {/* Charts Section */}
       <div className="charts-section">
+        {/* Date Range Selector */}
+        <div className="date-range-selector" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <label htmlFor="dateRange" style={{ fontWeight: 500, color: '#374151' }}>
+            Time Period:
+          </label>
+          <select
+            id="dateRange"
+            value={dateRange}
+            onChange={(e) => setDateRange(Number(e.target.value))}
+            style={{
+              padding: '0.5rem 1rem',
+              border: '1px solid #d1d5db',
+              borderRadius: '0.375rem',
+              fontSize: '0.875rem',
+              fontWeight: 500,
+              color: '#374151',
+              backgroundColor: 'white',
+              cursor: 'pointer',
+              outline: 'none',
+              transition: 'border-color 0.2s',
+            }}
+          >
+            <option value={7}>Last 7 days</option>
+            <option value={14}>Last 14 days</option>
+            <option value={30}>Last 30 days</option>
+            <option value={60}>Last 60 days</option>
+            <option value={90}>Last 90 days</option>
+          </select>
+          <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+            Showing data from the past {dateRange} day{dateRange !== 1 ? 's' : ''}
+          </span>
+        </div>
+
       <div className="charts-grid">
         {loading ? (
           <>

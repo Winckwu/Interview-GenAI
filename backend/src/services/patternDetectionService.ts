@@ -227,22 +227,31 @@ export class PatternDetectionService {
       dailyVerificationMap[dateStr] = verificationRate;
     });
 
-    // Transform to array of daily patterns with verification rates
-    const trends: Record<string, { pattern: string; verificationRate: number }> = {};
+    // Create a map of patterns by date
+    const patternsByDate: Record<string, string> = {};
     patternResult.rows.forEach((row: any) => {
       const dateStr = row.date.toISOString().split('T')[0];
-      if (!trends[dateStr]) {
-        trends[dateStr] = {
-          pattern: row.detected_pattern,
-          verificationRate: dailyVerificationMap[dateStr] || 0,
-        };
+      if (!patternsByDate[dateStr]) {
+        patternsByDate[dateStr] = row.detected_pattern;
       }
     });
 
-    return Object.entries(trends).map(([date, data]) => ({
-      date,
-      pattern: data.pattern,
-      verificationRate: Math.round(data.verificationRate),
+    // Generate all dates in the range to ensure continuity
+    const allDates: string[] = [];
+    const currentDate = new Date(since);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    while (currentDate <= today) {
+      allDates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    // Build trends array with all dates (including those with no data)
+    return allDates.map(dateStr => ({
+      date: dateStr,
+      pattern: patternsByDate[dateStr] || 'A', // Default to pattern A if no data
+      verificationRate: Math.round(dailyVerificationMap[dateStr] || 0),
     }));
   }
 
