@@ -260,21 +260,22 @@ const DashboardPage: React.FC = () => {
         )}
       </div>
 
-      {/* Quick Start Guide Card */}
-      <div className="dashboard-container" style={{ marginBottom: '2rem' }} data-tour="quick-start">
-        <div style={{
-          backgroundColor: '#f0f9ff',
-          border: '2px solid #0ea5e9',
-          borderRadius: '0.75rem',
-          padding: '2rem',
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-            <span style={{ fontSize: '2rem' }}>🎯</span>
-            <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700', color: '#0369a1' }}>
-              Quick Start Guide
-            </h2>
-          </div>
+      {/* Quick Start Guide Card - Only show for new users with no sessions */}
+      {totalSessions === 0 && (
+        <div className="dashboard-container" style={{ marginBottom: '2rem' }} data-tour="quick-start">
+          <div style={{
+            backgroundColor: '#f0f9ff',
+            border: '2px solid #0ea5e9',
+            borderRadius: '0.75rem',
+            padding: '2rem',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+              <span style={{ fontSize: '2rem' }}>🎯</span>
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700', color: '#0369a1' }}>
+                Quick Start Guide
+              </h2>
+            </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
             {/* Step 1: Start Chat */}
@@ -388,7 +389,8 @@ const DashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      )}
 
       {/* Key Metrics Cards */}
       <div className="metrics-section" data-tour="metrics">
