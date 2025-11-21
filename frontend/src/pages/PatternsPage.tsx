@@ -4,6 +4,7 @@ import { useAuthStore } from '../stores/authStore';
 import { useMetricsStore } from '../stores/metricsStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import InfoTooltip from '../components/InfoTooltip';
+import api from '../services/api';
 import './PatternsPage.css';
 
 /**
@@ -14,10 +15,18 @@ const PatternsPage: React.FC = () => {
   const { user } = useAuthStore();
   const { patterns, loading, fetchPatterns } = usePatternStore();
   const { alerts } = useMetricsStore();
+  const [totalInteractions, setTotalInteractions] = useState<number>(0);
 
   useEffect(() => {
     if (user?.id) {
       fetchPatterns(user.id);
+      // Fetch user's total interaction count
+      api.get(`/users/${user.id}/stats`).then(response => {
+        const stats = response.data.data || response.data;
+        setTotalInteractions(stats.totalInteractions || stats.totalMessages || 0);
+      }).catch(err => {
+        console.error('Failed to fetch user stats:', err);
+      });
     }
   }, [user?.id]);
 
@@ -27,6 +36,10 @@ const PatternsPage: React.FC = () => {
 
   const userPatterns = patterns.filter((p) => p.userId === user?.id);
   const recentAlerts = (alerts || []).slice(0, 5);
+
+  // Minimum interactions threshold before showing real metrics
+  const MIN_INTERACTIONS_THRESHOLD = 15;
+  const hasEnoughData = totalInteractions >= MIN_INTERACTIONS_THRESHOLD;
 
   // Get dominant pattern (highest confidence)
   const dominantPattern = userPatterns.length > 0
@@ -241,7 +254,7 @@ const PatternsPage: React.FC = () => {
                       : 'N/A'}
                   </span>
                 </div>
-                {dominantPattern.aiRelianceScore !== undefined ? (
+                {hasEnoughData && dominantPattern.aiRelianceScore !== undefined ? (
                   <>
                     <div style={{ fontSize: '2rem', fontWeight: '800', color: '#dc2626', marginBottom: '0.75rem', lineHeight: 1 }}>
                       {(dominantPattern.aiRelianceScore * 100).toFixed(0)}%
@@ -269,7 +282,7 @@ const PatternsPage: React.FC = () => {
                   </>
                 ) : (
                   <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
-                    No data available
+                    {hasEnoughData ? 'No data available' : `🔒 Complete ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock`}
                   </p>
                 )}
               </div>
@@ -307,7 +320,7 @@ const PatternsPage: React.FC = () => {
                       : 'N/A'}
                   </span>
                 </div>
-                {dominantPattern.verificationScore !== undefined ? (
+                {hasEnoughData && dominantPattern.verificationScore !== undefined ? (
                   <>
                     <div style={{ fontSize: '2rem', fontWeight: '800', color: '#059669', marginBottom: '0.75rem', lineHeight: 1 }}>
                       {(dominantPattern.verificationScore * 100).toFixed(0)}%
@@ -335,7 +348,7 @@ const PatternsPage: React.FC = () => {
                   </>
                 ) : (
                   <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
-                    No data available
+                    {hasEnoughData ? 'No data available' : `🔒 Complete ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock`}
                   </p>
                 )}
               </div>
@@ -373,7 +386,7 @@ const PatternsPage: React.FC = () => {
                       : 'N/A'}
                   </span>
                 </div>
-                {dominantPattern.contextSwitchingFrequency !== undefined ? (
+                {hasEnoughData && dominantPattern.contextSwitchingFrequency !== undefined ? (
                   <>
                     <div style={{ fontSize: '2rem', fontWeight: '800', color: '#2563eb', marginBottom: '0.75rem', lineHeight: 1 }}>
                       {dominantPattern.contextSwitchingFrequency.toFixed(2)}
@@ -402,7 +415,7 @@ const PatternsPage: React.FC = () => {
                   </>
                 ) : (
                   <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
-                    No data available
+                    {hasEnoughData ? 'No data available' : `🔒 Complete ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock`}
                   </p>
                 )}
               </div>
@@ -620,11 +633,15 @@ const PatternsPage: React.FC = () => {
                     <InfoTooltip text="How much you depend on AI for task completion (0% = no reliance, 100% = full dependence)." size="small" />
                   </span>
                   <span className="value">
-                    {pattern.aiRelianceScore !== undefined
+                    {hasEnoughData && pattern.aiRelianceScore !== undefined
                       ? `${(pattern.aiRelianceScore * 100).toFixed(0)}%`
                       : 'N/A'}
                   </span>
-                  <span className="description">How much you depend on AI (lower is better for learning)</span>
+                  <span className="description">
+                    {hasEnoughData
+                      ? 'How much you depend on AI (lower is better for learning)'
+                      : `Need ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock metrics`}
+                  </span>
                 </div>
                 <div className="metric">
                   <span className="label">
@@ -632,11 +649,15 @@ const PatternsPage: React.FC = () => {
                     <InfoTooltip text="How thoroughly you verify AI outputs (0% = no verification, 100% = complete verification)." size="small" />
                   </span>
                   <span className="value">
-                    {pattern.verificationScore !== undefined
+                    {hasEnoughData && pattern.verificationScore !== undefined
                       ? `${(pattern.verificationScore * 100).toFixed(0)}%`
                       : 'N/A'}
                   </span>
-                  <span className="description">How thoroughly you verify AI outputs (higher is better)</span>
+                  <span className="description">
+                    {hasEnoughData
+                      ? 'How thoroughly you verify AI outputs (higher is better)'
+                      : `Need ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock metrics`}
+                  </span>
                 </div>
                 <div className="metric">
                   <span className="label">
@@ -644,11 +665,15 @@ const PatternsPage: React.FC = () => {
                     <InfoTooltip text="How often you change your approach within a task. Lower is more consistent, higher is more experimental." size="small" />
                   </span>
                   <span className="value">
-                    {pattern.contextSwitchingFrequency !== undefined
+                    {hasEnoughData && pattern.contextSwitchingFrequency !== undefined
                       ? `${pattern.contextSwitchingFrequency.toFixed(2)} times/task`
                       : 'N/A'}
                   </span>
-                  <span className="description">How often you change strategy during tasks</span>
+                  <span className="description">
+                    {hasEnoughData
+                      ? 'How often you change strategy during tasks'
+                      : `Need ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock metrics`}
+                  </span>
                 </div>
               </div>
 
