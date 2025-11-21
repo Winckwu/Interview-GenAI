@@ -37,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       label: 'Predictions',
       path: '/predictions',
       icon: 'predictions',
-      visible: true,
+      visible: false, // Hidden per user request
     },
     {
       label: 'Evolution Tracking',
@@ -61,7 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       label: 'Data Browser',
       path: '/data',
       icon: 'database',
-      visible: true,
+      visible: false, // Hidden per user request
     },
     {
       label: 'Admin',
