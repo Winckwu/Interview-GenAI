@@ -754,11 +754,12 @@ const ChatSessionPage: React.FC = () => {
         trendDirection: patternData.trendDirection,
         reasoning: patternData.evidence || [],
         ...patternData,
-        metrics: {
-          aiReliance: Math.floor(Math.random() * 100), // TODO: Replace with actual metrics from API
-          verificationScore: Math.floor(Math.random() * 100),
-          learningIndex: Math.floor(Math.random() * 100),
-        },
+        // Extract real metrics from API response
+        metrics: patternData.metrics ? {
+          aiReliance: patternData.metrics.aiRelianceScore ?? patternData.aiRelianceScore,
+          verificationScore: patternData.metrics.verificationScore ?? patternData.verificationScore,
+          learningIndex: patternData.metrics.learningIndex,
+        } : undefined,
       };
 
       setPattern(enrichedPattern);

@@ -29,7 +29,7 @@ const EvolutionTrackingPage: React.FC = () => {
   const oscillationCount = userEvolutions.filter((e) => e.changeType === 'oscillation').length;
   const regressionCount = userEvolutions.filter((e) => e.changeType === 'regression').length;
 
-  // Mock timeline data
+  // Generate timeline data from real evolution events
   const evolutionTimeline = userEvolutions.map((e, idx) => ({
     week: `Week ${idx + 1}`,
     improvements: userEvolutions.filter((ev, i) => i <= idx && ev.changeType === 'improvement').length,

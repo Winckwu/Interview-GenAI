@@ -141,10 +141,22 @@ const DashboardPage: React.FC = () => {
         { strategy: 'High Verification', successRate: 0, sampleSize: 0 },
       ];
 
-  // Detect pattern change by checking if current dominantPattern differs from initial pattern
-  // For now, only show alert if we have meaningful data
-  const lastKnownPattern = 'A'; // Could be loaded from localStorage or previous session
-  const patternChanged = dominantPattern !== lastKnownPattern && totalSessions > 0;
+  // Detect pattern change by checking if current dominantPattern differs from last stored pattern
+  // Load last known pattern from localStorage
+  const lastKnownPattern = user?.id
+    ? localStorage.getItem(`last_dominant_pattern_${user.id}`)
+    : null;
+
+  const patternChanged = lastKnownPattern !== null
+    && dominantPattern !== lastKnownPattern
+    && totalSessions > 0;
+
+  // Update localStorage with current pattern for future comparison
+  useEffect(() => {
+    if (user?.id && dominantPattern && !loading) {
+      localStorage.setItem(`last_dominant_pattern_${user.id}`, dominantPattern);
+    }
+  }, [user?.id, dominantPattern, loading]);
 
   const handleSkipAssessment = () => {
     if (user?.id) {
