@@ -4,6 +4,7 @@ import api from '../services/api';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
 import { useUIStore } from '../stores/uiStore';
+import { useAssessmentStore } from '../stores/assessmentStore';
 import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
 // import VirtualizedMessageList from '../components/VirtualizedMessageList';
 // DISABLED: react-window compatibility issue - using simple list instead
@@ -230,8 +231,10 @@ const ChatSessionPage: React.FC = () => {
   const { user } = useAuthStore();
   const { addInteraction, deleteSession: deleteSessionFromStore } = useSessionStore();
   const { setSidebarOpen } = useUIStore();
+  const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
   const metricsStore = useMetricsStore();
   const [sessionStartTime] = useState(Date.now());
+  const [showPersonalizedTips, setShowPersonalizedTips] = useState(true);
 
   // ========================================================
   // PHASE 1 REFACTORING: Custom Hooks Integration
@@ -521,6 +524,13 @@ const ChatSessionPage: React.FC = () => {
   useEffect(() => {
     setSessionSidebarOpen(false);
   }, [location.pathname]);
+
+  // Fetch latest assessment for personalized tips
+  useEffect(() => {
+    if (user?.id) {
+      fetchLatestAssessment(user.id);
+    }
+  }, [user?.id, fetchLatestAssessment]);
 
   // Load session data and previous interactions on mount
   useEffect(() => {
@@ -2982,6 +2992,120 @@ const ChatSessionPage: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
         }}>
+          {/* Personalized Tips Banner */}
+          {latestAssessment && latestAssessment.responses && showPersonalizedTips && (() => {
+            const dimensions = latestAssessment.responses.dimensions;
+            if (!dimensions) return null;
+
+            // Find weakest dimension
+            const sortedDimensions = Object.entries(dimensions)
+              .map(([name, data]: [string, any]) => ({ name, score: data.score }))
+              .sort((a, b) => a.score - b.score);
+
+            const weakestDimension = sortedDimensions[0];
+            if (weakestDimension.score >= 0.6) return null; // Only show if score < 60
+
+            // Tips mapping based on dimension
+            const tips: Record<string, { icon: string; color: string; tips: string[] }> = {
+              planning: {
+                icon: '📐',
+                color: '#3b82f6',
+                tips: [
+                  'Break down complex tasks into smaller steps before asking AI',
+                  'Define clear goals for each conversation session',
+                  'Consider using the Task Decomposition tool for complex problems',
+                ]
+              },
+              monitoring: {
+                icon: '👁️',
+                color: '#10b981',
+                tips: [
+                  'Review AI outputs carefully before accepting them',
+                  'Track how your understanding evolves during the conversation',
+                  'Use the verification features to check AI responses',
+                ]
+              },
+              evaluation: {
+                icon: '⚖️',
+                color: '#f59e0b',
+                tips: [
+                  'Critically assess AI suggestions before implementing them',
+                  'Consider alternative approaches to problems',
+                  'Ask yourself: "Does this solution make sense?"',
+                ]
+              },
+              regulation: {
+                icon: '🔄',
+                color: '#ec4899',
+                tips: [
+                  'Adjust your approach if AI responses aren't helpful',
+                  'Know when to rely on AI vs. your own expertise',
+                  'Be aware of over-dependence on AI assistance',
+                ]
+              },
+            };
+
+            const tipData = tips[weakestDimension.name];
+            if (!tipData) return null;
+
+            // Randomly select one tip
+            const randomTip = tipData.tips[Math.floor(Math.random() * tipData.tips.length)];
+
+            return (
+              <div style={{
+                marginBottom: '1rem',
+                padding: '1rem 1.25rem',
+                backgroundColor: `${tipData.color}10`,
+                border: `2px solid ${tipData.color}`,
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '1rem',
+                position: 'relative',
+              }}>
+                <div style={{
+                  fontSize: '2rem',
+                  lineHeight: 1,
+                }}>
+                  {tipData.icon}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    fontSize: '0.875rem',
+                    fontWeight: '700',
+                    color: tipData.color,
+                    marginBottom: '0.5rem',
+                    textTransform: 'capitalize',
+                  }}>
+                    💡 Tip to improve your {weakestDimension.name} skills
+                  </div>
+                  <div style={{
+                    fontSize: '0.875rem',
+                    color: '#374151',
+                    lineHeight: '1.5',
+                  }}>
+                    {randomTip}
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowPersonalizedTips(false)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '1.25rem',
+                    color: '#9ca3af',
+                    padding: '0',
+                    lineHeight: 1,
+                  }}
+                  title="Dismiss tip"
+                >
+                  ×
+                </button>
+              </div>
+            );
+          })()}
+
           {messages.length === 0 && !loading && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
               <EmptyState

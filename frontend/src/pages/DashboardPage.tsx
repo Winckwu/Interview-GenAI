@@ -22,7 +22,7 @@ import '../styles/components.css';
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
+  const { latestAssessment, assessments, fetchLatestAssessment, fetchAssessments } = useAssessmentStore();
 
   // Date range state - default to 7 days
   const [dateRange, setDateRange] = useState<number>(7);
@@ -33,11 +33,12 @@ const DashboardPage: React.FC = () => {
   const [verificationStrategyData, setVerificationStrategyData] = useState<any[]>([]);
 
   useEffect(() => {
-    // Fetch latest assessment when component mounts
+    // Fetch latest assessment and all assessments when component mounts
     if (user?.id) {
       fetchLatestAssessment(user.id);
+      fetchAssessments(user.id);
     }
-  }, [user?.id, fetchLatestAssessment]);
+  }, [user?.id, fetchLatestAssessment, fetchAssessments]);
 
   useEffect(() => {
     // Show welcome modal only ONCE for users without assessment
@@ -440,100 +441,422 @@ const DashboardPage: React.FC = () => {
 
       {/* Metacognitive Assessment Results Section */}
       {latestAssessment && latestAssessment.responses && (
-        <div className="assessment-results-section" style={{ marginBottom: '2rem' }}>
-          <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', margin: 0 }}>
-              🧠 Your Metacognitive Profile
-            </h2>
-            <button
-              onClick={() => navigate('/assessment')}
-              style={{
-                padding: '0.5rem 1rem',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '0.5rem',
-                fontSize: '0.875rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              Retake Assessment
-            </button>
+        <>
+          <div className="assessment-results-section" style={{ marginBottom: '2rem' }}>
+            <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', margin: 0 }}>
+                🧠 Your Metacognitive Profile
+              </h2>
+              <button
+                onClick={() => navigate('/assessment')}
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                Retake Assessment
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+              {latestAssessment.responses.dimensions && Object.entries(latestAssessment.responses.dimensions).map(([dimension, data]: [string, any]) => {
+                const colors = {
+                  planning: { bg: '#eff6ff', border: '#3b82f6', icon: '📐' },
+                  monitoring: { bg: '#f0fdf4', border: '#10b981', icon: '👁️' },
+                  evaluation: { bg: '#fef3c7', border: '#f59e0b', icon: '⚖️' },
+                  regulation: { bg: '#fce7f3', border: '#ec4899', icon: '🔄' },
+                };
+                const color = colors[dimension as keyof typeof colors] || colors.planning;
+
+                return (
+                  <div
+                    key={dimension}
+                    style={{
+                      padding: '1.5rem',
+                      backgroundColor: color.bg,
+                      borderLeft: `4px solid ${color.border}`,
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <div style={{ fontSize: '1.75rem', marginBottom: '0.75rem' }}>{color.icon}</div>
+                    <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '600', color: '#1f2937', textTransform: 'capitalize' }}>
+                      {dimension}
+                    </h3>
+                    <div style={{ fontSize: '1.75rem', fontWeight: '700', color: color.border, marginBottom: '0.5rem' }}>
+                      {(data.score * 100).toFixed(0)}%
+                    </div>
+                    <div style={{
+                      display: 'inline-block',
+                      padding: '0.25rem 0.75rem',
+                      borderRadius: '1rem',
+                      backgroundColor: data.level === 'strong' ? '#10b981' : data.level === 'moderate' ? '#f59e0b' : '#ef4444',
+                      color: 'white',
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                    }}>
+                      {data.level}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {latestAssessment.responses.areasForGrowth && latestAssessment.responses.areasForGrowth.length > 0 && (
+              <div style={{
+                marginTop: '1.5rem',
+                padding: '1.25rem',
+                backgroundColor: '#f8fafc',
+                borderRadius: '8px',
+                borderLeft: '4px solid #64748b',
+              }}>
+                <h4 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
+                  💡 Areas for Growth
+                </h4>
+                <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.6' }}>
+                  {latestAssessment.responses.areasForGrowth.map((area: string, idx: number) => (
+                    <li key={idx}>{area}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
-            {latestAssessment.responses.dimensions && Object.entries(latestAssessment.responses.dimensions).map(([dimension, data]: [string, any]) => {
-              const colors = {
-                planning: { bg: '#eff6ff', border: '#3b82f6', icon: '📐' },
-                monitoring: { bg: '#f0fdf4', border: '#10b981', icon: '👁️' },
-                evaluation: { bg: '#fef3c7', border: '#f59e0b', icon: '⚖️' },
-                regulation: { bg: '#fce7f3', border: '#ec4899', icon: '🔄' },
-              };
-              const color = colors[dimension as keyof typeof colors] || colors.planning;
+          {/* Personalized MR Recommendations Section */}
+          {(() => {
+            // Analyze weak dimensions and generate recommendations
+            const dimensions = latestAssessment.responses.dimensions;
+            if (!dimensions) return null;
 
-              return (
-                <div
-                  key={dimension}
-                  style={{
-                    padding: '1.5rem',
-                    backgroundColor: color.bg,
-                    borderLeft: `4px solid ${color.border}`,
-                    borderRadius: '8px',
-                  }}
-                >
-                  <div style={{ fontSize: '1.75rem', marginBottom: '0.75rem' }}>{color.icon}</div>
-                  <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '600', color: '#1f2937', textTransform: 'capitalize' }}>
-                    {dimension}
-                  </h3>
-                  <div style={{ fontSize: '1.75rem', fontWeight: '700', color: color.border, marginBottom: '0.5rem' }}>
-                    {(data.score * 100).toFixed(0)}%
+            // Convert to array and sort by score (ascending)
+            const sortedDimensions = Object.entries(dimensions)
+              .map(([name, data]: [string, any]) => ({ name, score: data.score }))
+              .sort((a, b) => a.score - b.score);
+
+            // Get weakest dimensions (score < 0.6)
+            const weakDimensions = sortedDimensions.filter(d => d.score < 0.6);
+
+            if (weakDimensions.length === 0) return null;
+
+            // MR recommendation mapping
+            const mrRecommendations: Record<string, any[]> = {
+              planning: [
+                { id: 'MR1', name: 'Task Decomposition Scaffold', icon: '🧩', description: 'Break complex tasks into manageable subtasks', color: '#3b82f6' },
+                { id: 'MR15', name: 'Metacognitive Strategy Guide', icon: '📚', description: 'Learn effective AI collaboration strategies', color: '#8b5cf6' },
+                { id: 'MR8', name: 'Task Characteristic Recognition', icon: '🔍', description: 'Understand task requirements better', color: '#06b6d4' },
+              ],
+              monitoring: [
+                { id: 'MR2', name: 'Process Transparency', icon: '👁️', description: 'Track how AI outputs evolve through iterations', color: '#10b981' },
+                { id: 'MR17', name: 'Learning Process Visualization', icon: '📊', description: 'Visualize your learning journey', color: '#14b8a6' },
+                { id: 'MR11', name: 'Integrated Verification', icon: '✓', description: 'Guided verification of AI outputs', color: '#059669' },
+              ],
+              evaluation: [
+                { id: 'MR12', name: 'Critical Thinking Scaffolding', icon: '🤔', description: 'Develop critical evaluation skills', color: '#f59e0b' },
+                { id: 'MR7', name: 'Failure Tolerance Learning', icon: '📝', description: 'Learn from AI errors and mistakes', color: '#f97316' },
+                { id: 'MR10', name: 'Cost-Benefit Analysis', icon: '⚖️', description: 'Evaluate when to use AI assistance', color: '#eab308' },
+              ],
+              regulation: [
+                { id: 'MR9', name: 'Dynamic Trust Calibration', icon: '🎯', description: 'Calibrate appropriate trust in AI', color: '#ec4899' },
+                { id: 'MR18', name: 'Over-Reliance Warning', icon: '⚠️', description: 'Detect unhealthy AI dependence', color: '#ef4444' },
+                { id: 'MR16', name: 'Skill Atrophy Prevention', icon: '💪', description: 'Maintain your core skills', color: '#f43f5e' },
+              ],
+            };
+
+            // Get top 2 recommendations from the weakest dimension
+            const weakestDimension = weakDimensions[0].name;
+            const recommendations = mrRecommendations[weakestDimension]?.slice(0, 2) || [];
+
+            return (
+              <div style={{ marginBottom: '2rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                <div style={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  borderRadius: '12px',
+                  padding: '2rem',
+                  color: 'white',
+                  boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                    <span style={{ fontSize: '2rem' }}>🎯</span>
+                    <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700' }}>
+                      Recommended for You
+                    </h2>
                   </div>
-                  <div style={{
-                    display: 'inline-block',
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '1rem',
-                    backgroundColor: data.level === 'strong' ? '#10b981' : data.level === 'moderate' ? '#f59e0b' : '#ef4444',
-                    color: 'white',
-                    fontSize: '0.75rem',
-                    fontWeight: '600',
-                    textTransform: 'uppercase',
-                  }}>
-                    {data.level}
+                  <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.95rem', opacity: 0.95 }}>
+                    Based on your metacognitive profile, we recommend these MR features to strengthen your <strong>{weakestDimension}</strong> skills (score: {(weakDimensions[0].score * 100).toFixed(0)}/100)
+                  </p>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                    {recommendations.map((mr) => (
+                      <div
+                        key={mr.id}
+                        style={{
+                          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                          borderRadius: '8px',
+                          padding: '1.5rem',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          border: '2px solid transparent',
+                        }}
+                        onClick={() => navigate('/chat')}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-4px)';
+                          e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
+                          e.currentTarget.style.borderColor = mr.color;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                          e.currentTarget.style.borderColor = 'transparent';
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                          <div style={{
+                            fontSize: '1.75rem',
+                            width: '48px',
+                            height: '48px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: mr.color + '20',
+                            borderRadius: '8px',
+                          }}>
+                            {mr.icon}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '0.75rem', fontWeight: '600', color: mr.color, marginBottom: '0.25rem' }}>
+                              {mr.id}
+                            </div>
+                            <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#1f2937' }}>
+                              {mr.name}
+                            </h3>
+                          </div>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.5' }}>
+                          {mr.description}
+                        </p>
+                        <div style={{
+                          marginTop: '1rem',
+                          padding: '0.5rem 1rem',
+                          backgroundColor: mr.color,
+                          color: 'white',
+                          borderRadius: '6px',
+                          fontSize: '0.875rem',
+                          fontWeight: '600',
+                          textAlign: 'center',
+                        }}>
+                          Try in Chat →
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })()}
 
-          {latestAssessment.responses.areasForGrowth && latestAssessment.responses.areasForGrowth.length > 0 && (
-            <div style={{
-              marginTop: '1.5rem',
-              padding: '1.25rem',
-              backgroundColor: '#f8fafc',
-              borderRadius: '8px',
-              borderLeft: '4px solid #64748b',
-            }}>
-              <h4 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
-                💡 Areas for Growth
-              </h4>
-              <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.6' }}>
-                {latestAssessment.responses.areasForGrowth.map((area: string, idx: number) => (
-                  <li key={idx}>{area}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+          {/* Assessment Progress Tracking Section */}
+          {assessments && assessments.length > 1 && (() => {
+            // Prepare trend data from all assessments
+            const trendData = assessments
+              .slice()
+              .reverse() // Show oldest to newest
+              .map((assessment: any) => {
+                const date = new Date(assessment.timestamp);
+                return {
+                  date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                  fullDate: date,
+                  Planning: assessment.planningScore ? (assessment.planningScore * 100).toFixed(0) : 0,
+                  Monitoring: assessment.monitoringScore ? (assessment.monitoringScore * 100).toFixed(0) : 0,
+                  Evaluation: assessment.evaluationScore ? (assessment.evaluationScore * 100).toFixed(0) : 0,
+                  Regulation: assessment.regulationScore ? (assessment.regulationScore * 100).toFixed(0) : 0,
+                };
+              });
+
+            // Calculate progress indicators
+            const calculateProgress = (dimension: string) => {
+              if (assessments.length < 2) return { change: 0, status: 'stable' };
+              const latest = assessments[0];
+              const previous = assessments[1];
+              const latestScore = latest[`${dimension.toLowerCase()}Score`] || 0;
+              const previousScore = previous[`${dimension.toLowerCase()}Score`] || 0;
+              const change = ((latestScore - previousScore) * 100).toFixed(1);
+              const changeNum = parseFloat(change);
+              const status = changeNum > 2 ? 'improved' : changeNum < -2 ? 'declined' : 'stable';
+              return { change: changeNum, status };
+            };
+
+            const progressIndicators = {
+              planning: calculateProgress('planning'),
+              monitoring: calculateProgress('monitoring'),
+              evaluation: calculateProgress('evaluation'),
+              regulation: calculateProgress('regulation'),
+            };
+
+            return (
+              <div style={{ marginBottom: '2rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                <div style={{
+                  backgroundColor: '#fff',
+                  borderRadius: '12px',
+                  padding: '2rem',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <div>
+                      <h2 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontWeight: '700', color: '#1f2937' }}>
+                        📈 Your Progress Over Time
+                      </h2>
+                      <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
+                        Track how your metacognitive skills are developing across {assessments.length} assessments
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Progress Indicators */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
+                    {Object.entries(progressIndicators).map(([dimension, data]: [string, any]) => {
+                      const colors = {
+                        planning: '#3b82f6',
+                        monitoring: '#10b981',
+                        evaluation: '#f59e0b',
+                        regulation: '#ec4899',
+                      };
+                      const color = colors[dimension as keyof typeof colors];
+                      const statusIcons = {
+                        improved: '📈',
+                        declined: '📉',
+                        stable: '➡️',
+                      };
+                      const statusColors = {
+                        improved: '#10b981',
+                        declined: '#ef4444',
+                        stable: '#6b7280',
+                      };
+
+                      return (
+                        <div
+                          key={dimension}
+                          style={{
+                            padding: '1rem',
+                            backgroundColor: '#f9fafb',
+                            borderRadius: '8px',
+                            border: `2px solid ${color}20`,
+                          }}
+                        >
+                          <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                            {dimension}
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <span style={{ fontSize: '1.5rem' }}>{statusIcons[data.status as keyof typeof statusIcons]}</span>
+                            <div>
+                              <div style={{
+                                fontSize: '1.25rem',
+                                fontWeight: '700',
+                                color: statusColors[data.status as keyof typeof statusColors],
+                              }}>
+                                {data.change > 0 ? '+' : ''}{data.change}
+                              </div>
+                              <div style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'capitalize' }}>
+                                {data.status}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Trend Chart */}
+                  <div style={{ backgroundColor: '#fff', borderRadius: '8px' }}>
+                    <ResponsiveContainer width="100%" height={350}>
+                      <LineChart data={trendData} margin={{ top: 10, right: 30, left: 10, bottom: 10 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} />
+                        <XAxis
+                          dataKey="date"
+                          stroke="#6b7280"
+                          style={{ fontSize: '12px', fontWeight: 500 }}
+                          tickLine={false}
+                        />
+                        <YAxis
+                          domain={[0, 100]}
+                          stroke="#6b7280"
+                          style={{ fontSize: '12px', fontWeight: 500 }}
+                          tickLine={false}
+                          axisLine={false}
+                          label={{
+                            value: 'Score (0-100)',
+                            angle: -90,
+                            position: 'insideLeft',
+                            style: { fontSize: '12px', fontWeight: 600, fill: '#6b7280' }
+                          }}
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            borderRadius: '8px',
+                            border: 'none',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                            fontSize: '13px',
+                            fontWeight: 500
+                          }}
+                        />
+                        <Legend
+                          wrapperStyle={{ paddingTop: '20px', fontSize: '13px', fontWeight: 600 }}
+                          iconType="line"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="Planning"
+                          stroke="#3b82f6"
+                          strokeWidth={3}
+                          dot={{ fill: '#3b82f6', r: 5 }}
+                          activeDot={{ r: 7 }}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="Monitoring"
+                          stroke="#10b981"
+                          strokeWidth={3}
+                          dot={{ fill: '#10b981', r: 5 }}
+                          activeDot={{ r: 7 }}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="Evaluation"
+                          stroke="#f59e0b"
+                          strokeWidth={3}
+                          dot={{ fill: '#f59e0b', r: 5 }}
+                          activeDot={{ r: 7 }}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="Regulation"
+                          stroke="#ec4899"
+                          strokeWidth={3}
+                          dot={{ fill: '#ec4899', r: 5 }}
+                          activeDot={{ r: 7 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+        </>
       )}
 
 
