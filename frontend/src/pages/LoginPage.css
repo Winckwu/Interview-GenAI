@@ -2,6 +2,27 @@
    LoginPage Styles - Full Screen Split Layout
    ============================================ */
 
+/* Override AuthLayout wrapper constraints */
+.auth-layout:has(.login-page) {
+  padding: 0 !important;
+  background: none !important;
+  display: block !important;
+  align-items: unset !important;
+  justify-content: unset !important;
+}
+
+.auth-layout:has(.login-page) .auth-container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.auth-layout:has(.login-page) .auth-content {
+  width: 100% !important;
+  max-width: none !important;
+}
+
 .login-page {
   min-height: 100vh;
   display: grid;
