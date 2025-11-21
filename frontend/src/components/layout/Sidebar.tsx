@@ -143,14 +143,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
 
   return (
     <nav className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-      <ul className="nav-list">
+      <ul className="sidebar-menu">
         {navItems
           .filter((item) => item.visible)
           .map((item) => (
-            <li key={item.path}>
+            <li key={item.path} className="sidebar-item">
               <Link
                 to={item.path}
-                className={`nav-link ${isActive(item.path) ? 'active' : ''}`}
+                className={`sidebar-link ${isActive(item.path) ? 'active' : ''}`}
               >
                 <span className="nav-icon">{getIcon(item.icon)}</span>
                 {isOpen && <span className="nav-label">{item.label}</span>}
