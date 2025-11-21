@@ -28,7 +28,6 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
           color: '#3b82f6',
           fontWeight: 'bold',
         }}
-        title="Click or hover for explanation"
       >
         ℹ️
       </span>

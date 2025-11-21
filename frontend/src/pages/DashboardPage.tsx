@@ -43,7 +43,6 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
         tabIndex={0}
         aria-label="More information"
         aria-expanded={show}
-        title="Click or hover for explanation"
         onKeyDown={handleKeyDown}
         onClick={() => setShow(!show)}
         style={{ cursor: 'pointer' }}
@@ -227,7 +226,7 @@ const DashboardPage: React.FC = () => {
             </>
           ) : (
             <>
-              <div className="metric-card" title="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted.">
+              <div className="metric-card">
                 <div className="metric-label">Total Sessions <InfoTooltip text="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted." /></div>
                 <div className="metric-value">{totalSessions}</div>
                 <div className="metric-description">
@@ -235,7 +234,7 @@ const DashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="metric-card" title="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles.">
+              <div className="metric-card">
                 <div className="metric-label">Current Pattern <InfoTooltip text="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles." /></div>
                 <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
                 <div className="metric-description">
@@ -243,7 +242,7 @@ const DashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="metric-card" title="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity.">
+              <div className="metric-card">
                 <div className="metric-label">Verification Rate <InfoTooltip text="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity." /></div>
                 <div className="metric-value">{verificationRate.toFixed(1)}%</div>
                 <div className="metric-description">
@@ -251,7 +250,7 @@ const DashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="metric-card" title="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving.">
+              <div className="metric-card">
                 <div className="metric-label">Average Session <InfoTooltip text="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving." /></div>
                 <div className="metric-value">{averageSessionDuration}</div>
                 <div className="metric-description">
