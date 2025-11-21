@@ -35,9 +35,9 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
   };
 
   const iconSizes = {
-    small: 16,
-    medium: 18,
-    large: 20,
+    small: 12,
+    medium: 14,
+    large: 16,
   };
 
   const iconSize = iconSizes[size];

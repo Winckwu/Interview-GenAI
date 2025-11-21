@@ -406,7 +406,7 @@ const PatternsPage: React.FC = () => {
                 <h3>Pattern {pattern.patternType}</h3>
                 <span className="pattern-badge">
                   Confidence: {(pattern.confidence * 100).toFixed(0)}%
-                  <InfoTooltip text="How confident the system is that this is your dominant pattern (0% = uncertain, 100% = very confident). Based on your interaction history." />
+                  <InfoTooltip text="How confident the system is that this is your dominant pattern (0% = uncertain, 100% = very confident). Based on your interaction history." size="small" />
                 </span>
               </div>
 
@@ -418,7 +418,7 @@ const PatternsPage: React.FC = () => {
                 <div className="metric">
                   <span className="label">
                     AI Reliance Score
-                    <InfoTooltip text="How much you depend on AI for task completion (0% = no reliance, 100% = full dependence)." />
+                    <InfoTooltip text="How much you depend on AI for task completion (0% = no reliance, 100% = full dependence)." size="small" />
                   </span>
                   <span className="value">{(pattern.aiRelianceScore * 100).toFixed(0)}%</span>
                   <span className="description">How much you depend on AI (lower is better for learning)</span>
@@ -426,7 +426,7 @@ const PatternsPage: React.FC = () => {
                 <div className="metric">
                   <span className="label">
                     Verification Score
-                    <InfoTooltip text="How thoroughly you verify AI outputs (0% = no verification, 100% = complete verification)." />
+                    <InfoTooltip text="How thoroughly you verify AI outputs (0% = no verification, 100% = complete verification)." size="small" />
                   </span>
                   <span className="value">{(pattern.verificationScore * 100).toFixed(0)}%</span>
                   <span className="description">How thoroughly you verify AI outputs (higher is better)</span>
@@ -434,7 +434,7 @@ const PatternsPage: React.FC = () => {
                 <div className="metric">
                   <span className="label">
                     Context Switching
-                    <InfoTooltip text="How often you change your approach within a task. Lower is more consistent, higher is more experimental." />
+                    <InfoTooltip text="How often you change your approach within a task. Lower is more consistent, higher is more experimental." size="small" />
                   </span>
                   <span className="value">{pattern.contextSwitchingFrequency.toFixed(2)} times/task</span>
                   <span className="description">How often you change strategy during tasks</span>
