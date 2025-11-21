@@ -18,13 +18,15 @@ const MetacognitiveAssessmentPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { sessions, loadSessions } = useSessionStore();
-  const { submitAssessment, latestAssessment, fetchLatestAssessment } = useAssessmentStore();
+  const { submitAssessment, latestAssessment, fetchLatestAssessment, assessments, fetchAssessments } = useAssessmentStore();
   const [assessmentCompleted, setAssessmentCompleted] = useState(false);
   const [profile, setProfile] = useState<MetacognitiveProfile | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [loadingPrevious, setLoadingPrevious] = useState(true);
   const [showNewAssessment, setShowNewAssessment] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [selectedHistoryId, setSelectedHistoryId] = useState<string | null>(null);
   // 12-dimensional metacognitive behavior analysis (P1-P4, M1-M3, E1-E3, R1-R2)
   const [behaviorHistory, setBehaviorHistory] = useState<any[]>([
     // Planning dimensions
@@ -294,13 +296,16 @@ const MetacognitiveAssessmentPage: React.FC = () => {
     loadAndAnalyzeBehavior();
   }, [user?.id, loadSessions]);
 
-  // Load previous assessment on mount
+  // Load previous assessment and all assessments on mount
   useEffect(() => {
     const loadPreviousAssessment = async () => {
       if (user?.id) {
         try {
           setLoadingPrevious(true);
-          await fetchLatestAssessment(user.id);
+          await Promise.all([
+            fetchLatestAssessment(user.id),
+            fetchAssessments(user.id)
+          ]);
         } catch (error) {
           console.error('Failed to load previous assessment:', error);
         } finally {
@@ -312,7 +317,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
     };
 
     loadPreviousAssessment();
-  }, [user?.id, fetchLatestAssessment]);
+  }, [user?.id, fetchLatestAssessment, fetchAssessments]);
 
   // Convert previous assessment to MetacognitiveProfile if it exists
   useEffect(() => {
@@ -416,10 +421,59 @@ const MetacognitiveAssessmentPage: React.FC = () => {
     setAssessmentCompleted(false);
     setProfile(null);
     setSaveError(null);
+    setShowHistory(false);
+    setSelectedHistoryId(null);
   };
 
   const handleReturnToDashboard = () => {
     navigate('/dashboard');
+  };
+
+  const handleViewHistory = () => {
+    setShowHistory(!showHistory);
+  };
+
+  const handleSelectHistoryItem = (assessment: AssessmentResult) => {
+    const convertedProfile: MetacognitiveProfile = {
+      assessedAt: new Date(assessment.timestamp),
+      dimensions: {
+        planning: {
+          score: assessment.planningScore || 0,
+          level: (assessment.planningScore || 0) >= 0.75 ? 'strong' as const :
+                 (assessment.planningScore || 0) >= 0.5 ? 'moderate' as const : 'developing' as const,
+          interpretation: '',
+        },
+        monitoring: {
+          score: assessment.monitoringScore || 0,
+          level: (assessment.monitoringScore || 0) >= 0.75 ? 'strong' as const :
+                 (assessment.monitoringScore || 0) >= 0.5 ? 'moderate' as const : 'developing' as const,
+          interpretation: '',
+        },
+        evaluation: {
+          score: assessment.evaluationScore || 0,
+          level: (assessment.evaluationScore || 0) >= 0.75 ? 'strong' as const :
+                 (assessment.evaluationScore || 0) >= 0.5 ? 'moderate' as const : 'developing' as const,
+          interpretation: '',
+        },
+        regulation: {
+          score: assessment.regulationScore || 0,
+          level: (assessment.regulationScore || 0) >= 0.75 ? 'strong' as const :
+                 (assessment.regulationScore || 0) >= 0.5 ? 'moderate' as const : 'developing' as const,
+          interpretation: '',
+        },
+      },
+      overallInterpretation: `Your assessment from ${new Date(assessment.timestamp).toLocaleDateString()}`,
+      topStrengths: assessment.strengths || [],
+      areasForGrowth: assessment.areasForGrowth || [],
+      confidenceLevel: 'high' as const,
+      dataSource: 'combined' as const,
+    };
+
+    setProfile(convertedProfile);
+    setSelectedHistoryId(assessment.id);
+    setShowNewAssessment(false);
+    setAssessmentCompleted(true);
+    setShowHistory(false);
   };
 
   return (
@@ -504,7 +558,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                 Assessment Complete!
               </h2>
 
-              {latestAssessment && !showNewAssessment && (
+              {(latestAssessment || selectedHistoryId) && !showNewAssessment && (
                 <div style={{
                   backgroundColor: '#eef2ff',
                   border: '2px solid #818cf8',
@@ -519,14 +573,17 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                     fontSize: '1rem',
                     fontWeight: 600
                   }}>
-                    📊 Showing your previous assessment from {new Date(latestAssessment.timestamp).toLocaleDateString()}
+                    📊 {selectedHistoryId
+                      ? `Viewing assessment from ${new Date(profile?.assessedAt || '').toLocaleDateString()}`
+                      : `Showing your latest assessment from ${new Date(latestAssessment!.timestamp).toLocaleDateString()}`
+                    }
                   </p>
                   <p style={{
                     color: '#64748b',
                     margin: '0.5rem 0 0 0',
                     fontSize: '0.875rem'
                   }}>
-                    This assessment has been saved. You can review the results below or take a new assessment.
+                    This assessment has been saved. {assessments.length > 1 && 'Click "View History" to see all assessments.'}
                   </p>
                 </div>
               )}
@@ -564,6 +621,22 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                 >
                   Return to Dashboard
                 </button>
+                {assessments.length > 1 && (
+                  <button
+                    className="completion-button"
+                    onClick={handleViewHistory}
+                    disabled={saving}
+                    style={{
+                      backgroundColor: '#fff',
+                      color: '#059669',
+                      border: '2px solid #059669',
+                      fontWeight: 600,
+                      fontSize: '1rem',
+                    }}
+                  >
+                    📜 {showHistory ? 'Hide History' : 'View History'} ({assessments.length})
+                  </button>
+                )}
                 <button
                   className="completion-button"
                   onClick={handleRetakeAssessment}
@@ -579,6 +652,115 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                   🔄 Retake Assessment
                 </button>
               </div>
+
+              {/* History List */}
+              {showHistory && assessments.length > 0 && (
+                <div style={{
+                  marginTop: '2rem',
+                  padding: '1.5rem',
+                  backgroundColor: '#f9fafb',
+                  borderRadius: '0.75rem',
+                  border: '1px solid #e5e7eb'
+                }}>
+                  <h3 style={{
+                    margin: '0 0 1rem 0',
+                    fontSize: '1.25rem',
+                    fontWeight: 600,
+                    color: '#1f2937'
+                  }}>
+                    📚 Assessment History
+                  </h3>
+                  <div style={{
+                    display: 'grid',
+                    gap: '0.75rem'
+                  }}>
+                    {assessments.map((assessment, index) => {
+                      const isSelected = selectedHistoryId === assessment.id ||
+                                        (!selectedHistoryId && index === 0);
+                      const date = new Date(assessment.timestamp);
+                      const avgScore = (
+                        (assessment.planningScore || 0) +
+                        (assessment.monitoringScore || 0) +
+                        (assessment.evaluationScore || 0) +
+                        (assessment.regulationScore || 0)
+                      ) / 4;
+
+                      return (
+                        <button
+                          key={assessment.id}
+                          onClick={() => handleSelectHistoryItem(assessment)}
+                          style={{
+                            padding: '1rem 1.25rem',
+                            backgroundColor: isSelected ? '#eef2ff' : '#fff',
+                            border: isSelected ? '2px solid #818cf8' : '2px solid #e5e7eb',
+                            borderRadius: '0.5rem',
+                            cursor: 'pointer',
+                            textAlign: 'left',
+                            transition: 'all 0.2s',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!isSelected) {
+                              e.currentTarget.style.borderColor = '#d1d5db';
+                              e.currentTarget.style.backgroundColor = '#f9fafb';
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (!isSelected) {
+                              e.currentTarget.style.borderColor = '#e5e7eb';
+                              e.currentTarget.style.backgroundColor = '#fff';
+                            }
+                          }}
+                        >
+                          <div style={{ flex: 1 }}>
+                            <div style={{
+                              fontSize: '1rem',
+                              fontWeight: 600,
+                              color: isSelected ? '#4338ca' : '#1f2937',
+                              marginBottom: '0.25rem'
+                            }}>
+                              {index === 0 ? '🌟 Latest' : `Assessment #${assessments.length - index}`}
+                              {isSelected && ' (Currently Viewing)'}
+                            </div>
+                            <div style={{
+                              fontSize: '0.875rem',
+                              color: '#6b7280'
+                            }}>
+                              {date.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </div>
+                          </div>
+                          <div style={{
+                            textAlign: 'right'
+                          }}>
+                            <div style={{
+                              fontSize: '1.5rem',
+                              fontWeight: 700,
+                              color: avgScore >= 0.75 ? '#059669' : avgScore >= 0.5 ? '#f59e0b' : '#ef4444'
+                            }}>
+                              {(avgScore * 100).toFixed(0)}%
+                            </div>
+                            <div style={{
+                              fontSize: '0.75rem',
+                              color: '#9ca3af',
+                              marginTop: '0.125rem'
+                            }}>
+                              Overall
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
