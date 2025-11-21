@@ -12,9 +12,8 @@ import DashboardPage from './pages/DashboardPage';
 // OPTIMIZATION: Route-level code splitting
 // Lazy-load non-critical pages to reduce initial bundle by 60-70%
 // Each lazy import reduces initial payload size significantly
-const PatternsPage = lazy(() => import('./pages/PatternsPage'));
+const PatternAnalysisPage = lazy(() => import('./pages/PatternAnalysisPage'));
 const PredictionsPage = lazy(() => import('./pages/PredictionsPage'));
-const EvolutionTrackingPage = lazy(() => import('./pages/EvolutionTrackingPage'));
 const ABTestPage = lazy(() => import('./pages/ABTestPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
@@ -176,7 +175,7 @@ const App: React.FC = () => {
             path="/patterns"
             element={
               <Suspense fallback={<PageLoader />}>
-                <PatternsPage />
+                <PatternAnalysisPage />
               </Suspense>
             }
           />
@@ -188,14 +187,8 @@ const App: React.FC = () => {
               </Suspense>
             }
           />
-          <Route
-            path="/evolution"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <EvolutionTrackingPage />
-              </Suspense>
-            }
-          />
+          {/* Redirect old evolution route to new unified patterns page */}
+          <Route path="/evolution" element={<Navigate to="/patterns" replace />} />
           <Route
             path="/ab-test"
             element={

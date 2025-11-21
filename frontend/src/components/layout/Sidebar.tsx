@@ -28,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       visible: true,
     },
     {
-      label: 'Patterns',
+      label: 'Pattern Analysis',
       path: '/patterns',
       icon: 'patterns',
       visible: true,
@@ -38,12 +38,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       path: '/predictions',
       icon: 'predictions',
       visible: false, // Hidden per user request
-    },
-    {
-      label: 'Evolution Tracking',
-      path: '/evolution',
-      icon: 'evolution',
-      visible: true,
     },
     {
       label: 'Metacognitive Assessment',
