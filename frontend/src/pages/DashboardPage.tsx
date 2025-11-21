@@ -213,7 +213,7 @@ const DashboardPage: React.FC = () => {
               <HoverTooltip tooltip="Average duration of your conversation sessions in minutes. Longer sessions may indicate deeper engagement or comprehensive problem-solving." showIcon={true}>
                 <div className="metric-card">
                   <div className="metric-label">Average Session</div>
-                  <div className="metric-value">{averageSessionDuration}</div>
+                  <div className="metric-value">{Math.round(averageSessionDuration)} min</div>
                   <div className="metric-description">
                     Minutes per session
                   </div>
