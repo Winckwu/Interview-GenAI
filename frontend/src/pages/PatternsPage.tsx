@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { usePatternStore } from '../stores/patternStore';
 import { useAuthStore } from '../stores/authStore';
 import { useMetricsStore } from '../stores/metricsStore';
+import { useAssessmentStore } from '../stores/assessmentStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import InfoTooltip from '../components/InfoTooltip';
 import api from '../services/api';
@@ -15,11 +16,13 @@ const PatternsPage: React.FC = () => {
   const { user } = useAuthStore();
   const { patterns, loading, fetchPatterns } = usePatternStore();
   const { alerts } = useMetricsStore();
+  const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
   const [totalInteractions, setTotalInteractions] = useState<number>(0);
 
   useEffect(() => {
     if (user?.id) {
       fetchPatterns(user.id);
+      fetchLatestAssessment(user.id);
       // Fetch user's total interaction count
       api.get(`/users/${user.id}/stats`).then(response => {
         const stats = response.data.data || response.data;
@@ -28,7 +31,7 @@ const PatternsPage: React.FC = () => {
         console.error('Failed to fetch user stats:', err);
       });
     }
-  }, [user?.id]);
+  }, [user?.id, fetchLatestAssessment]);
 
   if (loading) {
     return <LoadingSpinner message="Loading patterns..." />;
@@ -87,6 +90,61 @@ const PatternsPage: React.FC = () => {
       F: '⚠️ Ineffective & Passive Usage - High-risk pattern with low verification (<10%). Uncritical acceptance, minimal engagement, and risk of skill degradation.',
     };
     return descriptions[patternType] || 'Unknown pattern';
+  };
+
+  // Render subdimension progress bar
+  const renderSubdimensionBar = (code: string, label: string, assessment: any) => {
+    // Extract score from assessment responses
+    const responses = assessment.responses || {};
+    const subdimScores = responses.subdimensionScores || [];
+    const found = subdimScores.find((s: any) => s.dimension === code);
+    const rawScore = found ? found.score : 0; // 1-5 scale
+    const percentage = rawScore > 0 ? ((rawScore - 1) / 4) * 100 : 0; // Convert to 0-100%
+
+    const getColor = (score: number) => {
+      if (score >= 4) return '#10b981'; // Strong (green)
+      if (score >= 3) return '#3b82f6'; // Moderate (blue)
+      return '#f59e0b'; // Weak (amber)
+    };
+
+    return (
+      <div key={code}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+          <span style={{ fontSize: '0.8125rem', fontWeight: '600', color: '#374151' }}>{label}</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: '700', color: getColor(rawScore) }}>
+            {rawScore > 0 ? rawScore.toFixed(1) : 'N/A'}
+          </span>
+        </div>
+        <div style={{
+          width: '100%',
+          height: '0.5rem',
+          backgroundColor: '#e5e7eb',
+          borderRadius: '0.25rem',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            width: `${percentage}%`,
+            height: '100%',
+            backgroundColor: getColor(rawScore),
+            transition: 'width 0.3s ease',
+            borderRadius: '0.25rem'
+          }} />
+        </div>
+      </div>
+    );
+  };
+
+  // Get correlation between pattern and metacognitive abilities
+  const getPatternMetacognitionCorrelation = (patternType: string): string => {
+    const correlations: Record<string, string> = {
+      A: 'strong Planning abilities (P1-P4) and high Monitoring (M1-M2). Users with Pattern A typically excel at task decomposition and progress tracking.',
+      B: 'strong Regulation abilities (R1-R2) and Evaluation (E2). Pattern B users are excellent at adjusting strategies and learning from failures.',
+      C: 'balanced abilities across all dimensions with strong Regulation (R1). Pattern C users excel at adaptive strategy switching.',
+      D: 'exceptional Monitoring (M1-M3) and Evaluation (E1-E3) abilities. Pattern D users are systematic verifiers with strong critical thinking.',
+      E: 'strong Evaluation (E2) and Monitoring (M1) with emphasis on learning reflection. Pattern E users treat AI as a pedagogical tool.',
+      F: 'underdeveloped metacognitive abilities across dimensions. Pattern F users may benefit from MR19 assessment and metacognitive training.',
+    };
+    return correlations[patternType] || 'various metacognitive abilities depending on your usage patterns.';
   };
 
   return (
@@ -682,6 +740,108 @@ const PatternsPage: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Metacognitive Ability Section */}
+      {latestAssessment && latestAssessment.responses && (
+        <div style={{
+          backgroundColor: '#f0f9ff',
+          border: '2px solid #0ea5e9',
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          marginBottom: '2rem',
+        }}>
+          <h2 style={{ margin: '0 0 1.5rem 0', color: '#0369a1', fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            🧠 Metacognitive Abilities (12 Dimensions)
+            <InfoTooltip text="Your cognitive abilities for planning, monitoring, evaluating and regulating your work with AI. Based on MR19 Assessment." size="small" />
+          </h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            {/* Planning Dimension */}
+            <div style={{
+              backgroundColor: '#fff',
+              borderRadius: '0.5rem',
+              padding: '1.5rem',
+              border: '2px solid #c7d2fe',
+            }}>
+              <h3 style={{ margin: '0 0 1rem 0', color: '#4338ca', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                📋 Planning
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {renderSubdimensionBar('P1', 'Task Decomposition', latestAssessment)}
+                {renderSubdimensionBar('P2', 'Goal Setting', latestAssessment)}
+                {renderSubdimensionBar('P3', 'Strategy Selection', latestAssessment)}
+                {renderSubdimensionBar('P4', 'Resource Planning', latestAssessment)}
+              </div>
+            </div>
+
+            {/* Monitoring Dimension */}
+            <div style={{
+              backgroundColor: '#fff',
+              borderRadius: '0.5rem',
+              padding: '1.5rem',
+              border: '2px solid #bfdbfe',
+            }}>
+              <h3 style={{ margin: '0 0 1rem 0', color: '#1e40af', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                👁️ Monitoring
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {renderSubdimensionBar('M1', 'Progress Tracking', latestAssessment)}
+                {renderSubdimensionBar('M2', 'Quality Checking', latestAssessment)}
+                {renderSubdimensionBar('M3', 'Context Monitoring', latestAssessment)}
+              </div>
+            </div>
+
+            {/* Evaluation Dimension */}
+            <div style={{
+              backgroundColor: '#fff',
+              borderRadius: '0.5rem',
+              padding: '1.5rem',
+              border: '2px solid #bbf7d0',
+            }}>
+              <h3 style={{ margin: '0 0 1rem 0', color: '#15803d', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                ✅ Evaluation
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {renderSubdimensionBar('E1', 'Result Evaluation', latestAssessment)}
+                {renderSubdimensionBar('E2', 'Learning Reflection', latestAssessment)}
+                {renderSubdimensionBar('E3', 'Capability Judgment', latestAssessment)}
+              </div>
+            </div>
+
+            {/* Regulation Dimension */}
+            <div style={{
+              backgroundColor: '#fff',
+              borderRadius: '0.5rem',
+              padding: '1.5rem',
+              border: '2px solid #fcd34d',
+            }}>
+              <h3 style={{ margin: '0 0 1rem 0', color: '#b45309', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                ⚙️ Regulation
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {renderSubdimensionBar('R1', 'Strategy Adjustment', latestAssessment)}
+                {renderSubdimensionBar('R2', 'Trust Calibration', latestAssessment)}
+              </div>
+            </div>
+          </div>
+
+          {/* Pattern-Metacognition Correlation */}
+          {dominantPattern && (
+            <div style={{
+              marginTop: '1.5rem',
+              padding: '1rem',
+              backgroundColor: '#fef3c7',
+              borderLeft: '4px solid #f59e0b',
+              borderRadius: '0.375rem',
+            }}>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#92400e' }}>
+                <strong>💡 Insight:</strong> Your dominant Pattern {dominantPattern.patternType} typically correlates with{' '}
+                {getPatternMetacognitionCorrelation(dominantPattern.patternType)}
+              </p>
+            </div>
+          )}
         </div>
       )}
 
