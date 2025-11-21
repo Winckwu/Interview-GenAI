@@ -84,10 +84,11 @@ const DashboardPage: React.FC = () => {
   const verificationRate = analytics?.verificationRate || 0;
   const modificationRate = analytics?.modificationRate || 0;
 
-  // Generate trend data from pattern trends if available
-  const weeklyAccuracyData = analytics?.patternTrend
+  // Generate daily trend data from pattern trends if available
+  const dailyAccuracyData = analytics?.patternTrend
     ? analytics.patternTrend.map((trend: any, idx: number) => ({
-        week: `Week ${idx + 1}`,
+        day: `Day ${idx + 1}`,
+        date: trend.date ? new Date(trend.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : `Day ${idx + 1}`,
         accuracy: Math.round(
           verificationRate > 0 ? (verificationRate * 100) : 50
         ),
@@ -234,15 +235,15 @@ const DashboardPage: React.FC = () => {
           </>
         ) : (
           <>
-            {/* Weekly Accuracy Trend */}
+            {/* Daily Accuracy Trend */}
             <div className="chart-container">
               <h3 className="chart-title">
-                📈 Weekly Accuracy Trend <InfoTooltip text="Shows your verification accuracy over the past weeks. Higher trends indicate you're getting better at verifying AI outputs correctly." />
+                📈 Daily Accuracy Trend <InfoTooltip text="Shows your verification accuracy over the past days. Higher trends indicate you're getting better at verifying AI outputs correctly." />
               </h3>
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={weeklyAccuracyData}>
+                <LineChart data={dailyAccuracyData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="week" />
+                  <XAxis dataKey="date" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
