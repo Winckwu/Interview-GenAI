@@ -980,8 +980,22 @@ const ChatSessionPage: React.FC = () => {
         return <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} onOpenMR8={openMR8TaskRecognition} />;
       case 'mr5-iteration':
         return <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} onOpenMR6={openMR6CrossModel} />;
-      case 'mr6-models':
-        return <MR6CrossModelExperimentation prompt={userInput || messages[messages.length - 1]?.content || ''} onComparisonComplete={(r) => console.log('Comparison:', r)} />;
+      case 'mr6-models': {
+        // Find the last user message (not AI message) for the prompt
+        const lastUserMessage = messages.slice().reverse().find(msg => msg.role === 'user');
+        const promptForMR6 = userInput || lastUserMessage?.content || '';
+        // Pass conversation history for better context
+        const conversationHistory = messages.map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }));
+        return <MR6CrossModelExperimentation
+          prompt={promptForMR6}
+          conversationHistory={conversationHistory}
+          taskType={sessionData?.taskType}
+          onComparisonComplete={(r) => console.log('Comparison:', r)}
+        />;
+      }
       case 'mr7-failure':
         return <MR7FailureToleranceLearning onIterationLogged={(log) => console.log('Learning:', log)} />;
       case 'mr8-recognition':
