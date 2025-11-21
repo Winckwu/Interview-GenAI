@@ -3038,7 +3038,7 @@ const ChatSessionPage: React.FC = () => {
                 icon: '🔄',
                 color: '#ec4899',
                 tips: [
-                  'Adjust your approach if AI responses aren't helpful',
+                  "Adjust your approach if AI responses aren't helpful",
                   'Know when to rely on AI vs. your own expertise',
                   'Be aware of over-dependence on AI assistance',
                 ]

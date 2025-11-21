@@ -739,7 +739,7 @@ const DashboardPage: React.FC = () => {
                         Recommended for You
                       </h2>
                     </div>
-                    <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.95rem', opacity: 0.95' }}>
+                    <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.95rem', opacity: 0.95 }}>
                       Based on your <strong>{patternProfile.nameCN}</strong> pattern, we recommend these MR features to help you grow
                     </p>
 
