@@ -377,6 +377,12 @@ const ChatSessionPage: React.FC = () => {
   // Track MR6 multi-model comparison suggestions
   const [comparisonSuggestedMessages, setComparisonSuggestedMessages] = useState<Set<string>>(new Set());
   const [showMR6Suggestion, setShowMR6Suggestion] = useState<string | null>(null);
+  // MR6 context: Store the specific message context for comparison
+  const [mr6Context, setMr6Context] = useState<{
+    prompt: string;
+    history: Array<{ role: 'user' | 'ai'; content: string }>;
+    messageIndex: number;
+  } | null>(null);
 
   // Track MR9 Dynamic Orchestration - Trust-based MR activation
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
@@ -429,6 +435,13 @@ const ChatSessionPage: React.FC = () => {
       setDisplayedModalMR(modalMR || null);
     }
   }, [activeMRs, dismissedMRs]);
+
+  // Clear MR6 context when switching away from MR6 tool
+  useEffect(() => {
+    if (activeMRTool !== 'mr6-models' && mr6Context !== null) {
+      setMr6Context(null);
+    }
+  }, [activeMRTool, mr6Context]);
 
   // Load session list with valid interactions (OPTIMIZED: Batch loading to reduce N+1)
   const loadSessionsRef = useRef(false);
@@ -929,7 +942,20 @@ const ChatSessionPage: React.FC = () => {
         ? messages[aiMsgIndex - 1].content
         : '';
 
-      // Open MR6 with the prompt
+      // Extract conversation history UP TO this message (not including later messages)
+      const historyUpToMessage = messages.slice(0, aiMsgIndex).map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
+
+      // Save MR6 context for this specific message
+      setMr6Context({
+        prompt: userPrompt,
+        history: historyUpToMessage,
+        messageIndex: aiMsgIndex
+      });
+
+      // Open MR6 with the specific message context
       openMR6CrossModel();
       setSuccessMessage('💡 Compare responses from multiple AI models to find the best solution');
       setTimeout(() => setSuccessMessage(null), 3000);
@@ -981,14 +1007,25 @@ const ChatSessionPage: React.FC = () => {
       case 'mr5-iteration':
         return <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} onOpenMR6={openMR6CrossModel} />;
       case 'mr6-models': {
-        // Find the last user message (not AI message) for the prompt
-        const lastUserMessage = messages.slice().reverse().find(msg => msg.role === 'user');
-        const promptForMR6 = userInput || lastUserMessage?.content || '';
-        // Pass conversation history for better context
-        const conversationHistory = messages.map(msg => ({
-          role: msg.role,
-          content: msg.content
-        }));
+        // Use saved MR6 context if available (from clicking specific message's MR6 button)
+        // Otherwise fall back to latest user message
+        let promptForMR6: string;
+        let conversationHistory: Array<{ role: 'user' | 'ai'; content: string }>;
+
+        if (mr6Context) {
+          // User clicked MR6 on a specific message - use that message's context
+          promptForMR6 = mr6Context.prompt;
+          conversationHistory = mr6Context.history;
+        } else {
+          // Opened MR6 manually - use current conversation state
+          const lastUserMessage = messages.slice().reverse().find(msg => msg.role === 'user');
+          promptForMR6 = userInput || lastUserMessage?.content || '';
+          conversationHistory = messages.map(msg => ({
+            role: msg.role,
+            content: msg.content
+          }));
+        }
+
         return <MR6CrossModelExperimentation
           prompt={promptForMR6}
           conversationHistory={conversationHistory}
@@ -1021,7 +1058,7 @@ const ChatSessionPage: React.FC = () => {
       default:
         return null;
     }
-  }, [activeMRTool, sessionId, messages, interventionLevel, sessionData, conversationBranches, verificationLogs, userInput, user, openMR4RoleDefinition, openMR8TaskRecognition, openMR6CrossModel, openMR3AgencyControl, openMR5Iteration, openMR9TrustCalibration, openMR11Verification, openMR14Reflection, openMR15StrategyGuide, openMR19CapabilityAssessment, openMR17LearningVisualization, openMR16SkillAtrophy, setInterventionLevel, setConversationBranches, setVerificationLogs]);
+  }, [activeMRTool, sessionId, messages, interventionLevel, sessionData, conversationBranches, verificationLogs, userInput, user, mr6Context, openMR4RoleDefinition, openMR8TaskRecognition, openMR6CrossModel, openMR3AgencyControl, openMR5Iteration, openMR9TrustCalibration, openMR11Verification, openMR14Reflection, openMR15StrategyGuide, openMR19CapabilityAssessment, openMR17LearningVisualization, openMR16SkillAtrophy, setInterventionLevel, setConversationBranches, setVerificationLogs]);
 
 
   /**
