@@ -12,7 +12,7 @@
  * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import MarkdownText from './common/MarkdownText';
 import styles from './MessageItem.module.css';
 import { type Message } from '../hooks/useMessages';
@@ -112,6 +112,27 @@ export const MessageItem: React.FC<MessageItemProps> = ({
     return branch || null;
   };
 
+  // Calculate branch statistics
+  const getBranchStatistics = () => {
+    if (!hasBranches) return null;
+
+    const branches = message.branches || [];
+    const mr6Count = branches.filter(b => b.source === 'mr6').length;
+    const mr5Count = branches.filter(b => b.source === 'mr5').length;
+    const manualCount = branches.filter(b => b.source === 'manual').length;
+    const verifiedCount = branches.filter(b => b.wasVerified).length;
+    const modifiedCount = branches.filter(b => b.wasModified).length;
+
+    return {
+      total: totalBranches,
+      mr6: mr6Count,
+      mr5: mr5Count,
+      manual: manualCount,
+      verified: verifiedCount,
+      modified: modifiedCount,
+    };
+  };
+
   // Format timestamp for display
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -126,8 +147,56 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   const currentContent = getCurrentContent();
   const branchInfo = getCurrentBranchInfo();
   const branchMetadata = getCurrentBranchMetadata();
+  const branchStats = getBranchStatistics();
+
+  // Keyboard shortcuts for branch navigation
+  const messageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Only enable keyboard shortcuts for AI messages with branches
+    if (message.role !== 'ai' || !hasBranches || isEditing) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check if this message is in viewport and focused
+      if (!messageRef.current?.contains(document.activeElement)) return;
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          if (canGoPrev && onBranchPrev) {
+            e.preventDefault();
+            onBranchPrev();
+          }
+          break;
+        case 'ArrowRight':
+          if (canGoNext && onBranchNext) {
+            e.preventDefault();
+            onBranchNext();
+          }
+          break;
+        case 'Delete':
+          if (currentBranchIndex > 0 && onBranchDelete) {
+            e.preventDefault();
+            onBranchDelete();
+          }
+          break;
+        case 'Enter':
+          if (e.ctrlKey && currentBranchIndex > 0 && onBranchSetAsMain) {
+            e.preventDefault();
+            onBranchSetAsMain();
+          }
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [hasBranches, canGoPrev, canGoNext, currentBranchIndex, isEditing, onBranchPrev, onBranchNext, onBranchDelete, onBranchSetAsMain, message.role]);
   return (
-    <div className={`${styles.messageContainer} ${styles[message.role]}`}>
+    <div
+      ref={messageRef}
+      className={`${styles.messageContainer} ${styles[message.role]}`}
+      tabIndex={hasBranches && message.role === 'ai' ? 0 : undefined}
+    >
       <div
         className={`${styles.messageBubble} ${styles[message.role]} ${
           message.role === 'ai' ? (message.wasVerified ? styles.verified : styles.unverified) : ''
@@ -175,6 +244,32 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </div>
 
+            {/* Branch Statistics */}
+            {branchStats && (
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.25rem 0.5rem',
+                  backgroundColor: '#f3f4f6',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '0.375rem',
+                  fontSize: '0.7rem',
+                  color: '#6b7280',
+                  fontWeight: '500',
+                }}
+                title={`Total: ${branchStats.total} branches\nMR6: ${branchStats.mr6} | MR5: ${branchStats.mr5} | Manual: ${branchStats.manual}\nVerified: ${branchStats.verified} | Modified: ${branchStats.modified}`}
+              >
+                <span style={{ color: '#374151' }}>📊 {branchStats.total} branches</span>
+                {branchStats.mr6 > 0 && <span>MR6: {branchStats.mr6}</span>}
+                {branchStats.mr5 > 0 && <span>MR5: {branchStats.mr5}</span>}
+                {branchStats.manual > 0 && <span>Manual: {branchStats.manual}</span>}
+                {branchStats.verified > 0 && <span style={{ color: '#10b981' }}>✓ {branchStats.verified}</span>}
+                {branchStats.modified > 0 && <span style={{ color: '#f59e0b' }}>✎ {branchStats.modified}</span>}
+              </div>
+            )}
+
             {/* Branch Navigation */}
             {hasBranches && (
               <div
@@ -189,6 +284,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   borderRadius: '0.375rem',
                   fontSize: '0.75rem',
                 }}
+                title="Keyboard: ← Previous | → Next | Delete to remove | Ctrl+Enter to set as main"
               >
                 <button
                   onClick={onBranchPrev}
