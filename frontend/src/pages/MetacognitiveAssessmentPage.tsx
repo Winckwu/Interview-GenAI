@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
 import { useAssessmentStore } from '../stores/assessmentStore';
 import { MR19MetacognitiveCapabilityAssessment } from '../components/mr/MR19MetacognitiveCapabilityAssessment';
 import type { MetacognitiveProfile } from '../components/mr/MR19MetacognitiveCapabilityAssessment/utils';
+import { apiService } from '../services/api';
 import './MetacognitiveAssessmentPage.css';
 import '../styles/components.css';
 
@@ -16,12 +17,118 @@ import '../styles/components.css';
 const MetacognitiveAssessmentPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { sessions } = useSessionStore();
+  const { sessions, loadSessions } = useSessionStore();
   const { submitAssessment } = useAssessmentStore();
   const [assessmentCompleted, setAssessmentCompleted] = useState(false);
   const [profile, setProfile] = useState<MetacognitiveProfile | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [behaviorHistory, setBehaviorHistory] = useState<any[]>([
+    { type: 'plan', count: 0, effectiveness: 0.5 },
+    { type: 'monitor', count: 0, effectiveness: 0.5 },
+    { type: 'evaluate', count: 0, effectiveness: 0.5 },
+    { type: 'regulate', count: 0, effectiveness: 0.5 },
+  ]);
+  const [loadingBehavior, setLoadingBehavior] = useState(true);
+
+  // Load sessions and analyze behavior on mount
+  useEffect(() => {
+    const loadAndAnalyzeBehavior = async () => {
+      try {
+        setLoadingBehavior(true);
+        // Load sessions if not already loaded
+        if (sessions.length === 0) {
+          await loadSessions();
+        }
+
+        // Fetch detailed interaction data for behavior analysis
+        if (user?.id) {
+          const response = await apiService.sessions.getAll({ limit: 100, includeInteractions: true });
+          const sessionsWithInteractions = response.data.data?.sessions || [];
+
+          // Analyze interactions to calculate real behavior metrics
+          let totalInteractions = 0;
+          let verifiedCount = 0;
+          let modifiedCount = 0;
+          let rejectedCount = 0;
+          let planningBehaviors = 0;
+          let monitoringBehaviors = 0;
+          let evaluationBehaviors = 0;
+          let regulationBehaviors = 0;
+
+          sessionsWithInteractions.forEach((session: any) => {
+            const interactions = session.interactions || [];
+            totalInteractions += interactions.length;
+
+            interactions.forEach((interaction: any) => {
+              // Count verification/modification/rejection behaviors
+              if (interaction.wasVerified) verifiedCount++;
+              if (interaction.wasModified) modifiedCount++;
+              if (interaction.wasRejected) rejectedCount++;
+
+              // Analyze prompt content for metacognitive patterns
+              const prompt = (interaction.userPrompt || '').toLowerCase();
+
+              // Planning indicators
+              if (prompt.includes('plan') || prompt.includes('step') || prompt.includes('how to') ||
+                  prompt.includes('strategy') || prompt.includes('approach')) {
+                planningBehaviors++;
+              }
+
+              // Monitoring indicators
+              if (prompt.includes('check') || prompt.includes('verify') || prompt.includes('correct') ||
+                  prompt.includes('is this right') || interaction.wasVerified) {
+                monitoringBehaviors++;
+              }
+
+              // Evaluation indicators
+              if (prompt.includes('better') || prompt.includes('compare') || prompt.includes('which') ||
+                  prompt.includes('evaluate') || prompt.includes('assess')) {
+                evaluationBehaviors++;
+              }
+
+              // Regulation indicators
+              if (prompt.includes('fix') || prompt.includes('improve') || prompt.includes('adjust') ||
+                  prompt.includes('change') || interaction.wasModified || interaction.wasRejected) {
+                regulationBehaviors++;
+              }
+            });
+          });
+
+          // Calculate effectiveness scores based on actual behavior
+          const planningEffectiveness = planningBehaviors > 0 ? Math.min(0.9, 0.5 + (planningBehaviors / totalInteractions) * 0.5) : 0.3;
+          const monitoringEffectiveness = verifiedCount > 0 ? Math.min(0.95, 0.6 + (verifiedCount / totalInteractions)) : 0.4;
+          const evaluationEffectiveness = evaluationBehaviors > 0 ? Math.min(0.9, 0.5 + (evaluationBehaviors / totalInteractions) * 0.5) : 0.35;
+          const regulationEffectiveness = (modifiedCount + rejectedCount) > 0 ? Math.min(0.95, 0.6 + ((modifiedCount + rejectedCount) / totalInteractions)) : 0.4;
+
+          setBehaviorHistory([
+            { type: 'plan', count: planningBehaviors, effectiveness: planningEffectiveness },
+            { type: 'monitor', count: monitoringBehaviors, effectiveness: monitoringEffectiveness },
+            { type: 'evaluate', count: evaluationBehaviors, effectiveness: evaluationEffectiveness },
+            { type: 'regulate', count: regulationBehaviors, effectiveness: regulationEffectiveness },
+          ]);
+
+          console.log('Analyzed behavior data:', {
+            totalInteractions,
+            verifiedCount,
+            modifiedCount,
+            rejectedCount,
+            planningBehaviors,
+            monitoringBehaviors,
+            evaluationBehaviors,
+            regulationBehaviors,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load behavior data:', error);
+        // Use default values if loading fails
+      } finally {
+        setLoadingBehavior(false);
+      }
+    };
+
+    loadAndAnalyzeBehavior();
+  }, [user?.id, loadSessions]);
 
   const handleAssessmentComplete = async (completedProfile: MetacognitiveProfile) => {
     setProfile(completedProfile);
@@ -126,14 +233,37 @@ const MetacognitiveAssessmentPage: React.FC = () => {
 
         {/* Assessment Component */}
         <div className="assessment-content">
-          {!assessmentCompleted ? (
+          {loadingBehavior ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '4rem 2rem',
+              color: '#64748b'
+            }}>
+              <div style={{
+                fontSize: '2rem',
+                marginBottom: '1rem',
+                animation: 'pulse 2s ease-in-out infinite'
+              }}>
+                🧠
+              </div>
+              <h3 style={{
+                margin: '0 0 0.5rem 0',
+                fontSize: '1.25rem',
+                color: '#1f2937',
+                fontWeight: 600
+              }}>
+                Analyzing Your Behavior History
+              </h3>
+              <p style={{
+                margin: 0,
+                fontSize: '1rem'
+              }}>
+                Reading your past interactions to personalize your assessment...
+              </p>
+            </div>
+          ) : !assessmentCompleted ? (
             <MR19MetacognitiveCapabilityAssessment
-              userBehaviorHistory={[
-                { type: 'plan', count: sessions.length, effectiveness: 0.7 },
-                { type: 'monitor', count: Math.floor(sessions.length * 0.6), effectiveness: 0.65 },
-                { type: 'evaluate', count: Math.floor(sessions.length * 0.5), effectiveness: 0.7 },
-                { type: 'regulate', count: Math.floor(sessions.length * 0.4), effectiveness: 0.6 },
-              ]}
+              userBehaviorHistory={behaviorHistory}
               onAssessmentComplete={handleAssessmentComplete}
               showRecommendations={true}
               allowSelfReport={true}
