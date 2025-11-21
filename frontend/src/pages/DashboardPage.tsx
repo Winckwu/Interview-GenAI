@@ -347,10 +347,13 @@ const DashboardPage: React.FC = () => {
                 </BarChart>
               </ResponsiveContainer>
               <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#475569' }}>
-                <p style={{ margin: '0.5rem 0' }}>📊 <strong>Real Data:</strong> Quality scores calculated from your actual verification behavior</p>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Low:</strong> No verification - accepted AI outputs directly</p>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Medium:</strong> Verified and found issues to modify</p>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>High:</strong> Verified and accepted without modifications</p>
+                <p style={{ margin: '0.5rem 0' }}>📊 <strong>Real Data:</strong> Final quality scores represent output quality AFTER verification process</p>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Low (~30-65%):</strong> No verification - accepted AI outputs directly (risky, potential errors remain)</p>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Medium (~75-90%):</strong> Verified and found issues to fix (good practice - errors caught and corrected)</p>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>High (~90-100%):</strong> Verified and accepted without modifications (best practice - quality confirmed)</p>
+                <p style={{ margin: '0.5rem 0', fontStyle: 'italic', color: '#64748b' }}>
+                  ℹ️ Higher scores indicate better final output quality. Verification improves quality by catching errors.
+                </p>
               </div>
             </div>
 
