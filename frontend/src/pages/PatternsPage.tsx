@@ -135,9 +135,9 @@ const PatternsPage: React.FC = () => {
               {/* Confidence Level */}
               <div style={{ marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600' }}>
+                  <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                     Confidence
-                    <InfoTooltip content="How confident we are in this pattern classification based on your usage data" />
+                    <InfoTooltip text="How confident we are in this pattern classification based on your usage data" size="small" />
                   </span>
                   <span style={{ fontSize: '1rem', fontWeight: '700', color: getPatternColor(dominantPattern.patternType) }}>
                     {dominantPattern.confidence > 0 ? `${(dominantPattern.confidence * 100).toFixed(0)}%` : 'N/A'}
@@ -178,9 +178,9 @@ const PatternsPage: React.FC = () => {
               {dominantPattern.stability !== undefined && (
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                    <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600' }}>
+                    <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                       Stability
-                      <InfoTooltip content="How consistently you exhibit this pattern over time" />
+                      <InfoTooltip text="How consistently you exhibit this pattern over time" size="small" />
                     </span>
                     <span style={{ fontSize: '1rem', fontWeight: '700', color: '#059669' }}>
                       {(dominantPattern.stability * 100).toFixed(0)}%
