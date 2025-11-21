@@ -15,18 +15,10 @@
 import React from 'react';
 import MarkdownText from './common/MarkdownText';
 import styles from './MessageItem.module.css';
+import { type Message } from '../hooks/useMessages';
 
-export interface Message {
-  id: string;
-  role: 'user' | 'ai';
-  content: string;
-  timestamp: string;
-  wasVerified?: boolean;
-  wasModified?: boolean;
-  wasRejected?: boolean;
-  replacedByMR6?: boolean;
-  replacedByModel?: string;
-}
+// Re-export Message type for backward compatibility
+export type { Message };
 
 export interface MessageItemProps {
   message: Message;
@@ -44,6 +36,10 @@ export interface MessageItemProps {
   onVerify: () => void;
   onModify: () => void;
 
+  // Branch navigation
+  onBranchPrev?: () => void;
+  onBranchNext?: () => void;
+
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
   quickReflection?: React.ReactNode;
@@ -60,10 +56,42 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onCancelEdit,
   onVerify,
   onModify,
+  onBranchPrev,
+  onBranchNext,
   trustIndicator,
   quickReflection,
   mr6Suggestion,
 }) => {
+  // Calculate branch information
+  const hasBranches = message.branches && message.branches.length > 0;
+  const currentBranchIndex = message.currentBranchIndex ?? 0;
+  const totalBranches = hasBranches ? (message.branches?.length ?? 0) + 1 : 1; // +1 for original
+  const canGoPrev = hasBranches && currentBranchIndex > 0;
+  const canGoNext = hasBranches && currentBranchIndex < totalBranches - 1;
+
+  // Get current content (either original or from a branch)
+  const getCurrentContent = () => {
+    if (currentBranchIndex === 0 || !message.branches) {
+      return message.content;
+    }
+    const branch = message.branches[currentBranchIndex - 1];
+    return branch?.content || message.content;
+  };
+
+  // Get current branch source info
+  const getCurrentBranchInfo = () => {
+    if (currentBranchIndex === 0) {
+      return { label: 'Original', model: undefined };
+    }
+    const branch = message.branches?.[currentBranchIndex - 1];
+    if (branch?.source === 'mr6' && branch.model) {
+      return { label: `MR6: ${branch.model}`, model: branch.model };
+    }
+    return { label: `Branch ${currentBranchIndex}`, model: undefined };
+  };
+
+  const currentContent = getCurrentContent();
+  const branchInfo = getCurrentBranchInfo();
   return (
     <div className={`${styles.messageContainer} ${styles[message.role]}`}>
       <div
@@ -98,7 +126,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
           </div>
         ) : (
           <div className={styles.messageContent}>
-            <MarkdownText content={message.content} />
+            <MarkdownText content={currentContent} />
           </div>
         )}
 
@@ -113,26 +141,54 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </div>
 
-            {/* MR6 Replacement Badge */}
-            {message.replacedByMR6 && message.replacedByModel && (
+            {/* Branch Navigation */}
+            {hasBranches && (
               <div
-                className={styles.replacementBadge}
-                title={`This answer was replaced using MR6 Cross-Model Comparison with ${message.replacedByModel}`}
-              >
-                <span style={{
-                  backgroundColor: '#fce7f3',
-                  color: '#be185d',
-                  padding: '0.25rem 0.5rem',
-                  borderRadius: '0.375rem',
-                  fontSize: '0.75rem',
-                  fontWeight: '500',
-                  border: '1px solid #fbcfe8',
+                className={styles.branchNavigation}
+                style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.25rem',
-                }}>
-                  🔄 Replaced by {message.replacedByModel}
+                  gap: '0.5rem',
+                  padding: '0.25rem 0.625rem',
+                  backgroundColor: currentBranchIndex === 0 ? '#e0f2fe' : '#fce7f3',
+                  border: `1px solid ${currentBranchIndex === 0 ? '#bae6fd' : '#fbcfe8'}`,
+                  borderRadius: '0.375rem',
+                  fontSize: '0.75rem',
+                }}
+              >
+                <button
+                  onClick={onBranchPrev}
+                  disabled={!canGoPrev}
+                  title="Previous branch"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: canGoPrev ? 'pointer' : 'not-allowed',
+                    padding: '0.125rem 0.25rem',
+                    opacity: canGoPrev ? 1 : 0.3,
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  ◀
+                </button>
+                <span style={{ fontWeight: '500', color: '#374151', whiteSpace: 'nowrap' }}>
+                  {branchInfo.label} ({currentBranchIndex + 1}/{totalBranches})
                 </span>
+                <button
+                  onClick={onBranchNext}
+                  disabled={!canGoNext}
+                  title="Next branch"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: canGoNext ? 'pointer' : 'not-allowed',
+                    padding: '0.125rem 0.25rem',
+                    opacity: canGoNext ? 1 : 0.3,
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  ▶
+                </button>
               </div>
             )}
 

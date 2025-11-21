@@ -18,6 +18,20 @@ import { useSessionStore } from '../stores/sessionStore';
 // TYPES
 // ============================================================
 
+/**
+ * Message Branch - Alternative AI response at a specific message point
+ * Enables conversation branching for exploring different AI model outputs
+ */
+export interface MessageBranch {
+  id: string; // Unique branch ID
+  content: string; // Branch AI response content
+  source: 'mr6' | 'mr5' | 'manual'; // Where the branch came from
+  model?: string; // Model used (for MR6 branches: 'gpt-4o', 'gpt-4o-mini', etc.)
+  createdAt: string;
+  wasVerified?: boolean;
+  wasModified?: boolean;
+}
+
 export interface Message {
   id: string;
   role: 'user' | 'ai';
@@ -26,6 +40,10 @@ export interface Message {
   wasVerified?: boolean;
   wasModified?: boolean;
   wasRejected?: boolean;
+
+  // Conversation branching support
+  branches?: MessageBranch[]; // Alternative responses for this message
+  currentBranchIndex?: number; // Which branch is currently displayed (0 = original, 1+ = branches)
 }
 
 export interface UseMessagesOptions {

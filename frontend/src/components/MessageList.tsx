@@ -32,6 +32,9 @@ export interface MessageListProps {
   onVerify: (messageId: string) => void;
   onModify: (messageId: string) => void;
 
+  // Branch navigation
+  onBranchSwitch?: (messageId: string, direction: 'prev' | 'next') => void;
+
   // Trust Indicator (MR9)
   showTrustIndicator: boolean;
   messageTrustScores: Map<string, number>;
@@ -71,6 +74,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   onCancelEdit,
   onVerify,
   onModify,
+  onBranchSwitch,
   showTrustIndicator,
   messageTrustScores,
   getTrustBadge,
@@ -159,6 +163,8 @@ export const MessageList: React.FC<MessageListProps> = ({
             onCancelEdit={onCancelEdit}
             onVerify={() => onVerify(message.id)}
             onModify={() => onModify(message.id)}
+            onBranchPrev={onBranchSwitch ? () => onBranchSwitch(message.id, 'prev') : undefined}
+            onBranchNext={onBranchSwitch ? () => onBranchSwitch(message.id, 'next') : undefined}
             trustIndicator={renderTrustIndicator(message, index)}
             quickReflection={renderQuickReflection(message)}
             mr6Suggestion={renderMR6Suggestion(message, index)}

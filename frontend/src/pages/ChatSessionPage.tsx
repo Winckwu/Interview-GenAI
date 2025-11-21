@@ -963,29 +963,39 @@ const ChatSessionPage: React.FC = () => {
   }, [messages, openMR6CrossModel]);
 
   /**
-   * Handle MR6 model selection - Replace current AI answer with selected model output
+   * Handle MR6 model selection - Create a new branch with selected model output
+   * Preserves original conversation while allowing exploration of alternatives
    */
   const handleMR6ModelSelected = useCallback(async (model: string, output: string) => {
     if (!mr6Context) {
-      console.error('[MR6] No context available for replacement');
+      console.error('[MR6] No context available for branch creation');
       return;
     }
 
     try {
-      // Find the message to replace
-      const messageToReplace = messages[mr6Context.messageIndex];
-      if (!messageToReplace || messageToReplace.role !== 'ai') {
-        console.error('[MR6] Invalid message to replace');
+      // Find the message to branch from
+      const targetMessage = messages[mr6Context.messageIndex];
+      if (!targetMessage || targetMessage.role !== 'ai') {
+        console.error('[MR6] Invalid message to branch from');
         return;
       }
 
-      // Update the message content and mark as replaced
-      const updatedMessage = {
-        ...messageToReplace,
+      // Create new branch
+      const newBranch: import('../hooks/useMessages').MessageBranch = {
+        id: `branch-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         content: output,
-        wasModified: true, // Mark as modified
-        replacedByMR6: true, // Special flag for MR6 replacement
-        replacedByModel: model, // Track which model was used
+        source: 'mr6',
+        model: model,
+        createdAt: new Date().toISOString(),
+        wasVerified: false,
+        wasModified: false,
+      };
+
+      // Update message with new branch and switch to it
+      const updatedMessage = {
+        ...targetMessage,
+        branches: [...(targetMessage.branches || []), newBranch],
+        currentBranchIndex: (targetMessage.branches?.length || 0) + 1, // Switch to new branch
       };
 
       // Update messages array
@@ -993,25 +1003,52 @@ const ChatSessionPage: React.FC = () => {
       updatedMessages[mr6Context.messageIndex] = updatedMessage;
       setMessages(updatedMessages);
 
-      // Update backend
-      if (sessionId && messageToReplace.id) {
-        await updateInteraction(messageToReplace.id, {
-          aiResponse: output,
-          wasModified: true,
-        });
-      }
+      // TODO: Save branches to backend (need to implement backend support)
+      // For now, branches are only stored in frontend state
 
       // Close MR6 tool and show success message
       setActiveMRTool('none');
       setMr6Context(null);
-      setSuccessMessage(`✓ Replaced answer with ${model} output`);
+      setSuccessMessage(`✓ Created new branch with ${model} output`);
       setTimeout(() => setSuccessMessage(null), 3000);
     } catch (error) {
-      console.error('[MR6] Failed to replace message:', error);
-      setErrorMessage('Failed to replace answer. Please try again.');
+      console.error('[MR6] Failed to create branch:', error);
+      setErrorMessage('Failed to create branch. Please try again.');
       setTimeout(() => setErrorMessage(null), 3000);
     }
   }, [mr6Context, messages, sessionId, setMessages, setActiveMRTool]);
+
+  /**
+   * Handle branch switching - Navigate between original message and alternative branches
+   */
+  const handleBranchSwitch = useCallback((messageId: string, direction: 'prev' | 'next') => {
+    const messageIndex = messages.findIndex(m => m.id === messageId);
+    if (messageIndex === -1) return;
+
+    const message = messages[messageIndex];
+    if (!message.branches || message.branches.length === 0) return;
+
+    const currentIndex = message.currentBranchIndex ?? 0;
+    const totalBranches = message.branches.length + 1; // +1 for original
+
+    let newIndex = currentIndex;
+    if (direction === 'prev' && currentIndex > 0) {
+      newIndex = currentIndex - 1;
+    } else if (direction === 'next' && currentIndex < totalBranches - 1) {
+      newIndex = currentIndex + 1;
+    }
+
+    if (newIndex !== currentIndex) {
+      const updatedMessage = {
+        ...message,
+        currentBranchIndex: newIndex,
+      };
+
+      const updatedMessages = [...messages];
+      updatedMessages[messageIndex] = updatedMessage;
+      setMessages(updatedMessages);
+    }
+  }, [messages, setMessages]);
 
   /**
    * Handle trust indicator recommendation click (MR9)
@@ -2694,6 +2731,7 @@ const ChatSessionPage: React.FC = () => {
                 onCancelEdit={cancelEditingMessage}
                 onVerify={markAsVerified}
                 onModify={markAsModified}
+                onBranchSwitch={handleBranchSwitch}
                 showTrustIndicator={showTrustIndicator}
                 messageTrustScores={messageTrustScores}
                 getTrustBadge={getTrustBadge}
