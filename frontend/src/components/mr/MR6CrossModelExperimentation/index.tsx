@@ -31,7 +31,7 @@ interface MR6Props {
   prompt?: string;
   taskType?: string;
   conversationHistory?: Array<{ role: 'user' | 'ai'; content: string }>;
-  onModelSelected?: (model: ModelType) => void;
+  onModelSelected?: (model: ModelType, output: string) => void;
   onComparisonComplete?: (comparison: ModelComparison) => void;
   availableModels?: ModelType[];
 }
@@ -229,9 +229,9 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
 
                     <button
                       className="mr6-select-btn"
-                      onClick={() => onModelSelected?.(model)}
+                      onClick={() => onModelSelected?.(model, modelOutput || '')}
                     >
-                      Select This Output
+                      ✓ Replace with This Answer
                     </button>
                   </div>
                 );

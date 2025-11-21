@@ -24,6 +24,8 @@ export interface Message {
   wasVerified?: boolean;
   wasModified?: boolean;
   wasRejected?: boolean;
+  replacedByMR6?: boolean;
+  replacedByModel?: string;
 }
 
 export interface MessageItemProps {
@@ -110,6 +112,29 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                 minute: '2-digit',
               })}
             </div>
+
+            {/* MR6 Replacement Badge */}
+            {message.replacedByMR6 && message.replacedByModel && (
+              <div
+                className={styles.replacementBadge}
+                title={`This answer was replaced using MR6 Cross-Model Comparison with ${message.replacedByModel}`}
+              >
+                <span style={{
+                  backgroundColor: '#fce7f3',
+                  color: '#be185d',
+                  padding: '0.25rem 0.5rem',
+                  borderRadius: '0.375rem',
+                  fontSize: '0.75rem',
+                  fontWeight: '500',
+                  border: '1px solid #fbcfe8',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                }}>
+                  🔄 Replaced by {message.replacedByModel}
+                </span>
+              </div>
+            )}
 
             {/* Trust Indicator (MR9) - Rendered from parent */}
             {trustIndicator}

@@ -963,6 +963,57 @@ const ChatSessionPage: React.FC = () => {
   }, [messages, openMR6CrossModel]);
 
   /**
+   * Handle MR6 model selection - Replace current AI answer with selected model output
+   */
+  const handleMR6ModelSelected = useCallback(async (model: string, output: string) => {
+    if (!mr6Context) {
+      console.error('[MR6] No context available for replacement');
+      return;
+    }
+
+    try {
+      // Find the message to replace
+      const messageToReplace = messages[mr6Context.messageIndex];
+      if (!messageToReplace || messageToReplace.role !== 'ai') {
+        console.error('[MR6] Invalid message to replace');
+        return;
+      }
+
+      // Update the message content and mark as replaced
+      const updatedMessage = {
+        ...messageToReplace,
+        content: output,
+        wasModified: true, // Mark as modified
+        replacedByMR6: true, // Special flag for MR6 replacement
+        replacedByModel: model, // Track which model was used
+      };
+
+      // Update messages array
+      const updatedMessages = [...messages];
+      updatedMessages[mr6Context.messageIndex] = updatedMessage;
+      setMessages(updatedMessages);
+
+      // Update backend
+      if (sessionId && messageToReplace.id) {
+        await updateInteraction(messageToReplace.id, {
+          aiResponse: output,
+          wasModified: true,
+        });
+      }
+
+      // Close MR6 tool and show success message
+      setActiveMRTool('none');
+      setMr6Context(null);
+      setSuccessMessage(`✓ Replaced answer with ${model} output`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (error) {
+      console.error('[MR6] Failed to replace message:', error);
+      setErrorMessage('Failed to replace answer. Please try again.');
+      setTimeout(() => setErrorMessage(null), 3000);
+    }
+  }, [mr6Context, messages, sessionId, setMessages, setActiveMRTool]);
+
+  /**
    * Handle trust indicator recommendation click (MR9)
    */
   const handleTrustRecommendationClick = useCallback((recommendation: MRRecommendation) => {
@@ -1030,6 +1081,7 @@ const ChatSessionPage: React.FC = () => {
           prompt={promptForMR6}
           conversationHistory={conversationHistory}
           taskType={sessionData?.taskType}
+          onModelSelected={handleMR6ModelSelected}
           onComparisonComplete={(r) => console.log('Comparison:', r)}
         />;
       }
@@ -1058,7 +1110,7 @@ const ChatSessionPage: React.FC = () => {
       default:
         return null;
     }
-  }, [activeMRTool, sessionId, messages, interventionLevel, sessionData, conversationBranches, verificationLogs, userInput, user, mr6Context, openMR4RoleDefinition, openMR8TaskRecognition, openMR6CrossModel, openMR3AgencyControl, openMR5Iteration, openMR9TrustCalibration, openMR11Verification, openMR14Reflection, openMR15StrategyGuide, openMR19CapabilityAssessment, openMR17LearningVisualization, openMR16SkillAtrophy, setInterventionLevel, setConversationBranches, setVerificationLogs]);
+  }, [activeMRTool, sessionId, messages, interventionLevel, sessionData, conversationBranches, verificationLogs, userInput, user, mr6Context, handleMR6ModelSelected, openMR4RoleDefinition, openMR8TaskRecognition, openMR6CrossModel, openMR3AgencyControl, openMR5Iteration, openMR9TrustCalibration, openMR11Verification, openMR14Reflection, openMR15StrategyGuide, openMR19CapabilityAssessment, openMR17LearningVisualization, openMR16SkillAtrophy, setInterventionLevel, setConversationBranches, setVerificationLogs]);
 
 
   /**
