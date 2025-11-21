@@ -162,10 +162,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       {isOpen && (
         <div className="sidebar-footer">
           <div className="sidebar-section">
-            <h3>User Type</h3>
-            <p>{user?.userType || 'Unknown'}</p>
-          </div>
-          <div className="sidebar-section">
             <h3>Joined</h3>
             <p>{user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</p>
           </div>

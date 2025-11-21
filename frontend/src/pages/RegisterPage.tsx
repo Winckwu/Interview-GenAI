@@ -19,7 +19,7 @@ const RegisterPage: React.FC = () => {
     username: '',
     password: '',
     confirmPassword: '',
-    userType: 'efficient',
+    userType: 'hybrid', // Default value, will be updated after MR19 assessment
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -123,22 +123,6 @@ const RegisterPage: React.FC = () => {
               disabled={loading}
             />
             {formErrors.username && <span className="error-message">{formErrors.username}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="userType">User Type</label>
-            <select
-              id="userType"
-              name="userType"
-              value={formData.userType}
-              onChange={handleChange}
-              disabled={loading}
-              className="form-input"
-            >
-              <option value="efficient">Efficient User (High verification, low AI reliance)</option>
-              <option value="struggling">Struggling User (Variable behavior, higher risk)</option>
-              <option value="hybrid">Hybrid User (Context-dependent patterns)</option>
-            </select>
           </div>
 
           <div className="form-group">
