@@ -181,11 +181,11 @@ const MetacognitiveAssessmentPage: React.FC = () => {
       </div>
 
       {/* Information Section */}
-      <div style={{ marginTop: '3rem' }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '1.5rem', color: '#1f2937' }}>
+      <div className="dimensions-section">
+        <h2 className="dimensions-title">
           📚 The 4 Metacognitive Dimensions
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+        <div className="dimensions-grid">
           {[
             {
               title: '1. Planning',
@@ -218,18 +218,17 @@ const MetacognitiveAssessmentPage: React.FC = () => {
           ].map((dimension, idx) => (
             <div
               key={idx}
+              className="dimension-card"
               style={{
-                padding: '1.5rem',
                 backgroundColor: dimension.color,
-                borderLeft: `4px solid ${dimension.borderColor}`,
-                borderRadius: '8px',
+                borderLeftColor: dimension.borderColor,
               }}
             >
-              <div style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>{dimension.icon}</div>
-              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '600', color: '#1f2937' }}>
+              <div className="dimension-icon">{dimension.icon}</div>
+              <h3 className="dimension-title">
                 {dimension.title}
               </h3>
-              <p style={{ margin: '0', fontSize: '0.875rem', color: '#666', lineHeight: '1.5' }}>
+              <p className="dimension-description">
                 {dimension.description}
               </p>
             </div>
@@ -238,24 +237,11 @@ const MetacognitiveAssessmentPage: React.FC = () => {
       </div>
 
       {/* How Results Are Used */}
-      <div style={{
-        marginTop: '3rem',
-        padding: '1.5rem',
-        backgroundColor: '#f8fafc',
-        borderRadius: '8px',
-        borderLeft: '4px solid #64748b',
-      }}>
-        <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem', fontWeight: '600', color: '#1f2937' }}>
+      <div className="results-usage-section">
+        <h3 className="results-usage-title">
           🎯 How Your Results Are Used
         </h3>
-        <ul style={{
-          margin: '0',
-          paddingLeft: '1.25rem',
-          color: '#1f2937',
-          fontSize: '0.875rem',
-          lineHeight: '1.8',
-          listStylePosition: 'outside',
-        }}>
+        <ul className="results-usage-list">
           <li>Your profile helps us understand your strengths and areas for improvement</li>
           <li>We recommend specific interventions (MRs) tailored to your metacognitive profile</li>
           <li>Your assessment adapts based on your interaction patterns and progress</li>
