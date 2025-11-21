@@ -40,6 +40,7 @@ import { type ReflectionResponse } from '../components/QuickReflection';
 import SessionSidebar, { type SessionItem } from '../components/SessionSidebar';
 import MRToolsPanel from '../components/MRToolsPanel';
 import GlobalRecommendationPanel from '../components/GlobalRecommendationPanel';
+import OnboardingTour from '../components/OnboardingTour';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -1571,6 +1572,9 @@ const ChatSessionPage: React.FC = () => {
 
   return (
     <>
+      {/* Onboarding Tour for Chat Page */}
+      <OnboardingTour context="chat" />
+
       {/* CSS overrides for MR components in sidebar - readable but compact */}
       <style>{`
         /* Global sidebar MR component styles */
@@ -2671,6 +2675,7 @@ const ChatSessionPage: React.FC = () => {
             {/* Quick Actions */}
             <div style={{ display: 'flex', gap: '0.5rem', paddingRight: '0.5rem', borderRight: '1px solid #e5e7eb' }}>
               <button
+                data-tour="mr-tools-btn"
                 onClick={() => {
                   setShowPatternPanel(!showPatternPanel);
                   if (!showPatternPanel) setShowMRToolsSection(true);
@@ -2701,6 +2706,7 @@ const ChatSessionPage: React.FC = () => {
 
             {/* Main Actions */}
             <button
+              data-tour="end-reflect-btn"
               onClick={handleEndAndReflect}
               disabled={messages.length === 0}
               style={{
@@ -3295,6 +3301,7 @@ const ChatSessionPage: React.FC = () => {
             }}
           >
             <input
+              data-tour="chat-input"
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
