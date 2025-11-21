@@ -11,6 +11,9 @@ import { v4 as uuidv4 } from 'uuid';
 export interface PatternDetectionResult {
   detectedPattern: string;
   confidence: number;
+  stability?: number;            // 0-1: Pattern stability over time
+  streakLength?: number;         // Consecutive turns with same pattern
+  trendDirection?: 'converging' | 'diverging' | 'oscillating' | 'stable';
   features: Record<string, number>;
   allProbabilities: Record<string, number>;
   method: 'rule_based' | 'ml_ensemble';
@@ -41,14 +44,49 @@ export class PatternDetectionService {
     const interactions = await SessionService.getSessionInteractions(sessionId, 1000);
 
     if (interactions.length === 0) {
+      // Try to get user's historical pattern for better initial estimate
+      const session = await SessionService.getSession(sessionId);
+      let defaultPattern = 'B'; // Most common pattern
+      let defaultConfidence = 0.4; // Low but not zero - indicates "early estimation"
+
+      if (session?.userId) {
+        try {
+          // Check user's historical dominant pattern
+          const { PatternHistoryService } = await import('./PatternHistoryService');
+          const historyService = new PatternHistoryService();
+          const dominant = await historyService.getDominantPattern(session.userId);
+
+          if (dominant && dominant.totalDetections >= 3) {
+            // Use historical pattern with adjusted confidence
+            defaultPattern = dominant.pattern;
+            // Scale historical confidence: 0.3-0.5 range for initial estimate
+            defaultConfidence = Math.max(0.3, Math.min(0.5, dominant.confidence * 0.6));
+          }
+        } catch (error) {
+          console.log('[PatternDetection] No historical data available, using defaults');
+        }
+      }
+
       return {
-        detectedPattern: 'A',
-        confidence: 0,
+        detectedPattern: defaultPattern,
+        confidence: defaultConfidence,
         features: {},
-        allProbabilities: {},
+        allProbabilities: {
+          A: defaultPattern === 'A' ? defaultConfidence : 0.25,
+          B: defaultPattern === 'B' ? defaultConfidence : 0.25,
+          C: defaultPattern === 'C' ? defaultConfidence : 0.25,
+          D: defaultPattern === 'D' ? defaultConfidence : 0.25,
+        },
         method: 'rule_based',
-        evidence: ['No interactions recorded'],
-        recommendations: [],
+        evidence: [
+          'Session just started - using historical pattern estimate',
+          `Initial pattern: ${defaultPattern}`,
+          'Confidence will improve as you interact'
+        ],
+        recommendations: [
+          'Continue the conversation to refine pattern detection',
+          'Your pattern will be more accurately detected after 3-5 interactions'
+        ],
       };
     }
 
@@ -71,15 +109,70 @@ export class PatternDetectionService {
       trustCalibrationAccuracy: features.trust_calibration_accuracy,
     });
 
+    // Calculate pattern stability from session history
+    let stabilityMetrics = null;
+    try {
+      const sessionPatternHistory = await this.getSessionPatternHistory(sessionId);
+      if (sessionPatternHistory.length >= 2) {
+        const { PatternStabilityCalculator } = await import('./PatternStabilityCalculator');
+        const stabilityCalc = new PatternStabilityCalculator();
+
+        // Add current detection to history
+        const historyWithCurrent = [
+          ...sessionPatternHistory,
+          {
+            pattern: analysis.primaryPattern as any,
+            confidence: analysis.confidence,
+            timestamp: new Date()
+          }
+        ];
+
+        stabilityMetrics = stabilityCalc.calculateStability(historyWithCurrent);
+      }
+    } catch (error) {
+      console.log('[PatternDetection] Could not calculate stability:', error);
+    }
+
     return {
       detectedPattern: analysis.primaryPattern,
       confidence: analysis.confidence,
+      stability: stabilityMetrics?.stability,
+      streakLength: stabilityMetrics?.streakLength,
+      trendDirection: stabilityMetrics?.trendDirection,
       features,
       allProbabilities: analysis.patternScores,
       method: 'rule_based',
       evidence: analysis.evidence,
       recommendations: analysis.recommendations,
     };
+  }
+
+  /**
+   * Get pattern detection history for a session
+   */
+  private async getSessionPatternHistory(sessionId: string): Promise<Array<{
+    pattern: string;
+    confidence: number;
+    timestamp: Date;
+  }>> {
+    try {
+      const result = await pool.query(
+        `SELECT detected_pattern, confidence, created_at
+         FROM pattern_logs
+         WHERE session_id = $1
+         ORDER BY created_at ASC`,
+        [sessionId]
+      );
+
+      return result.rows.map(row => ({
+        pattern: row.detected_pattern,
+        confidence: parseFloat(row.confidence),
+        timestamp: new Date(row.created_at)
+      }));
+    } catch (error) {
+      console.error('[PatternDetection] Error fetching session history:', error);
+      return [];
+    }
   }
 
   /**

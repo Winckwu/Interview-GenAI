@@ -87,6 +87,9 @@ const ComponentLoader: React.FC = () => (
 interface PatternResult {
   pattern: string;
   confidence: number;
+  stability?: number;            // 0-1: Pattern stability over time
+  streakLength?: number;         // Consecutive turns with same pattern
+  trendDirection?: 'converging' | 'diverging' | 'oscillating' | 'stable';
   reasoning: string[];
 }
 
@@ -649,6 +652,9 @@ const ChatSessionPage: React.FC = () => {
               const patternData = {
                 pattern: savedPattern.detectedPattern,
                 confidence: savedPattern.confidence,
+                stability: savedPattern.stability,
+                streakLength: savedPattern.streakLength,
+                trendDirection: savedPattern.trendDirection,
                 reasoning: savedPattern.features?.recommendations || [],
                 metrics: {
                   aiReliance: Math.floor(Math.random() * 100),
@@ -741,6 +747,12 @@ const ChatSessionPage: React.FC = () => {
 
       // Prepare pattern with metrics for the analysis window
       const enrichedPattern = {
+        pattern: patternData.detectedPattern,
+        confidence: patternData.confidence,
+        stability: patternData.stability,
+        streakLength: patternData.streakLength,
+        trendDirection: patternData.trendDirection,
+        reasoning: patternData.evidence || [],
         ...patternData,
         metrics: {
           aiReliance: Math.floor(Math.random() * 100), // TODO: Replace with actual metrics from API
@@ -2892,9 +2904,58 @@ const ChatSessionPage: React.FC = () => {
                   <p style={{ margin: '0', fontWeight: '600', color: '#1f2937' }}>
                     {getPatternLabel(pattern.pattern || pattern.detectedPattern)}
                   </p>
-                  <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
-                    Confidence: {(pattern.confidence * 100).toFixed(1)}%
-                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.25rem' }}>
+                    {/* Confidence Display */}
+                    <span style={{
+                      fontSize: '0.875rem',
+                      color: pattern.confidence === 0 ? '#f59e0b' : '#6b7280',
+                      fontWeight: pattern.confidence === 0 ? '600' : '500'
+                    }}>
+                      {pattern.confidence === 0 ? (
+                        <>🔍 Detecting...</>
+                      ) : pattern.confidence < 0.5 ? (
+                        <>📊 Confidence: {(pattern.confidence * 100).toFixed(1)}% (Early estimate)</>
+                      ) : (
+                        <>📊 Confidence: {(pattern.confidence * 100).toFixed(1)}%</>
+                      )}
+                    </span>
+
+                    {/* Stability Display - only show if available */}
+                    {pattern.stability !== undefined && pattern.stability > 0 && (
+                      <span style={{
+                        fontSize: '0.875rem',
+                        color: pattern.stability >= 0.7 ? '#10b981' : pattern.stability >= 0.5 ? '#f59e0b' : '#ef4444',
+                        fontWeight: '500'
+                      }}>
+                        {pattern.stability >= 0.7 ? '✓' : '⚠'} Stability: {(pattern.stability * 100).toFixed(1)}%
+                      </span>
+                    )}
+
+                    {/* Streak Length - only show if available */}
+                    {pattern.streakLength !== undefined && pattern.streakLength > 1 && (
+                      <span style={{
+                        fontSize: '0.875rem',
+                        color: '#8b5cf6',
+                        fontWeight: '500'
+                      }}>
+                        🔥 Streak: {pattern.streakLength} turns
+                      </span>
+                    )}
+
+                    {/* Trend Direction - only show if available */}
+                    {pattern.trendDirection && (
+                      <span style={{
+                        fontSize: '0.875rem',
+                        color: '#6b7280',
+                        fontWeight: '500'
+                      }}>
+                        {pattern.trendDirection === 'converging' && '📈 Converging'}
+                        {pattern.trendDirection === 'diverging' && '📉 Diverging'}
+                        {pattern.trendDirection === 'oscillating' && '〰️ Oscillating'}
+                        {pattern.trendDirection === 'stable' && '━ Stable'}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
