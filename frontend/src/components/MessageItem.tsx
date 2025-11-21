@@ -40,6 +40,7 @@ export interface MessageItemProps {
   onBranchPrev?: () => void;
   onBranchNext?: () => void;
   onBranchDelete?: () => void;
+  onBranchSetAsMain?: () => void;
 
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
@@ -60,6 +61,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onBranchPrev,
   onBranchNext,
   onBranchDelete,
+  onBranchSetAsMain,
   trustIndicator,
   quickReflection,
   mr6Suggestion,
@@ -191,6 +193,27 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                 >
                   ▶
                 </button>
+
+                {/* Set as Main button - only show for branches (not original) */}
+                {currentBranchIndex > 0 && onBranchSetAsMain && (
+                  <button
+                    onClick={onBranchSetAsMain}
+                    title="Set this branch as the main answer"
+                    style={{
+                      background: 'none',
+                      border: '1px solid #10b981',
+                      cursor: 'pointer',
+                      padding: '0.125rem 0.375rem',
+                      fontSize: '0.7rem',
+                      color: '#10b981',
+                      marginLeft: '0.5rem',
+                      borderRadius: '0.25rem',
+                      fontWeight: '500',
+                    }}
+                  >
+                    ⭐ Set as Main
+                  </button>
+                )}
 
                 {/* Delete button - only show for branches (not original) */}
                 {currentBranchIndex > 0 && onBranchDelete && (

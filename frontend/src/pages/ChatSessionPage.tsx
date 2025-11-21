@@ -1118,6 +1118,85 @@ const ChatSessionPage: React.FC = () => {
   }, [messages, setMessages]);
 
   /**
+   * Handle setting a branch as the main answer
+   * This replaces the original AI response with the selected branch
+   */
+  const handleSetBranchAsMain = useCallback(async (messageId: string) => {
+    const messageIndex = messages.findIndex(m => m.id === messageId);
+    if (messageIndex === -1) return;
+
+    const message = messages[messageIndex];
+    if (!message.branches || message.branches.length === 0) return;
+
+    const currentIndex = message.currentBranchIndex ?? 0;
+    if (currentIndex === 0) {
+      // Already on original
+      setErrorMessage('This is already the main answer');
+      setTimeout(() => setErrorMessage(null), 3000);
+      return;
+    }
+
+    const branchToPromote = message.branches[currentIndex - 1];
+    if (!branchToPromote) return;
+
+    // Confirm promotion
+    if (!window.confirm(`Set this ${branchToPromote.source.toUpperCase()} branch (${branchToPromote.model || 'manual'}) as the main answer? The original will be preserved as a branch.`)) {
+      return;
+    }
+
+    try {
+      // Mark this branch as main in backend
+      await api.patch(`/branches/${branchToPromote.id}`, { isMain: true });
+
+      // Update the interaction with the branch content
+      const interactionId = messageId.startsWith('user-')
+        ? messageId.replace('user-', '')
+        : messageId;
+
+      await api.patch(`/interactions/${interactionId}`, {
+        aiResponse: branchToPromote.content,
+        wasModified: true,
+      });
+
+      // Swap: original becomes a branch, branch becomes main
+      const originalContent = message.content;
+      const originalBranch: import('../hooks/useMessages').MessageBranch = {
+        id: `original-${Date.now()}`,
+        content: originalContent,
+        source: 'manual',
+        createdAt: message.timestamp,
+        wasVerified: message.wasVerified,
+        wasModified: message.wasModified,
+      };
+
+      // Remove the promoted branch from branches array
+      const updatedBranches = message.branches.filter((_, index) => index !== currentIndex - 1);
+
+      // Add original as a branch at the beginning
+      updatedBranches.unshift(originalBranch);
+
+      const updatedMessage = {
+        ...message,
+        content: branchToPromote.content, // New main content
+        branches: updatedBranches,
+        currentBranchIndex: 0, // Reset to original (which is now the promoted branch)
+        wasModified: true,
+      };
+
+      const updatedMessages = [...messages];
+      updatedMessages[messageIndex] = updatedMessage;
+      setMessages(updatedMessages);
+
+      setSuccessMessage(`⭐ Branch promoted to main answer successfully`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (error) {
+      console.error('[Branch] Failed to set as main:', error);
+      setErrorMessage('Failed to set branch as main. Please try again.');
+      setTimeout(() => setErrorMessage(null), 3000);
+    }
+  }, [messages, setMessages]);
+
+  /**
    * Handle trust indicator recommendation click (MR9)
    */
   const handleTrustRecommendationClick = useCallback((recommendation: MRRecommendation) => {
@@ -2800,6 +2879,7 @@ const ChatSessionPage: React.FC = () => {
                 onModify={markAsModified}
                 onBranchSwitch={handleBranchSwitch}
                 onBranchDelete={handleDeleteBranch}
+                onBranchSetAsMain={handleSetBranchAsMain}
                 showTrustIndicator={showTrustIndicator}
                 messageTrustScores={messageTrustScores}
                 getTrustBadge={getTrustBadge}
