@@ -69,10 +69,31 @@ export const MR19SelfReportQuestionnaire: React.FC<Props> = ({
   const isQuestionnaireComplete = answeredQuestions === totalQuestions;
 
   const handleRating = (questionId: QuestionID, rating: number) => {
-    setResponses({
+    const updatedResponses = {
       ...responses,
       [questionId]: rating,
-    });
+    };
+    setResponses(updatedResponses);
+
+    // Auto-scroll to next unanswered question after a short delay
+    setTimeout(() => {
+      const currentQuestionIndex = currentQuestions.findIndex((q) => q.id === questionId);
+      const nextUnansweredIndex = currentQuestions.findIndex(
+        (q, idx) => idx > currentQuestionIndex && updatedResponses[q.id] === undefined
+      );
+
+      if (nextUnansweredIndex !== -1) {
+        // Find the next unanswered question card and scroll to it
+        const questionCards = document.querySelectorAll('.question-card');
+        const nextCard = questionCards[nextUnansweredIndex];
+        if (nextCard) {
+          nextCard.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }
+    }, 300); // Small delay to ensure DOM update
   };
 
   const handleNext = () => {
