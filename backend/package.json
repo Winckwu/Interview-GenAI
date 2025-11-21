@@ -10,7 +10,9 @@
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "lint": "eslint src --ext .ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "bash scripts/run-branch-migration.sh",
+    "db:fix-permissions": "psql -U postgres -d interview_genai -f scripts/fix-permissions.sql"
   },
   "keywords": [
     "ai",
