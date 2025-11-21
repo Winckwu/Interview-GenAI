@@ -38,10 +38,13 @@ router.get(
       `SELECT
         id,
         user_id,
-        responses,
-        score,
-        feedback,
-        pattern_identified,
+        planning_score,
+        monitoring_score,
+        evaluation_score,
+        regulation_score,
+        overall_score,
+        strengths,
+        areas_for_growth,
         recommendations,
         created_at,
         updated_at
@@ -56,10 +59,13 @@ router.get(
       id: row.id,
       userId: row.user_id,
       timestamp: row.created_at,
-      responses: row.responses ? JSON.parse(row.responses) : {},
-      score: row.score,
-      feedback: row.feedback,
-      patternIdentified: row.pattern_identified,
+      planningScore: row.planning_score,
+      monitoringScore: row.monitoring_score,
+      evaluationScore: row.evaluation_score,
+      regulationScore: row.regulation_score,
+      overallScore: row.overall_score,
+      strengths: row.strengths ? JSON.parse(row.strengths) : [],
+      areasForGrowth: row.areas_for_growth ? JSON.parse(row.areas_for_growth) : [],
       recommendations: row.recommendations ? JSON.parse(row.recommendations) : [],
     }));
 
@@ -95,10 +101,13 @@ router.get(
       `SELECT
         id,
         user_id,
-        responses,
-        score,
-        feedback,
-        pattern_identified,
+        planning_score,
+        monitoring_score,
+        evaluation_score,
+        regulation_score,
+        overall_score,
+        strengths,
+        areas_for_growth,
         recommendations,
         created_at,
         updated_at
@@ -122,10 +131,13 @@ router.get(
       id: row.id,
       userId: row.user_id,
       timestamp: row.created_at,
-      responses: row.responses ? JSON.parse(row.responses) : {},
-      score: row.score,
-      feedback: row.feedback,
-      patternIdentified: row.pattern_identified,
+      planningScore: row.planning_score,
+      monitoringScore: row.monitoring_score,
+      evaluationScore: row.evaluation_score,
+      regulationScore: row.regulation_score,
+      overallScore: row.overall_score,
+      strengths: row.strengths ? JSON.parse(row.strengths) : [],
+      areasForGrowth: row.areas_for_growth ? JSON.parse(row.areas_for_growth) : [],
       recommendations: row.recommendations ? JSON.parse(row.recommendations) : [],
     };
 
@@ -228,28 +240,51 @@ router.post(
       }
     }
 
+    // Extract dimension scores for database columns
+    const planningScore = responses?.dimensions?.planning?.score || 0;
+    const monitoringScore = responses?.dimensions?.monitoring?.score || 0;
+    const evaluationScore = responses?.dimensions?.evaluation?.score || 0;
+    const regulationScore = responses?.dimensions?.regulation?.score || 0;
+    const overallScore = score / 100; // Convert from 0-100 to 0-1 for double precision
+
+    const strengths = responses?.topStrengths || [];
+    const areasForGrowth = responses?.areasForGrowth || [];
+    const recommendations = [
+      'Continue practicing critical thinking',
+      'Regular engagement with AI tools',
+      'Document learning progress',
+    ];
+
     // Debug logging before insert
     console.log('[POST /assessments] About to insert:');
     console.log('  id:', id);
     console.log('  userId:', userId);
-    console.log('  score:', score);
-    console.log('  pattern:', pattern);
-    console.log('  responses length:', JSON.stringify(responses).length);
+    console.log('  planning_score:', planningScore);
+    console.log('  monitoring_score:', monitoringScore);
+    console.log('  evaluation_score:', evaluationScore);
+    console.log('  regulation_score:', regulationScore);
+    console.log('  overall_score:', overallScore);
 
     let result;
     try {
       result = await pool.query(
         `INSERT INTO assessments
-          (id, user_id, responses, score, pattern_identified, created_at, updated_at)
+          (id, user_id, planning_score, monitoring_score, evaluation_score, regulation_score,
+           overall_score, strengths, areas_for_growth, recommendations, created_at, updated_at)
         VALUES
-          ($1, $2, $3, $4, $5, $6, $7)
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         RETURNING *`,
         [
           id,
           userId,
-          JSON.stringify(responses),
-          score,
-          pattern,
+          planningScore,
+          monitoringScore,
+          evaluationScore,
+          regulationScore,
+          overallScore,
+          JSON.stringify(strengths),
+          JSON.stringify(areasForGrowth),
+          JSON.stringify(recommendations),
           now,
           now,
         ]
@@ -268,14 +303,14 @@ router.post(
         id: assessment.id,
         userId: assessment.user_id,
         timestamp: assessment.created_at,
-        responses: assessment.responses ? JSON.parse(assessment.responses) : {},
-        score: assessment.score,
-        patternIdentified: assessment.pattern_identified,
-        recommendations: [
-          'Continue practicing critical thinking',
-          'Regular engagement with AI tools',
-          'Document learning progress',
-        ],
+        planningScore: assessment.planning_score,
+        monitoringScore: assessment.monitoring_score,
+        evaluationScore: assessment.evaluation_score,
+        regulationScore: assessment.regulation_score,
+        overallScore: assessment.overall_score,
+        strengths: assessment.strengths ? JSON.parse(assessment.strengths) : [],
+        areasForGrowth: assessment.areas_for_growth ? JSON.parse(assessment.areas_for_growth) : [],
+        recommendations: assessment.recommendations ? JSON.parse(assessment.recommendations) : [],
       },
       message: 'Assessment submitted successfully',
       timestamp: new Date().toISOString(),
