@@ -97,24 +97,78 @@
   gap: 0.75rem;
   cursor: pointer;
   font-size: 0.9rem;
+  padding: 0.625rem 0.75rem;
+  background: var(--mr6-bg, #ffffff);
+  border: 1.5px solid var(--mr6-border, #e0e0e0);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.mr6-model-checkbox:hover,
+.mr6-metric-checkbox:hover {
+  border-color: var(--mr6-accent, #0066ff);
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.03) 0%, rgba(0, 102, 255, 0.08) 100%);
+  box-shadow: 0 1px 3px rgba(0, 102, 255, 0.1);
 }
 
 .mr6-model-checkbox input,
 .mr6-metric-checkbox input {
+  /* Custom checkbox styling */
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border: 2px solid var(--mr6-border, #d0d0d0);
+  border-radius: 4px;
   cursor: pointer;
+  position: relative;
+  background: var(--mr6-bg, #ffffff);
+  transition: all 0.2s ease;
+  margin: 0;
+}
+
+.mr6-model-checkbox input:hover,
+.mr6-metric-checkbox input:hover {
+  border-color: var(--mr6-accent, #0066ff);
+}
+
+.mr6-model-checkbox input:checked,
+.mr6-metric-checkbox input:checked {
+  background: var(--mr6-accent, #0066ff);
+  border-color: var(--mr6-accent, #0066ff);
+}
+
+.mr6-model-checkbox input:checked::after,
+.mr6-metric-checkbox input:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 .mr6-model-name {
   flex: 1;
+  font-weight: 500;
+  color: var(--mr6-text, #1a1a1a);
 }
 
 .mr6-recommended {
-  padding: 0.25rem 0.5rem;
-  background: var(--mr6-accent, #0066ff);
+  padding: 0.25rem 0.625rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   font-size: 0.7rem;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 2px rgba(16, 185, 129, 0.2);
 }
 
 .mr6-run-btn {

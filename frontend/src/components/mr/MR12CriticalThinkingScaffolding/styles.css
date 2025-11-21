@@ -188,16 +188,61 @@
   gap: 0.75rem;
   cursor: pointer;
   font-size: 0.9rem;
+  padding: 0.625rem 0.75rem;
+  background: var(--mr12-bg, #ffffff);
+  border: 1.5px solid var(--mr12-border, #e0e0e0);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.mr12-checklist-item:hover {
+  border-color: var(--mr12-accent, #0066ff);
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.03) 0%, rgba(0, 102, 255, 0.08) 100%);
+  box-shadow: 0 1px 3px rgba(0, 102, 255, 0.1);
 }
 
 .mr12-checklist-item input {
-  margin-top: 0.25rem;
+  appearance: none;
+  -webkit-appearance: none;
+  margin-top: 0.125rem;
   cursor: pointer;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border: 2px solid var(--mr12-border, #d0d0d0);
+  border-radius: 4px;
+  position: relative;
+  background: var(--mr12-bg, #ffffff);
+  transition: all 0.2s ease;
+}
+
+.mr12-checklist-item input:hover {
+  border-color: var(--mr12-accent, #0066ff);
+}
+
+.mr12-checklist-item input:checked {
+  background: var(--mr12-accent, #0066ff);
+  border-color: var(--mr12-accent, #0066ff);
+}
+
+.mr12-checklist-item input:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 .mr12-checklist-text {
   line-height: 1.4;
   color: var(--mr12-text, #1a1a1a);
+  font-weight: 500;
+  flex: 1;
 }
 
 .mr12-assess-btn {
