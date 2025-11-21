@@ -184,13 +184,14 @@ export class PatternDetectionService {
   }
 
   /**
-   * Get pattern trends over time
+   * Get pattern trends over time with daily verification rates
    */
   async getPatternTrends(userId: string, days: number = 30): Promise<any[]> {
     const since = new Date();
     since.setDate(since.getDate() - days);
 
-    const result = await pool.query(
+    // Get pattern trends
+    const patternResult = await pool.query(
       `SELECT
          DATE(created_at) as date,
          detected_pattern,
@@ -202,17 +203,46 @@ export class PatternDetectionService {
       [userId, since]
     );
 
-    // Transform to array of daily patterns
-    const trends: Record<string, string> = {};
-    result.rows.forEach((row: any) => {
-      if (!trends[row.date]) {
-        trends[row.date] = row.detected_pattern;
+    // Get daily verification rates
+    const verificationResult = await pool.query(
+      `SELECT
+         DATE(i.created_at) as date,
+         COUNT(*) as total_interactions,
+         SUM(CASE WHEN i.was_verified THEN 1 ELSE 0 END) as verified_count
+       FROM interactions i
+       JOIN work_sessions s ON i.session_id = s.id
+       WHERE s.user_id = $1 AND i.created_at >= $2
+       GROUP BY DATE(i.created_at)
+       ORDER BY date ASC`,
+      [userId, since]
+    );
+
+    // Create a map of daily verification rates
+    const dailyVerificationMap: Record<string, number> = {};
+    verificationResult.rows.forEach((row: any) => {
+      const dateStr = row.date.toISOString().split('T')[0];
+      const verificationRate = row.total_interactions > 0
+        ? (parseInt(row.verified_count) / parseInt(row.total_interactions)) * 100
+        : 0;
+      dailyVerificationMap[dateStr] = verificationRate;
+    });
+
+    // Transform to array of daily patterns with verification rates
+    const trends: Record<string, { pattern: string; verificationRate: number }> = {};
+    patternResult.rows.forEach((row: any) => {
+      const dateStr = row.date.toISOString().split('T')[0];
+      if (!trends[dateStr]) {
+        trends[dateStr] = {
+          pattern: row.detected_pattern,
+          verificationRate: dailyVerificationMap[dateStr] || 0,
+        };
       }
     });
 
-    return Object.entries(trends).map(([date, pattern]) => ({
+    return Object.entries(trends).map(([date, data]) => ({
       date,
-      pattern,
+      pattern: data.pattern,
+      verificationRate: Math.round(data.verificationRate),
     }));
   }
 

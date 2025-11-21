@@ -89,9 +89,7 @@ const DashboardPage: React.FC = () => {
     ? analytics.patternTrend.map((trend: any, idx: number) => ({
         day: `Day ${idx + 1}`,
         date: trend.date ? new Date(trend.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : `Day ${idx + 1}`,
-        accuracy: Math.round(
-          verificationRate > 0 ? (verificationRate * 100) : 50
-        ),
+        accuracy: trend.verificationRate !== undefined ? trend.verificationRate : 0,
       }))
     : [];
 

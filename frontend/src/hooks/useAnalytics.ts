@@ -14,7 +14,7 @@ export interface UserAnalyticsData {
   patternDistribution: Record<string, number>;
   metacognitiveMetrics: Record<string, number>;
   modelUsage: Record<string, number>;
-  patternTrend: Array<{ date: string; pattern: string }>;
+  patternTrend: Array<{ date: string; pattern: string; verificationRate: number }>;
   verificationRate: number;
   modificationRate: number;
 }
