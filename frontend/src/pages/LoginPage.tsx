@@ -75,14 +75,16 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="auth-page login-page">
-      <div className="login-content-wrapper">
-        <div className="auth-card">
+      <div className="login-split-container">
+        {/* Left Side - Login Form */}
+        <div className="login-form-section">
+          <div className="auth-card">
           <div className="auth-header">
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <Logo size={48} showText={false} />
             </div>
             <h2>Welcome Back</h2>
-            <p>Sign in to your AI Pattern Recognition System account</p>
+            <p>Sign in to your AI Pattern Recognition System</p>
           </div>
 
           {error && <div className="auth-error">{error}</div>}
@@ -139,10 +141,12 @@ const LoginPage: React.FC = () => {
               Don't have an account? <Link to="/register">Create one here</Link>
             </p>
           </div>
+          </div>
         </div>
 
-        {/* System Introduction Section */}
-        <div className="system-intro-card">
+        {/* Right Side - System Introduction */}
+        <div className="login-intro-section">
+          <div className="system-intro-card">
           <div className="system-intro-header">
             <h3>AI Pattern Recognition System</h3>
             <p className="system-intro-subtitle">Enhance your AI collaboration effectiveness</p>
@@ -180,11 +184,12 @@ const LoginPage: React.FC = () => {
                 <h4>What you'll gain</h4>
                 <p>
                   <strong>Improved AI efficiency</strong> through pattern awareness,
-                  <strong>prevention of skill degradation</strong> via timely interventions, and
-                  <strong>enhanced problem-solving abilities</strong> with metacognitive insights.
+                  <strong> prevention of skill degradation</strong> via timely interventions, and
+                  <strong> enhanced problem-solving abilities</strong> with metacognitive insights.
                 </p>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
