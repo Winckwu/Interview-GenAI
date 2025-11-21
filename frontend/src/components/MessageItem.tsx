@@ -12,10 +12,13 @@
  * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import MarkdownText from './common/MarkdownText';
 import styles from './MessageItem.module.css';
 import { type Message } from '../hooks/useMessages';
+import { BranchComparisonModal } from './BranchComparisonModal';
+import { BranchFilterPanel, BranchFilter } from './BranchFilterPanel';
+import { exportBranches } from '../utils/branchExport';
 
 // Re-export Message type for backward compatibility
 export type { Message };
@@ -66,12 +69,57 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   quickReflection,
   mr6Suggestion,
 }) => {
+  // Comparison modal state
+  const [showComparison, setShowComparison] = useState(false);
+
+  // Filter state
+  const [showFilter, setShowFilter] = useState(false);
+  const [branchFilter, setBranchFilter] = useState<BranchFilter>({
+    sources: new Set(['mr6', 'mr5', 'manual']),
+    showVerified: null,
+    showModified: null,
+  });
+
+  // Export state
+  const [showExportMenu, setShowExportMenu] = useState(false);
+
+  // Export handler
+  const handleExport = (format: 'json' | 'csv' | 'markdown') => {
+    if (message.branches) {
+      exportBranches(message.content, message.branches, message.id, [format]);
+      setShowExportMenu(false);
+    }
+  };
+
   // Calculate branch information
   const hasBranches = message.branches && message.branches.length > 0;
   const currentBranchIndex = message.currentBranchIndex ?? 0;
   const totalBranches = hasBranches ? (message.branches?.length ?? 0) + 1 : 1; // +1 for original
-  const canGoPrev = hasBranches && currentBranchIndex > 0;
-  const canGoNext = hasBranches && currentBranchIndex < totalBranches - 1;
+
+  // Filter branches based on filter settings
+  const filteredBranches = useMemo(() => {
+    if (!hasBranches || !message.branches) return [];
+
+    return message.branches.filter(branch => {
+      // Check source filter
+      if (!branchFilter.sources.has(branch.source)) return false;
+
+      // Check verified filter
+      if (branchFilter.showVerified === true && !branch.wasVerified) return false;
+      if (branchFilter.showVerified === false && branch.wasVerified) return false;
+
+      // Check modified filter
+      if (branchFilter.showModified === true && !branch.wasModified) return false;
+      if (branchFilter.showModified === false && branch.wasModified) return false;
+
+      return true;
+    });
+  }, [hasBranches, message.branches, branchFilter]);
+
+  const filteredTotalBranches = filteredBranches.length + 1; // +1 for original
+  const hasFilteredBranches = filteredBranches.length > 0;
+  const canGoPrev = hasFilteredBranches && currentBranchIndex > 0;
+  const canGoNext = hasFilteredBranches && currentBranchIndex < filteredTotalBranches - 1;
 
   // Get current content (either original or from a branch)
   const getCurrentContent = () => {
@@ -112,24 +160,31 @@ export const MessageItem: React.FC<MessageItemProps> = ({
     return branch || null;
   };
 
-  // Calculate branch statistics
+  // Calculate branch statistics (use filtered branches if filters are active)
   const getBranchStatistics = () => {
     if (!hasBranches) return null;
 
-    const branches = message.branches || [];
+    const branches = filteredBranches;
     const mr6Count = branches.filter(b => b.source === 'mr6').length;
     const mr5Count = branches.filter(b => b.source === 'mr5').length;
     const manualCount = branches.filter(b => b.source === 'manual').length;
     const verifiedCount = branches.filter(b => b.wasVerified).length;
     const modifiedCount = branches.filter(b => b.wasModified).length;
 
+    const hasActiveFilter =
+      branchFilter.sources.size !== 3 ||
+      branchFilter.showVerified !== null ||
+      branchFilter.showModified !== null;
+
     return {
-      total: totalBranches,
+      total: filteredTotalBranches,
+      totalAll: totalBranches,
       mr6: mr6Count,
       mr5: mr5Count,
       manual: manualCount,
       verified: verifiedCount,
       modified: modifiedCount,
+      filtered: hasActiveFilter,
     };
   };
 
@@ -252,16 +307,18 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.25rem 0.5rem',
-                  backgroundColor: '#f3f4f6',
-                  border: '1px solid #d1d5db',
+                  backgroundColor: branchStats.filtered ? '#fef3c7' : '#f3f4f6',
+                  border: `1px solid ${branchStats.filtered ? '#fbbf24' : '#d1d5db'}`,
                   borderRadius: '0.375rem',
                   fontSize: '0.7rem',
                   color: '#6b7280',
                   fontWeight: '500',
                 }}
-                title={`Total: ${branchStats.total} branches\nMR6: ${branchStats.mr6} | MR5: ${branchStats.mr5} | Manual: ${branchStats.manual}\nVerified: ${branchStats.verified} | Modified: ${branchStats.modified}`}
+                title={`${branchStats.filtered ? 'Filtered: ' : ''}Total: ${branchStats.total} branches${branchStats.filtered ? ` (of ${branchStats.totalAll})` : ''}\nMR6: ${branchStats.mr6} | MR5: ${branchStats.mr5} | Manual: ${branchStats.manual}\nVerified: ${branchStats.verified} | Modified: ${branchStats.modified}`}
               >
-                <span style={{ color: '#374151' }}>📊 {branchStats.total} branches</span>
+                <span style={{ color: '#374151' }}>
+                  📊 {branchStats.total} {branchStats.filtered && `/ ${branchStats.totalAll}`} branches
+                </span>
                 {branchStats.mr6 > 0 && <span>MR6: {branchStats.mr6}</span>}
                 {branchStats.mr5 > 0 && <span>MR5: {branchStats.mr5}</span>}
                 {branchStats.manual > 0 && <span>Manual: {branchStats.manual}</span>}
@@ -302,7 +359,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   ◀
                 </button>
                 <span style={{ fontWeight: '500', color: '#374151', whiteSpace: 'nowrap' }}>
-                  {branchInfo.label} ({currentBranchIndex + 1}/{totalBranches})
+                  {branchInfo.label} ({currentBranchIndex + 1}/{filteredTotalBranches})
                 </span>
 
                 {/* Branch metadata info button */}
@@ -375,6 +432,157 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     🗑️
                   </button>
                 )}
+
+                {/* Compare branches button - show when there are multiple branches */}
+                {totalBranches > 1 && (
+                  <button
+                    onClick={() => setShowComparison(true)}
+                    title="Compare branches side-by-side"
+                    style={{
+                      background: 'none',
+                      border: '1px solid #3b82f6',
+                      cursor: 'pointer',
+                      padding: '0.125rem 0.375rem',
+                      fontSize: '0.7rem',
+                      color: '#3b82f6',
+                      marginLeft: '0.5rem',
+                      borderRadius: '0.25rem',
+                      fontWeight: '500',
+                    }}
+                  >
+                    🔍 Compare
+                  </button>
+                )}
+
+                {/* Filter branches button - show when there are branches */}
+                {hasBranches && message.branches && (
+                  <div style={{ position: 'relative', marginLeft: '0.5rem' }}>
+                    <button
+                      onClick={() => setShowFilter(!showFilter)}
+                      title="Filter branches by source and status"
+                      style={{
+                        background: 'none',
+                        border: '1px solid #8b5cf6',
+                        cursor: 'pointer',
+                        padding: '0.125rem 0.375rem',
+                        fontSize: '0.7rem',
+                        color: '#8b5cf6',
+                        borderRadius: '0.25rem',
+                        fontWeight: '500',
+                      }}
+                    >
+                      🔧 Filter {filteredBranches.length !== message.branches.length ? `(${filteredBranches.length})` : ''}
+                    </button>
+
+                    {/* Filter Panel */}
+                    {showFilter && (
+                      <BranchFilterPanel
+                        branches={message.branches}
+                        filter={branchFilter}
+                        onFilterChange={setBranchFilter}
+                        onClose={() => setShowFilter(false)}
+                      />
+                    )}
+                  </div>
+                )}
+
+                {/* Export branches button - show when there are branches */}
+                {hasBranches && message.branches && (
+                  <div style={{ position: 'relative', marginLeft: '0.5rem' }}>
+                    <button
+                      onClick={() => setShowExportMenu(!showExportMenu)}
+                      title="Export branch history"
+                      style={{
+                        background: 'none',
+                        border: '1px solid #059669',
+                        cursor: 'pointer',
+                        padding: '0.125rem 0.375rem',
+                        fontSize: '0.7rem',
+                        color: '#059669',
+                        borderRadius: '0.25rem',
+                        fontWeight: '500',
+                      }}
+                    >
+                      📥 Export
+                    </button>
+
+                    {/* Export Menu */}
+                    {showExportMenu && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '100%',
+                          right: 0,
+                          marginTop: '0.5rem',
+                          backgroundColor: 'white',
+                          border: '1px solid #d1d5db',
+                          borderRadius: '0.5rem',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                          padding: '0.5rem',
+                          minWidth: '150px',
+                          zIndex: 100,
+                        }}
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                          <button
+                            onClick={() => handleExport('json')}
+                            style={{
+                              padding: '0.5rem 0.75rem',
+                              background: 'none',
+                              border: 'none',
+                              cursor: 'pointer',
+                              textAlign: 'left',
+                              borderRadius: '0.375rem',
+                              fontSize: '0.875rem',
+                              color: '#374151',
+                              transition: 'background-color 0.2s',
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                          >
+                            📄 Export as JSON
+                          </button>
+                          <button
+                            onClick={() => handleExport('csv')}
+                            style={{
+                              padding: '0.5rem 0.75rem',
+                              background: 'none',
+                              border: 'none',
+                              cursor: 'pointer',
+                              textAlign: 'left',
+                              borderRadius: '0.375rem',
+                              fontSize: '0.875rem',
+                              color: '#374151',
+                              transition: 'background-color 0.2s',
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                          >
+                            📊 Export as CSV
+                          </button>
+                          <button
+                            onClick={() => handleExport('markdown')}
+                            style={{
+                              padding: '0.5rem 0.75rem',
+                              background: 'none',
+                              border: 'none',
+                              cursor: 'pointer',
+                              textAlign: 'left',
+                              borderRadius: '0.375rem',
+                              fontSize: '0.875rem',
+                              color: '#374151',
+                              transition: 'background-color 0.2s',
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                          >
+                            📝 Export as Markdown
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
@@ -421,6 +629,16 @@ export const MessageItem: React.FC<MessageItemProps> = ({
           </p>
         )}
       </div>
+
+      {/* Branch Comparison Modal */}
+      {showComparison && hasBranches && message.branches && (
+        <BranchComparisonModal
+          originalContent={message.content}
+          branches={message.branches}
+          currentBranchIndex={currentBranchIndex}
+          onClose={() => setShowComparison(false)}
+        />
+      )}
     </div>
   );
 };
