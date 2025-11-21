@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useSessionStore } from '../stores/sessionStore';
+import { useAssessmentStore } from '../stores/assessmentStore';
 import { MR19MetacognitiveCapabilityAssessment } from '../components/mr/MR19MetacognitiveCapabilityAssessment';
 import type { MetacognitiveProfile } from '../components/mr/MR19MetacognitiveCapabilityAssessment/utils';
 import './MetacognitiveAssessmentPage.css';
@@ -16,11 +17,62 @@ const MetacognitiveAssessmentPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { sessions } = useSessionStore();
+  const { submitAssessment } = useAssessmentStore();
   const [assessmentCompleted, setAssessmentCompleted] = useState(false);
   const [profile, setProfile] = useState<MetacognitiveProfile | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
-  const handleAssessmentComplete = (completedProfile: MetacognitiveProfile) => {
+  const handleAssessmentComplete = async (completedProfile: MetacognitiveProfile) => {
     setProfile(completedProfile);
+
+    // Save assessment to database
+    if (user?.id) {
+      setSaving(true);
+      setSaveError(null);
+      try {
+        // Convert profile to responses format for backend
+        const responses = {
+          assessedAt: completedProfile.assessedAt.toISOString(),
+          dimensions: {
+            planning: {
+              score: completedProfile.dimensions.planning.score,
+              level: completedProfile.dimensions.planning.level,
+              interpretation: completedProfile.dimensions.planning.interpretation,
+            },
+            monitoring: {
+              score: completedProfile.dimensions.monitoring.score,
+              level: completedProfile.dimensions.monitoring.level,
+              interpretation: completedProfile.dimensions.monitoring.interpretation,
+            },
+            evaluation: {
+              score: completedProfile.dimensions.evaluation.score,
+              level: completedProfile.dimensions.evaluation.level,
+              interpretation: completedProfile.dimensions.evaluation.interpretation,
+            },
+            regulation: {
+              score: completedProfile.dimensions.regulation.score,
+              level: completedProfile.dimensions.regulation.level,
+              interpretation: completedProfile.dimensions.regulation.interpretation,
+            },
+          },
+          overallInterpretation: completedProfile.overallInterpretation,
+          topStrengths: completedProfile.topStrengths,
+          areasForGrowth: completedProfile.areasForGrowth,
+          confidenceLevel: completedProfile.confidenceLevel,
+          dataSource: completedProfile.dataSource,
+        };
+
+        await submitAssessment(user.id, responses);
+        console.log('Assessment saved successfully');
+      } catch (error: any) {
+        console.error('Failed to save assessment:', error);
+        setSaveError(error.message || 'Failed to save assessment results');
+      } finally {
+        setSaving(false);
+      }
+    }
+
     setAssessmentCompleted(true);
   };
 
@@ -92,6 +144,25 @@ const MetacognitiveAssessmentPage: React.FC = () => {
               <h2 className="completion-title">
                 Assessment Complete!
               </h2>
+
+              {saving && (
+                <p className="completion-message" style={{ color: '#3b82f6' }}>
+                  💾 Saving your results...
+                </p>
+              )}
+
+              {!saving && !saveError && (
+                <p className="completion-message" style={{ color: '#10b981' }}>
+                  ✅ Your results have been saved successfully!
+                </p>
+              )}
+
+              {saveError && (
+                <p className="completion-message" style={{ color: '#ef4444' }}>
+                  ⚠️ {saveError}. Don't worry, your results are still displayed below.
+                </p>
+              )}
+
               <p className="completion-message">
                 Your metacognitive profile has been analyzed. Check the results above and return to the dashboard to see personalized recommendations.
               </p>
@@ -99,6 +170,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                 <button
                   className="completion-button"
                   onClick={handleReturnToDashboard}
+                  disabled={saving}
                 >
                   Return to Dashboard
                 </button>

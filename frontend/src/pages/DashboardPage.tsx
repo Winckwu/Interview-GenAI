@@ -4,6 +4,7 @@ import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import { useAuthStore } from '../stores/authStore';
 import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
+import { useAssessmentStore } from '../stores/assessmentStore';
 import { useAnalytics, usePatternStats } from '../hooks/useAnalytics';
 import { apiService } from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -20,6 +21,7 @@ import '../styles/components.css';
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
 
   // Date range state - default to 7 days
   const [dateRange, setDateRange] = useState<number>(7);
@@ -27,6 +29,13 @@ const DashboardPage: React.FC = () => {
   const { analytics, loading: analyticsLoading } = useAnalytics(dateRange);
   const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', dateRange);
   const [verificationStrategyData, setVerificationStrategyData] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Fetch latest assessment when component mounts
+    if (user?.id) {
+      fetchLatestAssessment(user.id);
+    }
+  }, [user?.id, fetchLatestAssessment]);
 
   useEffect(() => {
     // Fetch verification strategy data when date range changes
@@ -223,6 +232,148 @@ const DashboardPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Metacognitive Assessment Results Section */}
+      {latestAssessment && latestAssessment.responses && (
+        <div className="assessment-results-section" style={{ marginBottom: '2rem' }}>
+          <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', margin: 0 }}>
+              🧠 Your Metacognitive Profile
+            </h2>
+            <button
+              onClick={() => navigate('/assessment')}
+              style={{
+                padding: '0.5rem 1rem',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '0.5rem',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              Retake Assessment
+            </button>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+            {latestAssessment.responses.dimensions && Object.entries(latestAssessment.responses.dimensions).map(([dimension, data]: [string, any]) => {
+              const colors = {
+                planning: { bg: '#eff6ff', border: '#3b82f6', icon: '📐' },
+                monitoring: { bg: '#f0fdf4', border: '#10b981', icon: '👁️' },
+                evaluation: { bg: '#fef3c7', border: '#f59e0b', icon: '⚖️' },
+                regulation: { bg: '#fce7f3', border: '#ec4899', icon: '🔄' },
+              };
+              const color = colors[dimension as keyof typeof colors] || colors.planning;
+
+              return (
+                <div
+                  key={dimension}
+                  style={{
+                    padding: '1.5rem',
+                    backgroundColor: color.bg,
+                    borderLeft: `4px solid ${color.border}`,
+                    borderRadius: '8px',
+                  }}
+                >
+                  <div style={{ fontSize: '1.75rem', marginBottom: '0.75rem' }}>{color.icon}</div>
+                  <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '600', color: '#1f2937', textTransform: 'capitalize' }}>
+                    {dimension}
+                  </h3>
+                  <div style={{ fontSize: '1.75rem', fontWeight: '700', color: color.border, marginBottom: '0.5rem' }}>
+                    {(data.score * 100).toFixed(0)}%
+                  </div>
+                  <div style={{
+                    display: 'inline-block',
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '1rem',
+                    backgroundColor: data.level === 'strong' ? '#10b981' : data.level === 'moderate' ? '#f59e0b' : '#ef4444',
+                    color: 'white',
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                  }}>
+                    {data.level}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {latestAssessment.responses.areasForGrowth && latestAssessment.responses.areasForGrowth.length > 0 && (
+            <div style={{
+              marginTop: '1.5rem',
+              padding: '1.25rem',
+              backgroundColor: '#f8fafc',
+              borderRadius: '8px',
+              borderLeft: '4px solid #64748b',
+            }}>
+              <h4 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
+                💡 Areas for Growth
+              </h4>
+              <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.6' }}>
+                {latestAssessment.responses.areasForGrowth.map((area: string, idx: number) => (
+                  <li key={idx}>{area}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* No Assessment CTA */}
+      {!latestAssessment && (
+        <div style={{
+          marginBottom: '2rem',
+          padding: '2rem',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          borderRadius: '12px',
+          color: 'white',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🧠</div>
+          <h2 style={{ margin: '0 0 0.75rem 0', fontSize: '1.5rem', fontWeight: '700' }}>
+            Discover Your Metacognitive Profile
+          </h2>
+          <p style={{ margin: '0 0 1.5rem 0', fontSize: '1rem', opacity: 0.95 }}>
+            Take our 10-minute assessment to understand your learning and decision-making patterns
+          </p>
+          <button
+            onClick={() => navigate('/assessment')}
+            style={{
+              padding: '0.75rem 2rem',
+              backgroundColor: 'white',
+              color: '#667eea',
+              border: 'none',
+              borderRadius: '0.5rem',
+              fontSize: '1rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Take Assessment Now →
+          </button>
+        </div>
+      )}
 
       {/* Charts Section */}
       <div className="charts-section">
