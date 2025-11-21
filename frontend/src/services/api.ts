@@ -177,6 +177,9 @@ export const apiService = {
     list: (limit?: number, offset?: number) =>
       api.get('/sessions', { params: { limit, offset } }),
 
+    getAll: (params?: { limit?: number; offset?: number; includeInteractions?: boolean }) =>
+      api.get('/sessions', { params }),
+
     end: (sessionId: string) => api.post(`/sessions/${sessionId}/end`, {}),
 
     recordInteraction: (
