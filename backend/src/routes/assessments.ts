@@ -148,6 +148,13 @@ router.post(
     const { userId, responses, timestamp } = req.body;
     const currentUserId = req.user?.id;
 
+    // Debug logging
+    console.log('[POST /assessments] Request body:', JSON.stringify(req.body, null, 2));
+    console.log('[POST /assessments] userId:', userId);
+    console.log('[POST /assessments] currentUserId:', currentUserId);
+    console.log('[POST /assessments] responses type:', typeof responses);
+    console.log('[POST /assessments] responses keys:', responses ? Object.keys(responses) : 'null');
+
     // Check authorization
     if (userId !== currentUserId && (req as any).userRole !== 'admin') {
       return res.status(403).json({
@@ -221,22 +228,38 @@ router.post(
       }
     }
 
-    const result = await pool.query(
-      `INSERT INTO assessments
-        (id, user_id, responses, score, pattern_identified, created_at, updated_at)
-      VALUES
-        ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING *`,
-      [
-        id,
-        userId,
-        JSON.stringify(responses),
-        score,
-        pattern,
-        now,
-        now,
-      ]
-    );
+    // Debug logging before insert
+    console.log('[POST /assessments] About to insert:');
+    console.log('  id:', id);
+    console.log('  userId:', userId);
+    console.log('  score:', score);
+    console.log('  pattern:', pattern);
+    console.log('  responses length:', JSON.stringify(responses).length);
+
+    let result;
+    try {
+      result = await pool.query(
+        `INSERT INTO assessments
+          (id, user_id, responses, score, pattern_identified, created_at, updated_at)
+        VALUES
+          ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *`,
+        [
+          id,
+          userId,
+          JSON.stringify(responses),
+          score,
+          pattern,
+          now,
+          now,
+        ]
+      );
+      console.log('[POST /assessments] Insert successful');
+    } catch (error: any) {
+      console.error('[POST /assessments] Database error:', error.message);
+      console.error('[POST /assessments] Error stack:', error.stack);
+      throw error; // Re-throw to be caught by asyncHandler
+    }
 
     const assessment = result.rows[0];
     res.status(201).json({
