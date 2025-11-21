@@ -505,9 +505,30 @@ const MetacognitiveAssessmentPage: React.FC = () => {
               </h2>
 
               {latestAssessment && !showNewAssessment && (
-                <p className="completion-message" style={{ color: '#6366f1', marginBottom: '1rem' }}>
-                  📊 Showing your assessment from {new Date(latestAssessment.timestamp).toLocaleDateString()}
-                </p>
+                <div style={{
+                  backgroundColor: '#eef2ff',
+                  border: '2px solid #818cf8',
+                  borderRadius: '0.5rem',
+                  padding: '1rem 1.5rem',
+                  marginBottom: '1.5rem',
+                  textAlign: 'center'
+                }}>
+                  <p style={{
+                    color: '#4338ca',
+                    margin: 0,
+                    fontSize: '1rem',
+                    fontWeight: 600
+                  }}>
+                    📊 Showing your previous assessment from {new Date(latestAssessment.timestamp).toLocaleDateString()}
+                  </p>
+                  <p style={{
+                    color: '#64748b',
+                    margin: '0.5rem 0 0 0',
+                    fontSize: '0.875rem'
+                  }}>
+                    This assessment has been saved. You can review the results below or take a new assessment.
+                  </p>
+                </div>
               )}
 
               {saving && (
@@ -536,6 +557,10 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                   className="completion-button"
                   onClick={handleReturnToDashboard}
                   disabled={saving}
+                  style={{
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                  }}
                 >
                   Return to Dashboard
                 </button>
@@ -545,8 +570,10 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                   disabled={saving}
                   style={{
                     backgroundColor: '#fff',
-                    color: '#6366f1',
-                    border: '2px solid #6366f1',
+                    color: '#4338ca',
+                    border: '2px solid #4338ca',
+                    fontWeight: 600,
+                    fontSize: '1rem',
                   }}
                 >
                   🔄 Retake Assessment
