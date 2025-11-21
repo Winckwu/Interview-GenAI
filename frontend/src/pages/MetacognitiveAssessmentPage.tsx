@@ -692,9 +692,9 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                       color: '#6b7280',
                       lineHeight: 1.5
                     }}>
-                      Each assessment combines your questionnaire responses with behavioral analysis data.
+                      Scores range from <strong>0-100</strong>. Each assessment combines your questionnaire responses with behavioral analysis data.
                       The final score is a <strong>simple average</strong>: (Questionnaire Score + Behavioral Score) / 2.
-                      The "Average Score" shown is the mean across all 4 dimensions (Planning, Monitoring, Evaluation, Regulation).
+                      The "Average" shown is the mean across all 4 dimensions (Planning, Monitoring, Evaluation, Regulation).
                     </p>
                   </div>
                   <div style={{
@@ -776,7 +776,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                                 color: avgScore >= 0.75 ? '#059669' : avgScore >= 0.5 ? '#f59e0b' : '#ef4444',
                                 lineHeight: 1
                               }}>
-                                {(avgScore * 100).toFixed(0)}%
+                                {(avgScore * 100).toFixed(0)}
                               </div>
                               <div style={{
                                 fontSize: '0.75rem',
@@ -784,7 +784,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                                 marginTop: '0.25rem',
                                 fontWeight: 600
                               }}>
-                                Average Score
+                                Average (0-100)
                               </div>
                             </div>
                           </div>
@@ -798,25 +798,25 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                             <div style={{ fontSize: '0.8125rem' }}>
                               <span style={{ color: '#6b7280' }}>📋 Planning:</span>
                               <span style={{ fontWeight: 600, marginLeft: '0.25rem', color: '#1f2937' }}>
-                                {((assessment.planningScore || 0) * 100).toFixed(0)}%
+                                {((assessment.planningScore || 0) * 100).toFixed(0)}
                               </span>
                             </div>
                             <div style={{ fontSize: '0.8125rem' }}>
                               <span style={{ color: '#6b7280' }}>👁️ Monitoring:</span>
                               <span style={{ fontWeight: 600, marginLeft: '0.25rem', color: '#1f2937' }}>
-                                {((assessment.monitoringScore || 0) * 100).toFixed(0)}%
+                                {((assessment.monitoringScore || 0) * 100).toFixed(0)}
                               </span>
                             </div>
                             <div style={{ fontSize: '0.8125rem' }}>
                               <span style={{ color: '#6b7280' }}>⚖️ Evaluation:</span>
                               <span style={{ fontWeight: 600, marginLeft: '0.25rem', color: '#1f2937' }}>
-                                {((assessment.evaluationScore || 0) * 100).toFixed(0)}%
+                                {((assessment.evaluationScore || 0) * 100).toFixed(0)}
                               </span>
                             </div>
                             <div style={{ fontSize: '0.8125rem' }}>
                               <span style={{ color: '#6b7280' }}>🔄 Regulation:</span>
                               <span style={{ fontWeight: 600, marginLeft: '0.25rem', color: '#1f2937' }}>
-                                {((assessment.regulationScore || 0) * 100).toFixed(0)}%
+                                {((assessment.regulationScore || 0) * 100).toFixed(0)}
                               </span>
                             </div>
                           </div>
