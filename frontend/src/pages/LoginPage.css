@@ -13,10 +13,20 @@
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
   padding: var(--sp-4);
   font-family: inherit;
   border-radius: 24px;
+}
+
+.login-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  z-index: 10;
 }
 
 /* Decorative background elements */
@@ -398,4 +408,141 @@
 /* Dark mode (automatically handled by CSS variables) */
 @media (prefers-color-scheme: dark) {
   /* No changes needed - CSS variables handle dark mode */
+}
+
+/* ============================================
+   System Introduction Card
+   ============================================ */
+
+.system-intro-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  animation: slideUp 0.4s ease-out 0.1s both;
+}
+
+.system-intro-header {
+  text-align: center;
+  margin-bottom: var(--sp-6);
+  padding-bottom: var(--sp-4);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.system-intro-header h3 {
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  margin: 0 0 var(--sp-2) 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.system-intro-subtitle {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-weight: var(--fw-medium);
+}
+
+.system-intro-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.intro-section {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: flex-start;
+}
+
+.intro-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.intro-text {
+  flex: 1;
+}
+
+.intro-text h4 {
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--sp-2) 0;
+}
+
+.intro-text p {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--lh-relaxed);
+  margin: 0;
+}
+
+.intro-text ul {
+  margin: var(--sp-2) 0 0 0;
+  padding-left: var(--sp-5);
+  list-style-type: none;
+}
+
+.intro-text li {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--sp-2);
+  position: relative;
+}
+
+.intro-text li::before {
+  content: '✓';
+  position: absolute;
+  left: -1.25rem;
+  color: var(--color-success);
+  font-weight: var(--fw-bold);
+}
+
+.intro-text li strong {
+  color: var(--color-text-primary);
+  font-weight: var(--fw-semibold);
+}
+
+/* ============================================
+   Responsive Design for System Intro
+   ============================================ */
+
+@media (max-width: 768px) {
+  .system-intro-card {
+    padding: var(--sp-6);
+  }
+
+  .intro-section {
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+
+  .intro-icon {
+    font-size: 2rem;
+  }
+
+  .system-intro-header h3 {
+    font-size: var(--text-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .system-intro-card {
+    padding: var(--sp-4);
+  }
+
+  .system-intro-content {
+    gap: var(--sp-4);
+  }
 }

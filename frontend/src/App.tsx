@@ -21,6 +21,7 @@ const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const ChatSessionPage = lazy(() => import('./pages/ChatSessionPage')); // 51 KB - Biggest impact
 const MetacognitiveAssessmentPage = lazy(() => import('./pages/MetacognitiveAssessmentPage'));
 const DataBrowserPage = lazy(() => import('./pages/DataBrowserPage'));
+const HelpPage = lazy(() => import('./pages/HelpPage'));
 
 /**
  * OPTIMIZATION: Loading fallback component for lazy-loaded routes
@@ -250,6 +251,14 @@ const App: React.FC = () => {
             element={
               <Suspense fallback={<PageLoader />}>
                 <SettingsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <HelpPage />
               </Suspense>
             }
           />
