@@ -144,6 +144,69 @@ export class AnalyticsService {
   }
 
   /**
+   * Get verification strategy impact based on real user data
+   */
+  async getVerificationStrategyImpact(userId: string, days: number = 30): Promise<any[]> {
+    // Get recent sessions
+    const sessions = await SessionService.getUserSessions(userId, 1000);
+    const recentSessions = sessions.filter(s => {
+      const sessionAge = Date.now() - s.createdAt.getTime();
+      return sessionAge < days * 24 * 60 * 60 * 1000;
+    });
+
+    // Collect all interactions with their verification status
+    const allInteractions: any[] = [];
+    for (const session of recentSessions) {
+      const interactions = await SessionService.getSessionInteractions(session.id, 1000);
+      allInteractions.push(...interactions);
+    }
+
+    if (allInteractions.length === 0) {
+      // Return default structure if no data
+      return [
+        { strategy: 'Low Verification', qualityScore: 0, sampleSize: 0 },
+        { strategy: 'Medium Verification', qualityScore: 0, sampleSize: 0 },
+        { strategy: 'High Verification', qualityScore: 0, sampleSize: 0 },
+      ];
+    }
+
+    // Group interactions by verification behavior
+    // Low: wasVerified = false
+    // Medium: wasVerified = true, but wasModified = true (user found issues)
+    // High: wasVerified = true AND wasModified = false (user verified and accepted)
+    const lowVerification = allInteractions.filter(i => !i.wasVerified);
+    const mediumVerification = allInteractions.filter(i => i.wasVerified && i.wasModified);
+    const highVerification = allInteractions.filter(i => i.wasVerified && !i.wasModified);
+
+    // Calculate quality score for each group
+    // Quality metric: percentage of interactions that were NOT modified (higher = better)
+    // This represents how often the AI output was correct/acceptable
+    const calculateQualityScore = (interactions: any[]) => {
+      if (interactions.length === 0) return 0;
+      const acceptableCount = interactions.filter(i => !i.wasModified).length;
+      return (acceptableCount / interactions.length) * 100;
+    };
+
+    return [
+      {
+        strategy: 'Low Verification',
+        qualityScore: Math.round(calculateQualityScore(lowVerification)),
+        sampleSize: lowVerification.length,
+      },
+      {
+        strategy: 'Medium Verification',
+        qualityScore: Math.round(calculateQualityScore(mediumVerification)),
+        sampleSize: mediumVerification.length,
+      },
+      {
+        strategy: 'High Verification',
+        qualityScore: Math.round(calculateQualityScore(highVerification)),
+        sampleSize: highVerification.length,
+      },
+    ];
+  }
+
+  /**
    * Get system-wide statistics (for admin)
    */
   async getSystemStats(): Promise<any> {

@@ -96,4 +96,32 @@ router.get(
   })
 );
 
+/**
+ * GET /api/analytics/verification-strategy
+ * Get verification strategy impact based on real user data
+ */
+router.get(
+  '/verification-strategy',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const days = parseInt(req.query.days as string) || 30;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+      });
+    }
+
+    const strategyImpact = await AnalyticsService.getVerificationStrategyImpact(userId, days);
+
+    res.json({
+      success: true,
+      data: strategyImpact,
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
 export default router;

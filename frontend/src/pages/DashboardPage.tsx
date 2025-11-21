@@ -5,6 +5,7 @@ import { useAuthStore } from '../stores/authStore';
 import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
 import { useAnalytics, usePatternStats } from '../hooks/useAnalytics';
+import { apiService } from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ChartSkeleton, { ChartSkeletonGroup } from '../components/ChartSkeleton';
 import './DashboardPage.css';
@@ -68,9 +69,22 @@ const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();
   const { analytics, loading: analyticsLoading } = useAnalytics(30);
   const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', 30);
+  const [verificationStrategyData, setVerificationStrategyData] = useState<any[]>([]);
 
   useEffect(() => {
     // Initial data is loaded by hooks automatically
+    // Fetch verification strategy data
+    const fetchVerificationStrategy = async () => {
+      try {
+        const response = await apiService.analytics.getVerificationStrategy(30);
+        setVerificationStrategyData(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch verification strategy data:', error);
+        // Set empty data on error
+        setVerificationStrategyData([]);
+      }
+    };
+    fetchVerificationStrategy();
   }, []);
 
   const loading = analyticsLoading || patternsLoading;
@@ -101,25 +115,19 @@ const DashboardPage: React.FC = () => {
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
-  // Generate intervention strategy data based on verification metrics
-  // Shows how different verification levels impact overall quality
-  const interventionData = [
-    {
-      strategy: 'Low Verification',
-      successRate: Math.min(verificationRate, 30), // Low verification caps at 30%
-      description: 'Minimal checks'
-    },
-    {
-      strategy: 'Medium Verification',
-      successRate: Math.min(verificationRate * 1.2, 70), // Medium verification improves quality
-      description: 'Selective checks'
-    },
-    {
-      strategy: 'High Verification',
-      successRate: Math.min(verificationRate * 1.5, 100), // High verification maximizes quality
-      description: 'Thorough checks'
-    },
-  ];
+  // Use real verification strategy data from backend
+  // Maps real user behavior to quality impact scores
+  const interventionData = verificationStrategyData.length > 0
+    ? verificationStrategyData.map(item => ({
+        strategy: item.strategy,
+        successRate: item.qualityScore,
+        sampleSize: item.sampleSize,
+      }))
+    : [
+        { strategy: 'Low Verification', successRate: 0, sampleSize: 0 },
+        { strategy: 'Medium Verification', successRate: 0, sampleSize: 0 },
+        { strategy: 'High Verification', successRate: 0, sampleSize: 0 },
+      ];
 
   // Detect pattern change by checking if current dominantPattern differs from initial pattern
   // For now, only show alert if we have meaningful data
@@ -285,24 +293,28 @@ const DashboardPage: React.FC = () => {
             {/* Intervention Strategy Comparison */}
             <div className="chart-container">
               <h3 className="chart-title">
-                ✓ Verification Strategy Impact <InfoTooltip text="Compare how different verification strategies impact the quality of your work. Higher verification strategies reduce risk of errors and skill degradation." />
+                ✓ Verification Strategy Impact <InfoTooltip text="Real data showing how your verification behavior affects work quality. Based on your actual interactions with AI outputs." />
               </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 60, bottom: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="strategy" />
-                  <YAxis label={{ value: 'Quality Impact Score (%)', angle: -90, position: 'center', offset: -50 }} />
+                  <YAxis label={{ value: 'Quality Score (%)', angle: -90, position: 'center', offset: -50 }} />
                   <Tooltip
-                    formatter={(value: number) => `${value.toFixed(1)}%`}
-                    labelFormatter={() => 'Strategy Impact'}
+                    formatter={(value: number, name: string, props: any) => [
+                      `${value}%`,
+                      `Quality Score (${props.payload.sampleSize} interactions)`
+                    ]}
+                    labelFormatter={(label: string) => label}
                   />
-                  <Bar dataKey="successRate" fill="#10b981" name="Quality Impact" />
+                  <Bar dataKey="successRate" fill="#10b981" name="Quality Score" />
                 </BarChart>
               </ResponsiveContainer>
               <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#475569' }}>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Low Verification:</strong> Quick decisions but higher risk of missed errors</p>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Medium Verification:</strong> Balanced approach with selective spot-checks</p>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>High Verification:</strong> Thorough review (recommended) - ensures quality and skill preservation</p>
+                <p style={{ margin: '0.5rem 0' }}>📊 <strong>Real Data:</strong> Quality scores calculated from your actual verification behavior</p>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Low:</strong> No verification - accepted AI outputs directly</p>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Medium:</strong> Verified and found issues to modify</p>
+                <p style={{ margin: '0.5rem 0' }}>💡 <strong>High:</strong> Verified and accepted without modifications</p>
               </div>
             </div>
 

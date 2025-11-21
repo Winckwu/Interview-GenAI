@@ -229,6 +229,8 @@ export const apiService = {
 
     getSummary: (days?: number) => api.get('/analytics/summary', { params: { days } }),
 
+    getVerificationStrategy: (days?: number) => api.get('/analytics/verification-strategy', { params: { days } }),
+
     // User metrics and patterns analytics
     userMetrics: (userId: string) =>
       api.get(`/analytics/users/${userId}`, {}),
