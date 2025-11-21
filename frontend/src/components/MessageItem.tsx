@@ -71,7 +71,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
       >
         {/* Message Content or Editing UI */}
         {isEditing ? (
-          <div>
+          <div className={styles.messageContent}>
             <textarea
               value={editedContent}
               onChange={(e) => onEditContentChange(e.target.value)}
@@ -95,51 +95,64 @@ export const MessageItem: React.FC<MessageItemProps> = ({
             </div>
           </div>
         ) : (
-          <div>
+          <div className={styles.messageContent}>
             <MarkdownText content={message.content} />
           </div>
         )}
 
-        {/* Timestamp */}
-        <p className={styles.timestamp}>
-          {new Date(message.timestamp).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </p>
+        {/* Footer Section for AI Messages - metadata & interventions */}
+        {message.role === 'ai' && !isEditing && (
+          <div className={styles.messageFooter}>
+            {/* Timestamp */}
+            <div className={styles.timestamp}>
+              {new Date(message.timestamp).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </div>
 
-        {/* Trust Indicator (MR9) - Rendered from parent */}
-        {message.role === 'ai' && trustIndicator}
+            {/* Trust Indicator (MR9) - Rendered from parent */}
+            {trustIndicator}
 
-        {/* Action Buttons for AI Messages */}
-        {message.role === 'ai' && (
-          <div className={styles.actionButtons}>
-            <button
-              onClick={onVerify}
-              disabled={isUpdating}
-              title="✓ VERIFY: Confirm this AI response is correct and helpful."
-              className={`${styles.actionButton} ${message.wasVerified ? styles.verifiedBadge : styles.verifyButton}`}
-              style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
-            >
-              {isUpdating ? '⏳ Saving...' : message.wasVerified ? '✓ Verified' : '✓ Verify'}
-            </button>
-            <button
-              onClick={onModify}
-              disabled={isUpdating}
-              title="✎ MODIFY: Check this if you edited or improved the AI's response."
-              className={`${styles.actionButton} ${message.wasModified ? styles.modifiedBadge : styles.modifyButton}`}
-              style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
-            >
-              {isUpdating ? '⏳ Saving...' : message.wasModified ? '✎ Modified' : '✎ Modify'}
-            </button>
+            {/* Action Buttons */}
+            <div className={styles.actionButtons}>
+              <button
+                onClick={onVerify}
+                disabled={isUpdating}
+                title="✓ VERIFY: Confirm this AI response is correct and helpful."
+                className={`${styles.actionButton} ${message.wasVerified ? styles.verifiedBadge : styles.verifyButton}`}
+                style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+              >
+                {isUpdating ? '⏳' : message.wasVerified ? '✓' : '✓'} {message.wasVerified ? 'Verified' : 'Verify'}
+              </button>
+              <button
+                onClick={onModify}
+                disabled={isUpdating}
+                title="✎ MODIFY: Check this if you edited or improved the AI's response."
+                className={`${styles.actionButton} ${message.wasModified ? styles.modifiedBadge : styles.modifyButton}`}
+                style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+              >
+                {isUpdating ? '⏳' : message.wasModified ? '✎' : '✎'} {message.wasModified ? 'Modified' : 'Modify'}
+              </button>
+            </div>
+
+            {/* Quick Reflection Prompt (MR14) - Rendered from parent */}
+            {quickReflection}
+
+            {/* MR6 Multi-Model Comparison Suggestion - Rendered from parent */}
+            {mr6Suggestion}
           </div>
         )}
 
-        {/* Quick Reflection Prompt (MR14) - Rendered from parent */}
-        {message.role === 'ai' && quickReflection}
-
-        {/* MR6 Multi-Model Comparison Suggestion - Rendered from parent */}
-        {message.role === 'ai' && mr6Suggestion}
+        {/* Timestamp for user messages */}
+        {message.role === 'user' && !isEditing && (
+          <p className={styles.timestamp}>
+            {new Date(message.timestamp).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </p>
+        )}
       </div>
     </div>
   );

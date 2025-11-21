@@ -1,42 +1,74 @@
 /**
  * TrustIndicator CSS Module
- * Phase 4: Style Extraction
+ * Phase 4: Style Extraction + Visual Enhancement
  */
 
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
 .container {
-  margin: 0.75rem 0;
-  padding: 0.75rem;
-  background-color: #eff6ff;
-  border-left: 3px solid #3b82f6;
-  border-radius: 0.25rem;
+  margin: 0 0 0.75rem 0;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(249,250,251,1) 100%);
+  border: 1px solid;
+  border-radius: 0.625rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.container:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 0.8125rem;
 }
 
 .badge {
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 .score {
-  opacity: 0.7;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.8125rem;
 }
 
 .recommendation {
-  margin-top: 0.5rem;
+  width: 100%;
+  margin-top: 0.625rem;
   font-size: 0.75rem;
-  color: #1e40af;
-  padding: 0.5rem;
-  background-color: #dbeafe;
-  border-radius: 0.25rem;
+  font-weight: 600;
+  color: #fff;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  border: 1px solid #93c5fd;
-  transition: background-color 0.15s;
+  border: none;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .recommendation:hover {
-  background-color: #bfdbfe;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  animation: none;
+}
+
+.recommendation:active {
+  transform: translateY(0);
 }
