@@ -1,0 +1,504 @@
+/* ============================================
+   HelpPage Styles
+   ============================================ */
+
+.help-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Navigation Tabs */
+.help-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+
+.help-nav-tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s;
+  position: relative;
+  bottom: -2px;
+}
+
+.help-nav-tab:hover {
+  color: #3b82f6;
+  background-color: #f0f9ff;
+}
+
+.help-nav-tab.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+  font-weight: 600;
+}
+
+/* Content Sections */
+.help-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.help-section h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.section-intro {
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* Help Cards */
+.help-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.help-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.help-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.help-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #4b5563;
+  margin-bottom: 0.75rem;
+}
+
+.help-card p:last-child {
+  margin-bottom: 0;
+}
+
+.help-list {
+  list-style: none;
+  counter-reset: help-counter;
+  padding-left: 0;
+}
+
+.help-list li {
+  counter-increment: help-counter;
+  position: relative;
+  padding-left: 2.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.help-list li::before {
+  content: counter(help-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.help-list li strong {
+  color: #1f2937;
+}
+
+/* Feature Grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.feature-item {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+}
+
+.feature-item h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0369a1;
+  margin-bottom: 0.5rem;
+}
+
+.feature-item p {
+  font-size: 0.875rem;
+  color: #0c4a6e;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Workflow Diagram */
+.workflow-card {
+  background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+  border-color: #fde047;
+}
+
+.workflow-diagram {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+.workflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 160px;
+}
+
+.step-number {
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 4px 6px rgba(202, 138, 4, 0.3);
+}
+
+.step-content h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #713f12;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.step-content p {
+  font-size: 0.8rem;
+  color: #854d0e;
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.workflow-arrow {
+  font-size: 1.5rem;
+  color: #ca8a04;
+  flex-shrink: 0;
+}
+
+/* MR Categories */
+.mr-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.mr-category h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  padding-left: 0.75rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.mr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* MR Cards */
+.mr-card {
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.mr-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+.mr-card.expanded {
+  border-color: #3b82f6;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+}
+
+.mr-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.mr-card-header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  flex: 1;
+}
+
+.expand-icon {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #3b82f6;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+.mr-description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.mr-details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+.mr-detail-section {
+  margin-bottom: 1rem;
+}
+
+.mr-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.mr-detail-section h5 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-bottom: 0.5rem;
+}
+
+.mr-detail-section p {
+  font-size: 0.85rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.mr-detail-section ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.mr-detail-section li {
+  font-size: 0.85rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 0.35rem;
+}
+
+/* FAQ Section */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.faq-item {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.faq-item:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.faq-question {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.faq-icon {
+  color: #3b82f6;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.faq-answer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.faq-answer p {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Glossary Section */
+.glossary-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.25rem;
+}
+
+.glossary-item {
+  background: #fff;
+  border-left: 4px solid #3b82f6;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.glossary-item:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.glossary-term {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.glossary-definition {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .help-page {
+    padding: 1rem;
+  }
+
+  .help-nav {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .help-nav-tab {
+    border-bottom: 1px solid #e2e8f0;
+    border-left: 3px solid transparent;
+    bottom: 0;
+    padding: 0.75rem 1rem;
+  }
+
+  .help-nav-tab.active {
+    border-left-color: #3b82f6;
+    border-bottom-color: #e2e8f0;
+  }
+
+  .workflow-diagram {
+    flex-direction: column;
+  }
+
+  .workflow-arrow {
+    transform: rotate(90deg);
+  }
+
+  .mr-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .glossary-list {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .help-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .help-card,
+  .faq-item,
+  .glossary-item {
+    padding: 1rem;
+  }
+
+  .workflow-step {
+    min-width: 100%;
+  }
+}

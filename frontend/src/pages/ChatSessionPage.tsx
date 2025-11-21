@@ -408,6 +408,7 @@ const ChatSessionPage: React.FC = () => {
   const [interactionVersions, setInteractionVersions] = useState<any[]>([]);
 
   // Independent collapse states for sidebar sections
+  const [showHelpSection, setShowHelpSection] = useState(true); // Help panel open by default
   const [showInterventionSection, setShowInterventionSection] = useState(false);
   const [showMetricsSection, setShowMetricsSection] = useState(false);
 
@@ -3106,6 +3107,193 @@ const ChatSessionPage: React.FC = () => {
                 onToggleMRToolsSection={() => setShowMRToolsSection(!showMRToolsSection)}
                 renderActiveTool={renderActiveMRTool}
               />
+
+              {/* Help & Guidance Panel - Collapsible */}
+              <div style={{
+                borderBottom: '1px solid #e2e8f0',
+                backgroundColor: '#fff',
+              }}>
+                <button
+                  onClick={() => setShowHelpSection(!showHelpSection)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                  }}>
+                    📚 Help & Guidance
+                  </span>
+                  <span style={{ color: '#9ca3af', fontSize: '0.75rem' }}>
+                    {showHelpSection ? '▼' : '▶'}
+                  </span>
+                </button>
+                {showHelpSection && (
+                  <div style={{ padding: '0.75rem', fontSize: '0.75rem', lineHeight: '1.6' }}>
+                    {/* Current Session Status */}
+                    <div style={{
+                      backgroundColor: '#f0f9ff',
+                      border: '1px solid #0ea5e9',
+                      borderRadius: '0.5rem',
+                      padding: '0.75rem',
+                      marginBottom: '0.75rem'
+                    }}>
+                      <h4 style={{
+                        margin: '0 0 0.5rem 0',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        color: '#0369a1',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}>
+                        <span>📊</span> Current Session
+                      </h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', color: '#0c4a6e' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Interactions:</span>
+                          <strong>{messages.length}</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Active MRs:</span>
+                          <strong>{activeMRs.length}</strong>
+                        </div>
+                        {activeMRs.length > 0 && (
+                          <div style={{ marginTop: '0.25rem', fontSize: '0.7rem' }}>
+                            <div style={{ color: '#0369a1', fontWeight: '500', marginBottom: '0.25rem' }}>Currently Active:</div>
+                            {activeMRs.map((mr, idx) => (
+                              <div key={idx} style={{
+                                padding: '0.25rem 0.5rem',
+                                backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                                borderRadius: '0.25rem',
+                                marginBottom: '0.25rem'
+                              }}>
+                                {mr.mrType || 'MR Intervention'}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* MR Explanations */}
+                    <div style={{
+                      backgroundColor: '#fefce8',
+                      border: '1px solid #fbbf24',
+                      borderRadius: '0.5rem',
+                      padding: '0.75rem',
+                      marginBottom: '0.75rem'
+                    }}>
+                      <h4 style={{
+                        margin: '0 0 0.5rem 0',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        color: '#92400e',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}>
+                        <span>💡</span> About MR Interventions
+                      </h4>
+                      <p style={{ margin: '0 0 0.5rem 0', color: '#78350f', fontSize: '0.7rem' }}>
+                        <strong>What are MRs?</strong> Metacognitive Regulations (MR1-MR19) are intelligent interventions
+                        that guide you toward more effective AI usage patterns.
+                      </p>
+                      <p style={{ margin: '0', color: '#78350f', fontSize: '0.7rem' }}>
+                        <strong>When do they appear?</strong> MRs are triggered based on your interaction patterns,
+                        such as lack of verification (MR11), over-reliance (MR18), or task complexity (MR1).
+                      </p>
+                    </div>
+
+                    {/* Real-time Tips */}
+                    <div style={{
+                      backgroundColor: '#f0fdf4',
+                      border: '1px solid #22c55e',
+                      borderRadius: '0.5rem',
+                      padding: '0.75rem',
+                      marginBottom: '0.75rem'
+                    }}>
+                      <h4 style={{
+                        margin: '0 0 0.5rem 0',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        color: '#166534',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}>
+                        <span>⚡</span> Real-time Tips
+                      </h4>
+                      <ul style={{
+                        margin: 0,
+                        paddingLeft: '1.25rem',
+                        color: '#14532d',
+                        fontSize: '0.7rem'
+                      }}>
+                        <li style={{ marginBottom: '0.35rem' }}>
+                          The system monitors your verification behavior, trust calibration, and task decomposition.
+                        </li>
+                        <li style={{ marginBottom: '0.35rem' }}>
+                          Engage with MR interventions to improve your pattern (moving toward A/B).
+                        </li>
+                        <li>
+                          Use "🧠 MR Tools" to explore metacognitive strategies before you need them.
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Usage Techniques */}
+                    <div style={{
+                      backgroundColor: '#faf5ff',
+                      border: '1px solid #a855f7',
+                      borderRadius: '0.5rem',
+                      padding: '0.75rem'
+                    }}>
+                      <h4 style={{
+                        margin: '0 0 0.5rem 0',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        color: '#6b21a8',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}>
+                        <span>🎯</span> Best Practices
+                      </h4>
+                      <ul style={{
+                        margin: 0,
+                        paddingLeft: '1.25rem',
+                        color: '#581c87',
+                        fontSize: '0.7rem'
+                      }}>
+                        <li style={{ marginBottom: '0.35rem' }}>
+                          <strong>Decompose</strong> complex tasks into subtasks before asking AI
+                        </li>
+                        <li style={{ marginBottom: '0.35rem' }}>
+                          <strong>Verify</strong> AI responses with external sources
+                        </li>
+                        <li style={{ marginBottom: '0.35rem' }}>
+                          <strong>Reflect</strong> on what you learned after each session
+                        </li>
+                        <li>
+                          <strong>Experiment</strong> with different AI models for comparison
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {/* Intervention Manager - Collapsible */}
               <div style={{

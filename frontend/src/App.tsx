@@ -20,6 +20,7 @@ const AdminPage = lazy(() => import('./pages/AdminPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const ChatSessionPage = lazy(() => import('./pages/ChatSessionPage')); // 51 KB - Biggest impact
 const MetacognitiveAssessmentPage = lazy(() => import('./pages/MetacognitiveAssessmentPage'));
+const HelpPage = lazy(() => import('./pages/HelpPage'));
 const DataBrowserPage = lazy(() => import('./pages/DataBrowserPage'));
 
 /**
@@ -224,6 +225,14 @@ const App: React.FC = () => {
             element={
               <Suspense fallback={<PageLoader />}>
                 <MetacognitiveAssessmentPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <HelpPage />
               </Suspense>
             }
           />

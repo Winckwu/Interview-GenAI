@@ -256,6 +256,144 @@ const DashboardPage: React.FC = () => {
         )}
       </div>
 
+      {/* Quick Start Guide Card */}
+      <div className="dashboard-container" style={{ marginBottom: '2rem' }}>
+        <div style={{
+          backgroundColor: '#f0f9ff',
+          border: '2px solid #0ea5e9',
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            <span style={{ fontSize: '2rem' }}>🎯</span>
+            <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700', color: '#0369a1' }}>
+              Quick Start Guide
+            </h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+            {/* Step 1 */}
+            <div style={{
+              backgroundColor: '#fff',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #bae6fd',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            onClick={() => navigate('/chat')}>
+              <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>1️⃣</div>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', fontWeight: '600', color: '#0c4a6e' }}>
+                Start a Conversation
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#64748b', lineHeight: 1.6 }}>
+                Go to <strong>AI Chat</strong> and interact with the system. Your behavior will be monitored for pattern recognition.
+              </p>
+              <div style={{ marginTop: '0.75rem', color: '#0ea5e9', fontSize: '0.875rem', fontWeight: '600' }}>
+                → Go to AI Chat
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div style={{
+              backgroundColor: '#fff',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #bae6fd',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            onClick={() => navigate('/assessment')}>
+              <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>2️⃣</div>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', fontWeight: '600', color: '#0c4a6e' }}>
+                Complete Assessment
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#64748b', lineHeight: 1.6 }}>
+                Take the <strong>MR19 Metacognitive Assessment</strong> to evaluate your cognitive abilities (Planning, Monitoring, Evaluation, Regulation).
+              </p>
+              <div style={{ marginTop: '0.75rem', color: '#0ea5e9', fontSize: '0.875rem', fontWeight: '600' }}>
+                → Take Assessment
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div style={{
+              backgroundColor: '#fff',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #bae6fd',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            onClick={() => navigate('/patterns')}>
+              <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>3️⃣</div>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', fontWeight: '600', color: '#0c4a6e' }}>
+                View Your Pattern
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#64748b', lineHeight: 1.6 }}>
+                Understand your AI usage pattern (<strong>Pattern A-F</strong>) and see how it relates to your metacognitive abilities.
+              </p>
+              <div style={{ marginTop: '0.75rem', color: '#0ea5e9', fontSize: '0.875rem', fontWeight: '600' }}>
+                → View Patterns
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div style={{
+              backgroundColor: '#fff',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #bae6fd',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}>
+              <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>4️⃣</div>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', fontWeight: '600', color: '#0c4a6e' }}>
+                Receive Interventions
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#64748b', lineHeight: 1.6 }}>
+                The system provides <strong>intelligent MR (Metacognitive Regulation)</strong> interventions during conversations to improve your AI usage.
+              </p>
+              <div style={{ marginTop: '0.75rem', color: '#10b981', fontSize: '0.875rem', fontWeight: '600' }}>
+                ✓ Automatic during chat
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Key Metrics Cards */}
       <div className="metrics-section">
         <div className="metrics-grid">
