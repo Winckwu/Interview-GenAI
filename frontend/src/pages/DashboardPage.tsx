@@ -12,6 +12,12 @@ import ChartSkeleton, { ChartSkeletonGroup } from '../components/ChartSkeleton';
 import InfoTooltip from '../components/InfoTooltip';
 import HoverTooltip from '../components/HoverTooltip';
 import OnboardingTour from '../components/OnboardingTour';
+import {
+  classifyMetacognitiveType,
+  getMultiDimensionRecommendations,
+  type DimensionScores,
+  type MetacognitiveTypeProfile
+} from '../utils/metacognitiveTypeSystem';
 import './DashboardPage.css';
 import '../styles/components.css';
 
@@ -537,134 +543,196 @@ const DashboardPage: React.FC = () => {
             )}
           </div>
 
-          {/* Personalized MR Recommendations Section */}
+          {/* Metacognitive Type & Personalized Recommendations Section */}
           {(() => {
-            // Analyze weak dimensions and generate recommendations
             const dimensions = latestAssessment.responses.dimensions;
             if (!dimensions) return null;
 
-            // Convert to array and sort by score (ascending)
-            const sortedDimensions = Object.entries(dimensions)
-              .map(([name, data]: [string, any]) => ({ name, score: data.score }))
-              .sort((a, b) => a.score - b.score);
-
-            // Get weakest dimensions (score < 0.6)
-            const weakDimensions = sortedDimensions.filter(d => d.score < 0.6);
-
-            if (weakDimensions.length === 0) return null;
-
-            // MR recommendation mapping
-            const mrRecommendations: Record<string, any[]> = {
-              planning: [
-                { id: 'MR1', name: 'Task Decomposition Scaffold', icon: '🧩', description: 'Break complex tasks into manageable subtasks', color: '#3b82f6' },
-                { id: 'MR15', name: 'Metacognitive Strategy Guide', icon: '📚', description: 'Learn effective AI collaboration strategies', color: '#8b5cf6' },
-                { id: 'MR8', name: 'Task Characteristic Recognition', icon: '🔍', description: 'Understand task requirements better', color: '#06b6d4' },
-              ],
-              monitoring: [
-                { id: 'MR2', name: 'Process Transparency', icon: '👁️', description: 'Track how AI outputs evolve through iterations', color: '#10b981' },
-                { id: 'MR17', name: 'Learning Process Visualization', icon: '📊', description: 'Visualize your learning journey', color: '#14b8a6' },
-                { id: 'MR11', name: 'Integrated Verification', icon: '✓', description: 'Guided verification of AI outputs', color: '#059669' },
-              ],
-              evaluation: [
-                { id: 'MR12', name: 'Critical Thinking Scaffolding', icon: '🤔', description: 'Develop critical evaluation skills', color: '#f59e0b' },
-                { id: 'MR7', name: 'Failure Tolerance Learning', icon: '📝', description: 'Learn from AI errors and mistakes', color: '#f97316' },
-                { id: 'MR10', name: 'Cost-Benefit Analysis', icon: '⚖️', description: 'Evaluate when to use AI assistance', color: '#eab308' },
-              ],
-              regulation: [
-                { id: 'MR9', name: 'Dynamic Trust Calibration', icon: '🎯', description: 'Calibrate appropriate trust in AI', color: '#ec4899' },
-                { id: 'MR18', name: 'Over-Reliance Warning', icon: '⚠️', description: 'Detect unhealthy AI dependence', color: '#ef4444' },
-                { id: 'MR16', name: 'Skill Atrophy Prevention', icon: '💪', description: 'Maintain your core skills', color: '#f43f5e' },
-              ],
+            // Extract dimension scores
+            const scores: DimensionScores = {
+              planning: dimensions.planning?.score || 0,
+              monitoring: dimensions.monitoring?.score || 0,
+              evaluation: dimensions.evaluation?.score || 0,
+              regulation: dimensions.regulation?.score || 0,
             };
 
-            // Get top 2 recommendations from the weakest dimension
-            const weakestDimension = weakDimensions[0].name;
-            const recommendations = mrRecommendations[weakestDimension]?.slice(0, 2) || [];
+            // Classify user's metacognitive type
+            const userType = classifyMetacognitiveType(scores);
+
+            // Get recommendations (multi-dimension aware)
+            const recommendations = getMultiDimensionRecommendations(scores);
+
+            // If no weak dimensions, use type-based recommendations
+            const finalRecommendations = recommendations.length > 0
+              ? recommendations
+              : userType.recommendedMRs.slice(0, 2);
 
             return (
               <div style={{ marginBottom: '2rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                {/* Metacognitive Type Display */}
                 <div style={{
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  backgroundColor: '#fff',
                   borderRadius: '12px',
                   padding: '2rem',
-                  color: 'white',
-                  boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)'
+                  marginBottom: '1.5rem',
+                  border: `3px solid ${userType.color}`,
+                  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                    <span style={{ fontSize: '2rem' }}>🎯</span>
-                    <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700' }}>
-                      Recommended for You
-                    </h2>
-                  </div>
-                  <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.95rem', opacity: 0.95 }}>
-                    Based on your metacognitive profile, we recommend these MR features to strengthen your <strong>{weakestDimension}</strong> skills (score: {(weakDimensions[0].score * 100).toFixed(0)}/100)
-                  </p>
-
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
-                    {recommendations.map((mr) => (
-                      <div
-                        key={mr.id}
-                        style={{
-                          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                          borderRadius: '8px',
-                          padding: '1.5rem',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s',
-                          border: '2px solid transparent',
-                        }}
-                        onClick={() => navigate('/chat')}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'translateY(-4px)';
-                          e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
-                          e.currentTarget.style.borderColor = mr.color;
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = 'none';
-                          e.currentTarget.style.borderColor = 'transparent';
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                          <div style={{
-                            fontSize: '1.75rem',
-                            width: '48px',
-                            height: '48px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: mr.color + '20',
-                            borderRadius: '8px',
-                          }}>
-                            {mr.icon}
-                          </div>
-                          <div>
-                            <div style={{ fontSize: '0.75rem', fontWeight: '600', color: mr.color, marginBottom: '0.25rem' }}>
-                              {mr.id}
-                            </div>
-                            <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#1f2937' }}>
-                              {mr.name}
-                            </h3>
-                          </div>
-                        </div>
-                        <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.5' }}>
-                          {mr.description}
-                        </p>
-                        <div style={{
-                          marginTop: '1rem',
-                          padding: '0.5rem 1rem',
-                          backgroundColor: mr.color,
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                    <div style={{
+                      fontSize: '3rem',
+                      width: '80px',
+                      height: '80px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: `${userType.color}20`,
+                      borderRadius: '16px',
+                    }}>
+                      {userType.icon}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                        <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700', color: '#1f2937' }}>
+                          Your Metacognitive Type: <span style={{ color: userType.color }}>{userType.nameCN}</span>
+                        </h2>
+                        <span style={{
+                          padding: '0.25rem 0.75rem',
+                          backgroundColor: userType.color,
                           color: 'white',
-                          borderRadius: '6px',
+                          borderRadius: '12px',
                           fontSize: '0.875rem',
                           fontWeight: '600',
-                          textAlign: 'center',
                         }}>
-                          Try in Chat →
-                        </div>
+                          Type {userType.type}
+                        </span>
                       </div>
-                    ))}
+                      <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
+                        {userType.name}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
+                    {/* Characteristics */}
+                    <div>
+                      <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937', textTransform: 'uppercase' }}>
+                        💡 Type Characteristics
+                      </h3>
+                      <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
+                        {userType.characteristicsCN.map((char, idx) => (
+                          <li key={idx}>{char}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Strengths & Challenges */}
+                    <div>
+                      <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#10b981', textTransform: 'uppercase' }}>
+                        ✅ Strengths
+                      </h3>
+                      <ul style={{ margin: '0 0 1rem 0', paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
+                        {userType.strengthsCN.slice(0, 2).map((strength, idx) => (
+                          <li key={idx}>{strength}</li>
+                        ))}
+                      </ul>
+                      <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#f59e0b', textTransform: 'uppercase' }}>
+                        ⚠️ Growth Areas
+                      </h3>
+                      <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
+                        {userType.challengesCN.slice(0, 2).map((challenge, idx) => (
+                          <li key={idx}>{challenge}</li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
+
+                {/* MR Recommendations */}
+                {finalRecommendations.length > 0 && (
+                  <div style={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    borderRadius: '12px',
+                    padding: '2rem',
+                    color: 'white',
+                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                      <span style={{ fontSize: '2rem' }}>🎯</span>
+                      <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700' }}>
+                        Recommended for You
+                      </h2>
+                    </div>
+                    <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.95rem', opacity: 0.95 }}>
+                      Based on your <strong>{userType.nameCN}</strong> profile, we recommend these MR features to help you grow
+                    </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                      {finalRecommendations.map((mr: any) => (
+                        <div
+                          key={mr.id}
+                          style={{
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            borderRadius: '8px',
+                            padding: '1.5rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            border: '2px solid transparent',
+                          }}
+                          onClick={() => navigate('/chat')}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-4px)';
+                            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
+                            e.currentTarget.style.borderColor = mr.color;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = 'none';
+                            e.currentTarget.style.borderColor = 'transparent';
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                            <div style={{
+                              fontSize: '1.75rem',
+                              width: '48px',
+                              height: '48px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              backgroundColor: mr.color + '20',
+                              borderRadius: '8px',
+                            }}>
+                              {mr.icon}
+                            </div>
+                            <div>
+                              <div style={{ fontSize: '0.75rem', fontWeight: '600', color: mr.color, marginBottom: '0.25rem' }}>
+                                {mr.id}
+                              </div>
+                              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#1f2937' }}>
+                                {mr.name}
+                              </h3>
+                            </div>
+                          </div>
+                          <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.5' }}>
+                            {mr.description}
+                          </p>
+                          <div style={{
+                            marginTop: '1rem',
+                            padding: '0.5rem 1rem',
+                            backgroundColor: mr.color,
+                            color: 'white',
+                            borderRadius: '6px',
+                            fontSize: '0.875rem',
+                            fontWeight: '600',
+                            textAlign: 'center',
+                          }}>
+                            Try in Chat →
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })()}
