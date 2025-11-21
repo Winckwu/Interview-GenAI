@@ -353,12 +353,6 @@ const MetacognitiveAssessmentPage: React.FC = () => {
     <div className="assessment-page">
       {/* Header */}
       <div className="assessment-header">
-        <button
-          className="back-button"
-          onClick={() => navigate(-1)}
-        >
-          ← Back
-        </button>
         <h1>
           🧠 Metacognitive Capability Assessment
         </h1>

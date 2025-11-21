@@ -141,12 +141,12 @@
 .assessment-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 .info-section {
   background: white;
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -160,20 +160,20 @@
 }
 
 .info-section h3 {
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 1rem 0;
   color: #1f2937;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.625rem;
 }
 
 .info-section p {
   margin: 0;
   color: #64748b;
-  font-size: 0.9375rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.8;
 }
 
 /* Content section - Enhanced Padding */
