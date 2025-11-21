@@ -1197,6 +1197,73 @@ const ChatSessionPage: React.FC = () => {
   }, [messages, setMessages]);
 
   /**
+   * Handle MR5 variant selection - Create a new branch with selected variant
+   * Similar to MR6 but for MR5 iterations
+   */
+  const handleMR5VariantSelected = useCallback(async (variantContent: string) => {
+    if (!mr6Context) {
+      console.error('[MR5] No context available for branch creation');
+      return;
+    }
+
+    try {
+      // Find the message to branch from
+      const targetMessage = messages[mr6Context.messageIndex];
+      if (!targetMessage || targetMessage.role !== 'ai') {
+        console.error('[MR5] Invalid message to branch from');
+        return;
+      }
+
+      // Get the interaction ID
+      const interactionId = targetMessage.id.startsWith('user-')
+        ? targetMessage.id.replace('user-', '')
+        : targetMessage.id;
+
+      // Save branch to backend
+      const response = await api.post('/branches', {
+        interactionId,
+        branchContent: variantContent,
+        source: 'mr5',
+        model: 'variant', // MR5 doesn't use specific models
+      });
+
+      const savedBranch = response.data.data.branch;
+
+      // Create branch object for frontend
+      const newBranch: import('../hooks/useMessages').MessageBranch = {
+        id: savedBranch.id,
+        content: savedBranch.content,
+        source: savedBranch.source,
+        model: savedBranch.model,
+        createdAt: savedBranch.createdAt,
+        wasVerified: savedBranch.wasVerified,
+        wasModified: savedBranch.wasModified,
+      };
+
+      // Update message with new branch and switch to it
+      const updatedMessage = {
+        ...targetMessage,
+        branches: [...(targetMessage.branches || []), newBranch],
+        currentBranchIndex: (targetMessage.branches?.length || 0) + 1,
+      };
+
+      const updatedMessages = [...messages];
+      updatedMessages[mr6Context.messageIndex] = updatedMessage;
+      setMessages(updatedMessages);
+
+      // Close MR5 tool and show success message
+      setActiveMRTool('none');
+      setMr6Context(null);
+      setSuccessMessage('✓ Created new branch with MR5 variant');
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (error) {
+      console.error('[MR5] Failed to create branch:', error);
+      setErrorMessage('Failed to create branch. Please try again.');
+      setTimeout(() => setErrorMessage(null), 3000);
+    }
+  }, [mr6Context, messages, setMessages, setActiveMRTool]);
+
+  /**
    * Handle trust indicator recommendation click (MR9)
    */
   const handleTrustRecommendationClick = useCallback((recommendation: MRRecommendation) => {
@@ -1239,7 +1306,7 @@ const ChatSessionPage: React.FC = () => {
       case 'mr4-roles':
         return <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} onOpenMR8={openMR8TaskRecognition} />;
       case 'mr5-iteration':
-        return <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} onOpenMR6={openMR6CrossModel} />;
+        return <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} onVariantSelected={handleMR5VariantSelected} onOpenMR6={openMR6CrossModel} />;
       case 'mr6-models': {
         // Use saved MR6 context if available (from clicking specific message's MR6 button)
         // Otherwise fall back to latest user message

@@ -91,11 +91,41 @@ export const MessageItem: React.FC<MessageItemProps> = ({
     if (branch?.source === 'mr6' && branch.model) {
       return { label: `MR6: ${branch.model}`, model: branch.model };
     }
+    if (branch?.source === 'mr5' && branch.model) {
+      return { label: `MR5: ${branch.model}`, model: branch.model };
+    }
     return { label: `Branch ${currentBranchIndex}`, model: undefined };
+  };
+
+  // Get current branch metadata for history display
+  const getCurrentBranchMetadata = () => {
+    if (currentBranchIndex === 0) {
+      return {
+        createdAt: message.timestamp,
+        source: 'original',
+        model: undefined,
+        wasVerified: message.wasVerified,
+        wasModified: message.wasModified,
+      };
+    }
+    const branch = message.branches?.[currentBranchIndex - 1];
+    return branch || null;
+  };
+
+  // Format timestamp for display
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   };
 
   const currentContent = getCurrentContent();
   const branchInfo = getCurrentBranchInfo();
+  const branchMetadata = getCurrentBranchMetadata();
   return (
     <div className={`${styles.messageContainer} ${styles[message.role]}`}>
       <div
@@ -178,6 +208,22 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                 <span style={{ fontWeight: '500', color: '#374151', whiteSpace: 'nowrap' }}>
                   {branchInfo.label} ({currentBranchIndex + 1}/{totalBranches})
                 </span>
+
+                {/* Branch metadata info button */}
+                {branchMetadata && (
+                  <span
+                    title={`Created: ${formatTimestamp(branchMetadata.createdAt)}\nSource: ${branchMetadata.source?.toUpperCase() || 'N/A'}${branchMetadata.model ? `\nModel: ${branchMetadata.model}` : ''}${branchMetadata.wasVerified ? '\n✓ Verified' : ''}${branchMetadata.wasModified ? '\n✎ Modified' : ''}`}
+                    style={{
+                      marginLeft: '0.25rem',
+                      cursor: 'help',
+                      fontSize: '0.75rem',
+                      color: '#9ca3af',
+                    }}
+                  >
+                    ℹ️
+                  </span>
+                )}
+
                 <button
                   onClick={onBranchNext}
                   disabled={!canGoNext}

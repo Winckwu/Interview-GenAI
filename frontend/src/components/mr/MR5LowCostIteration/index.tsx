@@ -40,6 +40,7 @@ interface MR5Props {
   onVariantsGenerated?: (variants: IterationVariant[]) => void;
   onComparisonMade?: (comparison: VariantComparison) => void;
   onOpenMR6?: () => void;
+  onVariantSelected?: (variantContent: string) => void; // NEW: Callback when user selects a variant to use
   allowBranching?: boolean;
   maxBranches?: number;
 }
@@ -56,6 +57,7 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   onVariantsGenerated,
   onComparisonMade,
   onOpenMR6,
+  onVariantSelected,
   allowBranching = true,
   maxBranches = 10,
 }) => {
@@ -478,6 +480,23 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
                       👎 Poor
                     </button>
                   </div>
+
+                  {/* Use this variant button */}
+                  {onVariantSelected && (
+                    <button
+                      className="mr5-action-btn mr5-use-variant"
+                      onClick={() => onVariantSelected(variant.content)}
+                      style={{
+                        marginTop: '0.5rem',
+                        width: '100%',
+                        backgroundColor: '#10b981',
+                        color: 'white',
+                        fontWeight: '500',
+                      }}
+                    >
+                      ✓ Use This Variant
+                    </button>
+                  )}
 
                   <label className="mr5-compare-label">
                     <input
