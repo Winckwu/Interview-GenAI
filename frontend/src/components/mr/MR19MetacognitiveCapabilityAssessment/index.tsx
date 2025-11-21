@@ -28,7 +28,11 @@ import {
   calculateProfile,
   getAdaptationRecommendations,
   getDimensionScore,
+  SubdimensionScore,
+  calculateDetailedProfile,
+  convertToSimpleProfile,
 } from './utils';
+import { MR19SelfReportQuestionnaire } from './MR19SelfReportQuestionnaire';
 import './styles.css';
 
 /**
@@ -66,13 +70,9 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
   // State management
   const [assessmentMode, setAssessmentMode] = useState<AssessmentMode>('overview');
   const [profile, setProfile] = useState<MetacognitiveProfile | null>(null);
-  const [selfReportScores, setSelfReportScores] = useState<Record<AssessmentDimension, number>>({
-    planning: 3,
-    monitoring: 3,
-    evaluation: 3,
-    regulation: 3,
-  });
+  const [subdimensionScores, setSubdimensionScores] = useState<SubdimensionScore[] | null>(null);
   const [selectedDimension, setSelectedDimension] = useState<AssessmentDimension | null>(null);
+  const [language] = useState<'en' | 'cn'>('en'); // Could be made dynamic later
 
   /**
    * Calculate assessment from behavioral history
@@ -83,19 +83,48 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
   }, [userBehaviorHistory]);
 
   /**
-   * Calculate final profile from all data sources
+   * Handle questionnaire completion
    */
-  const handleGenerateProfile = useCallback(() => {
-    const finalProfile = calculateProfile({
-      behavioral: behavioralAssessment,
-      selfReport: allowSelfReport ? selfReportScores : undefined,
-      dataSource: 'combined',
-    });
+  const handleQuestionnaireComplete = useCallback((scores: SubdimensionScore[]) => {
+    setSubdimensionScores(scores);
+
+    // Automatically generate profile after questionnaire completion
+    const detailedProfile = calculateDetailedProfile(
+      scores,
+      behavioralAssessment ?? undefined
+    );
+    const finalProfile = convertToSimpleProfile(detailedProfile);
 
     setProfile(finalProfile);
     onAssessmentComplete?.(finalProfile);
     setAssessmentMode('results');
-  }, [behavioralAssessment, selfReportScores, allowSelfReport, onAssessmentComplete]);
+  }, [behavioralAssessment, onAssessmentComplete]);
+
+  /**
+   * Calculate final profile from all data sources
+   */
+  const handleGenerateProfile = useCallback(() => {
+    let finalProfile: MetacognitiveProfile;
+
+    // If we have 12-subdimension scores from the new questionnaire, use them
+    if (subdimensionScores && subdimensionScores.length === 12) {
+      const detailedProfile = calculateDetailedProfile(
+        subdimensionScores,
+        behavioralAssessment ?? undefined
+      );
+      finalProfile = convertToSimpleProfile(detailedProfile);
+    } else {
+      // Fallback to old simple profile (for behavioral-only assessment)
+      finalProfile = calculateProfile({
+        behavioral: behavioralAssessment,
+        dataSource: behavioralAssessment ? 'behavioral' : 'self-report',
+      });
+    }
+
+    setProfile(finalProfile);
+    onAssessmentComplete?.(finalProfile);
+    setAssessmentMode('results');
+  }, [behavioralAssessment, subdimensionScores, onAssessmentComplete]);
 
   /**
    * Render overview/intro
@@ -247,73 +276,15 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
   };
 
   /**
-   * Render self-report assessment view
+   * Render self-report assessment view (NEW: 36-item scientific questionnaire)
    */
   const renderSelfReportAssessment = () => {
-    const questions: Record<AssessmentDimension, { label: string; description: string }> = {
-      planning:
-        {
-          label: 'Planning Ability',
-          description: 'How well do you plan before starting a task?',
-        },
-      monitoring:
-        {
-          label: 'Monitoring Ability',
-          description: 'How often do you check your understanding while working?',
-        },
-      evaluation:
-        {
-          label: 'Evaluation Ability',
-          description: 'How carefully do you evaluate the quality of your work?',
-        },
-      regulation:
-        {
-          label: 'Regulation Ability',
-          description: 'How readily do you adjust your approach when something isn\'t working?',
-        },
-    };
-
     return (
       <div className="mr19-self-report">
-        <h3 className="mr19-section-title">Self-Assessment Questionnaire</h3>
-        <p className="mr19-section-subtitle">
-          Rate each statement on a scale of 1-5 (1 = Not at all, 5 = Completely)
-        </p>
-
-        <div className="mr19-questions-grid">
-          {(Object.keys(questions) as AssessmentDimension[]).map(dimension => {
-            const q = questions[dimension];
-            return (
-              <div key={dimension} className="mr19-question-card">
-                <h4 className="mr19-question-label">{q.label}</h4>
-                <p className="mr19-question-text">{q.description}</p>
-
-                <div className="mr19-rating-scale">
-                  {[1, 2, 3, 4, 5].map(score => (
-                    <button
-                      key={score}
-                      className={`mr19-rating-btn ${selfReportScores[dimension] === score ? 'selected' : ''}`}
-                      onClick={() =>
-                        setSelfReportScores(prev => ({ ...prev, [dimension]: score }))
-                      }
-                    >
-                      {score}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="mr19-rating-labels">
-                  <span>Weak</span>
-                  <span>Strong</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <button className="mr19-action-btn mr19-primary" onClick={handleGenerateProfile}>
-          Generate Your Profile
-        </button>
+        <MR19SelfReportQuestionnaire
+          onComplete={handleQuestionnaireComplete}
+          language={language}
+        />
       </div>
     );
   };

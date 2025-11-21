@@ -563,10 +563,252 @@ export function updateProfileWithBehavior(
   });
 }
 
+/**
+ * ============================================
+ * 12-Subdimension Questionnaire Support
+ * ============================================
+ */
+
+export type SubdimensionCode = 'P1' | 'P2' | 'P3' | 'P4' | 'M1' | 'M2' | 'M3' | 'E1' | 'E2' | 'E3' | 'R1' | 'R2';
+
+/**
+ * Subdimension score from questionnaire (0-3 mapped score)
+ */
+export interface SubdimensionScore {
+  dimension: string; // P1, P2, etc.
+  score: number; // 1-5 raw average from questionnaire
+  mappedScore: number; // 0-3 for pattern analysis
+}
+
+/**
+ * Detailed 12-subdimension profile
+ */
+export interface DetailedMetacognitiveProfile {
+  assessedAt: Date;
+  subdimensions: Record<SubdimensionCode, {
+    rawScore: number; // 1-5 from questionnaire
+    mappedScore: number; // 0-3 for pattern analysis
+    label: string;
+  }>;
+  aggregatedDimensions: Record<AssessmentDimension, DimensionProfile>;
+  totalScore: number; // 0-36 (sum of all 12 mapped scores)
+  patternRisk: 'Pattern F' | 'Pattern B/C' | 'Pattern A/D' | 'Pattern E';
+  overallInterpretation: string;
+  topStrengths: string[];
+  areasForGrowth: string[];
+  dataSource: 'self-report' | 'combined';
+}
+
+/**
+ * Subdimension labels for display
+ */
+const SUBDIMENSION_INFO: Record<SubdimensionCode, { en: string; cn: string; category: AssessmentDimension }> = {
+  P1: { en: 'Task Decomposition', cn: '任务分解', category: 'planning' },
+  P2: { en: 'Goal Setting', cn: '目标设定', category: 'planning' },
+  P3: { en: 'Strategy Selection', cn: '策略选择', category: 'planning' },
+  P4: { en: 'Resource Planning', cn: '资源规划', category: 'planning' },
+  M1: { en: 'Progress Tracking', cn: '进度追踪', category: 'monitoring' },
+  M2: { en: 'Quality Checking', cn: '质量检查', category: 'monitoring' },
+  M3: { en: 'Context Monitoring', cn: '上下文监控', category: 'monitoring' },
+  E1: { en: 'Result Evaluation', cn: '结果评估', category: 'evaluation' },
+  E2: { en: 'Learning Reflection', cn: '学习反思', category: 'evaluation' },
+  E3: { en: 'Capability Judgment', cn: '能力判断', category: 'evaluation' },
+  R1: { en: 'Strategy Adjustment', cn: '策略调整', category: 'regulation' },
+  R2: { en: 'Trust Calibration', cn: '信任校准', category: 'regulation' },
+};
+
+/**
+ * Calculate detailed profile from 12-subdimension questionnaire scores
+ */
+export function calculateDetailedProfile(
+  subdimensionScores: SubdimensionScore[],
+  behavioral?: BehavioralAssessmentResult
+): DetailedMetacognitiveProfile {
+  // Build subdimensions record
+  const subdimensions: Record<SubdimensionCode, {
+    rawScore: number;
+    mappedScore: number;
+    label: string;
+  }> = {} as any;
+
+  subdimensionScores.forEach(score => {
+    const code = score.dimension as SubdimensionCode;
+    subdimensions[code] = {
+      rawScore: score.score,
+      mappedScore: score.mappedScore,
+      label: SUBDIMENSION_INFO[code].en,
+    };
+  });
+
+  // Calculate total score (0-36)
+  const totalScore = subdimensionScores.reduce((sum, s) => sum + s.mappedScore, 0);
+
+  // Determine pattern risk
+  const patternRisk = getPatternRisk(totalScore);
+
+  // Aggregate to 4 main dimensions for compatibility
+  const aggregatedScores: Record<AssessmentDimension, number> = {
+    planning: 0,
+    monitoring: 0,
+    evaluation: 0,
+    regulation: 0,
+  };
+
+  // Calculate average scores for each main dimension
+  subdimensionScores.forEach(score => {
+    const code = score.dimension as SubdimensionCode;
+    const category = SUBDIMENSION_INFO[code].category;
+    // Convert 1-5 scale to 0-1 scale: (score - 1) / 4
+    aggregatedScores[category] += (score.score - 1) / 4;
+  });
+
+  // Average: P has 4 subdimensions, M has 3, E has 3, R has 2
+  aggregatedScores.planning /= 4;
+  aggregatedScores.monitoring /= 3;
+  aggregatedScores.evaluation /= 3;
+  aggregatedScores.regulation /= 2;
+
+  // If behavioral data exists, combine with self-report
+  if (behavioral) {
+    Object.keys(aggregatedScores).forEach(dim => {
+      const dimension = dim as AssessmentDimension;
+      const behavioralScore = behavioral[dimension].score;
+      // Average behavioral and self-report
+      aggregatedScores[dimension] = (aggregatedScores[dimension] + behavioralScore) / 2;
+    });
+  }
+
+  // Build dimension profiles
+  const aggregatedDimensions: Record<AssessmentDimension, DimensionProfile> = {
+    planning: buildDimensionProfile('planning', aggregatedScores.planning),
+    monitoring: buildDimensionProfile('monitoring', aggregatedScores.monitoring),
+    evaluation: buildDimensionProfile('evaluation', aggregatedScores.evaluation),
+    regulation: buildDimensionProfile('regulation', aggregatedScores.regulation),
+  };
+
+  // Calculate overall interpretation
+  const avgScore = Object.values(aggregatedScores).reduce((a, b) => a + b, 0) / 4;
+  const overallInterpretation = getDetailedOverallInterpretation(totalScore, patternRisk, avgScore);
+
+  // Get top strengths and areas for growth
+  const topStrengths = getDetailedTopStrengths(subdimensionScores);
+  const areasForGrowth = getDetailedAreasForGrowth(subdimensionScores);
+
+  return {
+    assessedAt: new Date(),
+    subdimensions,
+    aggregatedDimensions,
+    totalScore,
+    patternRisk,
+    overallInterpretation,
+    topStrengths,
+    areasForGrowth,
+    dataSource: behavioral ? 'combined' : 'self-report',
+  };
+}
+
+/**
+ * Determine pattern risk from total score (0-36)
+ */
+function getPatternRisk(totalScore: number): 'Pattern F' | 'Pattern B/C' | 'Pattern A/D' | 'Pattern E' {
+  if (totalScore <= 9) {
+    return 'Pattern F'; // High risk: minimal metacognitive behavior
+  } else if (totalScore <= 18) {
+    return 'Pattern B/C'; // Moderate risk: selective or inconsistent
+  } else if (totalScore <= 27) {
+    return 'Pattern A/D'; // Low risk: generally good with some gaps
+  } else {
+    return 'Pattern E'; // Minimal risk: strong across the board
+  }
+}
+
+/**
+ * Build dimension profile from aggregated score
+ */
+function buildDimensionProfile(
+  dimension: AssessmentDimension,
+  score: number // 0-1 scale
+): DimensionProfile {
+  const level: 'weak' | 'moderate' | 'strong' =
+    score >= 0.75 ? 'strong' : score >= 0.5 ? 'moderate' : 'weak';
+
+  return {
+    score,
+    level,
+    interpretation: getDimensionInterpretation(dimension, level),
+    behavioralMarkers: getIndicators(dimension, score),
+    supportNeeded: getSupportNeeded(dimension, level),
+  };
+}
+
+/**
+ * Get overall interpretation including pattern risk
+ */
+function getDetailedOverallInterpretation(
+  totalScore: number,
+  patternRisk: string,
+  avgScore: number
+): string {
+  if (patternRisk === 'Pattern E') {
+    return `Excellent metacognitive capability (${totalScore}/36 points). You demonstrate strong habits across all 12 subdimensions. You plan thoroughly, monitor actively, evaluate critically, and regulate flexibly. The system will provide minimal scaffolding.`;
+  } else if (patternRisk === 'Pattern A/D') {
+    return `Good metacognitive capability (${totalScore}/36 points). You have solid habits in most areas with some room for growth. The system will provide targeted support in your weaker subdimensions.`;
+  } else if (patternRisk === 'Pattern B/C') {
+    return `Developing metacognitive capability (${totalScore}/36 points). You show selective or inconsistent habits. Structured support will help you build more systematic practices.`;
+  } else {
+    return `Early-stage metacognitive capability (${totalScore}/36 points). You would benefit significantly from comprehensive scaffolding to develop stronger planning, monitoring, evaluation, and regulation habits.`;
+  }
+}
+
+/**
+ * Get top 3 subdimensions as strengths
+ */
+function getDetailedTopStrengths(subdimensionScores: SubdimensionScore[]): string[] {
+  return subdimensionScores
+    .filter(s => s.mappedScore >= 2) // Score of 2-3 indicates strength
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(s => {
+      const code = s.dimension as SubdimensionCode;
+      return SUBDIMENSION_INFO[code].en;
+    });
+}
+
+/**
+ * Get bottom 3 subdimensions as areas for growth
+ */
+function getDetailedAreasForGrowth(subdimensionScores: SubdimensionScore[]): string[] {
+  return subdimensionScores
+    .filter(s => s.mappedScore <= 1) // Score of 0-1 indicates weakness
+    .sort((a, b) => a.score - b.score)
+    .slice(0, 3)
+    .map(s => {
+      const code = s.dimension as SubdimensionCode;
+      return SUBDIMENSION_INFO[code].en;
+    });
+}
+
+/**
+ * Convert detailed profile to simple profile for backward compatibility
+ */
+export function convertToSimpleProfile(detailedProfile: DetailedMetacognitiveProfile): MetacognitiveProfile {
+  return {
+    assessedAt: detailedProfile.assessedAt,
+    dimensions: detailedProfile.aggregatedDimensions,
+    overallInterpretation: detailedProfile.overallInterpretation,
+    topStrengths: detailedProfile.topStrengths,
+    areasForGrowth: detailedProfile.areasForGrowth,
+    confidenceLevel: 0.75, // Self-report has moderate-high confidence
+    dataSource: detailedProfile.dataSource,
+  };
+}
+
 export default {
   assessMetacognitiveDimensions,
   calculateProfile,
   getAdaptationRecommendations,
   getDimensionScore,
   updateProfileWithBehavior,
+  calculateDetailedProfile,
+  convertToSimpleProfile,
 };
