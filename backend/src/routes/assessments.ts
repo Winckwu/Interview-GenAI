@@ -64,9 +64,9 @@ router.get(
       evaluationScore: row.evaluation_score,
       regulationScore: row.regulation_score,
       overallScore: row.overall_score,
-      strengths: row.strengths ? JSON.parse(row.strengths) : [],
-      areasForGrowth: row.areas_for_growth ? JSON.parse(row.areas_for_growth) : [],
-      recommendations: row.recommendations ? JSON.parse(row.recommendations) : [],
+      strengths: row.strengths || [],
+      areasForGrowth: row.areas_for_growth || [],
+      recommendations: row.recommendations || [],
     }));
 
     res.json({
@@ -136,9 +136,9 @@ router.get(
       evaluationScore: row.evaluation_score,
       regulationScore: row.regulation_score,
       overallScore: row.overall_score,
-      strengths: row.strengths ? JSON.parse(row.strengths) : [],
-      areasForGrowth: row.areas_for_growth ? JSON.parse(row.areas_for_growth) : [],
-      recommendations: row.recommendations ? JSON.parse(row.recommendations) : [],
+      strengths: row.strengths || [],
+      areasForGrowth: row.areas_for_growth || [],
+      recommendations: row.recommendations || [],
     };
 
     res.json({
@@ -308,9 +308,9 @@ router.post(
         evaluationScore: assessment.evaluation_score,
         regulationScore: assessment.regulation_score,
         overallScore: assessment.overall_score,
-        strengths: assessment.strengths ? JSON.parse(assessment.strengths) : [],
-        areasForGrowth: assessment.areas_for_growth ? JSON.parse(assessment.areas_for_growth) : [],
-        recommendations: assessment.recommendations ? JSON.parse(assessment.recommendations) : [],
+        strengths: assessment.strengths || [],
+        areasForGrowth: assessment.areas_for_growth || [],
+        recommendations: assessment.recommendations || [],
       },
       message: 'Assessment submitted successfully',
       timestamp: new Date().toISOString(),
