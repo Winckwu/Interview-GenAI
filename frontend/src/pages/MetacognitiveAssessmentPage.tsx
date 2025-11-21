@@ -670,15 +670,33 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                   }}>
                     📚 Assessment History
                   </h3>
-                  <p style={{
+                  <div style={{
                     margin: '0 0 1.5rem 0',
-                    fontSize: '0.875rem',
-                    color: '#6b7280',
-                    lineHeight: 1.5
+                    padding: '1rem',
+                    backgroundColor: '#fff',
+                    borderRadius: '0.5rem',
+                    border: '1px solid #e5e7eb'
                   }}>
-                    💡 <strong>How to read the scores:</strong> The percentage shows your average across all 4 dimensions
-                    (Planning, Monitoring, Evaluation, Regulation). Click any assessment to view its detailed breakdown.
-                  </p>
+                    <p style={{
+                      margin: '0 0 0.5rem 0',
+                      fontSize: '0.875rem',
+                      color: '#1f2937',
+                      lineHeight: 1.5,
+                      fontWeight: 600
+                    }}>
+                      💡 How scores are calculated:
+                    </p>
+                    <p style={{
+                      margin: '0',
+                      fontSize: '0.8125rem',
+                      color: '#6b7280',
+                      lineHeight: 1.5
+                    }}>
+                      Each assessment combines your questionnaire responses with behavioral analysis data.
+                      The final score is a <strong>simple average</strong>: (Questionnaire Score + Behavioral Score) / 2.
+                      The "Average Score" shown is the mean across all 4 dimensions (Planning, Monitoring, Evaluation, Regulation).
+                    </p>
+                  </div>
                   <div style={{
                     display: 'grid',
                     gap: '0.75rem'
@@ -802,31 +820,6 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                               </span>
                             </div>
                           </div>
-                          {!isSelected && (
-                            <div style={{
-                              marginTop: '0.75rem',
-                              fontSize: '0.8125rem',
-                              color: '#6366f1',
-                              fontWeight: 600,
-                              textAlign: 'center'
-                            }}>
-                              👆 Click to view details
-                            </div>
-                          )}
-                          {isSelected && (
-                            <div style={{
-                              marginTop: '0.75rem',
-                              fontSize: '0.8125rem',
-                              color: '#4338ca',
-                              fontWeight: 600,
-                              textAlign: 'center',
-                              backgroundColor: '#e0e7ff',
-                              padding: '0.5rem',
-                              borderRadius: '0.25rem'
-                            }}>
-                              ✓ Currently viewing this assessment
-                            </div>
-                          )}
                         </button>
                       );
                     })}
