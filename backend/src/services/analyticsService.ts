@@ -68,9 +68,18 @@ export class AnalyticsService {
     const modificationRate = interactionCount > 0 ? totalModified / interactionCount : 0;
 
     // Calculate average session duration
+    // Dynamically calculate duration even if session wasn't properly ended
     const avgDuration =
       recentSessions.length > 0
-        ? recentSessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0) / recentSessions.length
+        ? recentSessions.reduce((sum, s) => {
+            // If session has explicit duration, use it
+            if (s.durationMinutes) return sum + s.durationMinutes;
+
+            // Otherwise calculate from started_at to now (or ended_at)
+            const endTime = s.endedAt ? s.endedAt.getTime() : Date.now();
+            const duration = Math.round((endTime - s.startedAt.getTime()) / (1000 * 60));
+            return sum + duration;
+          }, 0) / recentSessions.length
         : 0;
 
     // Get metacognitive metrics
