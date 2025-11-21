@@ -26,11 +26,20 @@ import {
   type MRRecommendationSet,
   type UserExperienceLevel,
 } from '../utils/GlobalMRRecommendationEngine';
+import {
+  predictPatternFromAssessment,
+  getPatternProfile,
+  getEffectivePattern,
+  analyzeCapabilityVsBehaviorGap,
+  type DimensionScores,
+  type BehavioralPattern,
+} from '../utils/metacognitiveTypeSystem';
 
 // Phase 1 Refactoring: Custom Hooks
 import { useMessages, type Message, MESSAGES_PER_PAGE } from '../hooks/useMessages';
 import { useMRTools, type ActiveMRTool } from '../hooks/useMRTools';
 import { useGlobalRecommendations } from '../hooks/useGlobalRecommendations';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 // Phase 2 Refactoring: Message Components
 import MessageList from '../components/MessageList';
@@ -285,6 +294,28 @@ const ChatSessionPage: React.FC = () => {
     usedMRTools: mrToolsHook.usedMRTools,
   });
 
+  // Hook 4: Analytics data for behavioral pattern
+  const { analytics } = useAnalytics(7); // Last 7 days
+
+  // Compute effective behavioral pattern for chat header
+  const effectivePatternData = React.useMemo(() => {
+    if (!latestAssessment?.responses?.dimensions) {
+      return null;
+    }
+
+    const assessmentScores: DimensionScores = {
+      planning: latestAssessment.responses.dimensions.planning?.score || 0,
+      monitoring: latestAssessment.responses.dimensions.monitoring?.score || 0,
+      evaluation: latestAssessment.responses.dimensions.evaluation?.score || 0,
+      regulation: latestAssessment.responses.dimensions.regulation?.score || 0,
+    };
+
+    const detectedPattern = (analytics?.dominantPattern as BehavioralPattern) || null;
+    const totalSessions = analytics?.totalSessions || 0;
+
+    return getEffectivePattern(assessmentScores, detectedPattern, totalSessions);
+  }, [latestAssessment, analytics]);
+
   // Destructure hook returns for easy access
   const {
     messages,
@@ -431,6 +462,13 @@ const ChatSessionPage: React.FC = () => {
       metricsStore.setCurrentSession(sessionId, user.id);
     }
   }, [sessionId, user?.id]);
+
+  // Fetch latest assessment for pattern display
+  useEffect(() => {
+    if (user?.id) {
+      fetchLatestAssessment(user.id);
+    }
+  }, [user?.id, fetchLatestAssessment]);
 
   // Handle modal MRs display
   useEffect(() => {
@@ -2889,6 +2927,98 @@ const ChatSessionPage: React.FC = () => {
             ❌ {error}
           </div>
         )}
+
+        {/* Behavioral Pattern Card */}
+        {effectivePatternData && (() => {
+          const patternProfile = getPatternProfile(effectivePatternData.pattern);
+          const sourceColor = effectivePatternData.source === 'detected' ? '#10b981' : effectivePatternData.source === 'predicted' ? '#f59e0b' : '#6b7280';
+          const sourceBgColor = effectivePatternData.source === 'detected' ? '#d1fae5' : effectivePatternData.source === 'predicted' ? '#fef3c7' : '#f3f4f6';
+
+          return (
+            <div style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: sourceBgColor,
+              borderBottom: `2px solid ${patternProfile.color}`,
+              borderTop: `1px solid ${patternProfile.color}30`,
+            }}>
+              <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
+                  <div style={{
+                    fontSize: '1.5rem',
+                    width: '2.5rem',
+                    height: '2.5rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: `${patternProfile.color}20`,
+                    borderRadius: '50%',
+                  }}>
+                    {patternProfile.icon}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>
+                        Your AI Usage Pattern
+                      </span>
+                      <span style={{
+                        padding: '0.125rem 0.5rem',
+                        backgroundColor: patternProfile.color,
+                        color: 'white',
+                        borderRadius: '8px',
+                        fontSize: '0.7rem',
+                        fontWeight: '600',
+                      }}>
+                        Pattern {patternProfile.pattern}
+                      </span>
+                      <span style={{
+                        padding: '0.125rem 0.5rem',
+                        backgroundColor: sourceColor,
+                        color: 'white',
+                        borderRadius: '8px',
+                        fontSize: '0.65rem',
+                        fontWeight: '600',
+                      }}>
+                        {effectivePatternData.source === 'detected' ? '🎯 Detected' : effectivePatternData.source === 'predicted' ? '🔮 Predicted' : '📋 Default'}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: '600', color: patternProfile.color }}>
+                      {patternProfile.nameCN}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.125rem' }}>
+                      {patternProfile.descriptionCN}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    backgroundColor: patternProfile.color,
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '0.375rem',
+                    cursor: 'pointer',
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    transition: 'all 0.2s',
+                    whiteSpace: 'nowrap',
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                  title="View detailed analysis and recommendations"
+                >
+                  View Details →
+                </button>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Pattern Detection Banner */}
         {showPattern && pattern && (
