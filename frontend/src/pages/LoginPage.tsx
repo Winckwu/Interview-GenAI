@@ -73,6 +73,11 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="auth-page login-page">
+      {/* Decorative geometric shapes */}
+      <div className="bg-decoration bg-decoration-1"></div>
+      <div className="bg-decoration bg-decoration-2"></div>
+      <div className="bg-decoration bg-decoration-3"></div>
+
       <div className="login-unified-card">
         {/* Brand Section */}
         <div className="brand-section">
