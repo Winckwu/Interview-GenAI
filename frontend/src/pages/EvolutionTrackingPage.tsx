@@ -38,6 +38,25 @@ const EvolutionTrackingPage: React.FC = () => {
       };
     }
 
+    // Filter out data before user joined
+    const userJoinDate = user?.createdAt ? new Date(user.createdAt) : null;
+    const filteredTrends = userJoinDate
+      ? trends.filter(trend => new Date(trend.date) >= userJoinDate)
+      : trends;
+
+    if (filteredTrends.length === 0) {
+      return {
+        changes: [],
+        improvements: 0,
+        regressions: 0,
+        migrations: 0,
+        oscillations: 0,
+        dailyData: [],
+        currentPattern: null,
+        overallTrend: 'stable' as 'improving' | 'declining' | 'stable' | 'volatile',
+      };
+    }
+
     const changes: Array<{
       date: string;
       fromPattern: string;
@@ -52,9 +71,9 @@ const EvolutionTrackingPage: React.FC = () => {
     let oscillations = 0;
 
     // Analyze each pattern transition
-    for (let i = 1; i < trends.length; i++) {
-      const prev = trends[i - 1];
-      const curr = trends[i];
+    for (let i = 1; i < filteredTrends.length; i++) {
+      const prev = filteredTrends[i - 1];
+      const curr = filteredTrends[i];
 
       if (prev.pattern !== curr.pattern) {
         const fromQuality = PATTERN_QUALITY[prev.pattern as BehavioralPattern] || 0;
@@ -71,7 +90,7 @@ const EvolutionTrackingPage: React.FC = () => {
           regressions++;
         } else {
           // Same quality but different pattern - check if oscillation
-          const isPrevPatternRecentlyUsed = trends
+          const isPrevPatternRecentlyUsed = filteredTrends
             .slice(Math.max(0, i - 5), i - 1)
             .some(t => t.pattern === curr.pattern);
 
@@ -95,7 +114,7 @@ const EvolutionTrackingPage: React.FC = () => {
     }
 
     // Generate daily data for chart
-    const dailyData = trends.map((trend, idx) => {
+    const dailyData = filteredTrends.map((trend, idx) => {
       const patternProfile = getPatternProfile(trend.pattern as BehavioralPattern);
       const quality = PATTERN_QUALITY[trend.pattern as BehavioralPattern] || 0;
 
@@ -103,7 +122,7 @@ const EvolutionTrackingPage: React.FC = () => {
         date: new Date(trend.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
         fullDate: trend.date,
         pattern: trend.pattern,
-        patternName: patternProfile.nameCN,
+        patternName: patternProfile.name, // Use English name
         quality: quality * 20, // Scale 0-5 to 0-100 for visualization
         qualityRaw: quality,
         color: patternProfile.color,
@@ -112,8 +131,8 @@ const EvolutionTrackingPage: React.FC = () => {
     });
 
     // Determine overall trend
-    const firstQuality = PATTERN_QUALITY[trends[0].pattern as BehavioralPattern] || 0;
-    const lastQuality = PATTERN_QUALITY[trends[trends.length - 1].pattern as BehavioralPattern] || 0;
+    const firstQuality = PATTERN_QUALITY[filteredTrends[0].pattern as BehavioralPattern] || 0;
+    const lastQuality = PATTERN_QUALITY[filteredTrends[filteredTrends.length - 1].pattern as BehavioralPattern] || 0;
     const qualityDelta = lastQuality - firstQuality;
 
     let overallTrend: 'improving' | 'declining' | 'stable' | 'volatile';
@@ -134,10 +153,10 @@ const EvolutionTrackingPage: React.FC = () => {
       migrations,
       oscillations,
       dailyData,
-      currentPattern: trends[trends.length - 1]?.pattern as BehavioralPattern,
+      currentPattern: filteredTrends[filteredTrends.length - 1]?.pattern as BehavioralPattern,
       overallTrend,
     };
-  }, [trends]);
+  }, [trends, user?.createdAt]);
 
   if (loading) {
     return (
@@ -226,10 +245,10 @@ const EvolutionTrackingPage: React.FC = () => {
                     Current Pattern
                   </div>
                   <h2 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontWeight: '700', color: currentPatternProfile.color }}>
-                    Pattern {currentPattern} - {currentPatternProfile.nameCN}
+                    Pattern {currentPattern} - {currentPatternProfile.name}
                   </h2>
                   <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
-                    {currentPatternProfile.descriptionCN}
+                    {currentPatternProfile.description}
                   </p>
                 </div>
               </div>
@@ -450,7 +469,7 @@ const EvolutionTrackingPage: React.FC = () => {
                       {pattern}
                     </span>
                     <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
-                      {profile.nameCN}
+                      {profile.name}
                     </span>
                   </div>
                 );
@@ -525,9 +544,9 @@ const EvolutionTrackingPage: React.FC = () => {
                         </span>
                       </div>
                       <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
-                        {fromProfile.icon} Pattern {change.fromPattern} ({fromProfile.nameCN})
+                        {fromProfile.icon} Pattern {change.fromPattern} ({fromProfile.name})
                         <span style={{ margin: '0 0.5rem', color: '#9ca3af' }}>→</span>
-                        {toProfile.icon} Pattern {change.toPattern} ({toProfile.nameCN})
+                        {toProfile.icon} Pattern {change.toPattern} ({toProfile.name})
                       </div>
                       {change.qualityChange !== 0 && (
                         <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
