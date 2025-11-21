@@ -25,6 +25,7 @@ const DashboardPage: React.FC = () => {
 
   // Date range state - default to 7 days
   const [dateRange, setDateRange] = useState<number>(7);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   const { analytics, loading: analyticsLoading } = useAnalytics(dateRange);
   const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', dateRange);
@@ -36,6 +37,18 @@ const DashboardPage: React.FC = () => {
       fetchLatestAssessment(user.id);
     }
   }, [user?.id, fetchLatestAssessment]);
+
+  useEffect(() => {
+    // Show welcome modal for first-time users without assessment
+    if (user?.id && latestAssessment === null) {
+      const hasSkippedAssessment = localStorage.getItem(`assessment_skipped_${user.id}`);
+      if (!hasSkippedAssessment) {
+        // Delay showing modal slightly for better UX
+        const timer = setTimeout(() => setShowWelcomeModal(true), 1000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [user?.id, latestAssessment]);
 
   useEffect(() => {
     // Fetch verification strategy data when date range changes
@@ -128,8 +141,57 @@ const DashboardPage: React.FC = () => {
   const lastKnownPattern = 'A'; // Could be loaded from localStorage or previous session
   const patternChanged = dominantPattern !== lastKnownPattern && totalSessions > 0;
 
+  const handleSkipAssessment = () => {
+    if (user?.id) {
+      localStorage.setItem(`assessment_skipped_${user.id}`, 'true');
+    }
+    setShowWelcomeModal(false);
+  };
+
+  const handleTakeAssessment = () => {
+    setShowWelcomeModal(false);
+    navigate('/assessment');
+  };
+
   return (
     <div className="dashboard-page">
+      {/* Welcome Modal for First-time Users */}
+      {showWelcomeModal && (
+        <div className="welcome-modal-overlay" onClick={handleSkipAssessment}>
+          <div className="welcome-modal" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="welcome-modal-close"
+              onClick={handleSkipAssessment}
+              aria-label="Close welcome modal"
+            >
+              ×
+            </button>
+            <div className="welcome-modal-icon">🧠</div>
+            <h2 className="welcome-modal-title">
+              Discover Your Metacognitive Profile
+            </h2>
+            <p className="welcome-modal-description">
+              Take a 10-minute assessment to understand your AI usage patterns and get personalized recommendations
+              to improve your metacognitive skills across Planning, Monitoring, Evaluation, and Regulation.
+            </p>
+            <div className="welcome-modal-actions">
+              <button
+                className="welcome-modal-button welcome-modal-button-primary"
+                onClick={handleTakeAssessment}
+              >
+                Take Assessment Now
+              </button>
+              <button
+                className="welcome-modal-button welcome-modal-button-secondary"
+                onClick={handleSkipAssessment}
+              >
+                Skip
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header Section */}
       <div className="dashboard-container" style={{ marginBottom: '2rem' }}>
         <div className="page-header">
@@ -331,49 +393,6 @@ const DashboardPage: React.FC = () => {
         </div>
       )}
 
-      {/* No Assessment CTA */}
-      {!latestAssessment && (
-        <div style={{
-          marginBottom: '2rem',
-          padding: '2rem',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          borderRadius: '12px',
-          color: 'white',
-          textAlign: 'center',
-        }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🧠</div>
-          <h2 style={{ margin: '0 0 0.75rem 0', fontSize: '1.5rem', fontWeight: '700' }}>
-            Discover Your Metacognitive Profile
-          </h2>
-          <p style={{ margin: '0 0 1.5rem 0', fontSize: '1rem', opacity: 0.95 }}>
-            Take our 10-minute assessment to understand your learning and decision-making patterns
-          </p>
-          <button
-            onClick={() => navigate('/assessment')}
-            style={{
-              padding: '0.75rem 2rem',
-              backgroundColor: 'white',
-              color: '#667eea',
-              border: 'none',
-              borderRadius: '0.5rem',
-              fontSize: '1rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.05)';
-              e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
-            Take Assessment Now →
-          </button>
-        </div>
-      )}
 
       {/* Charts Section */}
       <div className="charts-section">
