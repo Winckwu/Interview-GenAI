@@ -39,6 +39,7 @@ export interface MessageItemProps {
   // Branch navigation
   onBranchPrev?: () => void;
   onBranchNext?: () => void;
+  onBranchDelete?: () => void;
 
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
@@ -58,6 +59,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onModify,
   onBranchPrev,
   onBranchNext,
+  onBranchDelete,
   trustIndicator,
   quickReflection,
   mr6Suggestion,
@@ -189,6 +191,25 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                 >
                   ▶
                 </button>
+
+                {/* Delete button - only show for branches (not original) */}
+                {currentBranchIndex > 0 && onBranchDelete && (
+                  <button
+                    onClick={onBranchDelete}
+                    title="Delete this branch"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '0.125rem 0.25rem',
+                      fontSize: '0.875rem',
+                      color: '#dc2626',
+                      marginLeft: '0.25rem',
+                    }}
+                  >
+                    🗑️
+                  </button>
+                )}
               </div>
             )}
 

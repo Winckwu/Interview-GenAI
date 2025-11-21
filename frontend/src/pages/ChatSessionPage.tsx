@@ -1063,6 +1063,61 @@ const ChatSessionPage: React.FC = () => {
   }, [messages, setMessages]);
 
   /**
+   * Handle branch deletion - Remove a branch from a message
+   */
+  const handleDeleteBranch = useCallback(async (messageId: string) => {
+    const messageIndex = messages.findIndex(m => m.id === messageId);
+    if (messageIndex === -1) return;
+
+    const message = messages[messageIndex];
+    if (!message.branches || message.branches.length === 0) return;
+
+    const currentIndex = message.currentBranchIndex ?? 0;
+    if (currentIndex === 0) {
+      // Cannot delete original message
+      setErrorMessage('Cannot delete the original response');
+      setTimeout(() => setErrorMessage(null), 3000);
+      return;
+    }
+
+    const branchToDelete = message.branches[currentIndex - 1];
+    if (!branchToDelete) return;
+
+    // Confirm deletion
+    if (!window.confirm(`Delete this ${branchToDelete.source.toUpperCase()} branch (${branchToDelete.model || 'manual'})? This cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      // Delete from backend
+      await api.delete(`/branches/${branchToDelete.id}`);
+
+      // Remove branch from array
+      const updatedBranches = message.branches.filter((_, index) => index !== currentIndex - 1);
+
+      // Adjust currentBranchIndex (go back to original if deleting last branch)
+      const newBranchIndex = updatedBranches.length === 0 ? 0 : Math.max(0, currentIndex - 1);
+
+      const updatedMessage = {
+        ...message,
+        branches: updatedBranches,
+        currentBranchIndex: newBranchIndex,
+      };
+
+      const updatedMessages = [...messages];
+      updatedMessages[messageIndex] = updatedMessage;
+      setMessages(updatedMessages);
+
+      setSuccessMessage('✓ Branch deleted successfully');
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (error) {
+      console.error('[Branch] Failed to delete branch:', error);
+      setErrorMessage('Failed to delete branch. Please try again.');
+      setTimeout(() => setErrorMessage(null), 3000);
+    }
+  }, [messages, setMessages]);
+
+  /**
    * Handle trust indicator recommendation click (MR9)
    */
   const handleTrustRecommendationClick = useCallback((recommendation: MRRecommendation) => {
@@ -2744,6 +2799,7 @@ const ChatSessionPage: React.FC = () => {
                 onVerify={markAsVerified}
                 onModify={markAsModified}
                 onBranchSwitch={handleBranchSwitch}
+                onBranchDelete={handleDeleteBranch}
                 showTrustIndicator={showTrustIndicator}
                 messageTrustScores={messageTrustScores}
                 getTrustBadge={getTrustBadge}
