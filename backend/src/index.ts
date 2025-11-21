@@ -115,6 +115,7 @@ import usersRoutes from './routes/users';
 import interactionsRoutes from './routes/interactions';
 import aiRoutes from './routes/ai';
 import mcaRoutes from './routes/mca';
+import branchesRoutes from './routes/branches';
 
 // ============================================================================
 // API Routes
@@ -149,6 +150,9 @@ app.use('/api/assessments', assessmentsRoutes);
 
 // Interactions endpoints
 app.use('/api/interactions', interactionsRoutes);
+
+// Message branches endpoints (conversation branching for MR6/MR5)
+app.use('/api/branches', branchesRoutes);
 
 // AI chat and endpoints
 app.use('/api/ai', aiRoutes);

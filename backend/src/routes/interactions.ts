@@ -357,6 +357,41 @@ router.get(
     const result = await pool.query(dataQuery, params);
     console.log(`[interactions] Result rows: ${result.rows.length}`);
 
+    // Load branches for all interactions
+    const interactionIds = result.rows.map((i: any) => i.id);
+    let branchesMap = new Map<string, any[]>();
+
+    if (interactionIds.length > 0) {
+      const branchesResult = await pool.query(
+        `SELECT id, interaction_id, branch_content, source, model,
+                was_verified, was_modified, is_main, created_by, created_at, updated_at
+         FROM message_branches
+         WHERE interaction_id = ANY($1)
+         ORDER BY created_at ASC`,
+        [interactionIds]
+      );
+
+      // Group branches by interaction_id
+      for (const branch of branchesResult.rows) {
+        const interactionId = branch.interaction_id;
+        if (!branchesMap.has(interactionId)) {
+          branchesMap.set(interactionId, []);
+        }
+        branchesMap.get(interactionId)!.push({
+          id: branch.id,
+          content: branch.branch_content,
+          source: branch.source,
+          model: branch.model,
+          wasVerified: branch.was_verified,
+          wasModified: branch.was_modified,
+          isMain: branch.is_main,
+          createdBy: branch.created_by,
+          createdAt: branch.created_at,
+          updatedAt: branch.updated_at,
+        });
+      }
+    }
+
     res.json({
       success: true,
       data: {
@@ -373,6 +408,7 @@ router.get(
           wasRejected: i.was_rejected,
           createdAt: i.created_at,
           updatedAt: i.updated_at,
+          branches: branchesMap.get(i.id) || [], // Include branches
         })),
         total: total,
       },

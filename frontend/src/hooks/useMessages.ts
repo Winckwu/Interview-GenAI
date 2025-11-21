@@ -190,7 +190,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
             timestamp: interaction.createdAt,
           });
 
-          // Add AI message
+          // Add AI message with branches
           pageMessages.push({
             id: interaction.id,
             role: 'ai',
@@ -199,6 +199,16 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
             wasVerified: interaction.wasVerified,
             wasModified: interaction.wasModified,
             wasRejected: interaction.wasRejected,
+            branches: interaction.branches?.map((branch: any) => ({
+              id: branch.id,
+              content: branch.content,
+              source: branch.source,
+              model: branch.model,
+              createdAt: branch.createdAt,
+              wasVerified: branch.wasVerified,
+              wasModified: branch.wasModified,
+            })) || [],
+            currentBranchIndex: 0, // Always start with original
           });
         }
 

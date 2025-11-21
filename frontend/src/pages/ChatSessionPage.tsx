@@ -980,15 +980,30 @@ const ChatSessionPage: React.FC = () => {
         return;
       }
 
-      // Create new branch
-      const newBranch: import('../hooks/useMessages').MessageBranch = {
-        id: `branch-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        content: output,
+      // Get the interaction ID (remove 'user-' prefix if present)
+      const interactionId = targetMessage.id.startsWith('user-')
+        ? targetMessage.id.replace('user-', '')
+        : targetMessage.id;
+
+      // Save branch to backend
+      const response = await api.post('/branches', {
+        interactionId,
+        branchContent: output,
         source: 'mr6',
-        model: model,
-        createdAt: new Date().toISOString(),
-        wasVerified: false,
-        wasModified: false,
+        model,
+      });
+
+      const savedBranch = response.data.data.branch;
+
+      // Create branch object for frontend
+      const newBranch: import('../hooks/useMessages').MessageBranch = {
+        id: savedBranch.id,
+        content: savedBranch.content,
+        source: savedBranch.source,
+        model: savedBranch.model,
+        createdAt: savedBranch.createdAt,
+        wasVerified: savedBranch.wasVerified,
+        wasModified: savedBranch.wasModified,
       };
 
       // Update message with new branch and switch to it
@@ -1001,10 +1016,7 @@ const ChatSessionPage: React.FC = () => {
       // Update messages array
       const updatedMessages = [...messages];
       updatedMessages[mr6Context.messageIndex] = updatedMessage;
-      setMessages(updatedMessages);
-
-      // TODO: Save branches to backend (need to implement backend support)
-      // For now, branches are only stored in frontend state
+      setMessages(updatedMessages)
 
       // Close MR6 tool and show success message
       setActiveMRTool('none');

@@ -336,6 +336,27 @@ export const apiService = {
     ) =>
       api.post('/ai/multi-model', { userPrompt, conversationHistory, models }),
   },
+
+  /**
+   * Message Branches endpoints - Conversation branching for MR6/MR5
+   */
+  branches: {
+    // Create a new branch for an interaction
+    create: (interactionId: string, branchContent: string, source: 'mr6' | 'mr5' | 'manual', model?: string) =>
+      api.post('/branches', { interactionId, branchContent, source, model }),
+
+    // Get all branches for an interaction
+    getByInteraction: (interactionId: string) =>
+      api.get(`/branches/interaction/${interactionId}`),
+
+    // Update a branch (verify, modify, set as main)
+    update: (branchId: string, data: { wasVerified?: boolean; wasModified?: boolean; isMain?: boolean; content?: string }) =>
+      api.patch(`/branches/${branchId}`, data),
+
+    // Delete a branch
+    delete: (branchId: string) =>
+      api.delete(`/branches/${branchId}`),
+  },
 };
 
 export default api;
