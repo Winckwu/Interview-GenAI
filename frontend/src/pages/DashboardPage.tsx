@@ -39,10 +39,15 @@ const DashboardPage: React.FC = () => {
   }, [user?.id, fetchLatestAssessment]);
 
   useEffect(() => {
-    // Show welcome modal for first-time users without assessment
+    // Show welcome modal only ONCE for users without assessment
     if (user?.id && latestAssessment === null) {
+      const hasSeenModal = localStorage.getItem(`assessment_modal_shown_${user.id}`);
       const hasSkippedAssessment = localStorage.getItem(`assessment_skipped_${user.id}`);
-      if (!hasSkippedAssessment) {
+
+      // Only show if user has never seen the modal and hasn't skipped
+      if (!hasSeenModal && !hasSkippedAssessment) {
+        // Mark as shown immediately to prevent showing again on refresh
+        localStorage.setItem(`assessment_modal_shown_${user.id}`, 'true');
         // Delay showing modal slightly for better UX
         const timer = setTimeout(() => setShowWelcomeModal(true), 1000);
         return () => clearTimeout(timer);
