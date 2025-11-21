@@ -1573,7 +1573,7 @@ const ChatSessionPage: React.FC = () => {
   return (
     <>
       {/* Onboarding Tour for Chat Page */}
-      <OnboardingTour context="chat" />
+      <OnboardingTour context="chat" userCreatedAt={user?.createdAt} />
 
       {/* CSS overrides for MR components in sidebar - readable but compact */}
       <style>{`

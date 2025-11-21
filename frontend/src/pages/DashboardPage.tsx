@@ -174,7 +174,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="dashboard-page">
       {/* Onboarding Tour */}
-      <OnboardingTour context="dashboard" />
+      <OnboardingTour context="dashboard" userCreatedAt={user?.createdAt} />
 
       {/* Welcome Modal for First-time Users */}
       {showWelcomeModal && (

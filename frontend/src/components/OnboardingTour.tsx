@@ -6,6 +6,8 @@ interface OnboardingTourProps {
   context: 'dashboard' | 'chat';
   /** Callback when tour is completed or skipped */
   onComplete?: () => void;
+  /** User's account creation date (to determine if they're a new user) */
+  userCreatedAt?: string | Date;
 }
 
 /**
@@ -13,7 +15,7 @@ interface OnboardingTourProps {
  * Interactive first-time user guide using react-joyride
  * Highlights key features and guides users through the system
  */
-const OnboardingTour: React.FC<OnboardingTourProps> = ({ context, onComplete }) => {
+const OnboardingTour: React.FC<OnboardingTourProps> = ({ context, onComplete, userCreatedAt }) => {
   const [run, setRun] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -21,8 +23,26 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ context, onComplete }) 
   const TOUR_COMPLETED_KEY = `onboarding_tour_completed_${context}`;
   const TOUR_SKIPPED_KEY = `onboarding_tour_skipped_${context}`;
 
+  // Check if user is a new user (created within last 24 hours)
+  const isNewUser = () => {
+    if (!userCreatedAt) return true; // If no date provided, assume new user
+
+    const createdDate = new Date(userCreatedAt);
+    const now = new Date();
+    const hoursSinceCreation = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60);
+
+    // Only show tour for users created within last 24 hours
+    return hoursSinceCreation < 24;
+  };
+
   // Check if user has completed or skipped the tour
   useEffect(() => {
+    // Skip tour entirely if user account is older than 24 hours
+    if (!isNewUser()) {
+      console.log(`[OnboardingTour] Skipping tour - user account is older than 24 hours`);
+      return;
+    }
+
     const hasCompleted = localStorage.getItem(TOUR_COMPLETED_KEY) === 'true';
     const hasSkipped = localStorage.getItem(TOUR_SKIPPED_KEY) === 'true';
 
@@ -34,7 +54,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ context, onComplete }) 
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [TOUR_COMPLETED_KEY, TOUR_SKIPPED_KEY]);
+  }, [TOUR_COMPLETED_KEY, TOUR_SKIPPED_KEY, userCreatedAt]);
 
   // Define tour steps for Dashboard
   const dashboardSteps: Step[] = [
