@@ -290,6 +290,7 @@ const ChatSessionPage: React.FC = () => {
     updatingMessageId,
     editingMessageId,
     editedContent,
+    setEditedContent,
     currentPage,
     setCurrentPage,
     hasMoreMessages,

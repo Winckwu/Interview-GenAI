@@ -66,6 +66,7 @@ export interface UseMessagesReturn {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   setSuccessMessage: React.Dispatch<React.SetStateAction<string | null>>;
+  setEditedContent: React.Dispatch<React.SetStateAction<string>>;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   setHasMoreMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLoadingMore: React.Dispatch<React.SetStateAction<boolean>>;
@@ -462,6 +463,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     setMessages,
     setError,
     setSuccessMessage,
+    setEditedContent,
     setCurrentPage,
     setHasMoreMessages,
     setIsLoadingMore,
