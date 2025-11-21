@@ -484,7 +484,7 @@ const PatternsPage: React.FC = () => {
                     {/* Pattern info */}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ margin: '0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
-                        Pattern {p.patternType} · {(p.confidence * 100).toFixed(0)}% confidence
+                        Pattern {p.patternType} · {p.confidence !== undefined ? `${(p.confidence * 100).toFixed(0)}%` : 'N/A'} confidence
                       </p>
                       <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
                         {idx === 0 ? 'Current' : 'Previous'} • {new Date(p.updatedAt).toLocaleDateString()}
@@ -494,10 +494,10 @@ const PatternsPage: React.FC = () => {
                     {/* Metrics summary */}
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', fontSize: '0.75rem', color: '#6b7280' }}>
                       <div title="AI Reliance">
-                        {(p.aiRelianceScore * 100).toFixed(0)}% reliance
+                        {p.aiRelianceScore !== undefined ? `${(p.aiRelianceScore * 100).toFixed(0)}% reliance` : 'N/A'}
                       </div>
                       <div title="Verification Score">
-                        {(p.verificationScore * 100).toFixed(0)}% verified
+                        {p.verificationScore !== undefined ? `${(p.verificationScore * 100).toFixed(0)}% verified` : 'N/A'}
                       </div>
                     </div>
                   </div>
@@ -604,7 +604,7 @@ const PatternsPage: React.FC = () => {
               <div className="pattern-header">
                 <h3>Pattern {pattern.patternType}</h3>
                 <span className="pattern-badge">
-                  Confidence: {(pattern.confidence * 100).toFixed(0)}%
+                  Confidence: {pattern.confidence !== undefined ? `${(pattern.confidence * 100).toFixed(0)}%` : 'N/A'}
                   <InfoTooltip text="How confident the system is that this is your dominant pattern (0% = uncertain, 100% = very confident). Based on your interaction history." size="small" />
                 </span>
               </div>
@@ -619,7 +619,11 @@ const PatternsPage: React.FC = () => {
                     AI Reliance Score
                     <InfoTooltip text="How much you depend on AI for task completion (0% = no reliance, 100% = full dependence)." size="small" />
                   </span>
-                  <span className="value">{(pattern.aiRelianceScore * 100).toFixed(0)}%</span>
+                  <span className="value">
+                    {pattern.aiRelianceScore !== undefined
+                      ? `${(pattern.aiRelianceScore * 100).toFixed(0)}%`
+                      : 'N/A'}
+                  </span>
                   <span className="description">How much you depend on AI (lower is better for learning)</span>
                 </div>
                 <div className="metric">
@@ -627,7 +631,11 @@ const PatternsPage: React.FC = () => {
                     Verification Score
                     <InfoTooltip text="How thoroughly you verify AI outputs (0% = no verification, 100% = complete verification)." size="small" />
                   </span>
-                  <span className="value">{(pattern.verificationScore * 100).toFixed(0)}%</span>
+                  <span className="value">
+                    {pattern.verificationScore !== undefined
+                      ? `${(pattern.verificationScore * 100).toFixed(0)}%`
+                      : 'N/A'}
+                  </span>
                   <span className="description">How thoroughly you verify AI outputs (higher is better)</span>
                 </div>
                 <div className="metric">
@@ -635,7 +643,11 @@ const PatternsPage: React.FC = () => {
                     Context Switching
                     <InfoTooltip text="How often you change your approach within a task. Lower is more consistent, higher is more experimental." size="small" />
                   </span>
-                  <span className="value">{pattern.contextSwitchingFrequency.toFixed(2)} times/task</span>
+                  <span className="value">
+                    {pattern.contextSwitchingFrequency !== undefined
+                      ? `${pattern.contextSwitchingFrequency.toFixed(2)} times/task`
+                      : 'N/A'}
+                  </span>
                   <span className="description">How often you change strategy during tasks</span>
                 </div>
               </div>
