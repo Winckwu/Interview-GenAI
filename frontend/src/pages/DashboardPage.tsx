@@ -13,10 +13,14 @@ import InfoTooltip from '../components/InfoTooltip';
 import HoverTooltip from '../components/HoverTooltip';
 import OnboardingTour from '../components/OnboardingTour';
 import {
-  classifyMetacognitiveType,
+  predictPatternFromAssessment,
+  getPatternProfile,
   getMultiDimensionRecommendations,
+  getEffectivePattern,
+  analyzeCapabilityVsBehaviorGap,
+  hasSufficientBehavioralData,
   type DimensionScores,
-  type MetacognitiveTypeProfile
+  type BehavioralPattern
 } from '../utils/metacognitiveTypeSystem';
 import './DashboardPage.css';
 import '../styles/components.css';
@@ -543,41 +547,54 @@ const DashboardPage: React.FC = () => {
             )}
           </div>
 
-          {/* Metacognitive Type & Personalized Recommendations Section */}
+          {/* Behavioral Pattern & Personalized Recommendations Section */}
           {(() => {
             const dimensions = latestAssessment.responses.dimensions;
             if (!dimensions) return null;
 
-            // Extract dimension scores
-            const scores: DimensionScores = {
+            // Extract dimension scores from assessment
+            const assessmentScores: DimensionScores = {
               planning: dimensions.planning?.score || 0,
               monitoring: dimensions.monitoring?.score || 0,
               evaluation: dimensions.evaluation?.score || 0,
               regulation: dimensions.regulation?.score || 0,
             };
 
-            // Classify user's metacognitive type
-            const userType = classifyMetacognitiveType(scores);
+            // Determine effective pattern based on data availability
+            const detectedPattern = (dominantPattern as BehavioralPattern) || null;
+            const effectivePatternData = getEffectivePattern(assessmentScores, detectedPattern, totalSessions);
+            const currentPattern = effectivePatternData.pattern;
+            const patternSource = effectivePatternData.source;
+            const patternConfidence = effectivePatternData.confidence;
+
+            // Get pattern profile
+            const patternProfile = getPatternProfile(currentPattern);
+
+            // Get gap analysis if we have both assessment and detected pattern
+            const gapAnalysis = (patternSource === 'detected' && detectedPattern)
+              ? analyzeCapabilityVsBehaviorGap(assessmentScores, detectedPattern)
+              : null;
 
             // Get recommendations (multi-dimension aware)
-            const recommendations = getMultiDimensionRecommendations(scores);
+            const dimensionRecommendations = getMultiDimensionRecommendations(assessmentScores);
 
-            // If no weak dimensions, use type-based recommendations
-            const finalRecommendations = recommendations.length > 0
-              ? recommendations
-              : userType.recommendedMRs.slice(0, 2);
+            // If no weak dimensions, use pattern-based recommendations
+            const finalRecommendations = dimensionRecommendations.length > 0
+              ? dimensionRecommendations
+              : patternProfile.recommendedMRs.slice(0, 2);
 
             return (
               <div style={{ marginBottom: '2rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                {/* Metacognitive Type Display */}
+                {/* Behavioral Pattern Display */}
                 <div style={{
                   backgroundColor: '#fff',
                   borderRadius: '12px',
                   padding: '2rem',
                   marginBottom: '1.5rem',
-                  border: `3px solid ${userType.color}`,
+                  border: `3px solid ${patternProfile.color}`,
                   boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)'
                 }}>
+                  {/* Pattern Header with Source Badge */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
                     <div style={{
                       fontSize: '3rem',
@@ -586,66 +603,125 @@ const DashboardPage: React.FC = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      backgroundColor: `${userType.color}20`,
+                      backgroundColor: `${patternProfile.color}20`,
                       borderRadius: '16px',
                     }}>
-                      {userType.icon}
+                      {patternProfile.icon}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
                         <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700', color: '#1f2937' }}>
-                          Your Metacognitive Type: <span style={{ color: userType.color }}>{userType.nameCN}</span>
+                          Your AI Usage Pattern: <span style={{ color: patternProfile.color }}>{patternProfile.nameCN}</span>
                         </h2>
                         <span style={{
                           padding: '0.25rem 0.75rem',
-                          backgroundColor: userType.color,
+                          backgroundColor: patternProfile.color,
                           color: 'white',
                           borderRadius: '12px',
                           fontSize: '0.875rem',
                           fontWeight: '600',
                         }}>
-                          Type {userType.type}
+                          Pattern {patternProfile.pattern}
+                        </span>
+                        <span style={{
+                          padding: '0.25rem 0.75rem',
+                          backgroundColor: patternSource === 'detected' ? '#10b981' : patternSource === 'predicted' ? '#f59e0b' : '#6b7280',
+                          color: 'white',
+                          borderRadius: '12px',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                        }}>
+                          {patternSource === 'detected' ? '🎯 Detected from Behavior' : patternSource === 'predicted' ? '🔮 Predicted from Assessment' : '📋 Default'}
                         </span>
                       </div>
                       <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
-                        {userType.name}
+                        {patternProfile.descriptionCN}
                       </p>
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
-                    {/* Characteristics */}
-                    <div>
-                      <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937', textTransform: 'uppercase' }}>
-                        💡 Type Characteristics
-                      </h3>
-                      <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
-                        {userType.characteristicsCN.map((char, idx) => (
-                          <li key={idx}>{char}</li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Strengths & Challenges */}
-                    <div>
-                      <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#10b981', textTransform: 'uppercase' }}>
-                        ✅ Strengths
-                      </h3>
-                      <ul style={{ margin: '0 0 1rem 0', paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
-                        {userType.strengthsCN.slice(0, 2).map((strength, idx) => (
-                          <li key={idx}>{strength}</li>
-                        ))}
-                      </ul>
-                      <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#f59e0b', textTransform: 'uppercase' }}>
-                        ⚠️ Growth Areas
-                      </h3>
-                      <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
-                        {userType.challengesCN.slice(0, 2).map((challenge, idx) => (
-                          <li key={idx}>{challenge}</li>
-                        ))}
-                      </ul>
-                    </div>
+                  {/* Pattern Characteristics */}
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937', textTransform: 'uppercase' }}>
+                      💡 Pattern Characteristics
+                    </h3>
+                    <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
+                      {patternProfile.characteristicsCN.map((char, idx) => (
+                        <li key={idx}>{char}</li>
+                      ))}
+                    </ul>
                   </div>
+
+                  {/* Risk Level Indicator */}
+                  {patternProfile.riskLevel === 'high' && (
+                    <div style={{
+                      marginTop: '1.5rem',
+                      padding: '1.25rem',
+                      backgroundColor: '#fef2f2',
+                      borderRadius: '8px',
+                      border: '2px solid #ef4444',
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                        <span style={{ fontSize: '1.25rem' }}>⚠️</span>
+                        <h3 style={{ margin: 0, fontSize: '0.875rem', fontWeight: '600', color: '#991b1b', textTransform: 'uppercase' }}>
+                          High Risk Alert
+                        </h3>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '0.875rem', color: '#7f1d1d' }}>
+                        您的使用模式显示过度依赖AI的迹象。建议立即采取措施提升独立思考和验证能力。
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Gap Analysis: Potential Capability vs Actual Behavior */}
+                  {gapAnalysis && (
+                    <div style={{
+                      marginTop: '1.5rem',
+                      padding: '1.25rem',
+                      backgroundColor: gapAnalysis.gapType === 'underperforming' ? '#fef3c7' : gapAnalysis.gapType === 'overperforming' ? '#d1fae5' : '#f0f9ff',
+                      borderRadius: '8px',
+                      border: `2px solid ${gapAnalysis.gapType === 'underperforming' ? '#f59e0b' : gapAnalysis.gapType === 'overperforming' ? '#10b981' : '#0ea5e9'}`,
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                        <span style={{ fontSize: '1.25rem' }}>
+                          {gapAnalysis.gapType === 'aligned' ? '✅' : gapAnalysis.gapType === 'underperforming' ? '⚠️' : '🌟'}
+                        </span>
+                        <h3 style={{ margin: 0, fontSize: '0.875rem', fontWeight: '600', color: gapAnalysis.gapType === 'underperforming' ? '#92400e' : gapAnalysis.gapType === 'overperforming' ? '#065f46' : '#0369a1', textTransform: 'uppercase' }}>
+                          Capability vs Behavior Analysis
+                        </h3>
+                        <span style={{
+                          padding: '0.15rem 0.5rem',
+                          backgroundColor: gapAnalysis.gapType === 'underperforming' ? '#f59e0b' : gapAnalysis.gapType === 'overperforming' ? '#10b981' : '#0ea5e9',
+                          color: 'white',
+                          borderRadius: '8px',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                        }}>
+                          {gapAnalysis.gapType === 'aligned' ? '完全对齐' : gapAnalysis.gapType === 'underperforming' ? '能力未充分发挥' : '超预期表现'}
+                        </span>
+                      </div>
+                      <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
+                        预测模式: Pattern {gapAnalysis.predictedPattern} → 实际行为: Pattern {gapAnalysis.actualPattern}
+                      </p>
+                      <ul style={{ margin: '0 0 0.75rem 0', paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
+                        {gapAnalysis.insightsCN.map((insight, idx) => (
+                          <li key={idx}>{insight}</li>
+                        ))}
+                      </ul>
+                      {gapAnalysis.recommendationsCN.length > 0 && (
+                        <>
+                          <h4 style={{ margin: '0.75rem 0 0.5rem 0', fontSize: '0.8125rem', fontWeight: '600', color: '#1f2937', textTransform: 'uppercase' }}>
+                            💡 Recommendations
+                          </h4>
+                          <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.875rem', lineHeight: '1.8' }}>
+                            {gapAnalysis.recommendationsCN.map((rec, idx) => (
+                              <li key={idx}>{rec}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* MR Recommendations */}
@@ -663,8 +739,8 @@ const DashboardPage: React.FC = () => {
                         Recommended for You
                       </h2>
                     </div>
-                    <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.95rem', opacity: 0.95 }}>
-                      Based on your <strong>{userType.nameCN}</strong> profile, we recommend these MR features to help you grow
+                    <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.95rem', opacity: 0.95' }}>
+                      Based on your <strong>{patternProfile.nameCN}</strong> pattern, we recommend these MR features to help you grow
                     </p>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
