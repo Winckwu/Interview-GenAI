@@ -160,27 +160,64 @@ router.post(
     const id = uuidv4();
     const now = new Date();
 
-    // Calculate score based on responses (simple scoring logic)
-    const responseValues = Object.values(responses || {}) as any[];
-    const score = responseValues.length > 0
-      ? Math.round((responseValues.filter((v: any) => v).length / responseValues.length) * 100)
-      : 0;
-
-    // Identify pattern based on responses
-    const patternMap: Record<string, string> = {
-      'high_verification': 'A',
-      'iterative_learning': 'B',
-      'adaptive': 'C',
-      'critical_thinking': 'D',
-      'pedagogical': 'E',
-      'passive': 'F',
-    };
-
+    // Calculate score based on responses
+    // Support both legacy simple format and new MR19 metacognitive format
+    let score = 0;
     let pattern = 'A';
-    for (const [key, value] of Object.entries(responses || {})) {
-      if (value && patternMap[key]) {
-        pattern = patternMap[key];
-        break;
+
+    if (responses?.dimensions) {
+      // MR19 metacognitive assessment format
+      // Calculate average score across 4 dimensions (Planning, Monitoring, Evaluation, Regulation)
+      const dimensions = responses.dimensions;
+      const dimensionScores = Object.values(dimensions).map((dim: any) => dim.score || 0);
+      score = dimensionScores.length > 0
+        ? Math.round((dimensionScores.reduce((a: number, b: number) => a + b, 0) / dimensionScores.length) * 100)
+        : 0;
+
+      // Map metacognitive profile to pattern (based on strongest dimension)
+      const dimensionNames = Object.keys(dimensions);
+      let maxScore = 0;
+      let strongestDimension = 'planning';
+
+      dimensionNames.forEach((name: string) => {
+        const dimScore = dimensions[name]?.score || 0;
+        if (dimScore > maxScore) {
+          maxScore = dimScore;
+          strongestDimension = name;
+        }
+      });
+
+      // Map metacognitive strengths to AI usage patterns
+      const metacognitiveToPattern: Record<string, string> = {
+        'planning': 'A',      // Strategic Decomposition & Control
+        'monitoring': 'B',    // Iterative Refinement & Verification
+        'evaluation': 'D',    // Critical Evaluation & Comparison
+        'regulation': 'C',    // Adaptive Learning & Flexibility
+      };
+
+      pattern = metacognitiveToPattern[strongestDimension] || 'A';
+    } else {
+      // Legacy simple format (for backward compatibility)
+      const responseValues = Object.values(responses || {}) as any[];
+      score = responseValues.length > 0
+        ? Math.round((responseValues.filter((v: any) => v).length / responseValues.length) * 100)
+        : 0;
+
+      // Identify pattern based on responses (legacy logic)
+      const patternMap: Record<string, string> = {
+        'high_verification': 'A',
+        'iterative_learning': 'B',
+        'adaptive': 'C',
+        'critical_thinking': 'D',
+        'pedagogical': 'E',
+        'passive': 'F',
+      };
+
+      for (const [key, value] of Object.entries(responses || {})) {
+        if (value && patternMap[key]) {
+          pattern = patternMap[key];
+          break;
+        }
       }
     }
 
