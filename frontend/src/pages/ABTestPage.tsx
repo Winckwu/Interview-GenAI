@@ -141,7 +141,22 @@ const ABTestPage: React.FC = () => {
                 <XAxis dataKey="strategy" />
                 <YAxis yAxisId="left" label={{ value: 'Success Rate (%)', angle: -90, position: 'insideLeft' }} />
                 <YAxis yAxisId="right" orientation="right" label={{ value: 'Satisfaction (0-5)', angle: 90, position: 'insideRight' }} />
-                <Tooltip />
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: '12px',
+                    border: 'none',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                    background: 'linear-gradient(135deg, #1f2937 0%, #374151 100%)',
+                    backdropFilter: 'blur(8px)',
+                  }}
+                  labelStyle={{
+                    color: '#f9fafb',
+                    fontWeight: 600,
+                  }}
+                  itemStyle={{
+                    color: '#e5e7eb',
+                  }}
+                />
                 <Legend />
                 <Bar yAxisId="left" dataKey="successRate" fill="#3b82f6" name="Success Rate (%)" />
                 <Bar yAxisId="right" dataKey="satisfaction" fill="#10b981" name="Satisfaction (0-5)" />

@@ -73,7 +73,22 @@ const EvolutionTrackingPage: React.FC = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="week" />
               <YAxis />
-              <Tooltip />
+              <Tooltip
+                contentStyle={{
+                  borderRadius: '12px',
+                  border: 'none',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                  background: 'linear-gradient(135deg, #1f2937 0%, #374151 100%)',
+                  backdropFilter: 'blur(8px)',
+                }}
+                labelStyle={{
+                  color: '#f9fafb',
+                  fontWeight: 600,
+                }}
+                itemStyle={{
+                  color: '#e5e7eb',
+                }}
+              />
               <Legend />
               <Line type="monotone" dataKey="changes" stroke="#3b82f6" strokeWidth={2} name="Total Changes" />
               <Line type="monotone" dataKey="improvements" stroke="#10b981" strokeWidth={2} name="Improvements" />

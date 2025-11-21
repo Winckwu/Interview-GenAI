@@ -8,80 +8,9 @@ import { useAnalytics, usePatternStats } from '../hooks/useAnalytics';
 import { apiService } from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ChartSkeleton, { ChartSkeletonGroup } from '../components/ChartSkeleton';
+import InfoTooltip from '../components/InfoTooltip';
 import './DashboardPage.css';
 import '../styles/components.css';
-
-/**
- * Tooltip Component for Info Icons
- * Accessible to both mouse and keyboard users
- */
-interface InfoTooltipProps {
-  text: string;
-}
-
-const InfoTooltip: React.FC<InfoTooltipProps> = ({ text }) => {
-  const [show, setShow] = useState(false);
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      setShow(!show);
-    } else if (e.key === 'Escape') {
-      setShow(false);
-    }
-  };
-
-  return (
-    <div
-      className="info-tooltip"
-      onMouseEnter={() => setShow(true)}
-      onMouseLeave={() => setShow(false)}
-    >
-      <div
-        className="tooltip-icon"
-        role="button"
-        tabIndex={0}
-        aria-label="More information"
-        aria-expanded={show}
-        onKeyDown={handleKeyDown}
-        onClick={() => setShow(!show)}
-      >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="info-icon-svg"
-        >
-          <circle
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-            className="info-circle"
-          />
-          <path
-            d="M12 16V12M12 8H12.01"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="info-mark"
-          />
-        </svg>
-      </div>
-      {show && (
-        <div className="tooltip-content" role="tooltip">
-          {text}
-          <div className="tooltip-arrow" />
-        </div>
-      )}
-    </div>
-  );
-};
 
 /**
  * Dashboard Page

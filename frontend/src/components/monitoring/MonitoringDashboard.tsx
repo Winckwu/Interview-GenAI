@@ -12,6 +12,7 @@
 import React, { useState, useEffect } from 'react';
 import { metricsCollector, SystemMetrics, SessionMetrics, SystemAlert } from '../../utils/MetricsCollector';
 import { useMetricsStore } from '../../stores/metricsStore';
+import InfoTooltip from '../InfoTooltip';
 import './MonitoringDashboard.css';
 
 // KPI Tooltip Descriptions
@@ -114,8 +115,11 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
       {/* KPI Cards */}
       <div className="kpi-grid">
         {/* Compliance Rate */}
-        <div className="kpi-card" title={KPI_TOOLTIPS.compliance}>
-          <div className="kpi-label">✅ Compliance Rate</div>
+        <div className="kpi-card">
+          <div className="kpi-label">
+            ✅ Compliance Rate
+            <InfoTooltip text={KPI_TOOLTIPS.compliance} size="small" />
+          </div>
           <div className="kpi-value">
             {sessionMetrics
               ? `${(sessionMetrics.complianceRate * 100).toFixed(1)}%`
@@ -141,8 +145,11 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
         </div>
 
         {/* Dismissal Rate */}
-        <div className="kpi-card" title={KPI_TOOLTIPS.dismissal}>
-          <div className="kpi-label">❌ Dismissal Rate</div>
+        <div className="kpi-card">
+          <div className="kpi-label">
+            ❌ Dismissal Rate
+            <InfoTooltip text={KPI_TOOLTIPS.dismissal} size="small" />
+          </div>
           <div className="kpi-value">
             {sessionMetrics
               ? `${(sessionMetrics.dismissalRate * 100).toFixed(1)}%`
@@ -168,8 +175,11 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
         </div>
 
         {/* Engagement Rate */}
-        <div className="kpi-card" title={KPI_TOOLTIPS.engagement}>
-          <div className="kpi-label">👥 Engagement Rate</div>
+        <div className="kpi-card">
+          <div className="kpi-label">
+            👥 Engagement Rate
+            <InfoTooltip text={KPI_TOOLTIPS.engagement} size="small" />
+          </div>
           <div className="kpi-value">
             {sessionMetrics
               ? `${(sessionMetrics.engagementRate * 100).toFixed(1)}%`
@@ -190,8 +200,11 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
         </div>
 
         {/* Override Rate */}
-        <div className="kpi-card" title={KPI_TOOLTIPS.override}>
-          <div className="kpi-label">🚀 Override Rate</div>
+        <div className="kpi-card">
+          <div className="kpi-label">
+            🚀 Override Rate
+            <InfoTooltip text={KPI_TOOLTIPS.override} size="small" />
+          </div>
           <div className="kpi-value">
             {sessionMetrics
               ? `${(sessionMetrics.overrideRate * 100).toFixed(1)}%`
@@ -213,8 +226,11 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
 
         {/* Fatigue Score */}
         {sessionMetrics && (
-          <div className="kpi-card" title={KPI_TOOLTIPS.fatigue}>
-            <div className="kpi-label">😴 Fatigue Score</div>
+          <div className="kpi-card">
+            <div className="kpi-label">
+              😴 Fatigue Score
+              <InfoTooltip text={KPI_TOOLTIPS.fatigue} size="small" />
+            </div>
             <div className="kpi-value">
               {sessionMetrics.avgFatigueScore.toFixed(0)} / 100
             </div>
@@ -234,8 +250,11 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
 
         {/* Detection Count */}
         {sessionMetrics && (
-          <div className="kpi-card" title={KPI_TOOLTIPS.detections}>
-            <div className="kpi-label">🎯 Detections</div>
+          <div className="kpi-card">
+            <div className="kpi-label">
+              🎯 Detections
+              <InfoTooltip text={KPI_TOOLTIPS.detections} size="small" />
+            </div>
             <div className="kpi-value">{sessionMetrics.totalDetections}</div>
             <div className="kpi-detail">
               Avg confidence: {(sessionMetrics.averageConfidence * 100).toFixed(1)}%
@@ -246,8 +265,11 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
         {/* System Health */}
         {systemMetrics && !sessionMetrics && (
           <>
-            <div className="kpi-card" title={KPI_TOOLTIPS.completion}>
-              <div className="kpi-label">🏥 Completion Rate</div>
+            <div className="kpi-card">
+              <div className="kpi-label">
+                🏥 Completion Rate
+                <InfoTooltip text={KPI_TOOLTIPS.completion} size="small" />
+              </div>
               <div className="kpi-value">
                 {(systemMetrics.completionRate * 100).toFixed(1)}%
               </div>
@@ -261,8 +283,11 @@ export const MonitoringDashboard: React.FC<MonitoringDashboardProps> = ({
               </div>
             </div>
 
-            <div className="kpi-card" title={KPI_TOOLTIPS.latency}>
-              <div className="kpi-label">⏱️ Detection Latency (P95)</div>
+            <div className="kpi-card">
+              <div className="kpi-label">
+                ⏱️ Detection Latency (P95)
+                <InfoTooltip text={KPI_TOOLTIPS.latency} size="small" />
+              </div>
               <div className="kpi-value">{systemMetrics.p95DetectionLatency.toFixed(0)}ms</div>
               <div className="kpi-detail">
                 P50: {systemMetrics.p50DetectionLatency.toFixed(0)}ms | P99:{' '}

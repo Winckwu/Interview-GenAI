@@ -1,0 +1,255 @@
+/* ===========================
+   Modern InfoTooltip Component Styles
+   =========================== */
+
+/* Base Tooltip Container */
+.info-tooltip {
+  display: inline-block;
+  position: relative;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Tooltip Icon Button */
+.tooltip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  position: relative;
+}
+
+/* Icon Sizes */
+.tooltip-icon--small {
+  width: 20px;
+  height: 20px;
+}
+
+.tooltip-icon--medium {
+  width: 24px;
+  height: 24px;
+}
+
+.tooltip-icon--large {
+  width: 28px;
+  height: 28px;
+}
+
+/* Hover Effects */
+.tooltip-icon:hover {
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.tooltip-icon:active {
+  transform: scale(1.05) rotate(2deg);
+}
+
+/* Focus State for Keyboard Navigation */
+.tooltip-icon:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+/* SVG Icon */
+.info-icon-svg {
+  color: white;
+  transition: all 0.3s ease;
+}
+
+/* Animated Circle on Hover */
+.tooltip-icon:hover .info-circle {
+  stroke-dasharray: 63;
+  stroke-dashoffset: 0;
+  animation: dash 0.6s ease-in-out;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 63;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Animated Info Mark on Hover */
+.tooltip-icon:hover .info-mark {
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Tooltip Content Container */
+.tooltip-content {
+  position: absolute;
+  width: 280px;
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  text-transform: none;
+  animation: tooltipFadeIn 0.2s ease-out;
+  backdrop-filter: blur(8px);
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Placement Variations */
+.tooltip-content--top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 12px;
+}
+
+.tooltip-content--bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px;
+}
+
+.tooltip-content--left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 12px;
+}
+
+.tooltip-content--right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 12px;
+}
+
+/* Fade In Animation */
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Bottom placement animation */
+.tooltip-content--bottom {
+  animation: tooltipFadeInBottom 0.2s ease-out;
+}
+
+@keyframes tooltipFadeInBottom {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Left placement animation */
+.tooltip-content--left {
+  animation: tooltipFadeInLeft 0.2s ease-out;
+}
+
+@keyframes tooltipFadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* Right placement animation */
+.tooltip-content--right {
+  animation: tooltipFadeInRight 0.2s ease-out;
+}
+
+@keyframes tooltipFadeInRight {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* Tooltip Arrow */
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Arrow Placement Variations */
+.tooltip-arrow--top {
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #1f2937;
+}
+
+.tooltip-arrow--bottom {
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #1f2937;
+}
+
+.tooltip-arrow--left {
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid #1f2937;
+}
+
+.tooltip-arrow--right {
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #1f2937;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  .tooltip-content {
+    width: 240px;
+    font-size: 0.7rem;
+    padding: 10px 14px;
+  }
+}
