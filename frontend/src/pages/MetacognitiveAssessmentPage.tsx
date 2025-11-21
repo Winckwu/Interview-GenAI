@@ -473,7 +473,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
     setSelectedHistoryId(assessment.id);
     setShowNewAssessment(false);
     setAssessmentCompleted(true);
-    setShowHistory(false);
+    // Removed setShowHistory(false) - keep history list open for easy browsing
   };
 
   return (
