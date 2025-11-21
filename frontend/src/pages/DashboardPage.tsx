@@ -11,6 +11,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import ChartSkeleton, { ChartSkeletonGroup } from '../components/ChartSkeleton';
 import InfoTooltip from '../components/InfoTooltip';
 import HoverTooltip from '../components/HoverTooltip';
+import OnboardingTour from '../components/OnboardingTour';
 import './DashboardPage.css';
 import '../styles/components.css';
 
@@ -172,6 +173,9 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="dashboard-page">
+      {/* Onboarding Tour */}
+      <OnboardingTour context="dashboard" />
+
       {/* Welcome Modal for First-time Users */}
       {showWelcomeModal && (
         <div className="welcome-modal-overlay" onClick={handleSkipAssessment}>
@@ -256,8 +260,138 @@ const DashboardPage: React.FC = () => {
         )}
       </div>
 
+      {/* Quick Start Guide Card */}
+      <div className="dashboard-container" style={{ marginBottom: '2rem' }} data-tour="quick-start">
+        <div style={{
+          backgroundColor: '#f0f9ff',
+          border: '2px solid #0ea5e9',
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            <span style={{ fontSize: '2rem' }}>🎯</span>
+            <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700', color: '#0369a1' }}>
+              Quick Start Guide
+            </h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+            {/* Step 1: Start Chat */}
+            <div style={{
+              backgroundColor: '#ffffff',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #e0f2fe',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => navigate('/chat')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            >
+              <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>📝</div>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem', fontWeight: '600', color: '#0c4a6e' }}>
+                1. Start Conversation
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#0369a1', lineHeight: '1.5' }}>
+                Go to AI Chat and begin interacting with the system
+              </p>
+            </div>
+
+            {/* Step 2: Complete Assessment */}
+            <div style={{
+              backgroundColor: '#ffffff',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #e0f2fe',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => navigate('/assessment')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            >
+              <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🧠</div>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem', fontWeight: '600', color: '#0c4a6e' }}>
+                2. Complete Assessment
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#0369a1', lineHeight: '1.5' }}>
+                Take the MR19 metacognitive capability evaluation
+              </p>
+            </div>
+
+            {/* Step 3: View Patterns */}
+            <div style={{
+              backgroundColor: '#ffffff',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #e0f2fe',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => navigate('/patterns')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            >
+              <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>📊</div>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem', fontWeight: '600', color: '#0c4a6e' }}>
+                3. Understand Patterns
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#0369a1', lineHeight: '1.5' }}>
+                Discover your AI usage pattern (A-F)
+              </p>
+            </div>
+
+            {/* Step 4: Accept Interventions */}
+            <div style={{
+              backgroundColor: '#ffffff',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #e0f2fe',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            >
+              <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>💡</div>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem', fontWeight: '600', color: '#0c4a6e' }}>
+                4. Receive Interventions
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#0369a1', lineHeight: '1.5' }}>
+                Get intelligent MR recommendations to improve
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Key Metrics Cards */}
-      <div className="metrics-section">
+      <div className="metrics-section" data-tour="metrics">
         <div className="metrics-grid">
           {loading ? (
             <>

@@ -164,6 +164,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
               <Link
                 to={item.path}
                 className={`sidebar-link ${isActive(item.path) ? 'active' : ''}`}
+                data-tour={
+                  item.path === '/chat' ? 'sidebar-chat' :
+                  item.path === '/patterns' ? 'sidebar-patterns' :
+                  item.path === '/help' ? 'sidebar-help' :
+                  undefined
+                }
               >
                 <span className="nav-icon">{getIcon(item.icon)}</span>
                 {isOpen && <span className="nav-label">{item.label}</span>}
