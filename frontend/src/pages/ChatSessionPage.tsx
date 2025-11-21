@@ -906,9 +906,10 @@ const ChatSessionPage: React.FC = () => {
       '或者', '另一种', 'or you could', 'alternatively', 'or'
     ];
 
-    const hasMultipleOptions = multiOptionIndicators.filter(
+    // Lower threshold: only need 1 indicator instead of 2
+    const hasMultipleOptions = multiOptionIndicators.some(
       indicator => content.includes(indicator)
-    ).length >= 2;
+    );
 
     return hasMultipleOptions;
   }, [messages, comparisonSuggestedMessages]);
