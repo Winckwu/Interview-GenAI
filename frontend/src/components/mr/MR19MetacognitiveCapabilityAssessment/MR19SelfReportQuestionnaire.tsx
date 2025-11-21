@@ -99,15 +99,34 @@ export const MR19SelfReportQuestionnaire: React.FC<Props> = ({
   const handleNext = () => {
     if (currentCategoryIndex < categories.length - 1) {
       setCurrentCategory(categories[currentCategoryIndex + 1]);
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Scroll to category header after a short delay to ensure DOM update
+      setTimeout(() => {
+        const categoryHeader = document.querySelector('.category-header');
+        if (categoryHeader) {
+          categoryHeader.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start', // Align to top of viewport
+          });
+        }
+      }, 100);
     }
   };
 
   const handlePrevious = () => {
     if (currentCategoryIndex > 0) {
       setCurrentCategory(categories[currentCategoryIndex - 1]);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Scroll to category header after a short delay to ensure DOM update
+      setTimeout(() => {
+        const categoryHeader = document.querySelector('.category-header');
+        if (categoryHeader) {
+          categoryHeader.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start', // Align to top of viewport
+          });
+        }
+      }, 100);
     }
   };
 
