@@ -252,6 +252,127 @@
   border-right: 6px solid #1f2937;
 }
 
+/* ===========================
+   Tooltip Variants (Colors)
+   =========================== */
+
+/* Warning Variant (Yellow/Orange) */
+.tooltip-icon--warning {
+  background: rgba(251, 191, 36, 0.1);
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.2);
+}
+
+.tooltip-icon--warning:hover {
+  background: rgba(251, 191, 36, 0.15);
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.4);
+}
+
+.tooltip-icon--warning:focus {
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.4);
+}
+
+.tooltip-icon--warning .info-icon-svg {
+  color: #f59e0b;
+}
+
+.tooltip-content--warning {
+  background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+}
+
+.tooltip-arrow--warning.tooltip-arrow--top {
+  border-top-color: #78350f;
+}
+
+.tooltip-arrow--warning.tooltip-arrow--bottom {
+  border-bottom-color: #78350f;
+}
+
+.tooltip-arrow--warning.tooltip-arrow--left {
+  border-left-color: #78350f;
+}
+
+.tooltip-arrow--warning.tooltip-arrow--right {
+  border-right-color: #78350f;
+}
+
+/* Error Variant (Red) */
+.tooltip-icon--error {
+  background: rgba(239, 68, 68, 0.1);
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
+}
+
+.tooltip-icon--error:hover {
+  background: rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.4);
+}
+
+.tooltip-icon--error:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
+}
+
+.tooltip-icon--error .info-icon-svg {
+  color: #dc2626;
+}
+
+.tooltip-content--error {
+  background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+}
+
+.tooltip-arrow--error.tooltip-arrow--top {
+  border-top-color: #7f1d1d;
+}
+
+.tooltip-arrow--error.tooltip-arrow--bottom {
+  border-bottom-color: #7f1d1d;
+}
+
+.tooltip-arrow--error.tooltip-arrow--left {
+  border-left-color: #7f1d1d;
+}
+
+.tooltip-arrow--error.tooltip-arrow--right {
+  border-right-color: #7f1d1d;
+}
+
+/* Success Variant (Green) */
+.tooltip-icon--success {
+  background: rgba(34, 197, 94, 0.1);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.2);
+}
+
+.tooltip-icon--success:hover {
+  background: rgba(34, 197, 94, 0.15);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+}
+
+.tooltip-icon--success:focus {
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4);
+}
+
+.tooltip-icon--success .info-icon-svg {
+  color: #16a34a;
+}
+
+.tooltip-content--success {
+  background: linear-gradient(135deg, #14532d 0%, #166534 100%);
+}
+
+.tooltip-arrow--success.tooltip-arrow--top {
+  border-top-color: #14532d;
+}
+
+.tooltip-arrow--success.tooltip-arrow--bottom {
+  border-bottom-color: #14532d;
+}
+
+.tooltip-arrow--success.tooltip-arrow--left {
+  border-left-color: #14532d;
+}
+
+.tooltip-arrow--success.tooltip-arrow--right {
+  border-right-color: #14532d;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 640px) {
   .tooltip-content {

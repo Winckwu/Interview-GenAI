@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import InfoTooltip from './InfoTooltip';
 import './UncertaintyIndicator.css';
 
 /**
@@ -167,8 +168,14 @@ const UncertaintyIndicator: React.FC<UncertaintyIndicatorProps> = ({
 
           {/* High-Risk Domain Badge */}
           {isHighRisk && (
-            <span className="high-risk-badge" title="High-risk domain: Medical, Legal, or Financial">
+            <span className="high-risk-badge">
               ⚠ {taskType.toUpperCase()}
+              <InfoTooltip
+                text="High-risk domain: Medical, Legal, or Financial. Extra verification strongly recommended."
+                variant="warning"
+                size="small"
+                placement="top"
+              />
             </span>
           )}
 
