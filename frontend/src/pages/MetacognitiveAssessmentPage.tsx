@@ -23,11 +23,24 @@ const MetacognitiveAssessmentPage: React.FC = () => {
   const [profile, setProfile] = useState<MetacognitiveProfile | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  // 12-dimensional metacognitive behavior analysis (P1-P4, M1-M3, E1-E3, R1-R2)
   const [behaviorHistory, setBehaviorHistory] = useState<any[]>([
-    { type: 'plan', count: 0, effectiveness: 0.5 },
-    { type: 'monitor', count: 0, effectiveness: 0.5 },
-    { type: 'evaluate', count: 0, effectiveness: 0.5 },
-    { type: 'regulate', count: 0, effectiveness: 0.5 },
+    // Planning dimensions
+    { type: 'p1', label: 'Task Decomposition', count: 0, score: 0 },
+    { type: 'p2', label: 'Goal Setting', count: 0, score: 0 },
+    { type: 'p3', label: 'Strategy Selection', count: 0, score: 0 },
+    { type: 'p4', label: 'Resource Planning', count: 0, score: 0 },
+    // Monitoring dimensions
+    { type: 'm1', label: 'Progress Tracking', count: 0, score: 0 },
+    { type: 'm2', label: 'Quality Checking', count: 0, score: 0 },
+    { type: 'm3', label: 'Context Monitoring', count: 0, score: 0 },
+    // Evaluation dimensions
+    { type: 'e1', label: 'Result Evaluation', count: 0, score: 0 },
+    { type: 'e2', label: 'Learning Reflection', count: 0, score: 0 },
+    { type: 'e3', label: 'Capability Judgment', count: 0, score: 0 },
+    // Regulation dimensions
+    { type: 'r1', label: 'Strategy Adjustment', count: 0, score: 0 },
+    { type: 'r2', label: 'Trust Calibration', count: 0, score: 0 },
   ]);
   const [loadingBehavior, setLoadingBehavior] = useState(true);
 
@@ -46,21 +59,32 @@ const MetacognitiveAssessmentPage: React.FC = () => {
           const response = await apiService.sessions.getAll({ limit: 100, includeInteractions: true });
           const sessionsWithInteractions = response.data.data?.sessions || [];
 
-          // Analyze interactions to calculate real behavior metrics
+          // Analyze interactions to calculate 12-dimensional metacognitive metrics
           let totalInteractions = 0;
           let verifiedCount = 0;
           let modifiedCount = 0;
           let rejectedCount = 0;
-          let planningBehaviors = 0;
-          let monitoringBehaviors = 0;
-          let evaluationBehaviors = 0;
-          let regulationBehaviors = 0;
+
+          // 12-dimensional counters
+          const dimensionCounts = {
+            p1: 0, p2: 0, p3: 0, p4: 0,  // Planning
+            m1: 0, m2: 0, m3: 0,          // Monitoring
+            e1: 0, e2: 0, e3: 0,          // Evaluation
+            r1: 0, r2: 0,                 // Regulation
+          };
+
+          // Track strategy diversity for P3
+          const strategies = new Set<string>();
+          // Track task types for M3 (context monitoring)
+          const taskTypes = new Map<string, number>();
+          // Track iteration patterns for R1
+          let iterationCount = 0;
 
           sessionsWithInteractions.forEach((session: any) => {
             const interactions = session.interactions || [];
             totalInteractions += interactions.length;
 
-            interactions.forEach((interaction: any) => {
+            interactions.forEach((interaction: any, idx: number) => {
               // Count verification/modification/rejection behaviors
               if (interaction.wasVerified) verifiedCount++;
               if (interaction.wasModified) modifiedCount++;
@@ -68,55 +92,193 @@ const MetacognitiveAssessmentPage: React.FC = () => {
 
               // Analyze prompt content for metacognitive patterns
               const prompt = (interaction.userPrompt || '').toLowerCase();
+              const promptLength = (interaction.userPrompt || '').trim().split(/\s+/).length;
 
-              // Planning indicators
-              if (prompt.includes('plan') || prompt.includes('step') || prompt.includes('how to') ||
-                  prompt.includes('strategy') || prompt.includes('approach')) {
-                planningBehaviors++;
+              // === PLANNING DIMENSIONS ===
+
+              // P1: Task Decomposition - detect structured, multi-step planning
+              if (prompt.match(/步骤|step\s*\d|first.*then|列出|list|分解|break.*down/) ||
+                  prompt.match(/\d+[.、)]\s*\w+/) || // numbered lists
+                  prompt.includes('how to') && promptLength > 15) {
+                dimensionCounts.p1++;
               }
 
-              // Monitoring indicators
-              if (prompt.includes('check') || prompt.includes('verify') || prompt.includes('correct') ||
-                  prompt.includes('is this right') || interaction.wasVerified) {
-                monitoringBehaviors++;
+              // P2: Goal Setting - detect specific, measurable goals
+              if (prompt.match(/目标|goal|需要.*实现|achieve|要求|requirement|具体|specific/) ||
+                  prompt.match(/确保|make sure|必须|must/) ||
+                  promptLength > 20) { // longer prompts suggest clearer goals
+                dimensionCounts.p2++;
               }
 
-              // Evaluation indicators
-              if (prompt.includes('better') || prompt.includes('compare') || prompt.includes('which') ||
-                  prompt.includes('evaluate') || prompt.includes('assess')) {
-                evaluationBehaviors++;
+              // P3: Strategy Selection - track variety of approaches
+              if (prompt.includes('代码')) strategies.add('code');
+              if (prompt.includes('解释')) strategies.add('explain');
+              if (prompt.includes('调试') || prompt.includes('debug')) strategies.add('debug');
+              if (prompt.includes('优化') || prompt.includes('optimize')) strategies.add('optimize');
+              if (prompt.includes('设计') || prompt.includes('design')) strategies.add('design');
+              if (strategies.size > 0) dimensionCounts.p3++;
+
+              // P4: Resource Planning - detect boundary awareness and independence
+              if (prompt.match(/我.*自己|independently|我来|帮助.*理解|explain.*so.*understand/) ||
+                  prompt.match(/不要.*直接|don't.*directly|引导|guide/)) {
+                dimensionCounts.p4++;
               }
 
-              // Regulation indicators
-              if (prompt.includes('fix') || prompt.includes('improve') || prompt.includes('adjust') ||
-                  prompt.includes('change') || interaction.wasModified || interaction.wasRejected) {
-                regulationBehaviors++;
+              // === MONITORING DIMENSIONS ===
+
+              // M1: Progress Tracking - detect milestone checking and sequential work
+              if (prompt.match(/进度|progress|完成.*吗|done|接下来|next step|继续|continue/) ||
+                  (idx > 0 && prompt.includes('然后'))) {
+                dimensionCounts.m1++;
+              }
+
+              // M2: Quality Checking - verification behaviors
+              if (interaction.wasVerified ||
+                  prompt.match(/检查|verify|正确.*吗|is.*correct|验证|validate|测试|test/)) {
+                dimensionCounts.m2++;
+              }
+
+              // M3: Context Monitoring - trust calibration across contexts
+              if (prompt.match(/可靠|reliable|确定|sure|信任|trust/) ||
+                  prompt.match(/这个.*对吗|is this right|会不会.*错|might.*wrong/)) {
+                dimensionCounts.m3++;
+              }
+              // Track task type diversity for M3 scoring
+              const taskType = prompt.includes('代码') ? 'code' :
+                              prompt.includes('解释') ? 'explain' :
+                              prompt.includes('设计') ? 'design' : 'other';
+              taskTypes.set(taskType, (taskTypes.get(taskType) || 0) + 1);
+
+              // === EVALUATION DIMENSIONS ===
+
+              // E1: Result Evaluation - quality assessment
+              if (prompt.match(/质量|quality|评估|evaluate|好不好|效果|effectiveness/) ||
+                  prompt.match(/更好|better|最佳|best|compare|比较/)) {
+                dimensionCounts.e1++;
+              }
+
+              // E2: Learning Reflection - learning indicators
+              if (prompt.match(/学到|learn|理解|understand|为什么|why|原理|principle/) ||
+                  prompt.match(/怎么.*工作|how.*work|机制|mechanism/)) {
+                dimensionCounts.e2++;
+              }
+
+              // E3: Capability Judgment - self-awareness
+              if (prompt.match(/我.*能|can I|我.*会|我.*懂|understand/) ||
+                  prompt.match(/不会|don't know|不懂|不理解/) ||
+                  prompt.match(/基础|basic|入门|beginner/)) {
+                dimensionCounts.e3++;
+              }
+
+              // === REGULATION DIMENSIONS ===
+
+              // R1: Strategy Adjustment - iteration and improvement
+              if (interaction.wasModified || interaction.wasRejected ||
+                  prompt.match(/改进|improve|优化|optimize|调整|adjust|换个|try another/) ||
+                  prompt.match(/重新|redo|再.*一次|again/)) {
+                dimensionCounts.r1++;
+                iterationCount++;
+              }
+
+              // R2: Trust Calibration - tool switching and dynamic trust
+              if (prompt.match(/换.*方法|try.*different|别的.*工具|another.*tool/) ||
+                  prompt.match(/或者|alternatively|还是|or/) ||
+                  taskTypes.size > 2) { // multiple task types suggest flexibility
+                dimensionCounts.r2++;
               }
             });
           });
 
-          // Calculate effectiveness scores based on actual behavior
-          const planningEffectiveness = planningBehaviors > 0 ? Math.min(0.9, 0.5 + (planningBehaviors / totalInteractions) * 0.5) : 0.3;
-          const monitoringEffectiveness = verifiedCount > 0 ? Math.min(0.95, 0.6 + (verifiedCount / totalInteractions)) : 0.4;
-          const evaluationEffectiveness = evaluationBehaviors > 0 ? Math.min(0.9, 0.5 + (evaluationBehaviors / totalInteractions) * 0.5) : 0.35;
-          const regulationEffectiveness = (modifiedCount + rejectedCount) > 0 ? Math.min(0.95, 0.6 + ((modifiedCount + rejectedCount) / totalInteractions)) : 0.4;
+          // === SCORING (0-3 scale based on frequency and quality) ===
 
-          setBehaviorHistory([
-            { type: 'plan', count: planningBehaviors, effectiveness: planningEffectiveness },
-            { type: 'monitor', count: monitoringBehaviors, effectiveness: monitoringEffectiveness },
-            { type: 'evaluate', count: evaluationBehaviors, effectiveness: evaluationEffectiveness },
-            { type: 'regulate', count: regulationBehaviors, effectiveness: regulationEffectiveness },
-          ]);
+          const calculateScore = (count: number, total: number, thresholds: number[]): number => {
+            const ratio = total > 0 ? count / total : 0;
+            if (ratio >= thresholds[2]) return 3;
+            if (ratio >= thresholds[1]) return 2;
+            if (ratio >= thresholds[0]) return 1;
+            return 0;
+          };
 
-          console.log('Analyzed behavior data:', {
+          const scores = {
+            // Planning: higher thresholds (planning should be deliberate)
+            p1: calculateScore(dimensionCounts.p1, totalInteractions, [0.10, 0.25, 0.40]),
+            p2: calculateScore(dimensionCounts.p2, totalInteractions, [0.20, 0.40, 0.60]),
+            p3: Math.min(3, strategies.size), // 0-3 based on strategy diversity
+            p4: calculateScore(dimensionCounts.p4, totalInteractions, [0.05, 0.15, 0.30]),
+
+            // Monitoring: medium thresholds (ongoing awareness)
+            m1: calculateScore(dimensionCounts.m1, totalInteractions, [0.10, 0.25, 0.45]),
+            m2: verifiedCount > 0 ? calculateScore(verifiedCount, totalInteractions, [0.10, 0.30, 0.60]) : 0,
+            m3: Math.min(3, taskTypes.size), // 0-3 based on context diversity
+
+            // Evaluation: medium-high thresholds (critical thinking)
+            e1: calculateScore(dimensionCounts.e1, totalInteractions, [0.08, 0.20, 0.40]),
+            e2: calculateScore(dimensionCounts.e2, totalInteractions, [0.15, 0.30, 0.50]),
+            e3: calculateScore(dimensionCounts.e3, totalInteractions, [0.05, 0.15, 0.30]),
+
+            // Regulation: iteration-based scoring
+            r1: (modifiedCount + rejectedCount) > 0 ?
+                calculateScore(modifiedCount + rejectedCount, totalInteractions, [0.10, 0.25, 0.45]) : 0,
+            r2: Math.min(3, Math.floor(taskTypes.size * 1.2)), // flexibility across task types
+          };
+
+          // Store full 12-dimensional analysis
+          const fullBehaviorHistory = [
+            { type: 'p1', label: 'Task Decomposition', count: dimensionCounts.p1, score: scores.p1 },
+            { type: 'p2', label: 'Goal Setting', count: dimensionCounts.p2, score: scores.p2 },
+            { type: 'p3', label: 'Strategy Selection', count: strategies.size, score: scores.p3 },
+            { type: 'p4', label: 'Resource Planning', count: dimensionCounts.p4, score: scores.p4 },
+            { type: 'm1', label: 'Progress Tracking', count: dimensionCounts.m1, score: scores.m1 },
+            { type: 'm2', label: 'Quality Checking', count: verifiedCount, score: scores.m2 },
+            { type: 'm3', label: 'Context Monitoring', count: taskTypes.size, score: scores.m3 },
+            { type: 'e1', label: 'Result Evaluation', count: dimensionCounts.e1, score: scores.e1 },
+            { type: 'e2', label: 'Learning Reflection', count: dimensionCounts.e2, score: scores.e2 },
+            { type: 'e3', label: 'Capability Judgment', count: dimensionCounts.e3, score: scores.e3 },
+            { type: 'r1', label: 'Strategy Adjustment', count: modifiedCount + rejectedCount, score: scores.r1 },
+            { type: 'r2', label: 'Trust Calibration', count: taskTypes.size, score: scores.r2 },
+          ];
+
+          // Aggregate to 4 main dimensions for MR19 component compatibility
+          // Convert 0-3 scores to 0-1 effectiveness scale
+          const aggregated4D = [
+            {
+              type: 'plan' as const,
+              count: dimensionCounts.p1 + dimensionCounts.p2 + dimensionCounts.p3 + dimensionCounts.p4,
+              effectiveness: (scores.p1 + scores.p2 + scores.p3 + scores.p4) / 12, // average of 4 dimensions, normalized to 0-1
+            },
+            {
+              type: 'monitor' as const,
+              count: dimensionCounts.m1 + dimensionCounts.m2 + dimensionCounts.m3,
+              effectiveness: (scores.m1 + scores.m2 + scores.m3) / 9, // average of 3 dimensions, normalized to 0-1
+            },
+            {
+              type: 'evaluate' as const,
+              count: dimensionCounts.e1 + dimensionCounts.e2 + dimensionCounts.e3,
+              effectiveness: (scores.e1 + scores.e2 + scores.e3) / 9, // average of 3 dimensions, normalized to 0-1
+            },
+            {
+              type: 'regulate' as const,
+              count: dimensionCounts.r1 + dimensionCounts.r2,
+              effectiveness: (scores.r1 + scores.r2) / 6, // average of 2 dimensions, normalized to 0-1
+            },
+          ];
+
+          setBehaviorHistory(aggregated4D);
+
+          console.log('Analyzed 12-dimensional behavior data:', {
             totalInteractions,
             verifiedCount,
             modifiedCount,
             rejectedCount,
-            planningBehaviors,
-            monitoringBehaviors,
-            evaluationBehaviors,
-            regulationBehaviors,
+            '12-dimensional scores (0-3 scale)': scores,
+            '12-dimensional counts': dimensionCounts,
+            'Full 12D history': fullBehaviorHistory,
+            'Aggregated 4D for MR19': aggregated4D,
+            strategyDiversity: strategies.size,
+            contextDiversity: taskTypes.size,
+            totalScore: Object.values(scores).reduce((a, b) => a + b, 0),
+            maxScore: 36,
+            percentage: `${Math.round((Object.values(scores).reduce((a, b) => a + b, 0) / 36) * 100)}%`,
           });
         }
       } catch (error) {
