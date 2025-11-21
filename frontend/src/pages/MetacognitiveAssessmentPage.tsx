@@ -18,11 +18,13 @@ const MetacognitiveAssessmentPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { sessions, loadSessions } = useSessionStore();
-  const { submitAssessment } = useAssessmentStore();
+  const { submitAssessment, latestAssessment, fetchLatestAssessment } = useAssessmentStore();
   const [assessmentCompleted, setAssessmentCompleted] = useState(false);
   const [profile, setProfile] = useState<MetacognitiveProfile | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [loadingPrevious, setLoadingPrevious] = useState(true);
+  const [showNewAssessment, setShowNewAssessment] = useState(false);
   // 12-dimensional metacognitive behavior analysis (P1-P4, M1-M3, E1-E3, R1-R2)
   const [behaviorHistory, setBehaviorHistory] = useState<any[]>([
     // Planning dimensions
@@ -292,6 +294,69 @@ const MetacognitiveAssessmentPage: React.FC = () => {
     loadAndAnalyzeBehavior();
   }, [user?.id, loadSessions]);
 
+  // Load previous assessment on mount
+  useEffect(() => {
+    const loadPreviousAssessment = async () => {
+      if (user?.id) {
+        try {
+          setLoadingPrevious(true);
+          await fetchLatestAssessment(user.id);
+        } catch (error) {
+          console.error('Failed to load previous assessment:', error);
+        } finally {
+          setLoadingPrevious(false);
+        }
+      } else {
+        setLoadingPrevious(false);
+      }
+    };
+
+    loadPreviousAssessment();
+  }, [user?.id, fetchLatestAssessment]);
+
+  // Convert previous assessment to MetacognitiveProfile if it exists
+  useEffect(() => {
+    if (latestAssessment && !showNewAssessment) {
+      const convertedProfile: MetacognitiveProfile = {
+        assessedAt: new Date(latestAssessment.timestamp),
+        dimensions: {
+          planning: {
+            score: latestAssessment.planningScore || 0,
+            level: (latestAssessment.planningScore || 0) >= 0.75 ? 'strong' as const :
+                   (latestAssessment.planningScore || 0) >= 0.5 ? 'moderate' as const : 'developing' as const,
+            interpretation: '',
+          },
+          monitoring: {
+            score: latestAssessment.monitoringScore || 0,
+            level: (latestAssessment.monitoringScore || 0) >= 0.75 ? 'strong' as const :
+                   (latestAssessment.monitoringScore || 0) >= 0.5 ? 'moderate' as const : 'developing' as const,
+            interpretation: '',
+          },
+          evaluation: {
+            score: latestAssessment.evaluationScore || 0,
+            level: (latestAssessment.evaluationScore || 0) >= 0.75 ? 'strong' as const :
+                   (latestAssessment.evaluationScore || 0) >= 0.5 ? 'moderate' as const : 'developing' as const,
+            interpretation: '',
+          },
+          regulation: {
+            score: latestAssessment.regulationScore || 0,
+            level: (latestAssessment.regulationScore || 0) >= 0.75 ? 'strong' as const :
+                   (latestAssessment.regulationScore || 0) >= 0.5 ? 'moderate' as const : 'developing' as const,
+            interpretation: '',
+          },
+        },
+        overallInterpretation: `Your assessment from ${new Date(latestAssessment.timestamp).toLocaleDateString()}`,
+        topStrengths: latestAssessment.strengths || [],
+        areasForGrowth: latestAssessment.areasForGrowth || [],
+        confidenceLevel: 'high' as const,
+        dataSource: 'combined' as const,
+      };
+
+      setProfile(convertedProfile);
+      setAssessmentCompleted(true);
+    }
+  }, [latestAssessment, showNewAssessment]);
+
   const handleAssessmentComplete = async (completedProfile: MetacognitiveProfile) => {
     setProfile(completedProfile);
 
@@ -334,6 +399,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
 
         await submitAssessment(user.id, responses);
         console.log('Assessment saved successfully');
+        setShowNewAssessment(false); // Reset to show saved assessment next time
       } catch (error: any) {
         console.error('Failed to save assessment:', error);
         setSaveError(error.message || 'Failed to save assessment results');
@@ -343,6 +409,13 @@ const MetacognitiveAssessmentPage: React.FC = () => {
     }
 
     setAssessmentCompleted(true);
+  };
+
+  const handleRetakeAssessment = () => {
+    setShowNewAssessment(true);
+    setAssessmentCompleted(false);
+    setProfile(null);
+    setSaveError(null);
   };
 
   const handleReturnToDashboard = () => {
@@ -389,7 +462,7 @@ const MetacognitiveAssessmentPage: React.FC = () => {
 
         {/* Assessment Component */}
         <div className="assessment-content">
-          {loadingBehavior ? (
+          {(loadingBehavior || loadingPrevious) ? (
             <div style={{
               textAlign: 'center',
               padding: '4rem 2rem',
@@ -408,13 +481,13 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                 color: '#1f2937',
                 fontWeight: 600
               }}>
-                Analyzing Your Behavior History
+                {loadingPrevious ? 'Loading Your Assessment History' : 'Analyzing Your Behavior History'}
               </h3>
               <p style={{
                 margin: 0,
                 fontSize: '1rem'
               }}>
-                Reading your past interactions to personalize your assessment...
+                {loadingPrevious ? 'Checking for previous assessments...' : 'Reading your past interactions to personalize your assessment...'}
               </p>
             </div>
           ) : !assessmentCompleted ? (
@@ -431,13 +504,19 @@ const MetacognitiveAssessmentPage: React.FC = () => {
                 Assessment Complete!
               </h2>
 
+              {latestAssessment && !showNewAssessment && (
+                <p className="completion-message" style={{ color: '#6366f1', marginBottom: '1rem' }}>
+                  📊 Showing your assessment from {new Date(latestAssessment.timestamp).toLocaleDateString()}
+                </p>
+              )}
+
               {saving && (
                 <p className="completion-message" style={{ color: '#3b82f6' }}>
                   💾 Saving your results...
                 </p>
               )}
 
-              {!saving && !saveError && (
+              {!saving && !saveError && showNewAssessment && (
                 <p className="completion-message" style={{ color: '#10b981' }}>
                   ✅ Your results have been saved successfully!
                 </p>
@@ -452,13 +531,25 @@ const MetacognitiveAssessmentPage: React.FC = () => {
               <p className="completion-message">
                 Your metacognitive profile has been analyzed. Check the results above and return to the dashboard to see personalized recommendations.
               </p>
-              <div className="completion-action">
+              <div className="completion-action" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
                   className="completion-button"
                   onClick={handleReturnToDashboard}
                   disabled={saving}
                 >
                   Return to Dashboard
+                </button>
+                <button
+                  className="completion-button"
+                  onClick={handleRetakeAssessment}
+                  disabled={saving}
+                  style={{
+                    backgroundColor: '#fff',
+                    color: '#6366f1',
+                    border: '2px solid #6366f1',
+                  }}
+                >
+                  🔄 Retake Assessment
                 </button>
               </div>
             </div>

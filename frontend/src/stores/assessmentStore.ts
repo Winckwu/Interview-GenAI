@@ -5,10 +5,13 @@ export interface AssessmentResult {
   id: string;
   userId: string;
   timestamp: string;
-  responses: Record<string, any>;
-  score?: number;
-  feedback?: string;
-  patternIdentified?: string;
+  planningScore?: number;
+  monitoringScore?: number;
+  evaluationScore?: number;
+  regulationScore?: number;
+  overallScore?: number;
+  strengths?: string[];
+  areasForGrowth?: string[];
   recommendations?: string[];
 }
 
