@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useUIStore } from '../stores/uiStore';
+import Logo from '../components/common/Logo';
 import './LoginPage.css';
 import '../styles/components.css';
 
@@ -76,6 +77,9 @@ const LoginPage: React.FC = () => {
     <div className="auth-page login-page">
       <div className="auth-card">
         <div className="auth-header">
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <Logo size={48} showText={false} />
+          </div>
           <h2>Welcome Back</h2>
           <p>Sign in to your AI Pattern Recognition System account</p>
         </div>

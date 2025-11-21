@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useUIStore } from '../stores/uiStore';
+import Logo from '../components/common/Logo';
 import './RegisterPage.css';
 import '../styles/components.css';
 
@@ -88,6 +89,9 @@ const RegisterPage: React.FC = () => {
     <div className="auth-page register-page">
       <div className="auth-card">
         <div className="auth-header">
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <Logo size={48} showText={false} />
+          </div>
           <h2>Create Account</h2>
           <p>Join AI Pattern Recognition System to track your AI usage patterns</p>
         </div>

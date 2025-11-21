@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
 import { useUIStore } from '../../stores/uiStore';
 import InfoTooltip from '../InfoTooltip';
+import Logo from '../common/Logo';
 
 /**
  * Header Component
@@ -37,7 +38,7 @@ const Header: React.FC = () => {
         </button>
 
         <Link to="/" className="header-logo">
-          <h1>AI Pattern Recognition System</h1>
+          <Logo size={36} showText={true} />
         </Link>
       </div>
 

@@ -160,18 +160,14 @@ a {
 }
 
 .header-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--color-primary);
+  display: flex;
+  align-items: center;
   text-decoration: none;
+  transition: var(--transition);
 
   &:hover {
     text-decoration: none;
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 1.5rem;
+    opacity: 0.85;
   }
 }
 
