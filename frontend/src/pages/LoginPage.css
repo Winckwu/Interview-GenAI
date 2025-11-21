@@ -7,15 +7,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background:
-    linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background: #6366f1;
   position: relative;
   padding: 2rem;
   font-family: inherit;
   overflow: hidden;
 }
 
-/* Animated gradient background */
+/* Multi-layer gradient background */
 .login-page::before {
   content: '';
   position: absolute;
@@ -24,10 +23,12 @@
   right: 0;
   bottom: 0;
   background:
-    radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(99, 102, 241, 0.2) 0%, transparent 40%);
-  animation: backgroundShift 15s ease-in-out infinite;
+    radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.8) 0%, transparent 50%),
+    radial-gradient(ellipse at top right, rgba(168, 85, 247, 0.6) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(59, 130, 246, 0.6) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(236, 72, 153, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at center, rgba(139, 92, 246, 0.4) 0%, transparent 70%);
+  animation: gradientShift 20s ease-in-out infinite;
 }
 
 /* Grid pattern overlay */
@@ -39,10 +40,10 @@
   right: 0;
   bottom: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-  opacity: 0.4;
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.6;
 }
 
 /* Decorative geometric shapes */
@@ -55,58 +56,64 @@
 }
 
 .bg-decoration-1 {
-  top: 10%;
-  right: 15%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
-  animation: float 20s ease-in-out infinite;
+  top: -10%;
+  right: -5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.15), transparent);
+  animation: float 25s ease-in-out infinite;
 }
 
 .bg-decoration-2 {
-  bottom: 15%;
-  left: 10%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(147, 197, 253, 0.3), transparent);
-  animation: float 25s ease-in-out infinite reverse;
-  animation-delay: -5s;
+  bottom: -10%;
+  left: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.12), transparent);
+  animation: float 30s ease-in-out infinite reverse;
+  animation-delay: -8s;
 }
 
 .bg-decoration-3 {
   top: 50%;
   left: 50%;
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(196, 181, 253, 0.25), transparent);
-  animation: float 30s ease-in-out infinite;
-  animation-delay: -10s;
-  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.1), transparent);
+  animation: floatCenter 35s ease-in-out infinite;
+  animation-delay: -15s;
 }
 
-@keyframes backgroundShift {
+@keyframes gradientShift {
   0%, 100% {
     opacity: 1;
-    transform: scale(1);
   }
   50% {
-    opacity: 0.8;
-    transform: scale(1.05);
+    opacity: 0.85;
   }
 }
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0px) translateX(0px);
+    transform: translate(0, 0) scale(1);
   }
-  25% {
-    transform: translateY(-20px) translateX(20px);
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
   }
-  50% {
-    transform: translateY(0px) translateX(40px);
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
   }
-  75% {
-    transform: translateY(20px) translateX(20px);
+}
+
+@keyframes floatCenter {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  33% {
+    transform: translate(calc(-50% + 30px), calc(-50% - 30px)) scale(1.1);
+  }
+  66% {
+    transform: translate(calc(-50% - 20px), calc(-50% + 20px)) scale(0.95);
   }
 }
 
