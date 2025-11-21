@@ -79,7 +79,22 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
    */
   const behavioralAssessment = useMemo(() => {
     if (userBehaviorHistory.length === 0) return null;
-    return assessMetacognitiveDimensions(userBehaviorHistory);
+
+    const assessment = assessMetacognitiveDimensions(userBehaviorHistory);
+
+    // Check if we have real behavioral data (not just default placeholders)
+    // Default placeholders have: score=0.5, confidence=0.3, indicators=[]
+    const hasRealData = Object.values(assessment).some(
+      dim => dim.confidence > 0.3 || dim.indicators.length > 0
+    );
+
+    // If no real behavioral data, return null to skip behavioral analysis
+    if (!hasRealData) {
+      console.log('No valid behavioral data found, skipping behavioral analysis');
+      return null;
+    }
+
+    return assessment;
   }, [userBehaviorHistory]);
 
   /**
@@ -176,6 +191,22 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
         <div className="mr19-assessment-options">
           <h3 className="mr19-options-title">How would you like to assess yourself?</h3>
 
+          {!behavioralAssessment && (
+            <div style={{
+              padding: '1rem 1.5rem',
+              background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.1) 100%)',
+              borderLeft: '4px solid #f59e0b',
+              borderRadius: '0.75rem',
+              marginBottom: '1.5rem',
+              fontSize: '0.9375rem',
+              color: '#92400e'
+            }}>
+              <strong>ℹ️ First-time assessment:</strong> You don't have enough usage history yet for behavioral analysis.
+              Please complete the 36-item questionnaire below. After you use the system more, we'll be able to combine
+              behavioral data with self-report for more accurate assessments.
+            </div>
+          )}
+
           <button
             className="mr19-option-btn"
             onClick={() => setAssessmentMode('behavioral')}
@@ -183,14 +214,16 @@ export const MR19MetacognitiveCapabilityAssessment: React.FC<MR19Props> = ({
           >
             <span className="mr19-option-icon">📊</span>
             <span className="mr19-option-text">
-              Behavioral Analysis {!behavioralAssessment && '(No history available)'}
+              Behavioral Analysis {!behavioralAssessment && '(Not available yet)'}
             </span>
           </button>
 
           {allowSelfReport && (
             <button className="mr19-option-btn" onClick={() => setAssessmentMode('self-report')}>
               <span className="mr19-option-icon">🎯</span>
-              <span className="mr19-option-text">Self-Report Questions</span>
+              <span className="mr19-option-text">
+                Self-Report Questionnaire {!behavioralAssessment && '(Start here)'}
+              </span>
             </button>
           )}
 
