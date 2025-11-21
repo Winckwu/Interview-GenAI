@@ -8,7 +8,7 @@ import '../styles/components.css';
 
 /**
  * Login Page
- * Authentication page for user login with side-by-side layout
+ * Authentication page with unified card design
  */
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -73,16 +73,74 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="auth-page login-page">
-      <div className="login-container">
-        {/* Left Side - Login Form */}
-        <div className="login-form-section">
-          <div className="auth-card">
-            <div className="auth-header">
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                <Logo size={48} showText={false} />
+      <div className="login-unified-card">
+        {/* Left Side - System Introduction */}
+        <div className="login-left-section">
+          <div className="brand-section">
+            <div className="brand-logo">
+              <Logo size={64} showText={false} />
+            </div>
+            <h1 className="brand-title">AI Pattern Recognition System</h1>
+            <p className="brand-tagline">Enhance your AI collaboration effectiveness</p>
+          </div>
+
+          <div className="features-list">
+            <div className="feature-row">
+              <div className="feature-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
               </div>
+              <div className="feature-text">
+                <h3>Smart Pattern Analysis</h3>
+                <p>Identifies 6 distinct AI usage patterns</p>
+              </div>
+            </div>
+
+            <div className="feature-row">
+              <div className="feature-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div className="feature-text">
+                <h3>Metacognitive Assessment</h3>
+                <p>12 dimensions of cognitive abilities</p>
+              </div>
+            </div>
+
+            <div className="feature-row">
+              <div className="feature-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div className="feature-text">
+                <h3>Skill Preservation</h3>
+                <p>19 MR strategies to prevent skill decay</p>
+              </div>
+            </div>
+
+            <div className="feature-row">
+              <div className="feature-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div className="feature-text">
+                <h3>Real-time Monitoring</h3>
+                <p>Continuous behavioral tracking</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Login Form */}
+        <div className="login-right-section">
+          <div className="form-container">
+            <div className="form-header">
               <h2>Welcome Back</h2>
-              <p>Sign in to continue to AI Pattern Recognition System</p>
+              <p>Sign in to continue</p>
             </div>
 
             {error && <div className="auth-error">{error}</div>}
@@ -136,52 +194,10 @@ const LoginPage: React.FC = () => {
               </button>
             </form>
 
-            <div className="auth-footer">
+            <div className="form-footer">
               <p>
                 Don't have an account? <Link to="/register">Create one here</Link>
               </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Side - System Introduction */}
-        <div className="login-intro-section">
-          <div className="intro-header">
-            <h1>AI Pattern Recognition System</h1>
-            <p className="intro-tagline">Enhance your AI collaboration effectiveness</p>
-          </div>
-
-          <div className="intro-features">
-            <div className="feature-item">
-              <div className="feature-icon">🧠</div>
-              <div className="feature-content">
-                <h3>Smart Pattern Analysis</h3>
-                <p>Identifies 6 distinct AI usage patterns and provides personalized insights</p>
-              </div>
-            </div>
-
-            <div className="feature-item">
-              <div className="feature-icon">📊</div>
-              <div className="feature-content">
-                <h3>Metacognitive Assessment</h3>
-                <p>Evaluates 12 dimensions of cognitive abilities with intelligent interventions</p>
-              </div>
-            </div>
-
-            <div className="feature-item">
-              <div className="feature-icon">🎯</div>
-              <div className="feature-content">
-                <h3>Skill Preservation</h3>
-                <p>19 MR strategies to prevent skill degradation and maintain cognitive health</p>
-              </div>
-            </div>
-
-            <div className="feature-item">
-              <div className="feature-icon">⚡</div>
-              <div className="feature-content">
-                <h3>Real-time Monitoring</h3>
-                <p>Continuous tracking of verification and engagement behaviors</p>
-              </div>
             </div>
           </div>
         </div>
