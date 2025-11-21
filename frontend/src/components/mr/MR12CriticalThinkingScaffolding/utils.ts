@@ -2,7 +2,7 @@
  * MR12: Critical Thinking Scaffolding - Utilities
  */
 
-import { apiService } from '../services/api';
+import { apiService } from '../../../services/api';
 
 export type DomainType = 'code' | 'writing' | 'analysis' | 'math' | 'general';
 

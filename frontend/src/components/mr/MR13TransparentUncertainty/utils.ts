@@ -5,7 +5,7 @@
  * Address the universal user frustration (98%) with AI "pretending to be certain".
  */
 
-import { apiService } from '../services/api';
+import { apiService } from '../../../services/api';
 
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 export type UncertaintyReason = 'limited-training-data' | 'knowledge-cutoff' | 'conflicting-sources' | 'reasoning-step' | 'domain-complexity' | 'not-trained';

@@ -9,7 +9,7 @@
  * - Just-in-time prompts
  */
 
-import { apiService } from '../services/api';
+import { apiService } from '../../../services/api';
 
 export type StrategyCategory = 'planning' | 'monitoring' | 'evaluation' | 'regulation';
 

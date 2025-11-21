@@ -2,7 +2,7 @@
  * MR14: Guided Reflection Mechanism - Utilities
  */
 
-import { apiService } from '../services/api';
+import { apiService } from '../../../services/api';
 
 export interface ReflectionPrompt {
   id: string;

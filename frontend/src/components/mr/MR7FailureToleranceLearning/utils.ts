@@ -6,7 +6,7 @@
  * iterative refinement.
  */
 
-import { apiService } from '../services/api';
+import { apiService } from '../../../services/api';
 
 export interface FailedIteration {
   id: string;
