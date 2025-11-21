@@ -18,7 +18,10 @@ import styles from './MessageItem.module.css';
 import { type Message } from '../hooks/useMessages';
 import { BranchComparisonModal } from './BranchComparisonModal';
 import { BranchFilterPanel, BranchFilter } from './BranchFilterPanel';
+import { BranchAnalytics } from './BranchAnalytics';
+import { BranchBulkOperations } from './BranchBulkOperations';
 import { exportBranches } from '../utils/branchExport';
+import api from '../services/api';
 
 // Re-export Message type for backward compatibility
 export type { Message };
@@ -69,8 +72,10 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   quickReflection,
   mr6Suggestion,
 }) => {
-  // Comparison modal state
+  // Modal states
   const [showComparison, setShowComparison] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showBulkOps, setShowBulkOps] = useState(false);
 
   // Filter state
   const [showFilter, setShowFilter] = useState(false);
@@ -89,6 +94,35 @@ export const MessageItem: React.FC<MessageItemProps> = ({
       exportBranches(message.content, message.branches, message.id, [format]);
       setShowExportMenu(false);
     }
+  };
+
+  // Bulk operations handlers
+  const handleBulkDelete = async (branchIds: string[]) => {
+    if (!message.branches) return;
+
+    // Delete branches from backend
+    await Promise.all(branchIds.map(id => api.delete(`/branches/${id}`)));
+
+    // Note: Parent component should handle refreshing the message data
+    // This is just for the API calls
+  };
+
+  const handleBulkVerify = async (branchIds: string[]) => {
+    if (!message.branches) return;
+
+    // Verify branches in backend
+    await Promise.all(
+      branchIds.map(id => api.patch(`/branches/${id}`, { wasVerified: true }))
+    );
+
+    // Note: Parent component should handle refreshing the message data
+  };
+
+  const handleBulkExport = (branchIds: string[], format: 'json' | 'csv' | 'markdown') => {
+    if (!message.branches) return;
+
+    const selectedBranches = message.branches.filter(b => branchIds.includes(b.id));
+    exportBranches(message.content, selectedBranches, message.id, [format]);
   };
 
   // Calculate branch information
@@ -583,6 +617,48 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     )}
                   </div>
                 )}
+
+                {/* Analytics button - show when there are branches */}
+                {hasBranches && message.branches && (
+                  <button
+                    onClick={() => setShowAnalytics(true)}
+                    title="View branch analytics"
+                    style={{
+                      background: 'none',
+                      border: '1px solid #f59e0b',
+                      cursor: 'pointer',
+                      padding: '0.125rem 0.375rem',
+                      fontSize: '0.7rem',
+                      color: '#f59e0b',
+                      marginLeft: '0.5rem',
+                      borderRadius: '0.25rem',
+                      fontWeight: '500',
+                    }}
+                  >
+                    📈 Analytics
+                  </button>
+                )}
+
+                {/* Bulk operations button - show when there are multiple branches */}
+                {hasBranches && message.branches && message.branches.length > 1 && (
+                  <button
+                    onClick={() => setShowBulkOps(true)}
+                    title="Bulk operations on branches"
+                    style={{
+                      background: 'none',
+                      border: '1px solid #dc2626',
+                      cursor: 'pointer',
+                      padding: '0.125rem 0.375rem',
+                      fontSize: '0.7rem',
+                      color: '#dc2626',
+                      marginLeft: '0.5rem',
+                      borderRadius: '0.25rem',
+                      fontWeight: '500',
+                    }}
+                  >
+                    ⚙️ Bulk Ops
+                  </button>
+                )}
               </div>
             )}
 
@@ -637,6 +713,26 @@ export const MessageItem: React.FC<MessageItemProps> = ({
           branches={message.branches}
           currentBranchIndex={currentBranchIndex}
           onClose={() => setShowComparison(false)}
+        />
+      )}
+
+      {/* Branch Analytics Modal */}
+      {showAnalytics && hasBranches && message.branches && (
+        <BranchAnalytics
+          originalContent={message.content}
+          branches={message.branches}
+          onClose={() => setShowAnalytics(false)}
+        />
+      )}
+
+      {/* Bulk Operations Modal */}
+      {showBulkOps && hasBranches && message.branches && (
+        <BranchBulkOperations
+          branches={message.branches}
+          onDelete={handleBulkDelete}
+          onVerify={handleBulkVerify}
+          onExport={handleBulkExport}
+          onClose={() => setShowBulkOps(false)}
         />
       )}
     </div>
