@@ -116,7 +116,36 @@ const DashboardPage: React.FC = () => {
     value: Math.round((value as number) * 100),
   }));
 
-  const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+  // Modern gradient colors for better visual appeal
+  const COLORS = [
+    '#3b82f6', // Blue
+    '#8b5cf6', // Purple
+    '#ec4899', // Pink
+    '#10b981', // Green
+    '#f59e0b', // Amber
+    '#ef4444', // Red
+  ];
+
+  // Custom label component for pie chart
+  const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, name, value }: any) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+        style={{ fontWeight: 600, fontSize: '14px', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+      >
+        {`${value}%`}
+      </text>
+    );
+  };
 
   // Use real verification strategy data from backend
   // Maps real user behavior to quality impact scores
@@ -280,21 +309,46 @@ const DashboardPage: React.FC = () => {
             {/* Daily Accuracy Trend */}
             <div className="chart-container">
               <h3 className="chart-title">
-                📈 Daily Accuracy Trend <InfoTooltip text="Shows your verification accuracy over the past days. Higher trends indicate you're getting better at verifying AI outputs correctly." />
+                Daily Accuracy Trend <InfoTooltip text="Shows your verification accuracy over the past days. Higher trends indicate you're getting better at verifying AI outputs correctly." />
               </h3>
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={dailyAccuracyData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
+                <LineChart data={dailyAccuracyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorAccuracy" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.2}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} />
+                  <XAxis
+                    dataKey="date"
+                    stroke="#6b7280"
+                    style={{ fontSize: '12px', fontWeight: 500 }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    stroke="#6b7280"
+                    style={{ fontSize: '12px', fontWeight: 500 }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: '8px',
+                      border: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}
+                  />
+                  <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '13px', fontWeight: 500 }} />
                   <Line
                     type="monotone"
                     dataKey="accuracy"
-                    stroke="#3b82f6"
-                    strokeWidth={2}
-                    dot={{ fill: '#3b82f6' }}
+                    stroke="url(#colorAccuracy)"
+                    strokeWidth={3}
+                    dot={{ fill: '#3b82f6', r: 5, strokeWidth: 2, stroke: '#fff' }}
+                    activeDot={{ r: 7, strokeWidth: 2 }}
+                    animationDuration={1000}
+                    animationEasing="ease-in-out"
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -303,7 +357,7 @@ const DashboardPage: React.FC = () => {
             {/* Pattern Distribution */}
             <div className="chart-container">
               <h3 className="chart-title">
-                🎯 Pattern Distribution <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." />
+                Pattern Distribution <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." />
               </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
@@ -312,16 +366,34 @@ const DashboardPage: React.FC = () => {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, value }) => `${name}: ${value}%`}
-                    outerRadius={80}
+                    label={renderCustomLabel}
+                    outerRadius={90}
+                    innerRadius={40}
                     fill="#8884d8"
                     dataKey="value"
+                    paddingAngle={2}
+                    animationBegin={0}
+                    animationDuration={800}
                   >
                     {patternDistributionChart.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: '8px',
+                      border: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      fontSize: '13px',
+                      fontWeight: 500
+                    }}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    height={36}
+                    iconType="circle"
+                    wrapperStyle={{ fontSize: '13px', fontWeight: 500 }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -329,21 +401,58 @@ const DashboardPage: React.FC = () => {
             {/* Intervention Strategy Comparison */}
             <div className="chart-container">
               <h3 className="chart-title">
-                ✓ Verification Strategy Impact <InfoTooltip text="Real data showing how your verification behavior affects work quality. Based on your actual interactions with AI outputs." />
+                Verification Strategy Impact <InfoTooltip text="Real data showing how your verification behavior affects work quality. Based on your actual interactions with AI outputs." />
               </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 60, bottom: 20 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="strategy" />
-                  <YAxis label={{ value: 'Quality Score (%)', angle: -90, position: 'center', offset: -50 }} />
+                  <defs>
+                    <linearGradient id="colorBar" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.9}/>
+                      <stop offset="95%" stopColor="#059669" stopOpacity={0.7}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} />
+                  <XAxis
+                    dataKey="strategy"
+                    stroke="#6b7280"
+                    style={{ fontSize: '12px', fontWeight: 500 }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    label={{
+                      value: 'Quality Score (%)',
+                      angle: -90,
+                      position: 'center',
+                      offset: -50,
+                      style: { fontSize: '12px', fontWeight: 600, fill: '#6b7280' }
+                    }}
+                    stroke="#6b7280"
+                    style={{ fontSize: '12px', fontWeight: 500 }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
                   <Tooltip
+                    contentStyle={{
+                      borderRadius: '8px',
+                      border: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      fontSize: '13px',
+                      fontWeight: 500
+                    }}
                     formatter={(value: number, name: string, props: any) => [
                       `${value}%`,
                       `Quality Score (${props.payload.sampleSize} interactions)`
                     ]}
                     labelFormatter={(label: string) => label}
                   />
-                  <Bar dataKey="successRate" fill="#10b981" name="Quality Score" />
+                  <Bar
+                    dataKey="successRate"
+                    fill="url(#colorBar)"
+                    name="Quality Score"
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                    animationEasing="ease-out"
+                  />
                 </BarChart>
               </ResponsiveContainer>
               <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#475569' }}>
