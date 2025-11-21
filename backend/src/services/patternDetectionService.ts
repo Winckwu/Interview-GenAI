@@ -123,7 +123,7 @@ export class PatternDetectionService {
           {
             pattern: analysis.primaryPattern as any,
             confidence: analysis.confidence,
-            timestamp: new Date()
+            timestamp: Date.now()  // Unix timestamp in milliseconds
           }
         ];
 
@@ -153,7 +153,7 @@ export class PatternDetectionService {
   private async getSessionPatternHistory(sessionId: string): Promise<Array<{
     pattern: string;
     confidence: number;
-    timestamp: Date;
+    timestamp: number;  // Unix timestamp in milliseconds
   }>> {
     try {
       const result = await pool.query(
@@ -167,7 +167,7 @@ export class PatternDetectionService {
       return result.rows.map(row => ({
         pattern: row.detected_pattern,
         confidence: parseFloat(row.confidence),
-        timestamp: new Date(row.created_at)
+        timestamp: new Date(row.created_at).getTime()  // Convert to Unix timestamp
       }));
     } catch (error) {
       console.error('[PatternDetection] Error fetching session history:', error);
