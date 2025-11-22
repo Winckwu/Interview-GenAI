@@ -455,7 +455,7 @@ const ChatSessionPage: React.FC = () => {
 
   // Adaptive MR Triggering - Evidence-based from 49 interview analysis
   const [userProfile, setUserProfile] = useState<UserProfile>(createDefaultUserProfile());
-  const [sessionStartTime] = useState<number>(Date.now());
+  // sessionStartTime is already declared above at line ~267
   const [iterationCount, setIterationCount] = useState<number>(0);
   const [previousMRsShown, setPreviousMRsShown] = useState<Set<MRToolType>>(new Set());
 
