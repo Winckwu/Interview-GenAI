@@ -3541,7 +3541,6 @@ Message: "${firstMessage.slice(0, 200)}"`,
           flex: '1 1 0',
           overflowY: 'auto', // Enable scrolling for messages
           padding: '0.75rem 1rem',
-          paddingBottom: '100px', // Space for fixed footer
           display: 'flex',
           flexDirection: 'column',
           minHeight: 0, // Important for flex overflow scrolling
@@ -3846,18 +3845,13 @@ Message: "${firstMessage.slice(0, 200)}"`,
           )}
         </div>
 
-        {/* Input Area - Fixed at bottom of viewport */}
+        {/* Input Area - Stays at bottom via flexbox */}
         <footer style={{
-          position: 'fixed',
-          bottom: 0,
-          left: sessionSidebarOpen ? '280px' : '0',
-          right: 0,
-          padding: '1rem 1.5rem',
+          padding: '0.75rem 1rem',
           backgroundColor: '#ffffff',
           borderTop: '1px solid #e2e8f0',
-          boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.08)',
-          zIndex: 100,
-          transition: 'left 0.3s ease',
+          boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.05)',
+          flexShrink: 0,
         }}>
           <form
             onSubmit={handleSendMessage}
@@ -3878,10 +3872,10 @@ Message: "${firstMessage.slice(0, 200)}"`,
               disabled={!sessionActive || loading}
               style={{
                 flex: 1,
-                padding: '0.875rem 1rem',
+                padding: '0.625rem 0.875rem',
                 border: '1px solid #e2e8f0',
-                borderRadius: '0.75rem',
-                fontSize: '0.95rem',
+                borderRadius: '0.5rem',
+                fontSize: '0.9rem',
                 backgroundColor: '#fff',
                 opacity: !sessionActive || loading ? 0.6 : 1,
                 transition: 'all 0.2s',
@@ -3904,13 +3898,13 @@ Message: "${firstMessage.slice(0, 200)}"`,
               disabled={!sessionActive || loading}
               title={webSearchEnabled ? 'Web search enabled - click to disable' : 'Enable web search for current information'}
               style={{
-                padding: '0.875rem',
+                padding: '0.5rem',
                 backgroundColor: webSearchEnabled ? '#10b981' : '#fff',
                 color: webSearchEnabled ? '#fff' : '#64748b',
                 border: webSearchEnabled ? 'none' : '1px solid #e2e8f0',
-                borderRadius: '0.75rem',
+                borderRadius: '0.5rem',
                 cursor: !sessionActive || loading ? 'not-allowed' : 'pointer',
-                fontSize: '1.1rem',
+                fontSize: '1rem',
                 transition: 'all 0.2s',
                 display: 'flex',
                 alignItems: 'center',
@@ -3925,14 +3919,14 @@ Message: "${firstMessage.slice(0, 200)}"`,
               type="submit"
               disabled={!sessionActive || loading || !userInput.trim()}
               style={{
-                padding: '0.875rem 1.25rem',
+                padding: '0.5rem 1rem',
                 backgroundColor: !sessionActive || loading || !userInput.trim() ? '#e2e8f0' : '#3b82f6',
                 color: !sessionActive || loading || !userInput.trim() ? '#94a3b8' : '#fff',
                 border: 'none',
-                borderRadius: '0.75rem',
+                borderRadius: '0.5rem',
                 cursor: !sessionActive || loading || !userInput.trim() ? 'not-allowed' : 'pointer',
                 fontWeight: '500',
-                fontSize: '0.95rem',
+                fontSize: '0.875rem',
                 transition: 'all 0.2s',
                 display: 'flex',
                 alignItems: 'center',
