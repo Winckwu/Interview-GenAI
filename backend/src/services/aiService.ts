@@ -15,6 +15,8 @@ if (!apiKey) {
 
 const client = new OpenAI({
   apiKey: apiKey,
+  timeout: 60000, // 60 seconds timeout
+  maxRetries: 3,  // Retry up to 3 times on connection errors
 });
 
 const MODEL = process.env.AI_MODEL || 'gpt-4o-mini'; // Default to cost-effective model
