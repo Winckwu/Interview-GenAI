@@ -461,24 +461,21 @@ export class PatternDetectionService {
       }
     });
 
-    // Only return dates that have actual user data (pattern or verification data)
-    // This prevents showing misleading zero values for dates before user started using the system
-    const datesWithData = new Set<string>();
+    // Generate ALL dates from effectiveSince to today
+    // This ensures the chart shows the complete date range even if some days have no data
+    const allDates: string[] = [];
+    const currentDate = new Date(effectiveSince);
+    currentDate.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
 
-    // Collect dates with pattern data
-    patternResult.rows.forEach((row: any) => {
-      datesWithData.add(row.date.toISOString().split('T')[0]);
-    });
+    while (currentDate <= today) {
+      allDates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
 
-    // Collect dates with verification data
-    verificationResult.rows.forEach((row: any) => {
-      datesWithData.add(row.date.toISOString().split('T')[0]);
-    });
-
-    // Sort dates and build trends array with only real data
-    const sortedDates = Array.from(datesWithData).sort();
-
-    return sortedDates.map(dateStr => ({
+    // Build trends array with all dates (0 for days with no data)
+    return allDates.map(dateStr => ({
       date: dateStr,
       pattern: patternsByDate[dateStr] || 'A',
       verificationRate: Math.round(dailyVerificationMap[dateStr] || 0),
