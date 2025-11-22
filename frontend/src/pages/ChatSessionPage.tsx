@@ -1564,36 +1564,45 @@ Message: "${firstMessage.slice(0, 200)}"`,
     // Only orchestrate for AI messages
     if (message.role !== 'ai') return null;
 
+    // Always calculate trust score first (even if orchestration is cached)
+    // This ensures the trust score reflects real content analysis
+    let trustScore: number;
+
+    if (messageTrustScores.has(message.id)) {
+      // Use cached trust score
+      trustScore = messageTrustScores.get(message.id)!;
+    } else {
+      // Calculate trust score using real message content analysis (rule-based)
+      const trustResult = calculateMessageTrustScore({
+        taskType: sessionData?.taskType || 'general',
+        taskCriticality: sessionData?.taskImportance === 3 ? 'high' : sessionData?.taskImportance === 2 ? 'medium' : 'low',
+        messageContent: message.content, // Pass actual message content for analysis
+        messageWasVerified: message.wasVerified || false,
+        messageWasModified: message.wasModified || false,
+        userValidationHistory: [],
+      });
+
+      trustScore = trustResult.score;
+
+      // Store trust score
+      setMessageTrustScores((prev) => new Map(prev).set(message.id, trustScore));
+
+      // If needs deep analysis, trigger async GPT analysis (non-blocking)
+      if (trustResult.needsDeepAnalysis && message.content.length > 200) {
+        // Async GPT analysis - updates score when complete
+        import('../utils/MROrchestrator').then(({ analyzeWithGPT }) => {
+          analyzeWithGPT(message.content, api).then((gptScore) => {
+            if (gptScore !== trustScore) {
+              setMessageTrustScores((prev) => new Map(prev).set(message.id, gptScore));
+            }
+          });
+        });
+      }
+    }
+
     // Check if we already have orchestration for this message
     if (orchestrationResults.has(message.id)) {
       return orchestrationResults.get(message.id);
-    }
-
-    // Calculate trust score using real message content analysis (rule-based)
-    const trustResult = calculateMessageTrustScore({
-      taskType: sessionData?.taskType || 'general',
-      taskCriticality: sessionData?.taskImportance === 3 ? 'high' : sessionData?.taskImportance === 2 ? 'medium' : 'low',
-      messageContent: message.content, // Pass actual message content for analysis
-      messageWasVerified: message.wasVerified || false,
-      messageWasModified: message.wasModified || false,
-      userValidationHistory: [],
-    });
-
-    const trustScore = trustResult.score;
-
-    // Store trust score
-    setMessageTrustScores((prev) => new Map(prev).set(message.id, trustScore));
-
-    // If needs deep analysis, trigger async GPT analysis (non-blocking)
-    if (trustResult.needsDeepAnalysis && message.content.length > 200) {
-      // Async GPT analysis - updates score when complete
-      import('../utils/MROrchestrator').then(({ analyzeWithGPT }) => {
-        analyzeWithGPT(message.content, api).then((gptScore) => {
-          if (gptScore !== trustScore) {
-            setMessageTrustScores((prev) => new Map(prev).set(message.id, gptScore));
-          }
-        });
-      });
     }
 
     // Orchestrate MR activation
@@ -1604,8 +1613,8 @@ Message: "${firstMessage.slice(0, 200)}"`,
       messageWasModified: message.wasModified || false,
       messageWasVerified: message.wasVerified || false,
       consecutiveUnverified: consecutiveNoVerify,
-      aiConfidenceScore: trustResult.score / 100,
-      hasUncertainty: trustResult.needsDeepAnalysis,
+      aiConfidenceScore: trustScore / 100,
+      hasUncertainty: false,
     };
 
     const result = orchestrateMRActivation(context);
