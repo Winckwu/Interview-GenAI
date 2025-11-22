@@ -246,6 +246,28 @@ export class SessionService {
   }
 
   /**
+   * Delete a session and all its interactions
+   */
+  async deleteSession(sessionId: string, userId: string): Promise<boolean> {
+    // First verify the session belongs to the user
+    const session = await this.getSession(sessionId);
+    if (!session || session.userId !== userId) {
+      return false;
+    }
+
+    // Delete all interactions for this session first (foreign key constraint)
+    await pool.query('DELETE FROM interactions WHERE session_id = $1', [sessionId]);
+
+    // Delete the session
+    const result = await pool.query('DELETE FROM work_sessions WHERE id = $1 AND user_id = $2', [
+      sessionId,
+      userId,
+    ]);
+
+    return result.rowCount !== null && result.rowCount > 0;
+  }
+
+  /**
    * Get session statistics for analysis
    */
   async getSessionStats(sessionId: string): Promise<any> {

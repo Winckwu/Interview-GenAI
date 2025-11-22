@@ -150,6 +150,43 @@ router.post(
 );
 
 /**
+ * DELETE /api/sessions/:sessionId
+ * Delete a session and all its interactions
+ */
+router.delete(
+  '/:sessionId',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { sessionId } = req.params;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const deleted = await SessionService.deleteSession(sessionId, userId);
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        error: 'Session not found or you do not have permission to delete it',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Session deleted successfully',
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
  * PATCH /api/sessions/:sessionId
  * Update session details (e.g., title/taskDescription)
  */
