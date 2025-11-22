@@ -18,13 +18,16 @@ interface InfoTooltipProps {
   placement?: 'top' | 'bottom' | 'left' | 'right';
   size?: 'small' | 'medium' | 'large';
   variant?: 'info' | 'warning' | 'error' | 'success';
+  /** Use 'inline' for subtle icons that blend with text (like Dashboard style) */
+  iconStyle?: 'default' | 'inline';
 }
 
 const InfoTooltip: React.FC<InfoTooltipProps> = ({
   text,
   placement = 'top',
   size = 'medium',
-  variant = 'info'
+  variant = 'info',
+  iconStyle = 'inline'
 }) => {
   const [show, setShow] = useState(false);
 
@@ -79,6 +82,8 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
     }
   };
 
+  const iconStyleClass = iconStyle === 'inline' ? 'tooltip-icon--inline' : '';
+
   return (
     <div
       className={`info-tooltip info-tooltip--${placement}`}
@@ -86,7 +91,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
       onMouseLeave={() => setShow(false)}
     >
       <div
-        className={`tooltip-icon tooltip-icon--${size} tooltip-icon--${variant}`}
+        className={`tooltip-icon tooltip-icon--${size} tooltip-icon--${variant} ${iconStyleClass}`}
         role="button"
         tabIndex={0}
         aria-label="More information"

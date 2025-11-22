@@ -58,6 +58,40 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
 }
 
+/* ===========================
+   Inline Style (Dashboard-like)
+   Subtle, minimal icon without background
+   =========================== */
+.tooltip-icon--inline {
+  background: transparent;
+  box-shadow: none;
+  width: auto;
+  height: auto;
+  padding: 2px;
+}
+
+.tooltip-icon--inline:hover {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.tooltip-icon--inline:focus {
+  background: rgba(59, 130, 246, 0.08);
+  box-shadow: none;
+  border-radius: 4px;
+}
+
+.tooltip-icon--inline .info-icon-svg {
+  color: #9ca3af;
+  opacity: 0.6;
+}
+
+.tooltip-icon--inline:hover .info-icon-svg {
+  color: #6b7280;
+  opacity: 1;
+}
+
 /* SVG Icon */
 .info-icon-svg {
   color: #3b82f6;
