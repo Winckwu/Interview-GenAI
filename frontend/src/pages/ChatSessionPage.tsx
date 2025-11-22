@@ -3847,45 +3847,21 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
         {/* Input Area - Fixed at bottom via flexbox */}
         <footer style={{
-          padding: '0.75rem 1rem',
-          backgroundColor: '#fff',
+          padding: '1rem 1.5rem',
+          backgroundColor: '#f8fafc',
           borderTop: '1px solid #e2e8f0',
-          boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.05)',
-          flexShrink: 0, // Prevent footer from shrinking - stays at bottom
+          flexShrink: 0,
         }}>
           <form
             onSubmit={handleSendMessage}
             style={{
               display: 'flex',
-              gap: '0.75rem',
+              gap: '0.5rem',
               alignItems: 'center',
+              maxWidth: '900px',
+              margin: '0 auto',
             }}
           >
-            {/* Web Search Toggle Button */}
-            <button
-              type="button"
-              onClick={() => setWebSearchEnabled(!webSearchEnabled)}
-              disabled={!sessionActive || loading}
-              title={webSearchEnabled ? 'Web search enabled - click to disable' : 'Enable web search'}
-              style={{
-                padding: '0.75rem',
-                backgroundColor: webSearchEnabled ? '#10b981' : '#f3f4f6',
-                color: webSearchEnabled ? '#fff' : '#6b7280',
-                border: webSearchEnabled ? '2px solid #10b981' : '2px solid #e5e7eb',
-                borderRadius: '0.5rem',
-                cursor: !sessionActive || loading ? 'not-allowed' : 'pointer',
-                fontSize: '1.25rem',
-                transition: 'all 0.2s',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minWidth: '44px',
-                opacity: !sessionActive || loading ? 0.5 : 1,
-              }}
-            >
-              🌐
-            </button>
-
             <input
               data-tour="chat-input"
               type="text"
@@ -3895,42 +3871,65 @@ Message: "${firstMessage.slice(0, 200)}"`,
               disabled={!sessionActive || loading}
               style={{
                 flex: 1,
-                padding: '0.75rem 1rem',
-                border: webSearchEnabled ? '2px solid #10b981' : '1px solid #d1d5db',
-                borderRadius: '0.5rem',
+                padding: '0.875rem 1rem',
+                border: '1px solid #e2e8f0',
+                borderRadius: '0.75rem',
                 fontSize: '0.95rem',
-                opacity: !sessionActive || loading ? 0.5 : 1,
-                transition: 'border-color 0.2s',
+                backgroundColor: '#fff',
+                opacity: !sessionActive || loading ? 0.6 : 1,
+                transition: 'all 0.2s',
                 outline: 'none',
-                boxShadow: 'none',
               }}
               onFocus={(e) => {
-                if (!webSearchEnabled) {
-                  e.currentTarget.style.borderColor = '#3b82f6';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
-                }
+                e.currentTarget.style.borderColor = '#3b82f6';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
               }}
               onBlur={(e) => {
-                if (!webSearchEnabled) {
-                  e.currentTarget.style.borderColor = '#d1d5db';
-                  e.currentTarget.style.boxShadow = 'none';
-                }
+                e.currentTarget.style.borderColor = '#e2e8f0';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
+
+            {/* Web Search Toggle Button - Next to Send */}
+            <button
+              type="button"
+              onClick={() => setWebSearchEnabled(!webSearchEnabled)}
+              disabled={!sessionActive || loading}
+              title={webSearchEnabled ? 'Web search enabled - click to disable' : 'Enable web search for current information'}
+              style={{
+                padding: '0.875rem',
+                backgroundColor: webSearchEnabled ? '#10b981' : '#fff',
+                color: webSearchEnabled ? '#fff' : '#64748b',
+                border: webSearchEnabled ? 'none' : '1px solid #e2e8f0',
+                borderRadius: '0.75rem',
+                cursor: !sessionActive || loading ? 'not-allowed' : 'pointer',
+                fontSize: '1.1rem',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: !sessionActive || loading ? 0.6 : 1,
+              }}
+            >
+              🌐
+            </button>
+
             <button
               type="submit"
               disabled={!sessionActive || loading || !userInput.trim()}
               style={{
-                padding: '0.75rem 1.5rem',
-                backgroundColor: !sessionActive || loading || !userInput.trim() ? '#d1d5db' : '#3b82f6',
-                color: '#fff',
+                padding: '0.875rem 1.25rem',
+                backgroundColor: !sessionActive || loading || !userInput.trim() ? '#e2e8f0' : '#3b82f6',
+                color: !sessionActive || loading || !userInput.trim() ? '#94a3b8' : '#fff',
                 border: 'none',
-                borderRadius: '0.5rem',
+                borderRadius: '0.75rem',
                 cursor: !sessionActive || loading || !userInput.trim() ? 'not-allowed' : 'pointer',
-                fontWeight: '600',
+                fontWeight: '500',
                 fontSize: '0.95rem',
-                transition: 'background-color 0.2s',
-                minWidth: '80px',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.375rem',
               }}
               onMouseOver={(e) => {
                 if (!(!sessionActive || loading || !userInput.trim())) {
@@ -3938,25 +3937,14 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 }
               }}
               onMouseOut={(e) => {
-                (e.target as HTMLButtonElement).style.backgroundColor = '#3b82f6';
+                if (!(!sessionActive || loading || !userInput.trim())) {
+                  (e.target as HTMLButtonElement).style.backgroundColor = '#3b82f6';
+                }
               }}
             >
-              {loading ? '⏳' : '📤'} Send
+              {loading ? '⏳' : '🚀'} Send
             </button>
           </form>
-          {/* Web Search Status Indicator */}
-          {webSearchEnabled && (
-            <div style={{
-              marginTop: '0.5rem',
-              fontSize: '0.75rem',
-              color: '#10b981',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.25rem',
-            }}>
-              🌐 Web search enabled - AI will search the internet for current information
-            </div>
-          )}
         </footer>
       </div>
 
