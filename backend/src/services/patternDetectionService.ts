@@ -442,21 +442,26 @@ export class PatternDetectionService {
       }
     });
 
-    // Generate all dates in the range to ensure continuity
-    const allDates: string[] = [];
-    const currentDate = new Date(since);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Only return dates that have actual user data (pattern or verification data)
+    // This prevents showing misleading zero values for dates before user started using the system
+    const datesWithData = new Set<string>();
 
-    while (currentDate <= today) {
-      allDates.push(currentDate.toISOString().split('T')[0]);
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+    // Collect dates with pattern data
+    patternResult.rows.forEach((row: any) => {
+      datesWithData.add(row.date.toISOString().split('T')[0]);
+    });
 
-    // Build trends array with all dates (including those with no data)
-    return allDates.map(dateStr => ({
+    // Collect dates with verification data
+    verificationResult.rows.forEach((row: any) => {
+      datesWithData.add(row.date.toISOString().split('T')[0]);
+    });
+
+    // Sort dates and build trends array with only real data
+    const sortedDates = Array.from(datesWithData).sort();
+
+    return sortedDates.map(dateStr => ({
       date: dateStr,
-      pattern: patternsByDate[dateStr] || 'A', // Default to pattern A if no data
+      pattern: patternsByDate[dateStr] || 'A',
       verificationRate: Math.round(dailyVerificationMap[dateStr] || 0),
     }));
   }
