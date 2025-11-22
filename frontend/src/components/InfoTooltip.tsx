@@ -75,7 +75,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
       default: // info
         return (
           <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" className="info-icon-svg">
-            <circle cx="12" cy="12" r="10" fill="currentColor" className="info-circle" />
+            <circle cx="12" cy="12" r="6" fill="currentColor" className="info-circle" />
           </svg>
         );
     }
