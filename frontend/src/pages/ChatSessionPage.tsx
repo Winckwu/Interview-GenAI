@@ -3541,6 +3541,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
           flex: '1 1 0',
           overflowY: 'auto', // Enable scrolling for messages
           padding: '0.75rem 1rem',
+          paddingBottom: '100px', // Space for fixed footer
           display: 'flex',
           flexDirection: 'column',
           minHeight: 0, // Important for flex overflow scrolling
@@ -3845,13 +3846,18 @@ Message: "${firstMessage.slice(0, 200)}"`,
           )}
         </div>
 
-        {/* Input Area - Fixed at bottom via flexbox */}
+        {/* Input Area - Fixed at bottom of viewport */}
         <footer style={{
+          position: 'fixed',
+          bottom: 0,
+          left: sessionSidebarOpen ? '280px' : '0',
+          right: 0,
           padding: '1rem 1.5rem',
           backgroundColor: '#ffffff',
           borderTop: '1px solid #e2e8f0',
           boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.08)',
-          flexShrink: 0,
+          zIndex: 100,
+          transition: 'left 0.3s ease',
         }}>
           <form
             onSubmit={handleSendMessage}
