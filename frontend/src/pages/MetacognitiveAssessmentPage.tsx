@@ -479,13 +479,113 @@ const MetacognitiveAssessmentPage: React.FC = () => {
   return (
     <div className="assessment-page">
       {/* Header */}
-      <div className="assessment-header">
-        <h1>
-          🧠 Metacognitive Capability Assessment
-        </h1>
-        <p className="assessment-subtitle">
-          Diagnose your metacognitive strengths and areas for growth across 4 key dimensions
-        </p>
+      <div className="assessment-header" style={{
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%)',
+        borderRadius: '1rem',
+        padding: '2rem 2.5rem',
+        marginBottom: '2rem',
+        border: '1px solid rgba(139, 92, 246, 0.15)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Decorative gradient bar */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '4px',
+          background: 'linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%)',
+          borderRadius: '1rem 1rem 0 0',
+        }} />
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1rem' }}>
+          <div style={{
+            width: '64px',
+            height: '64px',
+            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+            borderRadius: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '2rem',
+            boxShadow: '0 8px 24px rgba(59, 130, 246, 0.25)',
+          }}>
+            🧠
+          </div>
+          <div>
+            <h1 style={{
+              margin: 0,
+              fontSize: '2rem',
+              fontWeight: 800,
+              background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
+              Metacognitive Capability Assessment
+            </h1>
+            <p style={{
+              margin: '0.5rem 0 0 0',
+              fontSize: '1.0625rem',
+              color: '#64748b',
+              fontWeight: 500,
+            }}>
+              Diagnose your metacognitive strengths and areas for growth across 4 key dimensions
+            </p>
+          </div>
+        </div>
+
+        {/* Quick info badges */}
+        <div style={{
+          display: 'flex',
+          gap: '0.75rem',
+          flexWrap: 'wrap',
+          marginTop: '1rem',
+        }}>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.375rem',
+            padding: '0.5rem 1rem',
+            background: 'rgba(255, 255, 255, 0.8)',
+            borderRadius: '2rem',
+            fontSize: '0.8125rem',
+            fontWeight: 600,
+            color: '#3b82f6',
+            border: '1px solid rgba(59, 130, 246, 0.2)',
+          }}>
+            <span>⏱️</span> ~10 minutes
+          </span>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.375rem',
+            padding: '0.5rem 1rem',
+            background: 'rgba(255, 255, 255, 0.8)',
+            borderRadius: '2rem',
+            fontSize: '0.8125rem',
+            fontWeight: 600,
+            color: '#8b5cf6',
+            border: '1px solid rgba(139, 92, 246, 0.2)',
+          }}>
+            <span>📊</span> 4 Dimensions
+          </span>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.375rem',
+            padding: '0.5rem 1rem',
+            background: 'rgba(255, 255, 255, 0.8)',
+            borderRadius: '2rem',
+            fontSize: '0.8125rem',
+            fontWeight: 600,
+            color: '#10b981',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+          }}>
+            <span>🔒</span> Private & Secure
+          </span>
+        </div>
       </div>
 
       {/* Main Content */}
