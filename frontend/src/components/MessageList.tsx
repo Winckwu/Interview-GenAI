@@ -10,12 +10,46 @@
  * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import MessageItem, { type Message } from './MessageItem';
 import TrustIndicator, { type TrustBadge, type MRRecommendation } from './TrustIndicator';
 import QuickReflection, { type ReflectionResponse } from './QuickReflection';
 import MR6Suggestion from './MR6Suggestion';
 import styles from './MessageList.module.css';
+
+/**
+ * Detect if a message is a simple greeting or casual conversation
+ * that doesn't need verification tools, trust indicators, etc.
+ */
+const GREETING_PATTERNS = [
+  /^(hi|hello|hey|hola|你好|嗨|哈喽|早|晚上好|早上好|下午好)[\s!.,?]*$/i,
+  /^(how are you|what's up|sup|how's it going|怎么样|最近怎么样)[\s!.,?]*$/i,
+  /^(thanks|thank you|谢谢|感谢|thx|ty)[\s!.,?]*$/i,
+  /^(ok|okay|好的|好|行|嗯|got it|understood)[\s!.,?]*$/i,
+  /^(bye|goodbye|see you|再见|拜拜)[\s!.,?]*$/i,
+];
+
+const isSimpleMessage = (userMessage: string, aiResponse: string): boolean => {
+  const userMsg = userMessage.trim().toLowerCase();
+  const aiMsg = aiResponse.trim().toLowerCase();
+
+  // Very short messages (< 15 chars for user, < 50 chars for AI)
+  if (userMsg.length < 15 && aiMsg.length < 100) {
+    // Check if it matches greeting patterns
+    for (const pattern of GREETING_PATTERNS) {
+      if (pattern.test(userMsg)) {
+        return true;
+      }
+    }
+  }
+
+  // Simple one-word questions
+  if (userMsg.split(/\s+/).length <= 2 && aiMsg.length < 150) {
+    return true;
+  }
+
+  return false;
+};
 
 export interface MessageListProps {
   messages: Message[];
@@ -98,10 +132,27 @@ export const MessageList: React.FC<MessageListProps> = ({
   onLoadMore,
 }) => {
   /**
+   * Check if an AI message is a response to a simple greeting/casual message
+   * Returns true if tools should be hidden
+   */
+  const shouldHideTools = useCallback((message: Message, index: number): boolean => {
+    if (message.role !== 'ai') return false;
+
+    // Find the preceding user message
+    const userMessage = messages.slice(0, index).reverse().find(m => m.role === 'user');
+    if (!userMessage) return false;
+
+    return isSimpleMessage(userMessage.content, message.content);
+  }, [messages]);
+
+  /**
    * Render Trust Indicator for AI messages
    */
   const renderTrustIndicator = useCallback((message: Message, index: number) => {
     if (message.role !== 'ai' || !showTrustIndicator) return null;
+
+    // Skip for simple messages
+    if (shouldHideTools(message, index)) return null;
 
     const orchestrationResult = orchestrateForMessage(message, index);
     if (!orchestrationResult) return null;
@@ -117,13 +168,16 @@ export const MessageList: React.FC<MessageListProps> = ({
         onRecommendationClick={onTrustRecommendationClick}
       />
     );
-  }, [showTrustIndicator, orchestrateForMessage, messageTrustScores, getTrustBadge, onTrustRecommendationClick]);
+  }, [showTrustIndicator, orchestrateForMessage, messageTrustScores, getTrustBadge, onTrustRecommendationClick, shouldHideTools]);
 
   /**
    * Render Quick Reflection panel for AI messages
    */
-  const renderQuickReflection = useCallback((message: Message) => {
+  const renderQuickReflection = useCallback((message: Message, index: number) => {
     if (message.role !== 'ai' || reflectedMessages.has(message.id)) return null;
+
+    // Skip for simple messages
+    if (shouldHideTools(message, index)) return null;
 
     return (
       <QuickReflection
@@ -133,13 +187,16 @@ export const MessageList: React.FC<MessageListProps> = ({
         onRespond={(response) => onQuickReflectionRespond(message.id, response)}
       />
     );
-  }, [reflectedMessages, showQuickReflection, onExpandQuickReflection, onQuickReflectionRespond]);
+  }, [reflectedMessages, showQuickReflection, onExpandQuickReflection, onQuickReflectionRespond, shouldHideTools]);
 
   /**
    * Render MR6 Suggestion panel for AI messages
    */
   const renderMR6Suggestion = useCallback((message: Message, index: number) => {
     if (!shouldSuggestMR6(message, index)) return null;
+
+    // Skip for simple messages
+    if (shouldHideTools(message, index)) return null;
 
     return (
       <MR6Suggestion
@@ -150,7 +207,7 @@ export const MessageList: React.FC<MessageListProps> = ({
         onDismiss={() => onMR6SuggestionDismiss(message.id)}
       />
     );
-  }, [shouldSuggestMR6, showMR6Suggestion, onExpandMR6Suggestion, onMR6SuggestionAccept, onMR6SuggestionDismiss]);
+  }, [shouldSuggestMR6, showMR6Suggestion, onExpandMR6Suggestion, onMR6SuggestionAccept, onMR6SuggestionDismiss, shouldHideTools]);
 
   return (
     <div className={styles.messagesContainer}>
@@ -172,8 +229,9 @@ export const MessageList: React.FC<MessageListProps> = ({
             onBranchDelete={onBranchDelete ? () => onBranchDelete(message.id) : undefined}
             onBranchSetAsMain={onBranchSetAsMain ? () => onBranchSetAsMain(message.id) : undefined}
             trustIndicator={renderTrustIndicator(message, index)}
-            quickReflection={renderQuickReflection(message)}
+            quickReflection={renderQuickReflection(message, index)}
             mr6Suggestion={renderMR6Suggestion(message, index)}
+            hideActionButtons={shouldHideTools(message, index)}
           />
         </div>
       ))}

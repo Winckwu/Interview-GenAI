@@ -52,6 +52,9 @@ export interface MessageItemProps {
   trustIndicator?: React.ReactNode;
   quickReflection?: React.ReactNode;
   mr6Suggestion?: React.ReactNode;
+
+  // Hide action buttons for simple messages (greetings, etc.)
+  hideActionButtons?: boolean;
 }
 
 export const MessageItem: React.FC<MessageItemProps> = ({
@@ -71,6 +74,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   trustIndicator,
   quickReflection,
   mr6Suggestion,
+  hideActionButtons = false,
 }) => {
   // Modal states
   const [showComparison, setShowComparison] = useState(false);
@@ -717,27 +721,29 @@ export const MessageItem: React.FC<MessageItemProps> = ({
             {/* Trust Indicator (MR9) - Rendered from parent */}
             {trustIndicator}
 
-            {/* Action Buttons */}
-            <div className={styles.actionButtons}>
-              <button
-                onClick={onVerify}
-                disabled={isUpdating}
-                title="✓ VERIFY: Confirm this AI response is correct and helpful."
-                className={`${styles.actionButton} ${message.wasVerified ? styles.verifiedBadge : styles.verifyButton}`}
-                style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
-              >
-                {isUpdating ? '⏳' : message.wasVerified ? '✓' : '✓'} {message.wasVerified ? 'Verified' : 'Verify'}
-              </button>
-              <button
-                onClick={onModify}
-                disabled={isUpdating}
-                title="✎ MODIFY: Check this if you edited or improved the AI's response."
-                className={`${styles.actionButton} ${message.wasModified ? styles.modifiedBadge : styles.modifyButton}`}
-                style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
-              >
-                {isUpdating ? '⏳' : message.wasModified ? '✎' : '✎'} {message.wasModified ? 'Modified' : 'Modify'}
-              </button>
-            </div>
+            {/* Action Buttons - Hidden for simple messages */}
+            {!hideActionButtons && (
+              <div className={styles.actionButtons}>
+                <button
+                  onClick={onVerify}
+                  disabled={isUpdating}
+                  title="✓ VERIFY: Confirm this AI response is correct and helpful."
+                  className={`${styles.actionButton} ${message.wasVerified ? styles.verifiedBadge : styles.verifyButton}`}
+                  style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+                >
+                  {isUpdating ? '⏳' : message.wasVerified ? '✓' : '✓'} {message.wasVerified ? 'Verified' : 'Verify'}
+                </button>
+                <button
+                  onClick={onModify}
+                  disabled={isUpdating}
+                  title="✎ MODIFY: Check this if you edited or improved the AI's response."
+                  className={`${styles.actionButton} ${message.wasModified ? styles.modifiedBadge : styles.modifyButton}`}
+                  style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+                >
+                  {isUpdating ? '⏳' : message.wasModified ? '✎' : '✎'} {message.wasModified ? 'Modified' : 'Modify'}
+                </button>
+              </div>
+            )}
 
             {/* Quick Reflection Prompt (MR14) - Rendered from parent */}
             {quickReflection}
