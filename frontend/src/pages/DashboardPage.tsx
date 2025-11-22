@@ -1220,38 +1220,125 @@ const DashboardPage: React.FC = () => {
             {/* Quick Stats */}
             <div className="chart-container stats-container">
               <h3>Quick Stats</h3>
-              <div className="stats-list">
-                <div className="stat-item">
-                  <span className="stat-label">Verification Rate:</span>
-                  <span className="stat-value">{verificationRate.toFixed(0)}%</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Modification Rate:</span>
-                  <span className="stat-value">{modificationRate.toFixed(0)}%</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">AI Reliance:</span>
-                  <span className="stat-value">
-                    {userPattern?.aiRelianceScore !== undefined
-                      ? `${(userPattern.aiRelianceScore * 100).toFixed(0)}%`
-                      : 'N/A'}
+
+              {/* Behavioral Metrics Section */}
+              <div style={{
+                border: '2px solid #e5e7eb',
+                borderRadius: '0.75rem',
+                padding: '1rem',
+                marginBottom: '1rem',
+                backgroundColor: '#fafafa'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                  paddingBottom: '0.5rem',
+                  borderBottom: '1px solid #e5e7eb'
+                }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                    Behavioral Metrics
                   </span>
+                  <button
+                    onClick={() => navigate('/patterns')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#3b82f6',
+                      fontSize: '0.8125rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      transition: 'background-color 0.2s'
+                    }}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#eff6ff')}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                  >
+                    View Detail →
+                  </button>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-label">Pattern Stability:</span>
-                  <span className="stat-value">
-                    {userPattern?.stability !== undefined
-                      ? `${(userPattern.stability * 100).toFixed(0)}%`
-                      : 'N/A'}
-                  </span>
+                <div className="stats-list" style={{ gap: '0.5rem' }}>
+                  <div className="stat-item">
+                    <span className="stat-label">Verification Rate:</span>
+                    <span className="stat-value">{verificationRate.toFixed(0)}%</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Modification Rate:</span>
+                    <span className="stat-value">{modificationRate.toFixed(0)}%</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">AI Reliance:</span>
+                    <span className="stat-value">
+                      {userPattern?.aiRelianceScore !== undefined
+                        ? `${(userPattern.aiRelianceScore * 100).toFixed(0)}%`
+                        : 'N/A'}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Pattern Stability:</span>
+                    <span className="stat-value">
+                      {userPattern?.stability !== undefined
+                        ? `${(userPattern.stability * 100).toFixed(0)}%`
+                        : 'N/A'}
+                    </span>
+                  </div>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-label">Assessment Score:</span>
-                  <span className="stat-value">
-                    {latestAssessment?.overallScore !== undefined
-                      ? `${(latestAssessment.overallScore * 100).toFixed(0)}/100`
-                      : 'N/A'}
+              </div>
+
+              {/* Assessment Score Section */}
+              <div style={{
+                border: '2px solid #e5e7eb',
+                borderRadius: '0.75rem',
+                padding: '1rem',
+                backgroundColor: '#fafafa'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                  paddingBottom: '0.5rem',
+                  borderBottom: '1px solid #e5e7eb'
+                }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                    Metacognitive Assessment
                   </span>
+                  <button
+                    onClick={() => navigate('/assessment')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#8b5cf6',
+                      fontSize: '0.8125rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      transition: 'background-color 0.2s'
+                    }}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#f5f3ff')}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                  >
+                    View Detail →
+                  </button>
+                </div>
+                <div className="stats-list">
+                  <div className="stat-item">
+                    <span className="stat-label">Assessment Score:</span>
+                    <span className="stat-value">
+                      {latestAssessment?.overallScore !== undefined
+                        ? `${(latestAssessment.overallScore * 100).toFixed(0)}/100`
+                        : 'N/A'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
