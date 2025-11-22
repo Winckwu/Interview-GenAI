@@ -1569,8 +1569,8 @@ Message: "${firstMessage.slice(0, 200)}"`,
       return orchestrationResults.get(message.id);
     }
 
-    // Calculate trust score using real message content analysis
-    const trustScore = calculateMessageTrustScore({
+    // Calculate trust score using real message content analysis (rule-based)
+    const trustResult = calculateMessageTrustScore({
       taskType: sessionData?.taskType || 'general',
       taskCriticality: sessionData?.taskImportance === 3 ? 'high' : sessionData?.taskImportance === 2 ? 'medium' : 'low',
       messageContent: message.content, // Pass actual message content for analysis
@@ -1579,8 +1579,22 @@ Message: "${firstMessage.slice(0, 200)}"`,
       userValidationHistory: [],
     });
 
+    const trustScore = trustResult.score;
+
     // Store trust score
     setMessageTrustScores((prev) => new Map(prev).set(message.id, trustScore));
+
+    // If needs deep analysis, trigger async GPT analysis (non-blocking)
+    if (trustResult.needsDeepAnalysis && message.content.length > 200) {
+      // Async GPT analysis - updates score when complete
+      import('../utils/MROrchestrator').then(({ analyzeWithGPT }) => {
+        analyzeWithGPT(message.content, api).then((gptScore) => {
+          if (gptScore !== trustScore) {
+            setMessageTrustScores((prev) => new Map(prev).set(message.id, gptScore));
+          }
+        });
+      });
+    }
 
     // Orchestrate MR activation
     const context: OrchestrationContext = {
@@ -1590,8 +1604,8 @@ Message: "${firstMessage.slice(0, 200)}"`,
       messageWasModified: message.wasModified || false,
       messageWasVerified: message.wasVerified || false,
       consecutiveUnverified: consecutiveNoVerify,
-      aiConfidenceScore: 0.7,
-      hasUncertainty: false, // Can be enhanced with MR13 integration
+      aiConfidenceScore: trustResult.score / 100,
+      hasUncertainty: trustResult.needsDeepAnalysis,
     };
 
     const result = orchestrateMRActivation(context);

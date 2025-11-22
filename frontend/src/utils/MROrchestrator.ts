@@ -294,57 +294,168 @@ export function orchestrateMRActivation(context: OrchestrationContext): Orchestr
 }
 
 /**
- * Analyze AI message content to extract real confidence score
- * Based on: uncertainty words, structure, length, specificity
+ * Enhanced rule-based confidence analysis
+ * Quick initial screening with more comprehensive factors
  */
-function analyzeMessageConfidence(content: string): number {
-  if (!content || content.length < 10) return 0.5;
+function analyzeMessageConfidence(content: string): { score: number; needsDeepAnalysis: boolean } {
+  if (!content || content.length < 10) return { score: 0.5, needsDeepAnalysis: false };
 
   let score = 0.7; // Base score
+  let uncertaintySignals = 0;
 
-  // Uncertainty indicators (reduce confidence)
-  const uncertaintyWords = [
-    'might', 'maybe', 'perhaps', 'possibly', 'could be', 'not sure', 'uncertain',
-    'I think', 'I believe', 'it seems', 'probably', 'likely',
-    '可能', '也许', '或许', '大概', '不确定', '我认为', '我觉得', '似乎'
+  // 1. Uncertainty indicators (reduce confidence)
+  const uncertaintyPatterns = [
+    // English
+    /\b(might|maybe|perhaps|possibly|could be|may be)\b/gi,
+    /\b(not sure|uncertain|unsure|unclear)\b/gi,
+    /\b(I think|I believe|I guess|I suppose|it seems|appears to)\b/gi,
+    /\b(probably|likely|unlikely|potentially)\b/gi,
+    /\b(in my opinion|from my perspective)\b/gi,
+    // Chinese
+    /(可能|也许|或许|大概|不确定|不太确定)/g,
+    /(我认为|我觉得|我想|似乎|好像|应该是)/g,
+    /(据我所知|如果我没记错)/g,
   ];
-  const uncertaintyCount = uncertaintyWords.filter(w =>
-    content.toLowerCase().includes(w.toLowerCase())
-  ).length;
-  score -= uncertaintyCount * 0.03;
+  uncertaintyPatterns.forEach(pattern => {
+    const matches = content.match(pattern);
+    if (matches) {
+      uncertaintySignals += matches.length;
+      score -= matches.length * 0.025;
+    }
+  });
 
-  // Confidence indicators (increase confidence)
-  const confidenceWords = [
-    'definitely', 'certainly', 'clearly', 'obviously', 'must', 'always',
-    'specifically', 'exactly', 'precisely',
-    '一定', '确定', '肯定', '明确', '显然', '必须'
+  // 2. Confidence indicators (increase confidence)
+  const confidencePatterns = [
+    /\b(definitely|certainly|clearly|obviously|absolutely)\b/gi,
+    /\b(must|always|never|specifically|exactly|precisely)\b/gi,
+    /\b(is|are|will|does)\b(?!\s*(not|n't))/gi, // Declarative statements
+    /(一定|确定|肯定|明确|显然|必须|就是|正是)/g,
   ];
-  const confidenceCount = confidenceWords.filter(w =>
-    content.toLowerCase().includes(w.toLowerCase())
-  ).length;
-  score += confidenceCount * 0.02;
+  confidencePatterns.forEach(pattern => {
+    const matches = content.match(pattern);
+    if (matches) score += Math.min(matches.length * 0.015, 0.06);
+  });
 
-  // Structure indicators (lists, headers = more organized = higher confidence)
-  const hasLists = /^[\s]*[-*•]\s|^[\s]*\d+\.\s/m.test(content);
-  const hasHeaders = /^#+\s|^\*\*[^*]+\*\*/m.test(content);
+  // 3. Structure quality (organized = higher confidence)
+  const hasNumberedList = /^\s*\d+[.)]\s/m.test(content);
+  const hasBulletList = /^\s*[-*•]\s/m.test(content);
+  const hasHeaders = /^#{1,3}\s|^\*\*[^*]+\*\*:/m.test(content);
   const hasCodeBlocks = /```[\s\S]*?```/.test(content);
-  if (hasLists) score += 0.05;
+  const hasTables = /\|.*\|.*\|/m.test(content);
+
+  if (hasNumberedList) score += 0.04;
+  if (hasBulletList) score += 0.03;
   if (hasHeaders) score += 0.03;
   if (hasCodeBlocks) score += 0.05;
+  if (hasTables) score += 0.04;
 
-  // Length factor (too short = less detailed, too long = might be padding)
+  // 4. Evidence of specificity (concrete details = higher confidence)
+  const hasNumbers = /\d+(\.\d+)?(%|个|次|年|月|日|元|美元|\$|GB|MB|KB)/.test(content);
+  const hasUrls = /https?:\/\/\S+/.test(content);
+  const hasQuotes = /"[^"]{10,}"/.test(content);
+
+  if (hasNumbers) score += 0.03;
+  if (hasUrls) score += 0.02;
+  if (hasQuotes) score += 0.02;
+
+  // 5. Question marks (asking questions = less confident in providing answer)
+  const questionCount = (content.match(/\?/g) || []).length;
+  if (questionCount > 2) score -= 0.03;
+
+  // 6. Hedging phrases (reduce confidence)
+  const hedgingPhrases = [
+    /to some extent/gi, /in general/gi, /for the most part/gi,
+    /it depends/gi, /that said/gi, /however/gi,
+    /在一定程度上/g, /一般来说/g, /通常情况下/g,
+  ];
+  hedgingPhrases.forEach(pattern => {
+    if (pattern.test(content)) score -= 0.02;
+  });
+
+  // 7. Length factor
   const length = content.length;
-  if (length < 100) score -= 0.1;
-  else if (length > 200 && length < 2000) score += 0.05;
-  else if (length > 3000) score -= 0.03;
+  if (length < 50) score -= 0.12;
+  else if (length < 100) score -= 0.08;
+  else if (length > 200 && length < 2000) score += 0.04;
+  else if (length > 4000) score -= 0.02;
+
+  // Determine if needs GPT deep analysis
+  const needsDeepAnalysis =
+    (length > 500 && uncertaintySignals >= 2) || // Long message with uncertainty
+    (score >= 0.55 && score <= 0.75) || // Ambiguous middle range
+    (uncertaintySignals >= 3); // High uncertainty
 
   // Clamp to valid range
-  return Math.max(0.3, Math.min(0.95, score));
+  return {
+    score: Math.max(0.25, Math.min(0.95, score)),
+    needsDeepAnalysis
+  };
+}
+
+// Cache for GPT analysis results
+const gptAnalysisCache = new Map<string, number>();
+
+/**
+ * GPT-powered deep confidence analysis
+ * Called for important/ambiguous messages
+ */
+export async function analyzeWithGPT(content: string, api: any): Promise<number> {
+  // Check cache first (use content hash as key)
+  const cacheKey = content.slice(0, 200);
+  if (gptAnalysisCache.has(cacheKey)) {
+    return gptAnalysisCache.get(cacheKey)!;
+  }
+
+  try {
+    const response = await api.post('/ai/chat', {
+      userPrompt: `Analyze the confidence level of this AI response. Return ONLY a number between 30-95.
+
+Consider:
+- Certainty of statements (hedging words reduce score)
+- Specificity of information (concrete details increase score)
+- Structure and organization
+- Whether claims are supported
+
+Content (first 800 chars):
+"${content.slice(0, 800)}"
+
+Return only the number:`,
+      conversationHistory: [],
+    });
+
+    const scoreStr = response.data?.data?.response?.content?.trim();
+    const score = parseInt(scoreStr);
+
+    if (!isNaN(score) && score >= 0 && score <= 100) {
+      const normalizedScore = Math.max(30, Math.min(95, score));
+      gptAnalysisCache.set(cacheKey, normalizedScore);
+      return normalizedScore;
+    }
+  } catch (err) {
+    console.error('GPT analysis failed:', err);
+  }
+
+  return 70; // Fallback
+}
+
+/**
+ * Hybrid confidence analysis
+ * Rule-based quick scan + optional GPT deep analysis
+ */
+export function analyzeMessageConfidenceHybrid(
+  content: string
+): { score: number; needsDeepAnalysis: boolean; method: 'rule' | 'gpt' } {
+  const ruleResult = analyzeMessageConfidence(content);
+  return {
+    ...ruleResult,
+    method: 'rule',
+  };
 }
 
 /**
  * Calculate trust score from message context
  * Uses real message content analysis for confidence scoring
+ * Returns score and whether GPT deep analysis is recommended
  */
 export function calculateMessageTrustScore(options: {
   taskType?: string;
@@ -354,7 +465,7 @@ export function calculateMessageTrustScore(options: {
   messageWasVerified?: boolean;
   messageWasModified?: boolean;
   userValidationHistory?: Array<{ taskType: string; correct: boolean; timestamp: Date }>;
-}): number {
+}): { score: number; needsDeepAnalysis: boolean } {
   const {
     taskType = 'general',
     taskCriticality = 'medium',
@@ -366,9 +477,11 @@ export function calculateMessageTrustScore(options: {
   } = options;
 
   // Use real content analysis if available, otherwise fall back to provided score
-  const realConfidence = messageContent
+  const analysis = messageContent
     ? analyzeMessageConfidence(messageContent)
-    : (aiConfidenceScore ?? 0.7);
+    : { score: aiConfidenceScore ?? 0.7, needsDeepAnalysis: false };
+
+  const realConfidence = analysis.score;
 
   // Map taskType to MR9's task types
   const taskTypeMapping: Record<string, any> = {
@@ -406,7 +519,10 @@ export function calculateMessageTrustScore(options: {
     adjustedScore = Math.max(0, adjustedScore - 5); // Slight penalty if modified
   }
 
-  return adjustedScore;
+  return {
+    score: adjustedScore,
+    needsDeepAnalysis: analysis.needsDeepAnalysis,
+  };
 }
 
 /**
