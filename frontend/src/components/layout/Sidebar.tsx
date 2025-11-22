@@ -145,6 +145,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   };
 
   const isActive = (path: string) => {
+    // Special handling for AI Chat: /chat redirects to /session/:id
+    if (path === '/chat') {
+      return location.pathname === '/chat' || location.pathname.startsWith('/session');
+    }
     return location.pathname === path || location.pathname.startsWith(path + '/');
   };
 
