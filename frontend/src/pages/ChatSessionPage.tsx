@@ -3848,8 +3848,9 @@ Message: "${firstMessage.slice(0, 200)}"`,
         {/* Input Area - Fixed at bottom via flexbox */}
         <footer style={{
           padding: '1rem 1.5rem',
-          backgroundColor: '#f8fafc',
+          backgroundColor: '#ffffff',
           borderTop: '1px solid #e2e8f0',
+          boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.08)',
           flexShrink: 0,
         }}>
           <form
