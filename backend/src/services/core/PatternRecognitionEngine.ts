@@ -127,9 +127,27 @@ export class PatternRecognitionEngine {
     const recommendations = this.generateRecommendations(primaryPattern, secondaryPattern);
     const riskLevel = this.assessRiskLevel(data, primaryPattern);
 
-    // Confidence is based on gap between top two patterns
+    // Improved confidence calculation
+    // Consider: 1) Gap between patterns, 2) Dominance ratio, 3) Total interactions
     const secondaryScore = sortedPatterns[1]?.[1] ?? 0;
-    const confidence = Math.max(0, Math.min(1, (primaryScore - secondaryScore) / 100));
+
+    // Factor 1: Gap-based confidence (how much better is primary vs secondary)
+    // With 6 patterns summing to 100, avg is 16.7. A gap of 10+ is significant.
+    const gapConfidence = Math.min(1, (primaryScore - secondaryScore) / 30);
+
+    // Factor 2: Dominance ratio (primary should be notably higher than others)
+    // If primary is 2x the secondary, that's high confidence
+    const dominanceRatio = secondaryScore > 0 ? primaryScore / secondaryScore : 2;
+    const dominanceConfidence = Math.min(1, (dominanceRatio - 1) / 1.5);
+
+    // Factor 3: Interaction-based confidence (more data = more confidence)
+    // At 1 interaction: 0.3, at 5: 0.6, at 10: 0.8, at 20+: 1.0
+    const interactionConfidence = Math.min(1, 0.3 + (data.totalInteractions / 30));
+
+    // Combine factors with weights
+    const confidence = Math.max(0.1, Math.min(0.95,
+      (gapConfidence * 0.4) + (dominanceConfidence * 0.3) + (interactionConfidence * 0.3)
+    ));
 
     return {
       primaryPattern,
