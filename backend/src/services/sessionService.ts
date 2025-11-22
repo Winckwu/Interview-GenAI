@@ -70,6 +70,42 @@ export class SessionService {
   }
 
   /**
+   * Update session (e.g., taskDescription/title)
+   */
+  async updateSession(
+    sessionId: string,
+    updates: { taskDescription?: string; taskType?: string }
+  ): Promise<WorkSession | null> {
+    const setClauses: string[] = [];
+    const values: any[] = [];
+    let paramIndex = 1;
+
+    if (updates.taskDescription !== undefined) {
+      setClauses.push(`task_description = $${paramIndex++}`);
+      values.push(updates.taskDescription);
+    }
+    if (updates.taskType !== undefined) {
+      setClauses.push(`task_type = $${paramIndex++}`);
+      values.push(updates.taskType);
+    }
+
+    if (setClauses.length === 0) {
+      return this.getSession(sessionId);
+    }
+
+    setClauses.push(`updated_at = $${paramIndex++}`);
+    values.push(new Date());
+    values.push(sessionId);
+
+    const result = await pool.query(
+      `UPDATE work_sessions SET ${setClauses.join(', ')} WHERE id = $${paramIndex} RETURNING *`,
+      values
+    );
+
+    return result.rows.length > 0 ? this.mapToSession(result.rows[0]) : null;
+  }
+
+  /**
    * Get user sessions
    * Prioritizes sessions that have interactions
    */

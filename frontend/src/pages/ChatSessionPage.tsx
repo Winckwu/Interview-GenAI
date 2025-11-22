@@ -456,6 +456,9 @@ const ChatSessionPage: React.FC = () => {
   // AI-generated session title
   const [aiGeneratedTitle, setAiGeneratedTitle] = useState<string | null>(null);
   const [titleGenerating, setTitleGenerating] = useState(false);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editedTitle, setEditedTitle] = useState('');
+  const [savingTitle, setSavingTitle] = useState(false);
 
   // MCA orchestration states - Use GPT for accurate signal detection and pre-generated MR content
   const { result: mcaResult, activeMRs } = useMCAOrchestrator(sessionId || '', messages, true, 'gpt');
@@ -622,7 +625,15 @@ const ChatSessionPage: React.FC = () => {
       try {
         // Load session data
         const sessionResponse = await api.get(`/sessions/${sessionId}`);
-        setSessionData(sessionResponse.data.data.session);
+        const session = sessionResponse.data.data.session;
+        setSessionData(session);
+
+        // Load saved title from session (if not default)
+        if (session?.taskDescription && session.taskDescription !== 'General AI interaction') {
+          setAiGeneratedTitle(session.taskDescription);
+        } else {
+          setAiGeneratedTitle(null);
+        }
 
         // Reset pagination for new session
         setCurrentPage(1);
@@ -789,13 +800,39 @@ Message: "${firstMessage.slice(0, 200)}"`,
       const title = response.data?.data?.response?.content?.trim();
       if (title && title.length <= 60) {
         setAiGeneratedTitle(title);
+        // Auto-save AI-generated title to database
+        if (sessionId) {
+          try {
+            await api.patch(`/sessions/${sessionId}`, { taskDescription: title });
+          } catch (saveErr) {
+            console.error('Failed to save AI-generated title:', saveErr);
+          }
+        }
       }
     } catch (err) {
       console.error('Failed to generate session title:', err);
     } finally {
       setTitleGenerating(false);
     }
-  }, [titleGenerating, aiGeneratedTitle]);
+  }, [titleGenerating, aiGeneratedTitle, sessionId]);
+
+  /**
+   * Save edited title to database
+   */
+  const saveTitle = useCallback(async () => {
+    if (!editedTitle.trim() || !sessionId) return;
+
+    setSavingTitle(true);
+    try {
+      await api.patch(`/sessions/${sessionId}`, { taskDescription: editedTitle.trim() });
+      setAiGeneratedTitle(editedTitle.trim());
+      setIsEditingTitle(false);
+    } catch (err) {
+      console.error('Failed to save title:', err);
+    } finally {
+      setSavingTitle(false);
+    }
+  }, [editedTitle, sessionId]);
 
   /**
    * Send user prompt and get AI response - Wrapper for useMessages hook
@@ -2822,10 +2859,76 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
                 return (
                   <>
-                    <h1 style={{ margin: '0', fontSize: '1.25rem', fontWeight: '600', color: '#1f2937' }}>
-                      {displayTitle}
-                    </h1>
-                    {typeInfo && (
+                    {isEditingTitle ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <input
+                          type="text"
+                          value={editedTitle}
+                          onChange={(e) => setEditedTitle(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') saveTitle();
+                            if (e.key === 'Escape') setIsEditingTitle(false);
+                          }}
+                          autoFocus
+                          style={{
+                            fontSize: '1.125rem',
+                            fontWeight: '600',
+                            border: '1px solid #3b82f6',
+                            borderRadius: '0.25rem',
+                            padding: '0.25rem 0.5rem',
+                            width: '200px',
+                            outline: 'none',
+                          }}
+                        />
+                        <button
+                          onClick={saveTitle}
+                          disabled={savingTitle || !editedTitle.trim()}
+                          style={{
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.75rem',
+                            backgroundColor: '#10b981',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '0.25rem',
+                            cursor: savingTitle ? 'wait' : 'pointer',
+                          }}
+                        >
+                          {savingTitle ? '...' : '✓'}
+                        </button>
+                        <button
+                          onClick={() => setIsEditingTitle(false)}
+                          style={{
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.75rem',
+                            backgroundColor: '#6b7280',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '0.25rem',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ) : (
+                      <h1
+                        onClick={() => {
+                          setEditedTitle(aiGeneratedTitle || '');
+                          setIsEditingTitle(true);
+                        }}
+                        style={{
+                          margin: '0',
+                          fontSize: '1.25rem',
+                          fontWeight: '600',
+                          color: '#1f2937',
+                          cursor: 'pointer',
+                        }}
+                        title="Click to edit title"
+                      >
+                        {displayTitle}
+                      </h1>
+                    )}
+                    {typeInfo && !isEditingTitle && (
                       <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
                         {typeInfo.icon} {typeInfo.label}
                       </p>

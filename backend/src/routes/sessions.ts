@@ -150,6 +150,38 @@ router.post(
 );
 
 /**
+ * PATCH /api/sessions/:sessionId
+ * Update session details (e.g., title/taskDescription)
+ */
+router.patch(
+  '/:sessionId',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { sessionId } = req.params;
+    const { taskDescription, taskType } = req.body;
+
+    const session = await SessionService.updateSession(sessionId, {
+      taskDescription,
+      taskType,
+    });
+
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        error: 'Session not found',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    res.json({
+      success: true,
+      data: { session },
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
  * POST /api/sessions/:sessionId/interactions
  * Record an interaction in a session
  */

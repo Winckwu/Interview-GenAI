@@ -174,6 +174,9 @@ export const apiService = {
 
     get: (sessionId: string) => api.get(`/sessions/${sessionId}`),
 
+    update: (sessionId: string, data: { taskDescription?: string; taskType?: string }) =>
+      api.patch(`/sessions/${sessionId}`, data),
+
     list: (limit?: number, offset?: number) =>
       api.get('/sessions', { params: { limit, offset } }),
 
