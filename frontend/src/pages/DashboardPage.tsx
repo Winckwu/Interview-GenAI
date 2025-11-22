@@ -1217,16 +1217,16 @@ const DashboardPage: React.FC = () => {
                   Pattern Distribution
                   <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." size="small" />
                 </h3>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={220}>
                 <PieChart>
                   <Pie
                     data={patternDistributionChart}
                     cx="50%"
-                    cy="50%"
+                    cy="45%"
                     labelLine={false}
                     label={renderCustomLabel}
-                    outerRadius={90}
-                    innerRadius={40}
+                    outerRadius={75}
+                    innerRadius={35}
                     fill="#8884d8"
                     dataKey="value"
                     paddingAngle={2}
@@ -1254,6 +1254,16 @@ const DashboardPage: React.FC = () => {
                   />
                 </PieChart>
               </ResponsiveContainer>
+              <div style={{
+                marginTop: '0.5rem',
+                padding: '0.75rem',
+                backgroundColor: '#f8fafc',
+                borderRadius: '0.5rem',
+                fontSize: '0.8125rem',
+                color: '#475569'
+              }}>
+                <strong>Current Pattern:</strong> {dominantPattern} - {patternDistributionChart.length === 1 ? 'Single pattern detected. More variety may appear as you interact more.' : `${patternDistributionChart.length} patterns detected in your usage.`}
+              </div>
               </div>
 
             {/* 3. Daily Accuracy Trend */}
@@ -1262,7 +1272,7 @@ const DashboardPage: React.FC = () => {
                   Daily Accuracy Trend
                   <InfoTooltip text="Shows your verification accuracy over the past days. Higher trends indicate you're getting better at verifying AI outputs correctly." size="small" />
                 </h3>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={220}>
                 <LineChart data={dailyAccuracyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorAccuracy" x1="0" y1="0" x2="0" y2="1">
@@ -1290,7 +1300,7 @@ const DashboardPage: React.FC = () => {
                       boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                     }}
                   />
-                  <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '13px', fontWeight: 500 }} />
+                  <Legend wrapperStyle={{ paddingTop: '10px', fontSize: '13px', fontWeight: 500 }} />
                   <Line
                     type="monotone"
                     dataKey="accuracy"
@@ -1303,6 +1313,36 @@ const DashboardPage: React.FC = () => {
                   />
                 </LineChart>
               </ResponsiveContainer>
+              {dailyAccuracyData.length > 0 && (
+                <div style={{
+                  marginTop: '0.5rem',
+                  padding: '0.75rem',
+                  backgroundColor: '#f8fafc',
+                  borderRadius: '0.5rem',
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  fontSize: '0.8125rem'
+                }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#6b7280' }}>Average</div>
+                    <div style={{ fontWeight: '700', color: '#3b82f6' }}>
+                      {(dailyAccuracyData.reduce((sum, d) => sum + (d.accuracy || 0), 0) / dailyAccuracyData.length).toFixed(0)}%
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#6b7280' }}>Peak</div>
+                    <div style={{ fontWeight: '700', color: '#10b981' }}>
+                      {Math.max(...dailyAccuracyData.map(d => d.accuracy || 0)).toFixed(0)}%
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#6b7280' }}>Days</div>
+                    <div style={{ fontWeight: '700', color: '#8b5cf6' }}>
+                      {dailyAccuracyData.length}
+                    </div>
+                  </div>
+                </div>
+              )}
               </div>
 
             {/* 4. Verification Strategy Impact */}
