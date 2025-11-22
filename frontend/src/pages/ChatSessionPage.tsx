@@ -14,11 +14,20 @@ import { useMetricsStore } from '../stores/metricsStore';
 import MarkdownText from '../components/common/MarkdownText';
 import {
   orchestrateMRActivation,
+  orchestrateMRActivationAdaptive,
   calculateMessageTrustScore,
   getTrustLevel,
+  buildTriggerContext,
+  createDefaultUserProfile,
+  classifyUserPattern,
   type OrchestrationResult,
   type OrchestrationContext,
+  type AdaptiveOrchestrationResult,
+  type UserProfile,
+  type TriggerContext,
+  type MRToolType,
 } from '../utils/MROrchestrator';
+import { type SubprocessScores } from '../utils/MRAdaptiveTrigger';
 import {
   type UserContext,
   type MRRecommendationSet,
@@ -444,6 +453,12 @@ const ChatSessionPage: React.FC = () => {
   const [orchestrationResults, setOrchestrationResults] = useState<Map<string, any>>(new Map());
   const [showTrustIndicator, setShowTrustIndicator] = useState<boolean>(true); // Enabled: using real message content analysis
 
+  // Adaptive MR Triggering - Evidence-based from 49 interview analysis
+  const [userProfile, setUserProfile] = useState<UserProfile>(createDefaultUserProfile());
+  const [sessionStartTime] = useState<number>(Date.now());
+  const [iterationCount, setIterationCount] = useState<number>(0);
+  const [previousMRsShown, setPreviousMRsShown] = useState<Set<MRToolType>>(new Set());
+
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
   const [sessionsLoading, setSessionsLoading] = useState(false);
@@ -589,6 +604,58 @@ const ChatSessionPage: React.FC = () => {
       fetchLatestAssessment(user.id);
     }
   }, [user?.id, fetchLatestAssessment]);
+
+  // Update user profile from MR19 assessment for adaptive MR triggering
+  useEffect(() => {
+    if (latestAssessment?.responses?.dimensions) {
+      const dimensions = latestAssessment.responses.dimensions;
+
+      // Map MR19 assessment dimensions to subprocess scores
+      // MR19 uses 4 dimensions (planning, monitoring, evaluation, regulation)
+      // Each dimension score is 0-100, we map to 0-3 scale
+      const mapScoreToLevel = (score: number): number => {
+        if (score >= 75) return 3;
+        if (score >= 50) return 2;
+        if (score >= 25) return 1;
+        return 0;
+      };
+
+      const planningScore = mapScoreToLevel(dimensions.planning?.score || 50);
+      const monitoringScore = mapScoreToLevel(dimensions.monitoring?.score || 50);
+      const evaluationScore = mapScoreToLevel(dimensions.evaluation?.score || 50);
+      const regulationScore = mapScoreToLevel(dimensions.regulation?.score || 50);
+
+      // Create subprocess scores from assessment
+      // Distribute dimension scores across related subprocesses
+      const subprocessScores: SubprocessScores = {
+        P1: planningScore,           // Task Decomposition
+        P2: planningScore,           // Goal Setting
+        P3: Math.min(3, Math.round((planningScore + monitoringScore) / 2)),  // Strategy Selection
+        P4: planningScore,           // Resource Planning
+        M1: monitoringScore,         // Progress Monitoring
+        M2: monitoringScore,         // Quality Checking
+        M3: monitoringScore,         // Context Monitoring
+        E1: evaluationScore,         // Result Evaluation
+        E2: evaluationScore,         // Learning Reflection
+        E3: evaluationScore,         // Capability Judgment
+        R1: regulationScore,         // Strategy Adjustment
+        R2: regulationScore,         // Trust Calibration
+      };
+
+      // Classify pattern and update profile
+      const pattern = classifyUserPattern(subprocessScores);
+
+      setUserProfile(prev => ({
+        ...prev,
+        pattern,
+        subprocessScores,
+        behavioralIndicators: {
+          ...prev.behavioralIndicators,
+          totalInteractions: prev.behavioralIndicators.totalInteractions + 1,
+        },
+      }));
+    }
+  }, [latestAssessment]);
 
   // Load session data and previous interactions on mount
   useEffect(() => {
@@ -860,6 +927,9 @@ Message: "${firstMessage.slice(0, 200)}"`,
       // Reset short prompt counter if user writes a decent prompt
       setShortPromptCount(0);
     }
+
+    // Track iteration count for adaptive MR triggering
+    setIterationCount(prev => prev + 1);
 
     // Call hook's sendMessage
     await sendMessage(userInput, messages);
@@ -1605,7 +1675,25 @@ Message: "${firstMessage.slice(0, 200)}"`,
       return orchestrationResults.get(message.id);
     }
 
-    // Orchestrate MR activation
+    // Calculate session duration in minutes
+    const sessionDuration = Math.floor((Date.now() - sessionStartTime) / 60000);
+
+    // Build trigger context for adaptive orchestration
+    const triggerContext = buildTriggerContext(
+      { content: message.content, wasModified: message.wasModified },
+      {
+        taskType: sessionData?.taskType,
+        taskImportance: sessionData?.taskImportance,
+        messageIndex: index,
+        sessionDuration,
+        consecutiveUnverified: consecutiveNoVerify,
+        iterationCount,
+      },
+      trustScore,
+      previousMRsShown
+    );
+
+    // Build base orchestration context
     const context: OrchestrationContext = {
       trustScore,
       taskType: sessionData?.taskType || 'general',
@@ -1614,16 +1702,26 @@ Message: "${firstMessage.slice(0, 200)}"`,
       messageWasVerified: message.wasVerified || false,
       consecutiveUnverified: consecutiveNoVerify,
       aiConfidenceScore: trustScore / 100,
-      hasUncertainty: false,
+      hasUncertainty: triggerContext.uncertaintyIndicators > 0,
     };
 
-    const result = orchestrateMRActivation(context);
+    // Use adaptive orchestration (evidence-based from 49 interviews)
+    const result = orchestrateMRActivationAdaptive(context, userProfile, triggerContext);
+
+    // Track which MRs were shown for fatigue control
+    if (result.recommendations.length > 0) {
+      const newShownMRs = new Set(previousMRsShown);
+      result.recommendations.slice(0, 3).forEach(rec => {
+        newShownMRs.add(rec.tool);
+      });
+      setPreviousMRsShown(newShownMRs);
+    }
 
     // Store orchestration result
     setOrchestrationResults((prev) => new Map(prev).set(message.id, result));
 
     return result;
-  }, [sessionData, consecutiveNoVerify, orchestrationResults, messageTrustScores]);
+  }, [sessionData, consecutiveNoVerify, orchestrationResults, messageTrustScores, userProfile, sessionStartTime, iterationCount, previousMRsShown]);
 
   /**
    * Get trust badge color and label based on trust score
