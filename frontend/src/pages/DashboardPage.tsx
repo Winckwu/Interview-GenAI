@@ -1362,66 +1362,103 @@ const DashboardPage: React.FC = () => {
                   Verification Strategy Impact
                   <InfoTooltip text="Real data showing how your verification behavior affects work quality. Based on your actual interactions with AI outputs." size="small" />
                 </h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 60, bottom: 20 }}>
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart data={interventionData} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
                   <defs>
-                    <linearGradient id="colorBar" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.9}/>
-                      <stop offset="95%" stopColor="#059669" stopOpacity={0.7}/>
+                    <linearGradient id="colorLow" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#f97316" stopOpacity={0.9}/>
+                      <stop offset="100%" stopColor="#ea580c" stopOpacity={0.7}/>
+                    </linearGradient>
+                    <linearGradient id="colorMedium" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.9}/>
+                      <stop offset="100%" stopColor="#2563eb" stopOpacity={0.7}/>
+                    </linearGradient>
+                    <linearGradient id="colorHigh" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.9}/>
+                      <stop offset="100%" stopColor="#7c3aed" stopOpacity={0.7}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} vertical={false} />
                   <XAxis
                     dataKey="strategy"
                     stroke="#6b7280"
-                    style={{ fontSize: '12px', fontWeight: 500 }}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    label={{
-                      value: 'Quality Score (%)',
-                      angle: -90,
-                      position: 'center',
-                      offset: -50,
-                      style: { fontSize: '12px', fontWeight: 600, fill: '#6b7280' }
-                    }}
-                    stroke="#6b7280"
-                    style={{ fontSize: '12px', fontWeight: 500 }}
+                    style={{ fontSize: '11px', fontWeight: 500 }}
                     tickLine={false}
                     axisLine={false}
                   />
+                  <YAxis
+                    domain={[0, 100]}
+                    stroke="#6b7280"
+                    style={{ fontSize: '11px', fontWeight: 500 }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `${value}%`}
+                  />
                   <Tooltip
                     contentStyle={{
-                      borderRadius: '8px',
+                      borderRadius: '10px',
                       border: 'none',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
                       fontSize: '13px',
-                      fontWeight: 500
+                      fontWeight: 500,
+                      padding: '12px 16px'
                     }}
                     formatter={(value: number, name: string, props: any) => [
                       `${value}%`,
-                      `Quality Score (${props.payload.sampleSize} interactions)`
+                      `Quality (${props.payload.sampleSize} samples)`
                     ]}
-                    labelFormatter={(label: string) => label}
+                    labelStyle={{ fontWeight: 600, marginBottom: '4px' }}
                   />
                   <Bar
                     dataKey="successRate"
-                    fill="url(#colorBar)"
                     name="Quality Score"
                     radius={[8, 8, 0, 0]}
                     animationDuration={800}
                     animationEasing="ease-out"
-                  />
+                  >
+                    {interventionData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={index === 0 ? 'url(#colorLow)' : index === 1 ? 'url(#colorMedium)' : 'url(#colorHigh)'}
+                      />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
-              <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#475569' }}>
-                <p style={{ margin: '0.5rem 0' }}>📊 <strong>Real Data:</strong> Final quality scores represent output quality AFTER verification process</p>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Low (~30-65%):</strong> No verification - accepted AI outputs directly (risky, potential errors remain)</p>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>Medium (~75-90%):</strong> Verified and found issues to fix (good practice - errors caught and corrected)</p>
-                <p style={{ margin: '0.5rem 0' }}>💡 <strong>High (~90-100%):</strong> Verified and accepted without modifications (best practice - quality confirmed)</p>
-                <p style={{ margin: '0.5rem 0', fontStyle: 'italic', color: '#64748b' }}>
-                  ℹ️ Higher scores indicate better final output quality. Verification improves quality by catching errors.
-                </p>
+              <div style={{
+                marginTop: '0.75rem',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '0.5rem',
+                fontSize: '0.75rem'
+              }}>
+                <div style={{
+                  padding: '0.625rem',
+                  borderRadius: '0.5rem',
+                  background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(234, 88, 12, 0.08) 100%)',
+                  border: '1px solid rgba(249, 115, 22, 0.2)'
+                }}>
+                  <div style={{ fontWeight: 600, color: '#ea580c', marginBottom: '0.25rem' }}>Low</div>
+                  <div style={{ color: '#78716c', lineHeight: 1.4 }}>No verification - risky</div>
+                </div>
+                <div style={{
+                  padding: '0.625rem',
+                  borderRadius: '0.5rem',
+                  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(37, 99, 235, 0.08) 100%)',
+                  border: '1px solid rgba(59, 130, 246, 0.2)'
+                }}>
+                  <div style={{ fontWeight: 600, color: '#2563eb', marginBottom: '0.25rem' }}>Medium</div>
+                  <div style={{ color: '#78716c', lineHeight: 1.4 }}>Verified & fixed errors</div>
+                </div>
+                <div style={{
+                  padding: '0.625rem',
+                  borderRadius: '0.5rem',
+                  background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%)',
+                  border: '1px solid rgba(139, 92, 246, 0.2)'
+                }}>
+                  <div style={{ fontWeight: 600, color: '#7c3aed', marginBottom: '0.25rem' }}>High</div>
+                  <div style={{ color: '#78716c', lineHeight: 1.4 }}>Verified & confirmed</div>
+                </div>
               </div>
               </div>
           </>
