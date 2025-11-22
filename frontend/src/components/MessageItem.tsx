@@ -318,6 +318,58 @@ export const MessageItem: React.FC<MessageItemProps> = ({
           </div>
         ) : (
           <div className={styles.messageContent}>
+            {/* Web Search Indicator */}
+            {message.role === 'ai' && message.webSearchUsed && message.searchResults && (
+              <div style={{
+                marginBottom: '0.75rem',
+                padding: '0.5rem 0.75rem',
+                backgroundColor: '#ecfdf5',
+                border: '1px solid #10b981',
+                borderRadius: '0.5rem',
+                fontSize: '0.8rem',
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  color: '#059669',
+                  fontWeight: '600',
+                  marginBottom: '0.25rem',
+                }}>
+                  🌐 Web Search Results ({message.searchResults.resultCount} sources)
+                </div>
+                <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '0.5rem',
+                  marginTop: '0.25rem',
+                }}>
+                  {message.searchResults.results.map((result, idx) => (
+                    <a
+                      key={idx}
+                      href={result.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: '0.7rem',
+                        color: '#047857',
+                        textDecoration: 'none',
+                        padding: '0.125rem 0.375rem',
+                        backgroundColor: '#d1fae5',
+                        borderRadius: '0.25rem',
+                        maxWidth: '200px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                      title={result.url}
+                    >
+                      {result.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
             <MarkdownText content={currentContent} />
           </div>
         )}

@@ -44,6 +44,15 @@ export interface Message {
   // Conversation branching support
   branches?: MessageBranch[]; // Alternative responses for this message
   currentBranchIndex?: number; // Which branch is currently displayed (0 = original, 1+ = branches)
+
+  // Web search support
+  webSearchUsed?: boolean;
+  searchResults?: {
+    query: string;
+    source: string;
+    resultCount: number;
+    results: Array<{ title: string; url: string }>;
+  };
 }
 
 export interface UseMessagesOptions {
@@ -71,7 +80,7 @@ export interface UseMessagesReturn {
   totalMessagesCount: number;
 
   // Message operations
-  handleSendMessage: (userInput: string, conversationHistory?: Message[]) => Promise<void>;
+  handleSendMessage: (userInput: string, conversationHistory?: Message[], useWebSearch?: boolean) => Promise<void>;
   markAsVerified: (messageId: string) => Promise<void>;
   markAsModified: (messageId: string) => void;
   startEditingMessage: (messageId: string, content: string) => void;
@@ -250,8 +259,11 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
 
   /**
    * Send user message and get AI response
+   * @param userInput - The user's message
+   * @param conversationHistory - Optional conversation history to use instead of current messages
+   * @param useWebSearch - Whether to enable web search for this message
    */
-  const handleSendMessage = useCallback(async (userInput: string, conversationHistory?: Message[]) => {
+  const handleSendMessage = useCallback(async (userInput: string, conversationHistory?: Message[], useWebSearch?: boolean) => {
     if (!userInput.trim() || !sessionId) return;
 
     setLoading(true);
@@ -261,7 +273,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       // Use provided conversation history or current messages
       const history = conversationHistory || messages;
 
-      // Call AI API endpoint
+      // Call AI API endpoint with optional web search
       const startTime = Date.now();
       const aiApiResponse = await api.post('/ai/chat', {
         userPrompt: userInput,
@@ -269,11 +281,15 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
           role: m.role === 'user' ? 'user' : 'assistant',
           content: m.content,
         })),
+        useWebSearch: useWebSearch || false,
       });
 
       const responseTime = Date.now() - startTime;
-      const aiContent = aiApiResponse.data.data.response.content;
-      const aiModel = aiApiResponse.data.data.response.model;
+      const responseData = aiApiResponse.data.data.response;
+      const aiContent = responseData.content;
+      const aiModel = responseData.model;
+      const webSearchUsed = responseData.webSearchUsed || false;
+      const searchResults = responseData.searchResults || null;
 
       // Log interaction to backend
       const interactionResponse = await api.post('/interactions', {
@@ -325,6 +341,8 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
         wasVerified: false,
         wasModified: false,
         wasRejected: false,
+        webSearchUsed,
+        searchResults,
       };
 
       setMessages((prev) => [...prev, userMessage, aiMessage]);

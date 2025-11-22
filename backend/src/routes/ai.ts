@@ -2,19 +2,21 @@ import express, { Router, Request, Response } from 'express';
 import { authenticateToken } from '../middleware/auth';
 import { asyncHandler } from '../middleware/errorHandler';
 import { callOpenAI, getModelInfo, generateBatchVariants, callMultipleModels } from '../services/aiService';
+import { searchWeb, formatSearchResultsForPrompt, shouldUseWebSearch } from '../services/webSearchService';
 
 const router: Router = express.Router();
 
 /**
  * POST /api/ai/chat
  * Get AI response to user prompt with conversation history
+ * Supports optional web search augmentation
  */
 router.post(
   '/chat',
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.id;
-    const { userPrompt, conversationHistory = [] } = req.body;
+    const { userPrompt, conversationHistory = [], useWebSearch = false, autoDetectSearch = false } = req.body;
 
     // Validation
     if (!userPrompt || userPrompt.trim().length === 0) {
@@ -34,9 +36,30 @@ router.post(
     }
 
     try {
-      // Call OpenAI
       const startTime = Date.now();
-      const aiResponse = await callOpenAI(userPrompt, conversationHistory);
+      let searchResults = null;
+      let enhancedPrompt = userPrompt;
+
+      // Determine if we should use web search
+      const shouldSearch = useWebSearch || (autoDetectSearch && shouldUseWebSearch(userPrompt));
+
+      if (shouldSearch) {
+        try {
+          console.log(`[Web Search] Searching for: ${userPrompt.substring(0, 100)}...`);
+          searchResults = await searchWeb(userPrompt, 5);
+          console.log(`[Web Search] Found ${searchResults.results.length} results from ${searchResults.source}`);
+
+          // Enhance prompt with search results
+          const searchContext = formatSearchResultsForPrompt(searchResults);
+          enhancedPrompt = `${userPrompt}\n\nPlease use the following web search results to inform your response:\n${searchContext}\n\nBased on the search results above, please answer the original question. If the search results are relevant, cite them in your response. If they are not relevant, you may ignore them.`;
+        } catch (searchError) {
+          console.error('[Web Search] Error:', searchError);
+          // Continue without search results
+        }
+      }
+
+      // Call OpenAI with potentially enhanced prompt
+      const aiResponse = await callOpenAI(enhancedPrompt, conversationHistory);
       const responseTime = Date.now() - startTime;
 
       res.json({
@@ -47,6 +70,16 @@ router.post(
             model: aiResponse.model,
             responseTime,
             usage: aiResponse.usage,
+            webSearchUsed: shouldSearch && searchResults !== null,
+            searchResults: searchResults ? {
+              query: searchResults.query,
+              source: searchResults.source,
+              resultCount: searchResults.results.length,
+              results: searchResults.results.slice(0, 3).map(r => ({
+                title: r.title,
+                url: r.url,
+              })),
+            } : null,
           },
         },
         message: 'AI response generated successfully',
@@ -75,6 +108,50 @@ router.post(
       res.status(500).json({
         success: false,
         error: error.message || 'Failed to get AI response',
+        timestamp: new Date().toISOString(),
+      });
+    }
+  })
+);
+
+/**
+ * POST /api/ai/search
+ * Perform web search and return results
+ */
+router.post(
+  '/search',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { query, maxResults = 5 } = req.body;
+
+    if (!query || query.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Search query is required',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    try {
+      const searchResponse = await searchWeb(query, Math.min(maxResults, 10));
+
+      res.json({
+        success: true,
+        data: {
+          query: searchResponse.query,
+          source: searchResponse.source,
+          searchTime: searchResponse.searchTime,
+          results: searchResponse.results,
+        },
+        message: `Found ${searchResponse.results.length} results`,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      console.error('Web Search Error:', error);
+
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Search failed',
         timestamp: new Date().toISOString(),
       });
     }

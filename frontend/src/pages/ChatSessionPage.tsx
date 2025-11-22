@@ -423,6 +423,7 @@ const ChatSessionPage: React.FC = () => {
   // ========================================================
 
   const [userInput, setUserInput] = useState('');
+  const [webSearchEnabled, setWebSearchEnabled] = useState(false); // Web search toggle
   const [sessionActive, setSessionActive] = useState(true);
   const [pattern, setPattern] = useState<PatternResult | null>(null);
   const [showPattern, setShowPattern] = useState(false);
@@ -938,11 +939,13 @@ Message: "${firstMessage.slice(0, 200)}"`,
     // Track iteration count for adaptive MR triggering
     setIterationCount(prev => prev + 1);
 
-    // Call hook's sendMessage
-    await sendMessage(userInput, messages);
+    // Call hook's sendMessage with web search flag
+    await sendMessage(userInput, messages, webSearchEnabled);
 
     // Clear input after sending
     setUserInput('');
+    // Reset web search toggle after sending (optional: keep enabled for subsequent messages)
+    // setWebSearchEnabled(false);
 
     // Generate AI title after first message
     if (isFirstMessage && currentInput) {
@@ -3841,19 +3844,45 @@ Message: "${firstMessage.slice(0, 200)}"`,
             style={{
               display: 'flex',
               gap: '0.75rem',
+              alignItems: 'center',
             }}
           >
+            {/* Web Search Toggle Button */}
+            <button
+              type="button"
+              onClick={() => setWebSearchEnabled(!webSearchEnabled)}
+              disabled={!sessionActive || loading}
+              title={webSearchEnabled ? 'Web search enabled - click to disable' : 'Enable web search'}
+              style={{
+                padding: '0.75rem',
+                backgroundColor: webSearchEnabled ? '#10b981' : '#f3f4f6',
+                color: webSearchEnabled ? '#fff' : '#6b7280',
+                border: webSearchEnabled ? '2px solid #10b981' : '2px solid #e5e7eb',
+                borderRadius: '0.5rem',
+                cursor: !sessionActive || loading ? 'not-allowed' : 'pointer',
+                fontSize: '1.25rem',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minWidth: '44px',
+                opacity: !sessionActive || loading ? 0.5 : 1,
+              }}
+            >
+              🌐
+            </button>
+
             <input
               data-tour="chat-input"
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              placeholder="Ask a question or describe your task..."
+              placeholder={webSearchEnabled ? 'Search the web and ask AI...' : 'Ask a question or describe your task...'}
               disabled={!sessionActive || loading}
               style={{
                 flex: 1,
                 padding: '0.75rem 1rem',
-                border: '1px solid #d1d5db',
+                border: webSearchEnabled ? '2px solid #10b981' : '1px solid #d1d5db',
                 borderRadius: '0.5rem',
                 fontSize: '0.95rem',
                 opacity: !sessionActive || loading ? 0.5 : 1,
@@ -3862,12 +3891,16 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 boxShadow: 'none',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = '#3b82f6';
-                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+                if (!webSearchEnabled) {
+                  e.currentTarget.style.borderColor = '#3b82f6';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+                }
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#d1d5db';
-                e.currentTarget.style.boxShadow = 'none';
+                if (!webSearchEnabled) {
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.boxShadow = 'none';
+                }
               }}
             />
             <button
@@ -3897,6 +3930,19 @@ Message: "${firstMessage.slice(0, 200)}"`,
               {loading ? '⏳' : '📤'} Send
             </button>
           </form>
+          {/* Web Search Status Indicator */}
+          {webSearchEnabled && (
+            <div style={{
+              marginTop: '0.5rem',
+              fontSize: '0.75rem',
+              color: '#10b981',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+            }}>
+              🌐 Web search enabled - AI will search the internet for current information
+            </div>
+          )}
         </footer>
       </div>
 
