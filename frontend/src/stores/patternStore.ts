@@ -7,10 +7,11 @@ export interface Pattern {
   patternType: 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
   confidence: number;
   stability?: number; // 0-1: Pattern stability over time
-  aiRelianceScore: number;
-  verificationScore: number;
-  contextSwitchingFrequency: number;
+  aiRelianceScore?: number; // 0-1: AI reliance score
+  verificationScore?: number; // 0-1: Verification score
+  contextSwitchingFrequency?: number; // Context switches per session
   streakLength?: number; // Consecutive sessions with same pattern
+  totalInteractions?: number; // Total user interactions
   trendDirection?: 'converging' | 'diverging' | 'oscillating' | 'stable';
   metrics: Record<string, number>;
   createdAt: string;
@@ -78,23 +79,31 @@ export const usePatternStore = create<PatternState>((set, get) => ({
       const statsData = statsResponse.data.data;
 
       // Transform to Pattern array format
+      // Get metrics from both pattern-specific and top-level metrics object
+      const patternData = statsData.patterns?.[statsData.dominantPattern] || {};
+      const metricsData = statsData.metrics || {};
+
       const patterns = statsData.dominantPattern
         ? [
             {
               id: '1',
               userId: userId || 'current',
               patternType: statsData.dominantPattern as 'A' | 'B' | 'C' | 'D' | 'E' | 'F',
-              confidence: statsData.patterns?.[statsData.dominantPattern]?.avgConfidence || 0,
-              stability: statsData.patterns?.[statsData.dominantPattern]?.stability,
-              // Extract real metrics from API response
-              aiRelianceScore: statsData.patterns?.[statsData.dominantPattern]?.aiReliance ??
-                               statsData.metrics?.aiRelianceScore,
-              verificationScore: statsData.patterns?.[statsData.dominantPattern]?.verification ??
-                                statsData.metrics?.verificationScore,
-              contextSwitchingFrequency: statsData.patterns?.[statsData.dominantPattern]?.contextSwitching ??
-                                        statsData.metrics?.contextSwitchingFrequency,
-              streakLength: statsData.patterns?.[statsData.dominantPattern]?.streakLength,
-              trendDirection: statsData.patterns?.[statsData.dominantPattern]?.trend,
+              // Confidence from avgConfidence (0-1 scale)
+              confidence: patternData.avgConfidence ?? metricsData.confidence ?? 0,
+              // Stability from backend (0-1 scale)
+              stability: patternData.stability ?? metricsData.stability,
+              // AI Reliance Score (0-1 scale)
+              aiRelianceScore: patternData.aiReliance ?? metricsData.aiRelianceScore,
+              // Verification Score (0-1 scale)
+              verificationScore: patternData.verification ?? metricsData.verificationScore,
+              // Context Switching Frequency
+              contextSwitchingFrequency: patternData.contextSwitching ?? metricsData.contextSwitchingFrequency,
+              // Streak Length
+              streakLength: patternData.streakLength ?? metricsData.streakLength,
+              // Total Interactions (for threshold check)
+              totalInteractions: metricsData.totalInteractions ?? 0,
+              trendDirection: patternData.trend,
               metrics: statsData.distribution || {},
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),

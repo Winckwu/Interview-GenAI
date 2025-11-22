@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAuthStore } from '../stores/authStore';
 import { usePatternStats, useAnalytics } from '../hooks/useAnalytics';
@@ -7,7 +7,6 @@ import { usePatternStore } from '../stores/patternStore';
 import { useMetricsStore } from '../stores/metricsStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import InfoTooltip from '../components/InfoTooltip';
-import api from '../services/api';
 import { getPatternProfile, type BehavioralPattern } from '../utils/metacognitiveTypeSystem';
 
 /**
@@ -27,27 +26,15 @@ const PatternAnalysisPage: React.FC = () => {
   const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
   const { patterns, fetchPatterns } = usePatternStore();
   const { alerts } = useMetricsStore();
-  const [totalInteractions, setTotalInteractions] = useState<number>(0);
 
   useEffect(() => {
     if (user?.id) {
       fetchLatestAssessment(user.id);
       fetchPatterns(user.id);
-      // Fetch user's total interaction count
-      api.get(`/users/${user.id}/stats`).then(response => {
-        const stats = response.data.data || response.data;
-        setTotalInteractions(stats.totalInteractions || stats.totalMessages || 0);
-      }).catch(err => {
-        console.error('Failed to fetch user stats:', err);
-      });
     }
   }, [user?.id, fetchLatestAssessment, fetchPatterns]);
 
   const loading = trendsLoading || analyticsLoading;
-
-  // Minimum interactions threshold
-  const MIN_INTERACTIONS_THRESHOLD = 15;
-  const hasEnoughData = totalInteractions >= MIN_INTERACTIONS_THRESHOLD;
 
   // Get user patterns and dominant pattern
   const userPatterns = patterns.filter((p) => p.userId === user?.id);
@@ -56,6 +43,11 @@ const PatternAnalysisPage: React.FC = () => {
         (prev.confidence > current.confidence) ? prev : current
       )
     : null;
+
+  // Minimum interactions threshold - use totalInteractions from pattern data
+  const MIN_INTERACTIONS_THRESHOLD = 15;
+  const totalInteractions = dominantPattern?.totalInteractions ?? 0;
+  const hasEnoughData = totalInteractions >= MIN_INTERACTIONS_THRESHOLD;
 
   // Recent alerts
   const recentAlerts = (alerts || []).slice(0, 5);
