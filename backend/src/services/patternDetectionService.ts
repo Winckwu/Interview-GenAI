@@ -393,20 +393,27 @@ export class PatternDetectionService {
    * Get pattern trends over time with daily verification rates
    */
   async getPatternTrends(userId: string, days: number = 30): Promise<any[]> {
-    const since = new Date();
-    since.setDate(since.getDate() - days);
+    const now = new Date();
+    const daysAgo = new Date();
+    daysAgo.setDate(daysAgo.getDate() - days);
 
-    // Get user's registration date to ensure we don't show data before they joined
+    // Get user's registration date
     const userResult = await pool.query(
       'SELECT created_at FROM users WHERE id = $1',
       [userId]
     );
     const userCreatedAt = userResult.rows[0]?.created_at;
 
-    // Use the later of: N days ago OR user registration date
-    const effectiveSince = userCreatedAt && new Date(userCreatedAt) > since
-      ? new Date(userCreatedAt)
-      : since;
+    // Calculate days since user registration
+    const userRegDate = userCreatedAt ? new Date(userCreatedAt) : now;
+    const daysSinceRegistration = Math.floor((now.getTime() - userRegDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Logic:
+    // - If user registered less than N days ago: show ALL data from registration to today
+    // - If user registered more than N days ago: apply the N-day filter
+    const effectiveSince = daysSinceRegistration < days
+      ? userRegDate  // New user: show from registration date
+      : daysAgo;     // Old user: apply the day filter
 
     // Get pattern trends (only after user registration)
     const patternResult = await pool.query(
