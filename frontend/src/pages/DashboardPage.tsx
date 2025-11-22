@@ -32,6 +32,7 @@ const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { latestAssessment, assessments, fetchLatestAssessment, fetchAssessments } = useAssessmentStore();
+  const { patterns, fetchPatterns } = usePatternStore();
 
   // Date range state - default to 7 days
   const [dateRange, setDateRange] = useState<number>(7);
@@ -39,6 +40,9 @@ const DashboardPage: React.FC = () => {
 
   const { analytics, loading: analyticsLoading } = useAnalytics(dateRange);
   const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', dateRange);
+
+  // Get current user's pattern data
+  const userPattern = patterns.find(p => p.userId === user?.id) || patterns[0];
   const [verificationStrategyData, setVerificationStrategyData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -46,8 +50,9 @@ const DashboardPage: React.FC = () => {
     if (user?.id) {
       fetchLatestAssessment(user.id);
       fetchAssessments(user.id);
+      fetchPatterns(user.id);
     }
-  }, [user?.id, fetchLatestAssessment, fetchAssessments]);
+  }, [user?.id, fetchLatestAssessment, fetchAssessments, fetchPatterns]);
 
   useEffect(() => {
     // Show welcome modal only ONCE for users without assessment
@@ -1217,20 +1222,36 @@ const DashboardPage: React.FC = () => {
               <h3>Quick Stats</h3>
               <div className="stats-list">
                 <div className="stat-item">
-                  <span className="stat-label">Total Sessions:</span>
-                  <span className="stat-value">{totalSessions}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Total Interactions:</span>
-                  <span className="stat-value">{totalInteractions}</span>
+                  <span className="stat-label">Verification Rate:</span>
+                  <span className="stat-value">{verificationRate.toFixed(0)}%</span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-label">Modification Rate:</span>
                   <span className="stat-value">{modificationRate.toFixed(0)}%</span>
                 </div>
                 <div className="stat-item">
-                  <span className="stat-label">Member Since:</span>
-                  <span className="stat-value">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</span>
+                  <span className="stat-label">AI Reliance:</span>
+                  <span className="stat-value">
+                    {userPattern?.aiRelianceScore !== undefined
+                      ? `${(userPattern.aiRelianceScore * 100).toFixed(0)}%`
+                      : 'N/A'}
+                  </span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Pattern Stability:</span>
+                  <span className="stat-value">
+                    {userPattern?.stability !== undefined
+                      ? `${(userPattern.stability * 100).toFixed(0)}%`
+                      : 'N/A'}
+                  </span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Assessment Score:</span>
+                  <span className="stat-value">
+                    {latestAssessment?.responses?.overallScore !== undefined
+                      ? `${latestAssessment.responses.overallScore.toFixed(1)}/5`
+                      : 'N/A'}
+                  </span>
                 </div>
               </div>
             </div>
