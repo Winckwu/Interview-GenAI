@@ -13,6 +13,14 @@
  */
 
 import { calculateTrustScore, TrustProfile } from '../components/mr/MR9DynamicTrustCalibration/utils';
+import {
+  UserProfile,
+  TriggerContext,
+  getMRRecommendations,
+  createDefaultUserProfile,
+  createDefaultTriggerContext,
+  classifyUserPattern,
+} from './MRAdaptiveTrigger';
 
 export type MRToolType =
   | 'mr1-decomposition'
@@ -570,11 +578,200 @@ export function generateInterventionMessage(orchestrationResult: OrchestrationRe
   }
 }
 
+// ============================================================
+// Adaptive Orchestration (Evidence-Based)
+// ============================================================
+
+export type { UserProfile, TriggerContext };
+export { createDefaultUserProfile, createDefaultTriggerContext, classifyUserPattern };
+
+/**
+ * Enhanced orchestration result with adaptive triggering
+ */
+export interface AdaptiveOrchestrationResult extends OrchestrationResult {
+  userPattern: string;
+  adaptiveRecommendations: Array<{
+    tool: MRToolType;
+    priority: number;
+    reason: string;
+    category: string;
+  }>;
+}
+
+/**
+ * Adaptive MR orchestration using evidence-based triggering framework
+ *
+ * This function combines:
+ * 1. Trust-based orchestration (existing logic)
+ * 2. Pattern-aware adaptive triggering (new evidence-based logic)
+ */
+export function orchestrateMRActivationAdaptive(
+  context: OrchestrationContext,
+  userProfile: UserProfile,
+  triggerContext: TriggerContext
+): AdaptiveOrchestrationResult {
+  // Get base orchestration result
+  const baseResult = orchestrateMRActivation(context);
+
+  // Get adaptive recommendations
+  const adaptiveRecs = getMRRecommendations(userProfile, triggerContext, 3);
+
+  // Merge recommendations: adaptive takes priority, fill with base if needed
+  const mergedRecommendations: MRRecommendation[] = [];
+  const usedTools = new Set<MRToolType>();
+
+  // First, add adaptive recommendations (they're evidence-based)
+  for (const rec of adaptiveRecs) {
+    if (!usedTools.has(rec.tool)) {
+      mergedRecommendations.push({
+        tool: rec.tool,
+        toolName: getToolName(rec.tool),
+        priority: rec.result.priority >= 70 ? 'high' : rec.result.priority >= 50 ? 'medium' : 'low',
+        reason: rec.result.reason,
+        icon: getToolIcon(rec.tool),
+        urgency: rec.result.priority,
+      });
+      usedTools.add(rec.tool);
+    }
+  }
+
+  // Then, fill with base recommendations if we have room
+  for (const rec of baseResult.recommendations) {
+    if (mergedRecommendations.length >= 5) break;
+    if (!usedTools.has(rec.tool)) {
+      mergedRecommendations.push(rec);
+      usedTools.add(rec.tool);
+    }
+  }
+
+  // Sort by urgency
+  mergedRecommendations.sort((a, b) => b.urgency - a.urgency);
+
+  return {
+    ...baseResult,
+    recommendations: mergedRecommendations,
+    userPattern: userProfile.pattern,
+    adaptiveRecommendations: adaptiveRecs.map(r => ({
+      tool: r.tool,
+      priority: r.result.priority,
+      reason: r.result.reason,
+      category: r.result.category,
+    })),
+  };
+}
+
+/**
+ * Get display name for MR tool
+ */
+function getToolName(tool: MRToolType): string {
+  const names: Record<MRToolType, string> = {
+    'mr1-decomposition': 'Task Decomposition',
+    'mr2-transparency': 'Process Transparency',
+    'mr3-agency': 'User Agency',
+    'mr4-roles': 'Role Definition',
+    'mr5-iteration': 'Low-Cost Iteration',
+    'mr6-models': 'Cross-Model Comparison',
+    'mr7-failure': 'Failure Tolerance',
+    'mr8-recognition': 'Task Recognition',
+    'mr9-trust': 'Trust Calibration',
+    'mr10-cost': 'Cost-Benefit Analysis',
+    'mr11-verify': 'Integrated Verification',
+    'mr12-critical': 'Critical Thinking',
+    'mr13-uncertainty': 'Transparent Uncertainty',
+    'mr14-reflection': 'Guided Reflection',
+    'mr15-strategies': 'Metacognitive Strategies',
+    'mr16-warnings': 'Risk Warning',
+    'mr17-metrics': 'Progress Metrics',
+    'mr18-warnings': 'Over-Reliance Warning',
+    'mr19-assessment': 'Self-Assessment',
+  };
+  return names[tool] || tool;
+}
+
+/**
+ * Get icon for MR tool
+ */
+function getToolIcon(tool: MRToolType): string {
+  const icons: Record<MRToolType, string> = {
+    'mr1-decomposition': '🧩',
+    'mr2-transparency': '👁️',
+    'mr3-agency': '🎯',
+    'mr4-roles': '🎭',
+    'mr5-iteration': '🌳',
+    'mr6-models': '🔄',
+    'mr7-failure': '💡',
+    'mr8-recognition': '🔍',
+    'mr9-trust': '⚖️',
+    'mr10-cost': '💰',
+    'mr11-verify': '✅',
+    'mr12-critical': '🧠',
+    'mr13-uncertainty': '⚠️',
+    'mr14-reflection': '💭',
+    'mr15-strategies': '📚',
+    'mr16-warnings': '🚨',
+    'mr17-metrics': '📊',
+    'mr18-warnings': '⚡',
+    'mr19-assessment': '📋',
+  };
+  return icons[tool] || '📌';
+}
+
+/**
+ * Build trigger context from message and session data
+ */
+export function buildTriggerContext(
+  message: { content: string; wasModified?: boolean },
+  sessionData: {
+    taskType?: string;
+    taskImportance?: number;
+    messageIndex: number;
+    sessionDuration: number;
+    consecutiveUnverified: number;
+    iterationCount?: number;
+  },
+  trustScore: number,
+  previousMRsShown: Set<MRToolType> = new Set()
+): TriggerContext {
+  const content = message.content;
+
+  // Analyze message features
+  const containsCode = /```[\s\S]*?```|`[^`]+`/.test(content);
+  const containsDecisions = /should|recommend|suggest|决定|建议|应该/.test(content);
+  const uncertaintyIndicators = (content.match(/might|maybe|perhaps|possibly|可能|也许|或许/gi) || []).length;
+  const hasControversialClaim = /controversial|debatable|disputed|争议|有争议/.test(content);
+
+  return {
+    taskType: sessionData.taskType || 'general',
+    taskCriticality: sessionData.taskImportance === 3 ? 'high' : sessionData.taskImportance === 2 ? 'medium' : 'low',
+    taskComplexity: content.length > 2000 ? 'high' : content.length > 500 ? 'medium' : 'low',
+    isNewTaskType: sessionData.messageIndex === 0,
+    messageLength: content.length,
+    containsCode,
+    containsDecisions,
+    uncertaintyIndicators,
+    hasControversialClaim,
+    trustScore,
+    consecutiveUnverified: sessionData.consecutiveUnverified,
+    messageIndex: sessionData.messageIndex,
+    sessionDuration: sessionData.sessionDuration,
+    iterationCount: sessionData.iterationCount || 0,
+    messageWasModified: message.wasModified || false,
+    hasFailedBefore: false, // Would need to track this
+    previousMRsShown,
+    recentTrustChange: 0, // Would need to calculate from history
+  };
+}
+
 export default {
   getTrustLevel,
   orchestrateMRActivation,
+  orchestrateMRActivationAdaptive,
   calculateMessageTrustScore,
   getTopRecommendations,
   shouldShowMRTool,
   generateInterventionMessage,
+  buildTriggerContext,
+  createDefaultUserProfile,
+  createDefaultTriggerContext,
+  classifyUserPattern,
 };
