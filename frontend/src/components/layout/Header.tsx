@@ -43,6 +43,7 @@ const Header: React.FC = () => {
       </div>
 
       <div className="header-right">
+        {/* Theme toggle hidden - compatibility issues
         <button className="theme-toggle" onClick={toggleTheme} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
           {theme === 'light' ? (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -62,6 +63,7 @@ const Header: React.FC = () => {
             </svg>
           )}
         </button>
+        */}
 
         <div className="user-menu">
           <button
