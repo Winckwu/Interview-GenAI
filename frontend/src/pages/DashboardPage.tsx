@@ -10,7 +10,6 @@ import { apiService } from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ChartSkeleton, { ChartSkeletonGroup } from '../components/ChartSkeleton';
 import InfoTooltip from '../components/InfoTooltip';
-import HoverTooltip from '../components/HoverTooltip';
 import OnboardingTour from '../components/OnboardingTour';
 import {
   predictPatternFromAssessment,
@@ -415,35 +414,38 @@ const DashboardPage: React.FC = () => {
             </>
           ) : (
             <>
-              <HoverTooltip tooltip="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted." showIcon={true}>
-                <div className="metric-card">
-                  <div className="metric-label">Total Sessions</div>
-                  <div className="metric-value">{totalSessions}</div>
-                  <div className="metric-description">
-                    {totalInteractions} total interactions recorded
-                  </div>
+              <div className="metric-card">
+                <div className="metric-label">
+                  Total Sessions
+                  <InfoTooltip text="Number of conversation sessions with actual interactions. Auto-created empty sessions are not counted." size="small" />
                 </div>
-              </HoverTooltip>
+                <div className="metric-value">{totalSessions}</div>
+                <div className="metric-description">
+                  {totalInteractions} total interactions recorded
+                </div>
+              </div>
 
-              <HoverTooltip tooltip="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles." showIcon={true}>
-                <div className="metric-card">
-                  <div className="metric-label">Current Pattern</div>
-                  <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
-                  <div className="metric-description">
-                    Primary AI usage pattern detected
-                  </div>
+              <div className="metric-card">
+                <div className="metric-label">
+                  Current Pattern
+                  <InfoTooltip text="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles." size="small" />
                 </div>
-              </HoverTooltip>
+                <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
+                <div className="metric-description">
+                  Primary AI usage pattern detected
+                </div>
+              </div>
 
-              <HoverTooltip tooltip="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity." showIcon={true}>
-                <div className="metric-card">
-                  <div className="metric-label">Verification Rate</div>
-                  <div className="metric-value">{verificationRate.toFixed(1)}%</div>
-                  <div className="metric-description">
-                    {verificationRate > 70 ? '✅ Excellent verification level' : verificationRate > 40 ? '📊 Moderate verification' : '⚠️ Low verification - consider increasing'}
-                  </div>
+              <div className="metric-card">
+                <div className="metric-label">
+                  Verification Rate
+                  <InfoTooltip text="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity." size="small" />
                 </div>
-              </HoverTooltip>
+                <div className="metric-value">{verificationRate.toFixed(1)}%</div>
+                <div className="metric-description">
+                  {verificationRate > 70 ? '✅ Excellent verification level' : verificationRate > 40 ? '📊 Moderate verification' : '⚠️ Low verification - consider increasing'}
+                </div>
+              </div>
             </>
           )}
         </div>
@@ -1048,10 +1050,10 @@ const DashboardPage: React.FC = () => {
         ) : (
           <>
             {/* Daily Accuracy Trend */}
-            <HoverTooltip tooltip="Shows your verification accuracy over the past days. Higher trends indicate you're getting better at verifying AI outputs correctly." showIcon={true}>
               <div className="chart-container">
                 <h3 className="chart-title">
                   Daily Accuracy Trend
+                  <InfoTooltip text="Shows your verification accuracy over the past days. Higher trends indicate you're getting better at verifying AI outputs correctly." size="small" />
                 </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={dailyAccuracyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -1095,13 +1097,12 @@ const DashboardPage: React.FC = () => {
                 </LineChart>
               </ResponsiveContainer>
               </div>
-            </HoverTooltip>
 
             {/* Pattern Distribution */}
-            <HoverTooltip tooltip="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." showIcon={true}>
               <div className="chart-container">
                 <h3 className="chart-title">
                   Pattern Distribution
+                  <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." size="small" />
                 </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
@@ -1141,13 +1142,12 @@ const DashboardPage: React.FC = () => {
                 </PieChart>
               </ResponsiveContainer>
               </div>
-            </HoverTooltip>
 
             {/* Intervention Strategy Comparison */}
-            <HoverTooltip tooltip="Real data showing how your verification behavior affects work quality. Based on your actual interactions with AI outputs." showIcon={true}>
               <div className="chart-container">
                 <h3 className="chart-title">
                   Verification Strategy Impact
+                  <InfoTooltip text="Real data showing how your verification behavior affects work quality. Based on your actual interactions with AI outputs." size="small" />
                 </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={interventionData} margin={{ top: 20, right: 30, left: 60, bottom: 20 }}>
@@ -1211,7 +1211,6 @@ const DashboardPage: React.FC = () => {
                 </p>
               </div>
               </div>
-            </HoverTooltip>
 
             {/* Quick Stats */}
             <div className="chart-container stats-container">
