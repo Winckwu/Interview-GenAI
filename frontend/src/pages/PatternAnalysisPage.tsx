@@ -265,6 +265,52 @@ const PatternAnalysisPage: React.FC = () => {
     );
   };
 
+  // Calculate fallback confidence from distribution when backend confidence is 0
+  const calculateFallbackConfidence = (pattern: typeof dominantPattern): number => {
+    if (!pattern || !pattern.metrics) return 0;
+
+    const distribution = pattern.metrics as Record<string, number>;
+    const values = Object.values(distribution).filter((v): v is number => typeof v === 'number');
+
+    if (values.length === 0) return 0;
+
+    const total = values.reduce((sum, v) => sum + v, 0);
+    if (total === 0) return 0;
+
+    // Find the count for dominant pattern
+    const dominantCount = distribution[pattern.patternType] || 0;
+    const dominanceRatio = dominantCount / total;
+
+    // Find second highest
+    const sortedValues = [...values].sort((a, b) => b - a);
+    const secondCount = sortedValues[1] || 0;
+
+    // Calculate gap-based confidence (how much better is dominant vs second)
+    const gapConfidence = secondCount > 0
+      ? Math.min(1, (dominantCount - secondCount) / (dominantCount + secondCount))
+      : 0.8; // High confidence if only one pattern
+
+    // Combine dominance and gap for final confidence
+    const confidence = Math.max(0.15, Math.min(0.95,
+      (dominanceRatio * 0.5) + (gapConfidence * 0.5)
+    ));
+
+    return confidence;
+  };
+
+  // Get effective confidence (use backend value or calculate fallback)
+  const getEffectiveConfidence = (pattern: typeof dominantPattern): number => {
+    if (!pattern) return 0;
+
+    // If backend provides valid confidence, use it
+    if (pattern.confidence && pattern.confidence > 0.05) {
+      return pattern.confidence;
+    }
+
+    // Otherwise calculate from distribution
+    return calculateFallbackConfidence(pattern);
+  };
+
   // Pattern-Metacognition correlation helper
   const getPatternMetacognitionCorrelation = (patternType: string): string => {
     const correlations: Record<string, string> = {
@@ -442,44 +488,49 @@ const PatternAnalysisPage: React.FC = () => {
                 {/* Confidence and Stability Bars */}
                 <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                   {/* Confidence Level */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                      <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                        Confidence
-                        <InfoTooltip text="How confident we are in this pattern classification based on your usage data" size="small" />
-                      </span>
-                      <span style={{ fontSize: '1rem', fontWeight: '700', color: currentPatternProfile.color }}>
-                        {dominantPattern.confidence > 0 ? `${(dominantPattern.confidence * 100).toFixed(0)}%` : 'N/A'}
-                      </span>
-                    </div>
-                    {dominantPattern.confidence > 0 ? (
-                      <div style={{
-                        width: '100%',
-                        height: '0.625rem',
-                        backgroundColor: '#e5e7eb',
-                        borderRadius: '0.5rem',
-                        overflow: 'hidden',
-                      }}>
-                        <div style={{
-                          width: `${dominantPattern.confidence * 100}%`,
-                          height: '100%',
-                          background: `linear-gradient(90deg, ${currentPatternProfile.color}, ${currentPatternProfile.color}dd)`,
-                          transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                        }} />
+                  {(() => {
+                    const effectiveConfidence = getEffectiveConfidence(dominantPattern);
+                    return (
+                      <div style={{ marginBottom: '1rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                          <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            Confidence
+                            <InfoTooltip text="How confident we are in this pattern classification based on your usage data" size="small" />
+                          </span>
+                          <span style={{ fontSize: '1rem', fontWeight: '700', color: currentPatternProfile.color }}>
+                            {effectiveConfidence > 0 ? `${(effectiveConfidence * 100).toFixed(0)}%` : 'N/A'}
+                          </span>
+                        </div>
+                        {effectiveConfidence > 0 ? (
+                          <div style={{
+                            width: '100%',
+                            height: '0.625rem',
+                            backgroundColor: '#e5e7eb',
+                            borderRadius: '0.5rem',
+                            overflow: 'hidden',
+                          }}>
+                            <div style={{
+                              width: `${effectiveConfidence * 100}%`,
+                              height: '100%',
+                              background: `linear-gradient(90deg, ${currentPatternProfile.color}, ${currentPatternProfile.color}dd)`,
+                              transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                            }} />
+                          </div>
+                        ) : (
+                          <div style={{
+                            padding: '0.5rem 0.75rem',
+                            backgroundColor: '#fef3c7',
+                            borderLeft: '3px solid #f59e0b',
+                            borderRadius: '0.375rem',
+                            fontSize: '0.8125rem',
+                            color: '#92400e'
+                          }}>
+                            ⚠️ Not enough usage data yet to determine confidence level
+                          </div>
+                        )}
                       </div>
-                    ) : (
-                      <div style={{
-                        padding: '0.5rem 0.75rem',
-                        backgroundColor: '#fef3c7',
-                        borderLeft: '3px solid #f59e0b',
-                        borderRadius: '0.375rem',
-                        fontSize: '0.8125rem',
-                        color: '#92400e'
-                      }}>
-                        ⚠️ Not enough usage data yet to determine confidence level
-                      </div>
-                    )}
-                  </div>
+                    );
+                  })()}
 
                   {/* Stability */}
                   {dominantPattern.stability !== undefined && (
@@ -833,9 +884,10 @@ const PatternAnalysisPage: React.FC = () => {
                   fill="url(#qualityGradient)"
                   connectNulls={false}
                   dot={(props: any) => {
-                    if (props.payload.quality === null) return null;
+                    if (props.payload.quality === null) return <g key={`empty-dot-${props.index}`} />;
                     return (
                       <circle
+                        key={`dot-${props.index}`}
                         cx={props.cx}
                         cy={props.cy}
                         r={4}
