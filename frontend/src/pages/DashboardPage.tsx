@@ -98,12 +98,23 @@ const DashboardPage: React.FC = () => {
   const modificationRate = analytics?.modificationRate || 0;
 
   // Generate daily trend data from pattern trends if available
+  // Filter out any data from before user registration to ensure data accuracy
+  const userRegistrationDate = user?.createdAt ? new Date(user.createdAt) : null;
   const dailyAccuracyData = analytics?.patternTrend
-    ? analytics.patternTrend.map((trend: any, idx: number) => ({
-        day: `Day ${idx + 1}`,
-        date: trend.date ? new Date(trend.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : `Day ${idx + 1}`,
-        accuracy: trend.verificationRate !== undefined ? trend.verificationRate : 0,
-      }))
+    ? analytics.patternTrend
+        .filter((trend: any) => {
+          if (!userRegistrationDate || !trend.date) return true;
+          // Compare dates (ignoring time) to filter out pre-registration data
+          const trendDate = new Date(trend.date);
+          const userDateOnly = new Date(userRegistrationDate.toDateString());
+          const trendDateOnly = new Date(trendDate.toDateString());
+          return trendDateOnly >= userDateOnly;
+        })
+        .map((trend: any, idx: number) => ({
+          day: `Day ${idx + 1}`,
+          date: trend.date ? new Date(trend.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : `Day ${idx + 1}`,
+          accuracy: trend.verificationRate !== undefined ? trend.verificationRate : 0,
+        }))
     : [];
 
   // Convert pattern distribution to chart format
