@@ -1056,36 +1056,88 @@ const DashboardPage: React.FC = () => {
       {/* Charts Section */}
       <div className="charts-section">
         {/* Date Range Selector */}
-        <div className="date-range-selector" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <label htmlFor="dateRange" style={{ fontWeight: 500, color: '#374151' }}>
-            Time Period:
-          </label>
-          <select
-            id="dateRange"
-            value={dateRange}
-            onChange={(e) => setDateRange(Number(e.target.value))}
-            style={{
-              padding: '0.5rem 1rem',
-              border: '1px solid #d1d5db',
-              borderRadius: '0.375rem',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: '#374151',
-              backgroundColor: 'white',
-              cursor: 'pointer',
-              outline: 'none',
-              transition: 'border-color 0.2s',
-            }}
-          >
-            <option value={7}>Last 7 days</option>
-            <option value={14}>Last 14 days</option>
-            <option value={30}>Last 30 days</option>
-            <option value={60}>Last 60 days</option>
-            <option value={90}>Last 90 days</option>
-          </select>
-          <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-            Showing data from the past {dateRange} day{dateRange !== 1 ? 's' : ''}
-          </span>
+        <div className="date-range-selector" style={{
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
+          padding: '1rem 1.25rem',
+          background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)',
+          borderRadius: '0.75rem',
+          border: '1px solid rgba(139, 92, 246, 0.15)',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}>
+            <span style={{ fontSize: '1.125rem' }}>📅</span>
+            <label htmlFor="dateRange" style={{
+              fontWeight: 600,
+              color: '#1f2937',
+              fontSize: '0.9375rem',
+            }}>
+              Time Period
+            </label>
+          </div>
+          <div style={{
+            display: 'flex',
+            gap: '0.5rem',
+            flexWrap: 'wrap',
+          }}>
+            {[7, 14, 30, 60, 90].map((days) => (
+              <button
+                key={days}
+                onClick={() => setDateRange(days)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  fontSize: '0.8125rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  background: dateRange === days
+                    ? 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)'
+                    : 'rgba(255, 255, 255, 0.8)',
+                  color: dateRange === days ? 'white' : '#6b7280',
+                  boxShadow: dateRange === days
+                    ? '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    : '0 1px 3px rgba(0, 0, 0, 0.08)',
+                }}
+                onMouseEnter={(e) => {
+                  if (dateRange !== days) {
+                    e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                    e.currentTarget.style.color = '#8b5cf6';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (dateRange !== days) {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)';
+                    e.currentTarget.style.color = '#6b7280';
+                  }
+                }}
+              >
+                {days}D
+              </button>
+            ))}
+          </div>
+          <div style={{
+            marginLeft: 'auto',
+            fontSize: '0.8125rem',
+            color: '#6b7280',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.375rem',
+          }}>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+            }}></span>
+            Past {dateRange} days
+          </div>
         </div>
 
       <div className="charts-grid">
