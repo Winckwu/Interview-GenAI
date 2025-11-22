@@ -14,13 +14,13 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
 }) => {
   const [show, setShow] = useState(false);
 
-  const dotSizes: Record<string, number> = {
-    small: 6,
-    medium: 8,
-    large: 10,
+  const iconSizes: Record<string, number> = {
+    small: 14,
+    medium: 16,
+    large: 18,
   };
 
-  const dotSize = dotSizes[size] || 6;
+  const iconSize = iconSizes[size] || 14;
 
   return (
     <span
@@ -29,12 +29,15 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
       onMouseLeave={() => setShow(false)}
     >
       <span
-        className="info-tooltip-dot"
+        className="info-tooltip-icon"
         style={{
-          width: dotSize,
-          height: dotSize,
+          width: iconSize,
+          height: iconSize,
+          fontSize: iconSize * 0.7,
         }}
-      />
+      >
+        ?
+      </span>
       {show && (
         <span className={`info-tooltip-content info-tooltip-content--${placement}`}>
           {text}
