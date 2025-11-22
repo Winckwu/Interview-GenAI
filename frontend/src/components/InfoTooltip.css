@@ -1,442 +1,108 @@
-/* ===========================
-   Modern InfoTooltip Component Styles
-   =========================== */
+/* InfoTooltip - Simple Clean Styles */
 
-/* Base Tooltip Container */
-.info-tooltip {
-  display: inline-block;
-  position: relative;
-  margin-left: 0.25rem;
-  vertical-align: middle;
-  line-height: 1;
-}
-
-/* Tooltip Icon Button */
-.tooltip-icon {
+.info-tooltip-wrapper {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(59, 130, 246, 0.1);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
   position: relative;
+  margin-left: 6px;
+  cursor: pointer;
 }
 
-/* Icon Sizes */
-.tooltip-icon--small {
-  width: 16px;
-  height: 16px;
-}
-
-.tooltip-icon--medium {
-  width: 20px;
-  height: 20px;
-}
-
-.tooltip-icon--large {
-  width: 24px;
-  height: 24px;
-}
-
-/* Hover Effects */
-.tooltip-icon:hover {
-  transform: scale(1.1);
-  background: rgba(59, 130, 246, 0.15);
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4);
-}
-
-.tooltip-icon:active {
-  transform: scale(1.05);
-  background: rgba(59, 130, 246, 0.2);
-}
-
-/* Focus State for Keyboard Navigation */
-.tooltip-icon:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
-}
-
-/* ===========================
-   Inline Style (Dashboard-like)
-   Subtle, minimal icon without background
-   =========================== */
-.tooltip-icon--inline {
-  background: transparent;
-  box-shadow: none;
-  width: auto;
-  height: auto;
-  padding: 2px;
-}
-
-.tooltip-icon--inline:hover {
-  background: transparent;
-  box-shadow: none;
-  transform: none;
-}
-
-.tooltip-icon--inline:focus {
-  background: rgba(59, 130, 246, 0.08);
-  box-shadow: none;
-  border-radius: 4px;
-}
-
-.tooltip-icon--inline .info-icon-svg {
-  color: #9ca3af;
-  opacity: 0.6;
-}
-
-.tooltip-icon--inline:hover .info-icon-svg {
-  color: #6b7280;
-  opacity: 1;
-}
-
-/* SVG Icon */
-.info-icon-svg {
-  color: #3b82f6;
-  transition: all 0.3s ease;
-  opacity: 0.7;
-}
-
-.tooltip-icon:hover .info-icon-svg {
-  opacity: 1;
-}
-
-/* Info Dot (simple circle) */
-.info-dot {
+/* 小圆点图标 */
+.info-tooltip-dot {
   display: inline-block;
-  width: 8px;
-  height: 8px;
   border-radius: 50%;
-  background-color: #3b82f6;
-  transition: all 0.3s ease;
-  opacity: 0.7;
-}
-
-.tooltip-icon:hover .info-dot {
-  opacity: 1;
-}
-
-.tooltip-icon--inline .info-dot {
   background-color: #9ca3af;
-  opacity: 0.6;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
 }
 
-.tooltip-icon--inline:hover .info-dot {
-  background-color: #6b7280;
+.info-tooltip-wrapper:hover .info-tooltip-dot {
   opacity: 1;
+  background-color: #6b7280;
 }
 
-/* Animated Circle on Hover */
-.tooltip-icon:hover .info-circle {
-  stroke-dasharray: 63;
-  stroke-dashoffset: 0;
-  animation: dash 0.6s ease-in-out;
-}
-
-@keyframes dash {
-  from {
-    stroke-dashoffset: 63;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Animated Info Mark on Hover */
-.tooltip-icon:hover .info-mark {
-  animation: pulse 0.5s ease-in-out;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-/* Tooltip Content Container */
-.tooltip-content {
+/* Tooltip 内容 */
+.info-tooltip-content {
   position: absolute;
-  width: 280px;
-  background: rgba(31, 41, 55, 0.98);
+  width: 260px;
+  background: rgba(31, 41, 55, 0.95);
   color: white;
-  padding: 12px 16px;
-  border-radius: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
   font-size: 0.75rem;
-  line-height: 1.6;
+  line-height: 1.5;
   z-index: 10000;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   pointer-events: none;
   text-transform: none;
-  animation: tooltipFadeIn 0.2s ease-out;
-  backdrop-filter: blur(12px);
-  white-space: normal;
-  word-wrap: break-word;
+  font-weight: 400;
 }
 
-/* Placement Variations */
-.tooltip-content--top {
-  bottom: 100%;
+/* 位置 */
+.info-tooltip-content--top {
+  bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: 12px;
 }
 
-.tooltip-content--bottom {
-  top: 100%;
+.info-tooltip-content--bottom {
+  top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  margin-top: 12px;
 }
 
-.tooltip-content--left {
-  right: 100%;
+.info-tooltip-content--left {
+  right: calc(100% + 8px);
   top: 50%;
   transform: translateY(-50%);
-  margin-right: 12px;
 }
 
-.tooltip-content--right {
-  left: 100%;
+.info-tooltip-content--right {
+  left: calc(100% + 8px);
   top: 50%;
   transform: translateY(-50%);
-  margin-left: 12px;
 }
 
-/* Fade In Animation */
-@keyframes tooltipFadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-/* Bottom placement animation */
-.tooltip-content--bottom {
-  animation: tooltipFadeInBottom 0.2s ease-out;
-}
-
-@keyframes tooltipFadeInBottom {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-/* Left placement animation */
-.tooltip-content--left {
-  animation: tooltipFadeInLeft 0.2s ease-out;
-}
-
-@keyframes tooltipFadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateY(-50%) translateX(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-}
-
-/* Right placement animation */
-.tooltip-content--right {
-  animation: tooltipFadeInRight 0.2s ease-out;
-}
-
-@keyframes tooltipFadeInRight {
-  from {
-    opacity: 0;
-    transform: translateY(-50%) translateX(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-}
-
-/* Tooltip Arrow */
-.tooltip-arrow {
+/* 箭头 */
+.info-tooltip-arrow {
   position: absolute;
   width: 0;
   height: 0;
 }
 
-/* Arrow Placement Variations */
-.tooltip-arrow--top {
+.info-tooltip-arrow--top {
   bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 6px solid #1f2937;
+  border-top: 6px solid rgba(31, 41, 55, 0.95);
 }
 
-.tooltip-arrow--bottom {
+.info-tooltip-arrow--bottom {
   top: -6px;
   left: 50%;
   transform: translateX(-50%);
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-bottom: 6px solid #1f2937;
+  border-bottom: 6px solid rgba(31, 41, 55, 0.95);
 }
 
-.tooltip-arrow--left {
+.info-tooltip-arrow--left {
   right: -6px;
   top: 50%;
   transform: translateY(-50%);
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
-  border-left: 6px solid #1f2937;
+  border-left: 6px solid rgba(31, 41, 55, 0.95);
 }
 
-.tooltip-arrow--right {
+.info-tooltip-arrow--right {
   left: -6px;
   top: 50%;
   transform: translateY(-50%);
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
-  border-right: 6px solid #1f2937;
-}
-
-/* ===========================
-   Tooltip Variants (Colors)
-   =========================== */
-
-/* Warning Variant (Yellow/Orange) */
-.tooltip-icon--warning {
-  background: rgba(251, 191, 36, 0.1);
-  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.2);
-}
-
-.tooltip-icon--warning:hover {
-  background: rgba(251, 191, 36, 0.15);
-  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.4);
-}
-
-.tooltip-icon--warning:focus {
-  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.4);
-}
-
-.tooltip-icon--warning .info-icon-svg {
-  color: #f59e0b;
-}
-
-.tooltip-content--warning {
-  background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
-}
-
-.tooltip-arrow--warning.tooltip-arrow--top {
-  border-top-color: #78350f;
-}
-
-.tooltip-arrow--warning.tooltip-arrow--bottom {
-  border-bottom-color: #78350f;
-}
-
-.tooltip-arrow--warning.tooltip-arrow--left {
-  border-left-color: #78350f;
-}
-
-.tooltip-arrow--warning.tooltip-arrow--right {
-  border-right-color: #78350f;
-}
-
-/* Error Variant (Red) */
-.tooltip-icon--error {
-  background: rgba(239, 68, 68, 0.1);
-  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
-}
-
-.tooltip-icon--error:hover {
-  background: rgba(239, 68, 68, 0.15);
-  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.4);
-}
-
-.tooltip-icon--error:focus {
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
-}
-
-.tooltip-icon--error .info-icon-svg {
-  color: #dc2626;
-}
-
-.tooltip-content--error {
-  background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
-}
-
-.tooltip-arrow--error.tooltip-arrow--top {
-  border-top-color: #7f1d1d;
-}
-
-.tooltip-arrow--error.tooltip-arrow--bottom {
-  border-bottom-color: #7f1d1d;
-}
-
-.tooltip-arrow--error.tooltip-arrow--left {
-  border-left-color: #7f1d1d;
-}
-
-.tooltip-arrow--error.tooltip-arrow--right {
-  border-right-color: #7f1d1d;
-}
-
-/* Success Variant (Green) */
-.tooltip-icon--success {
-  background: rgba(34, 197, 94, 0.1);
-  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.2);
-}
-
-.tooltip-icon--success:hover {
-  background: rgba(34, 197, 94, 0.15);
-  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
-}
-
-.tooltip-icon--success:focus {
-  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4);
-}
-
-.tooltip-icon--success .info-icon-svg {
-  color: #16a34a;
-}
-
-.tooltip-content--success {
-  background: linear-gradient(135deg, #14532d 0%, #166534 100%);
-}
-
-.tooltip-arrow--success.tooltip-arrow--top {
-  border-top-color: #14532d;
-}
-
-.tooltip-arrow--success.tooltip-arrow--bottom {
-  border-bottom-color: #14532d;
-}
-
-.tooltip-arrow--success.tooltip-arrow--left {
-  border-left-color: #14532d;
-}
-
-.tooltip-arrow--success.tooltip-arrow--right {
-  border-right-color: #14532d;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 640px) {
-  .tooltip-content {
-    width: 240px;
-    font-size: 0.7rem;
-    padding: 10px 14px;
-  }
+  border-right: 6px solid rgba(31, 41, 55, 0.95);
 }
