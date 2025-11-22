@@ -442,7 +442,7 @@ const ChatSessionPage: React.FC = () => {
   // Track MR9 Dynamic Orchestration - Trust-based MR activation
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
   const [orchestrationResults, setOrchestrationResults] = useState<Map<string, any>>(new Map());
-  const [showTrustIndicator, setShowTrustIndicator] = useState<boolean>(true);
+  const [showTrustIndicator, setShowTrustIndicator] = useState<boolean>(false); // Disabled: not using real data
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
