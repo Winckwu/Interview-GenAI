@@ -1085,7 +1085,141 @@ const DashboardPage: React.FC = () => {
           </>
         ) : (
           <>
-            {/* 1. Quick Stats */}
+            {/* 1. Daily Accuracy Trend */}
+              <div className="chart-container">
+                <h3 className="chart-title">
+                  Daily Accuracy Trend
+                  <InfoTooltip text="Shows your verification accuracy over the past days. Higher trends indicate you're getting better at verifying AI outputs correctly." size="small" />
+                </h3>
+              <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={dailyAccuracyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorAccuracy" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.2}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} />
+                  <XAxis
+                    dataKey="date"
+                    stroke="#6b7280"
+                    style={{ fontSize: '12px', fontWeight: 500 }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    stroke="#6b7280"
+                    style={{ fontSize: '12px', fontWeight: 500 }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: '8px',
+                      border: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}
+                  />
+                  <Legend wrapperStyle={{ paddingTop: '10px', fontSize: '13px', fontWeight: 500 }} />
+                  <Line
+                    type="monotone"
+                    dataKey="accuracy"
+                    stroke="url(#colorAccuracy)"
+                    strokeWidth={3}
+                    dot={{ fill: '#3b82f6', r: 5, strokeWidth: 2, stroke: '#fff' }}
+                    activeDot={{ r: 7, strokeWidth: 2 }}
+                    animationDuration={1000}
+                    animationEasing="ease-in-out"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+              {dailyAccuracyData.length > 0 && (
+                <div style={{
+                  marginTop: '0.5rem',
+                  padding: '0.75rem',
+                  backgroundColor: '#f8fafc',
+                  borderRadius: '0.5rem',
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  fontSize: '0.8125rem'
+                }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#6b7280' }}>Average</div>
+                    <div style={{ fontWeight: '700', color: '#3b82f6' }}>
+                      {(dailyAccuracyData.reduce((sum, d) => sum + (d.accuracy || 0), 0) / dailyAccuracyData.length).toFixed(0)}%
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#6b7280' }}>Peak</div>
+                    <div style={{ fontWeight: '700', color: '#10b981' }}>
+                      {Math.max(...dailyAccuracyData.map(d => d.accuracy || 0)).toFixed(0)}%
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#6b7280' }}>Days</div>
+                    <div style={{ fontWeight: '700', color: '#8b5cf6' }}>
+                      {dailyAccuracyData.length}
+                    </div>
+                  </div>
+                </div>
+              )}
+              </div>
+
+            {/* 2. Pattern Distribution */}
+              <div className="chart-container">
+                <h3 className="chart-title">
+                  Pattern Distribution
+                  <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." size="small" />
+                </h3>
+              <ResponsiveContainer width="100%" height={220}>
+                <PieChart>
+                  <Pie
+                    data={patternDistributionChart}
+                    cx="50%"
+                    cy="45%"
+                    labelLine={false}
+                    label={renderCustomLabel}
+                    outerRadius={75}
+                    innerRadius={35}
+                    fill="#8884d8"
+                    dataKey="value"
+                    paddingAngle={2}
+                    animationBegin={0}
+                    animationDuration={800}
+                  >
+                    {patternDistributionChart.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: '8px',
+                      border: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      fontSize: '13px',
+                      fontWeight: 500
+                    }}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    height={36}
+                    iconType="circle"
+                    wrapperStyle={{ fontSize: '13px', fontWeight: 500 }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              <div style={{
+                marginTop: '0.5rem',
+                padding: '0.75rem',
+                backgroundColor: '#f8fafc',
+                borderRadius: '0.5rem',
+                fontSize: '0.8125rem',
+                color: '#475569'
+              }}>
+                <strong>Current Pattern:</strong> {dominantPattern} - {patternDistributionChart.length === 1 ? 'Single pattern detected. More variety may appear as you interact more.' : `${patternDistributionChart.length} patterns detected in your usage.`}
+              </div>
+              </div>
+
+            {/* 3. Quick Stats */}
             <div className="chart-container stats-container">
               <h3>Quick Stats</h3>
 
@@ -1211,7 +1345,7 @@ const DashboardPage: React.FC = () => {
               </div>
             </div>
 
-            {/* 2. Verification Strategy Impact */}
+            {/* 4. Verification Strategy Impact */}
               <div className="chart-container">
                 <h3 className="chart-title">
                   Verification Strategy Impact
@@ -1277,140 +1411,6 @@ const DashboardPage: React.FC = () => {
                 <p style={{ margin: '0.5rem 0', fontStyle: 'italic', color: '#64748b' }}>
                   ℹ️ Higher scores indicate better final output quality. Verification improves quality by catching errors.
                 </p>
-              </div>
-              </div>
-
-            {/* 3. Daily Accuracy Trend */}
-              <div className="chart-container">
-                <h3 className="chart-title">
-                  Daily Accuracy Trend
-                  <InfoTooltip text="Shows your verification accuracy over the past days. Higher trends indicate you're getting better at verifying AI outputs correctly." size="small" />
-                </h3>
-              <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={dailyAccuracyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorAccuracy" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.2}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} />
-                  <XAxis
-                    dataKey="date"
-                    stroke="#6b7280"
-                    style={{ fontSize: '12px', fontWeight: 500 }}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    stroke="#6b7280"
-                    style={{ fontSize: '12px', fontWeight: 500 }}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      borderRadius: '8px',
-                      border: 'none',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                    }}
-                  />
-                  <Legend wrapperStyle={{ paddingTop: '10px', fontSize: '13px', fontWeight: 500 }} />
-                  <Line
-                    type="monotone"
-                    dataKey="accuracy"
-                    stroke="url(#colorAccuracy)"
-                    strokeWidth={3}
-                    dot={{ fill: '#3b82f6', r: 5, strokeWidth: 2, stroke: '#fff' }}
-                    activeDot={{ r: 7, strokeWidth: 2 }}
-                    animationDuration={1000}
-                    animationEasing="ease-in-out"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-              {dailyAccuracyData.length > 0 && (
-                <div style={{
-                  marginTop: '0.5rem',
-                  padding: '0.75rem',
-                  backgroundColor: '#f8fafc',
-                  borderRadius: '0.5rem',
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  fontSize: '0.8125rem'
-                }}>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ color: '#6b7280' }}>Average</div>
-                    <div style={{ fontWeight: '700', color: '#3b82f6' }}>
-                      {(dailyAccuracyData.reduce((sum, d) => sum + (d.accuracy || 0), 0) / dailyAccuracyData.length).toFixed(0)}%
-                    </div>
-                  </div>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ color: '#6b7280' }}>Peak</div>
-                    <div style={{ fontWeight: '700', color: '#10b981' }}>
-                      {Math.max(...dailyAccuracyData.map(d => d.accuracy || 0)).toFixed(0)}%
-                    </div>
-                  </div>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ color: '#6b7280' }}>Days</div>
-                    <div style={{ fontWeight: '700', color: '#8b5cf6' }}>
-                      {dailyAccuracyData.length}
-                    </div>
-                  </div>
-                </div>
-              )}
-              </div>
-
-            {/* 4. Pattern Distribution */}
-              <div className="chart-container">
-                <h3 className="chart-title">
-                  Pattern Distribution
-                  <InfoTooltip text="Shows the breakdown of AI usage patterns you employ. Understanding your pattern mix helps identify if you're over-relying on certain approaches." size="small" />
-                </h3>
-              <ResponsiveContainer width="100%" height={220}>
-                <PieChart>
-                  <Pie
-                    data={patternDistributionChart}
-                    cx="50%"
-                    cy="45%"
-                    labelLine={false}
-                    label={renderCustomLabel}
-                    outerRadius={75}
-                    innerRadius={35}
-                    fill="#8884d8"
-                    dataKey="value"
-                    paddingAngle={2}
-                    animationBegin={0}
-                    animationDuration={800}
-                  >
-                    {patternDistributionChart.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      borderRadius: '8px',
-                      border: 'none',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                      fontSize: '13px',
-                      fontWeight: 500
-                    }}
-                  />
-                  <Legend
-                    verticalAlign="bottom"
-                    height={36}
-                    iconType="circle"
-                    wrapperStyle={{ fontSize: '13px', fontWeight: 500 }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-              <div style={{
-                marginTop: '0.5rem',
-                padding: '0.75rem',
-                backgroundColor: '#f8fafc',
-                borderRadius: '0.5rem',
-                fontSize: '0.8125rem',
-                color: '#475569'
-              }}>
-                <strong>Current Pattern:</strong> {dominantPattern} - {patternDistributionChart.length === 1 ? 'Single pattern detected. More variety may appear as you interact more.' : `${patternDistributionChart.length} patterns detected in your usage.`}
               </div>
               </div>
           </>
