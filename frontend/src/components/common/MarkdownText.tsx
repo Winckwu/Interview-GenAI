@@ -112,8 +112,8 @@ export const parseMarkdown = (content: string): React.ReactNode[] => {
       const ListTag = listType;
       result.push(
         <ListTag key={`list-${listStartIndex}`} style={{
-          margin: '0.5rem 0',
-          paddingLeft: '1.5rem',
+          margin: '0.25rem 0',
+          paddingLeft: '1.25rem',
         }}>
           {listItems}
         </ListTag>
@@ -132,10 +132,10 @@ export const parseMarkdown = (content: string): React.ReactNode[] => {
       const text = headerMatch[2];
 
       const headerStyle = {
-        margin: '0.75rem 0 0.5rem 0',
+        margin: '0.5rem 0 0.25rem 0',
         fontWeight: level <= 3 ? 'bold' : '600',
-        fontSize: level === 1 ? '1.5rem' : level === 2 ? '1.25rem' : level === 3 ? '1.1rem' : '1rem',
-        lineHeight: '1.4',
+        fontSize: level === 1 ? '1.1rem' : level === 2 ? '1rem' : level === 3 ? '0.9375rem' : '0.875rem',
+        lineHeight: '1.3',
       };
 
       const headerContent = parseInlineMarkdown(text, `h${level}-${lineIndex}`);
@@ -163,7 +163,7 @@ export const parseMarkdown = (content: string): React.ReactNode[] => {
       }
 
       listItems.push(
-        <li key={`li-${lineIndex}`} style={{ margin: '0.25rem 0' }}>
+        <li key={`li-${lineIndex}`} style={{ margin: '0.125rem 0' }}>
           {parseInlineMarkdown(text, `li-${lineIndex}`)}
         </li>
       );
@@ -182,7 +182,7 @@ export const parseMarkdown = (content: string): React.ReactNode[] => {
       }
 
       listItems.push(
-        <li key={`li-${lineIndex}`} style={{ margin: '0.25rem 0' }}>
+        <li key={`li-${lineIndex}`} style={{ margin: '0.125rem 0' }}>
           {parseInlineMarkdown(text, `li-${lineIndex}`)}
         </li>
       );
@@ -197,9 +197,9 @@ export const parseMarkdown = (content: string): React.ReactNode[] => {
 
       result.push(
         <blockquote key={`quote-${lineIndex}`} style={{
-          borderLeft: '4px solid #d1d5db',
-          paddingLeft: '1rem',
-          margin: '0.5rem 0',
+          borderLeft: '3px solid #d1d5db',
+          paddingLeft: '0.75rem',
+          margin: '0.25rem 0',
           color: '#6b7280',
           fontStyle: 'italic',
         }}>
@@ -209,17 +209,17 @@ export const parseMarkdown = (content: string): React.ReactNode[] => {
       return;
     }
 
-    // Empty line
+    // Empty line - use smaller spacing instead of full br
     if (line.trim() === '') {
       flushList(lineIndex);
-      result.push(<br key={`br-${lineIndex}`} />);
+      result.push(<div key={`br-${lineIndex}`} style={{ height: '0.375rem' }} />);
       return;
     }
 
     // Regular paragraph
     flushList(lineIndex);
     result.push(
-      <span key={`p-${lineIndex}`} style={{ display: 'block', margin: '0.25rem 0' }}>
+      <span key={`p-${lineIndex}`} style={{ display: 'block', margin: '0.125rem 0' }}>
         {parseInlineMarkdown(line, `p-${lineIndex}`)}
       </span>
     );
