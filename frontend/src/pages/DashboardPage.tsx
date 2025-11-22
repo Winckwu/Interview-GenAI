@@ -1249,7 +1249,7 @@ const DashboardPage: React.FC = () => {
                   <span className="stat-label">Assessment Score:</span>
                   <span className="stat-value">
                     {latestAssessment?.overallScore !== undefined
-                      ? `${latestAssessment.overallScore.toFixed(1)}/5`
+                      ? `${(latestAssessment.overallScore * 100).toFixed(0)}/100`
                       : 'N/A'}
                   </span>
                 </div>
