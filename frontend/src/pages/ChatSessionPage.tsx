@@ -11,7 +11,6 @@ import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversation
 import EmptyState, { EmptyStateError } from '../components/EmptyState';
 import { SkeletonText, SkeletonCard } from '../components/Skeleton';
 import InterventionManager from '../components/interventions/InterventionManager';
-import { MonitoringDashboard } from '../components/monitoring/MonitoringDashboard';
 import { useMetricsStore } from '../stores/metricsStore';
 import MarkdownText from '../components/common/MarkdownText';
 import {
@@ -470,7 +469,6 @@ const ChatSessionPage: React.FC = () => {
 
   // Independent collapse states for sidebar sections
   const [showInterventionSection, setShowInterventionSection] = useState(false);
-  const [showMetricsSection, setShowMetricsSection] = useState(false);
 
   // Virtualized list configuration
   const virtualizedListRef = useRef<any>(null);
@@ -3640,49 +3638,6 @@ Message: "${firstMessage.slice(0, 200)}"`,
                           }
                         }
                       }}
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Monitoring Dashboard - Collapsible */}
-              <div style={{
-                borderBottom: '1px solid #e2e8f0',
-                backgroundColor: '#fff',
-              }}>
-                <button
-                  onClick={() => setShowMetricsSection(!showMetricsSection)}
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                  }}
-                >
-                  <span style={{
-                    fontSize: '0.75rem',
-                    fontWeight: '600',
-                    color: '#6b7280',
-                    textTransform: 'uppercase',
-                  }}>
-                    📊 System Metrics
-                  </span>
-                  <span style={{ color: '#9ca3af', fontSize: '0.75rem' }}>
-                    {showMetricsSection ? '▼' : '▶'}
-                  </span>
-                </button>
-                {showMetricsSection && (
-                  <div style={{ padding: '0 0.75rem 0.75rem 0.75rem' }}>
-                    <MonitoringDashboard
-                      sessionId={sessionId}
-                      refreshIntervalMs={5000}
-                      showAlerts={true}
-                      compactMode={true}
                     />
                   </div>
                 )}
