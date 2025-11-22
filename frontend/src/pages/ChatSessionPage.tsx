@@ -413,7 +413,7 @@ const ChatSessionPage: React.FC = () => {
   const [sessionActive, setSessionActive] = useState(true);
   const [pattern, setPattern] = useState<PatternResult | null>(null);
   const [showPattern, setShowPattern] = useState(false);
-  const [showPatternPanel, setShowPatternPanel] = useState(false);
+  const [showPatternPanel, setShowPatternPanel] = useState(true); // Default: show MR Tools panel
   const [patternLoading, setPatternLoading] = useState(false);
   const [showModifiedChoiceUI, setShowModifiedChoiceUI] = useState(false);
 
