@@ -230,11 +230,42 @@ const DashboardPage: React.FC = () => {
 
       {/* Header Section */}
       <div className="dashboard-container" style={{ marginBottom: '2rem' }}>
-        <div className="page-header">
-          <h1>Dashboard</h1>
-          <p className="page-subtitle">
-            Welcome back, {user?.username}! Here's your AI usage overview.
-          </p>
+        <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h1>Dashboard</h1>
+            <p className="page-subtitle">
+              Welcome back, {user?.username}! Here's your AI usage overview.
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/chat')}
+            style={{
+              padding: '0.75rem 1.5rem',
+              background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '0.5rem',
+              fontSize: '0.9375rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
+            }}
+          >
+            <span style={{ fontSize: '1.125rem' }}>💬</span>
+            Start Chat
+          </button>
         </div>
 
         {/* Insight Alert Box - High Priority */}
@@ -1345,152 +1376,6 @@ const DashboardPage: React.FC = () => {
           </>
         )}
       </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div style={{ paddingLeft: '2rem', paddingRight: '2rem', marginTop: '2rem', marginBottom: '2rem' }}>
-        <h2 style={{ margin: '0 0 1.5rem 0', fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>⚡ Quick Actions</h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '1rem',
-        }}>
-          {/* Start New Chat */}
-          <button
-            onClick={() => navigate('/chat')}
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#fff',
-              border: '2px solid #3b82f6',
-              borderRadius: '0.5rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.75rem',
-              textAlign: 'center',
-            }}
-            onMouseOver={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#eff6ff';
-              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.2)';
-            }}
-            onMouseOut={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fff';
-              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-            }}
-          >
-            <span style={{ fontSize: '2rem' }}>💬</span>
-            <div>
-              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>Start Chat</div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Interact with AI</div>
-            </div>
-          </button>
-
-          {/* View Patterns */}
-          <button
-            onClick={() => navigate('/patterns')}
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#fff',
-              border: '2px solid #10b981',
-              borderRadius: '0.5rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.75rem',
-              textAlign: 'center',
-            }}
-            onMouseOver={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f0fdf4';
-              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.2)';
-            }}
-            onMouseOut={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fff';
-              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-            }}
-          >
-            <span style={{ fontSize: '2rem' }}>📊</span>
-            <div>
-              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>View Patterns</div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Analyze usage patterns</div>
-            </div>
-          </button>
-
-          {/* Track Evolution */}
-          <button
-            onClick={() => navigate('/evolution')}
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#fff',
-              border: '2px solid #f59e0b',
-              borderRadius: '0.5rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.75rem',
-              textAlign: 'center',
-            }}
-            onMouseOver={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fffbeb';
-              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.2)';
-            }}
-            onMouseOut={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fff';
-              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-            }}
-          >
-            <span style={{ fontSize: '2rem' }}>📈</span>
-            <div>
-              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>Track Evolution</div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>View learning progress</div>
-            </div>
-          </button>
-
-          {/* Assessment */}
-          <button
-            onClick={() => navigate('/assessment')}
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#fff',
-              border: '2px solid #8b5cf6',
-              borderRadius: '0.5rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.75rem',
-              textAlign: 'center',
-            }}
-            onMouseOver={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#faf5ff';
-              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.2)';
-            }}
-            onMouseOut={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#fff';
-              (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-            }}
-          >
-            <span style={{ fontSize: '2rem' }}>🎯</span>
-            <div>
-              <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>Self Assessment</div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Understand your capabilities</div>
-            </div>
-          </button>
-        </div>
       </div>
     </div>
   );
