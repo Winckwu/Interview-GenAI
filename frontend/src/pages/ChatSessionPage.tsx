@@ -1960,9 +1960,9 @@ Message: "${firstMessage.slice(0, 200)}"`,
       // Remove from local sessions list
       setSessions(sessions.filter((s) => s.id !== sessionToDeleteId));
 
-      // If we deleted the current session, go back to dashboard
+      // If we deleted the current session, create a new chat
       if (sessionToDeleteId === sessionId) {
-        navigate('/dashboard');
+        handleNewChat();
       }
     } catch (err: any) {
       console.error('Failed to delete session:', err);
