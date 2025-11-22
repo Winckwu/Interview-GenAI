@@ -1248,8 +1248,8 @@ const DashboardPage: React.FC = () => {
                 <div className="stat-item">
                   <span className="stat-label">Assessment Score:</span>
                   <span className="stat-value">
-                    {latestAssessment?.responses?.overallScore !== undefined
-                      ? `${latestAssessment.responses.overallScore.toFixed(1)}/5`
+                    {latestAssessment?.overallScore !== undefined
+                      ? `${latestAssessment.overallScore.toFixed(1)}/5`
                       : 'N/A'}
                   </span>
                 </div>
