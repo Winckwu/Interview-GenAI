@@ -18,14 +18,27 @@ import { MRToolType } from './MROrchestrator';
 // ============================================================
 
 /**
- * User behavioral patterns derived from interview analysis
- * Pattern A: Strategic Decomposition & Control (37%)
- * Pattern B: Iterative Optimization (16%)
- * Pattern C: Context-Sensitive Adaptation (29%)
- * Pattern D: Deep Verification (16%)
- * Pattern E: Learning-Oriented (2%)
+ * User behavioral patterns derived from interview analysis + Bayesian/SVM classification
+ *
+ * Pattern A: Strategic Decomposition & Control (战略分解与控制) - 37%
+ *   - Careful task planning, high verification, independent thinking
+ *
+ * Pattern B: Iterative Optimization & Calibration (迭代优化与校准) - 16%
+ *   - Frequent iteration, prompt refinement, continuous learning
+ *
+ * Pattern C: Adaptive Adjustment (自适应调整) - 29%
+ *   - Multi-strategy usage, context-aware, flexible role switching
+ *
+ * Pattern D: Deep Verification & Criticism (深度验证与批评) - 16%
+ *   - Thorough checking, deep questioning, high reflection
+ *
+ * Pattern E: Teaching & Learning (教学与学习) - 2%
+ *   - AI as learning tool, high learning reflection, knowledge building
+ *
+ * Pattern F: Passive Over-Reliance (被动过度依赖) - HIGH RISK
+ *   - Uncritical acceptance, minimal verification, passive attitude
  */
-export type UserPattern = 'A' | 'B' | 'C' | 'D' | 'E' | 'unknown';
+export type UserPattern = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'unknown';
 
 /**
  * 12 metacognitive subprocesses from self-regulated learning theory
@@ -170,6 +183,19 @@ const PATTERN_MODIFIERS: Record<UserPattern, Partial<Record<MRToolType, number>>
     'mr19-assessment': 10,
     'mr7-failure': 15,
   },
+  'F': {
+    // Pattern F: Passive Over-Reliance (HIGH RISK) - 需要强干预
+    'mr18-warnings': 30,       // Over-reliance warning (highest priority)
+    'mr11-verify': 25,         // Strong verification push
+    'mr12-critical': 25,       // Critical thinking scaffolding
+    'mr14-reflection': 20,     // Encourage reflection
+    'mr9-trust': 20,           // Trust calibration
+    'mr16-warnings': 20,       // Risk warnings
+    'mr3-agency': 20,          // Restore user agency
+    'mr7-failure': 15,         // Learn from failures
+    'mr1-decomposition': 15,   // Encourage active planning
+    'mr15-strategies': -10,    // Not ready for advanced strategies
+  },
   'unknown': {},
 };
 
@@ -237,6 +263,13 @@ export function classifyUserPattern(scores: SubprocessScores): UserPattern {
   // Conditions: R1≥2, Total≥20
   if (scores.R1 >= 2 && total >= 20) {
     return 'B';
+  }
+
+  // Pattern F: Passive Over-Reliance (HIGH RISK)
+  // Conditions: Very low total score OR minimal reflection with low engagement
+  // Detection criteria from metacognitiveTypeSystem.ts: reflection_depth = 0, total_score < 15
+  if (total < 15 || (scores.E2 === 0 && total < 20)) {
+    return 'F';
   }
 
   // Default: Context-Sensitive (most common fallback)

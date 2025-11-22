@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This paper presents an adaptive intervention framework for triggering Meta-Requirement (MR) tools in human-AI collaborative systems. Drawing from qualitative analysis of 49 semi-structured interviews with GenAI users across diverse domains, we identify five distinct user behavioral patterns and propose a pattern-aware triggering mechanism that dynamically activates appropriate metacognitive support tools. Our framework maps 12 metacognitive subprocesses derived from self-regulated learning theory to 19 MR intervention tools, establishing evidence-based trigger conditions that account for individual differences in user expertise, task characteristics, and interaction context. The proposed approach addresses the limitation of one-size-fits-all intervention strategies by tailoring support to user-specific metacognitive profiles.
+This paper presents an adaptive intervention framework for triggering Meta-Requirement (MR) tools in human-AI collaborative systems. Drawing from qualitative analysis of 49 semi-structured interviews with GenAI users across diverse domains, we identify six distinct user behavioral patterns (including a high-risk passive over-reliance pattern) and propose a pattern-aware triggering mechanism that dynamically activates appropriate metacognitive support tools. Our framework maps 12 metacognitive subprocesses derived from self-regulated learning theory to 19 MR intervention tools, establishing evidence-based trigger conditions that account for individual differences in user expertise, task characteristics, and interaction context. The proposed approach addresses the limitation of one-size-fits-all intervention strategies by tailoring support to user-specific metacognitive profiles.
 
 **Keywords:** Human-AI Interaction, Metacognition, Adaptive Intervention, Self-Regulated Learning, GenAI, Large Language Models
 
@@ -14,7 +14,7 @@ This paper presents an adaptive intervention framework for triggering Meta-Requi
 
 The rapid adoption of Generative AI (GenAI) tools has transformed knowledge work across domains, yet users exhibit substantial variation in their ability to effectively collaborate with AI systems (Tankelevitch et al., 2024). While prior research has identified metacognitive skills as critical for successful human-AI collaboration (Vaccaro et al., 2024), existing systems typically employ static intervention strategies that fail to account for individual differences in user expertise and behavioral patterns.
 
-Our formative research with 49 GenAI users revealed a striking heterogeneity: total metacognitive competency scores ranged from 15 to 33 out of 36 (a 2.2× difference), with users clustering into five distinct behavioral patterns. This variance suggests that uniform intervention approaches may either overwhelm expert users with unnecessary prompts or provide insufficient support for novices.
+Our formative research with 49 GenAI users revealed a striking heterogeneity: total metacognitive competency scores ranged from 15 to 33 out of 36 (a 2.2× difference), with users clustering into six distinct behavioral patterns—including a high-risk "passive over-reliance" pattern requiring intensive intervention. This variance suggests that uniform intervention approaches may either overwhelm expert users with unnecessary prompts or provide insufficient support for novices and at-risk users.
 
 ### 1.2 Research Questions
 
@@ -32,7 +32,7 @@ This paper makes three primary contributions:
 
 1. **Empirical mapping** between 12 metacognitive subprocesses from self-regulated learning theory and 19 Meta-Requirement intervention tools, grounded in qualitative interview data.
 
-2. **Pattern-aware triggering framework** that differentiates intervention strategies based on five empirically-derived user behavioral patterns.
+2. **Pattern-aware triggering framework** that differentiates intervention strategies based on six empirically-derived user behavioral patterns, including risk-based classification.
 
 3. **Evidence-based trigger conditions** for each MR tool, with priority calculations that incorporate user profile, task characteristics, and interaction context.
 
@@ -94,15 +94,18 @@ Each subprocess was scored 0-3 based on behavioral evidence, yielding total scor
 
 ### 3.3 Pattern Identification
 
-Through iterative analysis, we identified five distinct behavioral patterns based on subprocess score distributions and characteristic behaviors:
+Through iterative analysis and Bayesian+SVM classification, we identified six distinct behavioral patterns based on subprocess score distributions and characteristic behaviors:
 
-| Pattern | Description | Prevalence | Defining Characteristics |
-|---------|-------------|------------|-------------------------|
-| **A** | Strategic Decomposition & Control | 37% | P1≥2, M2≥2, E3≥2, Total≥24 |
-| **B** | Iterative Optimization | 16% | R1≥2, Total≥20 |
-| **C** | Context-Sensitive Adaptation | 29% | P3≥2, M3≥2, R2≥2, Total≥22 |
-| **D** | Deep Verification | 16% | M2=3, E1≥2, Total≥20 |
-| **E** | Learning-Oriented | 2% | E1+E2+E3≥6 |
+| Pattern | Description | Prevalence | Defining Characteristics | Risk Level |
+|---------|-------------|------------|-------------------------|------------|
+| **A** | Strategic Decomposition & Control | 37% | P1≥2, M2≥2, E3≥2, Total≥24 | Low |
+| **B** | Iterative Optimization | 16% | R1≥2, Total≥20 | Low |
+| **C** | Context-Sensitive Adaptation | 29% | P3≥2, M3≥2, R2≥2, Total≥22 | Low |
+| **D** | Deep Verification | 16% | M2=3, E1≥2, Total≥20 | Low |
+| **E** | Learning-Oriented | 2% | E1+E2+E3≥6 | Low |
+| **F** | Passive Over-Reliance | — | Total<15 OR (E2=0 AND Total<20) | **HIGH** |
+
+**Note on Pattern F:** This high-risk pattern represents users who exhibit minimal metacognitive engagement with AI outputs. These users accept AI responses uncritically, demonstrate near-zero reflection depth (E2=0), and score significantly below average on overall metacognitive measures. Pattern F users require intensive intervention to prevent automation complacency and skill degradation.
 
 ---
 
@@ -175,7 +178,7 @@ The user profile captures both static pattern classification and dynamic behavio
 
 ```
 UserProfile = {
-  pattern: Pattern ∈ {A, B, C, D, E, Unknown},
+  pattern: Pattern ∈ {A, B, C, D, E, F, Unknown},  // F = High-Risk Passive Over-Reliance
   subprocessScores: {P1..P4, M1..M3, E1..E3, R1, R2} ∈ [0,3]¹²,
   behavioralIndicators: {
     iterationCount: ℕ,           // Current task iterations
@@ -354,7 +357,7 @@ To prevent intervention fatigue, we implement the following constraints:
 
 ### 8.1 Theoretical Implications
 
-Our framework extends self-regulated learning theory to the human-AI collaboration context by demonstrating that metacognitive support must account for individual differences. The five-pattern taxonomy provides a parsimonious yet descriptive model of user variation that can inform future intervention design.
+Our framework extends self-regulated learning theory to the human-AI collaboration context by demonstrating that metacognitive support must account for individual differences. The six-pattern taxonomy—with explicit identification of high-risk passive over-reliance behaviors—provides a parsimonious yet descriptive model of user variation that can inform future intervention design and safety considerations.
 
 ### 8.2 Design Implications
 
