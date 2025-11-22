@@ -3,11 +3,14 @@
  * Complete API service for AI pattern recognition system
  */
 
+// IMPORTANT: Load environment variables FIRST, before any other imports
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import 'express-async-errors';
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import * as dotenv from 'dotenv';
 import path from 'path';
 import pool from './config/database';
 import { initializeDatabase } from './config/initializeDatabase';
@@ -15,8 +18,6 @@ import redisClient from './config/redis';
 import { errorHandler, notFoundHandler, asyncHandler } from './middleware/errorHandler';
 import { authenticateToken } from './middleware/auth';
 import authRoutes from './routes/auth';
-
-dotenv.config();
 
 const app: Express = express();
 const PORT = parseInt(process.env.PORT || '5001', 10);

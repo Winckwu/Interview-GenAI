@@ -5,8 +5,16 @@ import OpenAI from 'openai';
  * Securely manages API keys and model selection
  */
 
+// Validate API key on initialization
+const apiKey = process.env.OPENAI_API_KEY;
+if (!apiKey) {
+  console.error('WARNING: OPENAI_API_KEY is not set in environment variables!');
+} else {
+  console.log(`OpenAI API Key loaded (length: ${apiKey.length} chars)`);
+}
+
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: apiKey,
 });
 
 const MODEL = process.env.AI_MODEL || 'gpt-4o-mini'; // Default to cost-effective model
