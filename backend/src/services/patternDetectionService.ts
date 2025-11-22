@@ -238,9 +238,10 @@ export class PatternDetectionService {
   }
 
   /**
-   * Get pattern statistics for user
+   * Get pattern statistics for user with detailed metrics
    */
   async getUserPatternStats(userId: string): Promise<any> {
+    // Basic pattern distribution
     const result = await pool.query(
       `SELECT detected_pattern, COUNT(*) as count, AVG(confidence::float) as avg_confidence
        FROM pattern_logs
@@ -268,11 +269,123 @@ export class PatternDetectionService {
 
     const dominantPattern = result.rows.length > 0 ? result.rows[0].detected_pattern : null;
 
+    // Calculate verification score (how often user verifies AI responses)
+    const verificationResult = await pool.query(
+      `SELECT
+         COUNT(*) as total,
+         SUM(CASE WHEN was_verified = true THEN 1 ELSE 0 END) as verified_count
+       FROM interactions i
+       JOIN work_sessions s ON i.session_id = s.id
+       WHERE s.user_id = $1`,
+      [userId]
+    );
+    const totalInteractions = parseInt(verificationResult.rows[0]?.total || '0');
+    const verifiedCount = parseInt(verificationResult.rows[0]?.verified_count || '0');
+    const verificationScore = totalInteractions > 0 ? verifiedCount / totalInteractions : 0;
+
+    // Calculate AI reliance score (how often user accepts AI responses without modification)
+    const modificationResult = await pool.query(
+      `SELECT
+         COUNT(*) as total,
+         SUM(CASE WHEN was_modified = true THEN 1 ELSE 0 END) as modified_count
+       FROM interactions i
+       JOIN work_sessions s ON i.session_id = s.id
+       WHERE s.user_id = $1`,
+      [userId]
+    );
+    const modifiedCount = parseInt(modificationResult.rows[0]?.modified_count || '0');
+    // AI reliance = (total - modified) / total = 1 - modification rate
+    // Higher means more reliance on AI without modification
+    const aiRelianceScore = totalInteractions > 0 ? (totalInteractions - modifiedCount) / totalInteractions : 0;
+
+    // Calculate context switching frequency (average pattern changes per session)
+    const sessionPatternResult = await pool.query(
+      `SELECT session_id, detected_pattern, created_at
+       FROM pattern_logs
+       WHERE user_id = $1
+       ORDER BY session_id, created_at`,
+      [userId]
+    );
+
+    let contextSwitches = 0;
+    let sessionsAnalyzed = 0;
+    let lastSessionId = '';
+    let lastPattern = '';
+
+    sessionPatternResult.rows.forEach((row: any) => {
+      if (row.session_id !== lastSessionId) {
+        // New session
+        lastSessionId = row.session_id;
+        lastPattern = row.detected_pattern;
+        sessionsAnalyzed++;
+      } else if (row.detected_pattern !== lastPattern) {
+        // Pattern changed within same session
+        contextSwitches++;
+        lastPattern = row.detected_pattern;
+      }
+    });
+
+    const contextSwitchingFrequency = sessionsAnalyzed > 0 ? contextSwitches / sessionsAnalyzed : 0;
+
+    // Calculate stability (how consistent the pattern is over recent sessions)
+    const recentPatternsResult = await pool.query(
+      `SELECT DISTINCT ON (session_id) session_id, detected_pattern
+       FROM pattern_logs
+       WHERE user_id = $1
+       ORDER BY session_id, created_at DESC
+       LIMIT 10`,
+      [userId]
+    );
+
+    const recentPatterns = recentPatternsResult.rows.map((r: any) => r.detected_pattern);
+    const dominantInRecent = recentPatterns.filter((p: string) => p === dominantPattern).length;
+    const stability = recentPatterns.length > 0 ? dominantInRecent / recentPatterns.length : 0;
+
+    // Calculate streak length (consecutive sessions with same pattern)
+    const sessionOrderResult = await pool.query(
+      `SELECT DISTINCT ON (session_id) session_id, detected_pattern, created_at
+       FROM pattern_logs
+       WHERE user_id = $1
+       ORDER BY session_id, created_at DESC`,
+      [userId]
+    );
+
+    let streakLength = 0;
+    const sortedSessions = sessionOrderResult.rows.sort(
+      (a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
+    for (const session of sortedSessions) {
+      if (session.detected_pattern === dominantPattern) {
+        streakLength++;
+      } else {
+        break;
+      }
+    }
+
+    // Enhance patterns with additional metrics
+    if (dominantPattern && patterns[dominantPattern]) {
+      patterns[dominantPattern].aiReliance = aiRelianceScore;
+      patterns[dominantPattern].verification = verificationScore;
+      patterns[dominantPattern].contextSwitching = contextSwitchingFrequency;
+      patterns[dominantPattern].stability = stability;
+      patterns[dominantPattern].streakLength = streakLength;
+    }
+
     return {
       dominantPattern,
       distribution,
       totalDetections: totalCount,
       patterns,
+      // Also include at top level for easier access
+      metrics: {
+        aiRelianceScore,
+        verificationScore,
+        contextSwitchingFrequency,
+        stability,
+        streakLength,
+        totalInteractions,
+      },
     };
   }
 
