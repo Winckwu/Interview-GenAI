@@ -57,6 +57,10 @@ import { type ReflectionResponse } from '../components/QuickReflection';
 import SessionSidebar, { type SessionItem } from '../components/SessionSidebar';
 import MRToolsPanel from '../components/MRToolsPanel';
 import GlobalRecommendationPanel from '../components/GlobalRecommendationPanel';
+import MRInterventionNotification, {
+  type MRNotification,
+  shouldAutoOpenSidebar,
+} from '../components/MRInterventionNotification';
 import OnboardingTour from '../components/OnboardingTour';
 import { detectTaskType, type TaskType } from '../components/mr/MR8TaskCharacteristicRecognition/utils';
 
@@ -458,6 +462,9 @@ const ChatSessionPage: React.FC = () => {
   // sessionStartTime is already declared above at line ~267
   const [iterationCount, setIterationCount] = useState<number>(0);
   const [previousMRsShown, setPreviousMRsShown] = useState<Set<MRToolType>>(new Set());
+
+  // MR Intervention Notifications - Pattern-based display
+  const [pendingNotifications, setPendingNotifications] = useState<MRNotification[]>([]);
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
@@ -1722,6 +1729,106 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
     return result;
   }, [sessionData, consecutiveNoVerify, orchestrationResults, messageTrustScores, userProfile, sessionStartTime, iterationCount, previousMRsShown]);
+
+  /**
+   * Handle MR intervention notification display based on user pattern
+   * Pattern F or critical priority → auto-open sidebar
+   * Other patterns → show corner notification
+   */
+  const handleMRIntervention = useCallback((
+    recommendations: Array<{ tool: MRToolType; toolName: string; icon: string; reason: string; priority: string }>,
+    messageId: string
+  ) => {
+    if (recommendations.length === 0) return;
+
+    // If MR panel is already open, no need for notifications
+    if (showMRToolsSection) return;
+
+    // Convert to notification format
+    const newNotifications: MRNotification[] = recommendations.slice(0, 3).map((rec, idx) => ({
+      id: `${messageId}-${rec.tool}-${idx}`,
+      icon: rec.icon,
+      title: rec.toolName,
+      reason: rec.reason,
+      priority: rec.priority as 'critical' | 'high' | 'medium' | 'low',
+      tool: rec.tool,
+      timestamp: Date.now(),
+    }));
+
+    // Check if should auto-open sidebar
+    const shouldAutoOpen = newNotifications.some(n =>
+      shouldAutoOpenSidebar(n, userProfile.pattern, 'high')
+    );
+
+    if (shouldAutoOpen) {
+      // Pattern F or critical/high priority → auto-open sidebar
+      setShowMRToolsSection(true);
+      // Also set the active MR tool to the top recommendation
+      if (newNotifications[0]) {
+        setActiveMRTool(newNotifications[0].tool as ActiveMRTool);
+      }
+    } else {
+      // Other patterns → show corner notification
+      setPendingNotifications(prev => {
+        // Remove old notifications from same message
+        const filtered = prev.filter(n => !n.id.startsWith(messageId));
+        return [...filtered, ...newNotifications].slice(-5); // Keep max 5
+      });
+    }
+  }, [showMRToolsSection, userProfile.pattern, setShowMRToolsSection, setActiveMRTool]);
+
+  /**
+   * Handle notification click - open MR panel and dismiss notification
+   */
+  const handleNotificationClick = useCallback((notification: MRNotification) => {
+    setShowMRToolsSection(true);
+    setActiveMRTool(notification.tool as ActiveMRTool);
+    setPendingNotifications(prev => prev.filter(n => n.id !== notification.id));
+  }, [setShowMRToolsSection, setActiveMRTool]);
+
+  /**
+   * Dismiss single notification
+   */
+  const handleDismissNotification = useCallback((id: string) => {
+    setPendingNotifications(prev => prev.filter(n => n.id !== id));
+  }, []);
+
+  /**
+   * Dismiss all notifications
+   */
+  const handleDismissAllNotifications = useCallback(() => {
+    setPendingNotifications([]);
+  }, []);
+
+  // Track which messages have been processed for notifications
+  const processedNotificationIds = useRef<Set<string>>(new Set());
+
+  /**
+   * Effect: Process new orchestration results for notifications
+   * When MR panel is closed and new recommendations come in, show notifications
+   */
+  useEffect(() => {
+    if (showMRToolsSection) {
+      // Panel is open, clear any pending notifications
+      if (pendingNotifications.length > 0) {
+        setPendingNotifications([]);
+      }
+      return;
+    }
+
+    // Check for new orchestration results
+    orchestrationResults.forEach((result, messageId) => {
+      if (processedNotificationIds.current.has(messageId)) return;
+
+      // Mark as processed
+      processedNotificationIds.current.add(messageId);
+
+      // If result has recommendations, handle intervention
+      if (result?.recommendations?.length > 0) {
+        handleMRIntervention(result.recommendations, messageId);
+      }
+    });
+  }, [orchestrationResults, showMRToolsSection, handleMRIntervention, pendingNotifications.length]);
 
   /**
    * Get trust badge color and label based on trust score
@@ -3849,6 +3956,15 @@ Message: "${firstMessage.slice(0, 200)}"`,
         verifiedCount={recommendationsHook.verifiedCount}
         modifiedCount={recommendationsHook.modifiedCount}
         totalMessages={messagesHook.messages.length}
+      />
+
+      {/* MR Intervention Notifications - Pattern-based display */}
+      <MRInterventionNotification
+        notifications={pendingNotifications}
+        userPattern={userProfile.pattern}
+        onNotificationClick={handleNotificationClick}
+        onDismiss={handleDismissNotification}
+        onDismissAll={handleDismissAllNotifications}
       />
 
       `}</style>
