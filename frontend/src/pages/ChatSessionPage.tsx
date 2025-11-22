@@ -3239,92 +3239,58 @@ Message: "${firstMessage.slice(0, 200)}"`,
           );
         })()}
 
-        {/* Pattern Detection Banner */}
-        {showPattern && pattern && (
+        {/* Pattern Detection Banner - compact single row, only show when confidence > 30% */}
+        {showPattern && pattern && pattern.confidence > 0.3 && (
           <div style={{
-            padding: '1rem 1.5rem',
+            padding: '0.5rem 1rem',
             backgroundColor: '#f0f9ff',
             borderBottom: `2px solid ${getPatternColor(pattern.pattern || pattern.detectedPattern)}`,
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            fontSize: '0.8125rem',
           }}>
-            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-              <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', fontWeight: '600', color: '#1e40af' }}>
-                🎯 Pattern Detected
-              </h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{
-                  width: '2.5rem',
-                  height: '2.5rem',
-                  backgroundColor: getPatternColor(pattern.pattern || pattern.detectedPattern),
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  fontSize: '1.25rem',
-                  fontWeight: '700',
-                }}>
-                  {pattern.pattern || pattern.detectedPattern}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{ margin: '0', fontWeight: '600', color: '#1f2937' }}>
-                    {getPatternLabel(pattern.pattern || pattern.detectedPattern)}
-                  </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.25rem' }}>
-                    {/* Confidence Display */}
-                    <span style={{
-                      fontSize: '0.875rem',
-                      color: pattern.confidence === 0 ? '#f59e0b' : '#6b7280',
-                      fontWeight: pattern.confidence === 0 ? '600' : '500'
-                    }}>
-                      {pattern.confidence === 0 ? (
-                        <>🔍 Detecting...</>
-                      ) : pattern.confidence < 0.5 ? (
-                        <>📊 Confidence: {(pattern.confidence * 100).toFixed(1)}% (Early estimate)</>
-                      ) : (
-                        <>📊 Confidence: {(pattern.confidence * 100).toFixed(1)}%</>
-                      )}
-                    </span>
-
-                    {/* Stability Display - only show if available */}
-                    {pattern.stability !== undefined && pattern.stability > 0 && (
-                      <span style={{
-                        fontSize: '0.875rem',
-                        color: pattern.stability >= 0.7 ? '#10b981' : pattern.stability >= 0.5 ? '#f59e0b' : '#ef4444',
-                        fontWeight: '500'
-                      }}>
-                        {pattern.stability >= 0.7 ? '✓' : '⚠'} Stability: {(pattern.stability * 100).toFixed(1)}%
-                      </span>
-                    )}
-
-                    {/* Streak Length - only show if available */}
-                    {pattern.streakLength !== undefined && pattern.streakLength > 1 && (
-                      <span style={{
-                        fontSize: '0.875rem',
-                        color: '#8b5cf6',
-                        fontWeight: '500'
-                      }}>
-                        🔥 Streak: {pattern.streakLength} turns
-                      </span>
-                    )}
-
-                    {/* Trend Direction - only show if available */}
-                    {pattern.trendDirection && (
-                      <span style={{
-                        fontSize: '0.875rem',
-                        color: '#6b7280',
-                        fontWeight: '500'
-                      }}>
-                        {pattern.trendDirection === 'converging' && '📈 Converging'}
-                        {pattern.trendDirection === 'diverging' && '📉 Diverging'}
-                        {pattern.trendDirection === 'oscillating' && '〰️ Oscillating'}
-                        {pattern.trendDirection === 'stable' && '━ Stable'}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
+            <div style={{
+              width: '1.75rem',
+              height: '1.75rem',
+              backgroundColor: getPatternColor(pattern.pattern || pattern.detectedPattern),
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontSize: '0.875rem',
+              fontWeight: '700',
+              flexShrink: 0,
+            }}>
+              {pattern.pattern || pattern.detectedPattern}
             </div>
+            <span style={{ fontWeight: '600', color: '#1f2937' }}>
+              {getPatternLabel(pattern.pattern || pattern.detectedPattern)}
+            </span>
+            <span style={{ color: '#6b7280' }}>
+              📊 {(pattern.confidence * 100).toFixed(0)}%
+            </span>
+            {pattern.stability !== undefined && pattern.stability > 0.5 && (
+              <span style={{ color: pattern.stability >= 0.7 ? '#10b981' : '#f59e0b' }}>
+                {pattern.stability >= 0.7 ? '✓' : '⚠'} {(pattern.stability * 100).toFixed(0)}%
+              </span>
+            )}
+            <button
+              onClick={() => setShowPattern(false)}
+              style={{
+                marginLeft: 'auto',
+                background: 'none',
+                border: 'none',
+                color: '#9ca3af',
+                cursor: 'pointer',
+                fontSize: '1rem',
+                padding: '0',
+              }}
+              title="Dismiss"
+            >
+              ×
+            </button>
           </div>
         )}
 
