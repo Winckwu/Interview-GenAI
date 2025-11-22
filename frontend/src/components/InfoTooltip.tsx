@@ -74,16 +74,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
         );
       default: // info - simple filled circle dot
         return (
-          <span
-            className="info-dot"
-            style={{
-              display: 'inline-block',
-              width: `${iconSize}px`,
-              height: `${iconSize}px`,
-              borderRadius: '50%',
-              backgroundColor: 'currentColor',
-            }}
-          />
+          <span className="info-dot" />
         );
     }
   };
