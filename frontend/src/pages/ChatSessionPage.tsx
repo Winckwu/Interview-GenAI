@@ -3040,7 +3040,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
       {/* Main Content Container - 3 Column Layout */}
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
-        {/* Header */}
+        {/* Header - Fixed at top */}
         <header style={{
           padding: '1.5rem',
           backgroundColor: '#fff',
@@ -3049,6 +3049,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          flexShrink: 0, // Prevent header from shrinking
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
             <button
@@ -3516,16 +3517,16 @@ Message: "${firstMessage.slice(0, 200)}"`,
           </div>
         )}
 
-        {/* Center + Right Layout */}
-        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        {/* Center + Right Layout - Scrollable area */}
+        <div style={{ display: 'flex', flex: '1 1 0', overflow: 'hidden', minHeight: 0 }}>
           {/* Center - Messages Area */}
           <div style={{
-          flex: 1,
+          flex: '1 1 0',
           overflowY: 'auto', // Enable scrolling for messages
           padding: '0.75rem 1rem',
-          width: '100%',
           display: 'flex',
           flexDirection: 'column',
+          minHeight: 0, // Important for flex overflow scrolling
         }}>
           {/* Personalized Tips Banner */}
           {latestAssessment && latestAssessment.responses && showPersonalizedTips && (() => {
@@ -3656,8 +3657,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
             <div
               ref={virtualizedListRef as any}
               style={{
-                flex: 1,
-                overflowY: 'auto',
+                flex: '1 1 auto',
                 overflowX: 'hidden',
               }}
             >
@@ -3828,16 +3828,13 @@ Message: "${firstMessage.slice(0, 200)}"`,
           )}
         </div>
 
-        {/* Input Area - Fixed at bottom */}
+        {/* Input Area - Fixed at bottom via flexbox */}
         <footer style={{
           padding: '0.75rem 1rem',
           backgroundColor: '#fff',
           borderTop: '1px solid #e2e8f0',
           boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.05)',
-          flexShrink: 0, // Prevent footer from shrinking
-          position: 'sticky',
-          bottom: 0,
-          zIndex: 10,
+          flexShrink: 0, // Prevent footer from shrinking - stays at bottom
         }}>
           <form
             onSubmit={handleSendMessage}
