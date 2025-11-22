@@ -441,7 +441,7 @@ const DashboardPage: React.FC = () => {
                   Verification Rate
                   <InfoTooltip text="Percentage of AI outputs you verify or check. Higher is better for maintaining skill integrity." size="small" />
                 </div>
-                <div className="metric-value">{verificationRate.toFixed(1)}%</div>
+                <div className="metric-value">{verificationRate.toFixed(0)}%</div>
                 <div className="metric-description">
                   {verificationRate > 70 ? '✅ Excellent verification level' : verificationRate > 40 ? '📊 Moderate verification' : '⚠️ Low verification - consider increasing'}
                 </div>
@@ -1226,7 +1226,7 @@ const DashboardPage: React.FC = () => {
                 </div>
                 <div className="stat-item">
                   <span className="stat-label">Modification Rate:</span>
-                  <span className="stat-value">{modificationRate.toFixed(1)}%</span>
+                  <span className="stat-value">{modificationRate.toFixed(0)}%</span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-label">Member Since:</span>
