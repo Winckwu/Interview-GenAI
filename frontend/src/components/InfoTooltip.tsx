@@ -41,9 +41,9 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
   };
 
   const iconSizes = {
-    small: 12,
-    medium: 14,
-    large: 16,
+    small: 8,
+    medium: 10,
+    large: 12,
   };
 
   const iconSize = iconSizes[size];
@@ -53,30 +53,37 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
     switch (variant) {
       case 'warning':
         return (
-          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" className="info-icon-svg">
+          <svg width={iconSize + 4} height={iconSize + 4} viewBox="0 0 24 24" fill="none" className="info-icon-svg">
             <path d="M12 2L2 20h20L12 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" className="info-circle" />
             <path d="M12 9v4M12 17h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="info-mark" />
           </svg>
         );
       case 'error':
         return (
-          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" className="info-icon-svg">
+          <svg width={iconSize + 4} height={iconSize + 4} viewBox="0 0 24 24" fill="none" className="info-icon-svg">
             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" className="info-circle" />
             <path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="info-mark" />
           </svg>
         );
       case 'success':
         return (
-          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" className="info-icon-svg">
+          <svg width={iconSize + 4} height={iconSize + 4} viewBox="0 0 24 24" fill="none" className="info-icon-svg">
             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" className="info-circle" />
             <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="info-mark" />
           </svg>
         );
-      default: // info
+      default: // info - simple filled circle dot
         return (
-          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" className="info-icon-svg">
-            <circle cx="12" cy="12" r="6" fill="currentColor" className="info-circle" />
-          </svg>
+          <span
+            className="info-dot"
+            style={{
+              display: 'inline-block',
+              width: `${iconSize}px`,
+              height: `${iconSize}px`,
+              borderRadius: '50%',
+              backgroundColor: 'currentColor',
+            }}
+          />
         );
     }
   };
