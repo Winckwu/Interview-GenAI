@@ -10,7 +10,6 @@ import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversation
 // DISABLED: react-window compatibility issue - using simple list instead
 import EmptyState, { EmptyStateError } from '../components/EmptyState';
 import { SkeletonText, SkeletonCard } from '../components/Skeleton';
-import InterventionManager from '../components/interventions/InterventionManager';
 import { useMetricsStore } from '../stores/metricsStore';
 import MarkdownText from '../components/common/MarkdownText';
 import {
@@ -466,9 +465,6 @@ const ChatSessionPage: React.FC = () => {
 
   // MR2 Transparency versions
   const [interactionVersions, setInteractionVersions] = useState<any[]>([]);
-
-  // Independent collapse states for sidebar sections
-  const [showInterventionSection, setShowInterventionSection] = useState(false);
 
   // Virtualized list configuration
   const virtualizedListRef = useRef<any>(null);
@@ -3550,100 +3546,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 renderActiveTool={renderActiveMRTool}
               />
 
-              {/* Intervention Manager - Collapsible */}
-              <div style={{
-                borderBottom: '1px solid #e2e8f0',
-                backgroundColor: '#fff',
-              }}>
-                <button
-                  onClick={() => setShowInterventionSection(!showInterventionSection)}
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                  }}
-                >
-                  <span style={{
-                    fontSize: '0.75rem',
-                    fontWeight: '600',
-                    color: '#6b7280',
-                    textTransform: 'uppercase',
-                  }}>
-                    🔔 Interventions
-                  </span>
-                  <span style={{ color: '#9ca3af', fontSize: '0.75rem' }}>
-                    {showInterventionSection ? '▼' : '▶'}
-                  </span>
-                </button>
-                {showInterventionSection && (
-                  <div style={{ padding: '0 0.75rem 0.75rem 0.75rem' }}>
-                    <InterventionManager
-                      sessionId={sessionId || ''}
-                      messages={messages}
-                      minMessagesForDetection={3}
-                      activeMRs={activeMRs}
-                      onInterventionDisplayed={(tier, mrType) => {
-                        console.log(`✅ Intervention displayed: ${tier} (${mrType})`);
-                        // Auto-expand intervention section when intervention is shown
-                        setShowInterventionSection(true);
-                      }}
-                      onUserAction={(mrType, action) => {
-                        console.log(`📊 User action: ${action} on ${mrType}`);
-                        // Open corresponding MR tool when user clicks "View Details" or "Learn More"
-                        if (action === 'learn_more' || action === 'acted') {
-                          // Comprehensive mapping for all MR types (handles various naming formats)
-                          const mrToolMap: Record<string, ActiveMRTool> = {
-                            // Pattern-based interventions
-                            'MR13_Uncertainty': 'mr13-uncertainty',
-                            'MR18_OverDependence': 'mr17-visualization',
-                            'MR_PATTERN_F_BARRIER': 'mr14-reflection',
-                            // Backend MR IDs (both simple and descriptive formats)
-                            'MR1': 'mr1-decomposition', 'MR1_TaskDecomposition': 'mr1-decomposition',
-                            'MR2': 'mr2-transparency', 'MR2_ProcessTransparency': 'mr2-transparency',
-                            'MR3': 'mr3-agency', 'MR3_HumanAgency': 'mr3-agency',
-                            'MR4': 'mr4-roles', 'MR4_RoleDefinition': 'mr4-roles',
-                            'MR5': 'mr5-iteration', 'MR5_LowCostIteration': 'mr5-iteration',
-                            'MR6': 'mr6-models', 'MR6_CrossModel': 'mr6-models',
-                            'MR7': 'mr7-failure', 'MR7_FailureTolerance': 'mr7-failure',
-                            'MR10': 'mr10-cost', 'MR10_CostBenefit': 'mr10-cost',
-                            'MR11': 'mr11-verify', 'MR11_IntegratedVerification': 'mr11-verify',
-                            'MR12': 'mr12-critical', 'MR12_CriticalThinking': 'mr12-critical',
-                            'MR13': 'mr13-uncertainty', 'MR13_TransparentUncertainty': 'mr13-uncertainty',
-                            'MR14': 'mr14-reflection', 'MR14_GuidedReflection': 'mr14-reflection',
-                            'MR15': 'mr15-strategies', 'MR15_MetacognitiveStrategy': 'mr15-strategies',
-                            'MR16': 'mr16-atrophy', 'MR16_SkillAtrophy': 'mr16-atrophy',
-                            'MR17': 'mr17-visualization', 'MR17_LearningVisualization': 'mr17-visualization',
-                          };
-
-                          let tool = mrToolMap[mrType];
-
-                          // Fallback: try to extract MR number from string
-                          if (!tool) {
-                            const match = mrType.match(/MR(\d+)/);
-                            if (match) {
-                              tool = mrToolMap[`MR${match[1]}`];
-                            }
-                          }
-
-                          if (tool) {
-                            setActiveMRTool(tool);
-                            setShowPatternPanel(true);
-                            setShowMRToolsSection(true);
-                          }
-                        }
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Sidebar MRs - Keep existing recommendations */}
+              {/* Sidebar MRs - Recommendations */}
               {activeMRs && activeMRs.some((mr) => mr.displayMode === 'sidebar') && (
                 <div style={{
                   padding: '1rem',
