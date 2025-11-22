@@ -396,7 +396,19 @@ export class PatternDetectionService {
     const since = new Date();
     since.setDate(since.getDate() - days);
 
-    // Get pattern trends
+    // Get user's registration date to ensure we don't show data before they joined
+    const userResult = await pool.query(
+      'SELECT created_at FROM users WHERE id = $1',
+      [userId]
+    );
+    const userCreatedAt = userResult.rows[0]?.created_at;
+
+    // Use the later of: N days ago OR user registration date
+    const effectiveSince = userCreatedAt && new Date(userCreatedAt) > since
+      ? new Date(userCreatedAt)
+      : since;
+
+    // Get pattern trends (only after user registration)
     const patternResult = await pool.query(
       `SELECT
          DATE(created_at) as date,
@@ -406,10 +418,10 @@ export class PatternDetectionService {
        WHERE user_id = $1 AND created_at >= $2
        GROUP BY DATE(created_at), detected_pattern
        ORDER BY date ASC`,
-      [userId, since]
+      [userId, effectiveSince]
     );
 
-    // Get daily verification rates
+    // Get daily verification rates (only after user registration)
     const verificationResult = await pool.query(
       `SELECT
          DATE(i.created_at) as date,
@@ -420,7 +432,7 @@ export class PatternDetectionService {
        WHERE s.user_id = $1 AND i.created_at >= $2
        GROUP BY DATE(i.created_at)
        ORDER BY date ASC`,
-      [userId, since]
+      [userId, effectiveSince]
     );
 
     // Create a map of daily verification rates
