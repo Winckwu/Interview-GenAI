@@ -382,7 +382,7 @@ const PatternAnalysisPage: React.FC = () => {
                   Verification Rate
                 </div>
                 <div style={{ fontSize: '2rem', fontWeight: '800', color: '#059669', lineHeight: 1 }}>
-                  {(verificationRate * 100).toFixed(0)}%
+                  {verificationRate.toFixed(0)}%
                 </div>
               </div>
 
@@ -397,7 +397,7 @@ const PatternAnalysisPage: React.FC = () => {
                   Modification Rate
                 </div>
                 <div style={{ fontSize: '2rem', fontWeight: '800', color: '#d97706', lineHeight: 1 }}>
-                  {(modificationRate * 100).toFixed(0)}%
+                  {modificationRate.toFixed(0)}%
                 </div>
               </div>
             </div>
