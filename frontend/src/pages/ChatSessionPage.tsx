@@ -422,6 +422,10 @@ const ChatSessionPage: React.FC = () => {
     messageIndex: number;
   } | null>(null);
 
+  // MR11 context: Track the message being verified
+  const [verifyingMessageId, setVerifyingMessageId] = useState<string | null>(null);
+  const [verifyingMessageContent, setVerifyingMessageContent] = useState<string>('');
+
   // Track MR9 Dynamic Orchestration - Trust-based MR activation
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
   const [orchestrationResults, setOrchestrationResults] = useState<Map<string, any>>(new Map());
@@ -891,6 +895,36 @@ const ChatSessionPage: React.FC = () => {
     openMR5Iteration();
   }, [markAsModifiedBase, openMR5Iteration]);
 
+  /**
+   * handleVerifyClick - Opens MR11 verification tool with message content
+   * Instead of directly marking as verified, this opens MR11 for proper verification workflow
+   */
+  const handleVerifyClick = useCallback((messageId: string) => {
+    // Find the message to verify
+    const message = messages.find(m => m.id === messageId);
+    if (!message) return;
+
+    // Store the message context for MR11
+    setVerifyingMessageId(messageId);
+    setVerifyingMessageContent(message.content);
+
+    // Open MR11 verification tool
+    openMR11Verification();
+  }, [messages, openMR11Verification]);
+
+  /**
+   * handleMR11Decision - Called when user makes a decision in MR11
+   * If decision is 'accept', mark the message as verified
+   */
+  const handleMR11Decision = useCallback((messageId: string, decision: 'accept' | 'modify' | 'reject' | 'skip') => {
+    if (decision === 'accept') {
+      // Mark message as verified in the backend
+      markAsVerified(messageId);
+    }
+    // Clear the verifying state
+    setVerifyingMessageId(null);
+    setVerifyingMessageContent('');
+  }, [markAsVerified]);
 
   /**
    * Handle quick reflection response (MR14)
@@ -1404,7 +1438,13 @@ const ChatSessionPage: React.FC = () => {
       case 'mr10-cost':
         return <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />;
       case 'mr11-verify':
-        return <MR11IntegratedVerification existingLogs={verificationLogs} onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])} />;
+        return <MR11IntegratedVerification
+          existingLogs={verificationLogs}
+          onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])}
+          initialContent={verifyingMessageContent}
+          messageId={verifyingMessageId || undefined}
+          onMessageVerified={handleMR11Decision}
+        />;
       case 'mr12-critical':
         return <MR12CriticalThinkingScaffolding aiOutput={messages[messages.length - 1]?.content || ''} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />;
       case 'mr13-uncertainty':
@@ -3264,7 +3304,7 @@ const ChatSessionPage: React.FC = () => {
                 onEditContentChange={setEditedContent}
                 onSaveEdit={saveEditedMessage}
                 onCancelEdit={cancelEditingMessage}
-                onVerify={markAsVerified}
+                onVerify={handleVerifyClick}
                 onModify={markAsModified}
                 onBranchSwitch={handleBranchSwitch}
                 onBranchDelete={handleDeleteBranch}

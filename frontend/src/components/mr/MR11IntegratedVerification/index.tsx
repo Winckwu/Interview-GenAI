@@ -20,7 +20,7 @@
  * - Build trust through transparency about verification accuracy
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   VerifiableContent,
   VerificationResult,
@@ -42,20 +42,29 @@ import './styles.css';
 interface MR11Props {
   onDecisionMade?: (log: VerificationLog) => void;
   existingLogs?: VerificationLog[];
+  /** Pre-fill content from a specific message */
+  initialContent?: string;
+  /** ID of the message being verified (for callback tracking) */
+  messageId?: string;
+  /** Callback when message verification is complete (accept = verified) */
+  onMessageVerified?: (messageId: string, decision: UserDecision) => void;
 }
 
 type TabType = 'verify' | 'history' | 'stats';
 
 const MR11IntegratedVerification: React.FC<MR11Props> = ({
   onDecisionMade,
-  existingLogs = []
+  existingLogs = [],
+  initialContent = '',
+  messageId,
+  onMessageVerified
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('verify');
   const [logs, setLogs] = useState<VerificationLog[]>(existingLogs);
 
-  // Verification workflow states
-  const [contentText, setContentText] = useState('');
-  const [contentType, setContentType] = useState<ContentType>('code');
+  // Verification workflow states - pre-fill from initialContent if provided
+  const [contentText, setContentText] = useState(initialContent);
+  const [contentType, setContentType] = useState<ContentType>('text');
   const [selectedMethod, setSelectedMethod] = useState<VerificationMethod | null>(null);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
   const [userDecision, setUserDecision] = useState<UserDecision | null>(null);
@@ -63,6 +72,23 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
 
   const stats = calculateVerificationStatistics(logs);
   const recommendations = contentType ? getVerificationRecommendations({ id: '', contentType, content: contentText, flagged: false }) : [];
+
+  // Update content when initialContent prop changes (e.g., when verifying a different message)
+  useEffect(() => {
+    if (initialContent) {
+      setContentText(initialContent);
+      // Auto-detect content type based on content
+      if (initialContent.includes('```') || initialContent.includes('function ') || initialContent.includes('const ') || initialContent.includes('import ')) {
+        setContentType('code');
+      } else if (initialContent.includes('$$') || /\d+\s*[+\-*/]\s*\d+/.test(initialContent)) {
+        setContentType('math');
+      } else if (initialContent.includes('http') || initialContent.includes('[') && initialContent.includes(']')) {
+        setContentType('citation');
+      } else {
+        setContentType('text');
+      }
+    }
+  }, [initialContent]);
 
   /**
    * Start verification process
@@ -113,13 +139,18 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     setLogs([...logs, log]);
     onDecisionMade?.(log);
 
+    // If verifying a specific message, notify parent of the decision
+    if (messageId && onMessageVerified) {
+      onMessageVerified(messageId, userDecision);
+    }
+
     // Reset
     setContentText('');
     setSelectedMethod(null);
     setVerificationResult(null);
     setUserDecision(null);
     setDecisionNotes('');
-  }, [verificationResult, userDecision, decisionNotes, logs, onDecisionMade]);
+  }, [verificationResult, userDecision, decisionNotes, logs, onDecisionMade, messageId, onMessageVerified]);
 
   /**
    * Update decision and evaluate actual correctness
