@@ -51,6 +51,7 @@ import SessionSidebar, { type SessionItem } from '../components/SessionSidebar';
 import MRToolsPanel from '../components/MRToolsPanel';
 import GlobalRecommendationPanel from '../components/GlobalRecommendationPanel';
 import OnboardingTour from '../components/OnboardingTour';
+import { detectTaskType, type TaskType } from '../components/mr/MR8TaskCharacteristicRecognition/utils';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -227,6 +228,40 @@ const createDebounce = <T extends (...args: any[]) => Promise<any>>(func: T, del
       }
     }, delay);
   };
+};
+
+/**
+ * Task type labels for display
+ */
+const TASK_TYPE_LABELS: Record<TaskType, { icon: string; label: string }> = {
+  coding: { icon: '💻', label: '编程' },
+  writing: { icon: '✍️', label: '写作' },
+  analysis: { icon: '📊', label: '分析' },
+  creative: { icon: '🎨', label: '创意' },
+  research: { icon: '🔍', label: '研究' },
+  design: { icon: '🎯', label: '设计' },
+  planning: { icon: '📋', label: '规划' },
+  review: { icon: '📝', label: '审核' },
+};
+
+/**
+ * Generate a short title from user's first message
+ */
+const generateSessionTitle = (firstMessage: string): string => {
+  // Remove markdown and special characters
+  const cleanText = firstMessage
+    .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+    .replace(/[#*_~`]/g, '') // Remove markdown
+    .replace(/\n/g, ' ') // Replace newlines
+    .trim();
+
+  // Take first 30 characters or up to first sentence
+  const maxLength = 40;
+  if (cleanText.length <= maxLength) return cleanText;
+
+  // Try to cut at a natural break
+  const cutPoint = cleanText.substring(0, maxLength).lastIndexOf(' ');
+  return cleanText.substring(0, cutPoint > 20 ? cutPoint : maxLength) + '...';
 };
 
 /**
@@ -2751,12 +2786,26 @@ const ChatSessionPage: React.FC = () => {
               ☰
             </button>
             <div>
-              <h1 style={{ margin: '0', fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>Chat Session</h1>
-              {sessionData && (
-                <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
-                  📝 {sessionData.taskDescription || 'General Discussion'} • Type: {sessionData.taskType || 'unknown'}
-                </p>
-              )}
+              {(() => {
+                // Get first user message to generate title and detect type
+                const firstUserMessage = messages.find(m => m.role === 'user');
+                const autoTitle = firstUserMessage ? generateSessionTitle(firstUserMessage.content) : null;
+                const autoType = firstUserMessage ? detectTaskType(firstUserMessage.content) : null;
+                const typeInfo = autoType ? TASK_TYPE_LABELS[autoType] : null;
+
+                return (
+                  <>
+                    <h1 style={{ margin: '0', fontSize: '1.25rem', fontWeight: '600', color: '#1f2937' }}>
+                      {autoTitle || 'New Chat'}
+                    </h1>
+                    {typeInfo && (
+                      <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
+                        {typeInfo.icon} {typeInfo.label}
+                      </p>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
