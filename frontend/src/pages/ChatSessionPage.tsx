@@ -282,9 +282,6 @@ const ChatSessionPage: React.FC = () => {
   const messagesHook = useMessages({
     sessionId: sessionId || '',
     onSendSuccess: (interaction) => {
-      // Track message send in metrics
-      metricsStore.trackInteraction('send');
-
       // Add session to sidebar if it's a new session (not in the list yet)
       if (sessionId && !sessions.some((s) => s.id === sessionId)) {
         const title = interaction.userPrompt.length > 50
@@ -315,8 +312,7 @@ const ChatSessionPage: React.FC = () => {
   // Hook 2: MR Tools Management
   const mrToolsHook = useMRTools({
     onToolOpened: (toolId) => {
-      // Track MR tool usage in metrics
-      metricsStore.trackInteraction('mr_tool_open');
+      // Tool opened - tracking handled by MR tools hook
     },
     onSuccessMessage: (msg) => {
       // Show success messages from MR tool operations
