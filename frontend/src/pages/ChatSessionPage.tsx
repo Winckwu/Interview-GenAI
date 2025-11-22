@@ -284,6 +284,20 @@ const ChatSessionPage: React.FC = () => {
     onSendSuccess: (interaction) => {
       // Track message send in metrics
       metricsStore.trackInteraction('send');
+
+      // Add session to sidebar if it's a new session (not in the list yet)
+      if (sessionId && !sessions.some((s) => s.id === sessionId)) {
+        const title = interaction.userPrompt.length > 50
+          ? interaction.userPrompt.substring(0, 50) + '...'
+          : interaction.userPrompt;
+        const newSession: SessionItem = {
+          id: sessionId,
+          taskDescription: title,
+          createdAt: interaction.createdAt || new Date().toISOString(),
+          startedAt: interaction.createdAt || new Date().toISOString(),
+        };
+        setSessions((prev) => [newSession, ...prev]);
+      }
     },
     onVerifySuccess: () => {
       // Reset consecutive unverified counter
