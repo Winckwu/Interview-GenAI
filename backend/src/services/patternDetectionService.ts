@@ -442,10 +442,22 @@ export class PatternDetectionService {
       [userId, effectiveSince]
     );
 
+    // Helper function to format date as YYYY-MM-DD (handles both Date objects and strings)
+    const toDateString = (date: any): string => {
+      if (typeof date === 'string') return date.split('T')[0];
+      if (date instanceof Date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+      return String(date).split('T')[0];
+    };
+
     // Create a map of daily verification rates
     const dailyVerificationMap: Record<string, number> = {};
     verificationResult.rows.forEach((row: any) => {
-      const dateStr = row.date.toISOString().split('T')[0];
+      const dateStr = toDateString(row.date);
       const verificationRate = row.total_interactions > 0
         ? (parseInt(row.verified_count) / parseInt(row.total_interactions)) * 100
         : 0;
@@ -455,22 +467,30 @@ export class PatternDetectionService {
     // Create a map of patterns by date
     const patternsByDate: Record<string, string> = {};
     patternResult.rows.forEach((row: any) => {
-      const dateStr = row.date.toISOString().split('T')[0];
+      const dateStr = toDateString(row.date);
       if (!patternsByDate[dateStr]) {
         patternsByDate[dateStr] = row.detected_pattern;
       }
     });
 
-    // Generate ALL dates from effectiveSince to today
+    // Helper function to format date as YYYY-MM-DD in local timezone
+    const formatDateLocal = (d: Date): string => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    // Generate ALL dates from effectiveSince to today (using local timezone)
     // This ensures the chart shows the complete date range even if some days have no data
     const allDates: string[] = [];
     const currentDate = new Date(effectiveSince);
-    currentDate.setHours(0, 0, 0, 0);
+    currentDate.setHours(12, 0, 0, 0); // Set to noon to avoid DST issues
     const today = new Date();
-    today.setHours(23, 59, 59, 999);
+    today.setHours(12, 0, 0, 0);
 
     while (currentDate <= today) {
-      allDates.push(currentDate.toISOString().split('T')[0]);
+      allDates.push(formatDateLocal(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
