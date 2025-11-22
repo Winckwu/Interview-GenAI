@@ -1,10 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAuthStore } from '../stores/authStore';
 import { usePatternStats, useAnalytics } from '../hooks/useAnalytics';
 import { useAssessmentStore } from '../stores/assessmentStore';
+import { usePatternStore } from '../stores/patternStore';
+import { useMetricsStore } from '../stores/metricsStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import InfoTooltip from '../components/InfoTooltip';
+import api from '../services/api';
 import { getPatternProfile, type BehavioralPattern } from '../utils/metacognitiveTypeSystem';
 
 /**
@@ -22,14 +25,40 @@ const PatternAnalysisPage: React.FC = () => {
   const { trends, loading: trendsLoading, error: trendsError } = usePatternStats(user?.id || '', 90);
   const { analytics, loading: analyticsLoading } = useAnalytics(30);
   const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
+  const { patterns, fetchPatterns } = usePatternStore();
+  const { alerts } = useMetricsStore();
+  const [totalInteractions, setTotalInteractions] = useState<number>(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user?.id) {
       fetchLatestAssessment(user.id);
+      fetchPatterns(user.id);
+      // Fetch user's total interaction count
+      api.get(`/users/${user.id}/stats`).then(response => {
+        const stats = response.data.data || response.data;
+        setTotalInteractions(stats.totalInteractions || stats.totalMessages || 0);
+      }).catch(err => {
+        console.error('Failed to fetch user stats:', err);
+      });
     }
-  }, [user?.id, fetchLatestAssessment]);
+  }, [user?.id, fetchLatestAssessment, fetchPatterns]);
 
   const loading = trendsLoading || analyticsLoading;
+
+  // Minimum interactions threshold
+  const MIN_INTERACTIONS_THRESHOLD = 15;
+  const hasEnoughData = totalInteractions >= MIN_INTERACTIONS_THRESHOLD;
+
+  // Get user patterns and dominant pattern
+  const userPatterns = patterns.filter((p) => p.userId === user?.id);
+  const dominantPattern = userPatterns.length > 0
+    ? userPatterns.reduce((prev, current) =>
+        (prev.confidence > current.confidence) ? prev : current
+      )
+    : null;
+
+  // Recent alerts
+  const recentAlerts = (alerts || []).slice(0, 5);
 
   // Pattern quality hierarchy
   const PATTERN_QUALITY: Record<BehavioralPattern, number> = {
@@ -244,6 +273,19 @@ const PatternAnalysisPage: React.FC = () => {
     );
   };
 
+  // Pattern-Metacognition correlation helper
+  const getPatternMetacognitionCorrelation = (patternType: string): string => {
+    const correlations: Record<string, string> = {
+      A: 'strong Planning abilities (P1-P4) and high Monitoring (M1-M2). Users with Pattern A typically excel at task decomposition and progress tracking.',
+      B: 'strong Regulation abilities (R1-R2) and Evaluation (E2). Pattern B users are excellent at adjusting strategies and learning from failures.',
+      C: 'balanced abilities across all dimensions with strong Regulation (R1). Pattern C users excel at adaptive strategy switching.',
+      D: 'exceptional Monitoring (M1-M3) and Evaluation (E1-E3) abilities. Pattern D users are systematic verifiers with strong critical thinking.',
+      E: 'strong Evaluation (E2) and Monitoring (M1) with emphasis on learning reflection. Pattern E users treat AI as a pedagogical tool.',
+      F: 'underdeveloped metacognitive abilities across dimensions. Pattern F users may benefit from MR19 assessment and metacognitive training.',
+    };
+    return correlations[patternType] || 'various metacognitive abilities depending on your usage patterns.';
+  };
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -400,6 +442,251 @@ const PatternAnalysisPage: React.FC = () => {
                   {modificationRate.toFixed(0)}%
                 </div>
               </div>
+            </div>
+
+            {/* Detailed Pattern Metrics from patternStore */}
+            {dominantPattern && (
+              <>
+                {/* Confidence and Stability Bars */}
+                <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                  {/* Confidence Level */}
+                  <div style={{ marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        Confidence
+                        <InfoTooltip text="How confident we are in this pattern classification based on your usage data" size="small" />
+                      </span>
+                      <span style={{ fontSize: '1rem', fontWeight: '700', color: currentPatternProfile.color }}>
+                        {dominantPattern.confidence > 0 ? `${(dominantPattern.confidence * 100).toFixed(0)}%` : 'N/A'}
+                      </span>
+                    </div>
+                    {dominantPattern.confidence > 0 ? (
+                      <div style={{
+                        width: '100%',
+                        height: '0.625rem',
+                        backgroundColor: '#e5e7eb',
+                        borderRadius: '0.5rem',
+                        overflow: 'hidden',
+                      }}>
+                        <div style={{
+                          width: `${dominantPattern.confidence * 100}%`,
+                          height: '100%',
+                          background: `linear-gradient(90deg, ${currentPatternProfile.color}, ${currentPatternProfile.color}dd)`,
+                          transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                        }} />
+                      </div>
+                    ) : (
+                      <div style={{
+                        padding: '0.5rem 0.75rem',
+                        backgroundColor: '#fef3c7',
+                        borderLeft: '3px solid #f59e0b',
+                        borderRadius: '0.375rem',
+                        fontSize: '0.8125rem',
+                        color: '#92400e'
+                      }}>
+                        ⚠️ Not enough usage data yet to determine confidence level
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Stability */}
+                  {dominantPattern.stability !== undefined && (
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <span style={{ fontSize: '0.875rem', color: '#6b7280', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          Stability
+                          <InfoTooltip text="How consistently you exhibit this pattern over time" size="small" />
+                        </span>
+                        <span style={{ fontSize: '1rem', fontWeight: '700', color: '#059669' }}>
+                          {(dominantPattern.stability * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                      <div style={{
+                        width: '100%',
+                        height: '0.625rem',
+                        backgroundColor: '#e5e7eb',
+                        borderRadius: '0.5rem',
+                        overflow: 'hidden',
+                      }}>
+                        <div style={{
+                          width: `${dominantPattern.stability * 100}%`,
+                          height: '100%',
+                          background: 'linear-gradient(90deg, #059669, #10b981)',
+                          transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                        }} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Detailed Metrics Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.875rem', marginBottom: '1rem' }}>
+                  {/* AI Reliance Score */}
+                  <div style={{
+                    padding: '1.25rem',
+                    background: dominantPattern.aiRelianceScore !== undefined ? 'linear-gradient(135deg, #fff5f5 0%, #fff 100%)' : '#f9fafb',
+                    border: dominantPattern.aiRelianceScore !== undefined ? '2px solid #fecaca' : '2px dashed #d1d5db',
+                    borderRadius: '0.75rem',
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                      <span style={{ fontSize: '0.8125rem', color: '#6b7280', fontWeight: '600' }}>
+                        AI Reliance
+                        <InfoTooltip text="How much you depend on AI for task completion (0% = no reliance, 100% = full dependence)" size="small" />
+                      </span>
+                      <span style={{ fontSize: '0.75rem', padding: '0.125rem 0.5rem', backgroundColor: '#fee2e2', color: '#991b1b', borderRadius: '0.25rem', fontWeight: '600' }}>
+                        {dominantPattern.aiRelianceScore !== undefined
+                          ? (dominantPattern.aiRelianceScore > 0.7 ? 'HIGH' : dominantPattern.aiRelianceScore > 0.4 ? 'MED' : 'LOW')
+                          : 'N/A'}
+                      </span>
+                    </div>
+                    {hasEnoughData && dominantPattern.aiRelianceScore !== undefined ? (
+                      <>
+                        <div style={{ fontSize: '2rem', fontWeight: '800', color: '#dc2626', marginBottom: '0.75rem', lineHeight: 1 }}>
+                          {(dominantPattern.aiRelianceScore * 100).toFixed(0)}%
+                        </div>
+                        <div style={{ height: '0.375rem', backgroundColor: '#fee2e2', borderRadius: '0.25rem', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', background: 'linear-gradient(90deg, #dc2626, #ef4444)', width: `${Math.min(dominantPattern.aiRelianceScore * 100, 100)}%`, transition: 'width 0.5s ease' }} />
+                        </div>
+                      </>
+                    ) : (
+                      <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
+                        {hasEnoughData ? 'No data' : `🔒 ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock`}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Verification Score */}
+                  <div style={{
+                    padding: '1.25rem',
+                    background: dominantPattern.verificationScore !== undefined ? 'linear-gradient(135deg, #f0fdf4 0%, #fff 100%)' : '#f9fafb',
+                    border: dominantPattern.verificationScore !== undefined ? '2px solid #bbf7d0' : '2px dashed #d1d5db',
+                    borderRadius: '0.75rem',
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                      <span style={{ fontSize: '0.8125rem', color: '#6b7280', fontWeight: '600' }}>
+                        Verification
+                        <InfoTooltip text="How thoroughly you verify AI outputs (0% = no verification, 100% = complete verification)" size="small" />
+                      </span>
+                      <span style={{ fontSize: '0.75rem', padding: '0.125rem 0.5rem', backgroundColor: '#dcfce7', color: '#14532d', borderRadius: '0.25rem', fontWeight: '600' }}>
+                        {dominantPattern.verificationScore !== undefined
+                          ? (dominantPattern.verificationScore > 0.7 ? 'GOOD' : dominantPattern.verificationScore > 0.4 ? 'FAIR' : 'LOW')
+                          : 'N/A'}
+                      </span>
+                    </div>
+                    {hasEnoughData && dominantPattern.verificationScore !== undefined ? (
+                      <>
+                        <div style={{ fontSize: '2rem', fontWeight: '800', color: '#059669', marginBottom: '0.75rem', lineHeight: 1 }}>
+                          {(dominantPattern.verificationScore * 100).toFixed(0)}%
+                        </div>
+                        <div style={{ height: '0.375rem', backgroundColor: '#dcfce7', borderRadius: '0.25rem', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', background: 'linear-gradient(90deg, #059669, #10b981)', width: `${Math.min(dominantPattern.verificationScore * 100, 100)}%`, transition: 'width 0.5s ease' }} />
+                        </div>
+                      </>
+                    ) : (
+                      <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
+                        {hasEnoughData ? 'No data' : `🔒 ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock`}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Context Switching */}
+                  <div style={{
+                    padding: '1.25rem',
+                    background: dominantPattern.contextSwitchingFrequency !== undefined ? 'linear-gradient(135deg, #eff6ff 0%, #fff 100%)' : '#f9fafb',
+                    border: dominantPattern.contextSwitchingFrequency !== undefined ? '2px solid #bfdbfe' : '2px dashed #d1d5db',
+                    borderRadius: '0.75rem',
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                      <span style={{ fontSize: '0.8125rem', color: '#6b7280', fontWeight: '600' }}>
+                        Context Switch
+                        <InfoTooltip text="How often you change your approach within a task. Lower is more consistent." size="small" />
+                      </span>
+                      <span style={{ fontSize: '0.75rem', padding: '0.125rem 0.5rem', backgroundColor: '#dbeafe', color: '#1e3a8a', borderRadius: '0.25rem', fontWeight: '600' }}>
+                        {dominantPattern.contextSwitchingFrequency !== undefined
+                          ? (dominantPattern.contextSwitchingFrequency < 1 ? 'STABLE' : dominantPattern.contextSwitchingFrequency < 2 ? 'ADAPT' : 'HIGH')
+                          : 'N/A'}
+                      </span>
+                    </div>
+                    {hasEnoughData && dominantPattern.contextSwitchingFrequency !== undefined ? (
+                      <>
+                        <div style={{ fontSize: '2rem', fontWeight: '800', color: '#2563eb', marginBottom: '0.75rem', lineHeight: 1 }}>
+                          {dominantPattern.contextSwitchingFrequency.toFixed(2)}
+                          <span style={{ fontSize: '1rem', fontWeight: '600', color: '#6b7280', marginLeft: '0.25rem' }}>×/task</span>
+                        </div>
+                        <div style={{ height: '0.375rem', backgroundColor: '#dbeafe', borderRadius: '0.25rem', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', background: 'linear-gradient(90deg, #2563eb, #3b82f6)', width: `${Math.min((dominantPattern.contextSwitchingFrequency / 3) * 100, 100)}%`, transition: 'width 0.5s ease' }} />
+                        </div>
+                      </>
+                    ) : (
+                      <p style={{ fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic', margin: 0 }}>
+                        {hasEnoughData ? 'No data' : `🔒 ${MIN_INTERACTIONS_THRESHOLD - totalInteractions} more interactions to unlock`}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Pattern Streak */}
+                {dominantPattern.streakLength !== undefined && dominantPattern.streakLength > 0 && (
+                  <div style={{
+                    padding: '1rem 1.25rem',
+                    background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)',
+                    border: '2px solid rgba(139, 92, 246, 0.2)',
+                    borderRadius: '0.75rem',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <span style={{ fontSize: '1.5rem' }}>🔥</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.875rem', fontWeight: '700', color: '#8b5cf6', marginBottom: '0.125rem' }}>
+                          {dominantPattern.streakLength} Session Streak
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                          You've maintained Pattern {dominantPattern.patternType} for {dominantPattern.streakLength} consecutive sessions
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Recent Alerts */}
+        {recentAlerts.length > 0 && (
+          <div style={{
+            backgroundColor: '#fff5f5',
+            border: '1px solid #feb2b2',
+            borderRadius: '12px',
+            padding: '1.5rem',
+            marginBottom: '2rem',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+          }}>
+            <h3 style={{ margin: '0 0 1rem 0', color: '#742a2a', fontSize: '1rem' }}>🚨 Recent Alerts</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {recentAlerts.map((alert: any) => {
+                const severityIcon = alert.severity === 'critical' ? '🔴' : alert.severity === 'warning' ? '🟠' : '🔵';
+                const bgColor = alert.severity === 'critical' ? '#fecaca' : alert.severity === 'warning' ? '#fed7aa' : '#bfdbfe';
+                const textColor = alert.severity === 'critical' ? '#991b1b' : alert.severity === 'warning' ? '#92400e' : '#1e40af';
+
+                return (
+                  <div
+                    key={alert.id}
+                    style={{
+                      padding: '0.75rem',
+                      backgroundColor: bgColor,
+                      borderRadius: '0.375rem',
+                      borderLeft: `3px solid ${textColor}`,
+                    }}
+                  >
+                    <div style={{ fontSize: '0.875rem', fontWeight: 'bold', color: textColor, marginBottom: '0.25rem' }}>
+                      {severityIcon} {alert.message}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: textColor, opacity: 0.8 }}>
+                      {new Date(alert.timestamp).toLocaleTimeString()}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
@@ -772,8 +1059,142 @@ const PatternAnalysisPage: React.FC = () => {
                 {renderSubdimensionBar('R2', 'Trust Calibration', latestAssessment)}
               </div>
             </div>
+
+            {/* Pattern-Metacognition Correlation */}
+            {currentPattern && (
+              <div style={{
+                marginTop: '1.5rem',
+                padding: '1rem',
+                backgroundColor: '#fef3c7',
+                borderLeft: '4px solid #f59e0b',
+                borderRadius: '0.375rem',
+              }}>
+                <p style={{ margin: 0, fontSize: '0.875rem', color: '#92400e' }}>
+                  <strong>💡 Insight:</strong> Your dominant Pattern {currentPattern} typically correlates with{' '}
+                  {getPatternMetacognitionCorrelation(currentPattern)}
+                </p>
+              </div>
+            )}
           </div>
         )}
+
+        {/* Metrics Explanation Section */}
+        <div style={{
+          backgroundColor: '#f0f9ff',
+          border: '1px solid #93c5fd',
+          borderRadius: '12px',
+          padding: '1.5rem',
+          marginBottom: '2rem',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        }}>
+          <h3 style={{ margin: '0 0 1rem 0', color: '#1e40af', fontSize: '1rem' }}>📊 Understanding Your Metrics</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+            <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #dbeafe' }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', color: '#1e40af', fontSize: '0.875rem' }}>🤖 AI Reliance Score</h4>
+              <p style={{ margin: '0', fontSize: '0.8125rem', color: '#475569' }}>
+                Measures how much you depend on AI for task completion.
+              </p>
+              <ul style={{ margin: '0.5rem 0 0 1.25rem', fontSize: '0.8125rem', color: '#475569', paddingLeft: 0 }}>
+                <li><strong>Low (0-30%)</strong>: Solve most problems independently</li>
+                <li><strong>Medium (30-70%)</strong>: Balance AI with independent work</li>
+                <li><strong>High (70-100%)</strong>: Heavy AI reliance (higher risk)</li>
+              </ul>
+            </div>
+            <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #dbeafe' }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', color: '#1e40af', fontSize: '0.875rem' }}>✓ Verification Score</h4>
+              <p style={{ margin: '0', fontSize: '0.8125rem', color: '#475569' }}>
+                Measures how thoroughly you verify AI outputs.
+              </p>
+              <ul style={{ margin: '0.5rem 0 0 1.25rem', fontSize: '0.8125rem', color: '#475569', paddingLeft: 0 }}>
+                <li><strong>Low (0-30%)</strong>: Rarely verify (risky)</li>
+                <li><strong>Medium (30-70%)</strong>: Selective verification</li>
+                <li><strong>High (70-100%)</strong>: Thorough verification (best)</li>
+              </ul>
+            </div>
+            <div style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '0.375rem', border: '1px solid #dbeafe' }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', color: '#1e40af', fontSize: '0.875rem' }}>🔄 Context Switching</h4>
+              <p style={{ margin: '0', fontSize: '0.8125rem', color: '#475569' }}>
+                How often you change your approach per task.
+              </p>
+              <ul style={{ margin: '0.5rem 0 0 1.25rem', fontSize: '0.8125rem', color: '#475569', paddingLeft: 0 }}>
+                <li><strong>&lt;1.0</strong>: Consistent approach (stable)</li>
+                <li><strong>1.0-2.0</strong>: Some adjustments (adaptive)</li>
+                <li><strong>&gt;2.0</strong>: Frequent changes (experimental)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Interpretation Guide */}
+        <div style={{
+          backgroundColor: '#fff',
+          borderRadius: '12px',
+          padding: '2rem',
+          marginBottom: '2rem',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        }}>
+          <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#1f2937' }}>
+            Understanding Pattern Evolution
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '1rem',
+          }}>
+            <div style={{
+              padding: '1.25rem',
+              backgroundColor: '#d1fae5',
+              borderRadius: '8px',
+              border: '2px solid #10b981',
+            }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: '#065f46' }}>
+                🟢 Improvement
+              </h4>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#047857', lineHeight: '1.6' }}>
+                Moving towards more efficient patterns (A/B/E). Positive behavioral change - keep it up!
+              </p>
+            </div>
+            <div style={{
+              padding: '1.25rem',
+              backgroundColor: '#fee2e2',
+              borderRadius: '8px',
+              border: '2px solid #ef4444',
+            }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: '#991b1b' }}>
+                🔴 Regression
+              </h4>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#b91c1c', lineHeight: '1.6' }}>
+                Moving towards less efficient patterns (C/F). May indicate increasing AI reliance.
+              </p>
+            </div>
+            <div style={{
+              padding: '1.25rem',
+              backgroundColor: '#dbeafe',
+              borderRadius: '8px',
+              border: '2px solid #3b82f6',
+            }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: '#1e40af' }}>
+                🔵 Migration
+              </h4>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#1e3a8a', lineHeight: '1.6' }}>
+                Lateral shift between patterns of similar quality. Adapting to new contexts.
+              </p>
+            </div>
+            <div style={{
+              padding: '1.25rem',
+              backgroundColor: '#fef3c7',
+              borderRadius: '8px',
+              border: '2px solid #f59e0b',
+            }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: '#92400e' }}>
+                🟡 Oscillation
+              </h4>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: '#b45309', lineHeight: '1.6' }}>
+                Switching back and forth between patterns. Consider establishing consistent practices.
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Pattern Guide */}
         <div style={{
