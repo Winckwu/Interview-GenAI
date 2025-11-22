@@ -231,37 +231,17 @@ const createDebounce = <T extends (...args: any[]) => Promise<any>>(func: T, del
 };
 
 /**
- * Task type labels for display
+ * Task type labels for display (English)
  */
 const TASK_TYPE_LABELS: Record<TaskType, { icon: string; label: string }> = {
-  coding: { icon: '💻', label: '编程' },
-  writing: { icon: '✍️', label: '写作' },
-  analysis: { icon: '📊', label: '分析' },
-  creative: { icon: '🎨', label: '创意' },
-  research: { icon: '🔍', label: '研究' },
-  design: { icon: '🎯', label: '设计' },
-  planning: { icon: '📋', label: '规划' },
-  review: { icon: '📝', label: '审核' },
-};
-
-/**
- * Generate a short title from user's first message
- */
-const generateSessionTitle = (firstMessage: string): string => {
-  // Remove markdown and special characters
-  const cleanText = firstMessage
-    .replace(/```[\s\S]*?```/g, '') // Remove code blocks
-    .replace(/[#*_~`]/g, '') // Remove markdown
-    .replace(/\n/g, ' ') // Replace newlines
-    .trim();
-
-  // Take first 30 characters or up to first sentence
-  const maxLength = 40;
-  if (cleanText.length <= maxLength) return cleanText;
-
-  // Try to cut at a natural break
-  const cutPoint = cleanText.substring(0, maxLength).lastIndexOf(' ');
-  return cleanText.substring(0, cutPoint > 20 ? cutPoint : maxLength) + '...';
+  coding: { icon: '💻', label: 'Coding' },
+  writing: { icon: '✍️', label: 'Writing' },
+  analysis: { icon: '📊', label: 'Analysis' },
+  creative: { icon: '🎨', label: 'Creative' },
+  research: { icon: '🔍', label: 'Research' },
+  design: { icon: '🎯', label: 'Design' },
+  planning: { icon: '📋', label: 'Planning' },
+  review: { icon: '📝', label: 'Review' },
 };
 
 /**
@@ -472,6 +452,10 @@ const ChatSessionPage: React.FC = () => {
   const [sessionSidebarOpen, setSessionSidebarOpen] = useState(false);
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
   const [creatingNewSession, setCreatingNewSession] = useState(false);
+
+  // AI-generated session title
+  const [aiGeneratedTitle, setAiGeneratedTitle] = useState<string | null>(null);
+  const [titleGenerating, setTitleGenerating] = useState(false);
 
   // MCA orchestration states - Use GPT for accurate signal detection and pre-generated MR content
   const { result: mcaResult, activeMRs } = useMCAOrchestrator(sessionId || '', messages, true, 'gpt');
@@ -782,6 +766,38 @@ const ChatSessionPage: React.FC = () => {
   // trackMRToolUsage now handled by useMRTools hook
 
   /**
+   * Generate AI-based session title from first user message
+   * Creates a short, descriptive title in the same language as the message
+   */
+  const generateSessionTitle = useCallback(async (firstMessage: string) => {
+    if (titleGenerating || aiGeneratedTitle) return;
+
+    setTitleGenerating(true);
+    try {
+      const response = await api.post('/ai/chat', {
+        userPrompt: `Generate a very short title (max 8 words) for a conversation that starts with this message.
+The title should:
+- Be in the SAME LANGUAGE as the input message
+- Be concise and descriptive
+- Not include quotes or punctuation at the end
+- Just return the title, nothing else
+
+Message: "${firstMessage.slice(0, 200)}"`,
+        conversationHistory: [],
+      });
+
+      const title = response.data?.data?.response?.content?.trim();
+      if (title && title.length <= 60) {
+        setAiGeneratedTitle(title);
+      }
+    } catch (err) {
+      console.error('Failed to generate session title:', err);
+    } finally {
+      setTitleGenerating(false);
+    }
+  }, [titleGenerating, aiGeneratedTitle]);
+
+  /**
    * Send user prompt and get AI response - Wrapper for useMessages hook
    * Adds short prompt tracking logic before calling hook's sendMessage
    */
@@ -789,6 +805,10 @@ const ChatSessionPage: React.FC = () => {
     e.preventDefault();
 
     if (!userInput.trim() || !sessionId) return;
+
+    // Check if this is the first message (for title generation)
+    const isFirstMessage = messages.length === 0;
+    const currentInput = userInput.trim();
 
     // Problem behavior detection: Track short prompts (MR15)
     const trimmedInput = userInput.trim();
@@ -815,6 +835,11 @@ const ChatSessionPage: React.FC = () => {
 
     // Clear input after sending
     setUserInput('');
+
+    // Generate AI title after first message
+    if (isFirstMessage && currentInput) {
+      generateSessionTitle(currentInput);
+    }
 
     // OPTIMIZATION: Use debounced pattern detection
     if (messages.length >= 4 && debouncedDetectPatternRef.current) {
@@ -2787,16 +2812,18 @@ const ChatSessionPage: React.FC = () => {
             </button>
             <div>
               {(() => {
-                // Get first user message to generate title and detect type
+                // Get first user message to detect type
                 const firstUserMessage = messages.find(m => m.role === 'user');
-                const autoTitle = firstUserMessage ? generateSessionTitle(firstUserMessage.content) : null;
                 const autoType = firstUserMessage ? detectTaskType(firstUserMessage.content) : null;
                 const typeInfo = autoType ? TASK_TYPE_LABELS[autoType] : null;
+
+                // Display title: AI-generated > loading indicator > 'New Chat'
+                const displayTitle = aiGeneratedTitle || (titleGenerating ? 'Generating title...' : 'New Chat');
 
                 return (
                   <>
                     <h1 style={{ margin: '0', fontSize: '1.25rem', fontWeight: '600', color: '#1f2937' }}>
-                      {autoTitle || 'New Chat'}
+                      {displayTitle}
                     </h1>
                     {typeInfo && (
                       <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
