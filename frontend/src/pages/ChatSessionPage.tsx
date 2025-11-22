@@ -3521,7 +3521,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
           {/* Center - Messages Area */}
           <div style={{
           flex: 1,
-          overflowY: 'hidden', // Let VirtualizedMessageList handle scrolling
+          overflowY: 'auto', // Enable scrolling for messages
           padding: '0.75rem 1rem',
           width: '100%',
           display: 'flex',
@@ -3828,12 +3828,16 @@ Message: "${firstMessage.slice(0, 200)}"`,
           )}
         </div>
 
-        {/* Input Area */}
+        {/* Input Area - Fixed at bottom */}
         <footer style={{
           padding: '0.75rem 1rem',
           backgroundColor: '#fff',
           borderTop: '1px solid #e2e8f0',
           boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.05)',
+          flexShrink: 0, // Prevent footer from shrinking
+          position: 'sticky',
+          bottom: 0,
+          zIndex: 10,
         }}>
           <form
             onSubmit={handleSendMessage}
