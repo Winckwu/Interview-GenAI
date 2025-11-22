@@ -3294,9 +3294,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
           <div style={{
           flex: 1,
           overflowY: 'hidden', // Let VirtualizedMessageList handle scrolling
-          padding: '1.5rem',
-          maxWidth: '1200px',
-          margin: '0 auto',
+          padding: '0.75rem 1rem',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
@@ -3604,7 +3602,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
         {/* Input Area */}
         <footer style={{
-          padding: '1.5rem',
+          padding: '0.75rem 1rem',
           backgroundColor: '#fff',
           borderTop: '1px solid #e2e8f0',
           boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.05)',
@@ -3612,8 +3610,6 @@ Message: "${firstMessage.slice(0, 200)}"`,
           <form
             onSubmit={handleSendMessage}
             style={{
-              maxWidth: '1200px',
-              margin: '0 auto',
               display: 'flex',
               gap: '0.75rem',
             }}
