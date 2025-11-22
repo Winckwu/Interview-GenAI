@@ -294,13 +294,63 @@ export function orchestrateMRActivation(context: OrchestrationContext): Orchestr
 }
 
 /**
+ * Analyze AI message content to extract real confidence score
+ * Based on: uncertainty words, structure, length, specificity
+ */
+function analyzeMessageConfidence(content: string): number {
+  if (!content || content.length < 10) return 0.5;
+
+  let score = 0.7; // Base score
+
+  // Uncertainty indicators (reduce confidence)
+  const uncertaintyWords = [
+    'might', 'maybe', 'perhaps', 'possibly', 'could be', 'not sure', 'uncertain',
+    'I think', 'I believe', 'it seems', 'probably', 'likely',
+    '可能', '也许', '或许', '大概', '不确定', '我认为', '我觉得', '似乎'
+  ];
+  const uncertaintyCount = uncertaintyWords.filter(w =>
+    content.toLowerCase().includes(w.toLowerCase())
+  ).length;
+  score -= uncertaintyCount * 0.03;
+
+  // Confidence indicators (increase confidence)
+  const confidenceWords = [
+    'definitely', 'certainly', 'clearly', 'obviously', 'must', 'always',
+    'specifically', 'exactly', 'precisely',
+    '一定', '确定', '肯定', '明确', '显然', '必须'
+  ];
+  const confidenceCount = confidenceWords.filter(w =>
+    content.toLowerCase().includes(w.toLowerCase())
+  ).length;
+  score += confidenceCount * 0.02;
+
+  // Structure indicators (lists, headers = more organized = higher confidence)
+  const hasLists = /^[\s]*[-*•]\s|^[\s]*\d+\.\s/m.test(content);
+  const hasHeaders = /^#+\s|^\*\*[^*]+\*\*/m.test(content);
+  const hasCodeBlocks = /```[\s\S]*?```/.test(content);
+  if (hasLists) score += 0.05;
+  if (hasHeaders) score += 0.03;
+  if (hasCodeBlocks) score += 0.05;
+
+  // Length factor (too short = less detailed, too long = might be padding)
+  const length = content.length;
+  if (length < 100) score -= 0.1;
+  else if (length > 200 && length < 2000) score += 0.05;
+  else if (length > 3000) score -= 0.03;
+
+  // Clamp to valid range
+  return Math.max(0.3, Math.min(0.95, score));
+}
+
+/**
  * Calculate trust score from message context
- * Wrapper around MR9's calculateTrustScore with sensible defaults
+ * Uses real message content analysis for confidence scoring
  */
 export function calculateMessageTrustScore(options: {
   taskType?: string;
   taskCriticality?: 'low' | 'medium' | 'high';
   aiConfidenceScore?: number;
+  messageContent?: string;
   messageWasVerified?: boolean;
   messageWasModified?: boolean;
   userValidationHistory?: Array<{ taskType: string; correct: boolean; timestamp: Date }>;
@@ -308,11 +358,17 @@ export function calculateMessageTrustScore(options: {
   const {
     taskType = 'general',
     taskCriticality = 'medium',
-    aiConfidenceScore = 0.7,
+    aiConfidenceScore,
+    messageContent = '',
     messageWasVerified = false,
     messageWasModified = false,
     userValidationHistory = [],
   } = options;
+
+  // Use real content analysis if available, otherwise fall back to provided score
+  const realConfidence = messageContent
+    ? analyzeMessageConfidence(messageContent)
+    : (aiConfidenceScore ?? 0.7);
 
   // Map taskType to MR9's task types
   const taskTypeMapping: Record<string, any> = {
@@ -334,7 +390,7 @@ export function calculateMessageTrustScore(options: {
 
   const profile = calculateTrustScore({
     taskType: mappedTaskType,
-    aiConfidenceScore,
+    aiConfidenceScore: realConfidence,
     taskCriticality,
     taskFamiliarity: 'moderate',
     timePressure: 'medium',

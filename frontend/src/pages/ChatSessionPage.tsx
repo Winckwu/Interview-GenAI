@@ -442,7 +442,7 @@ const ChatSessionPage: React.FC = () => {
   // Track MR9 Dynamic Orchestration - Trust-based MR activation
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
   const [orchestrationResults, setOrchestrationResults] = useState<Map<string, any>>(new Map());
-  const [showTrustIndicator, setShowTrustIndicator] = useState<boolean>(false); // Disabled: not using real data
+  const [showTrustIndicator, setShowTrustIndicator] = useState<boolean>(true); // Enabled: using real message content analysis
 
   // Session sidebar states
   const [sessions, setSessions] = useState<SessionItem[]>([]);
@@ -1569,14 +1569,14 @@ Message: "${firstMessage.slice(0, 200)}"`,
       return orchestrationResults.get(message.id);
     }
 
-    // Calculate trust score
+    // Calculate trust score using real message content analysis
     const trustScore = calculateMessageTrustScore({
       taskType: sessionData?.taskType || 'general',
       taskCriticality: sessionData?.taskImportance === 3 ? 'high' : sessionData?.taskImportance === 2 ? 'medium' : 'low',
-      aiConfidenceScore: 0.7, // Default, can be enhanced with MR13 integration
+      messageContent: message.content, // Pass actual message content for analysis
       messageWasVerified: message.wasVerified || false,
       messageWasModified: message.wasModified || false,
-      userValidationHistory: [], // Can be enhanced with persistent storage
+      userValidationHistory: [],
     });
 
     // Store trust score
