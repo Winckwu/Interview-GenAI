@@ -3565,16 +3565,37 @@ Message: "${firstMessage.slice(0, 200)}"`,
                   </h3>
                   {activeMRs
                     .filter((mr) => mr.displayMode === 'sidebar' && !dismissedMRs.has(mr.mrId))
-                    .map((mr) => (
-                      <div key={mr.mrId} style={{ marginBottom: '0.75rem' }}>
-                        <Suspense fallback={<ComponentLoader />}>
-                          <MRDisplay
-                            mr={mr}
-                            onClose={() => setDismissedMRs((prev) => new Set([...prev, mr.mrId]))}
-                          />
-                        </Suspense>
-                      </div>
-                    ))}
+                    .map((mr) => {
+                      // Map MR ID to tool
+                      const mrToolMap: Record<string, ActiveMRTool> = {
+                        'MR1': 'mr1-decomposition', 'MR2': 'mr2-transparency',
+                        'MR3': 'mr3-agency', 'MR4': 'mr4-roles',
+                        'MR5': 'mr5-iteration', 'MR6': 'mr6-models',
+                        'MR7': 'mr7-failure', 'MR10': 'mr10-cost',
+                        'MR11': 'mr11-verify', 'MR12': 'mr12-critical',
+                        'MR13': 'mr13-uncertainty', 'MR14': 'mr14-reflection',
+                        'MR15': 'mr15-strategies', 'MR16': 'mr16-atrophy',
+                        'MR17': 'mr17-visualization',
+                      };
+                      const match = mr.mrId.match(/MR(\d+)/);
+                      const tool = match ? mrToolMap[`MR${match[1]}`] : null;
+
+                      return (
+                        <div key={mr.mrId} style={{ marginBottom: '0.75rem' }}>
+                          <Suspense fallback={<ComponentLoader />}>
+                            <MRDisplay
+                              mr={mr}
+                              onClose={() => setDismissedMRs((prev) => new Set([...prev, mr.mrId]))}
+                              onViewDetails={tool ? () => {
+                                setActiveMRTool(tool);
+                                setShowPatternPanel(true);
+                                setShowMRToolsSection(true);
+                              } : undefined}
+                            />
+                          </Suspense>
+                        </div>
+                      );
+                    })}
                 </div>
               )}
             </div>

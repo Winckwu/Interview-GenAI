@@ -380,12 +380,14 @@ interface MRDisplayProps {
   mr: ActiveMR;
   onClose?: () => void;
   onAcknowledge?: () => void;
+  onViewDetails?: () => void;
 }
 
 export const MRDisplay: React.FC<MRDisplayProps> = ({
   mr,
   onClose,
   onAcknowledge,
+  onViewDetails,
 }) => {
   const [acknowledged, setAcknowledged] = useState(false);
 
@@ -465,6 +467,24 @@ export const MRDisplay: React.FC<MRDisplayProps> = ({
         </div>
         <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', fontWeight: 600 }}>{mr.name}</p>
         <p style={{ margin: '0.5rem 0 0 0', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>{mr.message}</p>
+        {onViewDetails && (
+          <button
+            onClick={onViewDetails}
+            style={{
+              marginTop: '0.75rem',
+              padding: '0.375rem 0.75rem',
+              backgroundColor: colors.border,
+              color: colors.text,
+              border: 'none',
+              borderRadius: '0.25rem',
+              fontSize: '0.75rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+            }}
+          >
+            View Details →
+          </button>
+        )}
       </div>
     );
   } else if (mr.displayMode === 'modal') {
