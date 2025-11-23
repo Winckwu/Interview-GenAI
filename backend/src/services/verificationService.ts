@@ -226,6 +226,7 @@ export async function verifyMath(expression: string, context?: string): Promise<
 
 /**
  * Verify facts using web search
+ * Provides detailed analysis with specific source citations and actionable suggestions
  */
 export async function verifyFact(
   claim: string,
@@ -246,58 +247,97 @@ export async function verifyFact(
       status = 'unable-to-verify';
       confidence = 0.2;
       findings.push('No search results found for this claim');
-      suggestions.push('Try searching with more specific terms');
+      suggestions.push('Try rephrasing the claim or breaking it into smaller, more specific statements');
+      suggestions.push('Check if the claim contains proper nouns that might have alternate spellings');
       return { status, confidence, findings, discrepancies, suggestions, sources };
     }
 
-    // Analyze search results
+    // Extract key terms from claim (filter out common words)
+    const stopWords = ['the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used', 'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by', 'from', 'as', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'just', 'and', 'but', 'if', 'or', 'because', 'until', 'while', 'this', 'that', 'these', 'those'];
+    const claimWords = claim.toLowerCase()
+      .split(/\s+/)
+      .filter(w => w.length > 2 && !stopWords.includes(w))
+      .map(w => w.replace(/[.,!?;:'"()]/g, ''));
+
+    findings.push(`Searching for key terms: "${claimWords.slice(0, 5).join(', ')}${claimWords.length > 5 ? '...' : ''}"`);
+
+    // Analyze search results with detailed reporting
     let supportingResults = 0;
-    let contradictingResults = 0;
+    const relevantSnippets: { title: string; snippet: string; matchedTerms: string[] }[] = [];
 
     for (const result of searchResults.results.slice(0, 5)) {
       sources.push(result.url);
-
-      // Simple heuristic: check if the snippet contains key terms from the claim
-      const claimWords = claim.toLowerCase().split(/\s+/).filter(w => w.length > 3);
       const snippetLower = result.snippet.toLowerCase();
+      const titleLower = result.title.toLowerCase();
 
-      let matchCount = 0;
+      // Find which terms matched
+      const matchedTerms: string[] = [];
       for (const word of claimWords) {
-        if (snippetLower.includes(word)) {
-          matchCount++;
+        if (snippetLower.includes(word) || titleLower.includes(word)) {
+          matchedTerms.push(word);
         }
       }
 
-      const matchRatio = claimWords.length > 0 ? matchCount / claimWords.length : 0;
+      const matchRatio = claimWords.length > 0 ? matchedTerms.length / claimWords.length : 0;
 
-      if (matchRatio > 0.5) {
+      if (matchRatio > 0.3) {
         supportingResults++;
-        findings.push(`Supporting source: "${result.title}"`);
+        relevantSnippets.push({
+          title: result.title,
+          snippet: result.snippet.slice(0, 150) + (result.snippet.length > 150 ? '...' : ''),
+          matchedTerms,
+        });
       }
+    }
+
+    // Add detailed findings about relevant sources
+    if (relevantSnippets.length > 0) {
+      findings.push(`Found ${relevantSnippets.length} relevant source(s):`);
+      relevantSnippets.slice(0, 3).forEach((s, i) => {
+        findings.push(`  ${i + 1}. "${s.title}" - matches: ${s.matchedTerms.join(', ')}`);
+      });
     }
 
     // Determine verification status based on results
     if (supportingResults >= 3) {
       status = 'verified';
-      confidence = 0.8;
-      findings.push(`Found ${supportingResults} sources that support this claim`);
+      confidence = 0.85;
+      findings.push(`Multiple sources (${supportingResults}) discuss this topic consistently`);
+      suggestions.push('Cross-reference with the original source links provided below for full context');
     } else if (supportingResults >= 1) {
       status = 'partially-verified';
-      confidence = 0.6;
-      findings.push(`Found ${supportingResults} potentially relevant source(s)`);
-      suggestions.push('Consider verifying with additional authoritative sources');
+      confidence = 0.55;
+      findings.push(`Limited coverage found (${supportingResults} source${supportingResults > 1 ? 's' : ''})`);
+
+      // Specific suggestions based on content
+      if (claimWords.some(w => /\d{4}/.test(w))) {
+        suggestions.push('This claim contains dates - verify the exact timeline from official records');
+      }
+      if (claimWords.some(w => ['percent', 'percentage', '%'].some(p => w.includes(p)) || /^\d+$/.test(w))) {
+        suggestions.push('This claim contains numbers - verify statistics from the original data source');
+      }
+      suggestions.push('Click the source links below to read the full context');
+      suggestions.push('Consider searching for the specific person/organization mentioned for official statements');
     } else {
       status = 'unable-to-verify';
-      confidence = 0.3;
-      findings.push('Could not find strong supporting evidence');
-      suggestions.push('The claim may need manual verification from authoritative sources');
+      confidence = 0.25;
+      discrepancies.push('No sources found discussing this specific claim');
+
+      // Actionable suggestions
+      suggestions.push('The claim may be too specific or recent - try searching news sources directly');
+      suggestions.push('Check if proper nouns in the claim are spelled correctly');
+      suggestions.push('Break down the claim into smaller, verifiable statements');
+      if (claim.length > 100) {
+        suggestions.push('The claim is quite long - try verifying the main assertion separately');
+      }
     }
 
   } catch (error: any) {
     status = 'unable-to-verify';
     confidence = 0.2;
     discrepancies.push(`Search error: ${error.message}`);
-    suggestions.push('Try again or verify manually');
+    suggestions.push('Web search failed - try again in a few moments');
+    suggestions.push('You can manually verify by searching Google or checking Wikipedia');
   }
 
   return {

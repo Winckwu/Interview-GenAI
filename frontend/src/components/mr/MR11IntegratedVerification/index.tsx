@@ -618,6 +618,27 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
                     </div>
                   )}
 
+                  {/* Sources - for fact-check results */}
+                  {verificationResult.sources && verificationResult.sources.length > 0 && (
+                    <div className="mr11-detail-section">
+                      <h4>🔗 Sources Checked</h4>
+                      <ul style={{ margin: 0, padding: '0 0 0 1.25rem', fontSize: '0.85rem' }}>
+                        {verificationResult.sources.map((source, idx) => (
+                          <li key={idx} style={{ marginBottom: '0.25rem' }}>
+                            <a
+                              href={source}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: '#2563eb', textDecoration: 'underline', wordBreak: 'break-all' }}
+                            >
+                              {source.length > 60 ? source.slice(0, 60) + '...' : source}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
                   {/* Action Recommendation */}
                   <div className="mr11-action-recommendation">
                     <strong>Recommended action:</strong>
