@@ -65,6 +65,7 @@ export interface MessageListProps {
   // Actions
   onVerify: (messageId: string) => void;
   onModify: (messageId: string) => void;
+  onEditUserMessage?: (messageId: string) => void; // Edit user message and regenerate
 
   // Branch navigation
   onBranchSwitch?: (messageId: string, direction: 'prev' | 'next') => void;
@@ -113,6 +114,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   onCancelEdit,
   onVerify,
   onModify,
+  onEditUserMessage,
   onBranchSwitch,
   onBranchDelete,
   onBranchSetAsMain,
@@ -228,6 +230,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             onCancelEdit={onCancelEdit}
             onVerify={() => onVerify(message.id)}
             onModify={() => onModify(message.id)}
+            onEditUserMessage={message.role === 'user' && onEditUserMessage ? () => onEditUserMessage(message.id) : undefined}
             onBranchPrev={onBranchSwitch ? () => onBranchSwitch(message.id, 'prev') : undefined}
             onBranchNext={onBranchSwitch ? () => onBranchSwitch(message.id, 'next') : undefined}
             onBranchDelete={onBranchDelete ? () => onBranchDelete(message.id) : undefined}

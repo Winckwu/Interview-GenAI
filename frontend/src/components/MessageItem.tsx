@@ -41,6 +41,7 @@ export interface MessageItemProps {
   // Actions
   onVerify: () => void;
   onModify: () => void;
+  onEditUserMessage?: () => void; // Edit user message (creates new branch)
 
   // Branch navigation
   onBranchPrev?: () => void;
@@ -70,6 +71,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onCancelEdit,
   onVerify,
   onModify,
+  onEditUserMessage,
   onBranchPrev,
   onBranchNext,
   onBranchDelete,
@@ -771,14 +773,53 @@ export const MessageItem: React.FC<MessageItemProps> = ({
           </div>
         )}
 
-        {/* Timestamp for user messages */}
+        {/* Footer for user messages - timestamp and edit button */}
         {message.role === 'user' && !isEditing && (
-          <p className={styles.timestamp}>
-            {new Date(message.timestamp).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </p>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: '0.5rem',
+            gap: '0.5rem',
+          }}>
+            <p className={styles.timestamp} style={{ margin: 0 }}>
+              {new Date(message.timestamp).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </p>
+            {/* Edit button for user messages */}
+            {onEditUserMessage && (
+              <button
+                onClick={onEditUserMessage}
+                title="Edit this message and regenerate AI response"
+                style={{
+                  background: 'none',
+                  border: '1px solid #9ca3af',
+                  cursor: 'pointer',
+                  padding: '0.25rem 0.5rem',
+                  fontSize: '0.75rem',
+                  color: '#6b7280',
+                  borderRadius: '0.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#3b82f6';
+                  e.currentTarget.style.color = '#3b82f6';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#9ca3af';
+                  e.currentTarget.style.color = '#6b7280';
+                }}
+              >
+                <span style={{ fontSize: '0.875rem' }}>✎</span>
+                Edit
+              </button>
+            )}
+          </div>
         )}
       </div>
 

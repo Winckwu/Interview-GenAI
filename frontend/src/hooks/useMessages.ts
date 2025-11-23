@@ -96,6 +96,7 @@ export interface UseMessagesReturn {
   cancelEditingMessage: () => void;
   loadMessagesPage: (page: number) => Promise<void>;
   loadMoreMessages: () => Promise<void>;
+  editUserMessageAndRegenerate: (userMessageId: string, newContent: string) => Promise<void>;
 
   // Setters (for external state updates)
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
@@ -599,6 +600,38 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     }
   }, [messages, startEditingMessage]);
 
+  /**
+   * Edit user message and regenerate AI response (Claude-style branching)
+   * Creates a new conversation branch from the edited message
+   */
+  const editUserMessageAndRegenerate = useCallback(async (userMessageId: string, newContent: string) => {
+    if (!newContent.trim() || !sessionId) return;
+
+    // Find the user message index
+    const userMessageIndex = messages.findIndex(m => m.id === userMessageId);
+    if (userMessageIndex === -1) {
+      setError('Message not found');
+      return;
+    }
+
+    // Get conversation history up to (but not including) this user message
+    // This creates a "branch" from this point forward
+    const conversationHistory = messages.slice(0, userMessageIndex);
+
+    // Exit editing mode
+    cancelEditingMessage();
+
+    // Remove all messages from this point forward (will be replaced with new branch)
+    setMessages(prev => prev.slice(0, userMessageIndex));
+
+    // Send the edited message as a new message with the truncated history
+    // This will create new user message + AI response
+    await handleSendMessage(newContent, conversationHistory);
+
+    setSuccessMessage('Message edited - new response generated');
+    setTimeout(() => setSuccessMessage(null), 3000);
+  }, [sessionId, messages, handleSendMessage, cancelEditingMessage]);
+
   return {
     // State
     messages,
@@ -629,6 +662,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     cancelEditingMessage,
     loadMessagesPage,
     loadMoreMessages,
+    editUserMessageAndRegenerate,
 
     // Setters
     setMessages,

@@ -381,6 +381,7 @@ const ChatSessionPage: React.FC = () => {
     cancelEditingMessage,
     loadMessagesPage,
     loadMoreMessages,
+    editUserMessageAndRegenerate,
     isStreaming,
     streamingContent,
     stopStreaming,
@@ -1085,6 +1086,23 @@ Message: "${firstMessage.slice(0, 200)}"`,
     // Open MR5 for iteration workflow
     openMR5Iteration();
   }, [markAsModifiedBase, openMR5Iteration]);
+
+  /**
+   * handleSaveEdit - Wrapper for saving edited messages
+   * For user messages: calls editUserMessageAndRegenerate to fork conversation
+   * For AI messages: calls saveEditedMessage to update content
+   */
+  const handleSaveEdit = useCallback(async (messageId: string) => {
+    // Check if this is a user message being edited
+    const message = messages.find(m => m.id === messageId);
+    if (message?.role === 'user') {
+      // User message - fork conversation with edited content and regenerate AI response
+      await editUserMessageAndRegenerate(messageId, editedContent);
+    } else {
+      // AI message - just save the edited content
+      await saveEditedMessage(messageId);
+    }
+  }, [messages, editedContent, editUserMessageAndRegenerate, saveEditedMessage]);
 
   /**
    * handleVerifyClick - Opens MR11 verification tool with message content
@@ -3691,10 +3709,16 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 editedContent={editedContent}
                 updatingMessageId={updatingMessageId}
                 onEditContentChange={setEditedContent}
-                onSaveEdit={saveEditedMessage}
+                onSaveEdit={handleSaveEdit}
                 onCancelEdit={cancelEditingMessage}
                 onVerify={handleVerifyClick}
                 onModify={markAsModified}
+                onEditUserMessage={(messageId) => {
+                  const message = messages.find(m => m.id === messageId);
+                  if (message) {
+                    startEditingMessage(messageId, message.content);
+                  }
+                }}
                 onBranchSwitch={handleBranchSwitch}
                 onBranchDelete={handleDeleteBranch}
                 onBranchSetAsMain={handleSetBranchAsMain}
