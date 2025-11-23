@@ -28,7 +28,7 @@ import {
   VerificationMethod,
   ContentType,
   UserDecision,
-  performVerification,
+  performVerificationAsync,
   createVerificationLog,
   calculateVerificationStatistics,
   getVerificationRecommendations,
@@ -87,6 +87,9 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   const [showHistory, setShowHistory] = useState(false);
   const [dbHistory, setDbHistory] = useState<DBVerificationLog[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
+
+  // Verification loading state
+  const [verifying, setVerifying] = useState(false);
 
   const stats = calculateVerificationStatistics(logs);
   const recommendations = contentType ? getVerificationRecommendations({ id: '', contentType, content: contentText, flagged: false }) : [];
@@ -174,9 +177,9 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   }, [contentText, contentType]);
 
   /**
-   * Perform verification with selected method
+   * Perform REAL verification with selected method via backend API
    */
-  const handleVerify = useCallback(() => {
+  const handleVerify = useCallback(async () => {
     if (!selectedMethod) {
       alert('Please select a verification method');
       return;
@@ -190,9 +193,19 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       verificationMethod: selectedMethod
     };
 
-    const result = performVerification(content, selectedMethod);
-    setVerificationResult(result);
-    setUserDecision(null);
+    setVerifying(true);
+    setVerificationResult(null);
+
+    try {
+      const result = await performVerificationAsync(content, selectedMethod);
+      setVerificationResult(result);
+      setUserDecision(null);
+    } catch (error) {
+      console.error('[MR11] Verification failed:', error);
+      alert('Verification failed. Please try again.');
+    } finally {
+      setVerifying(false);
+    }
   }, [selectedMethod, contentType, contentText]);
 
   /**
@@ -432,9 +445,9 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
                     <button
                       className="mr11-verify-btn"
                       onClick={handleVerify}
-                      disabled={!selectedMethod}
+                      disabled={!selectedMethod || verifying}
                     >
-                      🔍 Run Verification
+                      {verifying ? '⏳ Verifying...' : '🔍 Run Verification'}
                     </button>
                   </div>
                 )}

@@ -1,13 +1,16 @@
 /**
  * MR11: Integrated Verification Tools - Utilities
  *
- * Provide one-click verification for different content types without
- * automatically verifying (maintaining user responsibility for evaluation).
- * Support Pattern A (Expert Delegation) and D (Safety-First) users.
+ * Provide REAL verification for different content types:
+ * - Code execution in sandboxed VM
+ * - Math expression evaluation
+ * - Fact checking via web search
  */
 
+import api from '../../../services/api';
+
 export type VerificationMethod = 'code-execution' | 'cross-reference' | 'calculation' | 'citation-check' | 'syntax-check' | 'fact-check';
-export type VerificationStatus = 'unverified' | 'pending' | 'verified' | 'error-found' | 'partially-verified';
+export type VerificationStatus = 'unverified' | 'pending' | 'verified' | 'error-found' | 'partially-verified' | 'unable-to-verify';
 export type ContentType = 'code' | 'math' | 'citation' | 'fact' | 'text';
 export type UserDecision = 'accept' | 'modify' | 'reject' | 'skip';
 
@@ -26,9 +29,12 @@ export interface VerificationResult {
   status: VerificationStatus;
   matchesAIOutput: boolean;
   confidence: number; // 0-1
+  confidenceScore?: number; // Alias for confidence
   findings: string[];
   discrepancies: string[];
   suggestions: string[];
+  sources?: string[]; // For fact-check results
+  executionResult?: any; // For code/math results
   timestamp: Date;
 }
 
@@ -86,72 +92,90 @@ const TOOL_DESCRIPTIONS: Record<VerificationMethod, string> = {
 };
 
 /**
- * Simulate verification of content
+ * Map frontend method to backend method
+ */
+function mapMethodToBackend(method: VerificationMethod): string {
+  const mapping: Record<VerificationMethod, string> = {
+    'code-execution': 'code-execution',
+    'syntax-check': 'syntax-check',
+    'calculation': 'math-check',
+    'citation-check': 'fact-check',
+    'cross-reference': 'fact-check',
+    'fact-check': 'fact-check',
+  };
+  return mapping[method] || 'fact-check';
+}
+
+/**
+ * Perform REAL verification via backend API
+ */
+export async function performVerificationAsync(
+  content: VerifiableContent,
+  method: VerificationMethod
+): Promise<VerificationResult> {
+  try {
+    const response = await api.post('/verification/verify', {
+      content: content.content,
+      contentType: content.contentType,
+      method: mapMethodToBackend(method),
+    });
+
+    const data = response.data.data.verification;
+
+    return {
+      contentId: content.id,
+      verificationMethod: method,
+      toolUsed: getToolName(method),
+      status: data.status as VerificationStatus,
+      matchesAIOutput: data.status === 'verified',
+      confidence: data.confidence,
+      confidenceScore: data.confidence,
+      findings: data.findings || [],
+      discrepancies: data.discrepancies || [],
+      suggestions: data.suggestions || [],
+      sources: data.sources,
+      executionResult: data.executionResult,
+      timestamp: new Date(data.timestamp),
+    };
+  } catch (error: any) {
+    console.error('[MR11] Verification API error:', error);
+
+    // Return error result
+    return {
+      contentId: content.id,
+      verificationMethod: method,
+      toolUsed: getToolName(method),
+      status: 'unable-to-verify',
+      matchesAIOutput: false,
+      confidence: 0,
+      confidenceScore: 0,
+      findings: [],
+      discrepancies: [`API Error: ${error.response?.data?.error || error.message}`],
+      suggestions: ['Try again or verify manually'],
+      timestamp: new Date(),
+    };
+  }
+}
+
+/**
+ * Synchronous wrapper for backwards compatibility (uses async internally)
+ * Note: This returns a placeholder, use performVerificationAsync for real results
  */
 export function performVerification(
   content: VerifiableContent,
   method: VerificationMethod
 ): VerificationResult {
-  let findings: string[] = [];
-  let discrepancies: string[] = [];
-  let suggestions: string[] = [];
-  let matchesAIOutput = true;
-  let confidence = 0.85;
-  let status: VerificationStatus = 'verified';
-
-  // Simulate verification based on content type
-  if (content.contentType === 'code') {
-    if (method === 'code-execution') {
-      findings.push('Code executed without errors');
-      findings.push('All test cases passed');
-      suggestions.push('Performance could be improved by 15% with caching');
-    } else if (method === 'syntax-check') {
-      findings.push('Syntax is valid');
-    }
-  } else if (content.contentType === 'math') {
-    if (method === 'calculation') {
-      // Check if expression contains common errors
-      if (content.content.includes('0/') || content.content.includes('/0')) {
-        discrepancies.push('Division by zero detected');
-        matchesAIOutput = false;
-        status = 'error-found';
-        confidence = 1.0;
-      } else {
-        findings.push('Mathematical expression is valid');
-        findings.push('All calculations are correct');
-      }
-    }
-  } else if (content.contentType === 'citation') {
-    if (method === 'citation-check') {
-      findings.push('Citation format is correct');
-      findings.push('Source exists in Google Scholar');
-      suggestions.push('Update to latest edition (published 2023)');
-    }
-  } else if (content.contentType === 'fact') {
-    if (method === 'fact-check') {
-      findings.push('Fact verified against Wikipedia');
-      findings.push('Consistent with recent research');
-    }
-  }
-
-  // Add some realistic variation
-  if (Math.random() > 0.85) {
-    matchesAIOutput = false;
-    status = 'error-found';
-    discrepancies.push('Minor inconsistency found');
-    confidence = 1.0;
-  }
-
+  // Return a "pending" result - caller should use async version
   return {
     contentId: content.id,
     verificationMethod: method,
     toolUsed: getToolName(method),
-    status,
-    matchesAIOutput,
-    confidence,
-    findings,
-    discrepancies,
-    suggestions,
+    status: 'pending' as VerificationStatus,
+    matchesAIOutput: false,
+    confidence: 0,
+    findings: ['Verification in progress...'],
+    discrepancies: [],
+    suggestions: [],
     timestamp: new Date()
   };
 }
