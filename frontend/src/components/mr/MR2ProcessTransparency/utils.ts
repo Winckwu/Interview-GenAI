@@ -37,14 +37,14 @@ export interface ChainOfThoughtStep {
 
 /**
  * Generate diff between two text versions
- * Uses simple line-based diff algorithm
+ * Groups consecutive changes into blocks for cleaner display
  */
 export function generateDiff(oldText: string, newText: string): DiffChange[] {
-  const diffs: DiffChange[] = [];
   const oldLines = oldText.split('\n');
   const newLines = newText.split('\n');
 
-  // Simple diff: identify added/removed/modified lines
+  // Collect raw line-by-line changes
+  const rawChanges: { type: 'add' | 'remove' | 'modify'; content: string; oldContent?: string; lineNumber: number }[] = [];
   const maxLength = Math.max(oldLines.length, newLines.length);
 
   for (let i = 0; i < maxLength; i++) {
@@ -52,31 +52,55 @@ export function generateDiff(oldText: string, newText: string): DiffChange[] {
     const newLine = newLines[i] || '';
 
     if (oldLine === newLine) {
-      // No change
       continue;
     } else if (i >= oldLines.length) {
-      // Added line
-      diffs.push({
-        type: 'add',
-        content: newLine,
-        lineNumber: i
-      });
+      rawChanges.push({ type: 'add', content: newLine, lineNumber: i });
     } else if (i >= newLines.length) {
-      // Removed line
-      diffs.push({
-        type: 'remove',
-        content: oldLine,
-        lineNumber: i
-      });
+      rawChanges.push({ type: 'remove', content: oldLine, lineNumber: i });
     } else {
-      // Modified line
-      diffs.push({
-        type: 'modify',
-        content: newLine,
-        oldContent: oldLine,
-        lineNumber: i
-      });
+      rawChanges.push({ type: 'modify', content: newLine, oldContent: oldLine, lineNumber: i });
     }
+  }
+
+  // Group consecutive changes of the same type into blocks
+  const diffs: DiffChange[] = [];
+  let currentBlock: { type: 'add' | 'remove' | 'modify'; lines: string[]; oldLines?: string[]; startLine: number } | null = null;
+
+  for (const change of rawChanges) {
+    if (currentBlock && currentBlock.type === change.type && change.lineNumber === currentBlock.startLine + currentBlock.lines.length) {
+      // Continue current block
+      currentBlock.lines.push(change.content);
+      if (change.oldContent && currentBlock.oldLines) {
+        currentBlock.oldLines.push(change.oldContent);
+      }
+    } else {
+      // Flush previous block
+      if (currentBlock) {
+        diffs.push({
+          type: currentBlock.type,
+          content: currentBlock.lines.join('\n'),
+          oldContent: currentBlock.oldLines?.join('\n'),
+          lineNumber: currentBlock.startLine
+        });
+      }
+      // Start new block
+      currentBlock = {
+        type: change.type,
+        lines: [change.content],
+        oldLines: change.oldContent ? [change.oldContent] : (change.type === 'modify' ? [] : undefined),
+        startLine: change.lineNumber
+      };
+    }
+  }
+
+  // Flush final block
+  if (currentBlock) {
+    diffs.push({
+      type: currentBlock.type,
+      content: currentBlock.lines.join('\n'),
+      oldContent: currentBlock.oldLines?.join('\n'),
+      lineNumber: currentBlock.startLine
+    });
   }
 
   return diffs;
