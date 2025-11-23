@@ -117,6 +117,7 @@ import interactionsRoutes from './routes/interactions';
 import aiRoutes from './routes/ai';
 import mcaRoutes from './routes/mca';
 import branchesRoutes from './routes/branches';
+import decompositionsRoutes from './routes/decompositions';
 
 // ============================================================================
 // API Routes
@@ -160,6 +161,9 @@ app.use('/api/ai', aiRoutes);
 
 // MCA (Metacognitive Assessment) - Real-time pattern recognition and MR activation
 app.use('/api/mca', mcaRoutes);
+
+// MR1 Task Decomposition History
+app.use('/api/decompositions', decompositionsRoutes);
 
 // Placeholder routes - backward compatibility
 app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {

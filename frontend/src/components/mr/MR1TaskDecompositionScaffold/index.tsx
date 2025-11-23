@@ -14,6 +14,7 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import './styles.css';
+import { apiService } from '../../../services/api';
 import {
   generateInitialDecomposition,
   analyzeTaskDimensions,
@@ -152,7 +153,38 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   const [showHistory, setShowHistory] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Database history state
+  const [dbHistory, setDbHistory] = useState<any[]>([]);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+
   const historyRef = useRef<TaskDecomposition[]>(persistedState.current?.decompositionHistory || []);
+
+  /**
+   * Load history from database
+   */
+  const loadHistoryFromDB = useCallback(async () => {
+    setIsLoadingHistory(true);
+    try {
+      const response = await apiService.decompositions.list({
+        sessionId: sessionId || undefined,
+        limit: 50,
+      });
+      if (response.data?.success) {
+        setDbHistory(response.data.data.decompositions || []);
+      }
+    } catch (error) {
+      console.warn('[MR1] Failed to load history from database:', error);
+    } finally {
+      setIsLoadingHistory(false);
+    }
+  }, [sessionId]);
+
+  // Load DB history when showing history panel
+  useEffect(() => {
+    if (showHistory) {
+      loadHistoryFromDB();
+    }
+  }, [showHistory, loadHistoryFromDB]);
 
   // Persist state whenever it changes
   useEffect(() => {
@@ -309,9 +341,9 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   }, [sessionId]);
 
   /**
-   * Complete decomposition
+   * Complete decomposition - save to database
    */
-  const handleComplete = useCallback(() => {
+  const handleComplete = useCallback(async () => {
     const decomposition: TaskDecomposition = {
       originalTask: state.originalTask,
       suggestedSubtasks: state.userModifiedSubtasks,
@@ -321,7 +353,30 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
         .map(s => s.userModification!)
     };
 
-    // Save to history
+    // Calculate total estimated time
+    const totalEstimatedTime = state.userModifiedSubtasks.reduce(
+      (sum, s) => sum + (s.estimatedTime || 0), 0
+    );
+
+    // Save to database
+    try {
+      await apiService.decompositions.create({
+        sessionId: sessionId || undefined,
+        originalTask: state.originalTask,
+        strategy: state.decompositionStrategy,
+        dimensions: dimensions,
+        subtasks: state.userModifiedSubtasks,
+        scaffoldLevel: state.scaffoldLevel,
+        totalEstimatedTime,
+        wasCompleted: true,
+      });
+      console.log('[MR1] Decomposition saved to database');
+    } catch (error) {
+      console.warn('[MR1] Failed to save decomposition to database:', error);
+      // Continue anyway - local history still works
+    }
+
+    // Save to local history
     historyRef.current = [...historyRef.current, decomposition];
     setDecompositionHistory(historyRef.current);
 
@@ -334,7 +389,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
     }
 
     setStep('complete');
-  }, [state, onDecompositionComplete, onHistoryChange]);
+  }, [sessionId, state, dimensions, onDecompositionComplete, onHistoryChange]);
 
   /**
    * Render step 1: Task input
@@ -626,25 +681,35 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
         >
           ➕ Decompose Another Task
         </button>
-        {decompositionHistory.length > 0 && (
-          <button
-            className="mr1-btn-history"
-            onClick={() => setShowHistory(!showHistory)}
-          >
-            📋 View History ({decompositionHistory.length})
-          </button>
-        )}
+        <button
+          className="mr1-btn-history"
+          onClick={() => setShowHistory(!showHistory)}
+        >
+          📋 View History
+        </button>
       </div>
 
       {showHistory && (
         <div className="mr1-history-panel">
-          <h3>Decomposition History</h3>
-          {decompositionHistory.map((item, idx) => (
-            <div key={idx} className="mr1-history-item">
-              <strong>{idx + 1}. {item.originalTask}</strong>
-              <p>{item.suggestedSubtasks.length} subtasks • {item.decompositionStrategy}</p>
-            </div>
-          ))}
+          <h3>📜 Decomposition History</h3>
+          {isLoadingHistory ? (
+            <p>Loading history...</p>
+          ) : dbHistory.length > 0 ? (
+            dbHistory.map((item, idx) => (
+              <div key={item.id || idx} className="mr1-history-item">
+                <strong>{item.originalTask}</strong>
+                <p>
+                  {item.subtasks?.length || 0} subtasks • {item.strategy}
+                  {item.totalEstimatedTime && ` • ~${item.totalEstimatedTime} min`}
+                </p>
+                <small style={{ color: '#888' }}>
+                  {new Date(item.createdAt).toLocaleDateString()} {new Date(item.createdAt).toLocaleTimeString()}
+                </small>
+              </div>
+            ))
+          ) : (
+            <p style={{ color: '#888', fontStyle: 'italic' }}>No saved decompositions yet. Complete a task decomposition to save it here.</p>
+          )}
         </div>
       )}
     </div>
@@ -658,17 +723,71 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       <div className="mr1-header">
         <div className="mr1-header-top">
           <h1 className="mr1-title">✂️ Task Decomposition Scaffold</h1>
-          {step !== 'input' && (
-            <button className="mr1-btn-reset" onClick={handleReset} title="Start over with a new task">
-              🔄 New Task
+          <div style={{ position: 'absolute', right: 0, display: 'flex', gap: '0.5rem' }}>
+            <button
+              className="mr1-btn-reset"
+              onClick={() => setShowHistory(!showHistory)}
+              title="View past decompositions"
+            >
+              📜 History
             </button>
-          )}
+            {step !== 'input' && (
+              <button className="mr1-btn-reset" onClick={handleReset} title="Start over with a new task">
+                🔄 New Task
+              </button>
+            )}
+          </div>
         </div>
         <p className="mr1-subtitle">Break complex tasks into manageable subtasks</p>
         {persistedState.current && step !== 'input' && (
           <p className="mr1-restored-notice">📌 Restored your previous progress</p>
         )}
       </div>
+
+      {/* History Panel - shows saved decompositions from database */}
+      {showHistory && (
+        <div className="mr1-history-panel" style={{ marginBottom: '1.5rem' }}>
+          <h3 style={{ marginTop: 0 }}>📜 Saved Decompositions</h3>
+          {isLoadingHistory ? (
+            <p>Loading history...</p>
+          ) : dbHistory.length > 0 ? (
+            <>
+              {dbHistory.map((item, idx) => (
+                <div key={item.id || idx} className="mr1-history-item" style={{ cursor: 'pointer' }}>
+                  <strong>{item.originalTask.slice(0, 100)}{item.originalTask.length > 100 ? '...' : ''}</strong>
+                  <p style={{ margin: '0.25rem 0' }}>
+                    {item.subtasks?.length || 0} subtasks • {item.strategy}
+                    {item.totalEstimatedTime ? ` • ~${item.totalEstimatedTime} min` : ''}
+                  </p>
+                  <small style={{ color: '#888' }}>
+                    {new Date(item.createdAt).toLocaleDateString()} {new Date(item.createdAt).toLocaleTimeString()}
+                  </small>
+                </div>
+              ))}
+              <p style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666' }}>
+                Showing {dbHistory.length} saved decomposition{dbHistory.length !== 1 ? 's' : ''}
+              </p>
+            </>
+          ) : (
+            <p style={{ color: '#888', fontStyle: 'italic' }}>
+              No saved decompositions yet. Complete a task decomposition to save it here.
+            </p>
+          )}
+          <button
+            onClick={() => setShowHistory(false)}
+            style={{
+              marginTop: '1rem',
+              padding: '0.5rem 1rem',
+              background: '#e0e0e0',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Close History
+          </button>
+        </div>
+      )}
 
       <div className="mr1-progress-bar">
         <div className={`mr1-progress-item mr1-progress-1 ${['input', 'analysis', 'decomposition', 'review', 'complete'].includes(step) ? 'mr1-progress-active' : ''}`}>

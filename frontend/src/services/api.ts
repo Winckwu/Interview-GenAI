@@ -364,6 +364,36 @@ export const apiService = {
     delete: (branchId: string) =>
       api.delete(`/branches/${branchId}`),
   },
+
+  /**
+   * MR1 Task Decomposition History endpoints
+   */
+  decompositions: {
+    // Get user's decomposition history
+    list: (params?: { sessionId?: string; limit?: number; offset?: number }) =>
+      api.get('/decompositions', { params }),
+
+    // Get a specific decomposition
+    get: (id: string) =>
+      api.get(`/decompositions/${id}`),
+
+    // Save a new decomposition
+    create: (data: {
+      sessionId?: string;
+      originalTask: string;
+      strategy: string;
+      dimensions?: any[];
+      subtasks: any[];
+      scaffoldLevel?: string;
+      totalEstimatedTime?: number;
+      wasCompleted?: boolean;
+    }) =>
+      api.post('/decompositions', data),
+
+    // Delete a decomposition
+    delete: (id: string) =>
+      api.delete(`/decompositions/${id}`),
+  },
 };
 
 export default api;
