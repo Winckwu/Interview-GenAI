@@ -555,14 +555,6 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
               <span className="mr2-version-time">
                 {new Date(version.timestamp).toLocaleTimeString()}
               </span>
-              {version.confidenceScore !== undefined && (
-                <span
-                  className={`mr2-version-confidence mr2-conf-${Math.round(version.confidenceScore * 10) * 10}`}
-                  title={`AI Confidence: ${(version.confidenceScore * 100).toFixed(0)}% (estimated based on response patterns)`}
-                >
-                  {(version.confidenceScore * 100).toFixed(0)}%
-                </span>
-              )}
             </button>
           ))}
         </div>
