@@ -39,7 +39,7 @@ const DashboardPage: React.FC = () => {
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   const { analytics, loading: analyticsLoading } = useAnalytics(dateRange);
-  const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', dateRange);
+  const { stats: patternStats, trends: patternTrends, loading: patternsLoading } = usePatternStats(user?.id || 'current', dateRange);
 
   // Get current user's pattern data from patternStore (same source as Pattern Analysis page)
   const userPattern = patterns.find(p => p.userId === user?.id) || patterns[0];
@@ -93,9 +93,24 @@ const DashboardPage: React.FC = () => {
   const totalSessions = analytics?.totalSessions || 0;
   const totalInteractions = analytics?.totalInteractions || 0;
   const averageSessionDuration = analytics?.averageSessionDuration || 0;
-  // Use pattern from patternStore (same source as Pattern Analysis page) for consistency
-  // Falls back to analytics for backward compatibility
-  const dominantPattern = currentUserPattern?.patternType || analytics?.dominantPattern || null;
+  // Get most recent pattern from trends (same logic as Pattern Analysis page)
+  // This ensures Dashboard and Pattern Analysis show the same current pattern
+  const getMostRecentPattern = () => {
+    if (patternTrends && patternTrends.length > 0) {
+      // Filter trends by user registration date like Pattern Analysis does
+      const userRegistrationDate = user?.createdAt ? new Date(user.createdAt) : null;
+      const filteredTrends = userRegistrationDate
+        ? patternTrends.filter(trend => new Date(trend.date) >= userRegistrationDate)
+        : patternTrends;
+
+      if (filteredTrends.length > 0) {
+        return filteredTrends[filteredTrends.length - 1].pattern;
+      }
+    }
+    // Fall back to patternStore or analytics if no trends
+    return currentUserPattern?.patternType || analytics?.dominantPattern || null;
+  };
+  const dominantPattern = getMostRecentPattern();
   const patternDistribution = analytics?.patternDistribution || {};
 
   // Minimum interactions needed for reliable pattern detection
