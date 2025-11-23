@@ -434,19 +434,18 @@ export const MRDisplay: React.FC<MRDisplayProps> = ({
       </div>
     );
   } else if (mr.displayMode === 'sidebar') {
-    // Sidebar display - visible but not blocking
+    // Sidebar display - compact, visible but not blocking
     return (
       <div style={{
-        padding: '1rem',
+        padding: '0.5rem 0.625rem',
         backgroundColor: colors.bg,
-        border: `2px solid ${colors.border}`,
-        borderRadius: '0.5rem',
+        border: `1px solid ${colors.border}`,
+        borderRadius: '0.375rem',
         color: colors.text,
-        fontSize: '0.875rem',
-        marginBottom: '1rem',
+        fontSize: '0.75rem',
       }}>
-        <div style={{ fontWeight: '600', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ fontWeight: '600', marginBottom: '0.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.6875rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
             {mr.urgency === 'observe' && '💡'}
             {mr.urgency === 'remind' && '⚠️'}
             {mr.urgency === 'enforce' && '🛑'}
@@ -459,27 +458,28 @@ export const MRDisplay: React.FC<MRDisplayProps> = ({
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                fontSize: '1rem',
+                fontSize: '0.75rem',
                 padding: '0',
+                lineHeight: 1,
               }}
             >
               ✕
             </button>
           )}
         </div>
-        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', fontWeight: 600 }}>{mr.name}</p>
-        <p style={{ margin: '0.5rem 0 0 0', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>{mr.message}</p>
+        <p style={{ margin: '0.125rem 0 0 0', fontSize: '0.6875rem', fontWeight: 600, color: colors.text }}>{mr.name}</p>
+        <p style={{ margin: '0.25rem 0 0 0', whiteSpace: 'pre-wrap', lineHeight: '1.4', fontSize: '0.6875rem' }}>{mr.message}</p>
         {onViewDetails && (
           <button
             onClick={onViewDetails}
             style={{
-              marginTop: '0.75rem',
-              padding: '0.375rem 0.75rem',
+              marginTop: '0.375rem',
+              padding: '0.25rem 0.5rem',
               backgroundColor: colors.border,
               color: colors.text,
               border: 'none',
               borderRadius: '0.25rem',
-              fontSize: '0.75rem',
+              fontSize: '0.625rem',
               fontWeight: '600',
               cursor: 'pointer',
             }}

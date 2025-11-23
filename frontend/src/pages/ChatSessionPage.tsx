@@ -3836,15 +3836,15 @@ Message: "${firstMessage.slice(0, 200)}"`,
               {/* Sidebar MRs - Recommendations */}
               {activeMRs && activeMRs.some((mr) => mr.displayMode === 'sidebar') && (
                 <div style={{
-                  padding: '1rem',
+                  padding: '0.5rem 0.75rem',
                   borderTop: '1px solid #e2e8f0',
                   borderBottom: '1px solid #e2e8f0',
                 }}>
                   <h3 style={{
-                    margin: '0 0 1rem 0',
-                    fontSize: '0.875rem',
+                    margin: '0 0 0.5rem 0',
+                    fontSize: '0.6875rem',
                     fontWeight: '600',
-                    color: '#1f2937',
+                    color: '#6b7280',
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em',
                   }}>
@@ -3868,7 +3868,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                       const tool = match ? mrToolMap[`MR${match[1]}`] : null;
 
                       return (
-                        <div key={mr.mrId} style={{ marginBottom: '0.75rem' }}>
+                        <div key={mr.mrId} style={{ marginBottom: '0.5rem' }}>
                           <Suspense fallback={<ComponentLoader />}>
                             <MRDisplay
                               mr={mr}
