@@ -41,7 +41,7 @@ export interface InteractionVersion {
   changesSummary?: string;
 }
 
-export type ViewMode = 'timeline' | 'diff' | 'reasoning' | 'comparison' | 'metrics';
+export type ViewMode = 'timeline' | 'diff';
 
 interface MR2Props {
   versions: InteractionVersion[];
@@ -662,19 +662,20 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
         <p className="mr2-subtitle">Track how outputs evolved through iterations</p>
 
         <div className="mr2-view-tabs">
-          {(['timeline', 'diff', 'reasoning', 'comparison', 'metrics'] as const).map(mode => (
-            <button
-              key={mode}
-              className={`mr2-tab ${viewMode === mode ? 'active' : ''}`}
-              onClick={() => setViewMode(mode)}
-            >
-              {mode === 'timeline' && '📅 Timeline'}
-              {mode === 'diff' && '📝 Changes'}
-              {mode === 'reasoning' && '🧠 Reasoning'}
-              {mode === 'comparison' && '⚖️ Compare'}
-              {mode === 'metrics' && '📊 Metrics'}
-            </button>
-          ))}
+          <button
+            className={`mr2-tab ${viewMode === 'timeline' ? 'active' : ''}`}
+            onClick={() => setViewMode('timeline')}
+            title="View all interactions in chronological order"
+          >
+            📅 Timeline
+          </button>
+          <button
+            className={`mr2-tab ${viewMode === 'diff' ? 'active' : ''}`}
+            onClick={() => setViewMode('diff')}
+            title="Compare changes between consecutive turns (only for same-topic refinements)"
+          >
+            📝 Changes
+          </button>
         </div>
 
         <div className="mr2-actions">
@@ -700,9 +701,6 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
         <div className="mr2-main-view">
           {viewMode === 'timeline' && renderTimelineView()}
           {viewMode === 'diff' && renderDiffView()}
-          {viewMode === 'reasoning' && renderReasoningView()}
-          {viewMode === 'comparison' && renderComparisonView()}
-          {viewMode === 'metrics' && renderMetricsView()}
         </div>
       </div>
     </div>
