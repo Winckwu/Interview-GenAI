@@ -542,16 +542,16 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   const renderVersionSelector = () => {
     return (
       <div className="mr2-version-selector-panel">
-        <h3>Versions</h3>
+        <h3>对话记录</h3>
         <div className="mr2-version-list">
           {versions.map((version, idx) => (
             <button
               key={version.id}
               className={`mr2-version-item ${selectedVersionId === version.id ? 'active' : ''}`}
               onClick={() => handleVersionSelect(version.id)}
-              title={`Version ${version.promptVersion}: ${version.modelName}`}
+              title={`对话 ${version.promptVersion}: ${version.modelName}`}
             >
-              <span className="mr2-version-num">v{version.promptVersion}</span>
+              <span className="mr2-version-num">对话 {version.promptVersion}</span>
               <span className="mr2-version-time">
                 {new Date(version.timestamp).toLocaleTimeString()}
               </span>
