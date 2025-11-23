@@ -412,6 +412,84 @@ router.post('/mr5/branches', async (req: Request, res: Response, next: NextFunct
 });
 
 /**
+ * PUT /mr-history/mr5/branches/:id - Update a conversation branch
+ */
+router.put('/mr5/branches/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.id;
+    const branchId = req.params.id;
+    const {
+      branchName,
+      conversationHistory,
+      nextPrompt,
+      rating,
+    } = req.body;
+
+    // Build dynamic update query
+    const updates: string[] = [];
+    const params: any[] = [];
+    let paramIndex = 1;
+
+    if (branchName !== undefined) {
+      updates.push(`branch_name = $${paramIndex++}`);
+      params.push(branchName);
+    }
+    if (conversationHistory !== undefined) {
+      updates.push(`conversation_history = $${paramIndex++}`);
+      params.push(JSON.stringify(conversationHistory));
+    }
+    if (nextPrompt !== undefined) {
+      updates.push(`next_prompt = $${paramIndex++}`);
+      params.push(nextPrompt);
+    }
+    if (rating !== undefined) {
+      updates.push(`rating = $${paramIndex++}`);
+      params.push(rating);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'No fields to update',
+      });
+    }
+
+    // Add WHERE conditions
+    params.push(branchId, userId);
+
+    const result = await pool.query(
+      `UPDATE mr5_conversation_branches
+       SET ${updates.join(', ')}, updated_at = NOW()
+       WHERE id = $${paramIndex++} AND user_id = $${paramIndex}
+       RETURNING *`,
+      params
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Branch not found or unauthorized',
+      });
+    }
+
+    const row = result.rows[0];
+    console.log('[mr-history/mr5/branches] Updated branch:', row.id);
+
+    res.json({
+      success: true,
+      data: {
+        id: row.id,
+        branchName: row.branch_name,
+        updatedAt: row.updated_at,
+      },
+    });
+  } catch (error) {
+    console.error('[mr-history/mr5/branches] PUT error:', error);
+    next(error);
+  }
+});
+
+/**
  * GET /mr-history/mr5/variants - Get user's iteration variants
  */
 router.get('/mr5/variants', async (req: Request, res: Response, next: NextFunction) => {

@@ -505,6 +505,13 @@ export const apiService = {
         rating?: number;
       }) => api.post('/mr-history/mr5/branches', data),
 
+      updateBranch: (branchId: string, data: {
+        branchName?: string;
+        conversationHistory?: Array<{ role: string; content: string; timestamp?: string }>;
+        nextPrompt?: string;
+        rating?: number;
+      }) => api.put(`/mr-history/mr5/branches/${branchId}`, data),
+
       // Variants
       listVariants: (params?: { sessionId?: string; branchId?: string; limit?: number; offset?: number }) =>
         api.get('/mr-history/mr5/variants', { params }),

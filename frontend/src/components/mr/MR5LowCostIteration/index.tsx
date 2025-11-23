@@ -237,26 +237,48 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   }, [sessionId]);
 
   /**
-   * Save branch to database
+   * Save branch to database - creates new or updates existing
+   * Returns the DB ID if created new
    */
-  const saveBranchToDB = useCallback(async (branch: ConversationBranch) => {
+  const saveBranchToDB = useCallback(async (branch: ConversationBranch): Promise<string | null> => {
     try {
-      await apiService.mrHistory.mr5.createBranch({
-        sessionId: sessionId || undefined,
-        branchName: branch.name,
-        parentBranchId: branch.parentRef.branchId,
-        parentMessageIndex: branch.parentRef.messageIndex,
-        conversationHistory: branch.history.map(msg => ({
-          role: msg.role === 'ai' ? 'assistant' : msg.role,
-          content: msg.content,
-          timestamp: msg.timestamp.toISOString(),
-        })),
-        nextPrompt: branch.nextPrompt,
-        rating: branch.rating,
-      });
-      console.log('[MR5] Branch saved to database:', branch.name);
+      const historyData = branch.history.map(msg => ({
+        role: msg.role === 'ai' ? 'assistant' : msg.role,
+        content: msg.content,
+        timestamp: msg.timestamp.toISOString(),
+      }));
+
+      // Check if this branch has a DB ID (not a temp ID like "branch-xxx")
+      const isDbId = !branch.id.startsWith('branch-');
+
+      if (isDbId) {
+        // Update existing branch
+        await apiService.mrHistory.mr5.updateBranch(branch.id, {
+          branchName: branch.name,
+          conversationHistory: historyData,
+          nextPrompt: branch.nextPrompt,
+          rating: branch.rating,
+        });
+        console.log('[MR5] Branch updated in database:', branch.id);
+        return branch.id;
+      } else {
+        // Create new branch
+        const response = await apiService.mrHistory.mr5.createBranch({
+          sessionId: sessionId || undefined,
+          branchName: branch.name,
+          parentBranchId: branch.parentRef.branchId,
+          parentMessageIndex: branch.parentRef.messageIndex,
+          conversationHistory: historyData,
+          nextPrompt: branch.nextPrompt,
+          rating: branch.rating,
+        });
+        const dbId = response.data.data.id;
+        console.log('[MR5] Branch created in database:', dbId);
+        return dbId;
+      }
     } catch (error) {
       console.error('[MR5] Failed to save branch:', error);
+      return null;
     }
   }, [sessionId]);
 
@@ -401,12 +423,20 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
               history: [...newBranch.history, userMessage, aiMessage],
             };
 
+            // Save branch to database and get DB ID
+            const dbId = await saveBranchToDB(updatedBranch);
+
+            // Update local state with DB ID if we got one
             setBranches(prev => prev.map(b =>
-              b.id === newBranch.id ? updatedBranch : b
+              b.id === newBranch.id
+                ? { ...updatedBranch, id: dbId || updatedBranch.id }
+                : b
             ));
 
-            // Save branch to database
-            await saveBranchToDB(updatedBranch);
+            // Update active branch ID if it changed
+            if (dbId && dbId !== newBranch.id) {
+              setActiveBranchId(dbId);
+            }
           }
         } catch (error) {
           console.error('[MR5] Failed to get AI response for branch:', error);
@@ -416,8 +446,14 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
           branchAbortRef.current = null;
         }
       } else {
-        // No prompt - still save the branch
-        await saveBranchToDB(newBranch);
+        // No prompt - still save the branch and get DB ID
+        const dbId = await saveBranchToDB(newBranch);
+        if (dbId && dbId !== newBranch.id) {
+          setBranches(prev => prev.map(b =>
+            b.id === newBranch.id ? { ...b, id: dbId } : b
+          ));
+          setActiveBranchId(dbId);
+        }
       }
     },
     [branches, activeBranchId, conversationHistory, maxBranches, onBranchCreated, saveBranchToDB]
