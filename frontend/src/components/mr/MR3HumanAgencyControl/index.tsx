@@ -300,6 +300,9 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
       proactive: 'AI actively intervenes with frequent suggestions'
     };
 
+    // Check if current level is not the default (suggestive)
+    const isOverrideActive = agencyState.interventionLevel !== 'suggestive';
+
     return (
       <div className="mr3-intervention-control">
         <h3 className="mr3-control-title">AI Intervention Level</h3>
@@ -338,6 +341,24 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
         <p className="mr3-description">
           {descriptions[agencyState.interventionLevel]}
         </p>
+
+        {/* Override hint - shows when not using default (suggestive) level */}
+        {isOverrideActive && (
+          <div className="mr3-override-hint">
+            <span className="mr3-override-icon">⚙️</span>
+            <span className="mr3-override-text">
+              Manual override active - this setting overrides automatic recommendation behavior
+            </span>
+            <button
+              className="mr3-override-reset"
+              onClick={() => handleInterventionLevelChange('suggestive')}
+              title="Reset to default (Suggestive)"
+              aria-label="Reset to default intervention level"
+            >
+              Reset
+            </button>
+          </div>
+        )}
       </div>
     );
   };

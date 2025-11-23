@@ -219,6 +219,56 @@
   line-height: 1.5;
 }
 
+/* Override Hint - Manual Override Indicator */
+.mr3-override-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--mr3-override-bg, #fff3e0);
+  border: 1px solid var(--mr3-override-border, #ffb74d);
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.mr3-override-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.mr3-override-text {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--mr3-override-text, #e65100);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.mr3-override-reset {
+  flex-shrink: 0;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--mr3-override-btn-bg, #ff9800);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.mr3-override-reset:hover {
+  background: var(--mr3-override-btn-hover, #f57c00);
+  box-shadow: 0 2px 6px rgba(255, 152, 0, 0.3);
+}
+
+.mr3-override-reset:focus {
+  outline: 3px solid var(--mr3-focus-color, #0066ff);
+  outline-offset: 2px;
+}
+
 /* ============================================
    Suggestions Section
    ============================================ */
@@ -904,6 +954,11 @@
     --mr3-accent-light: #1a4d7a;
     --mr3-suggestion-bg: #2a2a2a;
     --mr3-focus-color: #6bb6ff;
+    --mr3-override-bg: #3d2e1f;
+    --mr3-override-border: #8b6914;
+    --mr3-override-text: #ffb74d;
+    --mr3-override-btn-bg: #e65100;
+    --mr3-override-btn-hover: #bf360c;
   }
 
   .mr3-dialog {
@@ -928,6 +983,11 @@
   --mr3-accent-light: #1a4d7a;
   --mr3-suggestion-bg: #2a2a2a;
   --mr3-focus-color: #6bb6ff;
+  --mr3-override-bg: #3d2e1f;
+  --mr3-override-border: #8b6914;
+  --mr3-override-text: #ffb74d;
+  --mr3-override-btn-bg: #e65100;
+  --mr3-override-btn-hover: #bf360c;
 }
 
 [data-theme='dark'] .mr3-dialog {
@@ -1054,6 +1114,27 @@
   .mr3-level-indicator {
     flex: 0 1 calc(33.33% - 0.35rem);
     padding: 0.5rem;
+  }
+
+  .mr3-override-hint {
+    flex-wrap: wrap;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .mr3-override-text {
+    flex: 1 1 100%;
+    order: 2;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+  }
+
+  .mr3-override-icon {
+    order: 1;
+  }
+
+  .mr3-override-reset {
+    order: 1;
+    margin-left: auto;
   }
 
   .mr3-metrics-grid {
