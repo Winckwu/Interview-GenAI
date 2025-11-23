@@ -289,6 +289,108 @@ export function calculateVerificationStatistics(
 }
 
 /**
+ * Database verification log interface
+ */
+export interface DBVerificationLog {
+  id: string;
+  sessionId?: string;
+  messageId?: string;
+  contentType: string;
+  contentText?: string;
+  verificationMethod: string;
+  toolUsed?: string;
+  verificationStatus: string;
+  confidenceScore?: number;
+  findings?: string[];
+  discrepancies?: string[];
+  suggestions?: string[];
+  userDecision: string;
+  userNotes?: string;
+  actualCorrectness?: boolean;
+  createdAt: string;
+}
+
+/**
+ * Calculate verification statistics from database history
+ * This uses actual saved data instead of local state
+ */
+export function calculateStatsFromDBHistory(
+  dbHistory: DBVerificationLog[]
+): VerificationStatistics {
+  const byContentType: Record<ContentType, { total: number; errors: number; rate: number }> = {
+    code: { total: 0, errors: 0, rate: 0 },
+    math: { total: 0, errors: 0, rate: 0 },
+    citation: { total: 0, errors: 0, rate: 0 },
+    fact: { total: 0, errors: 0, rate: 0 },
+    text: { total: 0, errors: 0, rate: 0 }
+  };
+
+  const byVerificationMethod: Record<VerificationMethod, { total: number; errors: number; rate: number }> = {
+    'code-execution': { total: 0, errors: 0, rate: 0 },
+    'syntax-check': { total: 0, errors: 0, rate: 0 },
+    'calculation': { total: 0, errors: 0, rate: 0 },
+    'citation-check': { total: 0, errors: 0, rate: 0 },
+    'cross-reference': { total: 0, errors: 0, rate: 0 },
+    'fact-check': { total: 0, errors: 0, rate: 0 }
+  };
+
+  let totalVerified = 0;
+  let totalErrors = 0;
+
+  // Filter out skipped entries (they shouldn't be in DB anymore, but just in case)
+  const validLogs = dbHistory.filter(log => log.userDecision !== 'skip');
+
+  validLogs.forEach(log => {
+    totalVerified++;
+
+    // Count errors based on verification status
+    const isError = log.verificationStatus === 'error-found' ||
+                    log.verificationStatus === 'unable-to-verify';
+    if (isError) {
+      totalErrors++;
+    }
+
+    // Track by content type
+    const contentType = log.contentType as ContentType;
+    if (byContentType[contentType]) {
+      byContentType[contentType].total++;
+      if (isError) {
+        byContentType[contentType].errors++;
+      }
+    }
+
+    // Track by verification method
+    const method = log.verificationMethod as VerificationMethod;
+    if (byVerificationMethod[method]) {
+      byVerificationMethod[method].total++;
+      if (isError) {
+        byVerificationMethod[method].errors++;
+      }
+    }
+  });
+
+  // Calculate rates
+  Object.values(byContentType).forEach(stats => {
+    stats.rate = stats.total > 0 ? stats.errors / stats.total : 0;
+  });
+  Object.values(byVerificationMethod).forEach(stats => {
+    stats.rate = stats.total > 0 ? stats.errors / stats.total : 0;
+  });
+
+  const errorRate = totalVerified > 0 ? totalErrors / totalVerified : 0;
+  const trustBuiltUp = errorRate < 0.2 && totalVerified >= 5; // Need at least 5 verifications
+
+  return {
+    totalVerified,
+    errorsFound: totalErrors,
+    errorRate,
+    byContentType,
+    byVerificationMethod,
+    trustBuiltUp
+  };
+}
+
+/**
  * Get verification recommendations based on content
  */
 export function getVerificationRecommendations(

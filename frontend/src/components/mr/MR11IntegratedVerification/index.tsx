@@ -30,12 +30,13 @@ import {
   UserDecision,
   performVerificationAsync,
   createVerificationLog,
-  calculateVerificationStatistics,
+  calculateStatsFromDBHistory,
   getVerificationRecommendations,
   getConfidenceMessage,
   getActionRecommendation,
   getWorkflowGuidance,
-  VERIFICATION_TOOLS
+  VERIFICATION_TOOLS,
+  DBVerificationLog
 } from './utils';
 import { apiService } from '../../../services/api';
 import './styles.css';
@@ -50,25 +51,6 @@ interface MR11Props {
   messageId?: string;
   /** Callback when message verification is complete (accept = verified) */
   onMessageVerified?: (messageId: string, decision: UserDecision) => void;
-}
-
-interface DBVerificationLog {
-  id: string;
-  sessionId?: string;
-  messageId?: string;
-  contentType: string;
-  contentText?: string;
-  verificationMethod: string;
-  toolUsed?: string;
-  verificationStatus: string;
-  confidenceScore?: number;
-  findings?: string[];
-  discrepancies?: string[];
-  suggestions?: string[];
-  userDecision: string;
-  userNotes?: string;
-  actualCorrectness?: boolean;
-  createdAt: string;
 }
 
 type TabType = 'verify' | 'history' | 'stats';
@@ -101,7 +83,8 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   // Verification loading state
   const [verifying, setVerifying] = useState(false);
 
-  const stats = calculateVerificationStatistics(logs);
+  // Calculate stats from database history (real data) instead of local state
+  const stats = calculateStatsFromDBHistory(dbHistory);
   const recommendations = contentType ? getVerificationRecommendations({ id: '', contentType, content: contentText, flagged: false }) : [];
 
   /**
@@ -122,12 +105,12 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     }
   }, [sessionId]);
 
-  // Load history when showing history panel
+  // Load history when showing history panel or stats tab
   useEffect(() => {
-    if (showHistory) {
+    if (showHistory || activeTab === 'stats') {
       loadHistoryFromDB();
     }
-  }, [showHistory, loadHistoryFromDB]);
+  }, [showHistory, activeTab, loadHistoryFromDB]);
 
   /**
    * Save verification log to database
@@ -227,12 +210,24 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       return;
     }
 
+    // Skip = just reset form without saving, user can verify again later
+    if (userDecision === 'skip') {
+      setVerificationResult(null);
+      setUserDecision(null);
+      setDecisionNotes('');
+      // Don't clear content so user can re-verify if needed
+      return;
+    }
+
     const log = createVerificationLog(verificationResult, userDecision, decisionNotes);
     setLogs([...logs, log]);
     onDecisionMade?.(log);
 
-    // Save to database
+    // Save to database (only for non-skip decisions)
     await saveLogToDB(verificationResult, userDecision, decisionNotes);
+
+    // Refresh database history to update stats
+    await loadHistoryFromDB();
 
     // If verifying a specific message, notify parent of the decision
     if (messageId && onMessageVerified) {
@@ -245,7 +240,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     setVerificationResult(null);
     setUserDecision(null);
     setDecisionNotes('');
-  }, [verificationResult, userDecision, decisionNotes, logs, onDecisionMade, messageId, onMessageVerified, saveLogToDB]);
+  }, [verificationResult, userDecision, decisionNotes, logs, onDecisionMade, messageId, onMessageVerified, saveLogToDB, loadHistoryFromDB]);
 
   /**
    * Update decision and evaluate actual correctness
