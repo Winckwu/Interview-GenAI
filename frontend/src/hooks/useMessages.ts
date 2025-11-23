@@ -53,6 +53,9 @@ export interface Message {
     resultCount: number;
     results: Array<{ title: string; url: string }>;
   };
+
+  // AI reasoning (chain of thought)
+  reasoning?: string;
 }
 
 export interface UseMessagesOptions {
@@ -346,6 +349,8 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       let fullContent = '';
       let webSearchUsed = false;
       let searchResults = null;
+      let reasoning: string | null = null;
+      let cleanContent = '';
 
       const processStream = async () => {
         while (true) {
@@ -362,19 +367,23 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
 
                 if (data.type === 'chunk') {
                   fullContent += data.content;
-                  setStreamingContent(fullContent);
+                  // Remove thinking tags for display during streaming
+                  const displayContent = fullContent.replace(/<thinking>[\s\S]*?<\/thinking>\s*/g, '').trim();
+                  setStreamingContent(displayContent);
                   // Update message in real-time
                   setMessages((prev) =>
                     prev.map((msg) =>
-                      msg.id === tempId ? { ...msg, content: fullContent } : msg
+                      msg.id === tempId ? { ...msg, content: displayContent } : msg
                     )
                   );
                 } else if (data.type === 'search') {
                   webSearchUsed = true;
                   searchResults = data.searchResults;
                 } else if (data.type === 'done') {
-                  // Streaming complete
+                  // Streaming complete - extract reasoning
                   setIsStreaming(false);
+                  reasoning = data.reasoning || null;
+                  cleanContent = data.cleanContent || fullContent;
                 } else if (data.type === 'error') {
                   throw new Error(data.error);
                 }
@@ -390,17 +399,21 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
 
       const responseTime = Date.now() - startTime;
 
-      // Log interaction to backend
+      // Use cleanContent for storage and display (without thinking tags)
+      const finalContent = cleanContent || fullContent.replace(/<thinking>[\s\S]*?<\/thinking>\s*/g, '').trim();
+
+      // Log interaction to backend (with reasoning)
       const interactionResponse = await api.post('/interactions', {
         sessionId,
         userPrompt: userInput,
-        aiResponse: fullContent,
+        aiResponse: finalContent,
         aiModel: 'gpt-4o-mini',
         responseTime,
         wasVerified: false,
         wasModified: false,
         wasRejected: false,
         confidenceScore: 0.85,
+        reasoning: reasoning || undefined,
       });
 
       const interaction = interactionResponse.data.data.interaction;
@@ -411,7 +424,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
           id: interaction.id,
           sessionId,
           userPrompt: userInput,
-          aiResponse: fullContent,
+          aiResponse: finalContent,
           aiModel: 'gpt-4o-mini',
           responseTime,
           wasVerified: false,
@@ -424,7 +437,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
         console.error('Failed to update global store:', storeErr);
       }
 
-      // Update messages with real IDs
+      // Update messages with real IDs and reasoning
       setMessages((prev) =>
         prev.map((msg) => {
           if (msg.id === `user-${tempId}`) {
@@ -434,10 +447,11 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
             return {
               ...msg,
               id: interaction.id,
-              content: fullContent,
+              content: finalContent,
               timestamp: interaction.createdAt,
               webSearchUsed,
               searchResults,
+              reasoning: reasoning || undefined,
             };
           }
           return msg;

@@ -1583,6 +1583,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 aiOutput: aiMsg.content,
                 modelName: 'AI Assistant',
                 confidenceScore: 0.85,
+                reasoning: aiMsg.reasoning, // Pass AI reasoning for MR2 Reasoning tab
               });
             }
             return acc;

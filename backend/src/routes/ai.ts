@@ -187,16 +187,29 @@ router.post(
       await callOpenAIStream(enhancedPrompt, conversationHistory, (chunk, done) => {
         if (done) {
           const responseTime = Date.now() - startTime;
-          // Send completion event with metadata
+
+          // Parse reasoning from <thinking> tags
+          let reasoning = null;
+          let cleanContent = fullContent;
+          const thinkingMatch = fullContent.match(/<thinking>([\s\S]*?)<\/thinking>/);
+          if (thinkingMatch) {
+            reasoning = thinkingMatch[1].trim();
+            // Remove thinking tags from display content
+            cleanContent = fullContent.replace(/<thinking>[\s\S]*?<\/thinking>\s*/, '').trim();
+          }
+
+          // Send completion event with metadata and reasoning
           res.write(`data: ${JSON.stringify({
             type: 'done',
             responseTime,
             webSearchUsed: shouldSearch && searchResults !== null,
+            reasoning,
+            cleanContent,
           })}\n\n`);
           res.end();
         } else {
           fullContent += chunk;
-          // Send chunk
+          // Send chunk (including thinking tags - frontend will handle display)
           res.write(`data: ${JSON.stringify({
             type: 'chunk',
             content: chunk

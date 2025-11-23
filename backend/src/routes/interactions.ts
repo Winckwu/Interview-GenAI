@@ -24,6 +24,7 @@ router.post(
       wasVerified = false,
       wasModified = false,
       wasRejected = false,
+      reasoning = null,
     } = req.body;
 
     // Validation
@@ -62,10 +63,10 @@ router.post(
     const result = await pool.query(
       `INSERT INTO interactions (
         id, session_id, user_id, user_prompt, ai_response, ai_model,
-        response_time_ms, was_verified, was_modified, was_rejected, created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        response_time_ms, was_verified, was_modified, was_rejected, reasoning, created_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING id, session_id, user_id, user_prompt, ai_response, ai_model,
-                response_time_ms, was_verified, was_modified, was_rejected, created_at, updated_at`,
+                response_time_ms, was_verified, was_modified, was_rejected, reasoning, created_at, updated_at`,
       [
         interactionId,
         sessionId,
@@ -77,6 +78,7 @@ router.post(
         wasVerified,
         wasModified,
         wasRejected,
+        reasoning,
         new Date(),
       ]
     );
@@ -96,6 +98,7 @@ router.post(
           wasVerified: interaction.was_verified,
           wasModified: interaction.was_modified,
           wasRejected: interaction.was_rejected,
+          reasoning: interaction.reasoning,
           createdAt: interaction.created_at,
           updatedAt: interaction.updated_at,
         },

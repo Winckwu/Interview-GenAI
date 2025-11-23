@@ -42,6 +42,7 @@ export const initializeDatabase = async () => {
       'migrations_pattern_enhancement.sql',
       'migrations_mr1_history.sql',
       'migrations_mr_history.sql',
+      'migrations_reasoning.sql',
     ];
 
     for (const migrationFile of migrationFiles) {
