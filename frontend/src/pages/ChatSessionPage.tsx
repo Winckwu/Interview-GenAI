@@ -381,6 +381,9 @@ const ChatSessionPage: React.FC = () => {
     cancelEditingMessage,
     loadMessagesPage,
     loadMoreMessages,
+    isStreaming,
+    streamingContent,
+    stopStreaming,
   } = messagesHook;
 
   const {
@@ -3711,11 +3714,49 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 hasMoreMessages={hasMoreMessages}
                 isLoadingMore={isLoadingMore}
                 onLoadMore={loadMoreMessages}
+                isStreaming={isStreaming}
               />
             </div>
           )}
 
-          {loading && messages.length > 0 && (
+          {/* Streaming stop button */}
+          {isStreaming && (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              padding: '0.5rem',
+              animation: 'fadeIn 0.3s ease-in-out',
+            }}>
+              <button
+                onClick={stopStreaming}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 1rem',
+                  backgroundColor: '#f3f4f6',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  fontSize: '0.875rem',
+                  color: '#4b5563',
+                  transition: 'all 0.2s',
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = '#e5e7eb';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                }}
+              >
+                <span style={{ fontSize: '1rem' }}>⏹</span>
+                Stop generating
+              </button>
+            </div>
+          )}
+
+          {/* Loading skeleton - only show when not streaming */}
+          {loading && !isStreaming && messages.length > 0 && (
             <div style={{
               display: 'flex',
               justifyContent: 'flex-start',

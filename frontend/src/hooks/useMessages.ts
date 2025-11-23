@@ -10,8 +10,8 @@
  * Extracted from ChatSessionPage.tsx as part of Phase 1 refactoring.
  */
 
-import { useState, useCallback } from 'react';
-import api from '../services/api';
+import { useState, useCallback, useRef } from 'react';
+import api, { apiService } from '../services/api';
 import { useSessionStore } from '../stores/sessionStore';
 
 // ============================================================
@@ -72,6 +72,11 @@ export interface UseMessagesReturn {
   updatingMessageId: string | null;
   editingMessageId: string | null;
   editedContent: string;
+
+  // Streaming state
+  isStreaming: boolean;
+  streamingContent: string;
+  stopStreaming: () => void;
 
   // Pagination
   currentPage: number;
@@ -142,6 +147,11 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   // Editing state
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editedContent, setEditedContent] = useState<string>('');
+
+  // Streaming state
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [streamingContent, setStreamingContent] = useState('');
+  const abortControllerRef = useRef<(() => void) | null>(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -265,7 +275,18 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   }, [hasMoreMessages, isLoadingMore, currentPage, loadMessagesPage]);
 
   /**
-   * Send user message and get AI response
+   * Stop streaming response
+   */
+  const stopStreaming = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current();
+      abortControllerRef.current = null;
+    }
+    setIsStreaming(false);
+  }, []);
+
+  /**
+   * Send user message and get AI response with streaming
    * @param userInput - The user's message
    * @param conversationHistory - Optional conversation history to use instead of current messages
    * @param useWebSearch - Whether to enable web search for this message
@@ -275,35 +296,106 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
 
     setLoading(true);
     setError(null);
+    setStreamingContent('');
+
+    // Create temporary message ID for streaming
+    const tempId = `temp-${Date.now()}`;
+    const timestamp = new Date().toISOString();
+
+    // Add user message immediately
+    const userMessage: Message = {
+      id: `user-${tempId}`,
+      role: 'user',
+      content: userInput,
+      timestamp,
+    };
+
+    // Add placeholder AI message for streaming
+    const placeholderAiMessage: Message = {
+      id: tempId,
+      role: 'ai',
+      content: '',
+      timestamp,
+      wasVerified: false,
+      wasModified: false,
+      wasRejected: false,
+    };
+
+    setMessages((prev) => [...prev, userMessage, placeholderAiMessage]);
 
     try {
       // Use provided conversation history or current messages
       const history = conversationHistory || messages;
-
-      // Call AI API endpoint with optional web search
       const startTime = Date.now();
-      const aiApiResponse = await api.post('/ai/chat', {
-        userPrompt: userInput,
-        conversationHistory: history.map((m) => ({
+
+      // Start streaming
+      setIsStreaming(true);
+      const { stream, abort } = await apiService.ai.chatStream(
+        userInput,
+        history.map((m) => ({
           role: m.role === 'user' ? 'user' : 'assistant',
           content: m.content,
         })),
-        useWebSearch: useWebSearch || false,
-      });
+        { useWebSearch: useWebSearch || false }
+      );
+
+      abortControllerRef.current = abort;
+
+      // Read stream
+      const decoder = new TextDecoder();
+      let fullContent = '';
+      let webSearchUsed = false;
+      let searchResults = null;
+
+      const processStream = async () => {
+        while (true) {
+          const { done, value } = await stream.read();
+          if (done) break;
+
+          const text = decoder.decode(value, { stream: true });
+          const lines = text.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6));
+
+                if (data.type === 'chunk') {
+                  fullContent += data.content;
+                  setStreamingContent(fullContent);
+                  // Update message in real-time
+                  setMessages((prev) =>
+                    prev.map((msg) =>
+                      msg.id === tempId ? { ...msg, content: fullContent } : msg
+                    )
+                  );
+                } else if (data.type === 'search') {
+                  webSearchUsed = true;
+                  searchResults = data.searchResults;
+                } else if (data.type === 'done') {
+                  // Streaming complete
+                  setIsStreaming(false);
+                } else if (data.type === 'error') {
+                  throw new Error(data.error);
+                }
+              } catch (parseErr) {
+                // Ignore parse errors for incomplete chunks
+              }
+            }
+          }
+        }
+      };
+
+      await processStream();
 
       const responseTime = Date.now() - startTime;
-      const responseData = aiApiResponse.data.data.response;
-      const aiContent = responseData.content;
-      const aiModel = responseData.model;
-      const webSearchUsed = responseData.webSearchUsed || false;
-      const searchResults = responseData.searchResults || null;
 
       // Log interaction to backend
       const interactionResponse = await api.post('/interactions', {
         sessionId,
         userPrompt: userInput,
-        aiResponse: aiContent,
-        aiModel,
+        aiResponse: fullContent,
+        aiModel: 'gpt-4o-mini',
         responseTime,
         wasVerified: false,
         wasModified: false,
@@ -319,8 +411,8 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
           id: interaction.id,
           sessionId,
           userPrompt: userInput,
-          aiResponse: aiContent,
-          aiModel,
+          aiResponse: fullContent,
+          aiModel: 'gpt-4o-mini',
           responseTime,
           wasVerified: false,
           wasModified: false,
@@ -332,35 +424,42 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
         console.error('Failed to update global store:', storeErr);
       }
 
-      // Add messages to local state
-      const userMessage: Message = {
-        id: `user-${interaction.id}`,
-        role: 'user',
-        content: userInput,
-        timestamp: interaction.createdAt,
-      };
+      // Update messages with real IDs
+      setMessages((prev) =>
+        prev.map((msg) => {
+          if (msg.id === `user-${tempId}`) {
+            return { ...msg, id: `user-${interaction.id}`, timestamp: interaction.createdAt };
+          }
+          if (msg.id === tempId) {
+            return {
+              ...msg,
+              id: interaction.id,
+              content: fullContent,
+              timestamp: interaction.createdAt,
+              webSearchUsed,
+              searchResults,
+            };
+          }
+          return msg;
+        })
+      );
 
-      const aiMessage: Message = {
-        id: interaction.id,
-        role: 'ai',
-        content: aiContent,
-        timestamp: interaction.createdAt,
-        wasVerified: false,
-        wasModified: false,
-        wasRejected: false,
-        webSearchUsed,
-        searchResults,
-      };
-
-      setMessages((prev) => [...prev, userMessage, aiMessage]);
+      setStreamingContent('');
+      abortControllerRef.current = null;
 
       // Callback for success
       onSendSuccess?.(interaction);
     } catch (err: any) {
       console.error('Send message error:', err);
-      const errorMsg = err.response?.data?.error || 'Failed to send message';
+
+      // Remove placeholder messages on error
+      setMessages((prev) => prev.filter((msg) => msg.id !== tempId && msg.id !== `user-${tempId}`));
+
+      const errorMsg = err.message || 'Failed to send message';
       setError(errorMsg);
       onError?.(errorMsg);
+      setIsStreaming(false);
+      setStreamingContent('');
     } finally {
       setLoading(false);
     }
@@ -495,6 +594,11 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     updatingMessageId,
     editingMessageId,
     editedContent,
+
+    // Streaming state
+    isStreaming,
+    streamingContent,
+    stopStreaming,
 
     // Pagination
     currentPage,

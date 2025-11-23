@@ -25,6 +25,16 @@
   }
 }
 
+/* Blinking cursor for streaming */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
 .messageContainer {
   margin-bottom: 1rem;
   display: flex;

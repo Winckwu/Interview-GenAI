@@ -285,9 +285,51 @@ export const apiService = {
    * Note: AI endpoints use longer timeout (60s) as GPT calls can be slow
    */
   ai: {
-    // Basic chat
+    // Basic chat (non-streaming fallback)
     chat: (userPrompt: string, conversationHistory: any[] = []) =>
       api.post('/ai/chat', { userPrompt, conversationHistory }, { timeout: 60000 }),
+
+    // Streaming chat - returns an EventSource-like interface
+    chatStream: (
+      userPrompt: string,
+      conversationHistory: any[] = [],
+      options: { useWebSearch?: boolean; autoDetectSearch?: boolean } = {}
+    ): Promise<{
+      stream: ReadableStreamDefaultReader<Uint8Array>;
+      abort: () => void;
+    }> => {
+      const token = localStorage.getItem('auth-storage')
+        ? JSON.parse(localStorage.getItem('auth-storage') || '{}').state?.token
+        : null;
+
+      const controller = new AbortController();
+
+      return fetch(`${API_BASE_URL}/ai/chat/stream`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '',
+        },
+        body: JSON.stringify({
+          userPrompt,
+          conversationHistory,
+          useWebSearch: options.useWebSearch || false,
+          autoDetectSearch: options.autoDetectSearch || false,
+        }),
+        signal: controller.signal,
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        if (!response.body) {
+          throw new Error('No response body');
+        }
+        return {
+          stream: response.body.getReader(),
+          abort: () => controller.abort(),
+        };
+      });
+    },
 
     // Get available models
     getModels: () => api.get('/ai/models'),

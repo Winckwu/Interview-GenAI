@@ -98,6 +98,9 @@ export interface MessageListProps {
   hasMoreMessages: boolean;
   isLoadingMore: boolean;
   onLoadMore: () => void;
+
+  // Streaming state
+  isStreaming?: boolean;
 }
 
 export const MessageList: React.FC<MessageListProps> = ({
@@ -130,6 +133,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   hasMoreMessages,
   isLoadingMore,
   onLoadMore,
+  isStreaming = false,
 }) => {
   /**
    * Check if an AI message is a response to a simple greeting/casual message
@@ -232,6 +236,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             quickReflection={renderQuickReflection(message, index)}
             mr6Suggestion={renderMR6Suggestion(message, index)}
             hideActionButtons={shouldHideTools(message, index)}
+            isStreaming={isStreaming && message.role === 'ai' && index === messages.length - 1}
           />
         </div>
       ))}

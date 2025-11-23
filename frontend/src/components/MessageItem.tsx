@@ -55,6 +55,9 @@ export interface MessageItemProps {
 
   // Hide action buttons for simple messages (greetings, etc.)
   hideActionButtons?: boolean;
+
+  // Streaming state - shows typing cursor when true
+  isStreaming?: boolean;
 }
 
 export const MessageItem: React.FC<MessageItemProps> = ({
@@ -75,6 +78,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   quickReflection,
   mr6Suggestion,
   hideActionButtons = false,
+  isStreaming = false,
 }) => {
   // Modal states
   const [showComparison, setShowComparison] = useState(false);
@@ -375,6 +379,20 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               </div>
             )}
             <MarkdownText content={currentContent} />
+            {/* Blinking cursor for streaming */}
+            {isStreaming && message.role === 'ai' && (
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '2px',
+                  height: '1.2em',
+                  backgroundColor: '#3b82f6',
+                  marginLeft: '2px',
+                  animation: 'blink 1s infinite',
+                  verticalAlign: 'text-bottom',
+                }}
+              />
+            )}
           </div>
         )}
 

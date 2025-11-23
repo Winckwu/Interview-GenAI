@@ -31,6 +31,9 @@ interface AIResponse {
   };
 }
 
+// Streaming callback type
+export type StreamCallback = (chunk: string, done: boolean) => void;
+
 /**
  * Call OpenAI API with user prompt
  * @param userPrompt - User's message
@@ -91,6 +94,74 @@ export const callOpenAI = async (
   } catch (error: any) {
     console.error('OpenAI API Error:', error);
     throw new Error(`Failed to get AI response: ${error.message}`);
+  }
+};
+
+/**
+ * Call OpenAI API with streaming response
+ * @param userPrompt - User's message
+ * @param conversationHistory - Optional previous messages for context
+ * @param onChunk - Callback for each streamed chunk
+ * @returns Final usage stats
+ */
+export const callOpenAIStream = async (
+  userPrompt: string,
+  conversationHistory: Array<{ role: string; content: string }> = [],
+  onChunk: StreamCallback
+): Promise<{ model: string; content: string }> => {
+  try {
+    // Build messages array
+    const messages: any[] = [];
+
+    // Add system prompt
+    messages.push({
+      role: 'system',
+      content: `You are a helpful AI assistant. Be concise, accurate, and provide clear explanations.
+                Help users think critically about their tasks and learn from your responses.`,
+    });
+
+    // Add conversation history if provided
+    if (conversationHistory.length > 0) {
+      messages.push(...conversationHistory);
+    }
+
+    // Add current user message
+    messages.push({
+      role: 'user',
+      content: userPrompt,
+    });
+
+    // Call OpenAI with streaming
+    const stream = await client.chat.completions.create({
+      model: MODEL,
+      messages,
+      temperature: 0.7,
+      max_tokens: 2000,
+      top_p: 0.9,
+      stream: true,
+    });
+
+    let fullContent = '';
+
+    // Process stream
+    for await (const chunk of stream) {
+      const delta = chunk.choices[0]?.delta?.content || '';
+      if (delta) {
+        fullContent += delta;
+        onChunk(delta, false);
+      }
+    }
+
+    // Signal completion
+    onChunk('', true);
+
+    return {
+      model: MODEL,
+      content: fullContent,
+    };
+  } catch (error: any) {
+    console.error('OpenAI Streaming Error:', error);
+    throw new Error(`Failed to stream AI response: ${error.message}`);
   }
 };
 
@@ -297,4 +368,4 @@ export const callMultipleModels = async (
   }
 };
 
-export default { callOpenAI, getModelInfo, generateBatchVariants, callMultipleModels };
+export default { callOpenAI, callOpenAIStream, getModelInfo, generateBatchVariants, callMultipleModels };

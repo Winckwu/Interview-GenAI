@@ -1,7 +1,7 @@
 import express, { Router, Request, Response } from 'express';
 import { authenticateToken } from '../middleware/auth';
 import { asyncHandler } from '../middleware/errorHandler';
-import { callOpenAI, getModelInfo, generateBatchVariants, callMultipleModels } from '../services/aiService';
+import { callOpenAI, callOpenAIStream, getModelInfo, generateBatchVariants, callMultipleModels } from '../services/aiService';
 import { searchWeb, formatSearchResultsForPrompt, shouldUseWebSearch } from '../services/webSearchService';
 
 const router: Router = express.Router();
@@ -112,6 +112,106 @@ router.post(
       });
     }
   })
+);
+
+/**
+ * POST /api/ai/chat/stream
+ * Get AI response with Server-Sent Events (SSE) streaming
+ * Provides real-time token-by-token response like Claude
+ */
+router.post(
+  '/chat/stream',
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const { userPrompt, conversationHistory = [], useWebSearch = false, autoDetectSearch = false } = req.body;
+
+    // Validation
+    if (!userPrompt || userPrompt.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'User prompt is required',
+      });
+    }
+
+    if (userPrompt.length > 4000) {
+      return res.status(400).json({
+        success: false,
+        error: 'Prompt too long (max 4000 characters)',
+      });
+    }
+
+    // Set SSE headers
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no'); // Disable nginx buffering
+    res.flushHeaders();
+
+    try {
+      const startTime = Date.now();
+      let searchResults = null;
+      let enhancedPrompt = userPrompt;
+
+      // Determine if we should use web search
+      const shouldSearch = useWebSearch || (autoDetectSearch && shouldUseWebSearch(userPrompt));
+
+      if (shouldSearch) {
+        try {
+          console.log(`[Web Search] Searching for: ${userPrompt.substring(0, 100)}...`);
+          searchResults = await searchWeb(userPrompt, 5);
+          console.log(`[Web Search] Found ${searchResults.results.length} results from ${searchResults.source}`);
+
+          const searchContext = formatSearchResultsForPrompt(searchResults);
+          enhancedPrompt = `${userPrompt}\n\nPlease use the following web search results to inform your response:\n${searchContext}\n\nBased on the search results above, please answer the original question. If the search results are relevant, cite them in your response. If they are not relevant, you may ignore them.`;
+
+          // Send search results first
+          res.write(`data: ${JSON.stringify({
+            type: 'search',
+            searchResults: {
+              query: searchResults.query,
+              source: searchResults.source,
+              resultCount: searchResults.results.length,
+              results: searchResults.results.slice(0, 3).map(r => ({
+                title: r.title,
+                url: r.url,
+              })),
+            }
+          })}\n\n`);
+        } catch (searchError) {
+          console.error('[Web Search] Error:', searchError);
+        }
+      }
+
+      // Stream AI response
+      let fullContent = '';
+      await callOpenAIStream(enhancedPrompt, conversationHistory, (chunk, done) => {
+        if (done) {
+          const responseTime = Date.now() - startTime;
+          // Send completion event with metadata
+          res.write(`data: ${JSON.stringify({
+            type: 'done',
+            responseTime,
+            webSearchUsed: shouldSearch && searchResults !== null,
+          })}\n\n`);
+          res.end();
+        } else {
+          fullContent += chunk;
+          // Send chunk
+          res.write(`data: ${JSON.stringify({
+            type: 'chunk',
+            content: chunk
+          })}\n\n`);
+        }
+      });
+    } catch (error: any) {
+      console.error('AI Stream Error:', error);
+      res.write(`data: ${JSON.stringify({
+        type: 'error',
+        error: error.message || 'Failed to stream AI response'
+      })}\n\n`);
+      res.end();
+    }
+  }
 );
 
 /**
