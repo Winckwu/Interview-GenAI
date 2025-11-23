@@ -5,8 +5,8 @@
  */
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { pool } from '../config/database';
-import { authenticateToken, AuthRequest } from '../middleware/auth';
+import pool from '../config/database';
+import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
@@ -20,7 +20,7 @@ router.use(authenticateToken);
  *   - limit: Number of results (default 20)
  *   - offset: Pagination offset (default 0)
  */
-router.get('/', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { sessionId, limit = 20, offset = 0 } = req.query;
@@ -68,7 +68,7 @@ router.get('/', async (req: AuthRequest, res: Response, next: NextFunction) => {
     res.json({
       success: true,
       data: {
-        decompositions: result.rows.map(row => ({
+        decompositions: result.rows.map((row: any) => ({
           id: row.id,
           sessionId: row.session_id,
           originalTask: row.original_task,
@@ -93,7 +93,7 @@ router.get('/', async (req: AuthRequest, res: Response, next: NextFunction) => {
 /**
  * GET /decompositions/:id - Get a specific decomposition
  */
-router.get('/:id', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { id } = req.params;
@@ -135,7 +135,7 @@ router.get('/:id', async (req: AuthRequest, res: Response, next: NextFunction) =
 /**
  * POST /decompositions - Save a new decomposition
  */
-router.post('/', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const {
@@ -201,7 +201,7 @@ router.post('/', async (req: AuthRequest, res: Response, next: NextFunction) => 
 /**
  * DELETE /decompositions/:id - Delete a decomposition
  */
-router.delete('/:id', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { id } = req.params;

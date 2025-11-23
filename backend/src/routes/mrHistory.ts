@@ -10,9 +10,9 @@
  * - MR12: Critical Thinking Evaluations
  */
 
-import { Router, Response, NextFunction } from 'express';
-import { pool } from '../config/database';
-import { authenticateToken, AuthRequest } from '../middleware/auth';
+import { Router, Request, Response, NextFunction } from 'express';
+import pool from '../config/database';
+import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
@@ -26,7 +26,7 @@ router.use(authenticateToken);
 /**
  * GET /mr-history/mr7 - Get user's learning logs
  */
-router.get('/mr7', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/mr7', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { sessionId, limit = 50, offset = 0 } = req.query;
@@ -88,7 +88,7 @@ router.get('/mr7', async (req: AuthRequest, res: Response, next: NextFunction) =
 /**
  * POST /mr-history/mr7 - Save a learning log
  */
-router.post('/mr7', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/mr7', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const {
@@ -163,7 +163,7 @@ router.post('/mr7', async (req: AuthRequest, res: Response, next: NextFunction) 
 /**
  * GET /mr-history/mr11 - Get user's verification logs
  */
-router.get('/mr11', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/mr11', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { sessionId, contentType, limit = 50, offset = 0 } = req.query;
@@ -231,7 +231,7 @@ router.get('/mr11', async (req: AuthRequest, res: Response, next: NextFunction) 
 /**
  * POST /mr-history/mr11 - Save a verification log
  */
-router.post('/mr11', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/mr11', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const {
@@ -308,7 +308,7 @@ router.post('/mr11', async (req: AuthRequest, res: Response, next: NextFunction)
 /**
  * GET /mr-history/mr5/branches - Get user's conversation branches
  */
-router.get('/mr5/branches', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/mr5/branches', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { sessionId, limit = 50, offset = 0 } = req.query;
@@ -356,7 +356,7 @@ router.get('/mr5/branches', async (req: AuthRequest, res: Response, next: NextFu
 /**
  * POST /mr-history/mr5/branches - Save a conversation branch
  */
-router.post('/mr5/branches', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/mr5/branches', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const {
@@ -414,7 +414,7 @@ router.post('/mr5/branches', async (req: AuthRequest, res: Response, next: NextF
 /**
  * GET /mr-history/mr5/variants - Get user's iteration variants
  */
-router.get('/mr5/variants', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/mr5/variants', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { sessionId, branchId, limit = 50, offset = 0 } = req.query;
@@ -469,7 +469,7 @@ router.get('/mr5/variants', async (req: AuthRequest, res: Response, next: NextFu
 /**
  * POST /mr-history/mr5/variants - Save an iteration variant
  */
-router.post('/mr5/variants', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/mr5/variants', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const {
@@ -539,7 +539,7 @@ router.post('/mr5/variants', async (req: AuthRequest, res: Response, next: NextF
 /**
  * GET /mr-history/mr14 - Get user's reflection logs
  */
-router.get('/mr14', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/mr14', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { sessionId, limit = 50, offset = 0 } = req.query;
@@ -589,7 +589,7 @@ router.get('/mr14', async (req: AuthRequest, res: Response, next: NextFunction) 
 /**
  * POST /mr-history/mr14 - Save a reflection log
  */
-router.post('/mr14', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/mr14', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const {
@@ -651,7 +651,7 @@ router.post('/mr14', async (req: AuthRequest, res: Response, next: NextFunction)
 /**
  * GET /mr-history/mr6 - Get user's model comparisons
  */
-router.get('/mr6', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/mr6', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { sessionId, limit = 50, offset = 0 } = req.query;
@@ -697,7 +697,7 @@ router.get('/mr6', async (req: AuthRequest, res: Response, next: NextFunction) =
 /**
  * POST /mr-history/mr6 - Save a model comparison
  */
-router.post('/mr6', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/mr6', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const {
@@ -757,7 +757,7 @@ router.post('/mr6', async (req: AuthRequest, res: Response, next: NextFunction) 
 /**
  * GET /mr-history/mr12 - Get user's evaluation sessions
  */
-router.get('/mr12', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/mr12', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const { sessionId, limit = 50, offset = 0 } = req.query;
@@ -807,7 +807,7 @@ router.get('/mr12', async (req: AuthRequest, res: Response, next: NextFunction) 
 /**
  * POST /mr-history/mr12 - Save an evaluation session
  */
-router.post('/mr12', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/mr12', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     const {
@@ -875,7 +875,7 @@ router.post('/mr12', async (req: AuthRequest, res: Response, next: NextFunction)
 /**
  * GET /mr-history/stats - Get aggregated statistics for all MR tools
  */
-router.get('/stats', async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get('/stats', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
 
