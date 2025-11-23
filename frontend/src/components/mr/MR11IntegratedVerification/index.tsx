@@ -236,15 +236,11 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     <div className="mr11-container">
       {/* Header */}
       <div className="mr11-header">
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-          <h1 className="mr11-title">Integrated Verification Tools</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h1 className="mr11-title" style={{ margin: 0 }}>Integrated Verification Tools</h1>
           <button
             onClick={() => setShowHistory(!showHistory)}
             style={{
-              position: 'absolute',
-              right: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
               padding: '0.4rem 0.8rem',
               fontSize: '0.85rem',
               background: showHistory ? '#0066ff' : '#f0f0f0',
@@ -252,6 +248,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
               border: '1px solid #ddd',
               borderRadius: '4px',
               cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
             {showHistory ? 'Hide History' : 'View History'}

@@ -274,15 +274,11 @@ export const MR14GuidedReflectionMechanism: React.FC<MR14Props> = ({
   return (
     <div className="mr14-container">
       <div className="mr14-header">
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-          <h1 className="mr14-title">Guided Reflection</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h1 className="mr14-title" style={{ margin: 0 }}>Guided Reflection</h1>
           <button
             onClick={() => setShowHistory(!showHistory)}
             style={{
-              position: 'absolute',
-              right: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
               padding: '0.4rem 0.8rem',
               fontSize: '0.85rem',
               background: showHistory ? '#0066ff' : '#f0f0f0',
@@ -290,6 +286,7 @@ export const MR14GuidedReflectionMechanism: React.FC<MR14Props> = ({
               border: '1px solid #ddd',
               borderRadius: '4px',
               cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
             {showHistory ? 'Hide History' : 'View History'}

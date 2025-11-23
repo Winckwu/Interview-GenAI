@@ -217,15 +217,11 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
     <div className="mr7-container">
       {/* Header */}
       <div className="mr7-header">
-        <div className="mr7-header-top" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-          <h1 className="mr7-title">Learning from Failures</h1>
+        <div className="mr7-header-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h1 className="mr7-title" style={{ margin: 0 }}>Learning from Failures</h1>
           <button
             onClick={() => setShowHistory(!showHistory)}
             style={{
-              position: 'absolute',
-              right: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
               padding: '0.4rem 0.8rem',
               fontSize: '0.85rem',
               background: showHistory ? '#0066ff' : '#f0f0f0',
@@ -233,6 +229,7 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
               border: '1px solid #ddd',
               borderRadius: '4px',
               cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
             {showHistory ? 'Hide History' : 'View History'}

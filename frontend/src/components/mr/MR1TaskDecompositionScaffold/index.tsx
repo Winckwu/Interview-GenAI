@@ -721,9 +721,9 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   return (
     <div className="mr1-container">
       <div className="mr1-header">
-        <div className="mr1-header-top">
-          <h1 className="mr1-title">✂️ Task Decomposition Scaffold</h1>
-          <div style={{ position: 'absolute', right: 0, display: 'flex', gap: '0.5rem' }}>
+        <div className="mr1-header-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h1 className="mr1-title" style={{ margin: 0 }}>✂️ Task Decomposition Scaffold</h1>
+          <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
             <button
               className="mr1-btn-reset"
               onClick={() => setShowHistory(!showHistory)}
