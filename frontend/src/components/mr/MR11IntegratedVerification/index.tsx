@@ -44,7 +44,6 @@ import './styles.css';
 interface MR11Props {
   sessionId?: string;
   onDecisionMade?: (log: VerificationLog) => void;
-  existingLogs?: VerificationLog[];
   /** Pre-fill content from a specific message */
   initialContent?: string;
   /** ID of the message being verified (for callback tracking) */
@@ -58,13 +57,11 @@ type TabType = 'verify' | 'history' | 'stats';
 const MR11IntegratedVerification: React.FC<MR11Props> = ({
   sessionId,
   onDecisionMade,
-  existingLogs = [],
   initialContent = '',
   messageId,
   onMessageVerified
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('verify');
-  const [logs, setLogs] = useState<VerificationLog[]>(existingLogs);
 
   // Verification workflow states - pre-fill from initialContent if provided
   const [contentText, setContentText] = useState(initialContent);
@@ -74,8 +71,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   const [userDecision, setUserDecision] = useState<UserDecision | null>(null);
   const [decisionNotes, setDecisionNotes] = useState('');
 
-  // Database history state
-  const [showHistory, setShowHistory] = useState(false);
+  // Database history state (shown in History tab)
   const [dbHistory, setDbHistory] = useState<DBVerificationLog[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
@@ -105,12 +101,12 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     }
   }, [sessionId]);
 
-  // Load history when showing history panel or stats tab
+  // Load history when History tab or Stats tab is active
   useEffect(() => {
-    if (showHistory || activeTab === 'stats') {
+    if (activeTab === 'history' || activeTab === 'stats') {
       loadHistoryFromDB();
     }
-  }, [showHistory, activeTab, loadHistoryFromDB]);
+  }, [activeTab, loadHistoryFromDB]);
 
   /**
    * Save verification log to database
@@ -220,7 +216,6 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     }
 
     const log = createVerificationLog(verificationResult, userDecision, decisionNotes);
-    setLogs([...logs, log]);
     onDecisionMade?.(log);
 
     // Save to database (only for non-skip decisions)
@@ -240,7 +235,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     setVerificationResult(null);
     setUserDecision(null);
     setDecisionNotes('');
-  }, [verificationResult, userDecision, decisionNotes, logs, onDecisionMade, messageId, onMessageVerified, saveLogToDB, loadHistoryFromDB]);
+  }, [verificationResult, userDecision, decisionNotes, onDecisionMade, messageId, onMessageVerified, saveLogToDB, loadHistoryFromDB]);
 
   /**
    * Update decision and evaluate actual correctness
@@ -254,184 +249,10 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     <div className="mr11-container">
       {/* Header */}
       <div className="mr11-header">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <h1 className="mr11-title" style={{ margin: 0 }}>Integrated Verification Tools</h1>
-          <button
-            onClick={() => setShowHistory(!showHistory)}
-            style={{
-              padding: '0.4rem 0.8rem',
-              fontSize: '0.85rem',
-              background: showHistory ? '#0066ff' : '#f0f0f0',
-              color: showHistory ? 'white' : '#666',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}
-          >
-            {showHistory ? 'Hide History' : 'View History'}
-          </button>
-        </div>
+        <h1 className="mr11-title">Integrated Verification Tools</h1>
         <p className="mr11-subtitle">
           Verify AI-generated content with one-click verification methods
         </p>
-
-        {/* Database History Panel */}
-        {showHistory && (
-          <div style={{
-            margin: '1rem 0',
-            padding: '1rem',
-            background: '#f9f9f9',
-            borderRadius: '6px',
-            border: '1px solid #e0e0e0',
-            textAlign: 'left',
-          }}>
-            <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem' }}>
-              Verification History ({dbHistory.length})
-            </h3>
-            {loadingHistory ? (
-              <p style={{ color: '#666' }}>Loading history...</p>
-            ) : dbHistory.length === 0 ? (
-              <p style={{ color: '#666' }}>No verification logs saved yet.</p>
-            ) : (
-              <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-                {dbHistory.map((log) => {
-                  const isExpanded = expandedHistoryId === log.id;
-                  return (
-                    <div
-                      key={log.id}
-                      style={{
-                        padding: '0.75rem',
-                        marginBottom: '0.5rem',
-                        background: 'white',
-                        borderRadius: '6px',
-                        border: isExpanded ? '2px solid #3b82f6' : '1px solid #eee',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                      }}
-                      onClick={() => setExpandedHistoryId(isExpanded ? null : log.id)}
-                    >
-                      {/* Header - always visible */}
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <span style={{ fontSize: '1rem' }}>
-                            {isExpanded ? '▼' : '▶'}
-                          </span>
-                          <span style={{ fontWeight: 600 }}>
-                            {log.contentType} - {log.verificationMethod}
-                          </span>
-                        </div>
-                        <span style={{
-                          padding: '0.2rem 0.5rem',
-                          borderRadius: '4px',
-                          fontSize: '0.75rem',
-                          fontWeight: 600,
-                          background: log.userDecision === 'accept' ? '#d1fae5' : log.userDecision === 'reject' ? '#fee2e2' : '#fef3c7',
-                          color: log.userDecision === 'accept' ? '#065f46' : log.userDecision === 'reject' ? '#991b1b' : '#92400e',
-                        }}>
-                          {log.userDecision}
-                        </span>
-                      </div>
-                      <div style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
-                        Status: {log.verificationStatus}
-                        {log.confidenceScore !== undefined && ` • Confidence: ${Math.round(log.confidenceScore * 100)}%`}
-                      </div>
-                      <div style={{ fontSize: '0.75rem', color: '#888', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
-                        {new Date(log.createdAt).toLocaleString()}
-                      </div>
-
-                      {/* Expanded details */}
-                      {isExpanded && (
-                        <div style={{
-                          marginTop: '1rem',
-                          paddingTop: '1rem',
-                          borderTop: '1px solid #e5e7eb',
-                        }}>
-                          {/* Content Text */}
-                          {log.contentText && (
-                            <div style={{ marginBottom: '0.75rem' }}>
-                              <strong style={{ fontSize: '0.8rem', color: '#374151' }}>📝 Verified Content:</strong>
-                              <div style={{
-                                marginTop: '0.25rem',
-                                padding: '0.5rem',
-                                background: '#f9fafb',
-                                borderRadius: '4px',
-                                fontSize: '0.8rem',
-                                color: '#4b5563',
-                                maxHeight: '100px',
-                                overflow: 'auto',
-                                whiteSpace: 'pre-wrap',
-                                wordBreak: 'break-word',
-                              }}>
-                                {log.contentText}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Tool Used */}
-                          {log.toolUsed && (
-                            <div style={{ marginBottom: '0.5rem', fontSize: '0.85rem' }}>
-                              <strong>🔧 Tool:</strong> {log.toolUsed}
-                            </div>
-                          )}
-
-                          {/* Findings */}
-                          {log.findings && log.findings.length > 0 && (
-                            <div style={{ marginBottom: '0.75rem' }}>
-                              <strong style={{ fontSize: '0.8rem', color: '#059669' }}>✅ Findings:</strong>
-                              <ul style={{ margin: '0.25rem 0 0 1.25rem', padding: 0, fontSize: '0.8rem', color: '#065f46' }}>
-                                {log.findings.map((finding, idx) => (
-                                  <li key={idx}>{finding}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                          {/* Discrepancies */}
-                          {log.discrepancies && log.discrepancies.length > 0 && (
-                            <div style={{ marginBottom: '0.75rem' }}>
-                              <strong style={{ fontSize: '0.8rem', color: '#dc2626' }}>⚠️ Discrepancies:</strong>
-                              <ul style={{ margin: '0.25rem 0 0 1.25rem', padding: 0, fontSize: '0.8rem', color: '#991b1b' }}>
-                                {log.discrepancies.map((disc, idx) => (
-                                  <li key={idx}>{disc}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                          {/* Suggestions */}
-                          {log.suggestions && log.suggestions.length > 0 && (
-                            <div style={{ marginBottom: '0.75rem' }}>
-                              <strong style={{ fontSize: '0.8rem', color: '#2563eb' }}>💡 Suggestions:</strong>
-                              <ul style={{ margin: '0.25rem 0 0 1.25rem', padding: 0, fontSize: '0.8rem', color: '#1e40af' }}>
-                                {log.suggestions.map((sugg, idx) => (
-                                  <li key={idx}>{sugg}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                          {/* User Notes */}
-                          {log.userNotes && (
-                            <div style={{
-                              marginTop: '0.5rem',
-                              padding: '0.5rem',
-                              background: '#fef3c7',
-                              borderRadius: '4px',
-                              fontSize: '0.8rem',
-                            }}>
-                              <strong>📝 Your Notes:</strong> {log.userNotes}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       {/* Tabs */}
@@ -446,7 +267,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
           className={`mr11-tab ${activeTab === 'history' ? 'active' : ''}`}
           onClick={() => setActiveTab('history')}
         >
-          Verification History ({logs.length})
+          Verification History ({dbHistory.length})
         </button>
         <button
           className={`mr11-tab ${activeTab === 'stats' ? 'active' : ''}`}
@@ -706,63 +527,152 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
           </div>
         )}
 
-        {/* History Tab */}
+        {/* History Tab - Shows database history */}
         {activeTab === 'history' && (
           <div className="mr11-history">
-            {logs.length === 0 ? (
+            {loadingHistory ? (
+              <div className="mr11-empty-state">
+                <p>Loading history...</p>
+              </div>
+            ) : dbHistory.length === 0 ? (
               <div className="mr11-empty-state">
                 <p>No verification history yet. Start verifying content!</p>
               </div>
             ) : (
-              <div className="mr11-history-list">
-                {logs.map((log, idx) => (
-                  <div key={log.id} className="mr11-history-card">
-                    <div className="mr11-history-header">
-                      <div>
-                        <div className="mr11-history-status">
-                          {log.result.status === 'error-found' && '⚠️ Errors Found'}
-                          {log.result.status === 'verified' && '✅ Verified'}
-                          {log.result.status === 'partially-verified' && '📊 Partially Verified'}
-                          {log.result.status === 'unverified' && '❓ Unverified'}
+              <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                {dbHistory.map((log) => {
+                  const isExpanded = expandedHistoryId === log.id;
+                  return (
+                    <div
+                      key={log.id}
+                      style={{
+                        padding: '0.75rem',
+                        marginBottom: '0.5rem',
+                        background: 'white',
+                        borderRadius: '6px',
+                        border: isExpanded ? '2px solid #3b82f6' : '1px solid #eee',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                      }}
+                      onClick={() => setExpandedHistoryId(isExpanded ? null : log.id)}
+                    >
+                      {/* Header - always visible */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ fontSize: '1rem' }}>
+                            {isExpanded ? '▼' : '▶'}
+                          </span>
+                          <span style={{ fontWeight: 600 }}>
+                            {log.contentType} - {log.verificationMethod}
+                          </span>
                         </div>
-                        <div className="mr11-history-method">
-                          {log.result.verificationMethod} ({log.result.toolUsed})
+                        <span style={{
+                          padding: '0.2rem 0.5rem',
+                          borderRadius: '4px',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          background: log.userDecision === 'accept' ? '#d1fae5' : log.userDecision === 'reject' ? '#fee2e2' : '#fef3c7',
+                          color: log.userDecision === 'accept' ? '#065f46' : log.userDecision === 'reject' ? '#991b1b' : '#92400e',
+                        }}>
+                          {log.userDecision}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
+                        Status: {log.verificationStatus}
+                        {log.confidenceScore !== undefined && ` • Confidence: ${Math.round(log.confidenceScore * 100)}%`}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: '#888', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
+                        {new Date(log.createdAt).toLocaleString()}
+                      </div>
+
+                      {/* Expanded details */}
+                      {isExpanded && (
+                        <div style={{
+                          marginTop: '1rem',
+                          paddingTop: '1rem',
+                          borderTop: '1px solid #e5e7eb',
+                        }}>
+                          {/* Content Text */}
+                          {log.contentText && (
+                            <div style={{ marginBottom: '0.75rem' }}>
+                              <strong style={{ fontSize: '0.8rem', color: '#374151' }}>📝 Verified Content:</strong>
+                              <div style={{
+                                marginTop: '0.25rem',
+                                padding: '0.5rem',
+                                background: '#f9fafb',
+                                borderRadius: '4px',
+                                fontSize: '0.8rem',
+                                color: '#4b5563',
+                                maxHeight: '100px',
+                                overflow: 'auto',
+                                whiteSpace: 'pre-wrap',
+                                wordBreak: 'break-word',
+                              }}>
+                                {log.contentText}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Tool Used */}
+                          {log.toolUsed && (
+                            <div style={{ marginBottom: '0.5rem', fontSize: '0.85rem' }}>
+                              <strong>🔧 Tool:</strong> {log.toolUsed}
+                            </div>
+                          )}
+
+                          {/* Findings */}
+                          {log.findings && log.findings.length > 0 && (
+                            <div style={{ marginBottom: '0.75rem' }}>
+                              <strong style={{ fontSize: '0.8rem', color: '#059669' }}>✅ Findings:</strong>
+                              <ul style={{ margin: '0.25rem 0 0 1.25rem', padding: 0, fontSize: '0.8rem', color: '#065f46' }}>
+                                {log.findings.map((finding, idx) => (
+                                  <li key={idx}>{finding}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Discrepancies */}
+                          {log.discrepancies && log.discrepancies.length > 0 && (
+                            <div style={{ marginBottom: '0.75rem' }}>
+                              <strong style={{ fontSize: '0.8rem', color: '#dc2626' }}>⚠️ Discrepancies:</strong>
+                              <ul style={{ margin: '0.25rem 0 0 1.25rem', padding: 0, fontSize: '0.8rem', color: '#991b1b' }}>
+                                {log.discrepancies.map((disc, idx) => (
+                                  <li key={idx}>{disc}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Suggestions */}
+                          {log.suggestions && log.suggestions.length > 0 && (
+                            <div style={{ marginBottom: '0.75rem' }}>
+                              <strong style={{ fontSize: '0.8rem', color: '#2563eb' }}>💡 Suggestions:</strong>
+                              <ul style={{ margin: '0.25rem 0 0 1.25rem', padding: 0, fontSize: '0.8rem', color: '#1e40af' }}>
+                                {log.suggestions.map((sugg, idx) => (
+                                  <li key={idx}>{sugg}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* User Notes */}
+                          {log.userNotes && (
+                            <div style={{
+                              marginTop: '0.5rem',
+                              padding: '0.5rem',
+                              background: '#fef3c7',
+                              borderRadius: '4px',
+                              fontSize: '0.8rem',
+                            }}>
+                              <strong>📝 Your Notes:</strong> {log.userNotes}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                      <div className="mr11-history-date">
-                        {new Date(log.result.timestamp).toLocaleDateString()}
-                      </div>
+                      )}
                     </div>
-
-                    <div className="mr11-history-decision">
-                      <span className="mr11-decision-label">Decision:</span>
-                      <span className="mr11-decision-value">
-                        {log.userDecision === 'accept' && '✅ Accepted'}
-                        {log.userDecision === 'modify' && '✏️ Modified'}
-                        {log.userDecision === 'reject' && '❌ Rejected'}
-                        {log.userDecision === 'skip' && '⏭️ Skipped'}
-                      </span>
-                    </div>
-
-                    {log.userNotes && (
-                      <div className="mr11-history-notes">
-                        <strong>Notes:</strong> {log.userNotes}
-                      </div>
-                    )}
-
-                    {log.result.findings.length > 0 && (
-                      <div className="mr11-history-findings">
-                        <strong>Findings:</strong>
-                        <ul>
-                          {log.result.findings.slice(0, 2).map((finding, idx) => (
-                            <li key={idx}>{finding}</li>
-                          ))}
-                          {log.result.findings.length > 2 && <li>+{log.result.findings.length - 2} more</li>}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
