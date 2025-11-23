@@ -797,6 +797,63 @@
   color: var(--mr2-secondary, #666);
 }
 
+/* Different topic notice */
+.mr2-different-topic-notice {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: var(--mr2-secondary-bg, #f8f9fa);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.mr2-different-topic-notice h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.1rem;
+  color: var(--mr2-accent, #0066ff);
+}
+
+.mr2-different-topic-notice > p {
+  margin: 0 0 1rem 0;
+  color: var(--mr2-secondary, #666);
+}
+
+.mr2-topic-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--mr2-bg, #ffffff);
+  border-radius: 6px;
+  border: 1px solid var(--mr2-border, #e0e0e0);
+}
+
+.mr2-topic-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mr2-topic-item strong {
+  font-size: 0.875rem;
+  color: var(--mr2-text, #1a1a1a);
+}
+
+.mr2-topic-prompt {
+  font-size: 0.8125rem;
+  color: var(--mr2-secondary, #666);
+  font-style: italic;
+  word-break: break-word;
+}
+
+.mr2-topic-hint {
+  margin: 1rem 0 0 0 !important;
+  font-size: 0.8125rem;
+  color: var(--mr2-secondary, #888);
+  font-style: italic;
+}
+
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   .mr2-container {

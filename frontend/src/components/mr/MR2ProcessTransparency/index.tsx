@@ -71,6 +71,44 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   const [expandedReasons, setExpandedReasons] = useState<Set<number>>(new Set());
   const [diffs, setDiffs] = useState<DiffChange[]>([]);
   const [chainOfThought, setChainOfThought] = useState<ChainOfThoughtStep[]>([]);
+  const [isDifferentTopic, setIsDifferentTopic] = useState<boolean>(false);
+
+  /**
+   * Check if two prompts are similar (indicating a refinement/regeneration vs new topic)
+   * Returns true if prompts are similar enough to warrant comparison
+   */
+  const arePromptsSimilar = (prompt1: string, prompt2: string): boolean => {
+    // Normalize prompts
+    const p1 = prompt1.toLowerCase().trim();
+    const p2 = prompt2.toLowerCase().trim();
+
+    // Exact match
+    if (p1 === p2) return true;
+
+    // Very short prompts that are different are likely different topics
+    if (p1.length < 10 || p2.length < 10) {
+      return p1 === p2;
+    }
+
+    // Calculate simple similarity based on word overlap
+    const words1 = new Set(p1.split(/\s+/).filter(w => w.length > 2));
+    const words2 = new Set(p2.split(/\s+/).filter(w => w.length > 2));
+
+    if (words1.size === 0 || words2.size === 0) return false;
+
+    // Count overlapping words
+    let overlap = 0;
+    words1.forEach(word => {
+      if (words2.has(word)) overlap++;
+    });
+
+    // Calculate Jaccard similarity
+    const union = new Set([...words1, ...words2]).size;
+    const similarity = overlap / union;
+
+    // Consider similar if > 50% word overlap
+    return similarity > 0.5;
+  };
 
   /**
    * Handle version selection
@@ -81,13 +119,28 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
       const selectedVersion = versions.find(v => v.id === versionId);
 
       if (selectedVersion) {
-        // Generate diff from previous version
+        // Generate diff from previous version ONLY if prompts are similar
         if (versions.length > 1) {
           const versionIndex = versions.findIndex(v => v.id === versionId);
           if (versionIndex > 0) {
             const prevVersion = versions[versionIndex - 1];
-            const diffResult = generateDiff(prevVersion.aiOutput, selectedVersion.aiOutput);
-            setDiffs(diffResult);
+
+            // Check if prompts are similar (same topic/refinement vs completely different question)
+            const similar = arePromptsSimilar(prevVersion.userPrompt, selectedVersion.userPrompt);
+            setIsDifferentTopic(!similar);
+
+            if (similar) {
+              // Only compare outputs when prompts are related
+              const diffResult = generateDiff(prevVersion.aiOutput, selectedVersion.aiOutput);
+              setDiffs(diffResult);
+            } else {
+              // Different topics - don't show meaningless diff
+              setDiffs([]);
+            }
+          } else {
+            // First version - no comparison possible
+            setIsDifferentTopic(false);
+            setDiffs([]);
           }
         }
 
@@ -268,10 +321,47 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
    */
   const renderDiffView = () => {
     const selectedVersion = versions.find(v => v.id === selectedVersionId);
+    const versionIndex = versions.findIndex(v => v.id === selectedVersionId);
+
+    // First version - no previous to compare
+    if (versionIndex === 0) {
+      return (
+        <div className="mr2-empty-state">
+          <p>This is the first turn - no previous version to compare</p>
+        </div>
+      );
+    }
+
+    // Different topics - comparison not meaningful
+    if (isDifferentTopic) {
+      const prevVersion = versionIndex > 0 ? versions[versionIndex - 1] : null;
+      return (
+        <div className="mr2-empty-state">
+          <div className="mr2-different-topic-notice">
+            <h3>🔀 Different Topics</h3>
+            <p>These turns discuss different topics, so output comparison is not applicable.</p>
+            {prevVersion && (
+              <div className="mr2-topic-comparison">
+                <div className="mr2-topic-item">
+                  <strong>Turn {prevVersion.promptVersion}:</strong>
+                  <span className="mr2-topic-prompt">{prevVersion.userPrompt.substring(0, 100)}{prevVersion.userPrompt.length > 100 ? '...' : ''}</span>
+                </div>
+                <div className="mr2-topic-item">
+                  <strong>Turn {selectedVersion?.promptVersion}:</strong>
+                  <span className="mr2-topic-prompt">{selectedVersion?.userPrompt.substring(0, 100)}{(selectedVersion?.userPrompt.length || 0) > 100 ? '...' : ''}</span>
+                </div>
+              </div>
+            )}
+            <p className="mr2-topic-hint">Output diffs are shown when you refine the same prompt or regenerate a response.</p>
+          </div>
+        </div>
+      );
+    }
+
     if (!selectedVersion || diffs.length === 0) {
       return (
         <div className="mr2-empty-state">
-          <p>Select a version to view changes</p>
+          <p>No changes detected between versions</p>
         </div>
       );
     }
