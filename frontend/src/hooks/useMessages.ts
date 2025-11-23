@@ -60,6 +60,7 @@ export interface Message {
 
 export interface UseMessagesOptions {
   sessionId: string;
+  systemPrompt?: string;  // MR4: Role-based system prompt to constrain AI behavior
   onSendSuccess?: (interaction: any) => void;
   onVerifySuccess?: () => void;
   onModifySuccess?: () => void;
@@ -138,7 +139,7 @@ const batchUpdateInteractions = async (
 // ============================================================
 
 export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
-  const { sessionId, onSendSuccess, onVerifySuccess, onModifySuccess, onError } = options;
+  const { sessionId, systemPrompt, onSendSuccess, onVerifySuccess, onModifySuccess, onError } = options;
   const { addInteraction } = useSessionStore();
 
   // Message state
@@ -340,7 +341,10 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
           role: m.role === 'user' ? 'user' : 'assistant',
           content: m.content,
         })),
-        { useWebSearch: useWebSearch || false }
+        {
+          useWebSearch: useWebSearch || false,
+          systemPrompt: systemPrompt || undefined,  // MR4: Role constraint
+        }
       );
 
       abortControllerRef.current = abort;
@@ -478,7 +482,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     } finally {
       setLoading(false);
     }
-  }, [sessionId, messages, addInteraction, onSendSuccess, onError]);
+  }, [sessionId, messages, systemPrompt, addInteraction, onSendSuccess, onError]);
 
   /**
    * Mark interaction as verified

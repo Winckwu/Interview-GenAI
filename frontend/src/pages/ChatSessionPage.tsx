@@ -63,6 +63,13 @@ import MRInterventionNotification, {
 } from '../components/MRInterventionNotification';
 import OnboardingTour from '../components/OnboardingTour';
 import { detectTaskType, type TaskType } from '../components/mr/MR8TaskCharacteristicRecognition/utils';
+import {
+  type AIRole,
+  type RoleContext,
+  getCombinedRoleSystemPrompt,
+  getRoleIndicatorPrefix,
+  getRoleTemplate,
+} from '../components/mr/MR4RoleDefinitionGuidance/utils';
 
 // OPTIMIZATION: Lazy-load heavy components to reduce ChatSessionPage bundle size
 // These components are only needed when specific features are active
@@ -278,9 +285,20 @@ const ChatSessionPage: React.FC = () => {
   // Session metadata (needed by hooks)
   const [sessionData, setSessionData] = useState<any>(null);
 
+  // MR4: Selected AI roles for constraining AI behavior
+  const [selectedRoles, setSelectedRoles] = useState<AIRole[]>([]);
+  const [roleContext, setRoleContext] = useState<RoleContext | null>(null);
+
+  // Generate system prompt from selected roles
+  const roleSystemPrompt = React.useMemo(() => {
+    if (selectedRoles.length === 0) return undefined;
+    return getCombinedRoleSystemPrompt(selectedRoles);
+  }, [selectedRoles]);
+
   // Hook 1: Messages Management
   const messagesHook = useMessages({
     sessionId: sessionId || '',
+    systemPrompt: roleSystemPrompt,  // MR4: Pass role constraint to AI
     onSendSuccess: (interaction) => {
       // Add session to sidebar if it's a new session (not in the list yet)
       if (sessionId && !sessions.some((s) => s.id === sessionId)) {
@@ -1612,7 +1630,24 @@ Message: "${firstMessage.slice(0, 200)}"`,
       case 'mr3-agency':
         return <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />;
       case 'mr4-roles':
-        return <MR4RoleDefinitionGuidance taskType={sessionData?.taskType || 'general'} onRoleSelect={(r) => console.log('Role:', r)} onOpenMR8={openMR8TaskRecognition} />;
+        return <MR4RoleDefinitionGuidance
+          taskType={sessionData?.taskType || 'general'}
+          selectedRoles={selectedRoles}
+          onRoleSelected={(roles) => {
+            setSelectedRoles(roles);
+            console.log('[MR4] Roles selected:', roles);
+          }}
+          onRoleConfirmed={(context) => {
+            setRoleContext(context);
+            setSelectedRoles(context.selectedRoles);
+            console.log('[MR4] Roles confirmed:', context);
+            // Show success message
+            messagesHook.setSuccessMessage(
+              `AI role${context.selectedRoles.length > 1 ? 's' : ''} set: ${context.selectedRoles.map(r => getRoleTemplate(r).displayName).join(' + ')}`
+            );
+          }}
+          onOpenMR8={openMR8TaskRecognition}
+        />;
       case 'mr5-iteration':
         return <MR5LowCostIteration sessionId={sessionId || ''} currentMessages={messages} branches={conversationBranches} onBranchCreate={(b) => setConversationBranches([...conversationBranches, b])} onVariantGenerate={(v) => console.log('Variants:', v)} onVariantSelected={handleMR5VariantSelected} onOpenMR6={openMR6CrossModel} />;
       case 'mr6-models': {
@@ -3924,6 +3959,49 @@ Message: "${firstMessage.slice(0, 200)}"`,
           boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.05)',
           flexShrink: 0,
         }}>
+          {/* MR4: Active Role Indicator */}
+          {selectedRoles.length > 0 && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginBottom: '0.5rem',
+              padding: '0.375rem 0.75rem',
+              backgroundColor: '#f0f9ff',
+              border: '1px solid #bae6fd',
+              borderRadius: '0.375rem',
+              fontSize: '0.75rem',
+              color: '#0369a1',
+              maxWidth: '900px',
+              margin: '0 auto 0.5rem auto',
+            }}>
+              <span style={{ fontWeight: 600 }}>🎭 AI Role:</span>
+              <span>{selectedRoles.map(r => getRoleTemplate(r).displayName).join(' + ')}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedRoles([]);
+                  setRoleContext(null);
+                  messagesHook.setSuccessMessage('AI role cleared - using default behavior');
+                }}
+                style={{
+                  marginLeft: 'auto',
+                  padding: '0.125rem 0.375rem',
+                  backgroundColor: 'transparent',
+                  border: '1px solid #0369a1',
+                  borderRadius: '0.25rem',
+                  color: '#0369a1',
+                  fontSize: '0.7rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+                title="Clear role and use default AI behavior"
+              >
+                Clear
+              </button>
+            </div>
+          )}
           <form
             onSubmit={handleSendMessage}
             style={{

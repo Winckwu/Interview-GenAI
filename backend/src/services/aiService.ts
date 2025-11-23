@@ -98,25 +98,32 @@ export const callOpenAI = async (
 };
 
 /**
+ * Options for streaming AI response
+ */
+export interface StreamOptions {
+  customSystemPrompt?: string;  // MR4: Role-based system prompt to constrain AI behavior
+}
+
+/**
  * Call OpenAI API with streaming response
  * @param userPrompt - User's message
  * @param conversationHistory - Optional previous messages for context
  * @param onChunk - Callback for each streamed chunk
+ * @param options - Additional options including custom system prompt
  * @returns Final usage stats
  */
 export const callOpenAIStream = async (
   userPrompt: string,
   conversationHistory: Array<{ role: string; content: string }> = [],
-  onChunk: StreamCallback
+  onChunk: StreamCallback,
+  options: StreamOptions = {}
 ): Promise<{ model: string; content: string }> => {
   try {
     // Build messages array
     const messages: any[] = [];
 
-    // Add system prompt with reasoning instruction (强制要求)
-    messages.push({
-      role: 'system',
-      content: `You are a helpful AI assistant. Be concise, accurate, and provide clear explanations.
+    // Base system prompt with reasoning instruction
+    const baseSystemPrompt = `You are a helpful AI assistant. Be concise, accurate, and provide clear explanations.
 
 **MANDATORY REQUIREMENT - MUST FOLLOW:**
 You MUST start EVERY response with <thinking> tags. This is NON-NEGOTIABLE.
@@ -136,7 +143,25 @@ RULES:
 - The thinking section shows your reasoning process
 - NEVER skip or omit the <thinking> section
 
-This helps users understand AI decision-making and builds transparency.`,
+This helps users understand AI decision-making and builds transparency.`;
+
+    // MR4: If custom role system prompt is provided, append it to base prompt
+    let finalSystemPrompt = baseSystemPrompt;
+    if (options.customSystemPrompt) {
+      finalSystemPrompt = `${baseSystemPrompt}
+
+---
+
+**ROLE CONSTRAINT (MR4 - User Defined):**
+${options.customSystemPrompt}
+
+You MUST adhere to the role constraints above while maintaining the thinking format requirement.`;
+    }
+
+    // Add system prompt
+    messages.push({
+      role: 'system',
+      content: finalSystemPrompt,
     });
 
     // Add conversation history if provided

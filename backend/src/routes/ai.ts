@@ -123,7 +123,13 @@ router.post(
   '/chat/stream',
   authenticateToken,
   async (req: Request, res: Response) => {
-    const { userPrompt, conversationHistory = [], useWebSearch = false, autoDetectSearch = false } = req.body;
+    const {
+      userPrompt,
+      conversationHistory = [],
+      useWebSearch = false,
+      autoDetectSearch = false,
+      systemPrompt,  // MR4: Role-based system prompt to constrain AI behavior
+    } = req.body;
 
     // Validation
     if (!userPrompt || userPrompt.trim().length === 0) {
@@ -183,39 +189,45 @@ router.post(
       }
 
       // Stream AI response
+      // MR4: Pass custom system prompt if provided for role constraint
       let fullContent = '';
-      await callOpenAIStream(enhancedPrompt, conversationHistory, (chunk, done) => {
-        if (done) {
-          const responseTime = Date.now() - startTime;
+      await callOpenAIStream(
+        enhancedPrompt,
+        conversationHistory,
+        (chunk, done) => {
+          if (done) {
+            const responseTime = Date.now() - startTime;
 
-          // Parse reasoning from <thinking> tags
-          let reasoning = null;
-          let cleanContent = fullContent;
-          const thinkingMatch = fullContent.match(/<thinking>([\s\S]*?)<\/thinking>/);
-          if (thinkingMatch) {
-            reasoning = thinkingMatch[1].trim();
-            // Remove thinking tags from display content
-            cleanContent = fullContent.replace(/<thinking>[\s\S]*?<\/thinking>\s*/, '').trim();
+            // Parse reasoning from <thinking> tags
+            let reasoning = null;
+            let cleanContent = fullContent;
+            const thinkingMatch = fullContent.match(/<thinking>([\s\S]*?)<\/thinking>/);
+            if (thinkingMatch) {
+              reasoning = thinkingMatch[1].trim();
+              // Remove thinking tags from display content
+              cleanContent = fullContent.replace(/<thinking>[\s\S]*?<\/thinking>\s*/, '').trim();
+            }
+
+            // Send completion event with metadata and reasoning
+            res.write(`data: ${JSON.stringify({
+              type: 'done',
+              responseTime,
+              webSearchUsed: shouldSearch && searchResults !== null,
+              reasoning,
+              cleanContent,
+            })}\n\n`);
+            res.end();
+          } else {
+            fullContent += chunk;
+            // Send chunk (including thinking tags - frontend will handle display)
+            res.write(`data: ${JSON.stringify({
+              type: 'chunk',
+              content: chunk
+            })}\n\n`);
           }
-
-          // Send completion event with metadata and reasoning
-          res.write(`data: ${JSON.stringify({
-            type: 'done',
-            responseTime,
-            webSearchUsed: shouldSearch && searchResults !== null,
-            reasoning,
-            cleanContent,
-          })}\n\n`);
-          res.end();
-        } else {
-          fullContent += chunk;
-          // Send chunk (including thinking tags - frontend will handle display)
-          res.write(`data: ${JSON.stringify({
-            type: 'chunk',
-            content: chunk
-          })}\n\n`);
-        }
-      });
+        },
+        { customSystemPrompt: systemPrompt }  // MR4: Role constraint
+      );
     } catch (error: any) {
       console.error('AI Stream Error:', error);
       res.write(`data: ${JSON.stringify({

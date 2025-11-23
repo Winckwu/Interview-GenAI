@@ -293,7 +293,11 @@ export const apiService = {
     chatStream: (
       userPrompt: string,
       conversationHistory: any[] = [],
-      options: { useWebSearch?: boolean; autoDetectSearch?: boolean } = {}
+      options: {
+        useWebSearch?: boolean;
+        autoDetectSearch?: boolean;
+        systemPrompt?: string;  // MR4: Role-based system prompt to constrain AI behavior
+      } = {}
     ): Promise<{
       stream: ReadableStreamDefaultReader<Uint8Array>;
       abort: () => void;
@@ -315,6 +319,7 @@ export const apiService = {
           conversationHistory,
           useWebSearch: options.useWebSearch || false,
           autoDetectSearch: options.autoDetectSearch || false,
+          systemPrompt: options.systemPrompt || undefined,  // MR4: Role constraint
         }),
         signal: controller.signal,
       }).then(response => {
