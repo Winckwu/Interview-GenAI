@@ -16,7 +16,7 @@
  * This addresses the biggest UX pain point: iteration should feel effortless
  */
 
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import {
   ConversationBranch,
   IterationVariant,
@@ -94,6 +94,67 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   const [branchStreamingContent, setBranchStreamingContent] = useState('');
   const branchAbortRef = useRef<(() => void) | null>(null);
 
+  /**
+   * Load branches from database on mount
+   */
+  useEffect(() => {
+    const loadBranches = async () => {
+      try {
+        const response = await apiService.mrHistory.mr5.listBranches({
+          sessionId: sessionId || undefined,
+          limit: 50,
+        });
+        const dbBranches = response.data.data.branches || [];
+        // Convert DB format to local format
+        const loadedBranches: ConversationBranch[] = dbBranches.map((db: any) => ({
+          id: db.id,
+          name: db.branchName || `Branch`,
+          parentRef: {
+            branchId: db.parentBranchId || 'main',
+            messageIndex: db.parentMessageIndex || 0,
+          },
+          history: (db.conversationHistory || []).map((msg: any) => ({
+            role: msg.role === 'assistant' ? 'ai' : msg.role,
+            content: msg.content,
+            timestamp: msg.timestamp ? new Date(msg.timestamp) : new Date(),
+          })),
+          nextPrompt: db.nextPrompt || '',
+          createdAt: new Date(db.createdAt),
+          rating: db.rating || 0,
+          variantsCount: 0,
+        }));
+        setBranches(loadedBranches);
+        console.log('[MR5] Loaded branches from database:', loadedBranches.length);
+      } catch (error) {
+        console.error('[MR5] Failed to load branches:', error);
+      }
+    };
+    loadBranches();
+  }, [sessionId]);
+
+  /**
+   * Save branch to database
+   */
+  const saveBranchToDB = useCallback(async (branch: ConversationBranch) => {
+    try {
+      await apiService.mrHistory.mr5.createBranch({
+        sessionId: sessionId || undefined,
+        branchName: branch.name,
+        parentBranchId: branch.parentRef.branchId,
+        parentMessageIndex: branch.parentRef.messageIndex,
+        conversationHistory: branch.history.map(msg => ({
+          role: msg.role === 'ai' ? 'assistant' : msg.role,
+          content: msg.content,
+          timestamp: msg.timestamp.toISOString(),
+        })),
+        nextPrompt: branch.nextPrompt,
+        rating: branch.rating,
+      });
+      console.log('[MR5] Branch saved to database:', branch.name);
+    } catch (error) {
+      console.error('[MR5] Failed to save branch:', error);
+    }
+  }, [sessionId]);
 
   /**
    * Save variant to database
@@ -195,13 +256,12 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
 
           branchAbortRef.current = abort;
 
-          // Read stream
-          const reader = stream.getReader();
+          // Read stream - stream is already a ReadableStreamDefaultReader
           const decoder = new TextDecoder();
           let fullContent = '';
 
           while (true) {
-            const { done, value } = await reader.read();
+            const { done, value } = await stream.read();
             if (done) break;
 
             const chunk = decoder.decode(value, { stream: true });
@@ -224,7 +284,7 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
             }
           }
 
-          // Add AI response to branch
+          // Add AI response to branch and save to DB
           if (fullContent) {
             const aiMessage: BranchMessage = {
               role: 'ai',
@@ -232,11 +292,17 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
               timestamp: new Date(),
             };
 
+            const updatedBranch = {
+              ...newBranch,
+              history: [...newBranch.history, userMessage, aiMessage],
+            };
+
             setBranches(prev => prev.map(b =>
-              b.id === newBranch.id
-                ? { ...b, history: [...b.history, aiMessage] }
-                : b
+              b.id === newBranch.id ? updatedBranch : b
             ));
+
+            // Save branch to database
+            await saveBranchToDB(updatedBranch);
           }
         } catch (error) {
           console.error('[MR5] Failed to get AI response for branch:', error);
@@ -245,9 +311,12 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
           setBranchStreamingContent('');
           branchAbortRef.current = null;
         }
+      } else {
+        // No prompt - still save the branch
+        await saveBranchToDB(newBranch);
       }
     },
-    [branches, activeBranchId, conversationHistory, maxBranches, onBranchCreated]
+    [branches, activeBranchId, conversationHistory, maxBranches, onBranchCreated, saveBranchToDB]
   );
 
   /**
@@ -293,13 +362,12 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
 
       branchAbortRef.current = abort;
 
-      // Read stream
-      const reader = stream.getReader();
+      // Read stream - stream is already a ReadableStreamDefaultReader
       const decoder = new TextDecoder();
       let fullContent = '';
 
       while (true) {
-        const { done, value } = await reader.read();
+        const { done, value } = await stream.read();
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
@@ -322,7 +390,7 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
         }
       }
 
-      // Add AI response to branch
+      // Add AI response to branch and save to DB
       if (fullContent) {
         const aiMessage: BranchMessage = {
           role: 'ai',
@@ -330,11 +398,17 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
           timestamp: new Date(),
         };
 
+        const updatedBranch = {
+          ...currentBranch,
+          history: [...currentBranch.history, userMessage, aiMessage],
+        };
+
         setBranches(prev => prev.map(b =>
-          b.id === activeBranchId
-            ? { ...b, history: [...b.history, aiMessage] }
-            : b
+          b.id === activeBranchId ? updatedBranch : b
         ));
+
+        // Save updated branch to database
+        await saveBranchToDB(updatedBranch);
       }
     } catch (error) {
       console.error('[MR5] Failed to send message on branch:', error);
@@ -343,7 +417,7 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
       setBranchStreamingContent('');
       branchAbortRef.current = null;
     }
-  }, [activeBranchId, branchInput, branchLoading, branches]);
+  }, [activeBranchId, branchInput, branchLoading, branches, saveBranchToDB]);
 
   /**
    * Generate multiple variants with different parameters
