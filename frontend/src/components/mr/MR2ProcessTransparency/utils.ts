@@ -91,7 +91,7 @@ export function createTimeline(versions: InteractionVersion[]): TimelineEvent[] 
   versions.forEach((version, idx) => {
     // Prompt event
     events.push({
-      title: `用户提示 (对话 ${version.promptVersion})`,
+      title: `User Prompt (Turn ${version.promptVersion})`,
       description: version.userPrompt,
       timestamp: version.timestamp,
       formattedTime: formatTime(version.timestamp),
@@ -109,7 +109,7 @@ export function createTimeline(versions: InteractionVersion[]): TimelineEvent[] 
     };
 
     events.push({
-      title: `AI 回复 (${version.modelName})`,
+      title: `AI Response (${version.modelName})`,
       description: version.aiOutput.substring(0, 100) + '...',
       timestamp: new Date(version.timestamp.getTime() + 1000), // 1 second after prompt
       formattedTime: formatTime(new Date(version.timestamp.getTime() + 1000)),
