@@ -105,13 +105,16 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
    * Load history from database
    */
   const loadHistoryFromDB = useCallback(async () => {
+    console.log('[MR11] Loading history, sessionId:', sessionId);
     setLoadingHistory(true);
     try {
       const response = await apiService.mrHistory.mr11.list({
         sessionId: sessionId || undefined,
         limit: 50,
       });
-      setDbHistory(response.data.data.logs || []);
+      const logs = response.data.data.logs || [];
+      console.log('[MR11] Loaded history:', logs.length, 'records', logs);
+      setDbHistory(logs);
     } catch (error) {
       console.error('[MR11] Failed to load history:', error);
     } finally {
@@ -135,23 +138,26 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
    * Save verification log to database
    */
   const saveLogToDB = useCallback(async (result: VerificationResult, decision: UserDecision, notes: string) => {
+    console.log('[MR11] saveLogToDB called with decision:', decision);
+    const payload = {
+      sessionId: sessionId || undefined,
+      messageId: messageId || undefined,
+      contentType: contentType as any,
+      contentText: contentText || undefined,
+      verificationMethod: result.verificationMethod,
+      toolUsed: result.toolUsed,
+      verificationStatus: result.status as any,
+      confidenceScore: result.confidenceScore,
+      findings: result.findings,
+      discrepancies: result.discrepancies,
+      suggestions: result.suggestions,
+      userDecision: decision,
+      userNotes: notes || undefined,
+    };
+    console.log('[MR11] Saving payload:', payload);
     try {
-      await apiService.mrHistory.mr11.create({
-        sessionId: sessionId || undefined,
-        messageId: messageId || undefined,
-        contentType: contentType as any,
-        contentText: contentText || undefined,
-        verificationMethod: result.verificationMethod,
-        toolUsed: result.toolUsed,
-        verificationStatus: result.status as any,
-        confidenceScore: result.confidenceScore,
-        findings: result.findings,
-        discrepancies: result.discrepancies,
-        suggestions: result.suggestions,
-        userDecision: decision,
-        userNotes: notes || undefined,
-      });
-      console.log('[MR11] Verification log saved to database');
+      const response = await apiService.mrHistory.mr11.create(payload);
+      console.log('[MR11] Save response:', response);
     } catch (error) {
       console.error('[MR11] Failed to save to database:', error);
     }
@@ -228,6 +234,8 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
    * Make a decision on verification result
    */
   const handleMakeDecision = useCallback(async () => {
+    console.log('[MR11] handleMakeDecision called, userDecision:', userDecision);
+
     if (!verificationResult || !userDecision) {
       alert('Please make a decision');
       return;
@@ -235,6 +243,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
 
     // Skip = just reset form without saving, user can verify again later
     if (userDecision === 'skip') {
+      console.log('[MR11] Skip selected - NOT saving to database');
       setVerificationResult(null);
       setUserDecision(null);
       setDecisionNotes('');
@@ -242,6 +251,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       return;
     }
 
+    console.log('[MR11] Non-skip decision, will save to database');
     const log = createVerificationLog(verificationResult, userDecision, decisionNotes);
     onDecisionMade?.(log);
 
@@ -250,6 +260,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
 
     // Refresh database history to update stats (small delay to ensure DB commit)
     setTimeout(async () => {
+      console.log('[MR11] Refreshing history after save...');
       await loadHistoryFromDB();
     }, 300);
 
