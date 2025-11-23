@@ -79,6 +79,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   const [editingSubtaskId, setEditingSubtaskId] = useState<string | null>(null);
   const [decompositionHistory, setDecompositionHistory] = useState<TaskDecomposition[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const historyRef = useRef<TaskDecomposition[]>([]);
 
@@ -91,33 +92,49 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       return;
     }
 
-    // Analyze task dimensions
-    const analyzed = await analyzeTaskDimensions(state.originalTask);
-    setDimensions(analyzed);
+    setIsLoading(true);
+    try {
+      // Analyze task dimensions
+      const analyzed = await analyzeTaskDimensions(state.originalTask);
+      setDimensions(analyzed);
 
-    if (onTaskAnalyzed) {
-      onTaskAnalyzed(analyzed);
+      if (onTaskAnalyzed) {
+        onTaskAnalyzed(analyzed);
+      }
+
+      setStep('decomposition');
+    } catch (error) {
+      console.error('[MR1] Failed to analyze task:', error);
+      alert('Failed to analyze task. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-
-    setStep('decomposition');
   }, [state.originalTask, onTaskAnalyzed]);
 
   /**
    * Step 2: Generate initial decomposition
    */
   const handleGenerateDecomposition = useCallback(async () => {
-    const decomposed = await generateInitialDecomposition(
-      state.originalTask,
-      state.decompositionStrategy
-    );
+    setIsLoading(true);
+    try {
+      const decomposed = await generateInitialDecomposition(
+        state.originalTask,
+        state.decompositionStrategy
+      );
 
-    setState(prev => ({
-      ...prev,
-      suggestedSubtasks: decomposed.suggestedSubtasks,
-      scaffoldLevel: calculateScaffoldLevel(decomposed.suggestedSubtasks)
-    }));
+      setState(prev => ({
+        ...prev,
+        suggestedSubtasks: decomposed.suggestedSubtasks,
+        scaffoldLevel: calculateScaffoldLevel(decomposed.suggestedSubtasks)
+      }));
 
-    setStep('review');
+      setStep('review');
+    } catch (error) {
+      console.error('[MR1] Failed to generate decomposition:', error);
+      alert('Failed to generate decomposition. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   }, [state.originalTask, state.decompositionStrategy]);
 
   /**
@@ -236,9 +253,9 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
         <button
           className="mr1-btn-analyze"
           onClick={handleAnalyzeTask}
-          disabled={!state.originalTask.trim()}
+          disabled={!state.originalTask.trim() || isLoading}
         >
-          🔍 Analyze Task
+          {isLoading ? '⏳ Analyzing...' : '🔍 Analyze Task'}
         </button>
       </div>
     </div>
@@ -284,8 +301,12 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
         </p>
       </div>
 
-      <button className="mr1-btn-decompose" onClick={handleGenerateDecomposition}>
-        ✂️ Generate Decomposition
+      <button
+        className="mr1-btn-decompose"
+        onClick={handleGenerateDecomposition}
+        disabled={isLoading}
+      >
+        {isLoading ? '⏳ Generating...' : '✂️ Generate Decomposition'}
       </button>
     </div>
   );
@@ -533,19 +554,19 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       </div>
 
       <div className="mr1-progress-bar">
-        <div className="mr1-progress-item mr1-progress-1 mr1-progress-active">
+        <div className={`mr1-progress-item mr1-progress-1 ${['input', 'analysis', 'decomposition', 'review', 'complete'].includes(step) ? 'mr1-progress-active' : ''}`}>
           <span className="mr1-step-label">Input</span>
         </div>
-        <div className="mr1-progress-item mr1-progress-2 mr1-progress-active">
+        <div className={`mr1-progress-item mr1-progress-2 ${['analysis', 'decomposition', 'review', 'complete'].includes(step) ? 'mr1-progress-active' : ''}`}>
           <span className="mr1-step-label">Analysis</span>
         </div>
-        <div className="mr1-progress-item mr1-progress-3">
+        <div className={`mr1-progress-item mr1-progress-3 ${['decomposition', 'review', 'complete'].includes(step) ? 'mr1-progress-active' : ''}`}>
           <span className="mr1-step-label">Decompose</span>
         </div>
-        <div className="mr1-progress-item mr1-progress-4">
+        <div className={`mr1-progress-item mr1-progress-4 ${['review', 'complete'].includes(step) ? 'mr1-progress-active' : ''}`}>
           <span className="mr1-step-label">Review</span>
         </div>
-        <div className="mr1-progress-item mr1-progress-5">
+        <div className={`mr1-progress-item mr1-progress-5 ${step === 'complete' ? 'mr1-progress-active' : ''}`}>
           <span className="mr1-step-label">Complete</span>
         </div>
       </div>
