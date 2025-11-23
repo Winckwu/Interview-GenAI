@@ -57,11 +57,11 @@ router.post(
         // Use web search for fact checking
         result = await verifyFact(content, async (query) => {
           try {
-            const searchResults = await webSearchService.searchWeb(query, 5);
+            const searchResponse = await webSearchService.searchWeb(query, 5);
             return {
-              results: searchResults.map((r: { title: string; snippet?: string; url: string }) => ({
+              results: searchResponse.results.map((r) => ({
                 title: r.title,
-                snippet: r.snippet || '',
+                snippet: r.content || '',
                 url: r.url,
               })),
             };
@@ -163,11 +163,11 @@ router.post(
 
     const result = await verifyFact(claim, async (query) => {
       try {
-        const searchResults = await webSearchService.searchWeb(query, 5);
+        const searchResponse = await webSearchService.searchWeb(query, 5);
         return {
-          results: searchResults.map((r: { title: string; snippet?: string; url: string }) => ({
+          results: searchResponse.results.map((r) => ({
             title: r.title,
-            snippet: r.snippet || '',
+            snippet: r.content || '',
             url: r.url,
           })),
         };
