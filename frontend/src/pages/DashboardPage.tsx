@@ -41,8 +41,9 @@ const DashboardPage: React.FC = () => {
   const { analytics, loading: analyticsLoading } = useAnalytics(dateRange);
   const { stats: patternStats, loading: patternsLoading } = usePatternStats(user?.id || 'current', dateRange);
 
-  // Get current user's pattern data
+  // Get current user's pattern data from patternStore (same source as Pattern Analysis page)
   const userPattern = patterns.find(p => p.userId === user?.id) || patterns[0];
+  const { currentUserPattern } = usePatternStore();
   const [verificationStrategyData, setVerificationStrategyData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -92,13 +93,16 @@ const DashboardPage: React.FC = () => {
   const totalSessions = analytics?.totalSessions || 0;
   const totalInteractions = analytics?.totalInteractions || 0;
   const averageSessionDuration = analytics?.averageSessionDuration || 0;
-  // Don't default to 'A' - show actual pattern or null if no data
-  const dominantPattern = analytics?.dominantPattern || null;
+  // Use pattern from patternStore (same source as Pattern Analysis page) for consistency
+  // Falls back to analytics for backward compatibility
+  const dominantPattern = currentUserPattern?.patternType || analytics?.dominantPattern || null;
   const patternDistribution = analytics?.patternDistribution || {};
 
   // Minimum interactions needed for reliable pattern detection
   const MIN_PATTERN_INTERACTIONS = 15;
-  const hasEnoughPatternData = totalInteractions >= MIN_PATTERN_INTERACTIONS && dominantPattern !== null;
+  // Use total interactions from patternStore (all-time) for pattern threshold check
+  const patternTotalInteractions = currentUserPattern?.totalInteractions || totalInteractions;
+  const hasEnoughPatternData = patternTotalInteractions >= MIN_PATTERN_INTERACTIONS && dominantPattern !== null;
   const verificationRate = analytics?.verificationRate || 0;
   const modificationRate = analytics?.modificationRate || 0;
 
@@ -493,12 +497,12 @@ const DashboardPage: React.FC = () => {
                 ) : (
                   <>
                     <div className="metric-value" style={{ fontSize: '1.5rem', color: '#9ca3af' }}>
-                      {totalInteractions === 0 ? 'No Data' : 'Analyzing...'}
+                      {patternTotalInteractions === 0 ? 'No Data' : 'Analyzing...'}
                     </div>
                     <div className="metric-description">
-                      {totalInteractions === 0
+                      {patternTotalInteractions === 0
                         ? 'Start interacting with AI to detect patterns'
-                        : `${MIN_PATTERN_INTERACTIONS - totalInteractions} more interactions needed`}
+                        : `${MIN_PATTERN_INTERACTIONS - patternTotalInteractions} more interactions needed`}
                     </div>
                   </>
                 )}
