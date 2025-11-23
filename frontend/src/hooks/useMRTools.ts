@@ -187,7 +187,7 @@ export function useMRTools(options: UseMRToolsOptions = {}): UseMRToolsReturn {
   }, [openTool]);
 
   const openMR11Verification = useCallback(() => {
-    openTool('mr11-verify', '✓ Opened Verification Tool (MR11)');
+    openTool('mr11-verify', '📋 Verification Tool Opened - Complete the workflow to mark as verified');
   }, [openTool]);
 
   const openMR12CriticalThinking = useCallback(() => {
