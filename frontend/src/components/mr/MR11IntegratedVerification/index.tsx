@@ -241,21 +241,11 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       return;
     }
 
-    // Skip = just reset form without saving, user can verify again later
-    if (userDecision === 'skip') {
-      console.log('[MR11] Skip selected - NOT saving to database');
-      setVerificationResult(null);
-      setUserDecision(null);
-      setDecisionNotes('');
-      // Don't clear content so user can re-verify if needed
-      return;
-    }
-
-    console.log('[MR11] Non-skip decision, will save to database');
+    console.log('[MR11] Saving decision to database...');
     const log = createVerificationLog(verificationResult, userDecision, decisionNotes);
     onDecisionMade?.(log);
 
-    // Save to database (only for non-skip decisions)
+    // Save to database
     await saveLogToDB(verificationResult, userDecision, decisionNotes);
 
     // Refresh database history to update stats (small delay to ensure DB commit)
@@ -534,15 +524,6 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
                       <div className="mr11-decision-icon">❌</div>
                       <div className="mr11-decision-title">Reject</div>
                       <div className="mr11-decision-desc">Discard and redo</div>
-                    </button>
-
-                    <button
-                      className={`mr11-decision-btn ${userDecision === 'skip' ? 'selected' : ''}`}
-                      onClick={() => setUserDecision('skip')}
-                    >
-                      <div className="mr11-decision-icon">⏭️</div>
-                      <div className="mr11-decision-title">Skip</div>
-                      <div className="mr11-decision-desc">Decide later</div>
                     </button>
                   </div>
 
