@@ -92,8 +92,13 @@ const DashboardPage: React.FC = () => {
   const totalSessions = analytics?.totalSessions || 0;
   const totalInteractions = analytics?.totalInteractions || 0;
   const averageSessionDuration = analytics?.averageSessionDuration || 0;
-  const dominantPattern = analytics?.dominantPattern || 'A';
+  // Don't default to 'A' - show actual pattern or null if no data
+  const dominantPattern = analytics?.dominantPattern || null;
   const patternDistribution = analytics?.patternDistribution || {};
+
+  // Minimum interactions needed for reliable pattern detection
+  const MIN_PATTERN_INTERACTIONS = 15;
+  const hasEnoughPatternData = totalInteractions >= MIN_PATTERN_INTERACTIONS && dominantPattern !== null;
   const verificationRate = analytics?.verificationRate || 0;
   const modificationRate = analytics?.modificationRate || 0;
 
@@ -175,6 +180,7 @@ const DashboardPage: React.FC = () => {
     : null;
 
   const patternChanged = lastKnownPattern !== null
+    && dominantPattern !== null
     && dominantPattern !== lastKnownPattern
     && totalSessions > 0;
 
@@ -477,10 +483,25 @@ const DashboardPage: React.FC = () => {
                   Current Pattern
                   <InfoTooltip text="Your dominant AI usage pattern based on recent interactions. Each pattern has different characteristics and risk profiles." size="small" />
                 </div>
-                <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
-                <div className="metric-description">
-                  Primary AI usage pattern detected
-                </div>
+                {hasEnoughPatternData ? (
+                  <>
+                    <div className="metric-value" style={{ fontSize: '2.5rem' }}>Pattern {dominantPattern}</div>
+                    <div className="metric-description">
+                      Primary AI usage pattern detected
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="metric-value" style={{ fontSize: '1.5rem', color: '#9ca3af' }}>
+                      {totalInteractions === 0 ? 'No Data' : 'Analyzing...'}
+                    </div>
+                    <div className="metric-description">
+                      {totalInteractions === 0
+                        ? 'Start interacting with AI to detect patterns'
+                        : `${MIN_PATTERN_INTERACTIONS - totalInteractions} more interactions needed`}
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="metric-card">
@@ -1278,7 +1299,7 @@ const DashboardPage: React.FC = () => {
                 fontSize: '0.8125rem',
                 color: '#475569'
               }}>
-                <strong>Current Pattern:</strong> {dominantPattern} - {patternDistributionChart.length === 1 ? 'Single pattern detected. More variety may appear as you interact more.' : `${patternDistributionChart.length} patterns detected in your usage.`}
+                <strong>Current Pattern:</strong> {dominantPattern || 'Not yet detected'} - {patternDistributionChart.length === 0 ? 'No patterns detected yet. Keep interacting!' : patternDistributionChart.length === 1 ? 'Single pattern detected. More variety may appear as you interact more.' : `${patternDistributionChart.length} patterns detected in your usage.`}
               </div>
               </div>
 
