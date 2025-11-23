@@ -789,11 +789,18 @@ const ChatSessionPage: React.FC = () => {
             });
           }
 
-          // For initial load, replace messages. For loading more, append
+          // Sort messages by timestamp in ascending order (oldest first)
+          // Backend returns DESC order, but chat UI needs chronological order
+          pageMessages.sort((a, b) =>
+            new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+          );
+
+          // For initial load, replace messages. For loading more, prepend older messages
           if (isInitialLoad) {
             setMessages(pageMessages);
           } else {
-            setMessages((prev) => [...prev, ...pageMessages]);
+            // When loading more (older) messages, prepend them to maintain chronological order
+            setMessages((prev) => [...pageMessages, ...prev]);
           }
 
           // Update pagination state
