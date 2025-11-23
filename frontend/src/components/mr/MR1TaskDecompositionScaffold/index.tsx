@@ -12,7 +12,7 @@
  * Design principle: System suggests decomposition, users review and approve, maintain planning control
  */
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import './styles.css';
 import {
   generateInitialDecomposition,
@@ -35,6 +35,9 @@ export type {
   DecompositionDimension
 };
 
+// Storage key for persisting MR1 state
+const MR1_STORAGE_KEY = 'mr1-decomposition-state';
+
 interface DecompositionState {
   originalTask: string;
   suggestedSubtasks: SubtaskItem[];
@@ -42,6 +45,47 @@ interface DecompositionState {
   decompositionStrategy: DecompositionStrategy;
   allApproved: boolean;
   scaffoldLevel: 'high' | 'medium' | 'low';
+}
+
+interface PersistedMR1State {
+  state: DecompositionState;
+  step: 'input' | 'analysis' | 'decomposition' | 'review' | 'complete';
+  dimensions: DecompositionDimension[];
+  decompositionHistory: TaskDecomposition[];
+  timestamp: number;
+}
+
+/**
+ * Load persisted state from sessionStorage
+ */
+function loadPersistedState(): PersistedMR1State | null {
+  try {
+    const saved = sessionStorage.getItem(MR1_STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved) as PersistedMR1State;
+      // Only restore if saved within last 30 minutes
+      if (Date.now() - parsed.timestamp < 30 * 60 * 1000) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.warn('[MR1] Failed to load persisted state:', e);
+  }
+  return null;
+}
+
+/**
+ * Save state to sessionStorage
+ */
+function savePersistedState(data: Omit<PersistedMR1State, 'timestamp'>) {
+  try {
+    sessionStorage.setItem(MR1_STORAGE_KEY, JSON.stringify({
+      ...data,
+      timestamp: Date.now()
+    }));
+  } catch (e) {
+    console.warn('[MR1] Failed to save state:', e);
+  }
 }
 
 interface MR1Props {
@@ -61,27 +105,57 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   onHistoryChange,
   onOpenMR4
 }) => {
-  // State management
-  const [state, setState] = useState<DecompositionState>({
-    originalTask: initialTask,
-    suggestedSubtasks: [],
-    userModifiedSubtasks: [],
-    decompositionStrategy: 'sequential',
-    allApproved: false,
-    scaffoldLevel: 'medium'
+  // Try to load persisted state on initial mount
+  const persistedState = useRef(loadPersistedState());
+
+  // State management - restore from persisted state if available
+  const [state, setState] = useState<DecompositionState>(() => {
+    if (persistedState.current?.state) {
+      return persistedState.current.state;
+    }
+    return {
+      originalTask: initialTask,
+      suggestedSubtasks: [],
+      userModifiedSubtasks: [],
+      decompositionStrategy: 'sequential',
+      allApproved: false,
+      scaffoldLevel: 'medium'
+    };
   });
 
-  const [step, setStep] = useState<'input' | 'analysis' | 'decomposition' | 'review' | 'complete'>(
-    initialTask ? 'analysis' : 'input'
-  );
+  const [step, setStep] = useState<'input' | 'analysis' | 'decomposition' | 'review' | 'complete'>(() => {
+    if (persistedState.current?.step) {
+      return persistedState.current.step;
+    }
+    return initialTask ? 'analysis' : 'input';
+  });
 
-  const [dimensions, setDimensions] = useState<DecompositionDimension[]>([]);
+  const [dimensions, setDimensions] = useState<DecompositionDimension[]>(() =>
+    persistedState.current?.dimensions || []
+  );
   const [editingSubtaskId, setEditingSubtaskId] = useState<string | null>(null);
-  const [decompositionHistory, setDecompositionHistory] = useState<TaskDecomposition[]>([]);
+  const [decompositionHistory, setDecompositionHistory] = useState<TaskDecomposition[]>(() =>
+    persistedState.current?.decompositionHistory || []
+  );
   const [showHistory, setShowHistory] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const historyRef = useRef<TaskDecomposition[]>([]);
+  const historyRef = useRef<TaskDecomposition[]>(persistedState.current?.decompositionHistory || []);
+
+  // Persist state whenever it changes
+  useEffect(() => {
+    // Don't persist if we're at the initial empty state
+    if (step === 'input' && !state.originalTask.trim()) {
+      return;
+    }
+
+    savePersistedState({
+      state,
+      step,
+      dimensions,
+      decompositionHistory
+    });
+  }, [state, step, dimensions, decompositionHistory]);
 
   /**
    * Step 1: Analyze task input
@@ -199,6 +273,27 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       ...prev,
       suggestedSubtasks: prev.suggestedSubtasks.filter(s => s.id !== subtaskId)
     }));
+  }, []);
+
+  /**
+   * Reset to start a new decomposition
+   */
+  const handleReset = useCallback(() => {
+    // Clear persisted state
+    sessionStorage.removeItem(MR1_STORAGE_KEY);
+
+    // Reset all state
+    setState({
+      originalTask: '',
+      suggestedSubtasks: [],
+      userModifiedSubtasks: [],
+      decompositionStrategy: 'sequential',
+      allApproved: false,
+      scaffoldLevel: 'medium'
+    });
+    setStep('input');
+    setDimensions([]);
+    setEditingSubtaskId(null);
   }, []);
 
   /**
@@ -549,8 +644,18 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   return (
     <div className="mr1-container">
       <div className="mr1-header">
-        <h1 className="mr1-title">✂️ Task Decomposition Scaffold</h1>
+        <div className="mr1-header-top">
+          <h1 className="mr1-title">✂️ Task Decomposition Scaffold</h1>
+          {step !== 'input' && (
+            <button className="mr1-btn-reset" onClick={handleReset} title="Start over with a new task">
+              🔄 New Task
+            </button>
+          )}
+        </div>
         <p className="mr1-subtitle">Break complex tasks into manageable subtasks</p>
+        {persistedState.current && step !== 'input' && (
+          <p className="mr1-restored-notice">📌 Restored your previous progress</p>
+        )}
       </div>
 
       <div className="mr1-progress-bar">
