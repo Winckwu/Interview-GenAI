@@ -156,6 +156,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   // Database history state
   const [dbHistory, setDbHistory] = useState<any[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
 
   const historyRef = useRef<TaskDecomposition[]>(persistedState.current?.decompositionHistory || []);
 
@@ -752,20 +753,100 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
             <p>Loading history...</p>
           ) : dbHistory.length > 0 ? (
             <>
-              {dbHistory.map((item, idx) => (
-                <div key={item.id || idx} className="mr1-history-item" style={{ cursor: 'pointer' }}>
-                  <strong>{item.originalTask.slice(0, 100)}{item.originalTask.length > 100 ? '...' : ''}</strong>
-                  <p style={{ margin: '0.25rem 0' }}>
-                    {item.subtasks?.length || 0} subtasks • {item.strategy}
-                    {item.totalEstimatedTime ? ` • ~${item.totalEstimatedTime} min` : ''}
-                  </p>
-                  <small style={{ color: '#888' }}>
-                    {new Date(item.createdAt).toLocaleDateString()} {new Date(item.createdAt).toLocaleTimeString()}
-                  </small>
-                </div>
-              ))}
+              {dbHistory.map((item, idx) => {
+                const isExpanded = expandedHistoryId === item.id;
+                return (
+                  <div
+                    key={item.id || idx}
+                    className="mr1-history-item"
+                    style={{
+                      cursor: 'pointer',
+                      border: isExpanded ? '2px solid #0066ff' : '1px solid #e0e0e0',
+                      borderRadius: '8px',
+                      padding: '0.75rem',
+                      marginBottom: '0.5rem',
+                      background: isExpanded ? '#f0f7ff' : '#fff',
+                    }}
+                    onClick={() => setExpandedHistoryId(isExpanded ? null : item.id)}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <strong style={{ flex: 1 }}>
+                        {item.originalTask.slice(0, 100)}{item.originalTask.length > 100 ? '...' : ''}
+                      </strong>
+                      <span style={{ color: '#666', fontSize: '1.2rem', marginLeft: '0.5rem' }}>
+                        {isExpanded ? '▼' : '▶'}
+                      </span>
+                    </div>
+                    <p style={{ margin: '0.25rem 0', color: '#666', fontSize: '0.9rem' }}>
+                      {item.subtasks?.length || 0} subtasks • {item.strategy}
+                      {item.totalEstimatedTime ? ` • ~${item.totalEstimatedTime} min` : ''}
+                    </p>
+                    <small style={{ color: '#888' }}>
+                      {new Date(item.createdAt).toLocaleDateString()} {new Date(item.createdAt).toLocaleTimeString()}
+                    </small>
+
+                    {/* Expanded Details */}
+                    {isExpanded && (
+                      <div style={{ marginTop: '1rem', borderTop: '1px solid #ddd', paddingTop: '1rem' }}>
+                        <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem' }}>📋 Full Task:</h4>
+                        <p style={{ margin: '0 0 1rem 0', background: '#f5f5f5', padding: '0.5rem', borderRadius: '4px', fontSize: '0.9rem' }}>
+                          {item.originalTask}
+                        </p>
+
+                        <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem' }}>✅ Subtasks ({item.subtasks?.length || 0}):</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                          {(item.subtasks || []).map((subtask: any, sIdx: number) => (
+                            <div
+                              key={subtask.id || sIdx}
+                              style={{
+                                background: '#f9f9f9',
+                                padding: '0.5rem 0.75rem',
+                                borderRadius: '4px',
+                                borderLeft: '3px solid #0066ff',
+                              }}
+                            >
+                              <div style={{ fontWeight: 500, fontSize: '0.9rem' }}>
+                                {sIdx + 1}. {subtask.description || subtask.title}
+                              </div>
+                              {subtask.estimatedTime && (
+                                <small style={{ color: '#666' }}>⏱️ {subtask.estimatedTime} min</small>
+                              )}
+                              {subtask.difficulty && (
+                                <small style={{ color: '#666', marginLeft: '0.5rem' }}>
+                                  📊 {subtask.difficulty}
+                                </small>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+
+                        {item.dimensions && item.dimensions.length > 0 && (
+                          <>
+                            <h4 style={{ margin: '1rem 0 0.5rem 0', fontSize: '0.95rem' }}>📊 Dimensions:</h4>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                              {item.dimensions.map((dim: any, dIdx: number) => (
+                                <span
+                                  key={dIdx}
+                                  style={{
+                                    background: '#e8f4fd',
+                                    padding: '0.25rem 0.5rem',
+                                    borderRadius: '4px',
+                                    fontSize: '0.85rem',
+                                  }}
+                                >
+                                  {dim.name}: {dim.value}
+                                </span>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
               <p style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666' }}>
-                Showing {dbHistory.length} saved decomposition{dbHistory.length !== 1 ? 's' : ''}
+                Showing {dbHistory.length} saved decomposition{dbHistory.length !== 1 ? 's' : ''} • Click to expand
               </p>
             </>
           ) : (
