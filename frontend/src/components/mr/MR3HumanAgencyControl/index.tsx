@@ -338,6 +338,10 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
         <p className="mr3-description">
           {descriptions[agencyState.interventionLevel]}
         </p>
+
+        <p className="mr3-override-hint">
+          This setting overrides automatic recommendations
+        </p>
       </div>
     );
   };
