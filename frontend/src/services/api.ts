@@ -295,9 +295,9 @@ export const apiService = {
     // Health check
     healthCheck: () => api.post('/ai/health', {}),
 
-    // MR1: Task Decomposition (60s timeout for GPT analysis)
+    // MR1: Task Decomposition (30s timeout - fallback to local if slow)
     decompose: (task: string, strategy: string = 'sequential') =>
-      api.post('/ai/mr/decompose', { task, strategy }, { timeout: 60000 }),
+      api.post('/ai/mr/decompose', { task, strategy }, { timeout: 30000 }),
 
     // MR5: Generate Variants (60s - generates multiple responses)
     generateVariants: (prompt: string, count: number = 3) =>

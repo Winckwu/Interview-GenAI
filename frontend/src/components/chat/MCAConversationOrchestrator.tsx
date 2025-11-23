@@ -126,7 +126,7 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
             conversationHistory,
             taskType,
             turnCount: messages.filter(m => m.role === 'user').length,
-          }, { timeout: 60000 }); // 60s for GPT analysis
+          }, { timeout: 30000 }); // 30s for GPT analysis
 
           const data = analyzeResponse.data.data;
 
@@ -187,7 +187,7 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
             currentTurnIndex: messages.length - 1,
           }, {
             params: { classifier },
-            timeout: 60000 // 60s for analysis
+            timeout: 30000 // 30s for analysis
           });
 
           orchestrationResult = {
@@ -274,7 +274,7 @@ export const useMCAOrchestrator = (
             conversationHistory,
             taskType,
             turnCount: messages.filter(m => m.role === 'user').length,
-          }, { timeout: 60000 }); // 60s for GPT analysis
+          }, { timeout: 30000 }); // 30s for GPT analysis
 
           const data = analyzeResponse.data.data;
 
@@ -334,7 +334,7 @@ export const useMCAOrchestrator = (
             currentTurnIndex: messages.length - 1,
           }, {
             params: { classifier },
-            timeout: 60000 // 60s for analysis
+            timeout: 30000 // 30s for analysis
           });
 
           orchestrationResult = {
