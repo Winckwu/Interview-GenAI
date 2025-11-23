@@ -39,6 +39,110 @@ interface BranchMessage {
 }
 
 /**
+ * Clean AI response: remove <thinking> blocks and format for display
+ */
+function cleanAIResponse(content: string): string {
+  // Remove <thinking>...</thinking> blocks (including nested content)
+  let cleaned = content.replace(/<thinking>[\s\S]*?<\/thinking>/gi, '');
+
+  // Remove any remaining thinking tags
+  cleaned = cleaned.replace(/<\/?thinking>/gi, '');
+
+  // Trim leading/trailing whitespace
+  cleaned = cleaned.trim();
+
+  return cleaned;
+}
+
+/**
+ * Simple markdown to React elements for MR5 display
+ */
+function formatMarkdown(text: string): React.ReactNode[] {
+  const lines = text.split('\n');
+  const elements: React.ReactNode[] = [];
+  let listItems: string[] = [];
+  let inList = false;
+
+  const processInlineMarkdown = (line: string): React.ReactNode => {
+    // Bold: **text** or __text__
+    const parts: React.ReactNode[] = [];
+    let remaining = line;
+    let key = 0;
+
+    while (remaining) {
+      const boldMatch = remaining.match(/\*\*(.+?)\*\*|__(.+?)__/);
+      if (boldMatch) {
+        const index = boldMatch.index!;
+        if (index > 0) {
+          parts.push(remaining.substring(0, index));
+        }
+        parts.push(
+          <strong key={key++}>{boldMatch[1] || boldMatch[2]}</strong>
+        );
+        remaining = remaining.substring(index + boldMatch[0].length);
+      } else {
+        parts.push(remaining);
+        break;
+      }
+    }
+    return parts.length === 1 ? parts[0] : <>{parts}</>;
+  };
+
+  const flushList = () => {
+    if (listItems.length > 0) {
+      elements.push(
+        <ul key={elements.length} style={{ margin: '0.5rem 0', paddingLeft: '1.5rem' }}>
+          {listItems.map((item, i) => (
+            <li key={i} style={{ marginBottom: '0.25rem' }}>{processInlineMarkdown(item)}</li>
+          ))}
+        </ul>
+      );
+      listItems = [];
+    }
+    inList = false;
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // Empty line
+    if (!trimmed) {
+      flushList();
+      elements.push(<br key={elements.length} />);
+      continue;
+    }
+
+    // Numbered list: 1. item or 1) item
+    const numberedMatch = trimmed.match(/^\d+[\.\)]\s+(.+)$/);
+    if (numberedMatch) {
+      if (!inList) inList = true;
+      listItems.push(numberedMatch[1]);
+      continue;
+    }
+
+    // Bullet list: - item, * item, • item
+    const bulletMatch = trimmed.match(/^[-\*•]\s+(.+)$/);
+    if (bulletMatch) {
+      if (!inList) inList = true;
+      listItems.push(bulletMatch[1]);
+      continue;
+    }
+
+    // Regular paragraph
+    flushList();
+    elements.push(
+      <p key={elements.length} style={{ margin: '0.5rem 0' }}>
+        {processInlineMarkdown(trimmed)}
+      </p>
+    );
+  }
+
+  flushList();
+  return elements;
+}
+
+/**
  * Props for MR5 component
  */
 interface MR5Props {
@@ -685,22 +789,25 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
                           padding: '0.75rem',
                           borderRadius: '8px',
                           background: msg.role === 'user' ? '#e3f2fd' : '#f5f5f5',
-                          borderLeft: msg.role === 'user' ? '3px solid #2196f3' : '3px solid #9e9e9e',
+                          borderLeft: msg.role === 'user' ? '3px solid #2196f3' : '3px solid #4caf50',
                         }}
                       >
                         <div style={{
                           fontSize: '0.75rem',
                           color: '#666',
-                          marginBottom: '0.25rem',
+                          marginBottom: '0.5rem',
+                          fontWeight: 500,
                         }}>
                           {msg.role === 'user' ? '👤 You' : '🤖 AI'}
                         </div>
                         <div style={{
                           fontSize: '0.9rem',
-                          whiteSpace: 'pre-wrap',
-                          wordBreak: 'break-word',
+                          lineHeight: '1.6',
                         }}>
-                          {msg.content}
+                          {msg.role === 'ai'
+                            ? formatMarkdown(cleanAIResponse(msg.content))
+                            : <span style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{msg.content}</span>
+                          }
                         </div>
                       </div>
                     ))}
@@ -712,17 +819,16 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
                         padding: '0.75rem',
                         borderRadius: '8px',
                         background: '#f5f5f5',
-                        borderLeft: '3px solid #9e9e9e',
+                        borderLeft: '3px solid #4caf50',
                       }}>
-                        <div style={{ fontSize: '0.75rem', color: '#666', marginBottom: '0.25rem' }}>
+                        <div style={{ fontSize: '0.75rem', color: '#666', marginBottom: '0.5rem', fontWeight: 500 }}>
                           🤖 AI
                         </div>
                         <div style={{
                           fontSize: '0.9rem',
-                          whiteSpace: 'pre-wrap',
-                          wordBreak: 'break-word',
+                          lineHeight: '1.6',
                         }}>
-                          {branchStreamingContent}
+                          {formatMarkdown(cleanAIResponse(branchStreamingContent))}
                           <span className="mr5-cursor">▊</span>
                         </div>
                       </div>
