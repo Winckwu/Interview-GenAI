@@ -916,6 +916,29 @@
   }
 }
 
+/* Manual dark theme override (data-theme attribute) */
+[data-theme='dark'] .mr3-container {
+  --mr3-bg-primary: #1e1e1e;
+  --mr3-bg-secondary: #2a2a2a;
+  --mr3-bg-hover: #333333;
+  --mr3-text-primary: #ffffff;
+  --mr3-text-secondary: #b0b0b0;
+  --mr3-border-color: #404040;
+  --mr3-accent: #4a9eff;
+  --mr3-accent-light: #1a4d7a;
+  --mr3-suggestion-bg: #2a2a2a;
+  --mr3-focus-color: #6bb6ff;
+}
+
+[data-theme='dark'] .mr3-dialog {
+  background: #1e1e1e;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .mr3-dialog-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
 /* ============================================
    High Contrast Mode
    ============================================ */

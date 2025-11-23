@@ -46,6 +46,8 @@ export interface SessionData {
   [key: string]: any;
 }
 
+export type InterventionLevel = 'passive' | 'suggestive' | 'proactive';
+
 export interface UseGlobalRecommendationsOptions {
   sessionData: SessionData | null;
   messages: Message[];
@@ -53,6 +55,8 @@ export interface UseGlobalRecommendationsOptions {
   experienceLevel?: UserExperienceLevel;
   consecutiveUnverified?: number;
   usedMRTools?: string[];
+  /** MR3 intervention level - controls recommendation visibility */
+  interventionLevel?: InterventionLevel;
 }
 
 export interface UseGlobalRecommendationsReturn {
@@ -93,6 +97,7 @@ export function useGlobalRecommendations(
     experienceLevel = 'intermediate',
     consecutiveUnverified = 0,
     usedMRTools = [],
+    interventionLevel = 'suggestive',
   } = options;
 
   // State
@@ -141,8 +146,18 @@ export function useGlobalRecommendations(
 
   /**
    * Generate recommendations based on current context
+   * Respects MR3 intervention level:
+   * - passive: No automatic recommendations (user must request)
+   * - suggestive: Show recommendations normally (default)
+   * - proactive: Show recommendations more prominently
    */
   const refreshRecommendations = useCallback(() => {
+    // In passive mode, don't show automatic recommendations
+    if (interventionLevel === 'passive') {
+      setRecommendations([]);
+      return;
+    }
+
     const userContext = buildUserContext();
     if (!userContext) {
       setRecommendations([]);
@@ -153,12 +168,18 @@ export function useGlobalRecommendations(
     const allRecommendations = generateMRRecommendations(userContext);
 
     // Filter out dismissed recommendations
-    const activeRecommendations = allRecommendations.filter(
+    let activeRecommendations = allRecommendations.filter(
       rec => !dismissedRecommendations.has(rec.id)
     );
 
+    // In proactive mode, show more recommendations (don't limit)
+    // In suggestive mode, limit to top 3
+    if (interventionLevel === 'suggestive') {
+      activeRecommendations = activeRecommendations.slice(0, 3);
+    }
+
     setRecommendations(activeRecommendations);
-  }, [buildUserContext, dismissedRecommendations]);
+  }, [buildUserContext, dismissedRecommendations, interventionLevel]);
 
   /**
    * Auto-generate recommendations when context changes

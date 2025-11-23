@@ -321,6 +321,7 @@ const ChatSessionPage: React.FC = () => {
   });
 
   // Hook 3: Global Recommendations
+  // Uses MR3 intervention level to control recommendation visibility
   const recommendationsHook = useGlobalRecommendations({
     sessionData,
     messages: messagesHook.messages,
@@ -328,6 +329,7 @@ const ChatSessionPage: React.FC = () => {
     experienceLevel: 'intermediate',
     consecutiveUnverified: 0, // Will be tracked separately
     usedMRTools: mrToolsHook.usedMRTools,
+    interventionLevel: mrToolsHook.interventionLevel, // MR3 control
   });
 
   // Hook 4: Analytics data for behavioral pattern
