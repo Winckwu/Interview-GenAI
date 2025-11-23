@@ -558,7 +558,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
               {version.confidenceScore !== undefined && (
                 <span
                   className={`mr2-version-confidence mr2-conf-${Math.round(version.confidenceScore * 10) * 10}`}
-                  title={`AI置信度评分：${(version.confidenceScore * 100).toFixed(0)}%（基于模型输出的确定性）`}
+                  title={`AI Confidence: ${(version.confidenceScore * 100).toFixed(0)}% (estimated based on response patterns)`}
                 >
                   {(version.confidenceScore * 100).toFixed(0)}%
                 </span>
