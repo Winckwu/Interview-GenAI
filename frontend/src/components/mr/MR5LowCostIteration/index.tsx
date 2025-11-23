@@ -709,15 +709,11 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   return (
     <div className="mr5-container">
       <div className="mr5-header">
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-          <h1 className="mr5-title">Low-Cost Iteration Mechanism</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h1 className="mr5-title" style={{ margin: 0 }}>Low-Cost Iteration Mechanism</h1>
           <button
             onClick={() => setShowHistory(!showHistory)}
             style={{
-              position: 'absolute',
-              right: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
               padding: '0.4rem 0.8rem',
               fontSize: '0.85rem',
               background: showHistory ? '#0066ff' : '#f0f0f0',
@@ -725,9 +721,10 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
               border: '1px solid #ddd',
               borderRadius: '4px',
               cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
-            {showHistory ? 'Hide DB History' : 'View DB History'}
+            {showHistory ? 'Hide History' : 'View History'}
           </button>
         </div>
         <p className="mr5-subtitle">
