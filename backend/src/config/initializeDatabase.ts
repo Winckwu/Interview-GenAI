@@ -35,29 +35,39 @@ export const initializeDatabase = async () => {
 
     console.log('✓ Base schema initialized');
 
-    // Read and execute migrations.sql
-    const migrationsSqlPath = path.join(__dirname, 'migrations.sql');
-    if (fs.existsSync(migrationsSqlPath)) {
-      const migrationsSql = fs.readFileSync(migrationsSqlPath, 'utf-8');
+    // Run all migration files in order
+    const migrationFiles = [
+      'migrations.sql',
+      'migrations_message_branches.sql',
+      'migrations_pattern_enhancement.sql',
+      'migrations_mr1_history.sql',
+      'migrations_mr_history.sql',
+    ];
 
-      const migrationStatements = migrationsSql
-        .split(';')
-        .map((stmt) => stmt.trim())
-        .filter((stmt) => stmt.length > 0);
+    for (const migrationFile of migrationFiles) {
+      const migrationPath = path.join(__dirname, migrationFile);
+      if (fs.existsSync(migrationPath)) {
+        const migrationSql = fs.readFileSync(migrationPath, 'utf-8');
 
-      for (const statement of migrationStatements) {
-        try {
-          await pool.query(statement);
-        } catch (err: any) {
-          // Ignore errors if tables/columns already exist
-          if (err.code !== '42P07' && err.code !== '42701') {
-            // 42701 = column already exists
-            console.warn(`⚠️  Warning executing migration: ${err.message}`);
+        const migrationStatements = migrationSql
+          .split(';')
+          .map((stmt) => stmt.trim())
+          .filter((stmt) => stmt.length > 0);
+
+        for (const statement of migrationStatements) {
+          try {
+            await pool.query(statement);
+          } catch (err: any) {
+            // Ignore errors if tables/columns already exist
+            if (err.code !== '42P07' && err.code !== '42701') {
+              // 42701 = column already exists
+              console.warn(`⚠️  Warning executing ${migrationFile}: ${err.message}`);
+            }
           }
         }
-      }
 
-      console.log('✓ Migrations applied');
+        console.log(`✓ Migration applied: ${migrationFile}`);
+      }
     }
 
     console.log('✓ Database initialization complete');
