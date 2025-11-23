@@ -282,11 +282,12 @@ export const apiService = {
 
   /**
    * AI/MR endpoints - GPT-powered MR tools
+   * Note: AI endpoints use longer timeout (60s) as GPT calls can be slow
    */
   ai: {
     // Basic chat
     chat: (userPrompt: string, conversationHistory: any[] = []) =>
-      api.post('/ai/chat', { userPrompt, conversationHistory }),
+      api.post('/ai/chat', { userPrompt, conversationHistory }, { timeout: 60000 }),
 
     // Get available models
     getModels: () => api.get('/ai/models'),
@@ -294,35 +295,35 @@ export const apiService = {
     // Health check
     healthCheck: () => api.post('/ai/health', {}),
 
-    // MR1: Task Decomposition
+    // MR1: Task Decomposition (60s timeout for GPT analysis)
     decompose: (task: string, strategy: string = 'sequential') =>
-      api.post('/ai/mr/decompose', { task, strategy }),
+      api.post('/ai/mr/decompose', { task, strategy }, { timeout: 60000 }),
 
-    // MR5: Generate Variants
+    // MR5: Generate Variants (60s - generates multiple responses)
     generateVariants: (prompt: string, count: number = 3) =>
-      api.post('/ai/mr/variants', { prompt, count }),
+      api.post('/ai/mr/variants', { prompt, count }, { timeout: 60000 }),
 
-    // MR7: Failure Analysis
+    // MR7: Failure Analysis (60s - GPT analysis)
     analyzeFailure: (task: string, issue: string, originalPrompt?: string, previousFailures?: any[]) =>
-      api.post('/ai/mr/failure-analysis', { task, issue, originalPrompt, previousFailures }),
+      api.post('/ai/mr/failure-analysis', { task, issue, originalPrompt, previousFailures }, { timeout: 60000 }),
 
-    // MR12: Critical Analysis
+    // MR12: Critical Analysis (60s - GPT analysis)
     criticalAnalysis: (content: string, taskType: string = 'general') =>
-      api.post('/ai/mr/critical-analysis', { content, taskType }),
+      api.post('/ai/mr/critical-analysis', { content, taskType }, { timeout: 60000 }),
 
-    // MR13: Uncertainty Analysis
+    // MR13: Uncertainty Analysis (60s - GPT analysis)
     analyzeUncertainty: (content: string) =>
-      api.post('/ai/mr/uncertainty', { content }),
+      api.post('/ai/mr/uncertainty', { content }, { timeout: 60000 }),
 
-    // MR14: Generate Reflection
+    // MR14: Generate Reflection (60s - GPT analysis)
     generateReflection: (messages: any[], sessionContext?: string) =>
-      api.post('/ai/mr/reflection', { messages, sessionContext }),
+      api.post('/ai/mr/reflection', { messages, sessionContext }, { timeout: 60000 }),
 
-    // MR15: Recommend Strategy
+    // MR15: Recommend Strategy (60s - GPT analysis)
     recommendStrategy: (taskType: string, taskDescription?: string, userLevel?: string) =>
-      api.post('/ai/mr/strategy', { taskType, taskDescription, userLevel }),
+      api.post('/ai/mr/strategy', { taskType, taskDescription, userLevel }, { timeout: 60000 }),
 
-    // NEW: Batch Variants with Temperature & Style (MR5)
+    // NEW: Batch Variants with Temperature & Style (MR5) - 90s for multiple generations
     batchVariants: (
       userPrompt: string,
       conversationHistory: any[] = [],
@@ -332,15 +333,15 @@ export const apiService = {
         maxTokens?: number;
       }> = []
     ) =>
-      api.post('/ai/batch-variants', { userPrompt, conversationHistory, variants }),
+      api.post('/ai/batch-variants', { userPrompt, conversationHistory, variants }, { timeout: 90000 }),
 
-    // NEW: Multi-Model Comparison (MR6)
+    // NEW: Multi-Model Comparison (MR6) - 90s for multiple model calls
     multiModel: (
       userPrompt: string,
       conversationHistory: any[] = [],
       models: string[] = []
     ) =>
-      api.post('/ai/multi-model', { userPrompt, conversationHistory, models }),
+      api.post('/ai/multi-model', { userPrompt, conversationHistory, models }, { timeout: 90000 }),
   },
 
   /**
