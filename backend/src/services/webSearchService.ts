@@ -62,19 +62,39 @@ async function searchWithTavily(query: string, maxResults: number = 5): Promise<
 
 /**
  * Fallback search using DuckDuckGo Instant Answer API
- * Free but less comprehensive than Tavily
+ * Free but limited - only works for definition/Wikipedia-style queries
+ * Note: DDG API often returns empty or HTML errors for complex queries
  */
 async function searchWithDuckDuckGo(query: string, maxResults: number = 5): Promise<SearchResult[]> {
   const encodedQuery = encodeURIComponent(query);
   const response = await fetch(
-    `https://api.duckduckgo.com/?q=${encodedQuery}&format=json&no_html=1&skip_disambig=1`
+    `https://api.duckduckgo.com/?q=${encodedQuery}&format=json&no_html=1&skip_disambig=1`,
+    {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'Interview-GenAI/1.0',
+      },
+    }
   );
 
   if (!response.ok) {
     throw new Error(`DuckDuckGo API error: ${response.status}`);
   }
 
-  const data = await response.json();
+  // Check content type - DDG sometimes returns HTML error pages
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json') && !contentType.includes('application/x-javascript')) {
+    throw new Error('DuckDuckGo returned non-JSON response (likely rate limited or blocked)');
+  }
+
+  const text = await response.text();
+
+  // Verify it's actually JSON before parsing
+  if (text.trim().startsWith('<')) {
+    throw new Error('DuckDuckGo returned HTML instead of JSON');
+  }
+
+  const data = JSON.parse(text);
   const results: SearchResult[] = [];
 
   // Abstract (main answer)
@@ -105,23 +125,14 @@ async function searchWithDuckDuckGo(query: string, maxResults: number = 5): Prom
 }
 
 /**
- * Mock search for development/testing when no API key is available
+ * Fallback when external search APIs are unavailable
+ * Returns empty results so GPT-based analysis can be used instead
  */
 function mockSearch(query: string): SearchResult[] {
-  return [
-    {
-      title: `Search result for: ${query}`,
-      url: 'https://example.com/result1',
-      content: `This is a mock search result for "${query}". Configure TAVILY_API_KEY for real search results.`,
-      score: 0.9,
-    },
-    {
-      title: 'How to enable web search',
-      url: 'https://tavily.com',
-      content: 'Get your API key from tavily.com to enable real web search functionality.',
-      score: 0.8,
-    },
-  ];
+  // Return empty to trigger GPT-based fact checking
+  // This is better than returning fake "mock" results
+  console.log(`[WebSearch] No external search API available for: "${query.slice(0, 50)}..."`);
+  return [];
 }
 
 /**

@@ -317,11 +317,55 @@ export async function verifyFact(
     const searchResults = await searchFunction(claim);
 
     if (searchResults.results.length === 0) {
-      status = 'unable-to-verify';
-      confidence = 0.2;
-      findings.push('No search results found for this claim');
-      suggestions.push('Try rephrasing the claim or breaking it into smaller, more specific statements');
-      suggestions.push('Check if the claim contains proper nouns that might have alternate spellings');
+      // No search results - use GPT-based fact checking as fallback
+      findings.push('Web search unavailable - using AI knowledge base');
+
+      const gptFactCheck = await analyzeWithGPT(
+        `You are a fact-checker with extensive knowledge. Analyze the following claim and provide:
+1. VERDICT: TRUE, FALSE, PARTIALLY TRUE, or UNVERIFIABLE
+2. EXPLANATION: Why you believe this (2-3 sentences)
+3. CONFIDENCE: Your confidence level (low/medium/high)
+4. CAVEAT: Any important limitations or context needed
+
+Base your analysis on established facts. Be honest about uncertainty.`,
+        `Claim to verify: "${claim}"`,
+        400
+      );
+
+      if (gptFactCheck) {
+        findings.push('AI Knowledge-Based Analysis:');
+        gptFactCheck.split('\n').filter(line => line.trim()).slice(0, 6).forEach(line => {
+          findings.push(`  ${line}`);
+        });
+
+        // Parse GPT verdict to set status
+        const analysisLower = gptFactCheck.toLowerCase();
+        if (analysisLower.includes('verdict: true') || analysisLower.includes('verdict:true')) {
+          status = 'partially-verified';
+          confidence = 0.6;
+          suggestions.push('AI analysis suggests this claim is likely true, but verify with authoritative sources');
+        } else if (analysisLower.includes('verdict: false') || analysisLower.includes('verdict:false')) {
+          status = 'error-found';
+          confidence = 0.6;
+          discrepancies.push('AI analysis suggests this claim may be false');
+          suggestions.push('Review the AI analysis above and check authoritative sources');
+        } else if (analysisLower.includes('partially true')) {
+          status = 'partially-verified';
+          confidence = 0.5;
+          suggestions.push('Claim appears partially accurate - verify specific details');
+        } else {
+          status = 'unable-to-verify';
+          confidence = 0.35;
+          suggestions.push('Claim requires verification from authoritative sources');
+        }
+      } else {
+        status = 'unable-to-verify';
+        confidence = 0.2;
+        findings.push('No search results and AI analysis unavailable');
+        suggestions.push('Try rephrasing the claim or breaking it into smaller, more specific statements');
+        suggestions.push('Check if the claim contains proper nouns that might have alternate spellings');
+      }
+
       return { status, confidence, findings, discrepancies, suggestions, sources };
     }
 
