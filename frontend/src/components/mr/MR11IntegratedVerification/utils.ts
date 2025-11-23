@@ -114,11 +114,12 @@ export async function performVerificationAsync(
   method: VerificationMethod
 ): Promise<VerificationResult> {
   try {
+    // Use 90s timeout for verification (GPT-powered fact-checking can be slow)
     const response = await api.post('/verification/verify', {
       content: content.content,
       contentType: content.contentType,
       method: mapMethodToBackend(method),
-    });
+    }, { timeout: 90000 });
 
     const data = response.data.data.verification;
 

@@ -14,7 +14,7 @@ import OpenAI from 'openai';
 
 // Initialize OpenAI client
 const apiKey = process.env.OPENAI_API_KEY || '';
-const openai = apiKey ? new OpenAI({ apiKey, timeout: 30000 }) : null;
+const openai = apiKey ? new OpenAI({ apiKey, timeout: 60000 }) : null; // 60s timeout for GPT verification
 const GPT_MODEL = process.env.AI_MODEL || 'gpt-4o-mini';
 
 /**
