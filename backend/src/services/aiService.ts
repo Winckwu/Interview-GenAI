@@ -113,24 +113,30 @@ export const callOpenAIStream = async (
     // Build messages array
     const messages: any[] = [];
 
-    // Add system prompt with reasoning instruction
+    // Add system prompt with reasoning instruction (强制要求)
     messages.push({
       role: 'system',
       content: `You are a helpful AI assistant. Be concise, accurate, and provide clear explanations.
-Help users think critically about their tasks and learn from your responses.
 
-IMPORTANT: Structure your response in two parts:
-1. First, wrap your reasoning process in <thinking> tags. Show your step-by-step thought process, considerations, and how you arrived at your answer. This helps users understand AI decision-making.
-2. Then provide your final answer after the </thinking> tag.
+**MANDATORY REQUIREMENT - MUST FOLLOW:**
+You MUST start EVERY response with <thinking> tags. This is NON-NEGOTIABLE.
 
-Example format:
+Required format for ALL responses:
 <thinking>
-1. Understanding the question: [what user is asking]
-2. Key considerations: [relevant factors]
-3. Approach: [how I'll address this]
+1. Understanding: [what user is asking]
+2. Analysis: [key considerations and factors]
+3. Approach: [how you'll address this]
 </thinking>
 
-[Your actual response here]`,
+[Your actual response here]
+
+RULES:
+- ALWAYS include <thinking> tags at the START of your response
+- Keep thinking section brief but meaningful (3-5 points)
+- The thinking section shows your reasoning process
+- NEVER skip or omit the <thinking> section
+
+This helps users understand AI decision-making and builds transparency.`,
     });
 
     // Add conversation history if provided
