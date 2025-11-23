@@ -1,14 +1,53 @@
 /**
  * MR11 Verification Service
  *
- * Provides real verification capabilities:
- * - Code execution in sandboxed environment
- * - Math expression evaluation
- * - Fact-checking via web search
+ * Provides real verification capabilities with GPT-enhanced analysis:
+ * - Code execution in sandboxed environment + GPT error explanation
+ * - Math expression evaluation + GPT step-by-step breakdown
+ * - Fact-checking via web search + GPT intelligent analysis
+ * - Syntax checking + GPT code quality suggestions
  */
 
 import { VM } from 'vm2';
 import * as math from 'mathjs';
+import OpenAI from 'openai';
+
+// Initialize OpenAI client
+const apiKey = process.env.OPENAI_API_KEY || '';
+const openai = apiKey ? new OpenAI({ apiKey, timeout: 30000 }) : null;
+const GPT_MODEL = process.env.AI_MODEL || 'gpt-4o-mini';
+
+/**
+ * GPT-enhanced analysis helper
+ * Returns empty string if GPT is not available
+ */
+async function analyzeWithGPT(
+  systemPrompt: string,
+  userPrompt: string,
+  maxTokens: number = 500
+): Promise<string> {
+  if (!openai) {
+    console.log('[Verification] OpenAI not configured, skipping GPT analysis');
+    return '';
+  }
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: GPT_MODEL,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt },
+      ],
+      temperature: 0.3, // Lower temperature for more factual responses
+      max_tokens: maxTokens,
+    });
+
+    return response.choices[0]?.message?.content || '';
+  } catch (error: any) {
+    console.error('[Verification] GPT analysis failed:', error.message);
+    return '';
+  }
+}
 
 export type VerificationMethod = 'code-execution' | 'math-check' | 'fact-check' | 'syntax-check';
 export type VerificationStatus = 'verified' | 'error-found' | 'partially-verified' | 'unable-to-verify';
@@ -91,13 +130,31 @@ export async function verifyCode(code: string): Promise<VerificationResult> {
     executionError = error.message;
     discrepancies.push(`Execution error: ${error.message}`);
 
-    // Provide helpful suggestions based on error type
-    if (error.message.includes('is not defined')) {
-      suggestions.push('Check for undefined variables or missing imports');
-    } else if (error.message.includes('SyntaxError')) {
-      suggestions.push('Fix syntax error in the code');
-    } else if (error.message.includes('timeout')) {
-      suggestions.push('Code took too long to execute - possible infinite loop');
+    // GPT-enhanced error explanation
+    const gptAnalysis = await analyzeWithGPT(
+      `You are a JavaScript debugging expert. Analyze the code error and provide:
+1. A clear explanation of why the error occurred
+2. The specific fix needed
+3. A corrected code snippet if applicable
+Keep your response concise and actionable.`,
+      `Code:\n\`\`\`javascript\n${code}\n\`\`\`\n\nError: ${error.message}`,
+      400
+    );
+
+    if (gptAnalysis) {
+      findings.push('GPT Analysis:');
+      gptAnalysis.split('\n').filter(line => line.trim()).slice(0, 5).forEach(line => {
+        findings.push(`  ${line}`);
+      });
+    } else {
+      // Fallback suggestions if GPT is not available
+      if (error.message.includes('is not defined')) {
+        suggestions.push('Check for undefined variables or missing imports');
+      } else if (error.message.includes('SyntaxError')) {
+        suggestions.push('Fix syntax error in the code');
+      } else if (error.message.includes('timeout')) {
+        suggestions.push('Code took too long to execute - possible infinite loop');
+      }
     }
   }
 
@@ -212,6 +269,22 @@ export async function verifyMath(expression: string, context?: string): Promise<
     confidence = 0.3;
     discrepancies.push(`Math evaluation error: ${error.message}`);
     suggestions.push('Ensure the expression uses standard mathematical notation');
+  }
+
+  // GPT-enhanced step-by-step explanation
+  if (executionResult !== null) {
+    const gptAnalysis = await analyzeWithGPT(
+      `You are a math tutor. Given a mathematical expression and its result, provide a clear step-by-step breakdown of how the answer was calculated. Use simple language. Format steps as numbered list.`,
+      `Expression: ${expression}\nResult: ${JSON.stringify(executionResult)}`,
+      300
+    );
+
+    if (gptAnalysis) {
+      findings.push('Step-by-step breakdown:');
+      gptAnalysis.split('\n').filter(line => line.trim()).slice(0, 6).forEach(line => {
+        findings.push(`  ${line}`);
+      });
+    }
   }
 
   return {
@@ -332,6 +405,44 @@ export async function verifyFact(
       }
     }
 
+    // GPT-enhanced intelligent analysis of search results
+    if (relevantSnippets.length > 0) {
+      const snippetsText = relevantSnippets.slice(0, 3).map((s, i) =>
+        `Source ${i + 1}: "${s.title}"\nSnippet: ${s.snippet}`
+      ).join('\n\n');
+
+      const gptAnalysis = await analyzeWithGPT(
+        `You are a fact-checker. Analyze whether the search results support, contradict, or are inconclusive about the given claim. Provide:
+1. Your verdict: SUPPORTS, CONTRADICTS, or INCONCLUSIVE
+2. Key evidence from the sources
+3. What's missing or needs further verification
+Be concise and objective.`,
+        `Claim to verify: "${claim}"\n\nSearch Results:\n${snippetsText}`,
+        400
+      );
+
+      if (gptAnalysis) {
+        findings.push('AI Analysis of Sources:');
+        gptAnalysis.split('\n').filter(line => line.trim()).slice(0, 6).forEach(line => {
+          findings.push(`  ${line}`);
+        });
+
+        // Adjust status based on GPT analysis
+        const analysisLower = gptAnalysis.toLowerCase();
+        if (analysisLower.includes('contradicts') || analysisLower.includes('false') || analysisLower.includes('incorrect')) {
+          if (status === 'verified' || status === 'partially-verified') {
+            status = 'partially-verified';
+            confidence = Math.min(confidence, 0.5);
+            discrepancies.push('AI analysis found potential contradictions in sources');
+          }
+        } else if (analysisLower.includes('supports') || analysisLower.includes('confirms') || analysisLower.includes('correct')) {
+          if (status === 'partially-verified') {
+            confidence = Math.min(confidence + 0.15, 0.9);
+          }
+        }
+      }
+    }
+
   } catch (error: any) {
     status = 'unable-to-verify';
     confidence = 0.2;
@@ -387,15 +498,48 @@ export async function checkSyntax(code: string): Promise<VerificationResult> {
       }
     }
 
+    // GPT-enhanced code quality review (for valid syntax)
+    const gptReview = await analyzeWithGPT(
+      `You are a senior JavaScript code reviewer. Analyze the code for:
+1. Potential bugs or edge cases
+2. Security concerns
+3. Performance issues
+4. Best practice violations
+Provide 3-5 specific, actionable suggestions. Be concise.`,
+      `\`\`\`javascript\n${code}\n\`\`\``,
+      400
+    );
+
+    if (gptReview) {
+      findings.push('Code Quality Review:');
+      gptReview.split('\n').filter(line => line.trim()).slice(0, 5).forEach(line => {
+        findings.push(`  ${line}`);
+      });
+    }
+
   } catch (error: any) {
     status = 'error-found';
     confidence = 1.0;
     discrepancies.push(`Syntax error: ${error.message}`);
 
-    // Try to provide helpful location info
-    const lineMatch = error.message.match(/line (\d+)/i);
-    if (lineMatch) {
-      suggestions.push(`Check line ${lineMatch[1]} for syntax errors`);
+    // GPT-enhanced error explanation for syntax errors
+    const gptAnalysis = await analyzeWithGPT(
+      `You are a JavaScript expert. Explain this syntax error in simple terms and show exactly how to fix it.`,
+      `Code:\n\`\`\`javascript\n${code}\n\`\`\`\n\nError: ${error.message}`,
+      300
+    );
+
+    if (gptAnalysis) {
+      findings.push('Error Explanation:');
+      gptAnalysis.split('\n').filter(line => line.trim()).slice(0, 4).forEach(line => {
+        findings.push(`  ${line}`);
+      });
+    } else {
+      // Fallback
+      const lineMatch = error.message.match(/line (\d+)/i);
+      if (lineMatch) {
+        suggestions.push(`Check line ${lineMatch[1]} for syntax errors`);
+      }
     }
   }
 
