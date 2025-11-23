@@ -210,9 +210,20 @@ export const parseMarkdown = (content: string): React.ReactNode[] => {
     }
 
     // Empty line - use smaller spacing instead of full br
+    // But don't flush list if we're in a list context (allow blank lines between list items)
     if (line.trim() === '') {
-      flushList(lineIndex);
-      result.push(<div key={`br-${lineIndex}`} style={{ height: '0.375rem' }} />);
+      // Only flush list if next non-empty line is not a list item
+      const nextNonEmptyLine = lines.slice(lineIndex + 1).find(l => l.trim() !== '');
+      const nextIsListItem = nextNonEmptyLine &&
+        (nextNonEmptyLine.match(/^[\s]*[-*]\s+/) || nextNonEmptyLine.match(/^[\s]*\d+\.\s+/));
+
+      if (!nextIsListItem) {
+        flushList(lineIndex);
+      }
+      // Add spacing only if not in a list
+      if (!listType) {
+        result.push(<div key={`br-${lineIndex}`} style={{ height: '0.375rem' }} />);
+      }
       return;
     }
 
