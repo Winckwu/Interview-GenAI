@@ -21,7 +21,7 @@
  * - Lower psychological cost of experimentation
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   FailedIteration,
   FailureAnalysis,
@@ -36,17 +36,30 @@ import {
   getSuccessExpectation,
   ACHIEVEMENT_BADGES
 } from './utils';
+import { apiService } from '../../../services/api';
 import './styles.css';
 
 interface MR7Props {
+  sessionId?: string;
   onIterationLogged?: (log: LearningLog) => void;
   existingIterations?: FailedIteration[];
   existingLogs?: LearningLog[];
 }
 
+interface DBLearningLog {
+  id: string;
+  taskDescription: string;
+  lessonsLearned: string;
+  keyTakeaways?: string[];
+  nextTimeStrategy?: string;
+  rating?: string;
+  createdAt: string;
+}
+
 type TabType = 'overview' | 'log-failure' | 'learning-logs' | 'achievements' | 'stats';
 
 const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
+  sessionId,
   onIterationLogged,
   existingIterations = [],
   existingLogs = []
@@ -64,8 +77,60 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
   const [nextStrategy, setNextStrategy] = useState('');
   const [selectedAnalysis, setSelectedAnalysis] = useState<FailureAnalysis | null>(null);
 
+  // Database history state
+  const [showHistory, setShowHistory] = useState(false);
+  const [dbHistory, setDbHistory] = useState<DBLearningLog[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
   const stats = calculateFailureStatistics(iterations, logs);
   const encouragement = getEncouragementMessage(stats);
+
+  /**
+   * Load history from database
+   */
+  const loadHistoryFromDB = useCallback(async () => {
+    setLoadingHistory(true);
+    try {
+      const response = await apiService.mrHistory.mr7.list({
+        sessionId: sessionId || undefined,
+        limit: 50,
+      });
+      setDbHistory(response.data.data.logs || []);
+    } catch (error) {
+      console.error('[MR7] Failed to load history:', error);
+    } finally {
+      setLoadingHistory(false);
+    }
+  }, [sessionId]);
+
+  // Load history when showing history panel
+  useEffect(() => {
+    if (showHistory) {
+      loadHistoryFromDB();
+    }
+  }, [showHistory, loadHistoryFromDB]);
+
+  /**
+   * Save learning log to database
+   */
+  const saveLogToDB = useCallback(async (log: LearningLog, analysis: FailureAnalysis | null) => {
+    try {
+      await apiService.mrHistory.mr7.create({
+        sessionId: sessionId || undefined,
+        taskDescription: log.taskId,
+        lessonsLearned: log.lessonsLearned,
+        keyTakeaways: log.keyTakeaways,
+        nextTimeStrategy: log.nextTimeStrategy,
+        failurePatterns: analysis?.failurePatterns || [],
+        learningInsights: analysis?.learningInsights || [],
+        recoveryStrategies: analysis?.recoveryStrategies || [],
+        rating: log.rating || undefined,
+      });
+      console.log('[MR7] Learning log saved to database');
+    } catch (error) {
+      console.error('[MR7] Failed to save to database:', error);
+    }
+  }, [sessionId]);
 
   /**
    * Handle logging a new failed iteration
@@ -103,7 +168,7 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
   /**
    * Handle creating a learning log from the analysis
    */
-  const handleCreateLearningLog = useCallback(() => {
+  const handleCreateLearningLog = useCallback(async () => {
     if (!selectedAnalysis || !lessonsLearned.trim()) {
       alert('Please write what you learned');
       return;
@@ -114,6 +179,9 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
 
     const newLog = createLearningLog(failedIter, selectedAnalysis, lessonsLearned, nextStrategy);
     setLogs([...logs, newLog]);
+
+    // Save to database
+    await saveLogToDB(newLog, selectedAnalysis);
 
     // Update achievements
     const updatedBadges = updateAchievementProgress([...badges], iterations, [...logs, newLog]);
@@ -127,7 +195,7 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
     setNextStrategy('');
     setSelectedAnalysis(null);
     setActiveTab('overview');
-  }, [selectedAnalysis, lessonsLearned, nextStrategy, iterations, logs, badges, onIterationLogged]);
+  }, [selectedAnalysis, lessonsLearned, nextStrategy, iterations, logs, badges, onIterationLogged, saveLogToDB]);
 
   /**
    * Handle dismissing analysis
@@ -149,11 +217,78 @@ const MR7FailureToleranceLearning: React.FC<MR7Props> = ({
     <div className="mr7-container">
       {/* Header */}
       <div className="mr7-header">
-        <h1 className="mr7-title">Learning from Failures</h1>
+        <div className="mr7-header-top" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+          <h1 className="mr7-title">Learning from Failures</h1>
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              padding: '0.4rem 0.8rem',
+              fontSize: '0.85rem',
+              background: showHistory ? '#0066ff' : '#f0f0f0',
+              color: showHistory ? 'white' : '#666',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            {showHistory ? 'Hide History' : 'View History'}
+          </button>
+        </div>
         <p className="mr7-subtitle">
           Turn iterations and rejections into learning opportunities
         </p>
       </div>
+
+      {/* Database History Panel */}
+      {showHistory && (
+        <div style={{
+          margin: '1rem 0',
+          padding: '1rem',
+          background: '#f9f9f9',
+          borderRadius: '6px',
+          border: '1px solid #e0e0e0',
+        }}>
+          <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem' }}>
+            Learning History from Database ({dbHistory.length})
+          </h3>
+          {loadingHistory ? (
+            <p style={{ color: '#666' }}>Loading history...</p>
+          ) : dbHistory.length === 0 ? (
+            <p style={{ color: '#666' }}>No learning logs saved yet.</p>
+          ) : (
+            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+              {dbHistory.map((log) => (
+                <div
+                  key={log.id}
+                  style={{
+                    padding: '0.75rem',
+                    marginBottom: '0.5rem',
+                    background: 'white',
+                    borderRadius: '4px',
+                    border: '1px solid #eee',
+                  }}
+                >
+                  <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
+                    {log.taskDescription}
+                  </div>
+                  <div style={{ fontSize: '0.9rem', color: '#333', marginBottom: '0.25rem' }}>
+                    {log.lessonsLearned.substring(0, 150)}
+                    {log.lessonsLearned.length > 150 ? '...' : ''}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#888' }}>
+                    {new Date(log.createdAt).toLocaleString()}
+                    {log.rating && ` • Rating: ${log.rating}`}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Encouragement Banner */}
       <div className="mr7-encouragement-banner">

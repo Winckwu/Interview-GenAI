@@ -37,9 +37,11 @@ import {
   getWorkflowGuidance,
   VERIFICATION_TOOLS
 } from './utils';
+import { apiService } from '../../../services/api';
 import './styles.css';
 
 interface MR11Props {
+  sessionId?: string;
   onDecisionMade?: (log: VerificationLog) => void;
   existingLogs?: VerificationLog[];
   /** Pre-fill content from a specific message */
@@ -50,9 +52,20 @@ interface MR11Props {
   onMessageVerified?: (messageId: string, decision: UserDecision) => void;
 }
 
+interface DBVerificationLog {
+  id: string;
+  contentType: string;
+  verificationMethod: string;
+  verificationStatus: string;
+  userDecision: string;
+  userNotes?: string;
+  createdAt: string;
+}
+
 type TabType = 'verify' | 'history' | 'stats';
 
 const MR11IntegratedVerification: React.FC<MR11Props> = ({
+  sessionId,
   onDecisionMade,
   existingLogs = [],
   initialContent = '',
@@ -70,8 +83,64 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   const [userDecision, setUserDecision] = useState<UserDecision | null>(null);
   const [decisionNotes, setDecisionNotes] = useState('');
 
+  // Database history state
+  const [showHistory, setShowHistory] = useState(false);
+  const [dbHistory, setDbHistory] = useState<DBVerificationLog[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
   const stats = calculateVerificationStatistics(logs);
   const recommendations = contentType ? getVerificationRecommendations({ id: '', contentType, content: contentText, flagged: false }) : [];
+
+  /**
+   * Load history from database
+   */
+  const loadHistoryFromDB = useCallback(async () => {
+    setLoadingHistory(true);
+    try {
+      const response = await apiService.mrHistory.mr11.list({
+        sessionId: sessionId || undefined,
+        limit: 50,
+      });
+      setDbHistory(response.data.data.logs || []);
+    } catch (error) {
+      console.error('[MR11] Failed to load history:', error);
+    } finally {
+      setLoadingHistory(false);
+    }
+  }, [sessionId]);
+
+  // Load history when showing history panel
+  useEffect(() => {
+    if (showHistory) {
+      loadHistoryFromDB();
+    }
+  }, [showHistory, loadHistoryFromDB]);
+
+  /**
+   * Save verification log to database
+   */
+  const saveLogToDB = useCallback(async (result: VerificationResult, decision: UserDecision, notes: string) => {
+    try {
+      await apiService.mrHistory.mr11.create({
+        sessionId: sessionId || undefined,
+        messageId: messageId || undefined,
+        contentType: contentType as any,
+        contentText: contentText || undefined,
+        verificationMethod: result.verificationMethod,
+        toolUsed: result.toolUsed,
+        verificationStatus: result.status as any,
+        confidenceScore: result.confidenceScore,
+        findings: result.findings,
+        discrepancies: result.discrepancies,
+        suggestions: result.suggestions,
+        userDecision: decision,
+        userNotes: notes || undefined,
+      });
+      console.log('[MR11] Verification log saved to database');
+    } catch (error) {
+      console.error('[MR11] Failed to save to database:', error);
+    }
+  }, [sessionId, messageId, contentType, contentText]);
 
   // Update content when initialContent prop changes (e.g., when verifying a different message)
   useEffect(() => {
@@ -129,7 +198,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   /**
    * Make a decision on verification result
    */
-  const handleMakeDecision = useCallback(() => {
+  const handleMakeDecision = useCallback(async () => {
     if (!verificationResult || !userDecision) {
       alert('Please make a decision');
       return;
@@ -138,6 +207,9 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     const log = createVerificationLog(verificationResult, userDecision, decisionNotes);
     setLogs([...logs, log]);
     onDecisionMade?.(log);
+
+    // Save to database
+    await saveLogToDB(verificationResult, userDecision, decisionNotes);
 
     // If verifying a specific message, notify parent of the decision
     if (messageId && onMessageVerified) {
@@ -150,7 +222,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     setVerificationResult(null);
     setUserDecision(null);
     setDecisionNotes('');
-  }, [verificationResult, userDecision, decisionNotes, logs, onDecisionMade, messageId, onMessageVerified]);
+  }, [verificationResult, userDecision, decisionNotes, logs, onDecisionMade, messageId, onMessageVerified, saveLogToDB]);
 
   /**
    * Update decision and evaluate actual correctness
@@ -164,10 +236,93 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     <div className="mr11-container">
       {/* Header */}
       <div className="mr11-header">
-        <h1 className="mr11-title">Integrated Verification Tools</h1>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+          <h1 className="mr11-title">Integrated Verification Tools</h1>
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              padding: '0.4rem 0.8rem',
+              fontSize: '0.85rem',
+              background: showHistory ? '#0066ff' : '#f0f0f0',
+              color: showHistory ? 'white' : '#666',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            {showHistory ? 'Hide History' : 'View History'}
+          </button>
+        </div>
         <p className="mr11-subtitle">
           Verify AI-generated content with one-click verification methods
         </p>
+
+        {/* Database History Panel */}
+        {showHistory && (
+          <div style={{
+            margin: '1rem 0',
+            padding: '1rem',
+            background: '#f9f9f9',
+            borderRadius: '6px',
+            border: '1px solid #e0e0e0',
+            textAlign: 'left',
+          }}>
+            <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem' }}>
+              Verification History ({dbHistory.length})
+            </h3>
+            {loadingHistory ? (
+              <p style={{ color: '#666' }}>Loading history...</p>
+            ) : dbHistory.length === 0 ? (
+              <p style={{ color: '#666' }}>No verification logs saved yet.</p>
+            ) : (
+              <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                {dbHistory.map((log) => (
+                  <div
+                    key={log.id}
+                    style={{
+                      padding: '0.75rem',
+                      marginBottom: '0.5rem',
+                      background: 'white',
+                      borderRadius: '4px',
+                      border: '1px solid #eee',
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontWeight: 600 }}>
+                        {log.contentType} - {log.verificationMethod}
+                      </span>
+                      <span style={{
+                        padding: '0.2rem 0.5rem',
+                        borderRadius: '4px',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        background: log.userDecision === 'accept' ? '#d1fae5' : log.userDecision === 'reject' ? '#fee2e2' : '#fef3c7',
+                        color: log.userDecision === 'accept' ? '#065f46' : log.userDecision === 'reject' ? '#991b1b' : '#92400e',
+                      }}>
+                        {log.userDecision}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem' }}>
+                      Status: {log.verificationStatus}
+                    </div>
+                    {log.userNotes && (
+                      <div style={{ fontSize: '0.85rem', color: '#444', marginTop: '0.25rem' }}>
+                        Notes: {log.userNotes}
+                      </div>
+                    )}
+                    <div style={{ fontSize: '0.75rem', color: '#888', marginTop: '0.25rem' }}>
+                      {new Date(log.createdAt).toLocaleString()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Tabs */}

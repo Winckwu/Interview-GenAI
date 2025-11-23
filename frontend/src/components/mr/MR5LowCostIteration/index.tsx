@@ -16,7 +16,7 @@
  * This addresses the biggest UX pain point: iteration should feel effortless
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import {
   ConversationBranch,
   IterationVariant,
@@ -28,12 +28,14 @@ import {
   getPromissingBranches,
   ParentReference,
 } from './utils';
+import { apiService } from '../../../services/api';
 import './styles.css';
 
 /**
  * Props for MR5 component
  */
 interface MR5Props {
+  sessionId?: string;
   initialPrompt?: string;
   conversationHistory?: Array<{ role: 'user' | 'ai'; content: string; timestamp: Date }>;
   onBranchCreated?: (branch: ConversationBranch) => void;
@@ -45,12 +47,23 @@ interface MR5Props {
   maxBranches?: number;
 }
 
+interface DBVariantLog {
+  id: string;
+  prompt: string;
+  content: string;
+  temperature?: number;
+  style?: string;
+  rating?: string;
+  createdAt: string;
+}
+
 /**
  * MR5 Component: Low-Cost Iteration Mechanism
  *
  * Transforms iteration from a tedious process into an efficient exploration mechanism
  */
 export const MR5LowCostIteration: React.FC<MR5Props> = ({
+  sessionId,
   initialPrompt = '',
   conversationHistory = [],
   onBranchCreated,
@@ -77,6 +90,59 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   const [selectedComparisonVariants, setSelectedComparisonVariants] = useState<string[]>([]);
   const [temperatureRange, setTemperatureRange] = useState({ min: 0.3, max: 0.9 });
   const [variantCount, setVariantCount] = useState(3);
+
+  // Database history state
+  const [showHistory, setShowHistory] = useState(false);
+  const [dbHistory, setDbHistory] = useState<DBVariantLog[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
+  /**
+   * Load history from database
+   */
+  const loadHistoryFromDB = useCallback(async () => {
+    setLoadingHistory(true);
+    try {
+      const response = await apiService.mrHistory.mr5.listVariants({
+        sessionId: sessionId || undefined,
+        limit: 50,
+      });
+      setDbHistory(response.data.data.variants || []);
+    } catch (error) {
+      console.error('[MR5] Failed to load history:', error);
+    } finally {
+      setLoadingHistory(false);
+    }
+  }, [sessionId]);
+
+  // Load history when showing history panel
+  useEffect(() => {
+    if (showHistory) {
+      loadHistoryFromDB();
+    }
+  }, [showHistory, loadHistoryFromDB]);
+
+  /**
+   * Save variant to database
+   */
+  const saveVariantToDB = useCallback(async (variant: IterationVariant, rating?: 'good' | 'okay' | 'poor', wasSelected?: boolean) => {
+    try {
+      await apiService.mrHistory.mr5.createVariant({
+        sessionId: sessionId || undefined,
+        prompt: initialPrompt,
+        content: variant.content,
+        temperature: variant.temperature,
+        style: variant.style,
+        promptTokens: variant.tokenUsage?.promptTokens,
+        completionTokens: variant.tokenUsage?.completionTokens,
+        totalTokens: variant.tokenUsage?.totalTokens,
+        rating: rating,
+        wasSelected: wasSelected,
+      });
+      console.log('[MR5] Variant saved to database');
+    } catch (error) {
+      console.error('[MR5] Failed to save variant to database:', error);
+    }
+  }, [sessionId, initialPrompt]);
 
   // Branch tree visualization
   const branchTree = useMemo(() => getBranchTree(branches), [branches]);
@@ -139,6 +205,11 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
       setVariants(newVariants);
       onVariantsGenerated?.(newVariants);
 
+      // Save each variant to database
+      for (const variant of newVariants) {
+        await saveVariantToDB(variant);
+      }
+
       // Update active branch
       if (activeBranchId) {
         setBranches(prev =>
@@ -152,7 +223,7 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
     } finally {
       setGeneratingVariants(false);
     }
-  }, [initialPrompt, conversationHistory, variantCount, temperatureRange, activeBranchId, onVariantsGenerated]);
+  }, [initialPrompt, conversationHistory, variantCount, temperatureRange, activeBranchId, onVariantsGenerated, saveVariantToDB]);
 
   /**
    * Rate a variant
@@ -638,10 +709,92 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   return (
     <div className="mr5-container">
       <div className="mr5-header">
-        <h1 className="mr5-title">Low-Cost Iteration Mechanism</h1>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+          <h1 className="mr5-title">Low-Cost Iteration Mechanism</h1>
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              padding: '0.4rem 0.8rem',
+              fontSize: '0.85rem',
+              background: showHistory ? '#0066ff' : '#f0f0f0',
+              color: showHistory ? 'white' : '#666',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            {showHistory ? 'Hide DB History' : 'View DB History'}
+          </button>
+        </div>
         <p className="mr5-subtitle">
           Explore multiple directions, compare versions, and iterate efficiently without friction
         </p>
+
+        {/* Database History Panel */}
+        {showHistory && (
+          <div style={{
+            margin: '1rem 0',
+            padding: '1rem',
+            background: '#f9f9f9',
+            borderRadius: '6px',
+            border: '1px solid #e0e0e0',
+            textAlign: 'left',
+          }}>
+            <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem' }}>
+              Saved Variants History ({dbHistory.length})
+            </h3>
+            {loadingHistory ? (
+              <p style={{ color: '#666' }}>Loading history...</p>
+            ) : dbHistory.length === 0 ? (
+              <p style={{ color: '#666' }}>No variants saved yet.</p>
+            ) : (
+              <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                {dbHistory.map((log) => (
+                  <div
+                    key={log.id}
+                    style={{
+                      padding: '0.75rem',
+                      marginBottom: '0.5rem',
+                      background: 'white',
+                      borderRadius: '4px',
+                      border: '1px solid #eee',
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontWeight: 600 }}>
+                        {log.style || 'Variant'}
+                        {log.temperature && ` (T: ${log.temperature})`}
+                      </span>
+                      {log.rating && (
+                        <span style={{
+                          padding: '0.2rem 0.5rem',
+                          borderRadius: '4px',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          background: log.rating === 'good' ? '#d1fae5' : log.rating === 'poor' ? '#fee2e2' : '#fef3c7',
+                          color: log.rating === 'good' ? '#065f46' : log.rating === 'poor' ? '#991b1b' : '#92400e',
+                        }}>
+                          {log.rating}
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: '0.85rem', color: '#444', marginTop: '0.25rem' }}>
+                      {log.content.substring(0, 100)}
+                      {log.content.length > 100 ? '...' : ''}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#888', marginTop: '0.25rem' }}>
+                      {new Date(log.createdAt).toLocaleString()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="mr5-tabs">

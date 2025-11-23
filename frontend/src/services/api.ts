@@ -394,6 +394,154 @@ export const apiService = {
     delete: (id: string) =>
       api.delete(`/decompositions/${id}`),
   },
+
+  /**
+   * MR History endpoints - Unified history for all MR tools
+   */
+  mrHistory: {
+    // ============ MR7: Failure Learning ============
+    mr7: {
+      list: (params?: { sessionId?: string; limit?: number; offset?: number }) =>
+        api.get('/mr-history/mr7', { params }),
+
+      create: (data: {
+        sessionId?: string;
+        taskDescription: string;
+        attemptNumber?: number;
+        rejectionReason?: string;
+        userFeedback?: string;
+        lessonsLearned: string;
+        keyTakeaways?: string[];
+        nextTimeStrategy?: string;
+        failurePatterns?: Array<{ pattern: string; preventionTip: string }>;
+        learningInsights?: string[];
+        recoveryStrategies?: string[];
+        rating?: 'valuable' | 'somewhat' | 'not_useful';
+      }) => api.post('/mr-history/mr7', data),
+    },
+
+    // ============ MR11: Verification ============
+    mr11: {
+      list: (params?: { sessionId?: string; contentType?: string; limit?: number; offset?: number }) =>
+        api.get('/mr-history/mr11', { params }),
+
+      create: (data: {
+        sessionId?: string;
+        messageId?: string;
+        contentType: 'code' | 'math' | 'citation' | 'fact' | 'text';
+        contentText?: string;
+        verificationMethod: string;
+        toolUsed?: string;
+        verificationStatus: 'error-found' | 'verified' | 'partially-verified' | 'unverified';
+        confidenceScore?: number;
+        findings?: string[];
+        discrepancies?: string[];
+        suggestions?: string[];
+        userDecision: 'accept' | 'modify' | 'reject' | 'skip';
+        userNotes?: string;
+      }) => api.post('/mr-history/mr11', data),
+    },
+
+    // ============ MR5: Low-Cost Iteration ============
+    mr5: {
+      // Branches
+      listBranches: (params?: { sessionId?: string; limit?: number; offset?: number }) =>
+        api.get('/mr-history/mr5/branches', { params }),
+
+      createBranch: (data: {
+        sessionId?: string;
+        branchName: string;
+        parentBranchId?: string;
+        parentMessageIndex?: number;
+        conversationHistory: Array<{ role: string; content: string; timestamp?: string }>;
+        nextPrompt?: string;
+        rating?: number;
+      }) => api.post('/mr-history/mr5/branches', data),
+
+      // Variants
+      listVariants: (params?: { sessionId?: string; branchId?: string; limit?: number; offset?: number }) =>
+        api.get('/mr-history/mr5/variants', { params }),
+
+      createVariant: (data: {
+        sessionId?: string;
+        branchId?: string;
+        prompt: string;
+        content: string;
+        temperature?: number;
+        style?: string;
+        promptTokens?: number;
+        completionTokens?: number;
+        totalTokens?: number;
+        rating?: 'good' | 'okay' | 'poor';
+        wasSelected?: boolean;
+      }) => api.post('/mr-history/mr5/variants', data),
+    },
+
+    // ============ MR14: Guided Reflection ============
+    mr14: {
+      list: (params?: { sessionId?: string; limit?: number; offset?: number }) =>
+        api.get('/mr-history/mr14', { params }),
+
+      create: (data: {
+        sessionId?: string;
+        conversationSummary?: string;
+        immediateReflections?: Record<string, string>;
+        structuredReflections?: Record<string, string>;
+        metacognitiveReflections?: Record<string, string>;
+        depthLevel?: 'surface' | 'moderate' | 'deep';
+        depthScore?: number;
+        depthFeedback?: string;
+        completedStages?: string[];
+        isComplete?: boolean;
+      }) => api.post('/mr-history/mr14', data),
+    },
+
+    // ============ MR6: Cross-Model Comparison ============
+    mr6: {
+      list: (params?: { sessionId?: string; limit?: number; offset?: number }) =>
+        api.get('/mr-history/mr6', { params }),
+
+      create: (data: {
+        sessionId?: string;
+        prompt: string;
+        modelResponses: Array<{
+          model: string;
+          content: string;
+          responseTime?: number;
+          tokens?: number;
+        }>;
+        preferredModel?: string;
+        preferenceReason?: string;
+        comparisonNotes?: string;
+      }) => api.post('/mr-history/mr6', data),
+    },
+
+    // ============ MR12: Critical Thinking ============
+    mr12: {
+      list: (params?: { sessionId?: string; limit?: number; offset?: number }) =>
+        api.get('/mr-history/mr12', { params }),
+
+      create: (data: {
+        sessionId?: string;
+        contentToEvaluate: string;
+        contentSource?: string;
+        evaluationCriteria: Array<{
+          criterion: string;
+          score: number;
+          notes?: string;
+        }>;
+        overallScore?: number;
+        strengths?: string[];
+        weaknesses?: string[];
+        recommendations?: string[];
+        userAssessment?: string;
+        agreedWithAi?: boolean;
+      }) => api.post('/mr-history/mr12', data),
+    },
+
+    // ============ Aggregated Stats ============
+    getStats: () => api.get('/mr-history/stats'),
+  },
 };
 
 export default api;

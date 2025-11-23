@@ -118,6 +118,7 @@ import aiRoutes from './routes/ai';
 import mcaRoutes from './routes/mca';
 import branchesRoutes from './routes/branches';
 import decompositionsRoutes from './routes/decompositions';
+import mrHistoryRoutes from './routes/mrHistory';
 
 // ============================================================================
 // API Routes
@@ -164,6 +165,9 @@ app.use('/api/mca', mcaRoutes);
 
 // MR1 Task Decomposition History
 app.use('/api/decompositions', decompositionsRoutes);
+
+// MR Tools History (MR5, MR6, MR7, MR11, MR12, MR14)
+app.use('/api/mr-history', mrHistoryRoutes);
 
 // Placeholder routes - backward compatibility
 app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {
