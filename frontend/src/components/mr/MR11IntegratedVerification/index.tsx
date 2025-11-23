@@ -20,7 +20,7 @@
  * - Build trust through transparency about verification accuracy
  */
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
   VerifiableContent,
   VerificationResult,
@@ -79,6 +79,24 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   // Verification loading state
   const [verifying, setVerifying] = useState(false);
 
+  // Refs for scroll behavior
+  const containerRef = useRef<HTMLDivElement>(null);
+  const methodSectionRef = useRef<HTMLDivElement>(null);
+  const resultsSectionRef = useRef<HTMLDivElement>(null);
+
+  // Scroll helpers
+  const scrollToTop = useCallback(() => {
+    containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const scrollToMethods = useCallback(() => {
+    methodSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
+  const scrollToResults = useCallback(() => {
+    resultsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
   // Calculate stats from database history (real data) instead of local state
   const stats = calculateStatsFromDBHistory(dbHistory);
   const recommendations = contentType ? getVerificationRecommendations({ id: '', contentType, content: contentText, flagged: false }) : [];
@@ -101,7 +119,12 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     }
   }, [sessionId]);
 
-  // Load history when History tab or Stats tab is active
+  // Load history on mount and when switching to history/stats tab
+  useEffect(() => {
+    loadHistoryFromDB();
+  }, [loadHistoryFromDB]);
+
+  // Reload history when tab changes to history or stats
   useEffect(() => {
     if (activeTab === 'history' || activeTab === 'stats') {
       loadHistoryFromDB();
@@ -152,7 +175,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   }, [initialContent]);
 
   /**
-   * Start verification process
+   * Start verification process - scroll to method selection
    */
   const handleStartVerification = useCallback(() => {
     if (!contentText.trim() || !contentType) {
@@ -163,7 +186,9 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     setVerificationResult(null);
     setUserDecision(null);
     setDecisionNotes('');
-  }, [contentText, contentType]);
+    // Smooth scroll to method selection section
+    setTimeout(() => scrollToMethods(), 100);
+  }, [contentText, contentType, scrollToMethods]);
 
   /**
    * Perform REAL verification with selected method via backend API
@@ -189,13 +214,15 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       const result = await performVerificationAsync(content, selectedMethod);
       setVerificationResult(result);
       setUserDecision(null);
+      // Scroll to results section after verification completes
+      setTimeout(() => scrollToTop(), 100);
     } catch (error) {
       console.error('[MR11] Verification failed:', error);
       alert('Verification failed. Please try again.');
     } finally {
       setVerifying(false);
     }
-  }, [selectedMethod, contentType, contentText]);
+  }, [selectedMethod, contentType, contentText, scrollToTop]);
 
   /**
    * Make a decision on verification result
@@ -221,8 +248,10 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     // Save to database (only for non-skip decisions)
     await saveLogToDB(verificationResult, userDecision, decisionNotes);
 
-    // Refresh database history to update stats
-    await loadHistoryFromDB();
+    // Refresh database history to update stats (small delay to ensure DB commit)
+    setTimeout(async () => {
+      await loadHistoryFromDB();
+    }, 300);
 
     // If verifying a specific message, notify parent of the decision
     if (messageId && onMessageVerified) {
@@ -278,7 +307,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       </div>
 
       {/* Content */}
-      <div className="mr11-content">
+      <div className="mr11-content" ref={containerRef} style={{ maxHeight: '70vh', overflowY: 'auto' }}>
         {/* Verify Tab */}
         {activeTab === 'verify' && (
           <div className="mr11-verify">
@@ -327,7 +356,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
                 </div>
 
                 {contentText && contentType && (
-                  <div className="mr11-form-section">
+                  <div className="mr11-form-section" ref={methodSectionRef}>
                     <h3 className="mr11-section-title">Step 2: Select Verification Method</h3>
                     <div className="mr11-guidance">
                       <strong>Recommended methods for {contentType}:</strong>
@@ -373,12 +402,15 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
                 )}
               </div>
             ) : (
-              <div className="mr11-results">
+              <div className="mr11-results" ref={resultsSectionRef}>
                 <div className="mr11-results-header">
                   <h3>Verification Results</h3>
                   <button
                     className="mr11-back-btn"
-                    onClick={() => setVerificationResult(null)}
+                    onClick={() => {
+                      setVerificationResult(null);
+                      setTimeout(() => scrollToTop(), 100);
+                    }}
                   >
                     ← Back
                   </button>
