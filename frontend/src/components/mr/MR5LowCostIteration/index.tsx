@@ -16,7 +16,7 @@
  * This addresses the biggest UX pain point: iteration should feel effortless
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import {
   ConversationBranch,
   IterationVariant,
@@ -30,6 +30,13 @@ import {
 } from './utils';
 import { apiService } from '../../../services/api';
 import './styles.css';
+
+// Message type for branch conversations
+interface BranchMessage {
+  role: 'user' | 'ai';
+  content: string;
+  timestamp: Date;
+}
 
 /**
  * Props for MR5 component
@@ -81,6 +88,12 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   const [temperatureRange, setTemperatureRange] = useState({ min: 0.3, max: 0.9 });
   const [variantCount, setVariantCount] = useState(3);
 
+  // Branch conversation state
+  const [branchLoading, setBranchLoading] = useState(false);
+  const [branchInput, setBranchInput] = useState('');
+  const [branchStreamingContent, setBranchStreamingContent] = useState('');
+  const branchAbortRef = useRef<(() => void) | null>(null);
+
 
   /**
    * Save variant to database
@@ -110,9 +123,10 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
 
   /**
    * Create a new branch from current point in conversation
+   * If a prompt is provided, immediately call GPT API to get a response
    */
   const handleCreateBranch = useCallback(
-    (fromIndex: number, customPrompt?: string) => {
+    async (fromIndex: number, customPrompt?: string) => {
       if (branches.length >= maxBranches) {
         alert(`Maximum branches (${maxBranches}) reached`);
         return;
@@ -126,11 +140,14 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
         messageIndex: validIndex,
       };
 
+      // Get base history from conversation
+      const baseHistory = conversationHistory.slice(0, validIndex + 1);
+
       const newBranch: ConversationBranch = {
         id: `branch-${Date.now()}`,
         name: `Branch ${branches.length + 1}`,
         parentRef,
-        history: conversationHistory.slice(0, validIndex + 1),
+        history: [...baseHistory],
         nextPrompt: customPrompt || '',
         createdAt: new Date(),
         rating: 0,
@@ -144,9 +161,189 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
       // Close branching UI and switch to branches view
       setShowBranchingUI(false);
       setActiveView('branches');
+
+      // If a prompt is provided, immediately send it to get AI response
+      if (customPrompt && customPrompt.trim()) {
+        setBranchLoading(true);
+        setBranchStreamingContent('');
+
+        // Add user message to branch
+        const userMessage: BranchMessage = {
+          role: 'user',
+          content: customPrompt,
+          timestamp: new Date(),
+        };
+
+        setBranches(prev => prev.map(b =>
+          b.id === newBranch.id
+            ? { ...b, history: [...b.history, userMessage] }
+            : b
+        ));
+
+        try {
+          // Build conversation history for API
+          const apiHistory = baseHistory.map(msg => ({
+            role: msg.role === 'user' ? 'user' : 'assistant',
+            content: msg.content,
+          }));
+
+          // Call streaming API
+          const { stream, abort } = await apiService.ai.chatStream(
+            customPrompt,
+            apiHistory
+          );
+
+          branchAbortRef.current = abort;
+
+          // Read stream
+          const reader = stream.getReader();
+          const decoder = new TextDecoder();
+          let fullContent = '';
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                if (data === '[DONE]') continue;
+                try {
+                  const parsed = JSON.parse(data);
+                  if (parsed.content) {
+                    fullContent += parsed.content;
+                    setBranchStreamingContent(fullContent);
+                  }
+                } catch {
+                  // Skip invalid JSON
+                }
+              }
+            }
+          }
+
+          // Add AI response to branch
+          if (fullContent) {
+            const aiMessage: BranchMessage = {
+              role: 'ai',
+              content: fullContent,
+              timestamp: new Date(),
+            };
+
+            setBranches(prev => prev.map(b =>
+              b.id === newBranch.id
+                ? { ...b, history: [...b.history, aiMessage] }
+                : b
+            ));
+          }
+        } catch (error) {
+          console.error('[MR5] Failed to get AI response for branch:', error);
+        } finally {
+          setBranchLoading(false);
+          setBranchStreamingContent('');
+          branchAbortRef.current = null;
+        }
+      }
     },
     [branches, activeBranchId, conversationHistory, maxBranches, onBranchCreated]
   );
+
+  /**
+   * Send a message on the active branch
+   */
+  const handleBranchSend = useCallback(async () => {
+    if (!activeBranchId || !branchInput.trim() || branchLoading) return;
+
+    const currentBranch = branches.find(b => b.id === activeBranchId);
+    if (!currentBranch) return;
+
+    setBranchLoading(true);
+    setBranchStreamingContent('');
+
+    // Add user message
+    const userMessage: BranchMessage = {
+      role: 'user',
+      content: branchInput,
+      timestamp: new Date(),
+    };
+
+    setBranches(prev => prev.map(b =>
+      b.id === activeBranchId
+        ? { ...b, history: [...b.history, userMessage] }
+        : b
+    ));
+
+    const userInput = branchInput;
+    setBranchInput('');
+
+    try {
+      // Build conversation history for API
+      const apiHistory = currentBranch.history.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content,
+      }));
+
+      // Call streaming API
+      const { stream, abort } = await apiService.ai.chatStream(
+        userInput,
+        apiHistory
+      );
+
+      branchAbortRef.current = abort;
+
+      // Read stream
+      const reader = stream.getReader();
+      const decoder = new TextDecoder();
+      let fullContent = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.content) {
+                fullContent += parsed.content;
+                setBranchStreamingContent(fullContent);
+              }
+            } catch {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+
+      // Add AI response to branch
+      if (fullContent) {
+        const aiMessage: BranchMessage = {
+          role: 'ai',
+          content: fullContent,
+          timestamp: new Date(),
+        };
+
+        setBranches(prev => prev.map(b =>
+          b.id === activeBranchId
+            ? { ...b, history: [...b.history, aiMessage] }
+            : b
+        ));
+      }
+    } catch (error) {
+      console.error('[MR5] Failed to send message on branch:', error);
+    } finally {
+      setBranchLoading(false);
+      setBranchStreamingContent('');
+      branchAbortRef.current = null;
+    }
+  }, [activeBranchId, branchInput, branchLoading, branches]);
 
   /**
    * Generate multiple variants with different parameters
@@ -306,9 +503,11 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
   };
 
   /**
-   * Render branches view
+   * Render branches view with full conversation and continuation
    */
   const renderBranchesView = () => {
+    const activeBranch = branches.find(b => b.id === activeBranchId);
+
     return (
       <div className="mr5-branches-view">
         <h3 className="mr5-section-title">Conversation Branches ({branches.length})</h3>
@@ -316,65 +515,213 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
         {branches.length === 0 ? (
           <p className="mr5-empty-message">No branches yet. Create one to start exploring alternatives.</p>
         ) : (
-          <>
-            <div className="mr5-branch-tree">
-              <div className="mr5-main-branch">
-                <div className="mr5-branch-node mr5-main-node">
-                  <span className="mr5-branch-icon">📌</span>
-                  <span className="mr5-branch-label">Main Conversation</span>
-                  <span className="mr5-branch-messages">{conversationHistory.length} messages</span>
-                </div>
-              </div>
-
-              <div className="mr5-branch-children">
-                {branches.map((branch, idx) => (
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            {/* Branch selector */}
+            <div style={{ flex: '0 0 200px' }}>
+              <div className="mr5-branch-tree">
+                <div className="mr5-main-branch">
                   <div
-                    key={branch.id}
-                    className={`mr5-branch-node ${activeBranchId === branch.id ? 'active' : ''}`}
-                    onClick={() => setActiveBranchId(branch.id)}
+                    className={`mr5-branch-node mr5-main-node ${!activeBranchId ? 'active' : ''}`}
+                    onClick={() => setActiveBranchId(null)}
+                    style={{ cursor: 'pointer' }}
                   >
-                    <span className="mr5-branch-icon">🌿</span>
-                    <div className="mr5-branch-info">
-                      <span className="mr5-branch-label">{branch.name}</span>
-                      <span className="mr5-branch-variants">
-                        {branch.variantsCount > 0 && `${branch.variantsCount} variants`}
-                      </span>
-                    </div>
-                    <span className={`mr5-branch-rating mr5-rating-${branch.rating}`}>
-                      {'⭐'.repeat(Math.max(1, branch.rating))}
-                    </span>
+                    <span className="mr5-branch-icon">📌</span>
+                    <span className="mr5-branch-label">Main</span>
+                    <span className="mr5-branch-messages">{conversationHistory.length}</span>
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
-            {activeBranchId && (
-              <div className="mr5-branch-details">
-                <h4 className="mr5-details-title">
-                  {branches.find(b => b.id === activeBranchId)?.name} Details
-                </h4>
-                <p className="mr5-details-text">
-                  {branches.find(b => b.id === activeBranchId)?.history.length} messages in this branch
-                </p>
-              </div>
-            )}
-
-            {promisingBranches.length > 0 && (
-              <div className="mr5-promising-branches">
-                <h4 className="mr5-promising-title">🚀 Promising Branches</h4>
-                <p className="mr5-promising-subtitle">Based on your ratings and iterations</p>
-                <div className="mr5-promising-list">
-                  {promisingBranches.map((branch, idx) => (
-                    <div key={branch.id} className="mr5-promising-item">
-                      <span className="mr5-promising-rank">#{idx + 1}</span>
-                      <span className="mr5-promising-name">{branch.name}</span>
-                      <span className="mr5-promising-score">{branch.rating}⭐</span>
+                <div className="mr5-branch-children">
+                  {branches.map((branch) => (
+                    <div
+                      key={branch.id}
+                      className={`mr5-branch-node ${activeBranchId === branch.id ? 'active' : ''}`}
+                      onClick={() => setActiveBranchId(branch.id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <span className="mr5-branch-icon">🌿</span>
+                      <div className="mr5-branch-info">
+                        <span className="mr5-branch-label">{branch.name}</span>
+                        <span className="mr5-branch-variants" style={{ fontSize: '0.75rem', color: '#666' }}>
+                          {branch.history.length} msgs
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
-            )}
-          </>
+            </div>
+
+            {/* Branch conversation */}
+            <div style={{ flex: '1', minWidth: '300px' }}>
+              {activeBranch ? (
+                <div style={{
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '8px',
+                  overflow: 'hidden',
+                  background: '#fff',
+                }}>
+                  {/* Branch header */}
+                  <div style={{
+                    padding: '0.75rem 1rem',
+                    background: '#f5f5f5',
+                    borderBottom: '1px solid #e0e0e0',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                    <div>
+                      <strong>🌿 {activeBranch.name}</strong>
+                      <span style={{ marginLeft: '0.5rem', fontSize: '0.85rem', color: '#666' }}>
+                        ({activeBranch.history.length} messages)
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (confirm('Delete this branch?')) {
+                          setBranches(prev => prev.filter(b => b.id !== activeBranchId));
+                          setActiveBranchId(null);
+                        }
+                      }}
+                      style={{
+                        padding: '0.25rem 0.5rem',
+                        fontSize: '0.8rem',
+                        background: '#fee2e2',
+                        color: '#dc2626',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+
+                  {/* Conversation messages */}
+                  <div style={{
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                    padding: '1rem',
+                  }}>
+                    {activeBranch.history.map((msg, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          marginBottom: '1rem',
+                          padding: '0.75rem',
+                          borderRadius: '8px',
+                          background: msg.role === 'user' ? '#e3f2fd' : '#f5f5f5',
+                          borderLeft: msg.role === 'user' ? '3px solid #2196f3' : '3px solid #9e9e9e',
+                        }}
+                      >
+                        <div style={{
+                          fontSize: '0.75rem',
+                          color: '#666',
+                          marginBottom: '0.25rem',
+                        }}>
+                          {msg.role === 'user' ? '👤 You' : '🤖 AI'}
+                        </div>
+                        <div style={{
+                          fontSize: '0.9rem',
+                          whiteSpace: 'pre-wrap',
+                          wordBreak: 'break-word',
+                        }}>
+                          {msg.content}
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Streaming content */}
+                    {branchLoading && branchStreamingContent && (
+                      <div style={{
+                        marginBottom: '1rem',
+                        padding: '0.75rem',
+                        borderRadius: '8px',
+                        background: '#f5f5f5',
+                        borderLeft: '3px solid #9e9e9e',
+                      }}>
+                        <div style={{ fontSize: '0.75rem', color: '#666', marginBottom: '0.25rem' }}>
+                          🤖 AI
+                        </div>
+                        <div style={{
+                          fontSize: '0.9rem',
+                          whiteSpace: 'pre-wrap',
+                          wordBreak: 'break-word',
+                        }}>
+                          {branchStreamingContent}
+                          <span className="mr5-cursor">▊</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {branchLoading && !branchStreamingContent && (
+                      <div style={{ textAlign: 'center', padding: '1rem', color: '#666' }}>
+                        ⏳ AI is thinking...
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Chat input */}
+                  <div style={{
+                    padding: '0.75rem 1rem',
+                    borderTop: '1px solid #e0e0e0',
+                    background: '#fafafa',
+                    display: 'flex',
+                    gap: '0.5rem',
+                  }}>
+                    <input
+                      type="text"
+                      value={branchInput}
+                      onChange={(e) => setBranchInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleBranchSend();
+                        }
+                      }}
+                      placeholder="Continue the conversation..."
+                      disabled={branchLoading}
+                      style={{
+                        flex: 1,
+                        padding: '0.5rem 0.75rem',
+                        border: '1px solid #ddd',
+                        borderRadius: '4px',
+                        fontSize: '0.9rem',
+                      }}
+                    />
+                    <button
+                      onClick={handleBranchSend}
+                      disabled={branchLoading || !branchInput.trim()}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        background: branchLoading || !branchInput.trim() ? '#ccc' : '#2196f3',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: branchLoading || !branchInput.trim() ? 'not-allowed' : 'pointer',
+                        fontWeight: '500',
+                      }}
+                    >
+                      {branchLoading ? '...' : 'Send'}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div style={{
+                  padding: '2rem',
+                  textAlign: 'center',
+                  color: '#666',
+                  background: '#f9f9f9',
+                  borderRadius: '8px',
+                }}>
+                  <p>👈 Select a branch to view and continue the conversation</p>
+                  <p style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>
+                    Or create a new branch from the History tab
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         )}
       </div>
     );

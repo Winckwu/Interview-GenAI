@@ -896,3 +896,15 @@
 .mr5-p {
   padding: 1rem;
 }
+
+/* Cursor animation for streaming */
+.mr5-cursor {
+  display: inline-block;
+  animation: mr5-blink 1s step-end infinite;
+  color: #666;
+}
+
+@keyframes mr5-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
