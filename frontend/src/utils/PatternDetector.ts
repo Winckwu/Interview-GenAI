@@ -6,22 +6,71 @@
  *
  * Rules do NOT require synthetic data or ML model training.
  * Fully defensible from academic perspective.
+ *
+ * ⚠️ IMPORTANT: Measurement Limitations (Proxy Measures)
+ * =====================================================
+ * This system CANNOT perform full behavioral monitoring. All metrics are
+ * PROXY MEASURES (代理指标), not direct behavioral observations:
+ *
+ * | Metric              | What We Measure                    | What We CANNOT Detect           |
+ * |---------------------|------------------------------------|---------------------------------|
+ * | verificationRate    | User clicks "Verified" button      | External verification (Google)  |
+ * | modificationRate    | User edits AI response in-system   | Mental review without editing   |
+ * | acceptanceSpeed     | Time between AI response & next    | What user did during that time  |
+ * | rejectionRate       | User clicks "Reject" button        | Silent disagreement             |
+ *
+ * Technical Honesty:
+ * - We CANNOT detect if user opens another browser tab to verify
+ * - We CANNOT detect if user mentally reviews without clicking
+ * - We CANNOT detect external research or consultation
+ * - All "verification" metrics are SELF-REPORTED via UI buttons
+ *
+ * These proxy measures correlate with but do not directly measure metacognitive behavior.
+ * Use with appropriate epistemic humility.
  */
 
 import { Interaction } from '../types';
 
 /**
  * User interaction signals needed for pattern detection
+ *
+ * ⚠️ Signal Confidence Classification:
+ * - HIGHEST: Direct in-system actions (wasModified, wasVerified, wasRejected)
+ * - HIGH: Observable interaction events (copyCount, selectionCount, followUpCount)
+ * - MEDIUM: Timing signals (dwellTime, hoverDuration, scrollDepth)
+ * - LOW: Indirect signals (tabSwitchCount) - we see the switch, not the activity
  */
 export interface UserSignals {
   // Input characteristics
   averageInputLength: number;      // Average chars per user message
   averageAcceptanceSpeed: number;  // Average ms from AI response → user accepts
 
-  // Behavioral verification patterns
-  verificationRate: number;        // % of interactions verified (0-100)
+  // ===== LEGACY: Button-click signals (HIGHEST confidence, but requires explicit action) =====
+  verificationRate: number;        // % of interactions verified via button (0-100)
   modificationRate: number;        // % of interactions modified (0-100)
   rejectionRate: number;           // % of interactions rejected (0-100)
+
+  // ===== NEW: Enhanced observable behavior signals =====
+
+  // Timing signals (MEDIUM confidence)
+  averageDwellTimeMs: number;      // Average time spent viewing AI response
+  averageHoverDurationMs: number;  // Average hover time on response
+
+  // Copy/Selection signals (HIGH confidence - indicates external verification intent)
+  copyEventRate: number;           // % of responses where user copied text (0-100)
+  averageCopiedTextLength: number; // Average chars copied per copy event
+  selectionEventRate: number;      // % of responses where user selected text (0-100)
+
+  // Tab visibility signals (LOW confidence - we see switch, not activity)
+  tabSwitchRate: number;           // % of responses where user switched tabs (0-100)
+  averageTabAwayDurationMs: number;// Average time spent away from tab
+
+  // Scroll signals (MEDIUM confidence)
+  averageScrollDepth: number;      // Average scroll depth (0-100%)
+  deepScrollRate: number;          // % of responses scrolled >80% (0-100)
+
+  // Follow-up signals (HIGH confidence - indicates critical engagement)
+  followUpQuestionRate: number;    // % of responses followed by clarifying question (0-100)
 
   // Temporal patterns
   inputOutputRatio: number;        // Average input length / average output length
@@ -33,6 +82,11 @@ export interface UserSignals {
   totalVerifications: number;
   totalModifications: number;
   totalRejections: number;
+
+  // ===== NEW: Derived composite scores =====
+  engagementScore: number;              // 0-100: Overall engagement level
+  verificationLikelihood: number;       // 0-100: Estimated verification probability
+  criticalThinkingIndicator: number;    // 0-100: Evidence of critical engagement
 }
 
 /**
@@ -373,24 +427,50 @@ export function detectPatternF(
 /**
  * Helper: Extract UserSignals from interaction history
  * This would typically be called in ChatSessionPage to prepare data
+ *
+ * @param messages - Array of messages (user/AI) or interactions
+ * @param behaviorSignals - Optional enhanced behavior signals from useBehaviorSignals hook
  */
-export function extractUserSignals(messages: any[]): UserSignals {
+export function extractUserSignals(
+  messages: any[],
+  behaviorSignals?: Map<string, any>
+): UserSignals {
+  // Default empty signals with all new fields
+  const emptySignals: UserSignals = {
+    averageInputLength: 0,
+    averageAcceptanceSpeed: 0,
+    verificationRate: 0,
+    modificationRate: 0,
+    rejectionRate: 0,
+    // NEW: Enhanced signals with defaults
+    averageDwellTimeMs: 0,
+    averageHoverDurationMs: 0,
+    copyEventRate: 0,
+    averageCopiedTextLength: 0,
+    selectionEventRate: 0,
+    tabSwitchRate: 0,
+    averageTabAwayDurationMs: 0,
+    averageScrollDepth: 0,
+    deepScrollRate: 0,
+    followUpQuestionRate: 0,
+    // Temporal
+    inputOutputRatio: 0,
+    lastInteractionGap: 0,
+    sessionBurstiness: 0,
+    // Totals
+    totalInteractions: 0,
+    totalVerifications: 0,
+    totalModifications: 0,
+    totalRejections: 0,
+    // Derived scores
+    engagementScore: 0,
+    verificationLikelihood: 0,
+    criticalThinkingIndicator: 0,
+  };
+
   // Handle both Message array (from ChatSessionPage) and Interaction array
   if (messages.length === 0) {
-    return {
-      averageInputLength: 0,
-      averageAcceptanceSpeed: 0,
-      verificationRate: 0,
-      modificationRate: 0,
-      rejectionRate: 0,
-      inputOutputRatio: 0,
-      lastInteractionGap: 0,
-      sessionBurstiness: 0,
-      totalInteractions: 0,
-      totalVerifications: 0,
-      totalModifications: 0,
-      totalRejections: 0,
-    };
+    return emptySignals;
   }
 
   // Detect if this is a Message array (mixed user/AI) or Interaction array
@@ -402,20 +482,7 @@ export function extractUserSignals(messages: any[]): UserSignals {
   const totalInteractionCount = aiMessages.length || messages.length;
 
   if (totalInteractionCount === 0) {
-    return {
-      averageInputLength: 0,
-      averageAcceptanceSpeed: 0,
-      verificationRate: 0,
-      modificationRate: 0,
-      rejectionRate: 0,
-      inputOutputRatio: 0,
-      lastInteractionGap: 0,
-      sessionBurstiness: 0,
-      totalInteractions: 0,
-      totalVerifications: 0,
-      totalModifications: 0,
-      totalRejections: 0,
-    };
+    return emptySignals;
   }
 
   // Count behaviors
@@ -493,18 +560,123 @@ export function extractUserSignals(messages: any[]): UserSignals {
   const lastTimestampMs = Math.max(...timestamps);
   const lastInteractionGapMin = (nowMs - lastTimestampMs) / (1000 * 60);
 
+  // ===== NEW: Process enhanced behavior signals if provided =====
+  let enhancedSignals = {
+    averageDwellTimeMs: 0,
+    averageHoverDurationMs: 0,
+    copyEventRate: 0,
+    averageCopiedTextLength: 0,
+    selectionEventRate: 0,
+    tabSwitchRate: 0,
+    averageTabAwayDurationMs: 0,
+    averageScrollDepth: 0,
+    deepScrollRate: 0,
+    followUpQuestionRate: 0,
+    engagementScore: 0,
+    verificationLikelihood: 0,
+    criticalThinkingIndicator: 0,
+  };
+
+  if (behaviorSignals && behaviorSignals.size > 0) {
+    let totalDwellTime = 0;
+    let totalHoverDuration = 0;
+    let copyEvents = 0;
+    let totalCopiedLength = 0;
+    let selectionEvents = 0;
+    let tabSwitches = 0;
+    let totalTabAwayDuration = 0;
+    let totalScrollDepth = 0;
+    let deepScrolls = 0;
+    let followUps = 0;
+    let totalEngagement = 0;
+    let totalVerificationLikelihood = 0;
+
+    behaviorSignals.forEach((signal) => {
+      totalDwellTime += signal.dwellTimeMs || 0;
+      totalHoverDuration += signal.hoverDurationMs || 0;
+      if (signal.copyCount > 0) {
+        copyEvents++;
+        totalCopiedLength += signal.copiedTextLength || 0;
+      }
+      if (signal.selectionCount > 0) selectionEvents++;
+      if (signal.tabSwitchCount > 0) tabSwitches++;
+      totalTabAwayDuration += signal.tabAwayDurationMs || 0;
+      totalScrollDepth += signal.maxScrollDepth || 0;
+      if ((signal.maxScrollDepth || 0) > 80) deepScrolls++;
+      if (signal.hasFollowUpQuestion) followUps++;
+      totalEngagement += signal.engagementScore || 0;
+      totalVerificationLikelihood += signal.verificationLikelihood || 0;
+    });
+
+    const signalCount = behaviorSignals.size;
+    enhancedSignals = {
+      averageDwellTimeMs: totalDwellTime / signalCount,
+      averageHoverDurationMs: totalHoverDuration / signalCount,
+      copyEventRate: (copyEvents / signalCount) * 100,
+      averageCopiedTextLength: copyEvents > 0 ? totalCopiedLength / copyEvents : 0,
+      selectionEventRate: (selectionEvents / signalCount) * 100,
+      tabSwitchRate: (tabSwitches / signalCount) * 100,
+      averageTabAwayDurationMs: tabSwitches > 0 ? totalTabAwayDuration / tabSwitches : 0,
+      averageScrollDepth: totalScrollDepth / signalCount,
+      deepScrollRate: (deepScrolls / signalCount) * 100,
+      followUpQuestionRate: (followUps / signalCount) * 100,
+      engagementScore: totalEngagement / signalCount,
+      verificationLikelihood: totalVerificationLikelihood / signalCount,
+      criticalThinkingIndicator: calculateCriticalThinkingIndicator(
+        modificationRate,
+        (followUps / signalCount) * 100,
+        (copyEvents / signalCount) * 100,
+        totalScrollDepth / signalCount
+      ),
+    };
+  }
+
   return {
     averageInputLength,
     averageAcceptanceSpeed,
     verificationRate,
     modificationRate,
     rejectionRate,
+    // Enhanced signals
+    ...enhancedSignals,
+    // Temporal
     inputOutputRatio,
     lastInteractionGap: lastInteractionGapMin,
     sessionBurstiness,
+    // Totals
     totalInteractions: totalInteractionCount,
     totalVerifications,
     totalModifications,
     totalRejections,
   };
+}
+
+/**
+ * Calculate Critical Thinking Indicator (0-100)
+ *
+ * Based on observable behaviors that suggest critical engagement:
+ * - Modification rate (user actively edits AI output)
+ * - Follow-up questions (user seeks clarification)
+ * - Copy events (may indicate external verification)
+ * - Deep scrolling (thorough content review)
+ */
+function calculateCriticalThinkingIndicator(
+  modificationRate: number,
+  followUpRate: number,
+  copyRate: number,
+  avgScrollDepth: number
+): number {
+  // Weighted combination:
+  // - Modification: 30% (HIGHEST confidence - direct action)
+  // - Follow-ups: 30% (HIGH confidence - critical engagement)
+  // - Copy rate: 20% (HIGH confidence - external verification intent)
+  // - Scroll depth: 20% (MEDIUM confidence - thoroughness)
+
+  const score =
+    (modificationRate / 100) * 30 +
+    (followUpRate / 100) * 30 +
+    (copyRate / 100) * 20 +
+    (avgScrollDepth / 100) * 20;
+
+  return Math.min(score, 100);
 }
