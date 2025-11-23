@@ -35,8 +35,12 @@ export type {
   DecompositionDimension
 };
 
-// Storage key for persisting MR1 state
-const MR1_STORAGE_KEY = 'mr1-decomposition-state';
+// Storage key prefix for persisting MR1 state (session-specific)
+const MR1_STORAGE_KEY_PREFIX = 'mr1-decomposition-state';
+
+// Helper to get session-specific storage key
+const getStorageKey = (sessionId?: string) =>
+  sessionId ? `${MR1_STORAGE_KEY_PREFIX}-${sessionId}` : MR1_STORAGE_KEY_PREFIX;
 
 interface DecompositionState {
   originalTask: string;
@@ -58,14 +62,19 @@ interface PersistedMR1State {
 /**
  * Load persisted state from sessionStorage
  */
-function loadPersistedState(): PersistedMR1State | null {
+function loadPersistedState(sessionId?: string): PersistedMR1State | null {
   try {
-    const saved = sessionStorage.getItem(MR1_STORAGE_KEY);
+    const key = getStorageKey(sessionId);
+    const saved = sessionStorage.getItem(key);
     if (saved) {
       const parsed = JSON.parse(saved) as PersistedMR1State;
       // Only restore if saved within last 30 minutes
       if (Date.now() - parsed.timestamp < 30 * 60 * 1000) {
+        console.log('[MR1] Restored persisted state from:', key);
         return parsed;
+      } else {
+        console.log('[MR1] Persisted state expired, clearing:', key);
+        sessionStorage.removeItem(key);
       }
     }
   } catch (e) {
@@ -77,9 +86,10 @@ function loadPersistedState(): PersistedMR1State | null {
 /**
  * Save state to sessionStorage
  */
-function savePersistedState(data: Omit<PersistedMR1State, 'timestamp'>) {
+function savePersistedState(sessionId: string | undefined, data: Omit<PersistedMR1State, 'timestamp'>) {
   try {
-    sessionStorage.setItem(MR1_STORAGE_KEY, JSON.stringify({
+    const key = getStorageKey(sessionId);
+    sessionStorage.setItem(key, JSON.stringify({
       ...data,
       timestamp: Date.now()
     }));
@@ -89,6 +99,7 @@ function savePersistedState(data: Omit<PersistedMR1State, 'timestamp'>) {
 }
 
 interface MR1Props {
+  sessionId?: string; // Session ID for persistence
   onDecompositionComplete?: (decomposition: TaskDecomposition) => void;
   onTaskAnalyzed?: (dimensions: DecompositionDimension[]) => void;
   onStrategySelected?: (strategy: DecompositionStrategy) => void;
@@ -98,6 +109,7 @@ interface MR1Props {
 }
 
 export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
+  sessionId,
   onDecompositionComplete,
   onTaskAnalyzed,
   onStrategySelected,
@@ -105,8 +117,8 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   onHistoryChange,
   onOpenMR4
 }) => {
-  // Try to load persisted state on initial mount
-  const persistedState = useRef(loadPersistedState());
+  // Try to load persisted state on initial mount (session-specific)
+  const persistedState = useRef(loadPersistedState(sessionId));
 
   // State management - restore from persisted state if available
   const [state, setState] = useState<DecompositionState>(() => {
@@ -149,13 +161,13 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       return;
     }
 
-    savePersistedState({
+    savePersistedState(sessionId, {
       state,
       step,
       dimensions,
       decompositionHistory
     });
-  }, [state, step, dimensions, decompositionHistory]);
+  }, [sessionId, state, step, dimensions, decompositionHistory]);
 
   /**
    * Step 1: Analyze task input
@@ -279,8 +291,8 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
    * Reset to start a new decomposition
    */
   const handleReset = useCallback(() => {
-    // Clear persisted state
-    sessionStorage.removeItem(MR1_STORAGE_KEY);
+    // Clear persisted state (session-specific)
+    sessionStorage.removeItem(getStorageKey(sessionId));
 
     // Reset all state
     setState({
@@ -294,7 +306,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
     setStep('input');
     setDimensions([]);
     setEditingSubtaskId(null);
-  }, []);
+  }, [sessionId]);
 
   /**
    * Complete decomposition
