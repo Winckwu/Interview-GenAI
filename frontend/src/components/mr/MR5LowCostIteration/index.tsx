@@ -118,16 +118,19 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
         return;
       }
 
+      // Ensure fromIndex is valid (at least 0)
+      const validIndex = Math.max(0, fromIndex);
+
       const parentRef: ParentReference = {
         branchId: activeBranchId || 'main',
-        messageIndex: fromIndex,
+        messageIndex: validIndex,
       };
 
       const newBranch: ConversationBranch = {
         id: `branch-${Date.now()}`,
         name: `Branch ${branches.length + 1}`,
         parentRef,
-        history: conversationHistory.slice(0, fromIndex + 1),
+        history: conversationHistory.slice(0, validIndex + 1),
         nextPrompt: customPrompt || '',
         createdAt: new Date(),
         rating: 0,
@@ -137,6 +140,10 @@ export const MR5LowCostIteration: React.FC<MR5Props> = ({
       setBranches(prev => [...prev, newBranch]);
       setActiveBranchId(newBranch.id);
       onBranchCreated?.(newBranch);
+
+      // Close branching UI and switch to branches view
+      setShowBranchingUI(false);
+      setActiveView('branches');
     },
     [branches, activeBranchId, conversationHistory, maxBranches, onBranchCreated]
   );
