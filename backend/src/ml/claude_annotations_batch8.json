@@ -1,0 +1,303 @@
+{
+  "batch_number": 8,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 19,
+  "user_id_range": "160-178 (alphabetically sorted, skipping 72df3146 already in batch 7)",
+
+  "annotations": [
+    {
+      "user_id": "731ac70b-004f-4d8a-80b5-328e2f332c4b",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'teach me how to find eigenvalues and eigenvectors'",
+        "M1=2: 'please display the matrix correctly' - monitoring output quality"
+      ]
+    },
+    {
+      "user_id": "731d8a7f-e051-4515-ab07-ca16e1763a00",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 0, "P3": 2, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 4,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Only 3 messages",
+        "P3=2: 'give me a 30 question mock quiz' - some self-direction",
+        "'what is the answer' - then just wants answers"
+      ]
+    },
+    {
+      "user_id": "73319292-8652-4e00-97b8-940d3940c527",
+      "message_count": 65,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 2, "M1": 1, "M2": 1, "M3": 1, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 10,
+      "pattern": "C",
+      "confidence": 0.7,
+      "key_evidence": [
+        "HIGH volume (65 messages) but mostly solve requests",
+        "Many calculus integration problems submitted",
+        "P4=2: Persistent practice but passive approach"
+      ]
+    },
+    {
+      "user_id": "7394ff1a-0c5e-40ad-b53a-6536e683fef5",
+      "message_count": 13,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 2, "E3": 0, "R1": 2, "R2": 2},
+      "total": 20,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P1=2: 'Test my understanding of Gauss theorem' - self-assessment intent",
+        "E1=2: 'got it, so the final solution is (-14, 6, 0) + t(6, -2, 1)' - VERIFYING own understanding",
+        "E2=2: 'How does point 1 imply point 2?' - deep conceptual questioning"
+      ]
+    },
+    {
+      "user_id": "741000e8-caba-4194-8f02-e8abdb11249a",
+      "message_count": 29,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 1},
+      "total": 15,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Civil engineering topics (pile load test, caissons)",
+        "P2=2: 'difference between caisson foundation and drilled piles' - conceptual",
+        "M2=2: 'explain points 2, 4 and 5 in more detail' - clarification"
+      ]
+    },
+    {
+      "user_id": "7421d324-39d0-4741-8091-0d9c24f9d059",
+      "message_count": 18,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 9,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Many 'solve' requests with image inputs",
+        "M1=2: 'Can you explain in detail' - some depth sought",
+        "Limited engagement beyond getting answers"
+      ]
+    },
+    {
+      "user_id": "7458718c-e599-4e9a-abbb-5a067c69f5e3",
+      "message_count": 47,
+      "scores": {"P1": 2, "P2": 1, "P3": 3, "P4": 2, "M1": 2, "M2": 1, "M3": 2, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 19,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P3=3: 'Can we do a mock quiz?', 'ask 100 questions one by one' - EXCEPTIONAL self-directed practice!",
+        "P3=3: 'can we do a mock quiz on what is data science? You give me options to choose'",
+        "M3=2: Engages with all quiz questions actively",
+        "Classic Pattern B - iterative self-directed learning"
+      ]
+    },
+    {
+      "user_id": "74b08f82-ec68-4a70-89b2-3c6c128efa1b",
+      "message_count": 19,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 14,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P2=2: 'Tell me the concept of Linear Combinations'",
+        "M2=2: 'i dont understand tutorial 2' - honest about confusion",
+        "Seeks conceptual understanding of circuits and matrices"
+      ]
+    },
+    {
+      "user_id": "758a174f-fec4-48dd-852f-aa7b5c63fa54",
+      "message_count": 4,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Only 4 messages - ALL administrative",
+        "Questions: learning outcomes, instructors, quiz dates",
+        "Zero substantive engagement with course material"
+      ]
+    },
+    {
+      "user_id": "76a286e4-1884-4df0-b70f-aaf271c2f614",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: Complex number and vector conceptual questions",
+        "M1=2: 'show step by step on (5-i)(x-yi) expansion' - seeking understanding"
+      ]
+    },
+    {
+      "user_id": "779facae-4a78-4db2-bb94-478dd623a8e4",
+      "message_count": 53,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "HIGH engagement (53 messages)",
+        "P2=2: 'Explain the topic Null Space' - conceptual",
+        "Many past exam questions requested - exam prep focused"
+      ]
+    },
+    {
+      "user_id": "78161a9f-d085-48c7-b418-a8ddd355fcc6",
+      "message_count": 33,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P2=2: 'when do i use the disc method and when do I use cylindrical shell method' - comparing approaches",
+        "P2=2: 'how do i approach a Riemann sum question?' - metacognitive",
+        "Good strategic questions about methods"
+      ]
+    },
+    {
+      "user_id": "7906f7ef-09dd-4759-bd6d-7c1fbe46854a",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 1, "P3": 2, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "'give me the answers' - answer-seeking",
+        "P3=2: 'give me some sample questions to practice' - some self-direction",
+        "Mixed admin and practice question requests"
+      ]
+    },
+    {
+      "user_id": "7944aada-3032-42fc-ae96-f184985b4c28",
+      "message_count": 147,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 3, "M3": 2, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 21,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "HIGHEST engagement in batch (147 messages)!",
+        "M2=3: Persistent clarification - 'but for the above example...you use the formula to find it?'",
+        "E1=2: 'so in order to find the shortest distance...we first have to calculate...' - verifying process",
+        "Approaching Pattern B but mostly guided learning"
+      ]
+    },
+    {
+      "user_id": "798fbb6d-45c5-463b-ab3d-2608c80160f0",
+      "message_count": 55,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 20,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "HIGH engagement (55 messages)",
+        "P3=2: 'Could you summarise what I need to know' - strategic review",
+        "E1=2: 'Why is the answer C/A' - verification behaviors",
+        "Good conceptual engagement"
+      ]
+    },
+    {
+      "user_id": "7b348c75-f137-49c5-b5fb-2e6062378fc6",
+      "message_count": 4,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "Only 4 basic messages",
+        "'hi', 'what is dy/dx', graph question, theorem question",
+        "Minimal engagement"
+      ]
+    },
+    {
+      "user_id": "7be739f6-a8d8-4944-9877-7df185d4b854",
+      "message_count": 4,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Only 4 messages - confused questions",
+        "'z^2 is z1 x zbar1?', 'zbar = x^2?' - conceptual confusion",
+        "E1=1: 'is z^2 equal zbar' - at least checking understanding"
+      ]
+    },
+    {
+      "user_id": "7c1cfba2-9e6f-47e4-a7d8-2f73ccc86e1f",
+      "message_count": 31,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 19,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P2=2: 'Teach me matrix operations. Tutor me with examples'",
+        "E1=2: 'is it easier to do ERO to make it into triangular form and find determinant?' - comparing approaches!",
+        "Good guided learning engagement"
+      ]
+    },
+    {
+      "user_id": "7c510bdc-a015-4ec0-b00f-9e286ef9e2d0",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 4,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Only 3 messages",
+        "'help me to do revision for the whole course' - broad passive request",
+        "Minimal engagement"
+      ]
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 1,
+      "C": 11,
+      "D": 0,
+      "E": 0,
+      "F": 7
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "5.3%",
+      "C": "57.9%",
+      "D": "0%",
+      "E": "0%",
+      "F": "36.8%"
+    },
+    "average_total_score": 11.5,
+    "notable_findings": {
+      "highest_engagement": {
+        "user_id": "7944aada-3032-42fc-ae96-f184985b4c28",
+        "message_count": 147,
+        "pattern": "C",
+        "highlight": "Most messages in entire dataset so far - persistent questioning"
+      },
+      "exemplary_pattern_b": {
+        "user_id": "7458718c-e599-4e9a-abbb-5a067c69f5e3",
+        "pattern": "B",
+        "highlight": "'ask 100 questions one by one' - exceptional self-directed quiz practice"
+      },
+      "verification_examples": [
+        {
+          "user_id": "7394ff1a-0c5e-40ad-b53a-6536e683fef5",
+          "quote": "got it, so the final solution is (-14, 6, 0) + t(6, -2, 1)",
+          "significance": "E1=2 - Restating answer to verify own understanding"
+        },
+        {
+          "user_id": "7c1cfba2-9e6f-47e4-a7d8-2f73ccc86e1f",
+          "quote": "is it easier to do ERO to make it into triangular form and find determinant?",
+          "significance": "E1=2 - Comparing method efficiency"
+        }
+      ]
+    }
+  }
+}
