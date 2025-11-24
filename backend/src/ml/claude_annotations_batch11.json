@@ -1,0 +1,282 @@
+{
+  "batch_number": 11,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 19,
+  "user_id_range": "217-235 (alphabetically sorted, skipping 94553666 already in batch 10)",
+
+  "annotations": [
+    {
+      "user_id": "94623ab1-002c-446c-b9a3-25628dcb79ad",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Education/intellectual disability course (off-topic)",
+        "Many admin questions about assignments"
+      ]
+    },
+    {
+      "user_id": "97286872-f1e3-4057-9309-f689e0bde519",
+      "message_count": 4,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "Only 4 messages",
+        "'yes' - minimal follow-up",
+        "Hypothesis testing questions pasted"
+      ]
+    },
+    {
+      "user_id": "9731460e-0884-4426-8e1f-a28275f958d2",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 4,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Only 3 messages",
+        "Mock quiz request + for loop explanation"
+      ]
+    },
+    {
+      "user_id": "979e1b71-8ce8-4b48-8b9a-ff8f7d2f0822",
+      "message_count": 14,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 2, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Many derivative proof requests",
+        "'explain 4. and 5.' - some follow-up but limited depth"
+      ]
+    },
+    {
+      "user_id": "97cee636-f4f1-4ec7-ac81-665900284587",
+      "message_count": 13,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'Difference between covariance and correlation' - conceptual",
+        "M1=2: Multiple R function meaning requests - learning the tool",
+        "E2=1: 'difference between c() and rep()' - comparing functions"
+      ]
+    },
+    {
+      "user_id": "989b83d2-d1bb-4260-8624-4fd52045d288",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E1=1: 'so the one below is just another way to show that w is 1/4 v in another plane?' - verifying understanding",
+        "P2=2: 'how do i determine if a limit exists' - conceptual"
+      ]
+    },
+    {
+      "user_id": "98d88b0f-81ae-40b4-ae1f-d84823aa23f2",
+      "message_count": 53,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "HIGH engagement (53 messages)",
+        "P3=2: 'a harder one please', 'give a more complicated squeeze theorem question' - SELF-DIRECTED DIFFICULTY!",
+        "Good breadth across topics"
+      ]
+    },
+    {
+      "user_id": "9932e316-174d-4098-94dc-311da62054c9",
+      "message_count": 7,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "total": 7,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E1=1: 'why is the derivative of 4a+b, a' - questioning but confused",
+        "Multiple attempts at same derivative question",
+        "Limited overall engagement"
+      ]
+    },
+    {
+      "user_id": "99d74ef9-3221-45c3-bf67-a29d57e21af4",
+      "message_count": 9,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Admin questions mixed with p-value",
+        "'no' responses - dismissive engagement",
+        "Minimal follow-through"
+      ]
+    },
+    {
+      "user_id": "99e235e8-839c-4015-a594-f72b115ef7d7",
+      "message_count": 4,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Only 4 image-based solve requests",
+        "'sure' - minimal response",
+        "No conceptual engagement"
+      ]
+    },
+    {
+      "user_id": "9acf5ab7-5a2d-42e9-9a5b-c228ef5c366b",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 1, "P3": 2, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 14,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=2: 'coefficient of x is 0.0177 and coefficient of y is 0.631' - PROVIDING own answers for verification!",
+        "P3=2: 'give me a questions with values to solve using rcode' - practice seeking",
+        "M2=1: 'i cannot find the coefficient for the slope' - honest about confusion"
+      ]
+    },
+    {
+      "user_id": "9b2fdd39-2396-4881-9bbf-5c609af5fbbd",
+      "message_count": 33,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 2, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 9,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Materials science stress-strain calculations",
+        "Many solve requests",
+        "Limited conceptual engagement despite 33 messages"
+      ]
+    },
+    {
+      "user_id": "9b647114-f581-423f-9e55-e35fbf76d1e8",
+      "message_count": 6,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "'When will you be disabled again' - off-topic",
+        "Basic theorem questions",
+        "Minimal engagement"
+      ]
+    },
+    {
+      "user_id": "9c219b44-c7f5-411b-93cb-97e745c3756e",
+      "message_count": 5,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Only 5 basic matrix questions",
+        "'more examples of matrix multiplication' - seeking examples"
+      ]
+    },
+    {
+      "user_id": "9cb21d47-9653-4acc-b80d-5f15f44f8480",
+      "message_count": 5,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Only 5 messages",
+        "'what is a subset of a matrix' - confused terminology (likely means subspace)",
+        "Example-seeking"
+      ]
+    },
+    {
+      "user_id": "9cc2f197-5cd6-4679-a15e-ee0604c39836",
+      "message_count": 3,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Only 3 image-based solve requests",
+        "No conceptual engagement"
+      ]
+    },
+    {
+      "user_id": "9d36ca7c-5212-4f37-b933-cde3729cb018",
+      "message_count": 4,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Only 4 messages",
+        "Numerical quadratic solving requests",
+        "'x is tan x solve for x' - unclear request"
+      ]
+    },
+    {
+      "user_id": "9e7f408e-755f-4304-892d-1af610960672",
+      "message_count": 9,
+      "scores": {"P1": 1, "P2": 3, "P3": 0, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 2, "E3": 1, "R1": 2, "R2": 1},
+      "total": 19,
+      "pattern": "C",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P2=3: EXCELLENT conceptual questions - 'if U and W are both subspaces...why is the intersection guaranteed to have the zero vector?'",
+        "E1=2: 'isnt what you mentioned applicable for the union, and not the intersection?' - CORRECTING AI reasoning!",
+        "E3=1: 'Oh, i get what you mean now, its an error on my part' - self-reflection",
+        "Approaching Pattern D level critical evaluation"
+      ]
+    },
+    {
+      "user_id": "9ee8f5e5-d15e-4e8c-aa1b-53cddeed4f51",
+      "message_count": 9,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'how statistic is a random variable?' - good conceptual question",
+        "M1=2: 'so how is this related to population and sample?' - seeking connections"
+      ]
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 0,
+      "C": 6,
+      "D": 0,
+      "E": 0,
+      "F": 13
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "0%",
+      "C": "31.6%",
+      "D": "0%",
+      "E": "0%",
+      "F": "68.4%"
+    },
+    "average_total_score": 6.7,
+    "notable_findings": {
+      "critical_evaluation_example": {
+        "user_id": "9e7f408e-755f-4304-892d-1af610960672",
+        "quote": "isnt what you mentioned applicable for the union, and not the intersection?",
+        "significance": "E1=2 - CORRECTS AI's reasoning! Shows high critical evaluation despite Pattern C classification"
+      },
+      "high_f_pattern_batch": {
+        "observation": "This batch has highest F pattern rate (68.4%) - many low-engagement users",
+        "possible_explanation": "Alphabetical sorting may cluster certain user types"
+      }
+    }
+  }
+}

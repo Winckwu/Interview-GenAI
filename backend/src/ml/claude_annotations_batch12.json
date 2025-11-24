@@ -1,0 +1,42 @@
+{
+  "batch_number": 12,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 19,
+  "user_id_range": "236-254 (alphabetically sorted, skipping 9ee8f5e5 already in batch 11)",
+
+  "annotations": [
+    {"user_id": "9f1d3ace-b035-4aa0-9ebf-442926a51c3d", "message_count": 4, "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1}, "total": 6, "pattern": "F", "confidence": 0.8, "key_evidence": ["OLS explanation + R studio", "Only 4 messages"]},
+    {"user_id": "a08a9090-8dd6-42e3-b8cd-258a276037a2", "message_count": 6, "scores": {"P1": 2, "P2": 1, "P3": 0, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1}, "total": 14, "pattern": "C", "confidence": 0.85, "key_evidence": ["M3=2: 'Test my understanding on solving Ax = b problem'", "'Check my working' - self-testing"]},
+    {"user_id": "a0bc7a29-34d8-4bf8-baf6-2c5926e40133", "message_count": 44, "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 1}, "total": 15, "pattern": "C", "confidence": 0.85, "key_evidence": ["HIGH engagement (44 msgs)", "'explain the thought process' - seeking deep understanding", "'how did you derive step 1' - questioning"]},
+    {"user_id": "a11b7f90-a727-4c7b-aabb-ab79945cd291", "message_count": 4, "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0}, "total": 2, "pattern": "F", "confidence": 0.9, "key_evidence": ["Only solve requests", "No conceptual engagement"]},
+    {"user_id": "a18ef405-be5d-4e06-9770-0ac0963b389b", "message_count": 4, "scores": {"P1": 1, "P2": 0, "P3": 2, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0}, "total": 6, "pattern": "F", "confidence": 0.75, "key_evidence": ["P3=2: 'generate a mock quiz' + 'similar quiz with same format'", "Self-directed but limited"]},
+    {"user_id": "a1a3b66f-7f20-4924-8f84-580e45d499ff", "message_count": 5, "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 1, "E3": 0, "R1": 1, "R2": 1}, "total": 16, "pattern": "C", "confidence": 0.9, "key_evidence": ["E1=3: 'but correct answer are sqrt(3) or -sqrt(3)' - CORRECTING AI!", "E1=3: 'you should assume you dont know the answer' - TEACHING AI proper reasoning!", "Strong critical evaluation despite few messages"]},
+    {"user_id": "a251e1be-13e2-49e8-8ad1-79ee19d031a9", "message_count": 32, "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 1}, "total": 17, "pattern": "C", "confidence": 0.85, "key_evidence": ["M2=2: 'why do i have to +1?'", "'so if there is an r squared value closer to 1...' - verifying understanding", "Good R code learning"]},
+    {"user_id": "a2704219-a556-4374-ae41-2144cd1c6110", "message_count": 25, "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 1}, "total": 19, "pattern": "B", "confidence": 0.9, "key_evidence": ["E1=2: Provides answers for checking: '1. 170', '0.7071068', '1.39'", "M3=2: 'work through the questions' - interactive learning", "'no, theres no standard deviation' - questioning assumptions"]},
+    {"user_id": "a40b3e53-42ea-4a64-8dac-dd3f711cd405", "message_count": 11, "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 2, "M2": 2, "M3": 0, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1}, "total": 10, "pattern": "C", "confidence": 0.75, "key_evidence": ["E1=1: 'so is this infinite solution or no solution' - checking understanding", "Gaussian elimination focus"]},
+    {"user_id": "a436e2db-733e-4218-b55b-a90d586f50e6", "message_count": 17, "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 1, "R2": 1}, "total": 14, "pattern": "C", "confidence": 0.8, "key_evidence": ["E1=2: 'isnt arg(z) 3pi/4' - questioning AI answer", "E1=2: 'why isnt the lowest n 0' - verification"]},
+    {"user_id": "a4538fb6-1a9d-4d46-b6fd-3bdba31b0433", "message_count": 11, "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 2, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0}, "total": 3, "pattern": "F", "confidence": 0.9, "key_evidence": ["All limit/derivative calculation requests", "No conceptual engagement"]},
+    {"user_id": "a4642d73-73ee-4c7b-81b4-f67f3e473c30", "message_count": 25, "scores": {"P1": 2, "P2": 2, "P3": 0, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 1}, "total": 19, "pattern": "C", "confidence": 0.85, "key_evidence": ["E1=2: 'wrong' - correcting AI", "'I got my REF as...' - showing own work for verification", "M3=2: Checks own understanding"]},
+    {"user_id": "a7399082-e511-4ba5-a3a6-e6b861b103c1", "message_count": 6, "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1}, "total": 7, "pattern": "F", "confidence": 0.75, "key_evidence": ["Data science basics", "Limited depth"]},
+    {"user_id": "a75efe00-c7c2-4c99-a1e2-104dd44d7232", "message_count": 81, "scores": {"P1": 2, "P2": 2, "P3": 3, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2}, "total": 20, "pattern": "B", "confidence": 0.9, "key_evidence": ["P3=3: 'can make me practice set' - multiple practice requests", "E1=2: 'just to make sure does sinx times arcsinx = x?' - verification", "HIGH engagement (81 msgs)"]},
+    {"user_id": "a7ed07e2-8981-4291-acb6-e5e3911aa5b4", "message_count": 5, "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0}, "total": 2, "pattern": "F", "confidence": 0.9, "key_evidence": ["Only tutorial question requests", "Minimal engagement"]},
+    {"user_id": "a889be17-ebaa-4a6f-b416-f2ed507fa263", "message_count": 77, "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2}, "total": 19, "pattern": "B", "confidence": 0.9, "key_evidence": ["P3=2: 'give me more question' - practice seeking", "Provides own GE steps for verification: 'i swap r1 with r2', 'x3=10/7'", "HIGH engagement (77 msgs)"]},
+    {"user_id": "a8c420d1-277d-4c63-8aea-3c129e72ab21", "message_count": 31, "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 3, "E2": 1, "E3": 0, "R1": 1, "R2": 1}, "total": 14, "pattern": "C", "confidence": 0.85, "key_evidence": ["E1=3: 'but the answer is 2/5' - CORRECTING AI with known answer!", "M1=2: 'can u break it down into simpler ways to understand'"]},
+    {"user_id": "a9b445ca-7416-40e0-b938-aeab76897b90", "message_count": 23, "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 1}, "total": 15, "pattern": "C", "confidence": 0.8, "key_evidence": ["E1=1: 'why you can form the bounds' - questioning", "P2=2: 'Can u list down the theorems and methods' - strategic"]},
+    {"user_id": "aaaeae86-d1d9-4682-8bcb-c3367cc48f37", "message_count": 4, "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1}, "total": 4, "pattern": "F", "confidence": 0.85, "key_evidence": ["Only 4 basic questions", "Repeated same question"]}
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {"A": 0, "B": 3, "C": 10, "D": 0, "E": 0, "F": 6},
+    "pattern_percentages": {"A": "0%", "B": "15.8%", "C": "52.6%", "D": "0%", "E": "0%", "F": "31.6%"},
+    "average_total_score": 11.4,
+    "notable_findings": {
+      "ai_correction_examples": [
+        {"user_id": "a1a3b66f-7f20-4924-8f84-580e45d499ff", "quote": "you should assume you dont know the answer", "significance": "TEACHES AI proper reasoning approach!"},
+        {"user_id": "a8c420d1-277d-4c63-8aea-3c129e72ab21", "quote": "but the answer is 2/5", "significance": "E1=3 - Corrects AI with known answer"}
+      ],
+      "self_testing_examples": [{"user_id": "a889be17-ebaa-4a6f-b416-f2ed507fa263", "highlight": "Provides own GE steps for verification"}]
+    }
+  }
+}
