@@ -1,0 +1,45 @@
+{
+  "analysis_summary": {
+    "total_real_users": 378,
+    "pattern_f_percentage": 54.761904761904766,
+    "avg_verification_score": 0.0,
+    "avg_total_score": 14.555555555555555
+  },
+  "threshold_adjustments": [
+    {
+      "metric": "verificationAttempted",
+      "current_threshold": 1.5,
+      "recommended_threshold": 1.0,
+      "reason": "Real data shows 54.8% users with E1=0"
+    },
+    {
+      "metric": "aiRelianceDegree",
+      "current_threshold": 2.5,
+      "recommended_threshold": 2.0,
+      "reason": "Real M1 average is 0.84, indicating low iteration"
+    },
+    {
+      "metric": "totalScore",
+      "current_threshold": 15,
+      "recommended_threshold": 16,
+      "reason": "Pattern F users average 13.2 total score"
+    }
+  ],
+  "new_rules": [
+    {
+      "mrId": "MR_INPUT_PROMPT",
+      "name": "Input Enhancement Prompt",
+      "trigger": {
+        "signal": "inputComplexity",
+        "operator": "<",
+        "threshold": 2
+      },
+      "urgency": "remind",
+      "targetPatterns": [
+        "F",
+        "C"
+      ],
+      "description": "Encourage more detailed input for better AI assistance"
+    }
+  ]
+}
