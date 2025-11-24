@@ -268,7 +268,77 @@ E             0    0    0    0    0    0
 F             0    0    0    0    0   38
 ```
 
-### 4.4 Threshold Calibration Recommendations
+### 4.4 Multi-Model Comparison
+
+To determine the optimal classification algorithm, we evaluated 10 different machine learning models on the hybrid dataset.
+
+#### 4.4.1 Models Evaluated
+
+| Model | Type | Key Parameters |
+|-------|------|----------------|
+| SVM (RBF) | Kernel-based | C=10.0, gamma=scale |
+| SVM (Linear) | Kernel-based | C=1.0 |
+| Random Forest | Ensemble | n_estimators=100, max_depth=10 |
+| Gradient Boosting | Ensemble | n_estimators=100, max_depth=5 |
+| Logistic Regression | Linear | multi_class=multinomial |
+| KNN (k=3) | Instance-based | weights=distance |
+| KNN (k=5) | Instance-based | weights=distance |
+| Naive Bayes | Probabilistic | Gaussian |
+| Decision Tree | Tree-based | max_depth=10 |
+| MLP Neural Network | Deep Learning | layers=(64, 32) |
+
+#### 4.4.2 Comparison Results
+
+| Model | Test Acc. | CV Acc. | F Recall | Macro F1 | Time (s) |
+|-------|-----------|---------|----------|----------|----------|
+| **SVM (RBF)** | **94.2%** | **91.1±7.9%** | **100.0%** | **0.807** | **0.014** |
+| Logistic Regression | 94.2% | 88.8±7.8% | 100.0% | 0.701 | 0.043 |
+| SVM (Linear) | 93.0% | 89.0±7.9% | 100.0% | 0.650 | 0.007 |
+| KNN (k=3) | 93.0% | 89.5±7.7% | 100.0% | 0.649 | 0.001 |
+| Decision Tree | 93.0% | 86.7±9.6% | 100.0% | 0.773 | 0.002 |
+| Gradient Boosting | 90.7% | 89.7±8.3% | 100.0% | 0.663 | 0.752 |
+| Random Forest | 89.5% | 90.0±7.8% | 100.0% | 0.577 | 0.104 |
+| KNN (k=5) | 89.5% | 89.0±7.4% | 100.0% | 0.570 | 0.001 |
+| MLP Neural Network | 87.2% | 84.8±4.3% | 100.0% | 0.369 | 0.039 |
+| Naive Bayes | 60.5% | 60.0±6.0% | 94.7% | 0.350 | 0.001 |
+
+#### 4.4.3 Pattern F Detection Performance
+
+All models except Naive Bayes achieved 100% Pattern F recall, meeting the critical target of >90%.
+
+| Model | F Precision | F Recall | F F1 | Status |
+|-------|-------------|----------|------|--------|
+| SVM (RBF) | 100.0% | 100.0% | 1.000 | ✅ |
+| Logistic Regression | 100.0% | 100.0% | 1.000 | ✅ |
+| SVM (Linear) | 100.0% | 100.0% | 1.000 | ✅ |
+| KNN (k=3) | 100.0% | 100.0% | 1.000 | ✅ |
+| Decision Tree | 100.0% | 100.0% | 1.000 | ✅ |
+| Gradient Boosting | 95.0% | 100.0% | 0.974 | ✅ |
+| Random Forest | 97.4% | 100.0% | 0.987 | ✅ |
+| KNN (k=5) | 97.4% | 100.0% | 0.987 | ✅ |
+| MLP Neural Network | 95.0% | 100.0% | 0.974 | ✅ |
+| Naive Bayes | 60.0% | 94.7% | 0.735 | ✅ |
+
+#### 4.4.4 Model Selection Rationale
+
+**Selected Model: SVM (RBF Kernel)**
+
+Justification:
+1. **Highest test accuracy** (94.2%) tied with Logistic Regression
+2. **Highest CV accuracy** (91.1%) indicating best generalization
+3. **Perfect Pattern F detection** (100% recall and precision)
+4. **Best Macro F1** (0.807) across all classes
+5. **Fast training** (0.014s) suitable for real-time updates
+6. **Robust to class imbalance** with balanced class weights
+
+#### 4.4.5 Key Observations
+
+1. **SVM outperforms neural networks**: The 12-dimensional feature space is well-suited to kernel methods
+2. **Tree-based models show overfitting**: Higher variance in CV scores (Decision Tree: ±9.6%)
+3. **Naive Bayes fails**: Gaussian assumption violated by discrete 0-3 scale metrics
+4. **All models detect Pattern F well**: The class is separable with high precision
+
+### 4.5 Threshold Calibration Recommendations
 
 Based on the analysis, we recommend the following threshold adjustments:
 
@@ -389,12 +459,15 @@ The findings underscore the urgent need for proactive metacognitive scaffolding 
 | Validator | `backend/src/ml/validate_pattern_classification.py` | Classification validation |
 | Calibrator | `backend/src/ml/mr_threshold_calibration.py` | Threshold analysis |
 | Trainer | `backend/src/ml/train_hybrid_model.py` | Model training script |
+| **Comparison** | `backend/src/ml/model_comparison.py` | Multi-model comparison |
 | Real Data | `backend/src/ml/real_user_training_data.csv` | Converted metrics (378) |
 | Hybrid Data | `backend/src/ml/hybrid_training_data.csv` | Merged dataset (427) |
 | Model | `backend/src/ml/svm_hybrid_model.pkl` | Trained SVM classifier |
 | Scaler | `backend/src/ml/svm_hybrid_scaler.pkl` | Feature scaler |
 | Metrics | `backend/src/ml/svm_hybrid_metrics.json` | Training metrics |
 | Calibration | `backend/src/ml/mr_threshold_calibration.json` | Threshold config |
+| **Comparison Results** | `backend/src/ml/model_comparison_results.json` | Full comparison data |
+| **LaTeX Table** | `backend/src/ml/model_comparison_table.tex` | Paper-ready table |
 
 ### A.2 Reproducibility
 
@@ -415,9 +488,40 @@ python3 backend/src/ml/mr_threshold_calibration.py
 
 # 5. Train hybrid model
 python3 backend/src/ml/train_hybrid_model.py
+
+# 6. Run multi-model comparison
+python3 backend/src/ml/model_comparison.py
 ```
 
-### A.3 References
+### A.3 LaTeX Table for Paper
+
+The model comparison table is automatically generated in LaTeX format:
+
+```latex
+\begin{table}[htbp]
+\centering
+\caption{Comparison of Machine Learning Models for User Pattern Classification}
+\label{tab:model_comparison}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Model} & \textbf{Test Acc.} & \textbf{CV Acc.} & \textbf{F Recall} & \textbf{Macro F1} & \textbf{Time (s)} \\
+\midrule
+SVM (RBF) & 94.2\% & 91.1±7.9\% & 100.0\% & 0.807 & 0.014 \\
+Logistic Regression & 94.2\% & 88.8±7.8\% & 100.0\% & 0.701 & 0.043 \\
+SVM (Linear) & 93.0\% & 89.0±7.9\% & 100.0\% & 0.650 & 0.007 \\
+KNN (k=3) & 93.0\% & 89.5±7.7\% & 100.0\% & 0.649 & 0.001 \\
+Decision Tree & 93.0\% & 86.7±9.6\% & 100.0\% & 0.773 & 0.002 \\
+Gradient Boosting & 90.7\% & 89.7±8.3\% & 100.0\% & 0.663 & 0.752 \\
+Random Forest & 89.5\% & 90.0±7.8\% & 100.0\% & 0.577 & 0.104 \\
+KNN (k=5) & 89.5\% & 89.0±7.4\% & 100.0\% & 0.570 & 0.001 \\
+MLP Neural Network & 87.2\% & 84.8±4.3\% & 100.0\% & 0.369 & 0.039 \\
+Naive Bayes & 60.5\% & 60.0±6.0\% & 94.7\% & 0.350 & 0.001 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+### A.4 References
 
 1. Parasuraman, R., & Manzey, D. H. (2010). Complacency and bias in human use of automation. Human Factors.
 2. Bainbridge, L. (1983). Ironies of automation. Automatica.

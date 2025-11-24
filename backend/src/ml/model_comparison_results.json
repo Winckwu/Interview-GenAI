@@ -1,0 +1,601 @@
+{
+  "comparison_date": "2025-11-24T03:51:01.690704",
+  "dataset": {
+    "total_samples": 427,
+    "train_samples": 341,
+    "test_samples": 86,
+    "features": 12
+  },
+  "results": [
+    {
+      "model_name": "SVM (RBF)",
+      "train_accuracy": 0.9970674486803519,
+      "test_accuracy": 0.9418604651162791,
+      "train_time_seconds": 0.014066219329833984,
+      "per_class": {
+        "A": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "support": 4
+        },
+        "B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.9268,
+          "recall": 0.9744,
+          "f1": 0.95,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.5,
+          "recall": 0.25,
+          "f1": 0.3333,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 1.0,
+      "pattern_f_f1": 1.0,
+      "macro_precision": 0.8354,
+      "macro_recall": 0.7949,
+      "macro_f1": 0.8067,
+      "cv_scores": [
+        0.7558,
+        0.9302,
+        0.9412,
+        0.9647,
+        0.9647
+      ],
+      "cv_mean": 0.9113,
+      "cv_std": 0.0789
+    },
+    {
+      "model_name": "Logistic Regression",
+      "train_accuracy": 0.9442815249266863,
+      "test_accuracy": 0.9418604651162791,
+      "train_time_seconds": 0.04307723045349121,
+      "per_class": {
+        "A": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.8889,
+          "support": 4
+        },
+        "B": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.973,
+          "recall": 0.9231,
+          "f1": 0.9474,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.6,
+          "recall": 0.75,
+          "f1": 0.6667,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 1.0,
+      "pattern_f_f1": 1.0,
+      "macro_precision": 0.6746,
+      "macro_recall": 0.7346,
+      "macro_f1": 0.7006,
+      "cv_scores": [
+        0.7326,
+        0.9419,
+        0.9294,
+        0.9294,
+        0.9059
+      ],
+      "cv_mean": 0.8878,
+      "cv_std": 0.0785
+    },
+    {
+      "model_name": "SVM (Linear)",
+      "train_accuracy": 0.9706744868035191,
+      "test_accuracy": 0.9302325581395349,
+      "train_time_seconds": 0.006966114044189453,
+      "per_class": {
+        "A": {
+          "precision": 0.6667,
+          "recall": 1.0,
+          "f1": 0.8,
+          "support": 4
+        },
+        "B": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.973,
+          "recall": 0.9231,
+          "f1": 0.9474,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 1.0,
+      "pattern_f_f1": 1.0,
+      "macro_precision": 0.6279,
+      "macro_recall": 0.6846,
+      "macro_f1": 0.6495,
+      "cv_scores": [
+        0.7326,
+        0.9302,
+        0.9294,
+        0.9412,
+        0.9176
+      ],
+      "cv_mean": 0.8902,
+      "cv_std": 0.0792
+    },
+    {
+      "model_name": "KNN (k=3)",
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.9302325581395349,
+      "train_time_seconds": 0.0006043910980224609,
+      "per_class": {
+        "A": {
+          "precision": 0.5714,
+          "recall": 1.0,
+          "f1": 0.7273,
+          "support": 4
+        },
+        "B": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.973,
+          "recall": 0.9231,
+          "f1": 0.9474,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.6667,
+          "recall": 0.5,
+          "f1": 0.5714,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 1.0,
+      "pattern_f_f1": 1.0,
+      "macro_precision": 0.6422,
+      "macro_recall": 0.6846,
+      "macro_f1": 0.6492,
+      "cv_scores": [
+        0.7442,
+        0.9186,
+        0.9176,
+        0.9529,
+        0.9412
+      ],
+      "cv_mean": 0.8949,
+      "cv_std": 0.0766
+    },
+    {
+      "model_name": "Decision Tree",
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.9302325581395349,
+      "train_time_seconds": 0.0015003681182861328,
+      "per_class": {
+        "A": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "support": 4
+        },
+        "B": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6667,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.973,
+          "recall": 0.9231,
+          "f1": 0.9474,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "support": 4
+        },
+        "E": {
+          "precision": 0.0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 1.0,
+      "pattern_f_f1": 1.0,
+      "macro_precision": 0.7446,
+      "macro_recall": 0.8346,
+      "macro_f1": 0.7728,
+      "cv_scores": [
+        0.6744,
+        0.9186,
+        0.9176,
+        0.9176,
+        0.9059
+      ],
+      "cv_mean": 0.8668,
+      "cv_std": 0.0963
+    },
+    {
+      "model_name": "Gradient Boosting",
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.9069767441860465,
+      "train_time_seconds": 0.7516875267028809,
+      "per_class": {
+        "A": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "support": 4
+        },
+        "B": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6667,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.9231,
+          "recall": 0.9231,
+          "f1": 0.9231,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 0.95,
+          "recall": 1.0,
+          "f1": 0.9744,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 0.95,
+      "pattern_f_f1": 0.9744,
+      "macro_precision": 0.6246,
+      "macro_recall": 0.7346,
+      "macro_f1": 0.6628,
+      "cv_scores": [
+        0.7326,
+        0.9535,
+        0.9294,
+        0.9412,
+        0.9294
+      ],
+      "cv_mean": 0.8972,
+      "cv_std": 0.0828
+    },
+    {
+      "model_name": "Random Forest",
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.8953488372093024,
+      "train_time_seconds": 0.10359740257263184,
+      "per_class": {
+        "A": {
+          "precision": 0.6,
+          "recall": 0.75,
+          "f1": 0.6667,
+          "support": 4
+        },
+        "B": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.8974,
+          "recall": 0.8974,
+          "f1": 0.8974,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.5,
+          "recall": 0.25,
+          "f1": 0.3333,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 0.9744,
+          "recall": 1.0,
+          "f1": 0.987,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 0.9744,
+      "pattern_f_f1": 0.987,
+      "macro_precision": 0.5944,
+      "macro_recall": 0.5795,
+      "macro_f1": 0.5769,
+      "cv_scores": [
+        0.7442,
+        0.9419,
+        0.9176,
+        0.9412,
+        0.9529
+      ],
+      "cv_mean": 0.8996,
+      "cv_std": 0.0785
+    },
+    {
+      "model_name": "KNN (k=5)",
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.8953488372093024,
+      "train_time_seconds": 0.0007891654968261719,
+      "per_class": {
+        "A": {
+          "precision": 0.6,
+          "recall": 0.75,
+          "f1": 0.6667,
+          "support": 4
+        },
+        "B": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.9211,
+          "recall": 0.8974,
+          "f1": 0.9091,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.3333,
+          "recall": 0.25,
+          "f1": 0.2857,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 0.9744,
+          "recall": 1.0,
+          "f1": 0.987,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 0.9744,
+      "pattern_f_f1": 0.987,
+      "macro_precision": 0.5658,
+      "macro_recall": 0.5795,
+      "macro_f1": 0.5697,
+      "cv_scores": [
+        0.7442,
+        0.9302,
+        0.9059,
+        0.9412,
+        0.9294
+      ],
+      "cv_mean": 0.8902,
+      "cv_std": 0.0739
+    },
+    {
+      "model_name": "MLP Neural Network",
+      "train_accuracy": 0.9208211143695014,
+      "test_accuracy": 0.872093023255814,
+      "train_time_seconds": 0.03909420967102051,
+      "per_class": {
+        "A": {
+          "precision": 0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 4
+        },
+        "B": {
+          "precision": 0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.8043,
+          "recall": 0.9487,
+          "f1": 0.8706,
+          "support": 39
+        },
+        "D": {
+          "precision": 0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 0.95,
+          "recall": 1.0,
+          "f1": 0.9744,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 1.0,
+      "pattern_f_precision": 0.95,
+      "pattern_f_f1": 0.9744,
+      "macro_precision": 0.3509,
+      "macro_recall": 0.3897,
+      "macro_f1": 0.369,
+      "cv_scores": [
+        0.7791,
+        0.907,
+        0.8235,
+        0.8588,
+        0.8706
+      ],
+      "cv_mean": 0.8478,
+      "cv_std": 0.0435
+    },
+    {
+      "model_name": "Naive Bayes",
+      "train_accuracy": 0.6363636363636364,
+      "test_accuracy": 0.6046511627906976,
+      "train_time_seconds": 0.0010313987731933594,
+      "per_class": {
+        "A": {
+          "precision": 0.4,
+          "recall": 1.0,
+          "f1": 0.5714,
+          "support": 4
+        },
+        "B": {
+          "precision": 0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 1
+        },
+        "C": {
+          "precision": 0.8,
+          "recall": 0.3077,
+          "f1": 0.4444,
+          "support": 39
+        },
+        "D": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "support": 4
+        },
+        "E": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 0
+        },
+        "F": {
+          "precision": 0.6,
+          "recall": 0.9474,
+          "f1": 0.7347,
+          "support": 38
+        }
+      },
+      "pattern_f_recall": 0.9474,
+      "pattern_f_precision": 0.6,
+      "pattern_f_f1": 0.7347,
+      "macro_precision": 0.36,
+      "macro_recall": 0.451,
+      "macro_f1": 0.3501,
+      "cv_scores": [
+        0.4884,
+        0.6628,
+        0.6118,
+        0.6353,
+        0.6
+      ],
+      "cv_mean": 0.5996,
+      "cv_std": 0.0596
+    }
+  ]
+}

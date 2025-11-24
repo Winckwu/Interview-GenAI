@@ -1,0 +1,23 @@
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of Machine Learning Models for User Pattern Classification}
+\label{tab:model_comparison}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Model} & \textbf{Test Acc.} & \textbf{CV Acc.} & \textbf{F Recall} & \textbf{Macro F1} & \textbf{Time (s)} \\
+\midrule
+SVM (RBF) & 94.2\% & 91.1±7.9\% & 100.0\% & 0.807 & 0.014 \\
+Logistic Regression & 94.2\% & 88.8±7.8\% & 100.0\% & 0.701 & 0.043 \\
+SVM (Linear) & 93.0\% & 89.0±7.9\% & 100.0\% & 0.649 & 0.007 \\
+KNN (k=3) & 93.0\% & 89.5±7.7\% & 100.0\% & 0.649 & 0.001 \\
+Decision Tree & 93.0\% & 86.7±9.6\% & 100.0\% & 0.773 & 0.002 \\
+Gradient Boosting & 90.7\% & 89.7±8.3\% & 100.0\% & 0.663 & 0.752 \\
+Random Forest & 89.5\% & 90.0±7.8\% & 100.0\% & 0.577 & 0.104 \\
+KNN (k=5) & 89.5\% & 89.0±7.4\% & 100.0\% & 0.570 & 0.001 \\
+MLP Neural Network & 87.2\% & 84.8±4.3\% & 100.0\% & 0.369 & 0.039 \\
+Naive Bayes & 60.5\% & 60.0±6.0\% & 94.7\% & 0.350 & 0.001 \\
+
+\bottomrule
+\end{tabular}
+\end{table}
