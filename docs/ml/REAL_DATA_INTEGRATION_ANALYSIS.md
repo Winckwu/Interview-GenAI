@@ -457,9 +457,84 @@ Pattern A (战略编排者):
 
 ---
 
-## 6. Model Training Results
+## 6. 已知数据问题 (Known Data Issues)
 
-### 6.1 Three-Round Bootstrap Validation
+### 6.1 时区不一致问题
+
+**问题描述:** Dashboard 图表显示用户"未使用"当天有数据 (如 Nov 24 显示 accuracy: 100)。
+
+**根本原因:** 数据库使用 `TIMESTAMP DEFAULT CURRENT_TIMESTAMP` 没有指定时区
+
+```sql
+-- 当前配置 (有问题)
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+-- 应该使用
+created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+```
+
+**影响:**
+
+| 场景 | 用户本地时间 | 服务器记录时间 | 问题 |
+|------|-------------|--------------|------|
+| 晚间使用 | Nov 23 11:00 PM (GMT+8) | Nov 24 03:00 AM (UTC) | 用户认为是23号，系统记录为24号 |
+| 跨日边界 | Nov 24 00:30 AM (GMT+8) | Nov 23 04:30 PM (UTC) | 可能记录为前一天 |
+
+**解决方案:**
+
+1. **短期修复**: 前端展示时考虑时区转换
+2. **长期修复**: 数据库迁移使用 `TIMESTAMP WITH TIME ZONE`
+
+```sql
+-- 迁移脚本
+ALTER TABLE interactions
+ALTER COLUMN created_at TYPE TIMESTAMP WITH TIME ZONE;
+```
+
+### 6.2 空 Session 数据问题
+
+**问题描述:** 用户未发送消息但有 accuracy 数据
+
+**可能原因:**
+1. 访问 Chat 页面时自动创建 session
+2. 验证操作（点击按钮）记录为 interaction
+3. 单条已验证消息 → verification_rate = 100%
+
+**验证方法:**
+```sql
+-- 检查特定日期的实际数据
+SELECT DATE(created_at), COUNT(*),
+       SUM(CASE WHEN was_verified THEN 1 ELSE 0 END) as verified
+FROM interactions i
+JOIN work_sessions s ON i.session_id = s.id
+WHERE s.user_id = 'YOUR_USER_ID'
+GROUP BY DATE(created_at)
+ORDER BY DATE(created_at) DESC;
+```
+
+### 6.3 统计方法说明
+
+Dashboard 图表的 `accuracy` 计算逻辑:
+
+```typescript
+// backend/src/services/patternDetectionService.ts:461-464
+verificationRate = verified_count / total_interactions * 100
+```
+
+**含义:**
+- `accuracy: 100` = 当天所有 interactions 都被验证
+- `accuracy: 0` = 当天没有任何 interaction 被验证
+- 如果当天只有 1 条被验证的 interaction → 显示 100%
+
+**建议改进:**
+- 添加样本量显示 (n=1 vs n=100 的 100% 意义不同)
+- 区分"无数据"和"0%验证率"
+
+---
+
+## 7. Model Training Results
+
+### 7.1 Three-Round Bootstrap Validation
 
 | Model | Mean Accuracy | Std Dev | Pattern F Recall |
 |-------|--------------|---------|------------------|
@@ -467,7 +542,7 @@ Pattern A (战略编排者):
 | Random Forest | 90.8% | ±1.9% | 95.4% |
 | Gradient Boosting | 90.4% | ±1.2% | 92.1% |
 
-### 6.2 Bootstrap Details (SVM)
+### 7.2 Bootstrap Details (SVM)
 
 ```
 Round 1: 88.2%
@@ -477,7 +552,7 @@ Mean:    92.1% (±3.2%)
 Pattern F Recall: 98.9% (±1.5%)
 ```
 
-### 6.3 Multi-Model Comparison
+### 7.3 Multi-Model Comparison
 
 | Model | Test Acc | CV Acc | F Recall | Macro F1 |
 |-------|----------|--------|----------|----------|
@@ -487,7 +562,7 @@ Pattern F Recall: 98.9% (±1.5%)
 | Random Forest | 88.2% | 89.9±8.4% | 90.3% | 0.6503 |
 | KNN (k=5) | 86.8% | 87.8±5.6% | 96.8% | 0.5549 |
 
-### 6.4 Model Selection Rationale
+### 7.4 Model Selection Rationale
 
 **Selected: SVM (RBF Kernel, C=10)**
 
@@ -505,16 +580,16 @@ Pattern F recall is the critical metric because:
 
 ---
 
-## 7. Historical Comparison
+## 8. Historical Comparison
 
-### 7.1 Version History
+### 8.1 Version History
 
 | Version | Date | Method | Accuracy | Pattern F Recall |
 |---------|------|--------|----------|------------------|
 | v1.0 | 2024-11-18 | Keyword | 72.73% | 100% (but overestimated F) |
 | **v2.0** | **2024-11-24** | **LLM** | **92.1%** | **98.9%** |
 
-### 7.2 Improvement Summary
+### 8.2 Improvement Summary
 
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
@@ -525,16 +600,16 @@ Pattern F recall is the critical metric because:
 
 ---
 
-## 8. Implications
+## 9. Implications
 
-### 8.1 For AI-Assisted Learning
+### 9.1 For AI-Assisted Learning
 
 1. **~40% of users still at risk** (Pattern F) - intervention needed
 2. **~10% show self-directed learning** (Pattern B) - positive behaviors exist
 3. **Verification behaviors exist** but were previously undetected
 4. **AI correction happens** - students do push back when AI is wrong
 
-### 8.2 For System Design
+### 9.2 For System Design
 
 1. **Update intervention thresholds** based on accurate data
 2. **Reward verification behaviors** in system feedback
@@ -543,9 +618,9 @@ Pattern F recall is the critical metric because:
 
 ---
 
-## 9. Files and Reproducibility
+## 10. Files and Reproducibility
 
-### 9.1 LLM Annotation Files
+### 10.1 LLM Annotation Files
 
 ```
 backend/src/ml/
@@ -558,7 +633,7 @@ backend/src/ml/
 └── llm_annotated_training_data.csv     # Training format
 ```
 
-### 9.2 Training and Validation Scripts
+### 10.2 Training and Validation Scripts
 
 ```
 backend/src/ml/
@@ -568,7 +643,7 @@ backend/src/ml/
 └── llm_model_comparison_results.json       # Full results
 ```
 
-### 9.3 Model Files
+### 10.3 Model Files
 
 ```
 backend/src/ml/models/
@@ -578,7 +653,7 @@ backend/src/ml/models/
 └── pattern_mapping.json        # Pattern ID mapping
 ```
 
-### 9.4 Reproducibility
+### 10.4 Reproducibility
 
 ```bash
 # 1. Convert LLM annotations to training format
@@ -597,11 +672,11 @@ cp svm_llm_scaler.pkl models/svm_scaler.pkl
 
 ---
 
-## 10. Conclusion
+## 11. Conclusion
 
 This analysis demonstrates the critical importance of **semantic understanding** in metacognitive behavior detection:
 
-### 10.1 Key Findings
+### 11.1 Key Findings
 
 1. **Keyword methods overestimate Pattern F** by 15.6 percentage points
 2. **LLM semantic analysis** detects verification and correction behaviors
@@ -609,7 +684,7 @@ This analysis demonstrates the critical importance of **semantic understanding**
 4. **92.1% accuracy** achieved with LLM-annotated training data
 5. **98.9% Pattern F recall** ensures at-risk users are identified
 
-### 10.2 Pattern A "消失" — 重要理论贡献
+### 11.2 Pattern A "消失" — 重要理论贡献
 
 **Pattern A 在真实数据中的消失 (20.4% → 0%) 是本研究的重要发现:**
 
@@ -618,7 +693,7 @@ This analysis demonstrates the critical importance of **semantic understanding**
 3. **测量局限性**: 高级规划行为难以在聊天记录中观察
 4. **实践建议**: 系统应以Pattern B/D作为实际目标，Pattern A作为理论参考
 
-### 10.3 Implications
+### 11.3 Implications
 
 The LLM-as-a-Judge methodology provides a more accurate picture of student AI collaboration patterns, enabling better-calibrated interventions. The discovery that Pattern A exists only in self-reports (not actual behavior) is itself an important contribution to understanding the gap between **reported** and **actual** AI usage behaviors.
 
