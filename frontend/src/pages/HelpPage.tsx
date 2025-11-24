@@ -225,7 +225,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR3</div>
                   <div className="mr-content">
                     <h4>Human Agency Control</h4>
-                    <p>Ensures you maintain control over the collaboration process</p>
+                    <p>Control intervention levels: Passive (minimal), Suggestive (default), or Proactive (all recommendations). Manual override indicator shows when you've customized settings.</p>
                   </div>
                 </div>
 
@@ -233,7 +233,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR4</div>
                   <div className="mr-content">
                     <h4>Role Definition Guidance</h4>
-                    <p>Clarifies your role and the AI's role in the collaboration</p>
+                    <p>Select AI roles (Research, Draft, Verifier, Brainstorm, Tutor, Critic) to constrain AI behavior. The AI will respond according to the selected role's guidelines.</p>
                   </div>
                 </div>
 
@@ -241,7 +241,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR5</div>
                   <div className="mr-content">
                     <h4>Low-Cost Iteration</h4>
-                    <p>Encourages experimentation without fear of failure</p>
+                    <p>Create conversation branches to explore different directions. Generate variants with different temperatures. Branch conversations persist in database for later review.</p>
                   </div>
                 </div>
 
@@ -434,12 +434,15 @@ const HelpPage: React.FC = () => {
 
                 <div className="pattern-card pattern-f">
                   <div className="pattern-badge">Pattern F</div>
-                  <h4>Insufficient Data</h4>
+                  <h4>Passive Over-Reliance (Critical)</h4>
                   <p>
-                    <strong>Characteristics:</strong> Not enough interactions to establish pattern
+                    <strong>Characteristics:</strong> Zero verification, accepts AI outputs without questioning, minimal cognitive engagement
                   </p>
                   <p>
-                    <strong>Risk Level:</strong> <span className="risk-unknown">Unknown</span> — Needs more data
+                    <strong>Risk Level:</strong> <span className="risk-critical">Critical</span> — Highest skill degradation risk
+                  </p>
+                  <p>
+                    <strong>Indicators:</strong> Short input times, no modifications, high output dependency ratio
                   </p>
                 </div>
               </div>
