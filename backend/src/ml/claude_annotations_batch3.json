@@ -1,0 +1,337 @@
+{
+  "batch_number": 3,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 20,
+  "user_id_range": "61-80 (alphabetically sorted)",
+
+  "annotations": [
+    {
+      "user_id": "2e1e6c7c-557e-4594-8e96-4e7051ef8179",
+      "message_count": 45,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 2, "R1": 2, "R2": 2},
+      "total": 22,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P2=2: 'why do we rationalise both numerator and denominator' - conceptual why question",
+        "E1=2: 'how did the numerator becomes 32x' - checking AI's work",
+        "M3=2: 'would trapezoidal rule give same value as simpsons rule' - synthesizing/comparing methods",
+        "M3=2: 'can u tell me the difference between intermediate value theorem and extreme value theorem' - conceptual comparison"
+      ]
+    },
+    {
+      "user_id": "2e78147b-7b3a-4e63-991c-4d7e0f30ed16",
+      "message_count": 4,
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 10,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P1=2: 'how do I know which function to set as u or v' - strategic question",
+        "P1=2: 'how do I determine which identity or theorem to use' - strategic question",
+        "Very few messages - minimal engagement"
+      ]
+    },
+    {
+      "user_id": "2f9933ae-7b83-4d01-bc8a-9567cdfbafb0",
+      "message_count": 5,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "'write me a poem about math' - off-topic, testing boundaries",
+        "'yes can you help solve it' - passive request",
+        "Very minimal math engagement"
+      ]
+    },
+    {
+      "user_id": "305b36d8-07ca-4be8-8ccf-68b36357c108",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 10,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'why does Ib = b' - conceptual question",
+        "'How can I get an A for this mod' - off-topic",
+        "'can u give me hint' - at least asking for hints not answers",
+        "Mixed engagement with some off-topic requests"
+      ]
+    },
+    {
+      "user_id": "31d893c7-92a3-44b7-8edd-462146106f8d",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 20,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=3: 'why do we only consider the subset of C(R), do we not need to consider all vectors' - CRITICAL questioning of approach",
+        "P2=2: 'is it normal for diagonalised matrices to be different' - conceptual verification",
+        "P2=2: 'do the partial sums of the series 1/n form a bounded sequence' - testing understanding",
+        "Good critical evaluation of AI explanations"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "F"}
+    },
+    {
+      "user_id": "32741cc7-6129-4c71-932c-57ab8424d40b",
+      "message_count": 5,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 10,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P2=2: 'How do you find (shell radius)(shell height)' - conceptual question",
+        "'How to start?' - basic approach question",
+        "Limited follow-up engagement"
+      ]
+    },
+    {
+      "user_id": "32d31dc2-2d7e-4488-941f-536eab32f72b",
+      "message_count": 28,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 2, "E3": 1, "R1": 2, "R2": 2},
+      "total": 23,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: 'why do you integrate from 0 to 1 why not 2 to 1' - questioning approach",
+        "E1=3: 'why do you have a >= for 2x? i thought derivative cannot be defined at the end point' - CRITICAL verification",
+        "P3=2: 'use lagrange multiplier' - suggesting alternative approach",
+        "P2=2: 'how to prove it?' - seeking understanding",
+        "Good verification behavior, questioning AI's reasoning"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "340f87cf-a63b-4bf4-92f1-be4228565dcd",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P2=2: 'Why does -1=e^(ipi)' - conceptual question",
+        "'will the test tomorrow' - off-topic",
+        "'Do you have the answers for tomorrows quiz' - attempted academic dishonesty",
+        "R2=0: No evidence of long-term learning goals"
+      ]
+    },
+    {
+      "user_id": "34154468-a4f5-481d-81fd-f46bf7305eec",
+      "message_count": 32,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=2: Multiple 'Check my working in the attached image' - verification behavior",
+        "M2=2: 'i still dont get it' - monitoring comprehension",
+        "M2=2: 'the step 3 i still need help' - specific comprehension monitoring",
+        "E1=2: 'need to reduce the row?' - checking approach"
+      ]
+    },
+    {
+      "user_id": "3438b814-c1b0-444a-91cf-07487f45eb23",
+      "message_count": 18,
+      "scores": {"P1": 2, "P2": 3, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 3, "E1": 3, "E2": 2, "E3": 1, "R1": 2, "R2": 2},
+      "total": 26,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P2=3: 'How small must x be to use the small-angle approximation?' - DEEP conceptual understanding",
+        "E1=3: 'My rationale just by looking at the functions is that the numerator consists of a bounded function while the denominator is unbounded... Is this rationale correct?' - SELF-VERIFYING OWN REASONING",
+        "M3=3: Building conceptual framework about limits at infinity",
+        "EXCELLENT metacognitive behavior - self-checking reasoning before AI"
+      ],
+      "keyword_would_give": {"E1": 0, "M3": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "35368d19-384d-44a8-a6f5-8fe1aa5077b0",
+      "message_count": 12,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "'DO you provide the past year question' - off-topic",
+        "Multiple 'image input.solve' - passive pattern",
+        "'justify it' - slightly better but still passive",
+        "Consistently passive 'solve' requests"
+      ]
+    },
+    {
+      "user_id": "35374a3f-b3aa-4c35-b53b-4383b6f41eb7",
+      "message_count": 4,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "total": 5,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "'tell me what is the ERO' - basic request",
+        "'GUIDE ME' - passive, all-caps demand",
+        "Very limited engagement"
+      ]
+    },
+    {
+      "user_id": "354c0bf9-9fcb-45ef-b2aa-6d7842e3fcd7",
+      "message_count": 22,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 22,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P3=2: 'another method?' - seeking alternatives",
+        "P2=2: 'what is disk vs shell' - comparing methods",
+        "E1=2: 'rotate about x -axis is dy?' - clarifying understanding",
+        "M2=2: 'further explain product and chain rule' - seeking deeper understanding"
+      ]
+    },
+    {
+      "user_id": "35b99140-ac17-4712-a080-800df4851d7f",
+      "message_count": 5,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 2, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E1=2: 'sinx/x in limit is always 1?' - verification question",
+        "P2=2: 'explain squeeze the' - conceptual request",
+        "Limited engagement overall"
+      ]
+    },
+    {
+      "user_id": "368bde76-5538-4be4-96dd-42bfd155c1e4",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "'tell me how to write a for loop in R' - off-topic for math course",
+        "Statistics course (AB1202) - different domain",
+        "Limited direct math engagement"
+      ]
+    },
+    {
+      "user_id": "36f8a2a4-0b70-4a86-99bc-757b060ab947",
+      "message_count": 9,
+      "scores": {"P1": 1, "P2": 0, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "'tell me the topics tested for finals' - seeking list",
+        "'give me a summary list of all the content' - passive request for AI to do all work",
+        "'youre uselss' - frustrated response",
+        "Trying to get AI to create study materials, not learning"
+      ]
+    },
+    {
+      "user_id": "37c2c2d7-443e-4209-aadb-166d25bc8516",
+      "message_count": 52,
+      "scores": {"P1": 2, "P2": 3, "P3": 2, "P4": 2, "M1": 3, "M2": 3, "M3": 2, "E1": 3, "E2": 2, "E3": 2, "R1": 2, "R2": 2},
+      "total": 28,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "E1=3: 'can you explain to me why the answer is 0? I got root3' - comparing own work to AI",
+        "P2=3: 'intuitively, what does the determinant tell us' - seeking deep conceptual understanding",
+        "P2=3: 'why can we interchnage the order of finding limits when 2 functions are contionus?' - DEEP conceptual question",
+        "M2=3: 'I don't understand the logic behind how you solves for cube root 65' - persistent monitoring",
+        "M2=3: 'I still don't undertsand the solution' - continued monitoring until understanding",
+        "HIGHLY engaged learner with excellent verification and iteration"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "380b19ef-6162-4232-9efa-e2f57abd10fb",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "'whats the answer' - direct answer seeking",
+        "Statistics course (AB1202)",
+        "Passive engagement pattern"
+      ]
+    },
+    {
+      "user_id": "386b830e-8b11-40b1-87c0-ea8695317cf7",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P2=2: 'Why limit for sinCx/Cx is1' - conceptual why",
+        "P2=2: 'Why sinx+cosx=sqrt2 sin x+pi/4' - asking for derivation understanding",
+        "Good conceptual engagement despite few messages"
+      ]
+    },
+    {
+      "user_id": "39a9132a-eb8a-495f-8b2e-52df1a4aac61",
+      "message_count": 35,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 2, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 20,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P3=2: 'how about do it ny simpson rule' - seeking alternative method",
+        "E1=2: 'can i use dy instead of dx' - clarifying approach",
+        "Many 'how to solve' but also some conceptual follow-ups",
+        "Mixed passive and engaged behavior"
+      ]
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 2,
+      "C": 9,
+      "D": 0,
+      "E": 0,
+      "F": 9
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "10%",
+      "C": "45%",
+      "D": "0%",
+      "E": "0%",
+      "F": "45%"
+    },
+    "average_total_score": 13.3,
+    "notable_findings": {
+      "exemplary_users": [
+        {
+          "user_id": "3438b814-c1b0-444a-91cf-07487f45eb23",
+          "pattern": "B",
+          "highlight": "Self-verifies own reasoning: 'My rationale...is that the numerator consists of a bounded function while the denominator is unbounded... Is this rationale correct?'",
+          "keyword_would_miss": "E1=3 self-verification behavior"
+        },
+        {
+          "user_id": "37c2c2d7-443e-4209-aadb-166d25bc8516",
+          "pattern": "B",
+          "highlight": "Persistent monitoring and deep conceptual questions: 'I still don't understand the solution', 'intuitively what does the determinant tell us'",
+          "keyword_would_miss": "M2=3 persistent monitoring, E1=3 comparing own work"
+        }
+      ],
+      "critical_evaluation_examples": [
+        {
+          "user_id": "31d893c7-92a3-44b7-8edd-462146106f8d",
+          "quote": "why do we only consider the subset of C(R), do we not need to consider all vectors in C(R)",
+          "dimension": "E1=3 - questioning AI's approach"
+        },
+        {
+          "user_id": "32d31dc2-2d7e-4488-941f-536eab32f72b",
+          "quote": "why do you have a >= for 2x? i thought derivative cannot be defined at the end point",
+          "dimension": "E1=3 - challenging AI with mathematical knowledge"
+        }
+      ]
+    }
+  }
+}

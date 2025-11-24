@@ -1,0 +1,303 @@
+{
+  "batch_number": 4,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 20,
+  "user_id_range": "81-100 (alphabetically sorted)",
+
+  "annotations": [
+    {
+      "user_id": "39ef625e-2723-4cfc-a6b7-9309c44a662e",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found in dataset"]
+    },
+    {
+      "user_id": "3b560cf6-45c3-472c-ae62-061931e5165f",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 1, "M2": 2, "M3": 0, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 10,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "'what questions will come up for the upcoming midterm' - seeking exam leaks",
+        "M2=2: 'it is too shallow, make it more indepth and show examples' - giving feedback",
+        "'what makes you better than chatgpt' - off-topic",
+        "Some engagement but mostly seeking summaries/shortcuts"
+      ]
+    },
+    {
+      "user_id": "3b883174-01fe-45fb-857e-62938a4e7e4c",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=2: 'Remains the same?' - verification of understanding",
+        "M1=2: 'No idea' followed by iteration - honest then trying",
+        "'Decrases??' - iterating through possibilities to learn"
+      ]
+    },
+    {
+      "user_id": "3d19ae2d-4179-41a9-9710-62bdc2b4b4f8",
+      "message_count": 45,
+      "scores": {"P1": 2, "P2": 3, "P3": 2, "P4": 2, "M1": 2, "M2": 3, "M3": 2, "E1": 2, "E2": 2, "E3": 1, "R1": 2, "R2": 2},
+      "total": 25,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P2=3: 'population parameter represents the entire population... sample statistic is what we are using to test' - ARTICULATING OWN UNDERSTANDING",
+        "M2=3: 'i forgot the formula to calculate everything I need more practice I feel' - EXCELLENT self-assessment",
+        "M2=3: 'can you start from the most basic my foundation is weak' - recognizing own weakness",
+        "E1=2: 'z test is use when population variance is known otherwise for t test' - verifying understanding",
+        "EXCELLENT metacognitive behavior - articulates understanding, honest self-assessment"
+      ],
+      "keyword_would_give": {"M2": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "3de057dc-c075-44b5-8cbf-b9ef36580c7e",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found in dataset"]
+    },
+    {
+      "user_id": "3e972fc4-ceae-4a73-825a-2eadd8a823a5",
+      "message_count": 4,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "'Can you only teach me about Linear Algebra but also about transistors?' - off-topic",
+        "'So please teach me everything in week 4' - passive request",
+        "Limited engagement"
+      ]
+    },
+    {
+      "user_id": "3f1802c8-b0e0-49dd-8ee0-d396f4ba1bb7",
+      "message_count": 5,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "'explain regression analysis' - basic request",
+        "Pasting assignment questions for explanation",
+        "Limited follow-up engagement"
+      ]
+    },
+    {
+      "user_id": "401d639e-3363-472d-bb59-5e1f02b09c68",
+      "message_count": 4,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 1, "M2": 2, "M3": 0, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 10,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "M2=2: 'Can you dumb down the content and treat me like an idiot and explain' - self-awareness of comprehension needs",
+        "'Please relook and format correctly' - formatting feedback",
+        "Some self-awareness but limited deeper engagement"
+      ]
+    },
+    {
+      "user_id": "4124fb06-9686-41ab-9779-bcdad43ff148",
+      "message_count": 18,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 21,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P3=2: 'are there other questions similar to this that would be useful in R' - seeking practice",
+        "E1=2: 'is it population standard deviaiton = sample standard deviation / sqrt(n)' - checking understanding",
+        "E1=2: 'why bnot use qnorm' - questioning methodology choice"
+      ]
+    },
+    {
+      "user_id": "41259a8a-40a8-4aad-a805-969db2808d7b",
+      "message_count": 16,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 20,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P3=2: 'step by step guide in solving a chi-squared test' - structured learning",
+        "E1=2: '14/3 is the sum of value for the Chi-squared statistic' - showing work for verification",
+        "P2=2: 'When do we use each test such as Z-test, t-test and Chi-squared test?' - conceptual organization"
+      ]
+    },
+    {
+      "user_id": "41350399-1755-4ff0-800a-18cc9d7c058b",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found in dataset"]
+    },
+    {
+      "user_id": "42200062-c6c7-4496-ad25-e7d164f6003d",
+      "message_count": 18,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P2=2: Multiple 'what is' conceptual questions - building understanding",
+        "P2=2: 'what is Aadj(A)' - conceptual depth question",
+        "Broad coverage of topics shows organized learning"
+      ]
+    },
+    {
+      "user_id": "42237cf6-fc98-4a87-906e-ea0cb8834306",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 2, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: '第二部详细解释为什么' (explain step 2 in detail why) - seeking understanding",
+        "Asking in Chinese shows comfort and engagement",
+        "Multiple calculation requests but with conceptual follow-up"
+      ]
+    },
+    {
+      "user_id": "428d0168-b0f2-45f6-bf8f-8913cb4372a2",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 2, "P3": 2, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 2, "R2": 1},
+      "total": 13,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P3=2: 'how to solve critical points type of questions' - seeking strategy",
+        "P2=2: 'how to know if the singular point is not defined' - conceptual question",
+        "Balanced procedural and conceptual questions"
+      ]
+    },
+    {
+      "user_id": "42ce76c0-00cc-4af6-9714-466469fd63c9",
+      "message_count": 22,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 19,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=2: 'explain how u get the last step' - verification",
+        "E1=2: 'how did u get sqrt (20 = 2sqrt5' - asking for clarification on steps",
+        "Good verification and follow-up behavior"
+      ]
+    },
+    {
+      "user_id": "44774901-80cf-4678-a58f-5ff2ed580592",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found in dataset"]
+    },
+    {
+      "user_id": "44ba45d0-55f6-4638-a16a-edab0b08f67f",
+      "message_count": 28,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 2, "E3": 1, "R1": 2, "R2": 2},
+      "total": 23,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: 'is this not accurate? if not, why so?' - SELF-VERIFICATION of own code!",
+        "'the mean of vector x is 2.555' - showing work before asking",
+        "P2=2: 'what is the difference between using rnorm and runif' - conceptual comparison",
+        "Good self-verification and understanding behavior"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "46e66184-5e5e-4bf7-bd65-5332c2c43768",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "'image input.solve' - passive requests",
+        "Very limited engagement"
+      ]
+    },
+    {
+      "user_id": "46ea6484-1352-45ca-a546-96e77d3dce4b",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "'could you format it to be readable thank you' - providing feedback",
+        "P2=2: asking for explanation of limit problem",
+        "Some engagement but limited depth"
+      ]
+    },
+    {
+      "user_id": "47462c2f-ffe3-4b19-b7ca-453dc5080132",
+      "message_count": 15,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 2, "E3": 1, "R1": 2, "R2": 2},
+      "total": 22,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: 'arg w is -pi/3 not +,' - CORRECTING AI ERROR!",
+        "P2=2: 'what if the planes are not parallel' - exploring edge cases",
+        "Good critical thinking and error detection"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"}
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 1,
+      "C": 11,
+      "D": 0,
+      "E": 0,
+      "F": 8
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "5%",
+      "C": "55%",
+      "D": "0%",
+      "E": "0%",
+      "F": "40%"
+    },
+    "average_total_score": 12.3,
+    "notable_findings": {
+      "exemplary_users": [
+        {
+          "user_id": "3d19ae2d-4179-41a9-9710-62bdc2b4b4f8",
+          "pattern": "B",
+          "highlight": "Articulates understanding in own words AND honest self-assessment: 'I need more practice I feel', 'my foundation is weak'",
+          "keyword_would_miss": "M2=3 self-assessment behavior"
+        }
+      ],
+      "critical_evaluation_examples": [
+        {
+          "user_id": "47462c2f-ffe3-4b19-b7ca-453dc5080132",
+          "quote": "arg w is -pi/3 not +,",
+          "dimension": "E1=3 - CORRECTING AI mathematical error"
+        },
+        {
+          "user_id": "44ba45d0-55f6-4638-a16a-edab0b08f67f",
+          "quote": "is this not accurate? if not, why so?",
+          "dimension": "E1=3 - Self-verification of own work"
+        }
+      ],
+      "no_data_users": ["39ef625e-2723-4cfc-a6b7-9309c44a662e", "3de057dc-c075-44b5-8cbf-b9ef36580c7e", "41350399-1755-4ff0-800a-18cc9d7c058b", "44774901-80cf-4678-a58f-5ff2ed580592"]
+    }
+  }
+}

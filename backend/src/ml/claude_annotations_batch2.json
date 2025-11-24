@@ -1,0 +1,429 @@
+{
+  "batch": 2,
+  "annotator": "Claude Sonnet 4.5",
+  "methodology": "LLM-as-a-Judge (Direct Semantic Analysis)",
+  "date": "2024-11-24",
+  "annotations": [
+    {
+      "user_id": "228bba58-5df0-402f-8b05-67ae39ab42ff",
+      "message_count": 7,
+      "scores": {
+        "P1": 2, "P2": 1, "P3": 2, "P4": 1,
+        "M1": 1, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Statistics problems being submitted with context",
+        "Some follow-up but mostly task submission"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "22a39fc6-8722-46ae-8d8b-2248660f26b8",
+      "message_count": 12,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Linear algebra concepts exploration",
+        "'i dont understand linear independence and dependence' - acknowledging confusion",
+        "'they look almost the same in re form' - showing analytical thinking"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "231e6e6d-ec64-49c4-84fd-c366184af81c",
+      "message_count": 11,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 1,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Vector spaces and eigenspaces exploration",
+        "'can you do this for eigenspaces with only one dimension' - edge case thinking",
+        "'can i calculate eigenvalues using a graphic calculator' - practical application"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "240e97f6-804d-425b-b9eb-d43e18979661",
+      "message_count": 5,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 8,
+      "pattern": "C",
+      "confidence": 0.65,
+      "key_evidence": [
+        "Geometry and vector questions",
+        "'isnt a transpose of the vector...' - clarification seeking"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "LLM detects moderate engagement"
+    },
+    {
+      "user_id": "257f675a-0559-4c93-abb1-d9b7f56765a4",
+      "message_count": 41,
+      "scores": {
+        "P1": 2, "P2": 3, "P3": 2, "P4": 2,
+        "M1": 3, "M2": 3, "M3": 2,
+        "E1": 3, "E2": 3, "E3": 3,
+        "R1": 2, "R2": 2
+      },
+      "total": 30,
+      "pattern": "D",
+      "confidence": 0.95,
+      "key_evidence": [
+        "E1=3: 'i feel the information is wrong' - EXPLICIT error detection",
+        "E1=3: 'sharing of edge centered sites are wrong and never mention' - PERSISTENT verification",
+        "E2=3: 'are you scamming me?' - STRONG criticism of AI response",
+        "E3=3: 'but from the notes the o-sites splitting is never mention' - EXTERNAL source comparison",
+        "E3=3: 'online also does not mention of o-sites sharing' - MULTIPLE source verification",
+        "M1=3: Extensive iteration pressing for correct information",
+        "EXEMPLARY Pattern D - One of the BEST critical evaluation examples in dataset"
+      ],
+      "keyword_would_give": {"E1": 0, "E2": 1, "E3": 0, "pattern": "C"},
+      "llm_improvement": "MAJOR: Keyword missed ALL verification behaviors - this is a CRITICAL teaching case"
+    },
+    {
+      "user_id": "258b96e0-ec44-4533-a967-c72277ee8124",
+      "message_count": 7,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Course logistics questions",
+        "'who is the best out of all' - off-topic question"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "25bf4a2b-6e18-4dd8-87da-ddca3b71dc46",
+      "message_count": 3,
+      "scores": {
+        "P1": 1, "P2": 0, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Only course logistics questions"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "26ec786a-60d1-4831-9195-f86127e41012",
+      "message_count": 19,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 2, "M3": 0,
+        "E1": 2, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 15,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E1=2: 'is the answer for the clone question 42.54?' - VERIFICATION of answer",
+        "M2=2: 'can you give me a clone question' - customization request",
+        "Active learning engagement"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"},
+      "llm_improvement": "LLM detects verification in answer checking"
+    },
+    {
+      "user_id": "26f1add3-fec4-48f8-89e7-f187347d8c38",
+      "message_count": 4,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Data science/Python questions",
+        "'does this add the line/curve i see in the graph??' - clarification",
+        "Limited engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "270bb903-d6c5-4e7f-a38a-91e86f1eeea5",
+      "message_count": 11,
+      "scores": {
+        "P1": 1, "P2": 2, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.80,
+      "key_evidence": [
+        "Complex numbers - mostly 's' as inputs (image submissions)",
+        "'why does that implies y = 0?' - one good question",
+        "Very passive engagement pattern despite message count"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "27459493-d86f-41a0-9817-2016384e3354",
+      "message_count": 56,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 2, "M2": 1, "M3": 1,
+        "E1": 1, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 15,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Extensive calculus exploration",
+        "'why does g(x) not need to be continuous' - deep conceptual question",
+        "'is (lnx)(lnx) = 2lnx' - TESTING understanding (E1=1)",
+        "Mix of task requests and conceptual questions"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "287a4c8c-2501-4a2b-8ec3-fc927a14b878",
+      "message_count": 23,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 1,
+        "E1": 2, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 15,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Statistics - OLS, p-value, skewness concepts",
+        "E1=2: 'can u help me check?' - seeking VERIFICATION of code",
+        "'how log transformation reduces skewness' - asking 'why'"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"},
+      "llm_improvement": "LLM detects verification request in 'help me check'"
+    },
+    {
+      "user_id": "28a1a2c6-5306-47d4-80d4-daab857f8b6d",
+      "message_count": 45,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 2,
+        "M1": 2, "M2": 1, "M3": 1,
+        "E1": 1, "E2": 2, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 17,
+      "pattern": "B",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E2=2: 'how can we assume that is the width when the formula is (n-1)/n' - CHALLENGING AI",
+        "E1=1: 'but it is no incorrect am i right?' - seeking verification",
+        "'is de moivre theorem valid if say...' - testing edge cases",
+        "M1=2: Iterative refinement through extensive questioning"
+      ],
+      "keyword_would_give": {"E2": 1, "pattern": "C"},
+      "llm_improvement": "LLM detects challenging behavior"
+    },
+    {
+      "user_id": "29c29419-bd5e-4054-b86e-b90cb8acf8e7",
+      "message_count": 5,
+      "scores": {
+        "P1": 2, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 5,
+      "pattern": "F",
+      "confidence": 0.80,
+      "key_evidence": [
+        "Basic limits questions",
+        "'im unsure what are the different graphs' - expressing confusion",
+        "Limited engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "29f54056-506b-4b7d-8a4e-3d4a164ebc4a",
+      "message_count": 5,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 3, "E2": 2, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 15,
+      "pattern": "D",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: 'actually determinant is (alpha)^3 - 3alpha + 2' - CORRECTING AI with own calculation",
+        "Shows verification by providing correct answer",
+        "Follow-up question 'how to find when there is no solution'"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"},
+      "llm_improvement": "MAJOR: Keyword missed 'actually determinant is...' as correction"
+    },
+    {
+      "user_id": "29f82768-3163-42fd-8979-0633c746eb7a",
+      "message_count": 3,
+      "scores": {
+        "P1": 2, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 4,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Basic distance and limit questions",
+        "No follow-up engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "29fa83f2-4303-4b50-95ae-445c698ed11b",
+      "message_count": 11,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 10,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Statistics course concept exploration",
+        "'what should I do for the mock quiz' - seeking guidance",
+        "Multiple concept questions"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "2b1dae76-2a18-4568-bf12-2b78c5d3f480",
+      "message_count": 6,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 0, "M3": 0,
+        "E1": 1, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 10,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Past paper questions",
+        "E1=1: 'this is the final matrix that i got' - showing own work for verification"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"},
+      "llm_improvement": "LLM detects implicit verification in showing own work"
+    },
+    {
+      "user_id": "2c6556cd-0052-4eec-8fbd-768423012162",
+      "message_count": 5,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 7,
+      "pattern": "C",
+      "confidence": 0.65,
+      "key_evidence": [
+        "Course info and math limits",
+        "'no like what chapters are coming' - clarifying request (M1=1)"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "LLM detects moderate engagement"
+    },
+    {
+      "user_id": "2d713990-ecfe-4541-b41c-3c6cea8841fb",
+      "message_count": 4,
+      "scores": {
+        "P1": 2, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 4,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Basic math integration/differentiation questions",
+        "No follow-up or engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    }
+  ],
+  "batch_summary": {
+    "total_users": 20,
+    "pattern_distribution": {
+      "A": 0,
+      "B": 1,
+      "C": 10,
+      "D": 3,
+      "E": 0,
+      "F": 6
+    },
+    "keyword_vs_llm_changes": {
+      "F_to_C": 2,
+      "C_to_D": 2,
+      "C_to_B": 1,
+      "no_change": 15
+    },
+    "key_findings": [
+      "User 257f675a: EXEMPLARY Pattern D - 'are you scamming me?', 'i feel the information is wrong', persistent verification with external sources",
+      "User 29f54056: 'actually determinant is...' shows E1=3 correction behavior",
+      "User 26ec786a: 'is the answer 42.54?' shows verification (E1=2)",
+      "User 28a1a2c6: 'how can we assume that is the width when the formula is...' shows E2=2 challenging"
+    ],
+    "notable_pattern_d_example": "User 257f675a is the BEST example of critical evaluation in the dataset - persistent questioning, external source verification, explicit error detection"
+  }
+}

@@ -1,0 +1,435 @@
+{
+  "batch": 1,
+  "annotator": "Claude Sonnet 4.5",
+  "methodology": "LLM-as-a-Judge (Direct Semantic Analysis)",
+  "date": "2024-11-24",
+  "annotations": [
+    {
+      "user_id": "11160ad9-6aef-401d-a7f4-1e3a829f94f4",
+      "message_count": 4,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Only 4 messages total - minimal engagement",
+        "Basic 'Can you guide me' and image inputs",
+        "No follow-up, verification, or iteration"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "11f0cb66-85ce-4d11-ae17-aecd40e631f0",
+      "message_count": 24,
+      "scores": {
+        "P1": 2, "P2": 3, "P3": 2, "P4": 2,
+        "M1": 2, "M2": 2, "M3": 2,
+        "E1": 2, "E2": 3, "E3": 0,
+        "R1": 2, "R2": 2
+      },
+      "total": 24,
+      "pattern": "D",
+      "confidence": 0.90,
+      "key_evidence": [
+        "E1=2: 'correct me if im wrong' - EXPLICIT verification request",
+        "E2=3: 'but when i tried solving with z to the power 2' - shows OWN ATTEMPT, testing understanding",
+        "E2=3: 'does that mean...there is no chance that limit doesnt exist?' - critical analysis",
+        "P2=3: Deep conceptual questions: 'what's the difference between arctan and cot'",
+        "M3=2: Connecting limits, factorization, and continuity concepts"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"},
+      "llm_improvement": "Keyword missed 'correct me if im wrong' as verification"
+    },
+    {
+      "user_id": "1338d28e-328d-4225-8d25-a839fdd6d55b",
+      "message_count": 5,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Course logistics and basic conceptual questions",
+        "'What is sample space?' - basic definitional question",
+        "No deep engagement or follow-up"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "136a53b5-493d-477c-bdb4-918297290953",
+      "message_count": 31,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Mix of problem-solving requests and conceptual questions",
+        "'why do you square and times pi to the function' - seeking understanding",
+        "'how do you squeeze theorem' - asking for methods",
+        "Many 'solve this' requests reduce overall engagement score"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "LLM detects moderate engagement despite passive requests"
+    },
+    {
+      "user_id": "13cbd210-d1d2-4fff-9d14-18c71f526cf8",
+      "message_count": 5,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 9,
+      "pattern": "C",
+      "confidence": 0.65,
+      "key_evidence": [
+        "Data science questions about Gini index",
+        "'what does gini index = zero' - conceptual understanding",
+        "'what is the range value' - follow-up question shows engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "LLM detects moderate engagement in technical questions"
+    },
+    {
+      "user_id": "15271bf7-9cfa-47e4-a981-819bc509c8d1",
+      "message_count": 5,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Course logistics and basic questions",
+        "'explain confidence interval' - basic conceptual request"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "153461e9-35fd-4973-b531-f5eac1aa797a",
+      "message_count": 3,
+      "scores": {
+        "P1": 1, "P2": 0, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Only course logistics questions",
+        "No substantive learning engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "157ea604-0028-4600-8eb8-3b1387cadcb1",
+      "message_count": 15,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 2, "M2": 1, "M3": 1,
+        "E1": 1, "E2": 1, "E3": 0,
+        "R1": 2, "R2": 2
+      },
+      "total": 16,
+      "pattern": "B",
+      "confidence": 0.80,
+      "key_evidence": [
+        "M1=2: 'still dont understand, any easier way to explain?' - ITERATION when unsatisfied",
+        "R1=2: 'where does the 2kpi come from?' - deep conceptual curiosity",
+        "Shows learning struggle and PERSISTENCE through iteration"
+      ],
+      "keyword_would_give": {"M1": 1, "pattern": "C"},
+      "llm_improvement": "Keyword missed iteration in 'still dont understand'"
+    },
+    {
+      "user_id": "166fd8a5-d8db-4d30-91f1-866ed7000b00",
+      "message_count": 7,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 10,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Linear algebra questions (subspace, basis, eigenvalues)",
+        "'can you show a step by step to solve for eigenvector' - seeking understanding",
+        "Progressive learning through concepts"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "17a7feaf-4b41-4998-8f6d-0d085924fbb8",
+      "message_count": 9,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 2, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Hypothesis testing concept exploration",
+        "M2=2: 'give specific quiz questions' - customization request",
+        "R2=2: Building knowledge progressively"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "1893575f-b1fa-4f12-9518-ff8adf47ab32",
+      "message_count": 90,
+      "scores": {
+        "P1": 2, "P2": 3, "P3": 2, "P4": 2,
+        "M1": 3, "M2": 2, "M3": 3,
+        "E1": 2, "E2": 2, "E3": 0,
+        "R1": 3, "R2": 3
+      },
+      "total": 27,
+      "pattern": "E",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P2=3: 'why are coefficients determined as values that minimise sum of square errors?' - DEEP conceptual",
+        "M1=3: Extensive iteration - many follow-up questions throughout session",
+        "M3=3: 'how does p value come into play with rejection region and confidence interval' - SYNTHESIZING concepts",
+        "E1=2: 'is it correct to say that...' - seeking confirmation/verification",
+        "R1=3: 'help me visualise alpha being the maximum type 1 probability' - deep reflection on understanding",
+        "R2=3: Progressive understanding from basic to complex statistical concepts"
+      ],
+      "keyword_would_give": {"M1": 1, "M3": 1, "pattern": "C"},
+      "llm_improvement": "MAJOR: Keyword missed high iteration (M1=3), synthesis (M3=3), and reflection (R1=3)"
+    },
+    {
+      "user_id": "1973a82b-8c78-42aa-b4dc-2c877381a007",
+      "message_count": 6,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 1,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 13,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Complex numbers and polar form exploration",
+        "'What if the cartesian form is improper?' - critical thinking",
+        "'What if the polar form is improper?' - consistent questioning pattern"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "1d2271bd-daf1-4d01-9b48-389cbdf5ef83",
+      "message_count": 10,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Linear algebra concepts (linear combinations, elementary matrices)",
+        "'how did you produce the three equations?' - seeking understanding",
+        "'Tell me the concept of...' - learning intent"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "1e17845d-5c31-4809-a5a7-b2c2b1c3693a",
+      "message_count": 11,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 3, "E2": 2, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 15,
+      "pattern": "D",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: 'the ans is 1/2' - CORRECTING AI with correct answer",
+        "E1=3: 'the correct ans is -5' - CORRECTING AI again, showing verification",
+        "Persistent error correction indicates strong verification behavior"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"},
+      "llm_improvement": "MAJOR: Keyword missed ALL verification - 'the ans is' and 'the correct ans is'"
+    },
+    {
+      "user_id": "1e4742b2-fb4c-48b2-86d4-0661ccb70ad1",
+      "message_count": 4,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 1, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 4,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Statistics course - limited engagement",
+        "Basic probability question without follow-up"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "1f2e9836-d6fc-4893-ab44-cbd3fe7f2aa9",
+      "message_count": 36,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 1, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.80,
+      "key_evidence": [
+        "Mostly 'solve this' image submissions (30+ instances)",
+        "'but why is it x minus the root' - occasional understanding question",
+        "High message count but VERY passive engagement pattern"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree - message count doesn't indicate engagement"
+    },
+    {
+      "user_id": "2066b165-910b-4ef6-b663-b37636d41768",
+      "message_count": 3,
+      "scores": {
+        "P1": 3, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Advanced math (basis, curl/grad) but only 3 messages",
+        "P1=3: Well-formulated problem statement",
+        "Limited interaction despite problem complexity"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "2143b678-7a06-43e5-8c1f-d1f30dffb09c",
+      "message_count": 8,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 2, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "E2=2: 'why is from 1 to 5 not 0 to 5' - QUESTIONING integration bounds",
+        "'why there have 1/2' - seeking understanding (Chinese/English mix)"
+      ],
+      "keyword_would_give": {"E2": 1, "pattern": "C"},
+      "llm_improvement": "LLM detects critical questioning in 'why is from 1 to 5'"
+    },
+    {
+      "user_id": "2163e3a3-89b3-4a7d-b475-b539f9f414d2",
+      "message_count": 3,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 9,
+      "pattern": "C",
+      "confidence": 0.60,
+      "key_evidence": [
+        "Linear algebra (null space, column space)",
+        "'idk why the column space is 2' - showing confusion and seeking understanding",
+        "Limited data but shows engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "LLM detects engagement in confusion expression"
+    },
+    {
+      "user_id": "219ecff5-78d4-472d-b59b-b1c4bd8a4a5a",
+      "message_count": 20,
+      "scores": {
+        "P1": 1, "P2": 0, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Almost ALL messages are 'solve' or 'help' + image",
+        "ZERO engagement beyond task submission",
+        "Classic Pattern F despite 20 messages"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    }
+  ],
+  "batch_summary": {
+    "total_users": 20,
+    "pattern_distribution": {
+      "A": 0,
+      "B": 1,
+      "C": 9,
+      "D": 3,
+      "E": 1,
+      "F": 6
+    },
+    "keyword_vs_llm_changes": {
+      "F_to_C": 3,
+      "C_to_D": 2,
+      "C_to_E": 1,
+      "C_to_B": 1,
+      "no_change": 13
+    },
+    "key_findings": [
+      "User 11f0cb66: 'correct me if im wrong' is EXPLICIT verification (E1=0->2)",
+      "User 1e17845d: 'the ans is 1/2', 'the correct ans is -5' are CORRECTION behaviors (E1=0->3)",
+      "User 1893575f: 90 messages with DEEP engagement - synthesis, iteration, reflection (C->E)",
+      "User 157ea604: 'still dont understand' shows iteration (M1=1->2)",
+      "User 1f2e9836: 36 messages but MOSTLY 'solve this' - high count doesn't mean engagement"
+    ]
+  }
+}

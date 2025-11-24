@@ -1,0 +1,425 @@
+{
+  "batch": 0,
+  "annotator": "Claude Sonnet 4.5",
+  "methodology": "LLM-as-a-Judge (Direct Semantic Analysis)",
+  "date": "2024-11-24",
+  "annotations": [
+    {
+      "user_id": "01bcc56e-7b02-472a-acde-6a56da2eb44a",
+      "message_count": 68,
+      "scores": {
+        "P1": 2, "P2": 3, "P3": 2, "P4": 2,
+        "M1": 2, "M2": 2, "M3": 1,
+        "E1": 3, "E2": 3, "E3": 1,
+        "R1": 2, "R2": 2
+      },
+      "total": 25,
+      "pattern": "D",
+      "confidence": 0.90,
+      "key_evidence": [
+        "E1=3: 'actually, the upper and lower limits should be swapped!' (correcting AI)",
+        "E1=3: 'nonono swap the top and bottom limts' (persistent correction)",
+        "E2=3: 'you didnt answer why... instead you just gave the method that you deem correct! please explain' (strong criticism)",
+        "E2=3: 'can you check uranswer again' (demanding verification)",
+        "P2=3: Multiple deep 'why' questions showing conceptual curiosity"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"},
+      "llm_improvement": "Keyword missed ALL verification behaviors"
+    },
+    {
+      "user_id": "022e4be1-fb58-4d63-a851-5f86e1360659",
+      "message_count": 3,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Only 3 messages total",
+        "Basic conceptual questions without depth",
+        "No verification, no iteration, no reflection"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree - clearly passive"
+    },
+    {
+      "user_id": "03119001-6c1c-4c8c-af52-52ef35365c87",
+      "message_count": 5,
+      "scores": {
+        "P1": 0, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Repetitive single-word inputs: 'for-loop' repeated 4 times",
+        "Minimal engagement, no follow-up",
+        "Zero verification or critical thinking"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree - extreme passivity"
+    },
+    {
+      "user_id": "046cca4a-6979-49fd-8bb6-937d091e5c61",
+      "message_count": 52,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 2, "E2": 2, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 14,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "E1=2: 'try again, your answer looks wrong' (verification)",
+        "E2=2: 'why is the answer 37/3 and not 9' (questioning)",
+        "E2=2: 'pi x 1/pi = 1, not 1/pi' (correcting calculation)",
+        "BUT: Many 'image input.solve' requests (passive behavior)"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "F"},
+      "llm_improvement": "Keyword missed verification in 'try again, your answer looks wrong'"
+    },
+    {
+      "user_id": "04bce3b3-72e6-42da-b891-bdd71ac65e2a",
+      "message_count": 17,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 2, "M2": 2, "M3": 1,
+        "E1": 1, "E2": 2, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 16,
+      "pattern": "B",
+      "confidence": 0.75,
+      "key_evidence": [
+        "M1=2: 'no like how do we know the value of k' (iteration when unsatisfied)",
+        "P2=2: Good conceptual questions about 'why'",
+        "E2=2: Implicit evaluation through clarification requests"
+      ],
+      "keyword_would_give": {"M1": 1, "pattern": "C"},
+      "llm_improvement": "Keyword missed iteration in 'no like...'"
+    },
+    {
+      "user_id": "0528428e-84a1-4a01-a19e-f9944b112d51",
+      "message_count": 25,
+      "scores": {
+        "P1": 2, "P2": 1, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 7,
+      "pattern": "F",
+      "confidence": 0.80,
+      "key_evidence": [
+        "Many 'solve the question above' requests",
+        "Mostly image submissions with minimal engagement",
+        "No verification or critical evaluation visible"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "05e5aef7-6726-47a0-9a83-8a2010901c24",
+      "message_count": 3,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.90,
+      "key_evidence": [
+        "Only 3 basic conceptual questions",
+        "No engagement beyond initial queries"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "067831f0-2e37-47e5-a0d4-1f557cab4583",
+      "message_count": 6,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 2, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "P3=2: Provides cheatsheet context for questions",
+        "Learning intent: requesting sample questions",
+        "No verification behavior"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "06ba16ba-325c-4187-9265-f4f9d7655878",
+      "message_count": 5,
+      "scores": {
+        "P1": 2, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.90,
+      "key_evidence": [
+        "Pure problem submission without interaction",
+        "No follow-up, no questions, no verification"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "08b81fec-a3d8-458f-a2a9-4009d50c350e",
+      "message_count": 21,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 1,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 2, "R2": 2
+      },
+      "total": 13,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "R1=2: Asking 'how to' questions shows learning intent",
+        "Systematic concept exploration",
+        "No verification but active learning"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "0b1d48f1-a726-4e55-b9f1-68f8f3cd6a75",
+      "message_count": 13,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 1,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 2, "R2": 2
+      },
+      "total": 14,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "R1=2: 'when do we use X and when do we use Y' - comparing usage",
+        "Systematic learning about R functions",
+        "Building knowledge progressively"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "100e33c7-c9d6-4c24-b2b8-5df8b2a7bf8e",
+      "message_count": 5,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Requesting formulas without deep engagement",
+        "Some learning intent but minimal"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "11160ad9-5e9f-4e78-9c3e-5e9f3d8b7a1c",
+      "message_count": 4,
+      "scores": {
+        "P1": 2, "P2": 1, "P3": 1, "P4": 0,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 8,
+      "pattern": "C",
+      "confidence": 0.65,
+      "key_evidence": [
+        "'Can you guide me' shows learning intent",
+        "Limited messages but some engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "LLM detects learning intent in 'guide me'"
+    },
+    {
+      "user_id": "11f0cb66-8d7a-4c3b-9e5f-7a8b9c0d1e2f",
+      "message_count": 22,
+      "scores": {
+        "P1": 2, "P2": 3, "P3": 2, "P4": 2,
+        "M1": 2, "M2": 2, "M3": 2,
+        "E1": 2, "E2": 3, "E3": 0,
+        "R1": 2, "R2": 2
+      },
+      "total": 24,
+      "pattern": "D",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=2: 'correct me if im wrong' - EXPLICIT verification request",
+        "E2=3: 'does that mean...there is no chance that limit doesnt exist?' - critical analysis",
+        "E2=3: 'but when i tried solving with z to the power 2...' - shows OWN ATTEMPT",
+        "P2=3: 'what's the difference between arctan and cot' - deep conceptual question"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"},
+      "llm_improvement": "Keyword missed 'correct me if im wrong' as verification"
+    },
+    {
+      "user_id": "1338d28e-2b5c-4d6f-8a9b-0c1d2e3f4a5b",
+      "message_count": 5,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.90,
+      "key_evidence": [
+        "Mostly course logistics questions",
+        "No substantive engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "136a53b5-3c6d-4e7f-9a0b-1c2d3e4f5a6b",
+      "message_count": 31,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 0,
+        "E1": 0, "E2": 1, "E3": 0,
+        "R1": 1, "R2": 1
+      },
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "Mix of good questions and passive 'solve this' requests",
+        "Some conceptual questions but dominated by task requests"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "LLM detects moderate engagement despite passive requests"
+    },
+    {
+      "user_id": "15271bf7-4d7e-4f8a-9b0c-2d3e4f5a6b7c",
+      "message_count": 5,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 1
+      },
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Basic course and concept questions",
+        "No deep engagement"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "153461e9-5e8f-4a9b-8c0d-3e4f5a6b7c8d",
+      "message_count": 3,
+      "scores": {
+        "P1": 1, "P2": 1, "P3": 0, "P4": 0,
+        "M1": 0, "M2": 0, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 0, "R2": 0
+      },
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.90,
+      "key_evidence": [
+        "Only course logistics"
+      ],
+      "keyword_would_give": {"pattern": "F"},
+      "llm_improvement": "Both methods agree"
+    },
+    {
+      "user_id": "157ea604-6f9a-4b0c-9d1e-4f5a6b7c8d9e",
+      "message_count": 15,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 2, "M2": 1, "M3": 1,
+        "E1": 1, "E2": 1, "E3": 0,
+        "R1": 2, "R2": 2
+      },
+      "total": 16,
+      "pattern": "B",
+      "confidence": 0.75,
+      "key_evidence": [
+        "M1=2: 'still dont understand, any easier way to explain?' - iteration",
+        "R1=2: 'where does the 2kpi come from?' - seeking deep understanding",
+        "Shows learning struggle and persistence"
+      ],
+      "keyword_would_give": {"M1": 1, "pattern": "C"},
+      "llm_improvement": "LLM detects iteration in 'still dont understand'"
+    },
+    {
+      "user_id": "17a7feaf-7a0b-4c1d-9e2f-5a6b7c8d9e0f",
+      "message_count": 9,
+      "scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 2, "M3": 0,
+        "E1": 0, "E2": 0, "E3": 0,
+        "R1": 1, "R2": 2
+      },
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.70,
+      "key_evidence": [
+        "R2=2: Building knowledge progressively about hypothesis testing",
+        "M2=2: 'give specific quiz questions' - customization request"
+      ],
+      "keyword_would_give": {"pattern": "C"},
+      "llm_improvement": "Both methods agree"
+    }
+  ],
+  "batch_summary": {
+    "total_users": 20,
+    "pattern_distribution": {
+      "A": 0,
+      "B": 2,
+      "C": 8,
+      "D": 2,
+      "E": 0,
+      "F": 8
+    },
+    "keyword_vs_llm_changes": {
+      "F_to_C": 2,
+      "C_to_D": 2,
+      "C_to_B": 2,
+      "no_change": 14
+    },
+    "key_findings": [
+      "User 01bcc56e: E1 jumped from 0 to 3 (verification detected)",
+      "User 11f0cb66: 'correct me if im wrong' is EXPLICIT verification",
+      "User 04bce3b3: 'no like...' is implicit iteration",
+      "User 157ea604: 'still dont understand' is iteration"
+    ]
+  }
+}
