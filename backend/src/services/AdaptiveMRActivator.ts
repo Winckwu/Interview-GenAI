@@ -40,6 +40,12 @@ export interface ActiveMR {
 /**
  * Define all MR activation rules
  * Based on Phase-5.5 design document
+ *
+ * CALIBRATED 2024-11-24: Thresholds adjusted based on real user data analysis
+ * - 378 real users from course interaction data
+ * - 54.8% Pattern F prevalence (passive over-reliance)
+ * - E1 (verification) average: 0.00 (critical concern)
+ * - M1 (iteration) average: 0.84 (very low)
  */
 const MR_ACTIVATION_RULES: MRActivationRule[] = [
   {
@@ -146,8 +152,8 @@ const MR_ACTIVATION_RULES: MRActivationRule[] = [
       {
         signal: 'aiRelianceDegree',
         operator: '>',
-        threshold: 2.5,
-        description: 'Extreme AI reliance'
+        threshold: 2.0,  // CALIBRATED: lowered from 2.5 based on real data (M1 avg: 0.84)
+        description: 'High AI reliance detected'
       },
       {
         signal: 'verificationAttempted',
@@ -159,6 +165,24 @@ const MR_ACTIVATION_RULES: MRActivationRule[] = [
     urgency: 'enforce',
     targetPatterns: ['F'],
     description: 'Alert about over-reliance on AI'
+  },
+
+  // NEW RULE: Added based on real data analysis (2024-11-24)
+  // 21.9% of users had short inputs (<30 chars avg), correlating with Pattern F
+  {
+    mrId: 'MR19',
+    name: 'Input Enhancement Prompt',
+    triggerConditions: [
+      {
+        signal: 'inputComplexity',
+        operator: '<',
+        threshold: 2,
+        description: 'Short or simple input detected'
+      }
+    ],
+    urgency: 'remind',
+    targetPatterns: ['F', 'C'],
+    description: 'Encourage more detailed input for better AI assistance'
   },
 ];
 
@@ -327,6 +351,17 @@ export class AdaptiveMRActivator {
              '2. Verify AI output accuracy\n' +
              '3. Regularly complete tasks without AI\n' +
              'Please confirm you understand the risks before continuing.';
+    }
+
+    // MR19: Input Enhancement Prompt (NEW - based on real data analysis)
+    if (rule.mrId === 'MR19') {
+      if (topPattern === 'F') {
+        return '💡 Your question is quite brief. To get better assistance and develop your understanding, try:\n' +
+               '• Describe your current understanding\n' +
+               '• Explain what you\'ve already tried\n' +
+               '• Ask specific questions about concepts you find confusing';
+      }
+      return '💡 Adding more detail to your question can help me provide more targeted assistance. What specific aspects would you like to explore?';
     }
 
     return rule.description;

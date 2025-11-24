@@ -50,7 +50,11 @@ export interface BehavioralSignals {
   taskComplexity: number;                 // 0-3: inferred task complexity
   aiRelianceDegree: number;               // 0-3: extent of AI reliance in request
 
-  // ✨ NEW: Task risk assessment
+  // ✨ NEW: Input quality assessment (added 2024-11-24 based on real data analysis)
+  inputComplexity: number;                // 0-3: complexity/detail level of user input
+                                          // Real data: 21.9% users had <30 char avg (low complexity)
+
+  // ✨ Task risk assessment
   taskRiskLevel: 'low' | 'medium' | 'high' | 'critical';  // comprehensive risk level
   riskFactors: RiskFactors;               // detailed risk breakdown
 }
@@ -107,9 +111,43 @@ export class BehaviorSignalDetector {
       taskComplexity: this.inferTaskComplexity(userMsg),
       aiRelianceDegree: this.inferAIReliance(userMsg),
 
-      // ✨ NEW: Task risk assessment
+      // ✨ NEW: Input complexity assessment (2024-11-24)
+      inputComplexity: this.detectInputComplexity(currentTurn.userMessage),
+
+      // ✨ Task risk assessment
       ...this.assessTaskRisk(userMsg),
     };
+  }
+
+  /**
+   * Detect input complexity based on message characteristics
+   * Based on real data analysis: 21.9% users had <30 char avg (Pattern F indicator)
+   * Returns: 0 (very short/simple) to 3 (detailed/complex)
+   */
+  private detectInputComplexity(message: string): number {
+    const length = message.length;
+    const wordCount = message.split(/\s+/).filter(w => w.length > 0).length;
+
+    // Check for detail indicators
+    const hasContext = /because|since|context|background|situation/i.test(message);
+    const hasSpecifics = /specifically|exactly|for example|such as/i.test(message);
+    const hasQuestion = /\?|how|what|why|when|where|which/i.test(message);
+    const hasMultipleParts = /and also|additionally|moreover|furthermore|1\.|2\./i.test(message);
+
+    let score = 0;
+
+    // Length-based scoring (calibrated from real data: avg 68 chars)
+    if (length < 30) score = 0;           // Very short (21.9% of real users)
+    else if (length < 80) score = 1;       // Short
+    else if (length < 150) score = 2;      // Medium
+    else score = 3;                        // Detailed
+
+    // Bonus for quality indicators
+    if (hasContext) score = Math.min(score + 1, 3);
+    if (hasSpecifics) score = Math.min(score + 1, 3);
+    if (hasMultipleParts) score = Math.min(score + 1, 3);
+
+    return score;
   }
 
   /**
