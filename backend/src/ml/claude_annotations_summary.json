@@ -1,44 +1,41 @@
 {
   "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
   "annotation_period": "2024-11-24",
-  "batches_completed": 13,
-  "total_users_annotated": 254,
+  "batches_completed": 19,
+  "total_users_annotated": 378,
   "total_users_in_dataset": 378,
-  "progress": "67.2%",
+  "progress": "100%",
 
   "aggregate_statistics": {
     "pattern_distribution": {
       "A": 0,
-      "B": 24,
-      "C": 118,
+      "B": 34,
+      "C": 186,
       "D": 9,
       "E": 1,
-      "F": 102
+      "F": 148
     },
     "pattern_percentages": {
       "A": "0%",
-      "B": "9.4%",
-      "C": "46.5%",
-      "D": "3.5%",
-      "E": "0.4%",
-      "F": "40.2%"
+      "B": "9.0%",
+      "C": "49.2%",
+      "D": "2.4%",
+      "E": "0.3%",
+      "F": "39.2%"
     },
-    "keyword_vs_llm_reclassifications": {
-      "total_reclassified": 32,
-      "reclassification_rate": "26.7%",
-      "F_to_C": 12,
-      "C_to_D": 8,
-      "C_to_B": 9,
-      "C_to_E": 1,
-      "F_to_B": 2
+    "keyword_vs_llm_comparison": {
+      "keyword_method_pattern_f_estimate": "54.8%",
+      "llm_method_pattern_f_finding": "39.2%",
+      "reduction": "15.6 percentage points",
+      "explanation": "LLM semantic analysis detects verification behaviors and conceptual engagement missed by keywords"
     }
   },
 
   "key_findings": {
     "pattern_f_reduction": {
       "keyword_method_estimate": "54.8%",
-      "llm_method_finding": "35.0%",
-      "reduction": "19.8 percentage points",
+      "llm_method_finding": "39.2%",
+      "reduction": "15.6 percentage points",
       "explanation": "LLM semantic analysis detects verification behaviors missed by keywords"
     },
     "critical_evaluation_detection": {
@@ -47,7 +44,9 @@
         "'actually, the upper and lower limits should be swapped!' - E1: keyword=0, LLM=3",
         "'the ans is 1/2' - E1: keyword=0, LLM=3 (user correcting AI)",
         "'correct me if im wrong' - E1: keyword=0, LLM=2",
-        "'i feel the information is wrong' - E1: keyword=0, LLM=3"
+        "'i feel the information is wrong' - E1: keyword=0, LLM=3",
+        "'you forgot that central limit theorem was also taught' - E1: keyword=0, LLM=3",
+        "'I think you misunderstand me' - E1: keyword=0, LLM=3"
       ]
     },
     "exemplary_pattern_d_user": {
@@ -64,7 +63,13 @@
       "scores": {"P1": 2, "P2": 3, "P3": 2, "P4": 2, "M1": 3, "M2": 3, "M3": 2, "E1": 3, "E2": 3, "E3": 3, "R1": 2, "R2": 2},
       "total": 30,
       "keyword_would_give": "Pattern C"
-    }
+    },
+    "highest_engagement_users": [
+      {"user_id": "dade7dad-6fbe-47c5-b691-de2adbd45d83", "msgs": 119, "pattern": "B", "highlight": "Corrects AI about CLT coverage"},
+      {"user_id": "cd279dc3-9d7e-416d-b100-3bdf4c8ef701", "msgs": 97, "pattern": "B", "highlight": "Excellent verification behaviors"},
+      {"user_id": "7944aada-1e8b-4c03-870f-7a5c75f3fca9", "msgs": 147, "pattern": "C", "highlight": "Highest overall engagement"},
+      {"user_id": "a75efe00-c7c2-4c99-a1e2-104dd44d7232", "msgs": 81, "pattern": "B", "highlight": "Active self-testing"}
+    ]
   },
 
   "methodology_comparison": {
@@ -73,14 +78,16 @@
       "Misses verification through answer checking (e.g., 'is the answer 42.54?')",
       "Misses iteration through confusion expression (e.g., 'still dont understand')",
       "Misses external source references without keywords (e.g., 'from the notes')",
-      "Confuses message count with engagement (high count != high engagement)"
+      "Confuses message count with engagement (high count != high engagement)",
+      "Cannot detect when user corrects AI without explicit keywords"
     ],
     "llm_semantic_advantages": [
       "Understands context and intent behind phrases",
       "Detects implicit verification behaviors",
       "Recognizes correction/error detection without explicit keywords",
       "Identifies synthesis and reflection across conversation",
-      "Distinguishes passive 'solve this' patterns from active engagement"
+      "Distinguishes passive 'solve this' patterns from active engagement",
+      "Detects metacognitive awareness (e.g., 'How do I know if I understand')"
     ]
   },
 
@@ -89,7 +96,8 @@
     "expected_improvements": [
       "Better E1 (Verification) detection",
       "More accurate Pattern D classification",
-      "Reduced false positives for Pattern F"
+      "Reduced false positives for Pattern F",
+      "Improved detection of self-directed learning behaviors"
     ],
     "data_availability": {
       "batch0_file": "claude_annotations_batch0.json",
@@ -104,21 +112,29 @@
       "batch9_file": "claude_annotations_batch9.json",
       "batch10_file": "claude_annotations_batch10.json",
       "batch11_file": "claude_annotations_batch11.json",
-      "batch12_file": "claude_annotations_batch12.json"
+      "batch12_file": "claude_annotations_batch12.json",
+      "batch13_to_18_file": "claude_annotations_batch13_to_18.json"
     }
   },
 
-  "batch3_highlights": {
-    "exemplary_self_verification": {
-      "user_id": "3438b814-c1b0-444a-91cf-07487f45eb23",
-      "quote": "My rationale just by looking at the functions is that the numerator consists of a bounded function while the denominator is unbounded, and the limits of bounded divided by unbounded functions will approach 0. Is this rationale correct?",
-      "significance": "User self-verifies OWN reasoning before asking AI - keyword method cannot detect this"
-    },
-    "persistent_monitoring_example": {
-      "user_id": "37c2c2d7-443e-4209-aadb-166d25bc8516",
-      "quotes": ["I don't understand the logic behind how you solves", "I still don't understand the solution"],
-      "significance": "Persistent M2 monitoring until comprehension achieved"
-    }
+  "notable_examples_by_category": {
+    "ai_correction_examples": [
+      {"user_id": "257f675a-0559-4c93-abb1-d9b7f56765a4", "quote": "i feel the information is wrong... it is wrong from all the sources", "pattern": "D"},
+      {"user_id": "a1a3b66f-7f20-4924-8f84-580e45d499ff", "quote": "you should assume you dont know the answer - TEACHES AI proper reasoning!", "pattern": "C"},
+      {"user_id": "dade7dad-6fbe-47c5-b691-de2adbd45d83", "quote": "you forgot that central limit theorem was also taught", "pattern": "B"},
+      {"user_id": "e497f98c-15b6-40e6-ba67-3f22aee969ba", "quote": "I think you misunderstand me", "pattern": "B"},
+      {"user_id": "ba7857ba-6965-4017-92b4-6dc250954eb5", "quote": "Shouldnt 6. be 1 because of sin^2(x) + cos^2(x) = 1", "pattern": "C"}
+    ],
+    "self_directed_learning_examples": [
+      {"user_id": "60474aa1-7017-47b0-836c-9cdb84410d17", "quote": "Make for me a 3 day study plan that encompasses all topics", "pattern": "B"},
+      {"user_id": "8c73c5db-9bea-4a6b-b20f-ef2b8de44f87", "quote": "interleaving, spaced repetition, pomodoro", "pattern": "B"},
+      {"user_id": "f9a76a92-3cfb-4231-9374-bb85a69db0a3", "quote": "Test my understanding on solving Ax = b problem", "pattern": "B"}
+    ],
+    "metacognitive_examples": [
+      {"user_id": "e808c425-a941-4cdd-a08a-ce1c1c9ba1f0", "quote": "How do I know if I have a firm grasp on limits?", "pattern": "C"},
+      {"user_id": "de5d49a5-1dad-49f8-9f7b-be065fecfaba", "quote": "Could you explain to me the relevance of vector spaces and why I am learning it", "pattern": "C"},
+      {"user_id": "b3afb2e5-2e1e-4528-80c3-102334d1d13c", "quote": "as a ME student with no CS background, explain...", "pattern": "B"}
+    ]
   },
 
   "files_created": [
@@ -135,28 +151,7 @@
     "backend/src/ml/claude_annotations_batch10.json",
     "backend/src/ml/claude_annotations_batch11.json",
     "backend/src/ml/claude_annotations_batch12.json",
-    "backend/src/ml/claude_annotations_summary.json",
-    "backend/src/ml/llm_sample_annotations.json",
-    "backend/src/ml/llm_conversation_annotator.py"
-  ],
-
-  "batch6_highlights": {
-    "self_directed_learners": [
-      {
-        "user_id": "60474aa1-7017-47b0-836c-9cdb84410d17",
-        "quote": "Make for me a 3 day study plan that encompasses all topics",
-        "significance": "P1=3 - Creates own comprehensive study plan (keyword method would give P1=0)"
-      },
-      {
-        "user_id": "58c89d1b-a8bb-49d1-9d30-90731c3ebcfe",
-        "quote": "can u give me a quiz of 20 questions / can u make a 30 qns test / can u gove me 10 differentiability questions",
-        "significance": "P3=3 - Consistent self-directed practice test creation"
-      }
-    ],
-    "critical_evaluation_example": {
-      "user_id": "630cc0ed-f97c-447a-9d97-6e8bfed8569b",
-      "quote": "but the answer is 0.6m/s",
-      "significance": "E1=3 - Corrects AI with known answer (keyword method would miss this entirely)"
-    }
-  }
+    "backend/src/ml/claude_annotations_batch13_to_18.json",
+    "backend/src/ml/claude_annotations_summary.json"
+  ]
 }
