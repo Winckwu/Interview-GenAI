@@ -348,9 +348,56 @@ Based on the analysis, we recommend the following threshold adjustments:
 | Pattern F total_score | 15 | 16 | Pattern F avg is 13.2 |
 | Input complexity alert | N/A | <2 | 21.9% users had very short inputs |
 
-### 4.5 System Changes Implemented
+### 4.6 System Architecture: Hybrid Pattern Estimator
 
-#### 4.5.1 New MR Rule Added: MR19
+The MCA system employs a **Hybrid Pattern Estimator** that combines Bayesian reasoning with SVM classification:
+
+#### 4.6.1 Architecture Overview
+
+```
+Final Prediction = 60% × Bayesian Probability + 40% × SVM Probability
+```
+
+| Component | Role | Weight |
+|-----------|------|--------|
+| Bayesian Estimator | Early-stage prediction with priors | 60% |
+| SVM Classifier | Data-driven classification | 40% |
+
+#### 4.6.2 Three-Phase Startup Mechanism
+
+| Phase | Turn Count | Behavior |
+|-------|------------|----------|
+| **Phase 1** | Turn 1-2 | Primarily Bayesian priors; SVM has insufficient signal data |
+| **Phase 2** | Turn 3 | SVM begins contributing; hybrid weights activated |
+| **Phase 3** | Turn 4+ | Full hybrid mode; dynamic weight adjustment based on confidence |
+
+#### 4.6.3 Component Details
+
+**Bayesian Component (`RealtimePatternRecognizer`):**
+- Maintains prior probabilities for each pattern
+- Updates posterior based on observed behavioral signals
+- Handles uncertainty in early conversation stages
+
+**SVM Component (`SVMPatternClassifier`):**
+- Uses 12-dimensional metacognitive metrics
+- RBF kernel with C=10.0
+- Class-weighted training (Pattern F: 2.0× weight)
+
+#### 4.6.4 Model Update Applied
+
+| File | Before | After |
+|------|--------|-------|
+| `models/svm_model.pkl` | Trained on 87 synthetic samples | Trained on 427 hybrid samples |
+| `models/svm_scaler.pkl` | Fit on synthetic data | Fit on real user data (378 users) |
+
+The hybrid architecture ensures:
+1. **Robustness in early stages** via Bayesian priors
+2. **Accuracy with more data** via SVM classification
+3. **Continuous adaptation** as conversation progresses
+
+### 4.7 System Changes Implemented
+
+#### 4.7.1 New MR Rule Added: MR19
 
 ```typescript
 {
@@ -370,7 +417,7 @@ Based on the analysis, we recommend the following threshold adjustments:
 }
 ```
 
-#### 4.5.2 Updated Threshold: MR18
+#### 4.7.2 Updated Threshold: MR18
 
 ```typescript
 // Before: threshold: 2.5
@@ -383,7 +430,7 @@ Based on the analysis, we recommend the following threshold adjustments:
 }
 ```
 
-#### 4.5.3 New Signal Added: inputComplexity
+#### 4.7.3 New Signal Added: inputComplexity
 
 Added to `BehaviorSignalDetector.ts`:
 - Measures input quality and detail level (0-3 scale)
