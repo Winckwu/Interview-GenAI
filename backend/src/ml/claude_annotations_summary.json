@@ -1,27 +1,27 @@
 {
   "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
   "annotation_period": "2024-11-24",
-  "batches_completed": 6,
-  "total_users_annotated": 120,
+  "batches_completed": 7,
+  "total_users_annotated": 140,
   "total_users_in_dataset": 378,
-  "progress": "31.7%",
+  "progress": "37.0%",
 
   "aggregate_statistics": {
     "pattern_distribution": {
       "A": 0,
-      "B": 11,
-      "C": 53,
+      "B": 15,
+      "C": 63,
       "D": 9,
       "E": 1,
-      "F": 46
+      "F": 52
     },
     "pattern_percentages": {
       "A": "0%",
-      "B": "9.2%",
-      "C": "44.2%",
-      "D": "7.5%",
-      "E": "0.8%",
-      "F": "38.3%"
+      "B": "10.7%",
+      "C": "45.0%",
+      "D": "6.4%",
+      "E": "0.7%",
+      "F": "37.1%"
     },
     "keyword_vs_llm_reclassifications": {
       "total_reclassified": 32,
@@ -97,7 +97,8 @@
       "batch2_file": "claude_annotations_batch2.json",
       "batch3_file": "claude_annotations_batch3.json",
       "batch4_file": "claude_annotations_batch4.json",
-      "batch5_file": "claude_annotations_batch5.json"
+      "batch5_file": "claude_annotations_batch5.json",
+      "batch6_file": "claude_annotations_batch6.json"
     }
   },
 
@@ -121,8 +122,29 @@
     "backend/src/ml/claude_annotations_batch3.json",
     "backend/src/ml/claude_annotations_batch4.json",
     "backend/src/ml/claude_annotations_batch5.json",
+    "backend/src/ml/claude_annotations_batch6.json",
     "backend/src/ml/claude_annotations_summary.json",
     "backend/src/ml/llm_sample_annotations.json",
     "backend/src/ml/llm_conversation_annotator.py"
-  ]
+  ],
+
+  "batch6_highlights": {
+    "self_directed_learners": [
+      {
+        "user_id": "60474aa1-7017-47b0-836c-9cdb84410d17",
+        "quote": "Make for me a 3 day study plan that encompasses all topics",
+        "significance": "P1=3 - Creates own comprehensive study plan (keyword method would give P1=0)"
+      },
+      {
+        "user_id": "58c89d1b-a8bb-49d1-9d30-90731c3ebcfe",
+        "quote": "can u give me a quiz of 20 questions / can u make a 30 qns test / can u gove me 10 differentiability questions",
+        "significance": "P3=3 - Consistent self-directed practice test creation"
+      }
+    ],
+    "critical_evaluation_example": {
+      "user_id": "630cc0ed-f97c-447a-9d97-6e8bfed8569b",
+      "quote": "but the answer is 0.6m/s",
+      "significance": "E1=3 - Corrects AI with known answer (keyword method would miss this entirely)"
+    }
+  }
 }

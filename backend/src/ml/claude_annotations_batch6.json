@@ -1,0 +1,293 @@
+{
+  "batch_number": 6,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 20,
+  "user_id_range": "121-140 (alphabetically sorted)",
+
+  "annotations": [
+    {
+      "user_id": "55d66a67-c7d3-4fd1-b110-285bc25a3a73",
+      "message_count": 35,
+      "scores": {"P1": 2, "P2": 2, "P3": 3, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 23,
+      "pattern": "B",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P3=3: 'how should i approach questions of limit as x tends to infinity? should i always divide by the dominant function, then use squeeze theorem?' - Strategic inquiry",
+        "P3=3: 'give me more specific examples on how i can differentiate whether to use dividing by dominant function and/or squeeze theorem' - Seeking decision criteria",
+        "E1=2: 'is it right to say that as long as there are trigo functions in the equation, i should use squeeze theorem?' - Testing generalization"
+      ]
+    },
+    {
+      "user_id": "5877a3ee-750f-4f20-9ace-9e02db0bffb2",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 0, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 5,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Mostly administrative questions (quiz dates, seating, CA marks)",
+        "No substantive math engagement"
+      ]
+    },
+    {
+      "user_id": "58c89d1b-a8bb-49d1-9d30-90731c3ebcfe",
+      "message_count": 8,
+      "scores": {"P1": 2, "P2": 1, "P3": 3, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "B",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P3=3: 'can u give me a quiz of 20 questions on matrices and determinants' - SELF-DIRECTED practice",
+        "P3=3: 'can u make a 30 qns test' - Creating own practice tests",
+        "P3=3: 'can u gove me 10 differentiability questions' - Consistent self-directed learning"
+      ]
+    },
+    {
+      "user_id": "58deb5fc-7301-4a35-bcb0-f215add7be67",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 2, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'how to find the angle in polar form' - conceptual question",
+        "M2=2: 'second or third quadrant' - specifying context",
+        "Some incomplete questions but engaged"
+      ]
+    },
+    {
+      "user_id": "5a28af10-e75f-4f80-a93f-a25c110e54fe",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "5bb94b54-0831-4f0c-be50-6455b51c1f76",
+      "message_count": 30,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 2, "E2": 2, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=2: 'image input.that might be wrong' - Questioning AI answer",
+        "P2=2: 'what is riemann's sum' - conceptual question",
+        "P2=2: 'what does linearly dependent mean' - conceptual",
+        "Many passive 'solve this' but some critical evaluation"
+      ]
+    },
+    {
+      "user_id": "5d08501a-9c44-4025-b9e3-0aea1b65e000",
+      "message_count": 10,
+      "scores": {"P1": 2, "P2": 1, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P3=2: 'give practice questions in relation to this topic' - seeking practice",
+        "P3=2: 'give practice questions on sampling and central limit theorem' - self-directed",
+        "M2=2: 'explain q2 under for loop' - clarifying understanding"
+      ]
+    },
+    {
+      "user_id": "5d1e2c83-c8f5-4538-92ac-98fbea3736d9",
+      "message_count": 22,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 21,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P2=2: 'can you explain why the length of the square is 2y in step 2' - seeking understanding",
+        "P3=2: 'give me a crash course on integration to find volume' - self-directed learning",
+        "E1=2: 'why cant i use power rule to differentiate the equation' - questioning approach"
+      ]
+    },
+    {
+      "user_id": "5d2b9752-e9e0-4326-9515-dad1a8f3356c",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "5e33886d-0b9d-44f1-bc10-4353d2acf786",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "5efbbaa9-7398-4e31-b417-69db1b4b3a94",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'what if 1 of the value of d is unknown?' - exploring edge cases",
+        "Limited but conceptual engagement"
+      ]
+    },
+    {
+      "user_id": "5efdc80b-a00f-42a3-98ac-fff45f8380a4",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "5f35958a-d110-424a-adf1-6393eee7e26d",
+      "message_count": 28,
+      "scores": {"P1": 2, "P2": 1, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P3=2: 'give me a for loop exam question to practise' - seeking practice",
+        "M2=2: 'i cannot understand' followed by 'next' - persistent learning",
+        "Good engaged learning"
+      ]
+    },
+    {
+      "user_id": "60474aa1-7017-47b0-836c-9cdb84410d17",
+      "message_count": 25,
+      "scores": {"P1": 3, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 23,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P1=3: 'Make for me a 3 day study plan that encompasses all topics' - EXCELLENT self-directed planning!",
+        "P3=2: 'give me a practice question where I can use cramer's rule' - seeking practice",
+        "P3=2: 'give me cases in which I need to use squeeze theorem' - strategy seeking",
+        "E1=2: 'when we do linearization, is a usually 0?' - checking assumptions"
+      ],
+      "keyword_would_give": {"P1": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "6077676a-ebee-44c1-83f0-ae30446debdf",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "60f5098b-9ed7-440e-9c34-cd0f71b0c181",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 2, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 14,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P3=2: 'how about squeeze theorem?' - asking about alternative approach",
+        "Good conceptual engagement"
+      ]
+    },
+    {
+      "user_id": "630cc0ed-f97c-447a-9d97-6e8bfed8569b",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 2, "E3": 0, "R1": 1, "R2": 1},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: 'but the answer is 0.6m/s' - CORRECTING AI with known answer!",
+        "P2=2: 'how is tan(-2x) turn into -2x?' - understanding approximation"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "F"}
+    },
+    {
+      "user_id": "632578fb-49cb-4de4-8a7c-18a2af25a673",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 7,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "'Then what you know?' - frustrated with AI limitations",
+        "Limited substantive engagement"
+      ]
+    },
+    {
+      "user_id": "635d08aa-4896-4a91-ad56-4daf40126b30",
+      "message_count": 22,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 19,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=2: 'but shouldnt x be the number of trials' - questioning understanding",
+        "E1=2: 'but we do not know the number of successes' - verifying",
+        "Good statistical engagement"
+      ]
+    },
+    {
+      "user_id": "63d84c6d-9828-4516-a0b8-1d2fe859f2f0",
+      "message_count": 12,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P3=2: 'when do i use the squeeze theorem' - seeking strategy",
+        "P3=2: 'when do we use equal one-sided theorem' - seeking criteria",
+        "P3=2: 'when to use intermediate value theorem' - good metacognitive question"
+      ]
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 4,
+      "C": 10,
+      "D": 0,
+      "E": 0,
+      "F": 6
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "20%",
+      "C": "50%",
+      "D": "0%",
+      "E": "0%",
+      "F": "30%"
+    },
+    "average_total_score": 13.0,
+    "notable_findings": {
+      "exemplary_users": [
+        {
+          "user_id": "60474aa1-7017-47b0-836c-9cdb84410d17",
+          "pattern": "B",
+          "highlight": "Creates own 3-day study plan - exceptional P1 (planning) behavior",
+          "keyword_would_miss": "P1=3 planning behavior"
+        },
+        {
+          "user_id": "58c89d1b-a8bb-49d1-9d30-90731c3ebcfe",
+          "pattern": "B",
+          "highlight": "Requests custom practice tests: 20, 30, and 10 questions across sessions",
+          "keyword_would_miss": "P3=3 self-directed practice"
+        }
+      ],
+      "critical_evaluation_examples": [
+        {
+          "user_id": "630cc0ed-f97c-447a-9d97-6e8bfed8569b",
+          "quote": "but the answer is 0.6m/s",
+          "dimension": "E1=3 - Correcting AI with known answer"
+        }
+      ],
+      "no_data_users": ["5a28af10-e75f-4f80-a93f-a25c110e54fe", "5d2b9752-e9e0-4326-9515-dad1a8f3356c", "5e33886d-0b9d-44f1-bc10-4353d2acf786", "5efdc80b-a00f-42a3-98ac-fff45f8380a4", "6077676a-ebee-44c1-83f0-ae30446debdf"]
+    }
+  }
+}
