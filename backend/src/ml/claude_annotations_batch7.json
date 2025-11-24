@@ -1,0 +1,305 @@
+{
+  "batch_number": 7,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 19,
+  "user_id_range": "141-159 (alphabetically sorted, skipping 63d84c6d already in batch 6)",
+
+  "annotations": [
+    {
+      "user_id": "64f3f339-716b-4a9c-85c2-cc78167eb9b7",
+      "message_count": 21,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 1, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 16,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P2=2: 'is e^i pi = -1?' - verifying mathematical identity",
+        "P2=2: 'is there any proved equations in complex number' - conceptual",
+        "Systematic topic summaries requested across multiple areas"
+      ]
+    },
+    {
+      "user_id": "66197561-4b4e-4214-af08-98f9b17e2957",
+      "message_count": 4,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Only 4 messages total",
+        "'is this llm better than chat gpt' - comparing tools rather than learning",
+        "E1=1: 'why previously did you put -ve theta?' - some verification"
+      ]
+    },
+    {
+      "user_id": "66ae1bd1-675c-46ca-bc13-c3a7add7e779",
+      "message_count": 7,
+      "scores": {"P1": 1, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "All 7 messages are pure computation requests: 'differentiate e^...'",
+        "No conceptual questions or clarification",
+        "Classic answer-seeking pattern"
+      ]
+    },
+    {
+      "user_id": "67e43cb4-dacd-4feb-a4f6-1bf0b0f5e7cb",
+      "message_count": 5,
+      "scores": {"P1": 1, "P2": 1, "P3": 2, "P4": 1, "M1": 1, "M2": 0, "M3": 1, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 10,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P3=2: 'can you provide me with some questions on simulation analysis'",
+        "P3=2: 'practical application' - seeking real-world connection",
+        "Limited but some self-directed learning"
+      ]
+    },
+    {
+      "user_id": "6869eb6b-e091-4bc8-ab08-2aaf8e639731",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'why do we need a well-functioning financial system?' - conceptual",
+        "M1=2: 'explain why the rate of return is higher/lower' - seeking understanding",
+        "Good financial economics engagement"
+      ]
+    },
+    {
+      "user_id": "6874fa08-100b-48ef-9a6d-3aa38d59f295",
+      "message_count": 11,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 13,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P2=2: 'What is the difference between domain and range' - conceptual",
+        "P2=2: 'What is derivative' - foundation question",
+        "Good progression of conceptual questions"
+      ]
+    },
+    {
+      "user_id": "68a3be8d-f7b9-49ba-bdd5-010f3ce4b5fa",
+      "message_count": 19,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=2: 'is the answer for tutorial 2 problem 2 0.8A?' - CHECKING answer with AI",
+        "P2=2: 'Can you show me the derivation' - seeking deeper understanding",
+        "M2=2: 'Can you elaborate on step 1?' - clarifying specific steps"
+      ]
+    },
+    {
+      "user_id": "6902f924-f27e-466f-99b7-bd334abffa9f",
+      "message_count": 44,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 1, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 21,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "VERY high engagement (44 messages)",
+        "M2=2: 'why is this so', 'how did you get this' - persistent clarification",
+        "P3=2: Asks about Simpson's rule, trapezoidal rule methodology",
+        "M3=2: 'what if my v values were...' - testing variations",
+        "Approaching Pattern B threshold but no explicit self-directed planning"
+      ]
+    },
+    {
+      "user_id": "691ef1bb-7257-45af-99db-f5e2309ed4ff",
+      "message_count": 5,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 7,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "All image-based solve requests",
+        "M2=1: 'how we know is linearly independent' - some conceptual interest",
+        "Limited engagement overall"
+      ]
+    },
+    {
+      "user_id": "6c0e251b-6772-4e16-9d69-8fab83168301",
+      "message_count": 4,
+      "scores": {"P1": 1, "P2": 0, "P3": 2, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 7,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Only 4 messages",
+        "P3=2: 'give me questions to revise for quiz 2' - some self-directed",
+        "Mostly administrative questions"
+      ]
+    },
+    {
+      "user_id": "6d94835a-f0ce-4535-a0c3-c192bed94eb9",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E1=1: 'i can just use dot product?' - checking approach",
+        "M1=2: Asks for specific worked examples",
+        "Orthogonal matrix concepts"
+      ]
+    },
+    {
+      "user_id": "6df44071-bf22-4ad6-b47c-3fbdee03b606",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 1},
+      "total": 15,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "M2=2: 'I dont understand the solution' - honest about confusion",
+        "E1=2: 'why the discriminant must be equal to or less than 0' - reasoning verification",
+        "E1=2: 'so is it because c has 2 value so the function cant has 1 inflection point only?' - testing understanding"
+      ]
+    },
+    {
+      "user_id": "6e1d5934-5e22-470a-b40a-19312bf3ede3",
+      "message_count": 4,
+      "scores": {"P1": 1, "P2": 0, "P3": 1, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Only 4 messages",
+        "'how can i learn week 6 content fastest' - seeking shortcuts",
+        "No substantive engagement with material"
+      ]
+    },
+    {
+      "user_id": "6e7c40bd-c9e3-494a-ba89-68093d0b2bcf",
+      "message_count": 10,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Many administrative questions (quiz dates, cheatsheet)",
+        "M2=1: 'why do i have to run the head' - some procedural curiosity",
+        "Mostly procedural R questions"
+      ]
+    },
+    {
+      "user_id": "6f8e7ffb-9a48-4579-b9a4-6d9c66fa04b2",
+      "message_count": 4,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "'gimme the ans' - pure answer-seeking",
+        "All 4 messages are solve requests",
+        "LOWEST engagement in batch - classic over-reliance"
+      ]
+    },
+    {
+      "user_id": "703ef106-5549-483d-a53b-d5e63ba9695e",
+      "message_count": 13,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 9,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'What are entropic forces?' - conceptual question",
+        "Repeated same question multiple times (hydrogen bond x5)",
+        "Course admin questions mixed in"
+      ]
+    },
+    {
+      "user_id": "717549db-9e2f-4e81-a0f4-f7b181d2b726",
+      "message_count": 20,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 1},
+      "total": 16,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "M2=2: 'Can explain me', 'Can show me details' - persistent clarification",
+        "P2=2: 'what is zero eigenvalues', 'what is singular and non singular' - conceptual",
+        "Good persistence in understanding diagonalization"
+      ]
+    },
+    {
+      "user_id": "72cba964-2a6d-4c32-9147-48424408a27d",
+      "message_count": 20,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 1},
+      "total": 16,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "M2=2: 'can u explain step by step' - seeking detailed understanding",
+        "P2=2: 'what does it mean' - clarifying concepts",
+        "E1=1: 'when should i use standard z-score formula and when did i use modified zscore' - comparing approaches"
+      ]
+    },
+    {
+      "user_id": "72df3146-7202-4a9c-8a74-413916e4b252",
+      "message_count": 11,
+      "scores": {"P1": 2, "P2": 1, "P3": 2, "P4": 2, "M1": 1, "M2": 1, "M3": 1, "E1": 0, "E2": 0, "E3": 0, "R1": 2, "R2": 1},
+      "total": 14,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P3=2: 'give me practice questions', 'give me questions to practice for CA1'",
+        "P3=2: 'Give me CA1 practise questions' - consistent self-directed practice",
+        "P2=1: 'list me useful trigo formulas' - seeking reference materials"
+      ]
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 0,
+      "C": 11,
+      "D": 0,
+      "E": 0,
+      "F": 8
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "0%",
+      "C": "57.9%",
+      "D": "0%",
+      "E": "0%",
+      "F": "42.1%"
+    },
+    "average_total_score": 10.8,
+    "notable_findings": {
+      "high_engagement_user": {
+        "user_id": "6902f924-f27e-466f-99b7-bd334abffa9f",
+        "message_count": 44,
+        "pattern": "C",
+        "highlight": "Highest message count in batch - very persistent questioning about numerical methods"
+      },
+      "lowest_engagement_user": {
+        "user_id": "6f8e7ffb-9a48-4579-b9a4-6d9c66fa04b2",
+        "message_count": 4,
+        "pattern": "F",
+        "highlight": "Total score of 1 - 'gimme the ans' epitomizes passive over-reliance"
+      },
+      "verification_examples": [
+        {
+          "user_id": "68a3be8d-f7b9-49ba-bdd5-010f3ce4b5fa",
+          "quote": "is the answer for tutorial 2 problem 2 0.8A?",
+          "significance": "E1=2 - Checking computed answer against AI"
+        },
+        {
+          "user_id": "6df44071-bf22-4ad6-b47c-3fbdee03b606",
+          "quote": "so is it because c has 2 value so the function cant has 1 inflection point only?",
+          "significance": "Testing understanding through reasoning"
+        }
+      ]
+    }
+  }
+}
