@@ -1,0 +1,321 @@
+{
+  "batch_number": 5,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 20,
+  "user_id_range": "101-120 (alphabetically sorted)",
+
+  "annotations": [
+    {
+      "user_id": "47e9b405-8ee3-4e99-8296-94afdf963d67",
+      "message_count": 78,
+      "scores": {"P1": 2, "P2": 3, "P3": 2, "P4": 2, "M1": 2, "M2": 3, "M3": 2, "E1": 3, "E2": 2, "E3": 1, "R1": 3, "R2": 2},
+      "total": 27,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "E1=3: 'Then wldnt c(rows, columns)... be c(column,column) instead?' - CORRECTING AI syntax error",
+        "P2=3: 'CLT proves normality of the sampling distribution. then we can use qnorm...' - articulating understanding",
+        "M2=3: 'why is the mean for the second part zero? i cannot picture how that happens' - deep comprehension monitoring",
+        "M3=2: 'does this apply the same for t-test?' - synthesizing across concepts",
+        "R1=3: Highly engaged, returning for multiple learning sessions"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "498602a3-ef5c-433c-8b29-ccc7f1d93ce2",
+      "message_count": 4,
+      "scores": {"P1": 1, "P2": 1, "P3": 1, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "'what to do if I dont understand the tutorial questions' - seeking general guidance",
+        "Very limited engagement"
+      ]
+    },
+    {
+      "user_id": "498c09c0-eb47-484a-9a6d-4ec295ca1132",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "499a9f6f-5caf-4b21-954a-bea04bc8ea74",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "4ca12e26-624d-4ab5-8fd8-2dcf6733d3dc",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "4d441b82-7672-4636-b67f-ab3e4e20b56a",
+      "message_count": 12,
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 19,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: Multiple 'check my answer' requests - seeking verification of own work",
+        "'check from question 1' - systematic review request",
+        "Good practice of verifying own work before relying on AI"
+      ]
+    },
+    {
+      "user_id": "4d80620b-332b-41b1-8e68-19f82dd9c5b0",
+      "message_count": 45,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 3, "E3": 2, "R1": 2, "R2": 2},
+      "total": 24,
+      "pattern": "D",
+      "confidence": 0.9,
+      "key_evidence": [
+        "E1=3: 'but thats sqrt(t)(4-t) not sqrt(t(4-t))' - CORRECTING AI mathematical error",
+        "E1=3: 'is it not from 0 to π' - catching integration bound error",
+        "E1=3: 'hi, can you check this graph? is the point A wrong here?' - CRITICAL evaluation of visual content",
+        "E2=3: 'why is lim x-4- sqrt(x) and not ax+b' - challenging AI's approach",
+        "EXCELLENT critical evaluation skills - catches multiple AI errors"
+      ],
+      "keyword_would_give": {"E1": 0, "E2": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "4e08ae2e-7cad-432d-88b1-8c131604cc64",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "4eaf2f14-f952-4acc-b851-c4cdda85cbf4",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "4f88e608-a513-4e79-80b4-514794e5fd5e",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "4f9929cb-94ae-40fd-a650-a4f3398d523e",
+      "message_count": 20,
+      "scores": {"P1": 2, "P2": 3, "P3": 3, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 2, "E3": 0, "R1": 2, "R2": 2},
+      "total": 24,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P3=3: 'Come up with a list of diferentiation practices. Start with the very basics' - SELF-DIRECTED learning!",
+        "P2=3: 'power rule proof' - seeking deep conceptual understanding",
+        "E1=3: 'image input.find my error' - asking AI to verify OWN work",
+        "E1=3: 'is my working valid' - self-verification behavior",
+        "M2=2: 'what does this means' (x^n terms cancel out) - monitoring comprehension"
+      ],
+      "keyword_would_give": {"P3": 0, "E1": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "50ac2e57-2041-4c53-8bd3-812adddbbe3a",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=2: 'why do we use t value?' - questioning methodology",
+        "P2=2: 'difference between t value and p value' - conceptual comparison",
+        "Good conceptual engagement"
+      ]
+    },
+    {
+      "user_id": "50f51f5f-216b-4efb-8f3a-615d5c7cf0e8",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Different course (ceramics)",
+        "Limited engagement"
+      ]
+    },
+    {
+      "user_id": "50ff4b84-0a43-4a0a-bc7d-707e4f6231d4",
+      "message_count": 12,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P1=2: 'what chapter is this L'Hôpital's Rule taught' - organizing learning",
+        "P1=2: 'which part exactly in Limits and continuity' - planning study",
+        "Multiple limit questions showing engaged learning"
+      ]
+    },
+    {
+      "user_id": "51fb6454-d2ae-4a08-8c0e-f203b5252e28",
+      "message_count": 15,
+      "scores": {"P1": 2, "P2": 2, "P3": 3, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 1, "R1": 2, "R2": 2},
+      "total": 22,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P3=3: 'Curate a repository of questions to practice for my midterms' - SELF-DIRECTED learning!",
+        "P3=3: 'Increase the difficulty for all questions' - seeking appropriate challenge",
+        "P3=3: 'Increase the difficulty some more' - PERSISTENT challenge-seeking!",
+        "P2=2: 'What if i choose x=0' - exploring alternative approaches",
+        "EXCELLENT self-directed learning behavior"
+      ],
+      "keyword_would_give": {"P3": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "5266f1a9-1b62-4986-b007-9707a471c062",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 10,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: 'Base on the regression line we can deduce the relationship' - showing understanding",
+        "Limited overall engagement"
+      ]
+    },
+    {
+      "user_id": "53ee9cbe-3eb1-4c72-a418-f93969dd160b",
+      "message_count": 22,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 3, "E2": 3, "E3": 1, "R1": 2, "R2": 2},
+      "total": 24,
+      "pattern": "D",
+      "confidence": 0.9,
+      "key_evidence": [
+        "E1=3: 'thats wrong' - DIRECTLY correcting AI",
+        "E1=3: 'we only have the sample standard deviation so we should use the t value instead of the z value' - CORRECTING AI methodology!",
+        "E2=3: Strong critical evaluation of AI statistical reasoning",
+        "P1=2: '0.068. which week is this topic under' - organizing learning"
+      ],
+      "keyword_would_give": {"E1": 0, "E2": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "54138b07-be95-4aec-a781-ab0798869783",
+      "message_count": 20,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 3, "E2": 2, "E3": 1, "R1": 2, "R2": 2},
+      "total": 24,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: 'esin^1/x is in the numerator not denominator' - CORRECTING AI error",
+        "P2=2: 'whats the difference between rolles theorem and mean value theorem' - conceptual comparison",
+        "M3=2: 'can i use squeeze theorem for tanx' - applying concepts across contexts"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "C"}
+    },
+    {
+      "user_id": "54e7f3fa-e7cd-42f9-b738-87255af9ea46",
+      "message_count": 0,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 0,
+      "pattern": "F",
+      "confidence": 0.5,
+      "key_evidence": ["No conversation data found"]
+    },
+    {
+      "user_id": "54eb466e-9e26-42c1-a89b-f64d923259c3",
+      "message_count": 15,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Following step-by-step guidance",
+        "Multiple questions across topics",
+        "Good engaged learning pattern"
+      ]
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 4,
+      "C": 6,
+      "D": 2,
+      "E": 0,
+      "F": 8
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "20%",
+      "C": "30%",
+      "D": "10%",
+      "E": "0%",
+      "F": "40%"
+    },
+    "average_total_score": 13.3,
+    "notable_findings": {
+      "exemplary_users": [
+        {
+          "user_id": "4d80620b-332b-41b1-8e68-19f82dd9c5b0",
+          "pattern": "D",
+          "highlight": "Catches MULTIPLE AI errors: integration bounds, function interpretation, graph analysis",
+          "keyword_would_miss": "All E1=3 and E2=3 error detection"
+        },
+        {
+          "user_id": "51fb6454-d2ae-4a08-8c0e-f203b5252e28",
+          "pattern": "B",
+          "highlight": "Exceptional self-directed learning: requests practice questions, asks for increasing difficulty THREE times",
+          "keyword_would_miss": "P3=3 self-directed behavior"
+        },
+        {
+          "user_id": "53ee9cbe-3eb1-4c72-a418-f93969dd160b",
+          "pattern": "D",
+          "highlight": "Corrects AI statistical methodology: 'we should use t value instead of z value'",
+          "keyword_would_miss": "E1=3 methodology correction"
+        }
+      ],
+      "critical_evaluation_examples": [
+        {
+          "user_id": "4d80620b-332b-41b1-8e68-19f82dd9c5b0",
+          "quote": "but thats sqrt(t)(4-t) not sqrt(t(4-t))",
+          "dimension": "E1=3 - Correcting AI mathematical notation"
+        },
+        {
+          "user_id": "47e9b405-8ee3-4e99-8296-94afdf963d67",
+          "quote": "Then wldnt c(rows, columns)... be c(column,column) instead?",
+          "dimension": "E1=3 - Correcting AI code syntax"
+        }
+      ],
+      "self_directed_learning_examples": [
+        {
+          "user_id": "51fb6454-d2ae-4a08-8c0e-f203b5252e28",
+          "quotes": ["Curate a repository of questions", "Increase the difficulty for all questions", "Increase the difficulty some more"],
+          "dimension": "P3=3 - Active challenge seeking"
+        },
+        {
+          "user_id": "4f9929cb-94ae-40fd-a650-a4f3398d523e",
+          "quote": "Come up with a list of diferentiation practices. Start with the very basics then work all the way upwards",
+          "dimension": "P3=3 - Scaffolded self-directed learning"
+        }
+      ],
+      "no_data_users": ["498c09c0-eb47-484a-9a6d-4ec295ca1132", "499a9f6f-5caf-4b21-954a-bea04bc8ea74", "4ca12e26-624d-4ab5-8fd8-2dcf6733d3dc", "4e08ae2e-7cad-432d-88b1-8c131604cc64", "4eaf2f14-f952-4acc-b851-c4cdda85cbf4", "4f88e608-a513-4e79-80b4-514794e5fd5e", "54e7f3fa-e7cd-42f9-b738-87255af9ea46"]
+    }
+  }
+}
