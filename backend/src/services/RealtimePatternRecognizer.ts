@@ -120,10 +120,15 @@ export class RealtimePatternRecognizer {
   }
 
   /**
-   * Initialize recognizer with historical prior
+   * Initialize recognizer with combined prior (assessment + history)
    * MUST be called before first updateProbabilities()
    *
-   * Loads user's historical pattern distribution to accelerate convergence
+   * Priority Order:
+   * 1. Behavioral history (pattern_detections) if available
+   * 2. Assessment questionnaire results if available
+   * 3. Uniform prior as fallback
+   *
+   * This integration enables the initial questionnaire to inform pattern recognition.
    */
   async initialize(): Promise<void> {
     if (this.initialized) {
@@ -132,22 +137,32 @@ export class RealtimePatternRecognizer {
     }
 
     try {
-      // Load historical prior
-      const historicalPrior = await PatternHistoryService.getUserPatternPrior(this.userId);
+      // Load combined prior (assessment + history)
+      const combinedPrior = await PatternHistoryService.getCombinedPrior(this.userId);
 
       // Update initial probabilities
       (['A', 'B', 'C', 'D', 'E', 'F'] as Pattern[]).forEach(pattern => {
-        this.patternProbabilities.set(pattern, historicalPrior[pattern]);
+        this.patternProbabilities.set(pattern, combinedPrior.prior[pattern]);
       });
 
-      console.log(`[RealtimePatternRecognizer] Initialized for user ${this.userId} with historical prior:`, historicalPrior);
+      console.log(`[RealtimePatternRecognizer] Initialized for user ${this.userId}:`, {
+        source: combinedPrior.source,
+        confidence: combinedPrior.confidence.toFixed(2),
+        assessmentId: combinedPrior.assessmentId || 'none',
+        prior: combinedPrior.prior
+      });
 
       // Get dominant pattern info for logging
       const dominant = await PatternHistoryService.getDominantPattern(this.userId);
       if (dominant) {
         console.log(`   Dominant pattern: ${dominant.pattern} (confidence=${dominant.confidence.toFixed(2)}, stability=${dominant.stability.toFixed(2)})`);
+      } else if (combinedPrior.source === 'assessment') {
+        // Find the highest probability pattern from assessment
+        const topPattern = Object.entries(combinedPrior.prior)
+          .sort((a, b) => b[1] - a[1])[0];
+        console.log(`   Assessment-based prediction: Pattern ${topPattern[0]} (probability=${(topPattern[1] * 100).toFixed(1)}%)`);
       } else {
-        console.log('   No dominant pattern found (new user or insufficient data)');
+        console.log('   No prior data (new user, using uniform distribution)');
       }
 
       this.initialized = true;

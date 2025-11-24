@@ -6,6 +6,12 @@
  * - Store pattern detection results across sessions
  * - Calculate historical prior probabilities for Bayesian initialization
  * - Track user's dominant pattern and stability over time
+ * - Integrate initial assessment questionnaire data (NEW)
+ *
+ * Data Sources (Priority Order):
+ * 1. pattern_detections table (behavioral history)
+ * 2. assessments table (questionnaire results)
+ * 3. Uniform prior (fallback)
  *
  * Used by: RealtimePatternRecognizer to initialize with informed priors
  */
@@ -28,6 +34,14 @@ export interface DominantPatternInfo {
   confidence: number;
   stability: number;  // 0-1: how consistent this pattern is
   totalDetections: number;
+}
+
+// NEW: Assessment data interface
+export interface AssessmentPrior {
+  source: 'assessment' | 'history' | 'uniform';
+  prior: Record<Pattern, number>;
+  confidence: number;  // How confident we are in this prior
+  assessmentId?: string;
 }
 
 export class PatternHistoryService {
@@ -235,6 +249,213 @@ export class PatternHistoryService {
       console.error('[PatternHistoryService] Error getting distribution:', error);
       return this.getUniformPrior();
     }
+  }
+
+  /**
+   * NEW: Get assessment-based prior from questionnaire results
+   *
+   * Maps 4-dimensional metacognitive scores to pattern probabilities:
+   * - High Planning → Pattern A (Strategic Decomposition)
+   * - High Monitoring → Pattern B (Iterative Refinement)
+   * - High Evaluation → Pattern D (Critical Evaluation)
+   * - High Regulation → Pattern C (Adaptive Learning)
+   * - Low overall → Pattern F (Passive Over-Reliance)
+   *
+   * @param userId - User ID
+   * @returns Assessment-based prior with confidence
+   */
+  async getAssessmentBasedPrior(userId: string): Promise<AssessmentPrior | null> {
+    try {
+      // Get latest assessment
+      const result = await pool.query(
+        `SELECT id, planning_score, monitoring_score, evaluation_score, regulation_score, overall_score
+         FROM assessments
+         WHERE user_id = $1
+         ORDER BY created_at DESC
+         LIMIT 1`,
+        [userId]
+      );
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const assessment = result.rows[0];
+      const planning = parseFloat(assessment.planning_score) || 0;
+      const monitoring = parseFloat(assessment.monitoring_score) || 0;
+      const evaluation = parseFloat(assessment.evaluation_score) || 0;
+      const regulation = parseFloat(assessment.regulation_score) || 0;
+      const overall = parseFloat(assessment.overall_score) || 0;
+
+      // Calculate pattern probabilities based on metacognitive profile
+      // Higher dimension score → higher probability for corresponding pattern
+      const prior = this.calculateAssessmentPrior(planning, monitoring, evaluation, regulation, overall);
+
+      console.log(`[PatternHistoryService] Assessment-based prior for user ${userId}:`, {
+        scores: { planning, monitoring, evaluation, regulation, overall },
+        prior
+      });
+
+      return {
+        source: 'assessment',
+        prior,
+        confidence: overall, // Use overall score as confidence
+        assessmentId: assessment.id
+      };
+    } catch (error) {
+      console.error('[PatternHistoryService] Error getting assessment prior:', error);
+      return null;
+    }
+  }
+
+  /**
+   * NEW: Calculate pattern probabilities from metacognitive assessment scores
+   *
+   * Mapping logic:
+   * - Pattern A: Planning-dominant (strategic, goal-oriented)
+   * - Pattern B: Monitoring-dominant (iterative, verification-focused)
+   * - Pattern C: Regulation-dominant (adaptive, flexible)
+   * - Pattern D: Evaluation-dominant (critical, analytical)
+   * - Pattern E: Balanced high scores (pedagogical, reflective)
+   * - Pattern F: Low overall (passive, over-reliant)
+   *
+   * @param planning - Planning dimension score (0-1)
+   * @param monitoring - Monitoring dimension score (0-1)
+   * @param evaluation - Evaluation dimension score (0-1)
+   * @param regulation - Regulation dimension score (0-1)
+   * @param overall - Overall score (0-1)
+   * @returns Pattern probability distribution
+   */
+  private calculateAssessmentPrior(
+    planning: number,
+    monitoring: number,
+    evaluation: number,
+    regulation: number,
+    overall: number
+  ): Record<Pattern, number> {
+    // Base probabilities from dimension strengths
+    const rawProbs: Record<Pattern, number> = {
+      'A': planning * 0.8,      // Planning → Strategic Decomposition
+      'B': monitoring * 0.8,    // Monitoring → Iterative Refinement
+      'C': regulation * 0.8,    // Regulation → Adaptive Learning
+      'D': evaluation * 0.8,    // Evaluation → Critical Evaluation
+      'E': 0.1,                 // E is rare, give small base probability
+      'F': 0.1                  // F probability based on overall score
+    };
+
+    // Pattern E: High balanced scores (all dimensions > 0.6)
+    const allHigh = planning > 0.6 && monitoring > 0.6 && evaluation > 0.6 && regulation > 0.6;
+    if (allHigh) {
+      rawProbs['E'] = 0.4;
+    }
+
+    // Pattern F: Low overall metacognitive engagement
+    // If overall < 0.4, increase F probability significantly
+    if (overall < 0.4) {
+      rawProbs['F'] = 0.6;
+      // Reduce other probabilities
+      (['A', 'B', 'C', 'D', 'E'] as Pattern[]).forEach(p => {
+        rawProbs[p] *= 0.5;
+      });
+    } else if (overall < 0.6) {
+      rawProbs['F'] = 0.3;
+    }
+
+    // Normalize to sum to 1
+    const total = Object.values(rawProbs).reduce((sum, val) => sum + val, 0);
+    const normalized: Record<Pattern, number> = {} as any;
+
+    (['A', 'B', 'C', 'D', 'E', 'F'] as Pattern[]).forEach(pattern => {
+      normalized[pattern] = Math.max(rawProbs[pattern] / total, 0.01); // Minimum 1%
+    });
+
+    // Re-normalize after floor
+    const newTotal = Object.values(normalized).reduce((sum, val) => sum + val, 0);
+    (['A', 'B', 'C', 'D', 'E', 'F'] as Pattern[]).forEach(pattern => {
+      normalized[pattern] /= newTotal;
+    });
+
+    return normalized;
+  }
+
+  /**
+   * NEW: Get combined prior (assessment + history)
+   * Priority: History > Assessment > Uniform
+   *
+   * If user has pattern history: use history (80%) + assessment (20%)
+   * If user only has assessment: use assessment (70%) + uniform (30%)
+   * If user has neither: use uniform
+   *
+   * @param userId - User ID
+   * @returns Combined prior with source information
+   */
+  async getCombinedPrior(userId: string): Promise<AssessmentPrior> {
+    const historyPrior = await this.getUserPatternPrior(userId);
+    const assessmentData = await this.getAssessmentBasedPrior(userId);
+
+    // Check if history has meaningful data (not uniform)
+    const isUniform = Object.values(historyPrior).every(
+      v => Math.abs(v - 1/6) < 0.01
+    );
+
+    if (!isUniform) {
+      // Has history data
+      if (assessmentData) {
+        // Blend history (80%) + assessment (20%)
+        const blended = this.blendPriors(historyPrior, assessmentData.prior, 0.8);
+        console.log(`[PatternHistoryService] Using blended prior (80% history + 20% assessment)`);
+        return {
+          source: 'history',
+          prior: blended,
+          confidence: 0.8,
+          assessmentId: assessmentData.assessmentId
+        };
+      } else {
+        // History only
+        return {
+          source: 'history',
+          prior: historyPrior,
+          confidence: 0.7
+        };
+      }
+    } else if (assessmentData) {
+      // No history, but has assessment
+      // Blend assessment (70%) + uniform (30%)
+      const blended = this.blendPriors(assessmentData.prior, this.getUniformPrior(), 0.7);
+      console.log(`[PatternHistoryService] Using assessment-based prior (70% assessment + 30% uniform)`);
+      return {
+        source: 'assessment',
+        prior: blended,
+        confidence: assessmentData.confidence * 0.7,
+        assessmentId: assessmentData.assessmentId
+      };
+    } else {
+      // Neither history nor assessment
+      return {
+        source: 'uniform',
+        prior: this.getUniformPrior(),
+        confidence: 0.0
+      };
+    }
+  }
+
+  /**
+   * Blend two priors with specified weights
+   * @private
+   */
+  private blendPriors(
+    prior1: Record<Pattern, number>,
+    prior2: Record<Pattern, number>,
+    weight1: number
+  ): Record<Pattern, number> {
+    const blended: Record<Pattern, number> = {} as any;
+    const weight2 = 1 - weight1;
+
+    (['A', 'B', 'C', 'D', 'E', 'F'] as Pattern[]).forEach(pattern => {
+      blended[pattern] = prior1[pattern] * weight1 + prior2[pattern] * weight2;
+    });
+
+    return blended;
   }
 
   /**

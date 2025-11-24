@@ -350,33 +350,68 @@ Based on the analysis, we recommend the following threshold adjustments:
 
 ### 4.6 System Architecture: Hybrid Pattern Estimator
 
-The MCA system employs a **Hybrid Pattern Estimator** that combines Bayesian reasoning with SVM classification using **dynamic turn-adaptive weights**.
+The MCA system employs a **Hybrid Pattern Estimator** that combines Bayesian reasoning with SVM classification using **dynamic turn-adaptive weights** and **assessment questionnaire integration**.
 
 #### 4.6.1 Architecture Overview
 
 ```
 Final Prediction = W_bayesian × Bayesian + W_svm × SVM
 
-Where weights adapt based on turn count:
-- Turn 1-2: W_bayesian=0.70, W_svm=0.30 (cold-start)
-- Turn 3-4: W_bayesian=0.50, W_svm=0.50 (transition)
-- Turn 5+:  W_bayesian=0.30, W_svm=0.70 (warm-start)
+Prior Sources (Priority Order):
+1. Behavioral history (pattern_detections table)
+2. Assessment questionnaire (assessments table)
+3. Uniform distribution (fallback)
+
+Combined Prior = 80% History + 20% Assessment (if both available)
+              or 70% Assessment + 30% Uniform (if only assessment)
 ```
 
-#### 4.6.2 Dynamic Weight Schedule
+#### 4.6.2 Assessment Questionnaire Integration (NEW)
+
+The system now integrates the initial metacognitive assessment questionnaire:
+
+| Assessment Dimension | Mapped Pattern | Rationale |
+|---------------------|----------------|-----------|
+| Planning (high) | Pattern A | Strategic, goal-oriented users |
+| Monitoring (high) | Pattern B | Iterative, verification-focused |
+| Evaluation (high) | Pattern D | Critical, analytical users |
+| Regulation (high) | Pattern C | Adaptive, flexible learners |
+| All dimensions high | Pattern E | Pedagogical, reflective |
+| Overall score low | Pattern F | Risk of passive over-reliance |
+
+**Example mapping:**
+```
+User assessment: Planning=0.8, Monitoring=0.6, Evaluation=0.5, Regulation=0.7
+→ Highest: Planning (0.8)
+→ Initial prior: Pattern A probability boosted
+→ Bayesian starts with informed prior instead of uniform
+```
+
+#### 4.6.3 Dynamic Weight Schedules
+
+**Default Schedule (No Assessment):**
 
 | Phase | Turn Count | Bayesian | SVM | Rationale |
 |-------|------------|----------|-----|-----------|
-| **Cold-start** | 1-2 | 70% | 30% | Limited signal data; rely on historical prior |
-| **Transition** | 3-4 | 50% | 50% | Balanced; accumulating signals |
-| **Warm-start** | 5+ | 30% | 70% | Sufficient data; leverage SVM's 94.2% accuracy |
+| Cold-start | 1-2 | 70% | 30% | Limited signal data |
+| Transition | 3-4 | 50% | 50% | Balanced |
+| Warm-start | 5+ | 30% | 70% | Trust SVM accuracy |
 
-#### 4.6.3 Component Details
+**Enhanced Schedule (With Assessment/History):**
+
+| Phase | Turn Count | Bayesian | SVM | Rationale |
+|-------|------------|----------|-----|-----------|
+| Cold-start | 1-2 | **80%** | 20% | Informed prior from questionnaire |
+| Transition | 3-4 | **55%** | 45% | Still favor informed Bayesian |
+| Warm-start | 5+ | **35%** | 65% | SVM dominant, Bayesian contributes |
+
+#### 4.6.4 Component Details
 
 **Bayesian Component (`RealtimePatternRecognizer`):**
+- **NEW:** Uses combined prior from `PatternHistoryService.getCombinedPrior()`
+- Integrates assessment questionnaire results
 - Maintains prior probabilities for each pattern
 - Uses hand-crafted signal-likelihood mappings
-- Best for: Cold-start with historical user data
 
 **SVM Component (`SVMPatternClassifier`):**
 - 94.2% test accuracy (updated 2024-11-24)
@@ -384,20 +419,22 @@ Where weights adapt based on turn count:
 - Trained on 427 samples (378 real users + 49 synthetic)
 - RBF kernel with C=10.0, class-weighted
 
-#### 4.6.4 Weight Evolution Rationale
+#### 4.6.5 Weight Evolution Rationale
 
 | Metric | Bayesian | SVM (Updated) |
 |--------|----------|---------------|
 | Accuracy | Rule-based | **94.2%** |
 | Pattern F Recall | Depends on rules | **100%** |
-| Data Source | Hand-crafted | **378 real users** |
-| Cold-start | ✅ Good | ⚠️ Needs signals |
+| Data Source | Assessment + History | **378 real users** |
+| Cold-start | ✅ Good (with assessment) | ⚠️ Needs signals |
 | Warm-start | ⚠️ Rules may be outdated | ✅ Data-driven |
 
-**Previous (Fixed):** 60% Bayesian / 40% SVM
-**Updated (Dynamic):** Adapts from 70/30 → 50/50 → 30/70
+**Evolution History:**
+- V1 (Fixed): 60% Bayesian / 40% SVM
+- V2 (Dynamic): Adapts 70/30 → 50/50 → 30/70
+- **V3 (Assessment-aware):** Adapts 80/20 → 55/45 → 35/65 (with assessment)
 
-#### 4.6.5 Model Update Applied
+#### 4.6.6 Model Update Applied
 
 | File | Before | After |
 |------|--------|-------|
@@ -405,9 +442,10 @@ Where weights adapt based on turn count:
 | `models/svm_scaler.pkl` | Fit on synthetic data | Fit on real user data (378 users) |
 
 The hybrid architecture ensures:
-1. **Robustness in early stages** via Bayesian priors (70% weight)
-2. **Maximum accuracy when data-rich** via SVM (70% weight after turn 5)
-3. **Smooth transition** through balanced 50/50 phase
+1. **Assessment-informed cold-start** via questionnaire integration (80% Bayesian with assessment)
+2. **Robustness in early stages** via combined priors
+3. **Maximum accuracy when data-rich** via SVM (65-70% weight after turn 5)
+4. **Smooth transition** through balanced phases
 
 ### 4.7 System Changes Implemented
 

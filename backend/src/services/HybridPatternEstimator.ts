@@ -6,21 +6,28 @@
  * - Dynamic ensemble prediction with turn-adaptive weights
  * - Stability-aware confidence adjustment
  * - Graceful fallback to Bayesian-only if SVM unavailable
+ * - Integration with initial assessment questionnaire (NEW)
  *
  * Architecture (Updated 2024-11-24):
- * - Bayesian: Good for cold-start with historical prior (hand-crafted likelihoods)
+ * - Bayesian: Uses combined prior (assessment + history), hand-crafted likelihoods
  * - SVM: 94.2% accuracy, 100% Pattern F recall (trained on 427 samples, 378 real users)
  * - Dynamic weights: Early turns favor Bayesian, later turns favor SVM
  *
- * Weight Schedule:
+ * Weight Schedule (Default - no assessment):
  * - Turn 1-2: 70% Bayesian / 30% SVM (cold-start, limited signals)
  * - Turn 3-4: 50% Bayesian / 50% SVM (transition phase)
  * - Turn 5+:  30% Bayesian / 70% SVM (warm-start, trust SVM accuracy)
+ *
+ * Weight Schedule (With assessment questionnaire):
+ * - Turn 1-2: 80% Bayesian / 20% SVM (informed prior from questionnaire)
+ * - Turn 3-4: 55% Bayesian / 45% SVM (still favor informed Bayesian)
+ * - Turn 5+:  35% Bayesian / 65% SVM (SVM with more weight, but Bayesian still contributes)
  */
 
 import RealtimePatternRecognizer, { PatternEstimate, Pattern } from './RealtimePatternRecognizer';
 import SVMPatternClassifier from './SVMPatternClassifier';
 import PatternStabilityCalculator, { PatternHistoryEntry, StabilityMetrics } from './PatternStabilityCalculator';
+import PatternHistoryService from './PatternHistoryService';
 import { BehavioralSignals } from './BehaviorSignalDetector';
 
 export interface HybridPatternEstimate extends PatternEstimate {
@@ -44,17 +51,28 @@ export class HybridPatternEstimator {
   private sessionId: string;
   private turnCount: number = 0;
 
+  // NEW: Track prior source to adjust weights
+  private priorSource: 'assessment' | 'history' | 'uniform' = 'uniform';
+  private priorConfidence: number = 0;
+
   // Dynamic ensemble weights based on turn count
   // Rationale: SVM achieves 94.2% accuracy with real data, but needs sufficient signals
   // Early turns: Bayesian prior is more reliable (limited signal data)
   // Later turns: SVM is more accurate (sufficient data accumulated)
-  private readonly WEIGHT_SCHEDULE = {
-    // Turn 1-2: Cold start - favor Bayesian prior
-    early: { bayesian: 0.70, svm: 0.30 },
-    // Turn 3-4: Transition - balanced
-    mid: { bayesian: 0.50, svm: 0.50 },
-    // Turn 5+: Warm start - favor SVM accuracy
-    late: { bayesian: 0.30, svm: 0.70 }
+
+  // Default weights (no assessment data)
+  private readonly DEFAULT_WEIGHT_SCHEDULE = {
+    early: { bayesian: 0.70, svm: 0.30 },  // Turn 1-2
+    mid: { bayesian: 0.50, svm: 0.50 },    // Turn 3-4
+    late: { bayesian: 0.30, svm: 0.70 }    // Turn 5+
+  };
+
+  // Enhanced weights when assessment questionnaire is available
+  // Rationale: Assessment provides informed prior, so Bayesian is more trustworthy
+  private readonly ASSESSMENT_WEIGHT_SCHEDULE = {
+    early: { bayesian: 0.80, svm: 0.20 },  // Turn 1-2: Strong trust in informed prior
+    mid: { bayesian: 0.55, svm: 0.45 },    // Turn 3-4: Still favor informed Bayesian
+    late: { bayesian: 0.35, svm: 0.65 }    // Turn 5+: SVM gains more weight, but Bayesian still contributes
   };
 
   constructor(userId: string, sessionId: string) {
@@ -65,11 +83,34 @@ export class HybridPatternEstimator {
 
   /**
    * Initialize hybrid estimator
-   * Loads historical prior for Bayesian
+   * Loads combined prior (assessment + history) for Bayesian
+   * Also determines which weight schedule to use based on prior availability
    */
   async initialize(): Promise<void> {
     await this.bayesianRecognizer.initialize();
-    console.log(`[HybridPatternEstimator] Initialized for user ${this.userId}`);
+
+    // Check prior source to determine weight schedule
+    try {
+      const combinedPrior = await PatternHistoryService.getCombinedPrior(this.userId);
+      this.priorSource = combinedPrior.source;
+      this.priorConfidence = combinedPrior.confidence;
+
+      const weightSchedule = this.priorSource !== 'uniform'
+        ? 'ASSESSMENT_WEIGHT_SCHEDULE'
+        : 'DEFAULT_WEIGHT_SCHEDULE';
+
+      console.log(`[HybridPatternEstimator] Initialized for user ${this.userId}:`, {
+        priorSource: this.priorSource,
+        priorConfidence: this.priorConfidence.toFixed(2),
+        weightSchedule,
+        assessmentId: combinedPrior.assessmentId || 'none'
+      });
+    } catch (error) {
+      console.error('[HybridPatternEstimator] Error checking prior:', error);
+      // Default to no-assessment weights
+      this.priorSource = 'uniform';
+      this.priorConfidence = 0;
+    }
   }
 
   /**
@@ -167,20 +208,30 @@ export class HybridPatternEstimator {
   }
 
   /**
-   * Get dynamic weights based on current turn count
+   * Get dynamic weights based on current turn count and prior availability
    *
-   * Rationale:
-   * - Turn 1-2: Limited signals → favor Bayesian prior (70/30)
-   * - Turn 3-4: Transition phase → balanced (50/50)
-   * - Turn 5+: Sufficient data → favor SVM accuracy (30/70)
+   * Default (no assessment):
+   * - Turn 1-2: 70% Bayesian / 30% SVM
+   * - Turn 3-4: 50% Bayesian / 50% SVM
+   * - Turn 5+:  30% Bayesian / 70% SVM
+   *
+   * With assessment/history:
+   * - Turn 1-2: 80% Bayesian / 20% SVM (informed prior)
+   * - Turn 3-4: 55% Bayesian / 45% SVM
+   * - Turn 5+:  35% Bayesian / 65% SVM
    */
   private getCurrentWeights(): { bayesian: number; svm: number } {
+    // Select weight schedule based on whether we have informed prior
+    const schedule = this.priorSource !== 'uniform'
+      ? this.ASSESSMENT_WEIGHT_SCHEDULE
+      : this.DEFAULT_WEIGHT_SCHEDULE;
+
     if (this.turnCount <= 2) {
-      return this.WEIGHT_SCHEDULE.early;
+      return schedule.early;
     } else if (this.turnCount <= 4) {
-      return this.WEIGHT_SCHEDULE.mid;
+      return schedule.mid;
     } else {
-      return this.WEIGHT_SCHEDULE.late;
+      return schedule.late;
     }
   }
 
