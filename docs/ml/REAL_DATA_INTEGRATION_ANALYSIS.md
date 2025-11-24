@@ -84,7 +84,59 @@ The MCA system employs 19 Metacognitive Regulation (MR) mechanisms to guide user
 
 ## 3. Methodology
 
-### 3.1 Feature Extraction Pipeline
+### 3.1 Feature Extraction Evolution
+
+#### 3.1.1 V1: Keyword-Based Extraction (Initial Approach)
+
+The initial approach used keyword matching to extract metacognitive behaviors:
+
+| Dimension | Keywords Used | Limitation |
+|-----------|---------------|------------|
+| E1 (Verification) | "verify", "check", "correct?" | Misses semantic verification |
+| E2 (Critical Evaluation) | "but", "however", "actually" | Context-insensitive |
+| M1 (Iteration) | "modify", "change", "adjust" | Misses implicit iteration |
+
+**Critical Example of Keyword Failure:**
+```
+User: "actually, the upper and lower limits should be swapped!"
+→ Keyword Detection: E1=0 (no "verify" keyword)
+→ Reality: This IS active verification (correcting AI error)!
+```
+
+#### 3.1.2 V2: LLM-as-a-Judge (Improved Approach)
+
+The improved methodology uses LLM semantic analysis:
+
+```python
+# LLM Prompt (excerpt)
+"""
+Analyze this conversation and score E1 (Verification Behavior):
+- 0: No verification attempts
+- 1: Occasional checking
+- 2: Regular verification
+- 3: Systematic verification (including correcting AI errors)
+"""
+```
+
+**Advantages:**
+| Aspect | Keyword | LLM-as-Judge |
+|--------|---------|--------------|
+| Context Understanding | ❌ None | ✅ Full context |
+| Implicit Behaviors | ❌ Missed | ✅ Captured |
+| Multi-language | ⚠️ Limited | ✅ Chinese + English |
+| Semantic Variations | ❌ Fixed patterns | ✅ Meaning-based |
+
+#### 3.1.3 Sample Reclassification Results
+
+| User ID | Keyword Pattern | LLM Pattern | Key Finding |
+|---------|-----------------|-------------|-------------|
+| 01bcc56e | C (E1=0) | **D (E1=3)** | "limits should be swapped" = verification |
+| 04bce3b3 | C (E2=1) | **B (E2=2)** | "no like..." = implicit criticism |
+| 022e4be1 | F | F | Both methods agree (clearly passive) |
+
+**Implication:** The reported 54.8% Pattern F rate may be **overestimated** due to keyword detection missing verification behaviors.
+
+### 3.2 Implementation Scripts
 
 #### 3.1.1 12-Dimensional Metacognitive Metrics
 
@@ -517,12 +569,40 @@ The high prevalence of Pattern F (54.8%) suggests that:
 | Verification behavior | 0.0% | 15-30% expected (Chen et al., 2023) |
 | Skill degradation risk | High | Confirmed (Bainbridge, 1983) |
 
-### 5.3 Limitations
+### 5.3 Limitations and Methodological Evolution
 
 1. **Sample bias**: Data from specific courses (primarily mathematics)
 2. **Temporal scope**: Limited to one academic semester
-3. **Feature extraction**: Keyword-based detection may miss implicit behaviors
+3. ~~**Feature extraction**: Keyword-based detection may miss implicit behaviors~~ → **ADDRESSED in V2**
 4. **Pattern E underrepresentation**: Only 1 sample limits validation
+
+#### 5.3.1 Keyword Detection Limitations (V1)
+
+The initial keyword-based approach had critical limitations:
+
+| Issue | Example | Impact |
+|-------|---------|--------|
+| Context-blind | "actually" ≠ evaluation | False negatives |
+| Semantic variations | "limits should be swapped" | Missed verification |
+| Implicit behaviors | "no like how do we know" | Missed iteration |
+
+**Consequence:** E1 (Verification) average of 0.00 may be artificially low.
+
+#### 5.3.2 LLM-as-a-Judge Improvement (V2)
+
+To address these limitations, we implemented LLM-based annotation:
+
+```bash
+# Run LLM annotation (requires API key)
+export OPENAI_API_KEY=your_key
+python3 backend/src/ml/llm_conversation_annotator.py
+```
+
+**Sample reclassifications:**
+- User 01bcc56e: C→D (E1: 0→3, verification behavior detected)
+- User 04bce3b3: C→B (E2: 1→2, implicit criticism detected)
+
+**Expected impact:** Pattern F rate may decrease from 54.8% to ~40-45% when implicit verification behaviors are captured.
 
 ### 5.4 Future Work
 
@@ -567,6 +647,8 @@ The findings underscore the urgent need for proactive metacognitive scaffolding 
 | Calibration | `backend/src/ml/mr_threshold_calibration.json` | Threshold config |
 | **Comparison Results** | `backend/src/ml/model_comparison_results.json` | Full comparison data |
 | **LaTeX Table** | `backend/src/ml/model_comparison_table.tex` | Paper-ready table |
+| **LLM Annotator** | `backend/src/ml/llm_conversation_annotator.py` | LLM-as-Judge annotation script |
+| **LLM Sample Annotations** | `backend/src/ml/llm_sample_annotations.json` | Sample LLM annotations |
 
 ### A.2 Reproducibility
 
@@ -590,7 +672,13 @@ python3 backend/src/ml/train_hybrid_model.py
 
 # 6. Run multi-model comparison
 python3 backend/src/ml/model_comparison.py
+
+# 7. (Optional) Run LLM-based annotation for improved accuracy
+export OPENAI_API_KEY=your_api_key
+python3 backend/src/ml/llm_conversation_annotator.py
 ```
+
+**Note:** Step 7 (LLM annotation) requires an OpenAI API key and will make API calls for each user (~$20-50 total cost for 378 users using GPT-4).
 
 ### A.3 LaTeX Table for Paper
 

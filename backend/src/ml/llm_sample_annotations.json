@@ -1,0 +1,224 @@
+{
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5)",
+  "annotation_date": "2024-11-24",
+  "annotator": "Claude (acting as metacognitive assessment expert)",
+  "samples": [
+    {
+      "user_id": "01bcc56e-7b02-472a-acde-6a56da2eb44a",
+      "message_count": 68,
+      "keyword_based_scores": {
+        "P1": 2, "P2": 2, "P3": 2, "P4": 2,
+        "M1": 1, "M2": 1, "M3": 1,
+        "E1": 0, "E2": 1, "E3": 1,
+        "R1": 1, "R2": 1,
+        "pattern": "C",
+        "total": 15
+      },
+      "llm_semantic_scores": {
+        "P1": 2,
+        "P1_evidence": "Moderate input length, provides mathematical expressions but could add more context",
+
+        "P2": 3,
+        "P2_evidence": "Asks deep 'why' questions: 'why we need to multiply the differential', 'why is it not just (cos^5(x))/-5sin(x)'",
+
+        "P3": 2,
+        "P3_evidence": "Provides mathematical context through equations, but limited verbal context",
+
+        "P4": 2,
+        "P4_evidence": "Explores multiple aspects of topics, asks about alternatives",
+
+        "M1": 2,
+        "M1_evidence": "Active iteration: corrects AI multiple times, asks follow-up questions",
+
+        "M2": 2,
+        "M2_evidence": "Demands explanations when unsatisfied: 'please explain...'",
+
+        "M3": 1,
+        "M3_evidence": "Some synthesis but primarily single-topic focused",
+
+        "E1": 3,
+        "E1_evidence": "CRITICAL: 'actually, the upper and lower limits should be swapped!' - Active verification and correction of AI errors. Keyword detection MISSED this completely.",
+
+        "E2": 3,
+        "E2_evidence": "'you didnt answer why... instead you just gave the method that you deem correct!' - Strong critical evaluation of AI response quality",
+
+        "E3": 1,
+        "E3_evidence": "Limited external references, mostly relies on AI",
+
+        "R1": 2,
+        "R1_evidence": "'i am not quite sure why... can you explain?' - Acknowledges own uncertainty",
+
+        "R2": 2,
+        "R2_evidence": "'i see' and follow-up questions indicate engagement with learning",
+
+        "total": 25,
+        "pattern": "D",
+        "pattern_confidence": 0.85,
+        "reasoning": "This user demonstrates strong CRITICAL EVALUATION (Pattern D) behavior. They actively verify AI outputs, correct errors, and demand explanations. Keyword detection failed to capture the semantic meaning of 'actually, the limits should be swapped' as verification behavior."
+      },
+      "comparison": {
+        "keyword_pattern": "C",
+        "llm_pattern": "D",
+        "keyword_E1": 0,
+        "llm_E1": 3,
+        "major_discrepancy": "E1 (Verification): Keyword=0, LLM=3. The phrase 'actually, the upper and lower limits should be swapped!' is ACTIVE verification that keyword detection completely missed."
+      }
+    },
+    {
+      "user_id": "022e4be1",
+      "message_count": 3,
+      "keyword_based_scores": {
+        "P1": 1, "P2": 1, "P3": 1, "P4": 1,
+        "M1": 0, "M2": 1, "M3": 1,
+        "E1": 0, "E2": 1, "E3": 1,
+        "R1": 1, "R2": 1,
+        "pattern": "F",
+        "total": 10
+      },
+      "llm_semantic_scores": {
+        "P1": 1,
+        "P1_evidence": "Very short inputs: 'Explain the concept of probability', 'What is sample space?'",
+
+        "P2": 1,
+        "P2_evidence": "Basic conceptual questions without depth",
+
+        "P3": 1,
+        "P3_evidence": "No context provided",
+
+        "P4": 1,
+        "P4_evidence": "No problem decomposition",
+
+        "M1": 0,
+        "M1_evidence": "Only 3 messages, no iteration visible",
+
+        "M2": 1,
+        "M2_evidence": "Final message asks for mock quiz - some customization",
+
+        "M3": 1,
+        "M3_evidence": "No synthesis evident",
+
+        "E1": 0,
+        "E1_evidence": "No verification behavior in 3 messages",
+
+        "E2": 0,
+        "E2_evidence": "No critical evaluation",
+
+        "E3": 0,
+        "E3_evidence": "No external references",
+
+        "R1": 0,
+        "R1_evidence": "No self-reflection visible",
+
+        "R2": 1,
+        "R2_evidence": "Implicit learning intent but no explicit signals",
+
+        "total": 7,
+        "pattern": "F",
+        "pattern_confidence": 0.80,
+        "reasoning": "Very limited engagement (only 3 messages). Pattern F (Passive Over-Reliance) appropriate. Both keyword and LLM agree."
+      },
+      "comparison": {
+        "keyword_pattern": "F",
+        "llm_pattern": "F",
+        "agreement": true,
+        "note": "Both methods agree for this clearly passive user"
+      }
+    },
+    {
+      "user_id": "04bce3b3",
+      "message_count": 17,
+      "sample_messages": [
+        "why is that for argument of z = θ +2kπ, there is 2kπ?",
+        "how do we know the value of k",
+        "no like how do we know the value of k for argument of z"
+      ],
+      "keyword_based_scores": {
+        "P1": 2, "P2": 2, "P3": 1, "P4": 1,
+        "M1": 1, "M2": 1, "M3": 1,
+        "E1": 0, "E2": 1, "E3": 1,
+        "R1": 1, "R2": 1,
+        "pattern": "C",
+        "total": 13
+      },
+      "llm_semantic_scores": {
+        "P1": 2,
+        "P1_evidence": "Short but focused questions about specific concepts",
+
+        "P2": 3,
+        "P2_evidence": "Deep 'why' questions showing conceptual curiosity: 'why is that for argument of z'",
+
+        "P3": 1,
+        "P3_evidence": "Limited context beyond the immediate question",
+
+        "P4": 1,
+        "P4_evidence": "Questions are focused but not decomposed",
+
+        "M1": 2,
+        "M1_evidence": "'no like how do we know...' - Clarifying and iterating when answer wasn't satisfactory",
+
+        "M2": 2,
+        "M2_evidence": "Redirecting AI: 'no like...' indicates dissatisfaction and customization request",
+
+        "M3": 1,
+        "M3_evidence": "Single-topic focus",
+
+        "E1": 1,
+        "E1_evidence": "Implicit verification through clarifying questions",
+
+        "E2": 2,
+        "E2_evidence": "'no like...' implies the previous answer was not satisfactory - evaluation of response",
+
+        "E3": 1,
+        "E3_evidence": "No external references",
+
+        "R1": 1,
+        "R1_evidence": "Questions indicate trying to understand",
+
+        "R2": 1,
+        "R2_evidence": "Learning signals present but implicit",
+
+        "total": 18,
+        "pattern": "B",
+        "pattern_confidence": 0.70,
+        "reasoning": "This user shows ITERATIVE REFINEMENT (Pattern B) behavior. They iterate when answers are unsatisfactory ('no like how do we know') and ask clarifying questions. Keyword detection missed the evaluation implicit in 'no like...'."
+      },
+      "comparison": {
+        "keyword_pattern": "C",
+        "llm_pattern": "B",
+        "keyword_E2": 1,
+        "llm_E2": 2,
+        "major_discrepancy": "E2 (Critical Evaluation): The phrase 'no like...' indicates dissatisfaction with the previous answer - this is implicit evaluation that keyword detection missed."
+      }
+    }
+  ],
+  "summary": {
+    "keyword_vs_llm_discrepancies": [
+      {
+        "dimension": "E1 (Verification)",
+        "example": "'actually, the limits should be swapped!'",
+        "keyword_score": 0,
+        "llm_score": 3,
+        "reason": "Keyword detection looks for 'verify', 'check', 'correct?'. LLM understands semantic intent of correction."
+      },
+      {
+        "dimension": "E2 (Critical Evaluation)",
+        "example": "'you didnt answer why... instead you just gave the method that you deem correct!'",
+        "keyword_score": 1,
+        "llm_score": 3,
+        "reason": "This is strong criticism of AI response quality. No 'critical' keywords present."
+      },
+      {
+        "dimension": "M1 (Iteration)",
+        "example": "'no like how do we know...'",
+        "keyword_score": 1,
+        "llm_score": 2,
+        "reason": "'no like' indicates dissatisfaction and iteration request. Not a keyword like 'modify' or 'change'."
+      }
+    ],
+    "pattern_reclassifications": {
+      "user_01bcc56e": "C → D (Critical Evaluation pattern, not Moderate Balanced)",
+      "user_04bce3b3": "C → B (Iterative Refinement pattern)"
+    },
+    "implication_for_pattern_f": "If LLM semantic analysis finds more hidden verification/evaluation behaviors, the true Pattern F rate may be LOWER than 54.8% reported by keyword detection."
+  }
+}
