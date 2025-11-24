@@ -1,27 +1,27 @@
 {
   "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
   "annotation_period": "2024-11-24",
-  "batches_completed": 9,
-  "total_users_annotated": 178,
+  "batches_completed": 11,
+  "total_users_annotated": 216,
   "total_users_in_dataset": 378,
-  "progress": "47.1%",
+  "progress": "57.1%",
 
   "aggregate_statistics": {
     "pattern_distribution": {
       "A": 0,
-      "B": 16,
-      "C": 85,
+      "B": 21,
+      "C": 102,
       "D": 9,
       "E": 1,
-      "F": 67
+      "F": 83
     },
     "pattern_percentages": {
       "A": "0%",
-      "B": "9.0%",
-      "C": "47.8%",
-      "D": "5.1%",
-      "E": "0.6%",
-      "F": "37.6%"
+      "B": "9.7%",
+      "C": "47.2%",
+      "D": "4.2%",
+      "E": "0.5%",
+      "F": "38.4%"
     },
     "keyword_vs_llm_reclassifications": {
       "total_reclassified": 32,
@@ -100,7 +100,9 @@
       "batch5_file": "claude_annotations_batch5.json",
       "batch6_file": "claude_annotations_batch6.json",
       "batch7_file": "claude_annotations_batch7.json",
-      "batch8_file": "claude_annotations_batch8.json"
+      "batch8_file": "claude_annotations_batch8.json",
+      "batch9_file": "claude_annotations_batch9.json",
+      "batch10_file": "claude_annotations_batch10.json"
     }
   },
 
@@ -127,6 +129,8 @@
     "backend/src/ml/claude_annotations_batch6.json",
     "backend/src/ml/claude_annotations_batch7.json",
     "backend/src/ml/claude_annotations_batch8.json",
+    "backend/src/ml/claude_annotations_batch9.json",
+    "backend/src/ml/claude_annotations_batch10.json",
     "backend/src/ml/claude_annotations_summary.json",
     "backend/src/ml/llm_sample_annotations.json",
     "backend/src/ml/llm_conversation_annotator.py"

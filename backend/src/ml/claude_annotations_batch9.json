@@ -1,0 +1,303 @@
+{
+  "batch_number": 9,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 19,
+  "user_id_range": "179-197 (alphabetically sorted, skipping 7c510bdc already in batch 8)",
+
+  "annotations": [
+    {
+      "user_id": "7db11d48-432d-4ff5-9b97-42b4d89729d7",
+      "message_count": 33,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 1},
+      "total": 16,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=2: 'how can a volume be 0' - questioning results",
+        "P2=2: 'conditions for the existence of a limit' - conceptual",
+        "Mix of solve requests and conceptual questions"
+      ]
+    },
+    {
+      "user_id": "7e184af7-e805-447c-810b-bd07b6ba6dc1",
+      "message_count": 106,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 2, "E3": 1, "R1": 2, "R2": 2},
+      "total": 23,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "HIGH engagement (106 messages)",
+        "E2=2: 'when do I use qt or qnorm in R?' - strategic method selection",
+        "E1=2: Provides OWN answers for verification: '120', 'Lower bound=45.872, upper bound=54.128'",
+        "M3=2: 'can you ask me some questions to make sure that i understand' - SELF-ASSESSMENT!",
+        "Classic iterative learning with answer verification"
+      ]
+    },
+    {
+      "user_id": "7e531994-257b-4964-ba60-98c83fc795dc",
+      "message_count": 3,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "Only 3 basic messages",
+        "Generic questions: course dates, what is complex number"
+      ]
+    },
+    {
+      "user_id": "7e8af39a-75f3-4e67-8282-a2845af3a301",
+      "message_count": 7,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "'oi' - dismissive",
+        "'Please just give the answer' - pure answer-seeking",
+        "No conceptual engagement"
+      ]
+    },
+    {
+      "user_id": "810cecf6-f323-4dd5-8a9e-5ccad3e742a0",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 0, "P3": 2, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 7,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P3=2: 'no i dont want answer...i want question' - wants to test self!",
+        "Borderline - some self-directed intent",
+        "Limited overall engagement"
+      ]
+    },
+    {
+      "user_id": "830cceff-a415-44b7-a71e-b2d5cd468721",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Only 3 messages",
+        "Solve request and basic concept questions"
+      ]
+    },
+    {
+      "user_id": "84dab563-2714-41ea-9d2e-6c013600861d",
+      "message_count": 18,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E1=1: 'lim sin x / x =1?' - checking standard limits",
+        "P2=2: 'summarize important formula for exam' - strategic",
+        "Mix of solve and explain requests"
+      ]
+    },
+    {
+      "user_id": "87b7ded1-ab31-4639-8bec-314aa5471a59",
+      "message_count": 14,
+      "scores": {"P1": 2, "P2": 2, "P3": 3, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 22,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "E1=2: 'Ok, so the b = 0.9?', 'a = 1.3?' - VERIFYING calculated answers",
+        "P3=3: 'can you give me a harder for loop question?' - SELF-DIRECTED DIFFICULTY INCREASE!",
+        "P3=3: 'Can you give me a harder question for simulation in R?' - repeated difficulty seeking",
+        "M3=2: Provides own code for verification"
+      ]
+    },
+    {
+      "user_id": "8896797c-d98a-4276-90bb-4908b1ec4fe2",
+      "message_count": 39,
+      "scores": {"P1": 1, "P2": 2, "P3": 2, "P4": 2, "M1": 1, "M2": 1, "M3": 1, "E1": 0, "E2": 0, "E3": 0, "R1": 2, "R2": 1},
+      "total": 13,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P3=2: Multiple practice question requests",
+        "P2=2: 'explain intermediate/extreme value theorem' - conceptual",
+        "Good breadth but not deep verification"
+      ]
+    },
+    {
+      "user_id": "895e43a9-73f1-403c-9e2b-49dd6096b814",
+      "message_count": 14,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 7,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Many image-based solve requests",
+        "'what is the matrix for p?' - answer-seeking",
+        "Limited conceptual engagement"
+      ]
+    },
+    {
+      "user_id": "8987c65f-11e2-4e3e-9084-f832799e1a00",
+      "message_count": 15,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 2, "M1": 1, "M2": 1, "M3": 1, "E1": 2, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "E1=2: 'why not 2/5' - questioning an answer!",
+        "E1=2: 'why the answer 2/5' - seeking understanding of result",
+        "Shows verification behavior through questioning"
+      ]
+    },
+    {
+      "user_id": "89b4754e-f35f-4927-9ef8-eff7c52b901c",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 4,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Only 3 messages",
+        "'gimme a crash course' - minimal effort",
+        "Tutorial and crash course requests"
+      ]
+    },
+    {
+      "user_id": "89f9415b-c45e-44a8-b94d-ad94c4f6f017",
+      "message_count": 16,
+      "scores": {"P1": 1, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 14,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P3=2: 'give me some questions to practice for the upcoming CA2'",
+        "P2=2: Ceramics conceptual questions - porosity, tetrahedral sites",
+        "Engaged with material science content"
+      ]
+    },
+    {
+      "user_id": "8a12da42-10d5-49b6-8e6a-a97187aefe92",
+      "message_count": 11,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 2, "E3": 0, "R1": 1, "R2": 1},
+      "total": 14,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E2=2: 'for CLT when they mention sample size does it refer to...' - clarifying concepts!",
+        "E1=1: 'in your above explanation you seem to refer to...' - catching inconsistency",
+        "Good conceptual engagement with statistics"
+      ]
+    },
+    {
+      "user_id": "8a21ef75-5b63-4690-8d98-4304319a465f",
+      "message_count": 3,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "Only 3 messages",
+        "Generic concept explanation requests"
+      ]
+    },
+    {
+      "user_id": "8a73146d-e041-4ad7-8fcc-d049740ebe03",
+      "message_count": 70,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 20,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "HIGH engagement (70 messages)",
+        "E1=2: 'can you explain how the det(-A) formula is derived?' - seeking derivation",
+        "P3=2: 'come up with a formula sheet for all the topics' - strategic preparation",
+        "Close to Pattern B but mostly guided learning"
+      ]
+    },
+    {
+      "user_id": "8a821446-cdbc-4d59-8f8c-4070cabdbb98",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 1, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 11,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E1=1: 'Can you explain why D is wrong' - questioning MCQ answer",
+        "P2=2: Investment conceptual questions",
+        "Finance/investment topic engagement"
+      ]
+    },
+    {
+      "user_id": "8a920542-fb0e-4c10-b8fe-d4a6f4fa9232",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 1, "M1": 2, "M2": 1, "M3": 1, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 12,
+      "pattern": "C",
+      "confidence": 0.75,
+      "key_evidence": [
+        "M3=1: 'can you give another example' - seeking multiple examples",
+        "P2=2: 'can you explain the definition of a pivoting column' - conceptual",
+        "Learning through examples"
+      ]
+    },
+    {
+      "user_id": "8b141d91-820d-49e5-a4de-55fe0d2b175d",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 2,
+      "pattern": "F",
+      "confidence": 0.9,
+      "key_evidence": [
+        "Only 3 messages",
+        "One message about special education (off-topic)",
+        "Minimal engagement with course material"
+      ]
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 2,
+      "C": 9,
+      "D": 0,
+      "E": 0,
+      "F": 8
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "10.5%",
+      "C": "47.4%",
+      "D": "0%",
+      "E": "0%",
+      "F": "42.1%"
+    },
+    "average_total_score": 10.1,
+    "notable_findings": {
+      "exemplary_pattern_b": [
+        {
+          "user_id": "7e184af7-e805-447c-810b-bd07b6ba6dc1",
+          "message_count": 106,
+          "highlight": "'can you ask me some questions to make sure that i understand' - self-assessment request"
+        },
+        {
+          "user_id": "87b7ded1-ab31-4639-8bec-314aa5471a59",
+          "highlight": "'can you give me a harder for loop question?' - self-directed difficulty increase"
+        }
+      ],
+      "verification_behaviors": [
+        {
+          "user_id": "87b7ded1-ab31-4639-8bec-314aa5471a59",
+          "quote": "Ok, so the b = 0.9?",
+          "significance": "E1=2 - Verifying calculated answers with AI"
+        },
+        {
+          "user_id": "8987c65f-11e2-4e3e-9084-f832799e1a00",
+          "quote": "why not 2/5",
+          "significance": "E1=2 - Questioning AI answer"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "batch_number": 10,
+  "annotation_date": "2024-11-24",
+  "methodology": "LLM-as-a-Judge (Claude Sonnet 4.5 Direct Semantic Analysis)",
+  "users_annotated": 19,
+  "user_id_range": "198-216 (alphabetically sorted, skipping 8b141d91 already in batch 9)",
+
+  "annotations": [
+    {
+      "user_id": "8b19cb54-a8b0-4098-9db9-a387d657dd11",
+      "message_count": 15,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 1},
+      "total": 19,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "M3=2: 'Test my understanding on solving Ax = b problem' - SELF-TESTING!",
+        "P2=2: 'What is the different between row space, column space and null space' - conceptual",
+        "Close to Pattern B but mostly guided learning"
+      ]
+    },
+    {
+      "user_id": "8bfe145e-798b-4b37-8eae-58ac18590be3",
+      "message_count": 7,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 8,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "P2=2: Theorem questions (l'Hospital, MVT, IVT)",
+        "M1=1: 'CAN YOU draw points A and B' - visualization request",
+        "Limited overall engagement"
+      ]
+    },
+    {
+      "user_id": "8c2684d5-377b-44df-ae98-3b95190b8f68",
+      "message_count": 6,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 2, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 9,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "E1=1: 'is the answer to this just 0?' - checking answer",
+        "M2=1: 'how did the limit change to h to 0' - questioning step",
+        "Mostly image-based help requests"
+      ]
+    },
+    {
+      "user_id": "8c6d1585-cd9c-477c-a8ae-3d7dbe625729",
+      "message_count": 21,
+      "scores": {"P1": 1, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 1},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P2=2: 'What is the difference between standard deviation and sigma?' - conceptual",
+        "P3=2: 'Can you provide more practice questions for quiz 2' - self-directed",
+        "E1=1: 'How you know a coefficient is statistically significant?' - understanding criteria"
+      ]
+    },
+    {
+      "user_id": "8c73c5db-5918-4dba-ac2d-32a9e093bdd6",
+      "message_count": 11,
+      "scores": {"P1": 3, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 21,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P1=3: 'create a study schedule for today which includes studying...applying active study techniques: interleaving, spaced repetition, and pomodoro' - EXCELLENT METACOGNITIVE PLANNING!",
+        "P1=3: 'create a study plan allocating one pomodoro session for one subtopic'",
+        "Classic Pattern B with strong self-regulation"
+      ]
+    },
+    {
+      "user_id": "8cc396ac-ad69-483c-83f7-b4e4088dc822",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 1, "E3": 0, "R1": 1, "R2": 0},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Only 3 messages",
+        "E2=1: 'yes its right skewed' - responding to AI analysis",
+        "Statistics regression question"
+      ]
+    },
+    {
+      "user_id": "8e3145bb-a5e5-40ac-bc0d-d00408e19093",
+      "message_count": 3,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "Only 3 pure derivative requests",
+        "No conceptual engagement at all"
+      ]
+    },
+    {
+      "user_id": "8e5b0cdc-781e-4657-a95f-6f88a5add4c9",
+      "message_count": 33,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 20,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=2: 'why is this code wrong' - debugging understanding",
+        "E1=2: 'is 2*(1-pnorm(abs(Z)) and 2*(pnorm(-abs(Z))) the same?' - verifying equivalence",
+        "P3=2: 'can you mock a final quiz questions bank for me' - self-directed practice",
+        "Close to Pattern B"
+      ]
+    },
+    {
+      "user_id": "90502d74-166b-4d8a-8831-a5d953a89a7f",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 3,
+      "pattern": "F",
+      "confidence": 0.85,
+      "key_evidence": [
+        "Only 3 messages",
+        "Education/intellectual disability topic (off-topic from main dataset)",
+        "Limited engagement"
+      ]
+    },
+    {
+      "user_id": "9061fc8b-130d-40bc-b494-4a7451c041ba",
+      "message_count": 55,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 3, "E2": 1, "E3": 0, "R1": 1, "R2": 1},
+      "total": 15,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "E1=3: 'but the correct ans is 0.6' - CORRECTING AI with known answer!",
+        "HIGH volume (55 msgs) but many 'solve' requests",
+        "P2=2: 'can we use squeeze theorem for other numbers instead of trigo' - conceptual"
+      ],
+      "keyword_would_give": {"E1": 0, "pattern": "F"}
+    },
+    {
+      "user_id": "906e529c-7704-4b35-b6b4-c0dcf14db6d6",
+      "message_count": 23,
+      "scores": {"P1": 1, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 1, "M3": 1, "E1": 0, "E2": 1, "E3": 0, "R1": 2, "R2": 1},
+      "total": 15,
+      "pattern": "C",
+      "confidence": 0.8,
+      "key_evidence": [
+        "P3=2: 'try a question where cramer rule can be applied' - self-directed practice",
+        "P2=2: 'when does l hospital rule apply' - understanding application criteria",
+        "Good topic breadth"
+      ]
+    },
+    {
+      "user_id": "908ee2bb-2d91-4b32-bf01-81c502fedec2",
+      "message_count": 5,
+      "scores": {"P1": 0, "P2": 0, "P3": 0, "P4": 1, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 1,
+      "pattern": "F",
+      "confidence": 0.95,
+      "key_evidence": [
+        "4 of 5 messages are admin questions (outcomes, instructors, quizzes, assessment)",
+        "Only 1 substantive question about confidence interval",
+        "Minimal engagement"
+      ]
+    },
+    {
+      "user_id": "90a9ecb5-64c1-4574-9b0e-5ff934c35baa",
+      "message_count": 77,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 1, "E3": 0, "R1": 2, "R2": 2},
+      "total": 18,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "HIGH engagement (77 messages)",
+        "P2=2: Geotechnical conceptual questions - soil profiles, strata",
+        "E1=1: Checking groupings of soil types for profiles"
+      ]
+    },
+    {
+      "user_id": "916f15c7-9d11-46c2-8d98-3fbe0e7c8d74",
+      "message_count": 21,
+      "scores": {"P1": 1, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 2, "M3": 1, "E1": 1, "E2": 2, "E3": 0, "R1": 2, "R2": 1},
+      "total": 17,
+      "pattern": "C",
+      "confidence": 0.85,
+      "key_evidence": [
+        "P2=2: Polymer physics questions - swelling, radius of gyration, percolation",
+        "E2=2: 'how is the Einstein equation derived' - seeking derivation",
+        "Good conceptual depth"
+      ]
+    },
+    {
+      "user_id": "91c8b63d-7223-486d-9e71-bcfd1fa3a1d5",
+      "message_count": 8,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 1},
+      "total": 9,
+      "pattern": "F",
+      "confidence": 0.75,
+      "key_evidence": [
+        "Bilingual user (Chinese/English)",
+        "E1=1: 'is it necessary to calculate the value of singular points?' - checking criteria",
+        "Limited overall engagement"
+      ]
+    },
+    {
+      "user_id": "92a37e0e-e674-4301-a25c-1056ae612c38",
+      "message_count": 66,
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 2, "M1": 2, "M2": 3, "M3": 2, "E1": 2, "E2": 2, "E3": 0, "R1": 2, "R2": 2},
+      "total": 22,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "HIGH engagement (66 messages)",
+        "M2=3: Persistent clarification - 'confidence level vs interval', 'are they related?'",
+        "E2=2: 'can null hypothesis be equal while alternate hypothesis be greater than' - deep statistical understanding",
+        "E1=2: 'what i mean is...' - clarifying own question"
+      ]
+    },
+    {
+      "user_id": "931bc988-cbd0-4aa5-a9bd-f2910c29da73",
+      "message_count": 3,
+      "scores": {"P1": 0, "P2": 1, "P3": 0, "P4": 1, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "total": 5,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Only 3 messages",
+        "E1=1: 'but from the photos is not' - verifying against source",
+        "Image-based eigenvalue questions"
+      ]
+    },
+    {
+      "user_id": "932ec878-bef7-4e09-a6b3-839f6b402cb4",
+      "message_count": 3,
+      "scores": {"P1": 1, "P2": 2, "P3": 0, "P4": 1, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 1, "E3": 0, "R1": 0, "R2": 0},
+      "total": 6,
+      "pattern": "F",
+      "confidence": 0.8,
+      "key_evidence": [
+        "Only 3 messages",
+        "P2=2: 'when should we use source transformation?' - conceptual",
+        "E2=1: 'why did we use source transformation on only one part'"
+      ]
+    },
+    {
+      "user_id": "94553666-f9ab-4e4a-b89e-cb9eed4446df",
+      "message_count": 63,
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 2, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 2, "E3": 1, "R1": 2, "R2": 2},
+      "total": 23,
+      "pattern": "B",
+      "confidence": 0.9,
+      "key_evidence": [
+        "P3=2: 'can u test me on rank theorem?' - SELF-TESTING!",
+        "E1=2: 'is it 2?', 'Am i right?' - verifying own answers",
+        "E3=1: 'ahhh i see, if it has coefficients that are zero...Am i right?' - synthesis and confirmation",
+        "HIGH engagement (63 messages) with consistent self-checking"
+      ]
+    }
+  ],
+
+  "batch_statistics": {
+    "pattern_distribution": {
+      "A": 0,
+      "B": 3,
+      "C": 8,
+      "D": 0,
+      "E": 0,
+      "F": 8
+    },
+    "pattern_percentages": {
+      "A": "0%",
+      "B": "15.8%",
+      "C": "42.1%",
+      "D": "0%",
+      "E": "0%",
+      "F": "42.1%"
+    },
+    "average_total_score": 11.3,
+    "notable_findings": {
+      "exemplary_pattern_b": [
+        {
+          "user_id": "8c73c5db-5918-4dba-ac2d-32a9e093bdd6",
+          "highlight": "Creates study schedule with active learning techniques (interleaving, spaced repetition, pomodoro)"
+        },
+        {
+          "user_id": "94553666-f9ab-4e4a-b89e-cb9eed4446df",
+          "highlight": "'can u test me on rank theorem?' + 'Am i right?' - self-testing and verification"
+        }
+      ],
+      "ai_correction_example": {
+        "user_id": "9061fc8b-130d-40bc-b494-4a7451c041ba",
+        "quote": "but the correct ans is 0.6",
+        "significance": "E1=3 - Corrects AI with known answer (keyword method would give E1=0)"
+      }
+    }
+  }
+}
