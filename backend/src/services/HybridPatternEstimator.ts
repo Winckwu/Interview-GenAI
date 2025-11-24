@@ -3,14 +3,19 @@
  * Fuses Bayesian and SVM predictions with pattern stability tracking
  *
  * Purpose:
- * - Ensemble prediction: 60% Bayesian + 40% SVM (when available)
+ * - Dynamic ensemble prediction with turn-adaptive weights
  * - Stability-aware confidence adjustment
  * - Graceful fallback to Bayesian-only if SVM unavailable
  *
- * Benefits:
- * - Bayesian: Fast, no dependencies, good with historical prior
- * - SVM: 77% accuracy, good for cold-start (first turns)
- * - Ensemble: Best of both worlds
+ * Architecture (Updated 2024-11-24):
+ * - Bayesian: Good for cold-start with historical prior (hand-crafted likelihoods)
+ * - SVM: 94.2% accuracy, 100% Pattern F recall (trained on 427 samples, 378 real users)
+ * - Dynamic weights: Early turns favor Bayesian, later turns favor SVM
+ *
+ * Weight Schedule:
+ * - Turn 1-2: 70% Bayesian / 30% SVM (cold-start, limited signals)
+ * - Turn 3-4: 50% Bayesian / 50% SVM (transition phase)
+ * - Turn 5+:  30% Bayesian / 70% SVM (warm-start, trust SVM accuracy)
  */
 
 import RealtimePatternRecognizer, { PatternEstimate, Pattern } from './RealtimePatternRecognizer';
@@ -39,9 +44,18 @@ export class HybridPatternEstimator {
   private sessionId: string;
   private turnCount: number = 0;
 
-  // Ensemble weights (can be tuned)
-  private readonly BAYESIAN_WEIGHT = 0.6;  // Bayesian more stable with prior
-  private readonly SVM_WEIGHT = 0.4;        // SVM good for cold-start
+  // Dynamic ensemble weights based on turn count
+  // Rationale: SVM achieves 94.2% accuracy with real data, but needs sufficient signals
+  // Early turns: Bayesian prior is more reliable (limited signal data)
+  // Later turns: SVM is more accurate (sufficient data accumulated)
+  private readonly WEIGHT_SCHEDULE = {
+    // Turn 1-2: Cold start - favor Bayesian prior
+    early: { bayesian: 0.70, svm: 0.30 },
+    // Turn 3-4: Transition - balanced
+    mid: { bayesian: 0.50, svm: 0.50 },
+    // Turn 5+: Warm start - favor SVM accuracy
+    late: { bayesian: 0.30, svm: 0.70 }
+  };
 
   constructor(userId: string, sessionId: string) {
     this.userId = userId;
@@ -153,22 +167,44 @@ export class HybridPatternEstimator {
   }
 
   /**
-   * Fuse Bayesian and SVM predictions
-   *
-   * Algorithm:
-   * 1. Weighted average: 60% Bayesian + 40% SVM
-   * 2. Normalize probabilities
-   * 3. Calculate new top pattern and confidence
+   * Get dynamic weights based on current turn count
    *
    * Rationale:
-   * - Bayesian: Better with historical prior (warm start)
-   * - SVM: Better for cold start (first turns)
-   * - 60/40 blend: Balanced approach
+   * - Turn 1-2: Limited signals → favor Bayesian prior (70/30)
+   * - Turn 3-4: Transition phase → balanced (50/50)
+   * - Turn 5+: Sufficient data → favor SVM accuracy (30/70)
+   */
+  private getCurrentWeights(): { bayesian: number; svm: number } {
+    if (this.turnCount <= 2) {
+      return this.WEIGHT_SCHEDULE.early;
+    } else if (this.turnCount <= 4) {
+      return this.WEIGHT_SCHEDULE.mid;
+    } else {
+      return this.WEIGHT_SCHEDULE.late;
+    }
+  }
+
+  /**
+   * Fuse Bayesian and SVM predictions with dynamic weights
+   *
+   * Algorithm:
+   * 1. Get turn-adaptive weights
+   * 2. Weighted average of probability distributions
+   * 3. Normalize probabilities
+   * 4. Calculate new top pattern and confidence
+   *
+   * Weight Evolution:
+   * - Early (turn 1-2): 70% Bayesian / 30% SVM
+   * - Mid (turn 3-4): 50% Bayesian / 50% SVM
+   * - Late (turn 5+): 30% Bayesian / 70% SVM
    */
   private fusePredictions(
     bayesian: PatternEstimate,
     svm: PatternEstimate
   ): PatternEstimate {
+    // Get dynamic weights based on turn count
+    const weights = this.getCurrentWeights();
+
     // Weighted average of probability distributions
     const fusedProbs = new Map<Pattern, number>();
 
@@ -177,8 +213,8 @@ export class HybridPatternEstimator {
       const svmProb = svm.probabilities.get(pattern) || 0;
 
       const fusedProb =
-        bayesianProb * this.BAYESIAN_WEIGHT +
-        svmProb * this.SVM_WEIGHT;
+        bayesianProb * weights.bayesian +
+        svmProb * weights.svm;
 
       fusedProbs.set(pattern, fusedProb);
     });
@@ -198,6 +234,9 @@ export class HybridPatternEstimator {
     const secondProb = sorted[1][1];
     const confidence = topProb - secondProb;
 
+    // Log weight usage for debugging
+    console.log(`[HybridPatternEstimator] Turn ${this.turnCount}: Using weights ${Math.round(weights.bayesian * 100)}% Bayesian / ${Math.round(weights.svm * 100)}% SVM`);
+
     return {
       topPattern,
       probability: topProb,
@@ -207,7 +246,7 @@ export class HybridPatternEstimator {
       evidence: [
         ...bayesian.evidence,
         `SVM prediction: ${svm.topPattern} (${(svm.probability * 100).toFixed(0)}% confidence)`,
-        `Ensemble: 60% Bayesian + 40% SVM`
+        `Ensemble: ${Math.round(weights.bayesian * 100)}% Bayesian + ${Math.round(weights.svm * 100)}% SVM (turn ${this.turnCount})`
       ]
     };
   }

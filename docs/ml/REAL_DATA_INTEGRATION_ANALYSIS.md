@@ -350,40 +350,54 @@ Based on the analysis, we recommend the following threshold adjustments:
 
 ### 4.6 System Architecture: Hybrid Pattern Estimator
 
-The MCA system employs a **Hybrid Pattern Estimator** that combines Bayesian reasoning with SVM classification:
+The MCA system employs a **Hybrid Pattern Estimator** that combines Bayesian reasoning with SVM classification using **dynamic turn-adaptive weights**.
 
 #### 4.6.1 Architecture Overview
 
 ```
-Final Prediction = 60% × Bayesian Probability + 40% × SVM Probability
+Final Prediction = W_bayesian × Bayesian + W_svm × SVM
+
+Where weights adapt based on turn count:
+- Turn 1-2: W_bayesian=0.70, W_svm=0.30 (cold-start)
+- Turn 3-4: W_bayesian=0.50, W_svm=0.50 (transition)
+- Turn 5+:  W_bayesian=0.30, W_svm=0.70 (warm-start)
 ```
 
-| Component | Role | Weight |
-|-----------|------|--------|
-| Bayesian Estimator | Early-stage prediction with priors | 60% |
-| SVM Classifier | Data-driven classification | 40% |
+#### 4.6.2 Dynamic Weight Schedule
 
-#### 4.6.2 Three-Phase Startup Mechanism
-
-| Phase | Turn Count | Behavior |
-|-------|------------|----------|
-| **Phase 1** | Turn 1-2 | Primarily Bayesian priors; SVM has insufficient signal data |
-| **Phase 2** | Turn 3 | SVM begins contributing; hybrid weights activated |
-| **Phase 3** | Turn 4+ | Full hybrid mode; dynamic weight adjustment based on confidence |
+| Phase | Turn Count | Bayesian | SVM | Rationale |
+|-------|------------|----------|-----|-----------|
+| **Cold-start** | 1-2 | 70% | 30% | Limited signal data; rely on historical prior |
+| **Transition** | 3-4 | 50% | 50% | Balanced; accumulating signals |
+| **Warm-start** | 5+ | 30% | 70% | Sufficient data; leverage SVM's 94.2% accuracy |
 
 #### 4.6.3 Component Details
 
 **Bayesian Component (`RealtimePatternRecognizer`):**
 - Maintains prior probabilities for each pattern
-- Updates posterior based on observed behavioral signals
-- Handles uncertainty in early conversation stages
+- Uses hand-crafted signal-likelihood mappings
+- Best for: Cold-start with historical user data
 
 **SVM Component (`SVMPatternClassifier`):**
-- Uses 12-dimensional metacognitive metrics
-- RBF kernel with C=10.0
-- Class-weighted training (Pattern F: 2.0× weight)
+- 94.2% test accuracy (updated 2024-11-24)
+- 100% Pattern F recall (critical for at-risk detection)
+- Trained on 427 samples (378 real users + 49 synthetic)
+- RBF kernel with C=10.0, class-weighted
 
-#### 4.6.4 Model Update Applied
+#### 4.6.4 Weight Evolution Rationale
+
+| Metric | Bayesian | SVM (Updated) |
+|--------|----------|---------------|
+| Accuracy | Rule-based | **94.2%** |
+| Pattern F Recall | Depends on rules | **100%** |
+| Data Source | Hand-crafted | **378 real users** |
+| Cold-start | ✅ Good | ⚠️ Needs signals |
+| Warm-start | ⚠️ Rules may be outdated | ✅ Data-driven |
+
+**Previous (Fixed):** 60% Bayesian / 40% SVM
+**Updated (Dynamic):** Adapts from 70/30 → 50/50 → 30/70
+
+#### 4.6.5 Model Update Applied
 
 | File | Before | After |
 |------|--------|-------|
@@ -391,9 +405,9 @@ Final Prediction = 60% × Bayesian Probability + 40% × SVM Probability
 | `models/svm_scaler.pkl` | Fit on synthetic data | Fit on real user data (378 users) |
 
 The hybrid architecture ensures:
-1. **Robustness in early stages** via Bayesian priors
-2. **Accuracy with more data** via SVM classification
-3. **Continuous adaptation** as conversation progresses
+1. **Robustness in early stages** via Bayesian priors (70% weight)
+2. **Maximum accuracy when data-rich** via SVM (70% weight after turn 5)
+3. **Smooth transition** through balanced 50/50 phase
 
 ### 4.7 System Changes Implemented
 
