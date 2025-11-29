@@ -32,7 +32,7 @@
 
 ### 代表性引文 (中文)
 
-> **引文A-1** (I3, 计算机科学博士生):
+> **引文A-1** (I13, 人工智能算法工程师):
 > "我把大任务分成小块...每个小块先自己思考，然后用GPT验证或扩展。但最后决定权是我的。如果我开始感觉'没有GPT我做不了'，那就是红灯信号。"
 
 > **引文A-2** (I22, 深度学习博士生):
@@ -43,7 +43,7 @@
 
 ### Representative Quotes (English Translation)
 
-> **Quote A-1** (I3, CS PhD):
+> **Quote A-1** (I13, AI Algorithm Engineer):
 > "I break big tasks into small chunks... For each chunk, I think through it myself first, then use GPT to verify or expand. But the final decision is mine. If I start feeling 'I can't do this without GPT,' that's a red flag."
 
 > **Quote A-2** (I22, Deep Learning PhD):
@@ -152,7 +152,7 @@
 
 ### 代表性引文 (中文)
 
-> **引文D-1** (I44, AIGC项目负责人):
+> **引文D-1** (I16, 计算机科学博士生):
 > "我从不直接接受GPT的代码。我逐行读，然后在本地测试，然后故意输入边缘情况看它会不会崩溃。它经常会。如果我不这样做，那些bug会在生产环境爆发。"
 
 > **引文D-2** (I10, 金融学副教授):
@@ -163,7 +163,7 @@
 
 ### Representative Quotes (English Translation)
 
-> **Quote D-1** (I44, AIGC Project Lead):
+> **Quote D-1** (I16, CS PhD):
 > "I never directly accept GPT's code. I read it line by line, then test it locally, then deliberately input edge cases to see if it crashes. It often does. If I don't do this, those bugs will explode in production."
 
 > **Quote D-2** (I10, Finance Associate Professor):
@@ -326,4 +326,4 @@ Pattern F虽然在访谈样本中仅占4.1%（n=2），但真实课堂数据显�
 **编码方法**: 扎根理论 + 三角验证（行为观察 + 自我报告 + 关键事件）
 **编码者间信度**: Cohen's κ = 0.72（n=10样本双盲编码）
 **数据更新**: 修正Pattern分布（A: 24.5%, F: 4.1%），添加I30/I44作为Pattern F代表
-**最后更新**: 2024-11-29
+**最后更新**: 2025-11-29
