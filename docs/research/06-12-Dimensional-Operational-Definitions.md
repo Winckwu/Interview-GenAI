@@ -749,7 +749,7 @@ def classify_pattern(scores):
         return 'F'  # Passive Over-Reliance
 
     # Pattern A: Strategic Decomposition
-    # 访谈样本：10人 (20.4%)，代表：I1, I13, I22, I24, I25, I27, I31, I34, I45
+    # 访谈样本：10人 (20.4%)，代表：I1, I8, I13, I22, I24, I25, I27, I31, I34, I45
     if P_avg >= 2.5 and E_avg >= 2 and scores['P4'] >= 2:
         return 'A'
 
