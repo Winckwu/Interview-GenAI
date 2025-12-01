@@ -603,8 +603,8 @@ SVC(kernel='rbf', C=10.0, gamma='scale')
 ```python
 SVC(
     kernel='rbf',
-    C=0.1,              # 降低正则化强度，防止过拟合
-    gamma=0.1,          # 增大支持向量影响范围
+    C=1.0,              # GridSearchCV最优正则化参数
+    gamma='scale',      # 自适应gamma (1 / n_features * X.var())
     probability=True,   # 启用概率输出
     class_weight='balanced',  # 处理类别不平衡
     random_state=42

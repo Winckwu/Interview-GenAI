@@ -151,7 +151,7 @@ svm_pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('svm', SVC(
         kernel='rbf',
-        C=10.0,
+        C=1.0,
         gamma='scale',
         class_weight='balanced',  # 处理类别不平衡
         probability=True,
