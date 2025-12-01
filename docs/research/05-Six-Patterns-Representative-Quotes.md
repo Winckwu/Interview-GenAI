@@ -309,7 +309,7 @@ Pattern E在访谈数据(2.0%)和真实数据(0.3%)中都极为稀有。这本�
 在论文中引用特定引文时:
 
 ```latex
-Pattern A用户（n=10, 20.4%）展现出强烈的能力保护意识。如受访者I22所述："我有一个规则：永远不让AI写我简历或求职信的第一稿。那是我必须自己做的。"（I22，深度学习博士生，Pattern A）这种行为体现了Self-Determination Theory中的autonomy need \citep{Deci2000}。
+Pattern A用户（n=10, 20.4%）展现出强烈的能力保护意识。如受访者I22所述："我有一个规则：永远不让AI写我简历或求职信的第一稿。那是我必须自己做的。"（I22，强化学习博士，Pattern A）这种行为体现了Self-Determination Theory中的autonomy need \citep{Deci2000}。
 ```
 
 For Pattern F:
