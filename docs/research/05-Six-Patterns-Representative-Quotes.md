@@ -35,10 +35,10 @@
 > **引文A-1** (I13, AI硕士生):
 > "我把大任务分成小块...每个小块先自己思考，然后用GPT验证或扩展。但最后决定权是我的。如果我开始感觉'没有GPT我做不了'，那就是红灯信号。"
 
-> **引文A-2** (I22, 深度学习博士生):
+> **引文A-2** (I22, 强化学习博士):
 > "我有一个规则：永远不让AI写我简历或求职信的第一稿。那是我必须自己做的。AI可以之后润色，但初稿必须是我的声音，我的经历，我的理解。"
 
-> **引文A-3** (I34, 化学研究员):
+> **引文A-3** (I34, 计算化学博士后研究员):
 > "我会问自己：'如果明天AI消失了，我还能完成这个任务吗？' 如果答案是否定的，我就会后退一步，先自己尝试，然后再用AI辅助。"
 
 ### Representative Quotes (English Translation)
@@ -46,10 +46,10 @@
 > **Quote A-1** (I13, AI Master's Student):
 > "I break big tasks into small chunks... For each chunk, I think through it myself first, then use GPT to verify or expand. But the final decision is mine. If I start feeling 'I can't do this without GPT,' that's a red flag."
 
-> **Quote A-2** (I22, Deep Learning PhD):
+> **Quote A-2** (I22, Reinforcement Learning PhD):
 > "I have a rule: Never let AI write the first draft of my resume or cover letter. That's something I must do myself. AI can polish it later, but the first draft must be in my voice, my experiences, my understanding."
 
-> **Quote A-3** (I34, Chemistry Researcher):
+> **Quote A-3** (I34, Computational Chemistry Postdoc):
 > "I ask myself: 'If AI disappeared tomorrow, could I still complete this task?' If the answer is no, I step back, try it myself first, then use AI as an aid."
 
 ### 行为指标
@@ -152,13 +152,13 @@
 
 ### 代表性引文 (中文)
 
-> **引文D-1** (I16, 计算机科学博士生):
+> **引文D-1** (I16, 计算机博士（大模型安全）):
 > "我从不直接接受GPT的代码。我逐行读，然后在本地测试，然后故意输入边缘情况看它会不会崩溃。它经常会。如果我不这样做，那些bug会在生产环境爆发。"
 
 > **引文D-2** (I10, 金融学副教授):
 > "我的规则是：AI提供的任何'事实'，我都要验证原始来源。它有时会编造引用，或者曲解论文含义。我被烧过几次，现在我不冒这个险。"
 
-> **引文D-3** (I18, 航空航天研究员):
+> **引文D-3** (I18, 航天博后):
 > "我会问GPT同一个问题三次，换不同的表述方式。如果三次答案不一致，我就知道它不确定，我需要查专业文献。我绝不能在技术细节上冒险。"
 
 ### Representative Quotes (English Translation)
@@ -188,17 +188,17 @@
 **占比**: 2.0% (1/49) ⚠️ 极稀有
 **元认知特征**: 高反思、学习导向、元认知觉察
 **核心策略**: 将AI作为元认知工具而非任务工具
-**唯一案例**: I6（医疗数据科学硕士生，31/36分）
+**唯一案例**: I6（健康大数据与智能医学硕士，31/36分）
 
 ### 代表性引文 (中文)
 
-> **引文E-1** (I6, 医疗数据科学硕士):
+> **引文E-1** (I6, 健康大数据与智能医学硕士):
 > "我不让GPT写我的代码。我让它扮演编程导师。我写一段代码，问它'这里有什么可以改进的？为什么？'这样我既完成了任务，又学到了东西。"
 
-> **引文E-2** (I6, 医疗数据科学硕士):
+> **引文E-2** (I6, 健康大数据与智能医学硕士):
 > "每次用完GPT，我会关掉它，然后尝试从记忆中复现刚才学的。如果我做不到，说明我没真正理解，只是借用了AI的大脑。那样的学习是假的。"
 
-> **引文E-3** (I6, 医疗数据科学硕士) ⭐ 唯一完整Pattern E案例:
+> **引文E-3** (I6, 健康大数据与智能医学硕士) ⭐ 唯一完整Pattern E案例:
 > "我建立了一个prompt模板库，每次用完GPT后我会记录：(1) 我学到了什么新概念；(2) 哪里我的理解有误；(3) 如果没有AI我能独立完成多少。我把AI当成一个私人导师，而不是作业代写工具。"
 
 ### Representative Quotes (English Translation)
