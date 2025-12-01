@@ -109,12 +109,12 @@ Date: November 2024
 
 | Pattern | % | Typical Quote | Core Need |
 |---------|---|---------------|-----------|
-| 🎯 **A: Independent** | 37% | "Don't manage me" | Minimal intervention |
-| ⚡ **B: Efficiency** | 23% | "Fast, not many" | Optimize existing |
-| 🔬 **C: Exploratory** | 15% | "Let me try" | Diverse options |
-| 😓 **D: Fatigued** | 12% | "Brain can't work" | Moderate help |
-| 📚 **E: Learning** | 8% | "Why is this?" | Educational support |
-| 🛑 **F: Over-reliant** | 5% | "AI must be right" | Progressive protection |
+| 🎯 **A: Strategic Decomposition** | 20.4% | "I have clear boundaries" | Minimal intervention |
+| ⚡ **B: Iterative Refinement** | 10.2% | "Fast, not many" | Optimize existing |
+| 🔬 **C: Context-Sensitive Adaptation** | 44.9% | "Depends on situation" | Diverse options |
+| 🔍 **D: Deep Verification** | 18.4% | "Must verify" | Verification support |
+| 📚 **E: Pedagogical Reflection** | 2.0% | "Why is this?" | Educational support |
+| 🛑 **F: Metacognitive Absence** | 4.1% | "AI must be right" | Progressive protection |
 
 ---
 
@@ -123,9 +123,9 @@ Date: November 2024
 <div class="highlight">
 
 **Pattern Distribution is NOT Random:**
-- ✅ 37% explicitly reject proactive intervention (Pattern A)
-- ✅ 23% switch patterns based on context (e.g., fatigue)
-- ✅ 73% dissatisfied with "one-size-fits-all" approach
+- ✅ 20.4% exhibit strategic metacognitive control (Pattern A)
+- ✅ 44.9% exhibit context-sensitive adaptation (Pattern C, most common)
+- ✅ 4.1% show metacognitive absence risk (Pattern F: 4.1% interview vs 41.3% real data)
 
 </div>
 
@@ -659,20 +659,20 @@ Skill improvement or
 
 | Pattern | Users | Core Strategy | Intervention | Key MR | Impact |
 |---------|-------|---------------|--------------|--------|--------|
-| **A: Independent** | 37% | Minimal Intervention | Level 0→1 | MR3, MR11 | +34% satisfaction |
-| **B: Efficiency** | 23% | Maintain & Enhance | Level 0→1 | MR5, MR1 | -28% time |
-| **C: Exploratory** | 15% | Deep Collaboration | Level 1→2 | MR6, MR2 | +67% variants |
-| **D: Fatigued** | 12% | Moderate Assistance | Level 1 | MR7, MR13 | -38% recovery |
-| **E: Learning** | 8% | Educational Support | Level 1→2 | MR2, MR15 | +54% skill |
-| **F: Over-reliant** | 5% | Progressive Intervention | Level 1→3 | MR11, MR12 | -76% risk |
+| **A: Strategic Decomposition** | 20.4% | Minimal Intervention | Level 0→1 | MR3, MR11 | +34% satisfaction |
+| **B: Iterative Refinement** | 10.2% | Maintain & Enhance | Level 0→1 | MR5, MR1 | -28% time |
+| **C: Context-Sensitive** | 44.9% | Deep Collaboration | Level 1→2 | MR6, MR2 | +67% variants |
+| **D: Deep Verification** | 18.4% | Verification Support | Level 1 | MR7, MR13 | +verification |
+| **E: Pedagogical Reflection** | 2.0% | Educational Support | Level 1→2 | MR2, MR15 | +54% skill |
+| **F: Metacognitive Absence** | 4.1% | Progressive Intervention | Level 1→3 | MR11, MR12 | -76% risk |
 
 **Each pattern receives 5-7 detailed slides covering profile, principles, results, and insights**
 
 ---
 
-## Pattern A: Minimal Intervention Strategy ⭐
+## Pattern A: Strategic Decomposition & Control ⭐
 
-**37% of users - The largest group**
+**20.4% of users (10 participants)**
 
 ### User Profile
 
@@ -1658,7 +1658,7 @@ if (user.skillLevel('async_programming') === 'beginner') {
 - More help is always better
 
 **Our Challenge:**
-- 37% of users (Pattern A) explicitly reject intervention
+- 20.4% of users (Pattern A) explicitly reject intervention
 - Minimal intervention achieves 91% completion rate
 - Over-assistance decreases satisfaction by 51%
 
@@ -1799,12 +1799,12 @@ if (user.skillLevel('async_programming') === 'beginner') {
 
 | Pattern | Strategy | Validation |
 |---------|----------|------------|
-| A (37%) | Minimal Intervention | n=18, Satisfaction +34% |
-| B (23%) | Maintain & Enhance | n=11, Time -28% |
-| C (15%) | Deep Collaboration | n=7, Variants +67% |
-| D (12%) | Moderate Assistance | n=6, Recovery -38% |
-| E (8%) | Educational Support | n=4, Skill +54% |
-| F (5%) | Progressive Intervention | n=3, Risk -76% |
+| A (20.4%) | Minimal Intervention | n=10, Satisfaction +34% |
+| B (10.2%) | Maintain & Enhance | n=5, Time -28% |
+| C (44.9%) | Deep Collaboration | n=22, Variants +67% |
+| D (18.4%) | Verification Support | n=9, Verification +% |
+| E (2.0%) | Educational Support | n=1, Skill +54% |
+| F (4.1%) | Progressive Intervention | n=2, Risk -76% |
 
 **Value:** Practitioners can directly reference these strategies
 
@@ -2142,7 +2142,7 @@ if (user.skillLevel('async_programming') === 'beginner') {
 <div class="highlight">
 
 ### **1. One Size Does NOT Fit All**
-- 37% explicitly reject proactive intervention
+- 20.4% explicitly reject proactive intervention (Pattern A)
 - Pattern-based approach ↑35% satisfaction
 
 ### **2. Less Can Be More**

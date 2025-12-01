@@ -754,7 +754,7 @@ def classify_pattern(scores):
         return 'A'
 
     # Pattern D: Deep Verification
-    # 访谈样本：9人 (18.4%)，代表：I3, I16, I17, I18, I20...
+    # 访谈样本：9人 (18.4%)，代表：I3, I10, I16, I17, I18, I20, I38, I41, I46
     if E_avg >= 2.5 and scores['E1'] >= 2 and scores['E2'] >= 2:
         return 'D'
 

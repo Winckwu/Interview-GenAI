@@ -95,48 +95,51 @@ We provide:
 
 #### 2.4.1 AI Usage Patterns (Patterns A-F)
 
-**Pattern A - "Lazy Delegation"** (8% of users):
-- Input entire task to AI with minimal guidance
-- Accept outputs with minimal verification
-- Result: Low quality, learn little
-- Example: "Give me a 5000-word essay" → takes first draft
+**Pattern A - "Strategic Decomposition & Control"** (20.4% of users, n=10):
+- Clear task boundaries with AI
+- Strategic use for specific sub-tasks
+- High autonomy and verification behavior
+- Result: Efficient, preserves agency
+- Representatives: I1, I8, I13, I22, I24, I25, I27, I31, I34, I45
 
-**Pattern B - "Iterative Optimization"** (33% of users):
+**Pattern B - "Iterative Refinement & Calibration"** (10.2% of users, n=5):
 - Break tasks into steps
 - Iterate 3-4+ times to refine output
 - Verify and learn from iterations
 - Result: High quality, develops skills
-- Example: I002 "3-4 times before it really works"
+- Representatives: I2, I7, I9, I11, I29
 
-**Pattern C - "Expert Delegation"** (27% of users):
-- Use AI strategically for specific sub-tasks
-- Integrate results into personal work
-- Maintain decision authority
-- Result: Efficient, preserves agency
-- Example: I001 for "逐字逐句" (line-by-line) refinement
+**Pattern C - "Context-Sensitive Adaptation"** (44.9% of users, n=22):
+- Adapt AI usage based on situation
+- Flexible approach depending on task type
+- Most common pattern
+- Result: Adaptive, contextual effectiveness
+- Representatives: I4, I5, I12, I14, I15, I19, I21, I23, I26, I28, I32, I33, I35, I36, I37, I39, I40, I42, I43, I47, I48, I49
 
-**Pattern D - "Safety-First Collaboration"** (14% of users):
-- Use AI for initial exploration only
+**Pattern D - "Deep Verification & Critical Engagement"** (18.4% of users, n=9):
 - Systematically verify before any use
 - Maintain skepticism throughout
+- Critical evaluation of AI outputs
 - Result: Slow but high confidence
-- Example: I017 (lawyer) doesn't trust medical advice from AI
+- Representatives: I3, I10, I16, I17, I18, I20, I38, I41, I46
 
-**Pattern E - "Experimental Explorer"** (12% of users):
-- Try multiple approaches/models
-- Document what works in their context
-- Build mental models of AI strengths
-- Result: Adaptive, learns patterns
-- Example: I016 "swap between GPT, Claude, Gemini"
+**Pattern E - "Pedagogical Reflection & Self-Monitoring"** (2.0% of users, n=1):
+- Learning-oriented AI usage
+- Reflect on process and outcomes
+- Self-monitoring metacognition
+- Result: Skill development focus
+- Representative: I6
 
-**Pattern F - "Passive Ineffective"** (6% of users):
+**Pattern F - "Metacognitive Absence & Passive Dependence"** (4.1% of users, n=2):
 - Accept AI outputs uncritically
 - No iteration or strategy
-- Mistakenly over-trust
+- Over-trust without verification
 - Result: Poor quality, risky
-- Example: User accepts medical advice without verification
+- Representatives: I30, I44
 
-**Key Insight**: Patterns A-E are self-improving loops. Pattern F is a "trap" we must prevent.
+**Key Insight**: Patterns A-E demonstrate various levels of metacognitive engagement. Pattern F represents metacognitive absence that requires intervention.
+
+> **Critical Note**: Interview sample shows Pattern F at 4.1% due to self-selection bias. Real classroom data (N=378) shows Pattern F at 41.3%.
 
 #### 2.4.2 User Frustrations (Top 6)
 
@@ -390,14 +393,14 @@ Clamped to [0, 100]
 
 ---
 
-#### MR5: Low-Cost Iteration Mechanism (33% of users)
+#### MR5: Low-Cost Iteration Mechanism (10.2% of users)
 
 **Design Goal**: Make iteration effortless - users should experiment freely
 
 **Evidence**:
 - I002: "Needs 3-4 iterations to get right"
 - I016: "Keep feeding it the question" with micro-modifications
-- Pattern B (33%): Heavy iterators need lightweight tools
+- Pattern B (10.2%): Heavy iterators need lightweight tools
 
 **Key Features**:
 1. **Branching conversations**: Fork from any history point, explore alternatives
@@ -924,17 +927,17 @@ IterationVariant {
 
 ### 7.1 User-Level Outcomes
 
-**Pattern B Users (Iterators, 33%)**:
+**Pattern B Users (Iterative Refinement, 10.2%)**:
 - Expected: 40-60% reduction in iteration time
 - Mechanism: MR5 (Low-Cost Iteration) enables fast variant generation
 - Outcome: More experimentation → better final results
 
-**Pattern D Users (Safety-First, 14%)**:
+**Pattern D Users (Deep Verification, 18.4%)**:
 - Expected: 30-50% reduction in verification time
 - Mechanism: MR9 (Trust Calibration) + MR12 (Critical Thinking) systematize verification
 - Outcome: Faster confidence → more AI usage
 
-**Pattern E Users (Explorers, 12%)**:
+**Pattern E Users (Pedagogical Reflection, 2.0%)**:
 - Expected: 50-70% acceleration in learning curve
 - Mechanism: MR15 (Strategy Guide) + MR19 (Assessment) scaffold learning
 - Outcome: Formal knowledge → apply faster
