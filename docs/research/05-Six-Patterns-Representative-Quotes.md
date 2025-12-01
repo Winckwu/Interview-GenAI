@@ -32,7 +32,7 @@
 
 ### 代表性引文 (中文)
 
-> **引文A-1** (I13, 人工智能算法工程师):
+> **引文A-1** (I13, AI硕士生):
 > "我把大任务分成小块...每个小块先自己思考，然后用GPT验证或扩展。但最后决定权是我的。如果我开始感觉'没有GPT我做不了'，那就是红灯信号。"
 
 > **引文A-2** (I22, 深度学习博士生):
@@ -43,7 +43,7 @@
 
 ### Representative Quotes (English Translation)
 
-> **Quote A-1** (I13, AI Algorithm Engineer):
+> **Quote A-1** (I13, AI Master's Student):
 > "I break big tasks into small chunks... For each chunk, I think through it myself first, then use GPT to verify or expand. But the final decision is mine. If I start feeling 'I can't do this without GPT,' that's a red flag."
 
 > **Quote A-2** (I22, Deep Learning PhD):
@@ -72,10 +72,10 @@
 
 ### 代表性引文 (中文)
 
-> **引文B-1** (I16, 软件工程师):
+> **引文B-1** (I7, 生物学博士生):
 > "我通常一开始就知道它不会完美。所以我就快速扔几个提示，看看哪个方向有希望，然后深挖那个方向。前几次'失败'其实是探路，不是真的失败。"
 
-> **引文B-2** (I8, 计算机科学本科生):
+> **引文B-2** (I9, 电子工程博士生):
 > "我有一个Google Doc专门记录'GPT搞砸的地方'。现在我知道：数学推导别信它，代码逻辑小心，创意头脑风暴很好。这是通过试错学出来的。"
 
 > **引文B-3** (I11, 产品经理):
@@ -83,10 +83,10 @@
 
 ### Representative Quotes (English Translation)
 
-> **Quote B-1** (I16, Software Engineer):
+> **Quote B-1** (I7, Biology PhD):
 > "I usually know upfront it won't be perfect. So I just quickly throw a few prompts, see which direction shows promise, then dig deeper in that direction. The first few 'failures' are really exploration, not real failures."
 
-> **Quote B-2** (I8, CS Undergrad):
+> **Quote B-2** (I9, Electrical Engineering PhD):
 > "I have a Google Doc specifically for 'where GPT screwed up.' Now I know: Don't trust it for math derivations, be careful with code logic, great for creative brainstorming. I learned this through trial and error."
 
 > **Quote B-3** (I11, Product Manager):
@@ -112,24 +112,24 @@
 
 ### 代表性引文 (中文)
 
-> **引文C-1** (I41, 理论光学博士生):
+> **引文C-1** (I33, 量化交易专家):
 > "我对GPT的信任不是固定的。写代码我信它70%，数学证明我信30%，帮我头脑风暴我信90%。这取决于任务是什么。"
 
 > **引文C-2** (I28, 金融硕士项目负责人):
 > "如果是期末考试，我会超级仔细验证。如果是课堂练习，我会快速用它然后继续。我会根据赌注调整使用方式。"
 
-> **引文C-3** (I19, 项目经理):
+> **引文C-3** (I19, 商业硕士生):
 > "我有一个心理决策树：紧急吗？熟悉吗？有风险吗？ 根据答案，我会选择不同的AI使用深度——从'只是头脑风暴'到'全面验证每个细节'。"
 
 ### Representative Quotes (English Translation)
 
-> **Quote C-1** (I41, Theoretical Optics PhD):
+> **Quote C-1** (I33, Quantitative Trading Expert):
 > "My trust in GPT isn't fixed. For coding I trust it 70%, for math proofs 30%, for brainstorming 90%. It depends on the task."
 
 > **Quote C-2** (I28, Finance MS Program Director):
 > "If it's a final exam, I verify super carefully. If it's class practice, I use it quickly and move on. I adjust how I use it based on the stakes."
 
-> **Quote C-3** (I19, Project Manager):
+> **Quote C-3** (I19, Business Master's Student):
 > "I have a mental decision tree: Is it urgent? Familiar? Risky? Based on the answers, I choose different AI engagement depths—from 'just brainstorming' to 'verifying every detail thoroughly.'"
 
 ### 行为指标
@@ -192,10 +192,10 @@
 
 ### 代表性引文 (中文)
 
-> **引文E-1** (I12, 金融风控专员):
+> **引文E-1** (I6, 医疗数据科学硕士):
 > "我不让GPT写我的代码。我让它扮演编程导师。我写一段代码，问它'这里有什么可以改进的？为什么？'这样我既完成了任务，又学到了东西。"
 
-> **引文E-2** (I26, 电商创业者):
+> **引文E-2** (I6, 医疗数据科学硕士):
 > "每次用完GPT，我会关掉它，然后尝试从记忆中复现刚才学的。如果我做不到，说明我没真正理解，只是借用了AI的大脑。那样的学习是假的。"
 
 > **引文E-3** (I6, 医疗数据科学硕士) ⭐ 唯一完整Pattern E案例:
@@ -203,10 +203,10 @@
 
 ### Representative Quotes (English Translation)
 
-> **Quote E-1** (I12, Financial Risk Specialist):
+> **Quote E-1** (I6, Health Data Science MS):
 > "I don't let GPT write my code. I have it act as a programming tutor. I write code, then ask 'what can be improved here? Why?' This way I complete the task and learn something."
 
-> **Quote E-2** (I26, E-commerce Entrepreneur):
+> **Quote E-2** (I6, Health Data Science MS):
 > "After using GPT, I close it and try to reproduce what I just learned from memory. If I can't, it means I didn't truly understand—I just borrowed AI's brain. That kind of learning is fake."
 
 > **Quote E-3** (I6, Health Data Science MS) ⭐ Only complete Pattern E case:
@@ -320,10 +320,20 @@ Pattern F虽然在访谈样本中仅占4.1%（n=2），但真实课堂数据显�
 
 ---
 
-**文档版本**: v2.0
+**文档版本**: v2.1
 **数据来源**: 49次深度访谈（2024年3-5月）+ 真实课堂数据（N=378）
 **访谈时长**: 平均67分钟（范围：45-93分钟）
 **编码方法**: 扎根理论 + 三角验证（行为观察 + 自我报告 + 关键事件）
 **编码者间信度**: Cohen's κ = 0.72（n=10样本双盲编码）
 **数据更新**: 修正Pattern分布（A: 20.4%, C: 44.9%, F: 4.1%），添加I30/I44作为Pattern F代表，I43从模式A修正为模式C
-**最后更新**: 2025-11-29
+**最后更新**: 2025-12-01
+
+---
+
+### 更新日志
+- v2.1 (2025-12-01): 修正参与者引用与模式归属错误，确保引文来自正确模式参与者
+  - Pattern A: I13职业修正为AI硕士生
+  - Pattern B: 替换I16(D模式)、I8(A模式)为I7、I9(B模式参与者)
+  - Pattern C: 替换I41(D模式)为I33(C模式)，修正I19职业为商业硕士生
+  - Pattern E: 统一为I6(唯一E模式参与者)的三段引文
+- v2.0 (2025-11-29): 修正Pattern分布，添加I30/I44作为Pattern F代表
