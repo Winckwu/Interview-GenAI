@@ -1,379 +1,379 @@
-user_id,P1,P2,P3,P4,M1,M2,M3,E1,E2,E3,R1,R2,pattern
-01bcc56e-7b02-472a-acde-6a56da2eb44a,2,1,1,0,2,2,1,1,0,0,1,0,B
-022e4be1-fb58-4d63-a851-5f86e1360659,1,0,0,0,0,0,0,0,0,0,0,0,F
-03119001-6c1c-4c8c-af52-52ef35365c87,0,0,0,0,0,0,0,0,0,0,0,0,F
-046cca4a-6979-49fd-8bb6-937d091e5c61,1,1,0,0,2,2,1,1,0,0,1,0,B
-04bce3b3-72e6-42da-b891-bdd71ac65e2a,2,1,1,0,1,1,0,1,0,0,1,0,C
-0528428e-84a1-4a01-a19e-f9944b112d51,1,0,0,0,1,0,0,0,0,0,0,0,F
-05e5aef7-6726-47a0-9a83-8a2010901c24,1,0,0,0,0,0,0,0,0,0,0,0,F
-067831f0-2e37-47e5-a0d4-1f557cab4583,2,2,1,0,1,0,0,0,0,0,1,0,C
-06ba16ba-325c-4187-9265-f4f9d7655878,0,0,0,0,0,0,0,0,0,0,0,0,F
-08b81fec-a3d8-458f-a2a9-4009d50c350e,2,1,1,0,2,1,0,1,0,0,1,0,C
-0b1d48f1-2b1c-4ec7-a46c-697b10eeab4a,2,2,2,0,2,1,0,1,0,0,1,0,C
-100e33c7-8052-441b-b9dd-9a7e3a999f31,1,1,0,0,0,0,0,0,0,0,0,0,F
-11160ad9-6aef-401d-a7f4-1e3a829f94f4,1,0,0,0,0,0,0,0,0,0,0,0,F
-11f0cb66-85ce-4d11-ae17-aecd40e631f0,2,2,2,0,2,2,1,2,1,0,2,0,D
-1338d28e-328d-4225-8d25-a839fdd6d55b,1,0,0,0,0,0,0,0,0,0,0,0,F
-136a53b5-493d-477c-bdb4-918297290953,1,1,0,0,1,0,0,0,0,0,1,0,C
-15271bf7-9cfa-47e4-a981-819bc509c8d1,1,0,0,0,0,0,0,0,0,0,0,0,F
-153461e9-35fd-4973-b531-f5eac1aa797a,0,0,0,0,0,0,0,0,0,0,0,0,F
-157ea604-0028-4600-8eb8-3b1387cadcb1,1,1,0,0,1,0,0,0,0,0,1,0,C
-17a7feaf-4b41-4998-8f6d-0d085924fbb8,2,1,1,0,1,0,0,0,0,0,1,0,C
-02a7661d-857a-4362-86bd-eccc9307f138,2,2,1,0,2,2,1,2,0,0,1,0,B
-04aadda1-1159-4177-a770-351165a38ba2,2,2,1,0,1,1,1,1,0,0,1,0,B
-0672d11b-171a-4abf-8add-afbef4886ac0,1,1,0,0,0,0,0,0,0,0,1,0,C
-06f9e927-6beb-4e09-b500-8940cf6e6791,2,2,2,0,2,1,0,1,0,0,2,0,C
-0ba18647-cf15-4840-8cdc-cbef0853ed3c,2,1,0,0,1,0,0,0,0,0,1,0,C
-0c3daac4-3239-44b3-a9b8-c5be4434987b,1,1,0,0,0,0,0,0,0,0,0,0,F
-0d82eed1-c96b-4fcb-b424-79267d642070,2,2,1,0,2,2,2,2,1,0,1,0,D
-10aa3f9c-14a6-45d1-a03a-1700064dbdc4,2,2,1,0,1,1,0,1,0,0,1,0,C
-13cbd210-d1d2-4fff-9d14-18c71f526cf8,1,1,0,0,0,0,0,0,0,0,1,0,C
-166fd8a5-d8db-4d30-91f1-866ed7000b00,2,1,1,0,1,0,0,0,0,0,1,0,C
-1893575f-b1fa-4f12-9518-ff8adf47ab32,3,2,2,0,2,2,1,2,1,0,2,0,D
-1973a82b-8c78-42aa-b4dc-2c877381a007,2,2,1,0,1,1,0,1,0,0,1,0,C
-1d2271bd-daf1-4d01-9b48-389cbdf5ef83,2,1,1,0,1,0,0,0,0,0,1,0,C
-1e17845d-5c31-4809-a5a7-b2c2b1c3693a,2,2,1,0,2,2,2,2,1,0,1,0,D
-1e4742b2-fb4c-48b2-86d4-0661ccb70ad1,1,1,0,0,0,0,0,0,0,0,0,0,F
-1f2e9836-d6fc-4893-ab44-cbd3fe7f2aa9,2,1,1,0,1,0,0,0,0,0,1,0,C
-2066b165-910b-4ef6-b663-b37636d41768,1,1,0,0,0,0,0,0,0,0,0,0,F
-2143b678-7a06-43e5-8c1f-d1f30dffb09c,2,1,1,0,1,1,0,1,0,0,1,0,C
-2163e3a3-89b3-4a7d-b475-b539f9f414d2,1,1,0,0,1,0,0,0,0,0,1,0,C
-219ecff5-78d4-472d-b59b-b1c4bd8a4a5a,1,1,0,0,0,0,0,0,0,0,0,0,F
-228bba58-5df0-402f-8b05-67ae39ab42ff,0,0,0,0,0,0,0,0,0,0,0,0,F
-22a39fc6-8722-46ae-8d8b-2248660f26b8,2,1,1,0,1,1,0,1,0,0,1,0,C
-231e6e6d-ec64-49c4-84fd-c366184af81c,2,1,1,0,1,0,0,0,0,0,1,0,C
-240e97f6-804d-425b-b9eb-d43e18979661,1,1,0,0,1,0,0,0,0,0,1,0,C
-257f675a-0559-4c93-abb1-d9b7f56765a4,2,1,1,0,1,2,2,1,1,0,1,0,B
-258b96e0-ec44-4533-a967-c72277ee8124,1,1,1,0,0,0,0,0,0,0,0,0,C
-25bf4a2b-6e18-4dd8-87da-ddca3b71dc46,0,0,0,0,0,0,0,0,0,0,0,0,F
-26ec786a-60d1-4831-9195-f86127e41012,1,1,1,0,1,0,0,0,0,0,1,0,C
-26f1add3-fec4-48f8-89e7-f187347d8c38,1,1,0,0,0,0,0,0,0,0,1,0,C
-270bb903-d6c5-4e7f-a38a-91e86f1eeea5,0,0,0,0,0,0,0,0,0,0,1,0,F
-27459493-d86f-41a0-9817-2016384e3354,2,1,1,0,1,1,0,0,0,0,1,0,C
-287a4c8c-2501-4a2b-8ec3-fc927a14b878,2,1,1,0,1,0,0,0,0,0,1,0,C
-28a1a2c6-5306-47d4-80d4-daab857f8b6d,2,2,1,0,1,1,0,1,0,0,1,0,C
-29c29419-bd5e-4054-b86e-b90cb8acf8e7,1,1,0,0,1,0,0,0,0,0,0,0,C
-29f54056-506b-4b7d-8a4e-3d4a164ebc4a,1,1,0,0,1,1,1,1,0,0,1,0,B
-29f82768-3163-42fd-8979-0633c746eb7a,1,0,0,0,0,0,0,0,0,0,0,0,F
-29fa83f2-4303-4b50-95ae-445c698ed11b,2,1,1,0,1,0,0,0,0,0,1,0,C
-2b1dae76-2a18-4568-bf12-2b78c5d3f480,1,1,0,0,0,0,0,0,0,0,1,0,C
-2c6556cd-0052-4eec-8fbd-768423012162,1,1,0,0,0,0,0,0,0,0,1,0,C
-2d713990-ecfe-4541-b41c-3c6cea8841fb,1,1,0,0,0,0,0,0,0,0,0,0,F
-2e1e6c7c-557e-4594-8e96-4e7051ef8179,2,2,1,0,1,1,0,1,0,0,1,0,C
-2e78147b-7b3a-4e63-991c-4d7e0f30ed16,2,2,2,0,1,1,0,0,0,0,1,0,C
-2f9933ae-7b83-4d01-bc8a-9567cdfbafb0,1,0,0,0,0,0,0,0,0,0,0,0,F
-305b36d8-07ca-4be8-8ccf-68b36357c108,2,1,1,0,1,0,0,0,0,0,1,0,C
-31d893c7-92a3-44b7-8edd-462146106f8d,2,2,2,0,2,1,0,1,0,0,2,0,C
-32741cc7-6129-4c71-932c-57ab8424d40b,1,1,0,0,0,0,0,0,0,0,0,0,F
-32d31dc2-2d7e-4488-941f-536eab32f72b,2,1,1,0,1,0,0,0,0,0,1,0,C
-340f87cf-a63b-4bf4-92f1-be4228565dcd,1,0,0,0,0,0,0,0,0,0,0,0,F
-34154468-a4f5-481d-81fd-f46bf7305eec,2,1,0,0,2,2,1,2,0,0,1,0,B
-3438b814-c1b0-444a-91cf-07487f45eb23,3,2,2,0,2,2,0,2,1,0,2,0,D
-35368d19-384d-44a8-a6f5-8fe1aa5077b0,1,1,0,0,0,0,0,0,0,0,0,0,F
-35374a3f-b3aa-4c35-b53b-4383b6f41eb7,1,0,0,0,0,0,0,0,0,0,0,0,F
-354c0bf9-9fcb-45ef-b2aa-6d7842e3fcd7,2,1,1,0,1,0,0,0,0,0,1,0,C
-35b99140-ac17-4712-a080-800df4851d7f,1,1,0,0,0,0,0,0,0,0,0,0,F
-368bde76-5538-4be4-96dd-42bfd155c1e4,1,1,0,0,0,0,0,0,0,0,0,0,F
-36f8a2a4-0b70-4a86-99bc-757b060ab947,1,1,0,0,0,0,0,0,0,0,0,0,F
-37c2c2d7-443e-4209-aadb-166d25bc8516,2,2,2,0,2,2,1,2,1,0,2,0,D
-380b19ef-6162-4232-9efa-e2f57abd10fb,0,0,0,0,0,0,0,0,0,0,0,0,F
-386b830e-8b11-40b1-87c0-ea8695317cf7,1,1,0,0,1,0,0,0,0,0,1,0,C
-39a9132a-eb8a-495f-8b2e-52df1a4aac61,1,0,0,0,0,0,0,0,0,0,0,0,F
-39ef625e-2723-4cfc-a6b7-9309c44a662e,2,2,2,0,2,1,0,1,0,0,1,0,C
-3b560cf6-45c3-472c-ae62-061931e5165f,2,1,1,0,1,1,1,1,0,0,1,0,B
-3b883174-01fe-45fb-857e-62938a4e7e4c,0,0,0,0,0,0,0,0,0,0,0,0,F
-3d19ae2d-4179-41a9-9710-62bdc2b4b4f8,2,1,1,0,1,1,0,1,0,0,1,0,C
-3de057dc-c075-44b5-8cbf-b9ef36580c7e,2,2,1,0,2,1,0,1,0,0,1,0,C
-3e972fc4-ceae-4a73-825a-2eadd8a823a5,1,1,0,0,0,0,0,0,0,0,0,0,F
-3f1802c8-b0e0-49dd-8ee0-d396f4ba1bb7,1,1,0,0,0,0,0,0,0,0,0,0,F
-401d639e-3363-472d-bb59-5e1f02b09c68,1,1,0,0,1,0,0,0,0,0,0,0,C
-4124fb06-9686-41ab-9779-bcdad43ff148,2,1,1,0,1,0,0,0,0,0,1,0,C
-41259a8a-40a8-4aad-a805-969db2808d7b,2,1,1,0,1,0,0,0,0,0,1,0,C
-41350399-1755-4ff0-800a-18cc9d7c058b,2,2,1,0,1,1,0,2,1,0,1,0,D
-42200062-c6c7-4496-ad25-e7d164f6003d,2,1,1,0,1,0,0,0,0,0,1,0,C
-42237cf6-fc98-4a87-906e-ea0cb8834306,2,1,0,0,1,0,0,0,0,0,1,0,C
-428d0168-b0f2-45f6-bf8f-8913cb4372a2,1,1,0,0,0,0,0,0,0,0,0,0,F
-42ce76c0-00cc-4af6-9714-466469fd63c9,2,1,1,0,1,0,0,0,0,0,1,0,C
-44774901-80cf-4678-a58f-5ff2ed580592,2,2,1,0,1,1,0,1,0,0,1,0,C
-44ba45d0-55f6-4638-a16a-edab0b08f67f,2,1,1,0,2,2,0,1,0,0,1,0,B
-46e66184-5e5e-4bf7-bd65-5332c2c43768,0,0,0,0,0,0,0,0,0,0,0,0,F
-46ea6484-1352-45ca-a546-96e77d3dce4b,1,1,0,0,0,0,0,0,0,0,0,0,F
-47462c2f-ffe3-4b19-b7ca-453dc5080132,2,1,0,0,2,2,2,2,0,0,1,0,B
-47e9b405-8ee3-4e99-8296-94afdf963d67,1,0,0,0,0,0,0,0,0,0,0,0,F
-498602a3-ef5c-433c-8b29-ccc7f1d93ce2,1,1,0,0,0,0,0,0,0,0,0,0,F
-498c09c0-eb47-484a-9a6d-4ec295ca1132,2,1,1,0,1,1,0,0,0,0,1,0,C
-499a9f6f-5caf-4b21-954a-bea04bc8ea74,1,1,0,0,0,0,0,0,0,0,0,0,F
-4ca12e26-624d-4ab5-8fd8-2dcf6733d3dc,2,2,1,0,1,0,0,0,0,0,1,0,C
-4d441b82-7672-4636-b67f-ab3e4e20b56a,2,1,0,0,2,2,1,2,0,0,1,0,B
-4d80620b-332b-41b1-8e68-19f82dd9c5b0,2,1,1,0,1,0,0,0,0,0,1,0,C
-4e08ae2e-7cad-432d-88b1-8c131604cc64,2,2,1,0,1,1,0,1,0,0,1,0,C
-4eaf2f14-f952-4acc-b851-c4cdda85cbf4,2,1,1,0,1,0,0,0,0,0,1,0,C
-4f88e608-a513-4e79-80b4-514794e5fd5e,2,1,0,0,1,1,0,1,0,0,1,0,C
-4f9929cb-94ae-40fd-a650-a4f3398d523e,2,2,2,0,1,0,0,0,0,0,1,0,C
-50ac2e57-2041-4c53-8bd3-812adddbbe3a,2,1,0,0,1,0,0,0,0,0,1,0,C
-50f51f5f-216b-4efb-8f3a-615d5c7cf0e8,1,1,0,0,0,0,0,0,0,0,0,0,F
-50ff4b84-0a43-4a0a-bc7d-707e4f6231d4,1,1,0,0,0,0,0,0,0,0,0,0,F
-51fb6454-d2ae-4a08-8c0e-f203b5252e28,2,2,2,0,2,1,0,1,0,0,2,0,C
-5266f1a9-1b62-4986-b007-9707a471c062,1,1,0,0,0,0,0,0,0,0,0,0,F
-53ee9cbe-3eb1-4c72-a418-f93969dd160b,2,1,0,0,1,0,0,0,0,0,1,0,C
-54138b07-be95-4aec-a781-ab0798869783,2,2,1,0,1,1,0,1,0,0,1,0,C
-54e7f3fa-e7cd-42f9-b738-87255af9ea46,2,2,1,0,2,1,0,1,0,0,2,0,C
-54eb466e-9e26-42c1-a89b-f64d923259c3,1,0,0,0,0,0,0,0,0,0,0,0,F
-55d66a67-c7d3-4fd1-b110-285bc25a3a73,2,1,0,0,1,1,0,1,0,0,1,0,C
-5877a3ee-750f-4f20-9ace-9e02db0bffb2,0,0,0,0,0,0,0,0,0,0,0,0,F
-58c89d1b-a8bb-49d1-9d30-90731c3ebcfe,2,2,2,0,1,0,0,0,0,0,1,0,C
-58deb5fc-7301-4a35-bcb0-f215add7be67,2,1,1,0,1,0,0,0,0,0,1,0,C
-5a28af10-e75f-4f80-a93f-a25c110e54fe,2,2,1,0,1,1,0,1,0,0,1,0,C
-5bb94b54-0831-4f0c-be50-6455b51c1f76,1,0,0,0,0,0,0,0,0,0,0,0,F
-5d08501a-9c44-4025-b9e3-0aea1b65e000,2,1,1,0,1,0,0,0,0,0,1,0,C
-5d1e2c83-c8f5-4538-92ac-98fbea3736d9,2,1,1,0,1,1,0,1,0,0,1,0,C
-5d2b9752-e9e0-4326-9515-dad1a8f3356c,2,2,2,0,2,1,0,1,0,0,2,0,C
-5e33886d-0b9d-44f1-bc10-4353d2acf786,1,0,0,0,0,0,0,0,0,0,0,0,F
-5efbbaa9-7398-4e31-b417-69db1b4b3a94,1,1,0,0,0,0,0,0,0,0,0,0,F
-5efdc80b-a00f-42a3-98ac-fff45f8380a4,2,1,0,0,1,0,0,0,0,0,1,0,C
-5f35958a-d110-424a-adf1-6393eee7e26d,1,1,0,0,0,0,0,0,0,0,0,0,F
-60474aa1-7017-47b0-836c-9cdb84410d17,2,1,1,0,1,0,0,0,0,0,1,0,C
-6077676a-ebee-44c1-83f0-ae30446debdf,2,1,1,0,1,0,0,0,0,0,1,0,C
-60f5098b-9ed7-440e-9c34-cd0f71b0c181,1,1,0,0,0,0,0,0,0,0,0,0,F
-630cc0ed-f97c-447a-9d97-6e8bfed8569b,1,1,0,0,0,0,0,0,0,0,0,0,F
-632578fb-49cb-4de4-8a7c-18a2af25a673,1,1,0,0,0,0,0,0,0,0,0,0,F
-635d08aa-4896-4a91-ad56-4daf40126b30,1,1,0,0,1,0,0,0,0,0,1,0,C
-63d84c6d-9828-4516-a0b8-1d2fe859f2f0,2,1,1,0,1,0,0,0,0,0,1,0,C
-64f3f339-716b-4a9c-85c2-cc78167eb9b7,1,1,0,0,0,0,0,0,0,0,0,0,F
-66197561-4b4e-4214-af08-98f9b17e2957,1,1,0,0,0,0,0,0,0,0,0,0,F
-66ae1bd1-675c-46ca-bc13-c3a7add7e779,1,1,0,0,0,0,0,0,0,0,0,0,F
-67e43cb4-dacd-4feb-a4f6-1bf0b0f5e7cb,1,1,0,0,0,0,0,0,0,0,0,0,F
-6869eb6b-e091-4bc8-ab08-2aaf8e639731,1,1,0,0,0,0,0,0,0,0,0,0,F
-6874fa08-100b-48ef-9a6d-3aa38d59f295,1,1,0,0,0,0,0,0,0,0,0,0,F
-68a3be8d-f7b9-49ba-bdd5-010f3ce4b5fa,1,1,0,0,0,0,0,0,0,0,0,0,F
-6902f924-f27e-466f-99b7-bd334abffa9f,1,1,0,0,0,0,0,0,0,0,0,0,F
-691ef1bb-7257-45af-99db-f5e2309ed4ff,1,1,0,0,0,0,0,0,0,0,0,0,F
-6c0e251b-6772-4e16-9d69-8fab83168301,1,1,0,0,0,0,0,0,0,0,0,0,F
-6df44071-bf22-4ad6-b47c-3fbdee03b606,1,1,0,0,2,1,0,1,0,0,1,0,B
-6e1d5934-5e22-470a-b40a-19312bf3ede3,1,0,0,0,0,0,0,0,0,0,0,0,F
-6e7c40bd-c9e3-494a-ba89-68093d0b2bcf,2,1,0,0,1,0,0,1,0,0,1,0,C
-72cba964-2a6d-4c32-9147-48424408a27d,2,1,1,0,1,0,0,1,0,0,1,0,C
-72df3146-7202-4a9c-8a74-413916e4b252,2,1,0,0,1,0,0,0,0,0,0,0,C
-731d8a7f-e051-4515-ab07-ca16e1763a00,1,1,0,0,1,0,0,0,0,0,0,0,F
-73319292-8652-4e00-97b8-940d3940c527,3,1,0,0,1,0,0,0,0,0,0,0,C
-7421d324-39d0-4741-8091-0d9c24f9d059,2,1,0,0,1,0,0,0,0,0,0,0,C
-758a174f-fec4-48dd-852f-aa7b5c63fa54,1,1,0,0,1,0,0,0,0,0,0,0,F
-76a286e4-1884-4df0-b70f-aaf271c2f614,1,1,0,0,1,0,0,0,0,0,0,0,C
-78161a9f-d085-48c7-b418-a8ddd355fcc6,3,1,1,0,2,0,0,2,0,0,1,0,B
-7906f7ef-09dd-4759-bd6d-7c1fbe46854a,2,1,0,0,1,2,1,0,0,0,0,0,B
-7944aada-3032-42fc-ae96-f184985b4c28,3,1,0,0,2,1,0,1,0,0,1,0,B
-798fbb6d-45c5-463b-ab3d-2608c80160f0,3,1,0,0,1,0,0,1,0,0,1,0,C
-7b348c75-f137-49c5-b5fb-2e6062378fc6,1,1,0,0,1,0,0,0,0,0,0,0,F
-7be739f6-a8d8-4944-9877-7df185d4b854,1,0,0,0,0,0,0,0,0,0,0,0,F
-7c510bdc-a015-4ec0-b00f-9e286ef9e2d0,1,1,0,0,1,0,0,0,0,0,0,0,F
-7db11d48-432d-4ff5-9b97-42b4d89729d7,3,1,0,0,1,0,0,0,0,0,0,0,C
-7e184af7-e805-447c-810b-bd07b6ba6dc1,3,1,1,0,2,2,0,1,0,0,2,0,B
-7e531994-257b-4964-ba60-98c83fc795dc,1,1,0,0,1,0,0,0,0,0,0,0,F
-810cecf6-f323-4dd5-8a9e-5ccad3e742a0,1,1,0,0,1,0,0,0,0,0,0,0,C
-830cceff-a415-44b7-a71e-b2d5cd468721,1,0,0,0,0,0,0,0,0,0,0,0,F
-84dab563-2714-41ea-9d2e-6c013600861d,2,1,0,0,1,0,0,0,0,0,0,0,C
-87b7ded1-ab31-4639-8bec-314aa5471a59,2,1,0,0,2,1,0,1,0,0,1,0,B
-8896797c-d98a-4276-90bb-4908b1ec4fe2,3,1,1,0,2,1,0,0,0,0,1,0,C
-8987c65f-11e2-4e3e-9084-f832799e1a00,2,1,0,0,1,0,0,1,0,0,1,0,C
-8a12da42-10d5-49b6-8e6a-a97187aefe92,2,1,1,0,1,0,0,0,0,0,0,0,C
-8a21ef75-5b63-4690-8d98-4304319a465f,1,1,0,0,1,0,0,0,0,0,0,0,F
-8a73146d-e041-4ad7-8fcc-d049740ebe03,3,2,0,0,2,1,0,1,0,0,1,0,B
-8bfe145e-798b-4b37-8eae-58ac18590be3,1,1,0,0,2,1,0,0,0,0,1,0,C
-8c2684d5-377b-44df-ae98-3b95190b8f68,1,2,0,0,1,0,0,1,0,0,0,0,C
-8c6d1585-cd9c-477c-a8ae-3d7dbe625729,2,1,0,0,1,0,0,0,0,0,0,0,C
-8c73c5db-5918-4dba-ac2d-32a9e093bdd6,2,1,1,0,1,2,0,0,0,0,0,0,C
-8cc396ac-ad69-483c-83f7-b4e4088dc822,1,0,0,0,0,0,0,0,0,0,0,0,F
-8e3145bb-a5e5-40ac-bc0d-d00408e19093,1,0,0,0,0,0,0,0,0,0,0,0,F
-8e5b0cdc-781e-4657-a95f-6f88a5add4c9,3,1,0,0,1,0,0,1,0,0,1,0,C
-9061fc8b-130d-40bc-b494-4a7451c041ba,3,1,0,0,1,2,2,1,0,0,1,0,B
-906e529c-7704-4b35-b6b4-c0dcf14db6d6,2,1,0,0,1,0,0,0,0,0,0,0,C
-908ee2bb-2d91-4b32-bf01-81c502fedec2,1,1,0,0,1,0,0,0,0,0,0,0,C
-91c8b63d-7223-486d-9e71-bcfd1fa3a1d5,1,1,0,0,1,0,0,0,0,0,0,0,C
-92a37e0e-e674-4301-a25c-1056ae612c38,3,1,1,0,2,1,0,1,0,0,2,0,B
-97286872-f1e3-4057-9309-f689e0bde519,1,1,0,0,1,0,0,0,0,0,0,0,F
-9731460e-0884-4426-8e1f-a28275f958d2,1,1,0,0,1,0,0,0,0,0,0,0,F
-979e1b71-8ce8-4b48-8b9a-ff8f7d2f0822,2,1,0,0,1,0,0,0,0,0,0,0,C
-97cee636-f4f1-4ec7-ac81-665900284587,2,0,0,0,0,0,0,0,0,0,0,0,C
-989b83d2-d1bb-4260-8624-4fd52045d288,2,1,0,0,2,2,0,1,0,0,1,0,B
-98d88b0f-81ae-40b4-ae1f-d84823aa23f2,3,1,0,0,1,0,0,0,0,0,0,0,C
-9932e316-174d-4098-94dc-311da62054c9,1,1,0,0,1,0,0,1,0,0,1,0,C
-99d74ef9-3221-45c3-bf67-a29d57e21af4,1,1,0,0,1,0,0,0,0,0,0,0,C
-99e235e8-839c-4015-a594-f72b115ef7d7,1,1,0,0,1,0,0,0,0,0,0,0,F
-9acf5ab7-5a2d-42e9-9a5b-c228ef5c366b,1,0,0,0,0,0,0,0,0,0,0,0,C
-9b2fdd39-2396-4881-9bbf-5c609af5fbbd,3,1,0,0,1,0,0,0,0,0,0,0,C
-9b647114-f581-423f-9e55-e35fbf76d1e8,1,1,0,0,1,0,0,0,0,0,0,0,C
-9c219b44-c7f5-411b-93cb-97e745c3756e,1,1,0,0,1,0,0,0,0,0,0,0,C
-9d36ca7c-5212-4f37-b933-cde3729cb018,1,0,0,0,0,0,0,0,0,0,0,0,F
-9ee8f5e5-d15e-4e8c-aa1b-53cddeed4f51,1,1,0,0,1,0,0,0,0,0,0,0,C
-9f1d3ace-b035-4aa0-9ebf-442926a51c3d,1,1,0,0,1,0,0,0,0,0,0,0,F
-a0bc7a29-34d8-4bf8-baf6-2c5926e40133,3,2,0,0,2,0,0,2,0,0,1,0,D
-a11b7f90-a727-4c7b-aabb-ab79945cd291,1,0,0,0,0,0,0,0,0,0,0,0,F
-a18ef405-be5d-4e06-9770-0ac0963b389b,1,1,0,0,1,0,0,0,0,0,0,0,F
-a1a3b66f-7f20-4924-8f84-580e45d499ff,1,1,0,0,1,2,1,1,0,0,1,0,B
-a251e1be-13e2-49e8-8ad1-79ee19d031a9,3,1,1,0,1,0,0,1,0,0,1,0,C
-a2704219-a556-4374-ae41-2144cd1c6110,2,1,0,0,1,0,0,1,0,0,1,0,C
-a436e2db-733e-4218-b55b-a90d586f50e6,2,1,0,0,1,0,0,1,0,0,1,0,C
-a4538fb6-1a9d-4d46-b6fd-3bdba31b0433,2,0,0,0,0,0,0,0,0,0,0,0,C
-a75efe00-c7c2-4c99-a1e2-104dd44d7232,3,1,1,0,2,2,2,1,0,0,1,0,D
-a8c420d1-277d-4c63-8aea-3c129e72ab21,3,1,0,0,1,2,2,1,0,0,1,0,B
-a9b445ca-7416-40e0-b938-aeab76897b90,2,1,0,0,1,0,0,1,0,0,1,0,C
-aaaeae86-d1d9-4682-8bcb-c3367cc48f37,1,0,0,0,0,0,0,0,0,0,0,0,F
-ab220331-6bfe-46cd-8762-716acdcb2f5d,2,1,0,0,1,0,0,1,0,0,1,0,C
-ac9c4b15-1a10-400b-9ec5-80dcacde5537,1,0,0,0,0,0,0,0,0,0,0,0,C
-aca6426d-eb7f-4c4d-bef7-0414cdb8672f,3,1,0,0,1,0,0,0,0,0,0,0,C
-ad36900b-8bd1-4edf-b46b-d466406562e6,2,1,0,0,1,0,0,1,0,0,1,0,C
-afb5461f-eee5-4eb9-83a5-87f5f5091279,1,1,0,0,1,2,1,1,0,0,1,0,B
-b01ef3a2-6aae-48e1-9864-eb218c2f621d,1,1,0,0,2,0,0,0,0,0,2,0,B
-b0a59fea-899d-49cd-9864-01280ff8b911,1,1,0,0,1,2,1,0,0,0,0,0,B
-b1a8fb89-cfbb-4eb6-a05f-849d7923c17a,1,1,0,0,1,0,0,0,0,0,0,0,F
-b365599b-5889-4d08-9821-123b50c9d5bf,1,1,0,0,1,0,0,0,0,0,0,0,F
-b6cdf11f-aec0-4f47-b56c-fa1522f3d3a9,1,0,0,0,0,0,0,0,0,0,0,0,C
-b7653442-88ff-4f5d-97b2-f8e4b9696599,2,1,0,0,1,0,0,1,0,0,1,0,C
-b7a8c4ce-445b-4f65-af2d-7fb07ef1f590,1,1,0,0,1,0,0,1,0,0,1,0,C
-b91d8736-7b18-470b-84e1-cd1b5a151928,2,1,0,0,2,1,0,0,0,0,1,0,C
-b938a6fb-b04a-4c93-ad1f-ba5de9de5639,2,0,0,0,0,0,0,0,0,0,0,0,C
-b94e0578-9bc3-4ccf-9e96-e49a7e879a1c,2,1,1,0,1,0,0,0,0,0,0,0,C
-ba7857ba-6965-4017-92b4-6dc250954eb5,1,1,0,0,1,0,0,0,0,0,0,0,F
-bc5d1eb1-b8c6-4a82-bc9c-db893e6da50f,1,1,0,0,1,0,0,0,0,0,0,0,C
-bd09aa3f-c804-4f80-bc24-18e3ca1d7e01,2,0,0,0,0,0,0,0,0,0,0,0,C
-bdd12bf2-19ae-482f-a80c-c867525c4a57,1,1,0,0,1,0,0,0,0,0,0,0,F
-be6d54bd-8f93-4fc1-b8a5-26b47f3474d5,3,2,0,0,1,0,0,1,0,0,1,0,C
-bf96db48-4ba3-4882-8da4-c4cd1d9e984c,1,0,0,0,0,2,0,0,0,0,0,0,C
-c156b7f9-dc7b-4a04-81d0-353f7865b73d,3,2,0,0,2,2,0,1,0,0,2,0,B
-c5fb40c6-524a-4e34-8969-67448dd62623,1,1,0,0,1,0,0,0,0,0,0,0,C
-c6fdc59a-a1d7-4714-b964-b60c5543e538,1,1,0,0,1,0,0,0,0,0,0,0,C
-c7107ed6-dc22-42fc-a314-c024f2ed9567,3,1,0,0,1,0,0,1,0,0,1,0,C
-c95d3039-b268-45be-a23a-48f1d3daed3f,3,1,0,0,2,0,0,0,0,0,2,0,B
-c9d48a02-0ac3-47b0-94ef-444c802bb54e,3,1,1,0,2,2,2,1,0,0,1,0,D
-cbb102a4-02b7-4f4d-aa0f-8ac1f5be61ec,1,0,0,0,0,0,0,0,0,0,0,0,C
-cc372ba5-6f22-4212-ad46-80d325bea735,1,0,0,0,0,0,0,0,0,0,0,0,F
-cd08d966-f7df-44ba-b3f8-426c0f1141b6,2,1,0,0,1,2,0,0,0,0,0,0,C
-cdadc75b-6f3c-4886-9bdb-45558c335023,1,0,0,0,0,0,0,0,0,0,0,0,F
-ce080fd9-d1f3-4b7a-b12d-58f4c2d128f8,3,1,0,0,1,0,0,1,0,0,1,0,C
-cead2db9-b80a-4535-a8cd-0af05b6e4494,1,0,0,0,0,0,0,0,0,0,0,0,F
-cf10adec-9868-43c2-86d4-10af2567726b,1,1,0,0,1,0,0,0,0,0,0,0,C
-cf537bdd-c7d5-432c-9979-6ecd31381501,1,1,0,0,1,0,0,0,0,0,0,0,F
-cfc66cf9-7416-4705-852a-3ad1a9dd3eec,2,1,0,0,1,0,0,1,0,0,1,0,C
-d25f93d6-959a-4d39-a63a-95ba90d27661,2,1,0,0,1,0,0,1,0,0,1,0,C
-d3e2e975-404f-4a2c-a1e3-1f8ee9d29899,1,1,0,0,1,0,0,0,0,0,0,0,C
-d560e9c5-b337-4433-ad36-cae72353d809,3,1,0,0,1,2,0,1,0,0,2,0,B
-d601bd43-a1ab-44ec-97cf-9b0c46bfb956,1,0,0,0,0,0,0,0,0,0,0,0,F
-d6280e69-bd84-4f55-b450-20f2b9fceee5,1,1,0,0,1,0,0,1,0,0,1,0,C
-d8108c8b-0518-4632-9d2e-00a34dcda1bb,2,1,0,0,1,0,0,0,0,0,0,0,C
-da909e7d-fb8c-40a7-b56e-ef471eba7f0e,1,1,0,0,1,0,0,0,0,0,0,0,F
-daa6bfd2-5126-4294-b985-56a73a28e057,2,1,0,0,1,0,0,0,0,0,0,0,C
-daa934c3-93db-4af1-8855-733ab6754db0,1,0,0,0,0,0,0,0,0,0,0,0,F
-dad7ecf3-c755-49a9-aa31-c086c4fe2548,2,0,0,0,0,0,0,0,0,0,0,0,C
-dade7dad-6fbe-47c5-b691-de2adbd45d83,3,2,1,0,2,2,2,1,0,0,2,0,D
-dce40392-845f-4d98-8b48-484e2c50ebd5,2,1,0,0,1,0,0,1,0,0,1,0,C
-dd0dcd3f-15b0-4525-9150-12d6fbccb0d3,3,1,1,0,1,0,0,1,0,0,1,0,C
-ddbb3f6e-09f0-43d8-926c-720cb2991015,1,1,0,0,1,0,0,1,0,0,1,0,C
-dec8e6cc-d87c-4e64-8fdf-cb4bdfc1da1f,1,0,0,0,0,0,0,0,0,0,0,0,C
-decc4c79-02e7-4652-a7df-f2dc4891e001,3,1,1,0,1,0,0,1,0,0,1,0,C
-df156220-6695-4ab5-b32f-adc799f032c1,1,1,0,0,1,0,0,0,0,0,0,0,F
-e149c248-b5f7-4b6c-90a3-66bdf4944fa0,2,1,0,0,1,0,0,0,0,0,0,0,C
-e360817d-5d90-4089-993f-3003a1f3802e,1,0,0,0,0,0,0,0,0,0,0,0,C
-e37d14a8-9534-4285-94c7-57a390783e41,1,0,0,0,0,0,0,0,0,0,0,0,F
-e497f98c-15b6-40e6-ba67-3f22aee969ba,2,1,0,0,1,2,1,1,0,0,1,0,B
-e557a23c-ebe8-45b8-a7bb-a9c42ad6d973,1,1,0,0,1,0,0,0,0,0,0,0,F
-e7cb9dd7-39c4-4118-9461-f108c9e03d10,1,1,0,0,1,0,0,0,0,0,0,0,F
-e808c425-a941-4cdd-a08a-ce1c1c9ba1f0,2,1,0,0,1,0,0,0,0,0,0,0,C
-eac5f544-9b7f-4de4-b115-35dd58d1390e,1,1,0,0,1,0,0,0,0,0,0,0,C
-eb1b7e23-08f1-4cfe-a088-ac04328fa258,1,1,0,0,1,0,0,0,0,0,0,0,C
-eb81d751-4916-47c1-bd6a-8c3c12e5dc8c,2,2,0,0,0,0,0,1,0,0,0,0,C
-ed0acda3-7e36-4b1b-96d6-4921cd9fb821,2,1,1,0,1,0,0,0,0,0,0,0,C
-ef9db05f-5b04-4340-a7a3-aa980a4cc96c,1,0,0,0,0,0,0,0,0,0,0,0,C
-f0249f10-eb0d-43e1-baca-efc44e9a047e,3,2,0,0,1,0,0,1,0,0,1,0,C
-f0559f26-9584-4a72-8554-2a90225dfe06,2,1,1,0,1,0,0,0,0,0,0,0,C
-f2a36e35-478f-4bf0-bf86-c893bb43f089,2,1,1,0,1,0,0,0,0,0,0,0,C
-f3274a50-479f-4cdb-8147-390681ced26d,1,1,0,0,1,0,0,0,0,0,0,0,F
-f43e3235-bb89-4760-ade6-dcf8fddecf99,2,0,0,0,0,0,0,0,0,0,0,0,C
-f4dd9f3c-44d5-4116-9017-0f29441f18fb,3,1,0,0,1,0,0,1,0,0,1,0,C
-f6252421-a5a7-44e8-a47d-ff24eb2f5ff7,2,1,0,0,1,0,0,0,0,0,0,0,C
-f767abbb-5d6b-4836-9211-d01aba41ebda,3,1,0,0,1,0,0,1,0,0,1,0,C
-f8a572f1-0222-45da-aedc-dcca50a3e267,2,1,0,0,1,0,0,0,0,0,0,0,C
-fcd68a56-d1ec-4076-8f5f-5971d593d0c6,2,1,0,0,1,0,0,0,0,0,0,0,C
-fd68e116-0ba8-4692-b34a-93e42f3a3305,1,0,0,0,0,0,0,0,0,0,0,0,F
-fd940a6e-e199-4512-9349-7a3a80ce69b3,2,1,1,0,1,0,0,0,0,0,0,0,C
-fe4e498f-cdee-41b6-8f44-5c65a64223b6,3,1,1,0,2,2,2,1,0,0,2,0,B
-ffec35a4-cc27-4335-83d4-fe2e44534078,1,1,0,0,1,0,0,0,0,0,0,0,C
-b3afb2e5-2e1e-4528-80c3-102334d1d13c,3,1,0,0,2,1,0,0,0,0,1,0,C
-b54c4794-f4ac-47b1-ae49-40ca8ba42f0d,1,1,0,0,1,0,0,0,0,0,0,0,F
-a7399082-e511-4ba5-a3a6-e6b861b103c1,1,1,0,0,1,0,0,0,0,0,0,0,C
-8b141d91-820d-49e5-a4de-55fe0d2b175d,1,1,0,0,1,0,0,0,0,0,0,0,F
-e5098446-1d64-4a07-9708-52159add5752,1,0,0,0,0,0,0,0,0,0,0,0,F
-e8e9bd40-d2ab-4e26-abf3-bbac2e3ea891,2,1,0,0,1,0,0,0,0,0,0,0,C
-f2c9e39d-8fc3-4568-99f7-8850b951ee41,3,1,0,0,1,0,0,1,0,0,1,0,C
-dcd98199-a614-4e4f-87b4-1e9f3a070aac,1,2,0,0,0,2,0,1,0,0,2,0,F
-de5d49a5-1dad-49f8-9f7b-be065fecfaba,2,1,0,0,1,0,0,1,0,0,1,0,C
-741000e8-caba-4194-8f02-e8abdb11249a,2,1,1,0,1,0,0,0,0,0,0,0,C
-8a821446-cdbc-4d59-8f8c-4070cabdbb98,1,1,0,0,1,0,0,1,0,0,1,0,C
-90a9ecb5-64c1-4574-9b0e-5ff934c35baa,3,1,0,0,1,0,0,0,0,0,0,0,C
-d4232fb2-66dc-4990-bc6a-4288eb7601a7,1,1,0,0,1,0,0,1,0,0,1,0,C
-895e43a9-73f1-403c-9e2b-49dd6096b814,2,1,0,0,1,0,0,0,0,0,0,0,C
-a889be17-ebaa-4a6f-b416-f2ed507fa263,3,1,0,0,2,2,0,0,0,0,2,0,B
-e517180b-3a7b-4461-ac18-89bc28baf2d8,1,1,0,0,1,0,0,0,0,0,0,0,F
-d3536ffc-d1db-4f32-9e72-c2ab65cd735f,1,0,0,0,0,0,0,0,0,0,0,0,F
-9cc2f197-5cd6-4679-a15e-ee0604c39836,1,0,0,0,0,0,0,0,0,0,0,0,F
-a4642d73-73ee-4c7b-81b4-f67f3e473c30,2,2,0,0,1,2,2,1,0,0,1,0,B
-b5121c70-067f-4634-b546-a462a1413cf8,1,1,0,0,1,0,0,1,0,0,1,0,C
-7458718c-e599-4e9a-abbb-5a067c69f5e3,3,1,0,0,2,0,0,0,0,0,2,0,B
-717549db-9e2f-4e81-a0f4-f7b181d2b726,2,1,0,0,1,2,1,0,0,0,0,0,B
-731ac70b-004f-4d8a-80b5-328e2f332c4b,1,0,0,0,0,0,0,0,0,0,0,0,C
-ddde66b4-6235-4cac-b8a8-608182f41214,2,1,0,0,2,0,0,0,0,0,2,0,B
-9e7f408e-755f-4304-892d-1af610960672,1,1,0,0,1,0,0,1,0,0,1,0,C
-fa4ec82b-f409-48a9-aea7-3acccf531e7b,1,0,0,0,0,0,0,0,0,0,0,0,F
-779facae-4a78-4db2-bb94-478dd623a8e4,3,1,0,0,1,0,0,0,0,0,0,0,C
-8b19cb54-a8b0-4098-9db9-a387d657dd11,2,1,0,0,2,0,0,1,0,0,2,0,B
-9cb21d47-9653-4acc-b80d-5f15f44f8480,1,1,0,0,1,0,0,0,0,0,0,0,C
-b72adf21-93d5-4f55-9c47-5591d8531128,3,1,0,0,1,0,0,1,0,0,1,0,C
-dc3107e2-6f9f-40f2-b880-e9ae873817f0,3,1,1,0,1,0,0,1,0,0,1,0,C
-adceff6c-a74a-4b7b-872e-b1341a3755df,1,1,0,0,1,0,0,0,0,0,0,0,F
-7c1cfba2-9e6f-47e4-a7d8-2f73ccc86e1f,3,1,0,0,1,0,0,0,0,0,0,0,C
-b63b531c-3c07-4026-ab50-f94c90b8b177,2,1,0,0,1,0,0,1,0,0,1,0,C
-f9a76a92-3cfb-4231-9374-bb85a69db0a3,3,2,0,0,2,2,0,1,0,0,2,0,B
-6d94835a-f0ce-4535-a0c3-c192bed94eb9,1,0,0,0,0,0,0,0,0,0,0,0,C
-8a920542-fb0e-4c10-b8fe-d4a6f4fa9232,1,2,0,0,1,0,0,1,0,0,0,0,C
-931bc988-cbd0-4aa5-a9bd-f2910c29da73,1,1,0,0,1,0,0,1,0,0,1,0,C
-94553666-f9ab-4e4a-b89e-cb9eed4446df,3,1,0,0,2,2,2,1,0,0,2,0,B
-a08a9090-8dd6-42e3-b8cd-258a276037a2,1,1,0,0,2,2,0,0,0,0,2,0,B
-b4df2cec-2a1a-4c1c-a5db-d6d7bb9e93e8,2,1,0,0,1,0,0,0,0,0,0,0,C
-cd279dc3-9d7e-416d-b100-3bdf4c8ef701,3,2,0,0,2,2,0,1,0,0,1,0,B
-d857d240-9adb-43f2-bd09-d78c8b157b17,1,1,0,0,1,0,0,0,0,0,0,0,C
-e24ec191-f90e-4cd4-90ff-67a4674d461e,2,1,0,0,1,0,0,0,0,0,0,0,C
-e3900c3f-5d23-4777-9e47-c0d3d9e320a4,2,1,0,0,2,1,0,0,0,0,1,0,C
-e4cde6f4-ae0c-4e8a-9a59-edc47aee9bae,2,1,0,0,1,0,0,0,0,0,0,0,C
-e91cc905-dfe1-4da7-bec3-3246395fe639,1,2,0,0,0,0,0,1,0,0,0,0,C
-fb313677-dfc4-4bb0-b24b-724ede8f426b,2,1,0,0,1,0,0,0,0,0,0,0,C
-703ef106-5549-483d-a53b-d5e63ba9695e,2,1,0,0,1,0,0,0,0,0,0,0,C
-916f15c7-9d11-46c2-8d98-3fbe0e7c8d74,2,2,0,0,1,0,0,1,0,0,1,0,C
-a40b3e53-42ea-4a64-8dac-dd3f711cd405,2,0,0,0,0,0,0,0,0,0,0,0,C
-c354b7fb-fa6b-4430-be21-137d5f5d8ea6,1,2,0,0,1,0,0,1,0,0,0,0,C
-cbca08d0-d551-4d35-9a76-bb6895e3d39b,3,1,0,0,1,0,0,1,0,0,1,0,C
-e2ac9a25-5e13-4595-b8d8-3b2dd1bf3c81,2,1,0,0,2,2,0,1,0,0,2,0,B
-bc0900ed-14bb-43cf-a928-2187d30719e5,1,1,0,0,1,0,0,0,0,0,0,0,F
-f04ef933-3ef8-43b7-9420-46d9e0bfbba8,3,1,0,0,1,0,0,1,0,0,1,0,C
-e9ff2822-b3f4-4d43-bc66-1df4b099d8da,1,1,0,0,1,0,0,0,0,0,0,0,C
-c5a631e9-477f-4fd8-8aa5-0c503a83ece4,3,1,0,0,1,2,2,1,0,0,1,0,B
-c85432b5-5c18-4988-a269-c5fdb61d0be3,1,1,0,0,1,0,0,1,0,0,1,0,C
-90502d74-166b-4d8a-8831-a5d953a89a7f,1,0,0,0,2,0,0,0,0,0,2,0,B
-89f9415b-c45e-44a8-b94d-ad94c4f6f017,2,1,0,0,1,0,0,1,0,0,1,0,C
-d2c62a37-d083-4632-8b94-d9f3d6013536,1,1,0,0,1,0,0,0,0,0,0,0,F
-ff6043a2-b55a-4a4b-9503-61007aed6560,1,1,0,0,1,0,0,0,0,0,0,0,F
-94623ab1-002c-446c-b9a3-25628dcb79ad,2,1,0,0,1,0,0,0,0,0,0,0,C
-7394ff1a-0c5e-40ad-b53a-6536e683fef5,2,1,0,0,2,1,0,0,0,0,2,0,B
-d3560cb7-31a6-425c-9fcc-fd03d531b57b,2,1,0,0,1,0,0,0,0,0,0,0,C
-74b08f82-ec68-4a70-89b2-3c6c128efa1b,2,1,0,0,1,0,0,0,0,0,0,0,C
-6f8e7ffb-9a48-4579-b9a4-6d9c66fa04b2,1,1,0,0,1,0,0,0,0,0,0,0,F
-7e8af39a-75f3-4e67-8282-a2845af3a301,1,0,0,0,0,0,0,0,0,0,0,0,C
-e2afc742-6834-4364-bc9b-f9d230a48da3,2,1,0,0,1,0,0,0,0,0,0,0,C
-c445e058-eb87-4428-93e9-c7b1ed32f506,1,0,0,0,0,0,0,0,0,0,0,0,C
-b1d475de-12c1-4fb3-a407-35cc904cd97c,1,2,0,0,1,0,0,1,0,0,1,0,C
-d7ccf37c-43c4-405c-89cc-dc1adae2c7b7,3,2,0,0,1,0,0,1,0,0,1,0,C
-bdc51ef4-a0e6-41b3-b447-21740a81ee05,1,1,0,0,1,0,0,1,0,0,1,0,C
-932ec878-bef7-4e09-a6b3-839f6b402cb4,1,1,1,0,1,0,0,1,0,0,1,0,C
-a7ed07e2-8981-4291-acb6-e5e3911aa5b4,1,0,0,0,0,0,0,0,0,0,0,0,C
-ddec7f5e-e319-4602-94b4-c96f745c2e53,1,1,0,0,1,0,0,0,0,0,0,0,F
-89b4754e-f35f-4927-9ef8-eff7c52b901c,1,1,0,0,1,0,0,1,0,0,1,0,C
-dc5e0d92-7626-4d66-8b2b-6a03f5e81492,1,1,0,0,1,0,0,1,0,0,1,0,C
-ff90e55b-b50e-41f2-b83c-849cb91d4604,1,0,0,0,0,0,0,0,0,0,0,0,F
+user_id,pattern,confidence,p1,p2,p3,p4,m1,m2,m3,e1,e2,e3,r1,r2,total_score,is_mixed_pattern,notes
+01bcc56e-7b02-472a-acde-6a56da2eb44a,C,0.8,2,1,1,0,2,2,1,1,0,0,1,0,11,false,Semantic annotation (aligned dimensions)
+022e4be1-fb58-4d63-a851-5f86e1360659,F,0.9,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+03119001-6c1c-4c8c-af52-52ef35365c87,F,0.95,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+046cca4a-6979-49fd-8bb6-937d091e5c61,B,0.75,1,1,0,0,2,2,1,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+04bce3b3-72e6-42da-b891-bdd71ac65e2a,C,0.75,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+0528428e-84a1-4a01-a19e-f9944b112d51,F,0.8,1,0,0,0,1,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+05e5aef7-6726-47a0-9a83-8a2010901c24,F,0.9,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+067831f0-2e37-47e5-a0d4-1f557cab4583,C,0.7,2,2,1,0,1,0,0,0,0,0,1,0,7,false,Semantic annotation (aligned dimensions)
+06ba16ba-325c-4187-9265-f4f9d7655878,F,0.95,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+08b81fec-a3d8-458f-a2a9-4009d50c350e,C,0.75,2,1,1,0,2,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+0b1d48f1-2b1c-4ec7-a46c-697b10eeab4a,C,0.8,2,2,2,0,2,1,0,1,0,0,1,0,11,false,Semantic annotation (aligned dimensions)
+100e33c7-8052-441b-b9dd-9a7e3a999f31,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+11160ad9-6aef-401d-a7f4-1e3a829f94f4,F,0.85,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+11f0cb66-85ce-4d11-ae17-aecd40e631f0,D,0.85,2,2,2,0,2,2,1,2,1,0,2,0,16,false,Semantic annotation (aligned dimensions)
+1338d28e-328d-4225-8d25-a839fdd6d55b,F,0.85,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+136a53b5-493d-477c-bdb4-918297290953,F,0.75,1,1,0,0,1,0,0,0,0,0,1,0,4,false,Semantic annotation (aligned dimensions)
+15271bf7-9cfa-47e4-a981-819bc509c8d1,F,0.85,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+153461e9-35fd-4973-b531-f5eac1aa797a,F,0.95,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+157ea604-0028-4600-8eb8-3b1387cadcb1,C,0.7,1,1,0,0,1,0,0,0,0,0,1,0,4,false,Semantic annotation (aligned dimensions)
+17a7feaf-4b41-4998-8f6d-0d085924fbb8,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+02a7661d-857a-4362-86bd-eccc9307f138,C,0.8,2,2,1,0,2,2,1,2,0,0,1,0,13,false,Semantic annotation (aligned dimensions)
+04aadda1-1159-4177-a770-351165a38ba2,C,0.75,2,2,1,0,1,1,1,1,0,0,1,0,10,false,Semantic annotation (aligned dimensions)
+0672d11b-171a-4abf-8add-afbef4886ac0,F,0.85,1,1,0,0,0,0,0,0,0,0,1,0,3,false,Semantic annotation (aligned dimensions)
+06f9e927-6beb-4e09-b500-8940cf6e6791,B,0.8,2,2,2,0,2,1,0,1,0,0,2,0,12,false,Semantic annotation (aligned dimensions)
+0ba18647-cf15-4840-8cdc-cbef0853ed3c,F,0.75,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+0c3daac4-3239-44b3-a9b8-c5be4434987b,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+0d82eed1-c96b-4fcb-b424-79267d642070,C,0.85,2,2,1,0,2,2,2,2,1,0,1,0,15,false,Semantic annotation (aligned dimensions)
+10aa3f9c-14a6-45d1-a03a-1700064dbdc4,C,0.75,2,2,1,0,1,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+13cbd210-d1d2-4fff-9d14-18c71f526cf8,F,0.8,1,1,0,0,0,0,0,0,0,0,1,0,3,false,Semantic annotation (aligned dimensions)
+166fd8a5-d8db-4d30-91f1-866ed7000b00,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+1893575f-b1fa-4f12-9518-ff8adf47ab32,D,0.85,3,2,2,0,2,2,1,2,1,0,2,0,17,false,Semantic annotation (aligned dimensions)
+1973a82b-8c78-42aa-b4dc-2c877381a007,C,0.75,2,2,1,0,1,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+1d2271bd-daf1-4d01-9b48-389cbdf5ef83,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+1e17845d-5c31-4809-a5a7-b2c2b1c3693a,C,0.85,2,2,1,0,2,2,2,2,1,0,1,0,15,false,Semantic annotation (aligned dimensions)
+1e4742b2-fb4c-48b2-86d4-0661ccb70ad1,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+1f2e9836-d6fc-4893-ab44-cbd3fe7f2aa9,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+2066b165-910b-4ef6-b663-b37636d41768,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+2143b678-7a06-43e5-8c1f-d1f30dffb09c,C,0.75,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+2163e3a3-89b3-4a7d-b475-b539f9f414d2,F,0.8,1,1,0,0,1,0,0,0,0,0,1,0,4,false,Semantic annotation (aligned dimensions)
+219ecff5-78d4-472d-b59b-b1c4bd8a4a5a,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+228bba58-5df0-402f-8b05-67ae39ab42ff,F,0.95,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+22a39fc6-8722-46ae-8d8b-2248660f26b8,C,0.75,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+231e6e6d-ec64-49c4-84fd-c366184af81c,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+240e97f6-804d-425b-b9eb-d43e18979661,F,0.8,1,1,0,0,1,0,0,0,0,0,1,0,4,false,Semantic annotation (aligned dimensions)
+257f675a-0559-4c93-abb1-d9b7f56765a4,C,0.8,2,1,1,0,1,2,2,1,1,0,1,0,12,false,Semantic annotation (aligned dimensions)
+258b96e0-ec44-4533-a967-c72277ee8124,F,0.8,1,1,1,0,0,0,0,0,0,0,0,0,3,false,Semantic annotation (aligned dimensions)
+25bf4a2b-6e18-4dd8-87da-ddca3b71dc46,F,0.95,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+26ec786a-60d1-4831-9195-f86127e41012,C,0.7,1,1,1,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+26f1add3-fec4-48f8-89e7-f187347d8c38,F,0.85,1,1,0,0,0,0,0,0,0,0,1,0,3,false,Semantic annotation (aligned dimensions)
+270bb903-d6c5-4e7f-a38a-91e86f1eeea5,F,0.85,0,0,0,0,0,0,0,0,0,0,1,0,1,false,Semantic annotation (aligned dimensions)
+27459493-d86f-41a0-9817-2016384e3354,C,0.75,2,1,1,0,1,1,0,0,0,0,1,0,7,false,Semantic annotation (aligned dimensions)
+287a4c8c-2501-4a2b-8ec3-fc927a14b878,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+28a1a2c6-5306-47d4-80d4-daab857f8b6d,C,0.8,2,2,1,0,1,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+29c29419-bd5e-4054-b86e-b90cb8acf8e7,F,0.8,1,1,0,0,1,0,0,0,0,0,0,0,3,false,Semantic annotation (aligned dimensions)
+29f54056-506b-4b7d-8a4e-3d4a164ebc4a,C,0.75,1,1,0,0,1,1,1,1,0,0,1,0,7,false,Semantic annotation (aligned dimensions)
+29f82768-3163-42fd-8979-0633c746eb7a,F,0.9,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+29fa83f2-4303-4b50-95ae-445c698ed11b,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+2b1dae76-2a18-4568-bf12-2b78c5d3f480,F,0.8,1,1,0,0,0,0,0,0,0,0,1,0,3,false,Semantic annotation (aligned dimensions)
+2c6556cd-0052-4eec-8fbd-768423012162,F,0.8,1,1,0,0,0,0,0,0,0,0,1,0,3,false,Semantic annotation (aligned dimensions)
+2d713990-ecfe-4541-b41c-3c6cea8841fb,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+2e1e6c7c-557e-4594-8e96-4e7051ef8179,C,0.75,2,2,1,0,1,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+2e78147b-7b3a-4e63-991c-4d7e0f30ed16,C,0.8,2,2,2,0,1,1,0,0,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+2f9933ae-7b83-4d01-bc8a-9567cdfbafb0,F,0.85,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+305b36d8-07ca-4be8-8ccf-68b36357c108,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+31d893c7-92a3-44b7-8edd-462146106f8d,C,0.8,2,2,2,0,2,1,0,1,0,0,2,0,12,false,Semantic annotation (aligned dimensions)
+32741cc7-6129-4c71-932c-57ab8424d40b,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+32d31dc2-2d7e-4488-941f-536eab32f72b,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+340f87cf-a63b-4bf4-92f1-be4228565dcd,F,0.9,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+34154468-a4f5-481d-81fd-f46bf7305eec,C,0.8,2,1,0,0,2,2,1,2,0,0,1,0,11,false,Semantic annotation (aligned dimensions)
+3438b814-c1b0-444a-91cf-07487f45eb23,D,0.85,3,2,2,0,2,2,0,2,1,0,2,0,16,false,Semantic annotation (aligned dimensions)
+35368d19-384d-44a8-a6f5-8fe1aa5077b0,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+35374a3f-b3aa-4c35-b53b-4383b6f41eb7,F,0.9,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+354c0bf9-9fcb-45ef-b2aa-6d7842e3fcd7,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+35b99140-ac17-4712-a080-800df4851d7f,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+368bde76-5538-4be4-96dd-42bfd155c1e4,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+36f8a2a4-0b70-4a86-99bc-757b060ab947,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+37c2c2d7-443e-4209-aadb-166d25bc8516,D,0.85,2,2,2,0,2,2,1,2,1,0,2,0,16,false,Semantic annotation (aligned dimensions)
+380b19ef-6162-4232-9efa-e2f57abd10fb,F,0.9,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+386b830e-8b11-40b1-87c0-ea8695317cf7,C,0.7,1,1,0,0,1,0,0,0,0,0,1,0,4,false,Semantic annotation (aligned dimensions)
+39a9132a-eb8a-495f-8b2e-52df1a4aac61,F,0.85,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+39ef625e-2723-4cfc-a6b7-9309c44a662e,B,0.8,2,2,2,0,2,1,0,1,0,0,1,0,11,false,Semantic annotation (aligned dimensions)
+3b560cf6-45c3-472c-ae62-061931e5165f,C,0.75,2,1,1,0,1,1,1,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+3b883174-01fe-45fb-857e-62938a4e7e4c,F,0.9,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+3d19ae2d-4179-41a9-9710-62bdc2b4b4f8,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+3de057dc-c075-44b5-8cbf-b9ef36580c7e,C,0.8,2,2,1,0,2,1,0,1,0,0,1,0,10,false,Semantic annotation (aligned dimensions)
+3e972fc4-ceae-4a73-825a-2eadd8a823a5,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+3f1802c8-b0e0-49dd-8ee0-d396f4ba1bb7,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+401d639e-3363-472d-bb59-5e1f02b09c68,F,0.8,1,1,0,0,1,0,0,0,0,0,0,0,3,false,Semantic annotation (aligned dimensions)
+4124fb06-9686-41ab-9779-bcdad43ff148,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+41259a8a-40a8-4aad-a805-969db2808d7b,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+41350399-1755-4ff0-800a-18cc9d7c058b,C,0.8,2,2,1,0,1,1,0,2,1,0,1,0,11,false,Semantic annotation (aligned dimensions)
+42200062-c6c7-4496-ad25-e7d164f6003d,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+42237cf6-fc98-4a87-906e-ea0cb8834306,C,0.7,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+428d0168-b0f2-45f6-bf8f-8913cb4372a2,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+42ce76c0-00cc-4af6-9714-466469fd63c9,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+44774901-80cf-4678-a58f-5ff2ed580592,C,0.75,2,2,1,0,1,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+44ba45d0-55f6-4638-a16a-edab0b08f67f,C,0.8,2,1,1,0,2,2,0,1,0,0,1,0,10,false,Semantic annotation (aligned dimensions)
+46e66184-5e5e-4bf7-bd65-5332c2c43768,F,0.95,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+46ea6484-1352-45ca-a546-96e77d3dce4b,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+47462c2f-ffe3-4b19-b7ca-453dc5080132,C,0.8,2,1,0,0,2,2,2,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+47e9b405-8ee3-4e99-8296-94afdf963d67,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+498602a3-ef5c-433c-8b29-ccc7f1d93ce2,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+498c09c0-eb47-484a-9a6d-4ec295ca1132,C,0.7,2,1,1,0,1,1,0,0,0,0,1,0,7,false,Semantic annotation (aligned dimensions)
+499a9f6f-5caf-4b21-954a-bea04bc8ea74,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+4ca12e26-624d-4ab5-8fd8-2dcf6733d3dc,C,0.75,2,2,1,0,1,0,0,0,0,0,1,0,7,false,Semantic annotation (aligned dimensions)
+4d441b82-7672-4636-b67f-ab3e4e20b56a,C,0.8,2,1,0,0,2,2,1,2,0,0,1,0,11,false,Semantic annotation (aligned dimensions)
+4d80620b-332b-41b1-8e68-19f82dd9c5b0,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+4e08ae2e-7cad-432d-88b1-8c131604cc64,C,0.75,2,2,1,0,1,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+4eaf2f14-f952-4acc-b851-c4cdda85cbf4,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+4f88e608-a513-4e79-80b4-514794e5fd5e,C,0.75,2,1,0,0,1,1,0,1,0,0,1,0,7,false,Semantic annotation (aligned dimensions)
+4f9929cb-94ae-40fd-a650-a4f3398d523e,C,0.8,2,2,2,0,1,0,0,0,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+50ac2e57-2041-4c53-8bd3-812adddbbe3a,C,0.7,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+50f51f5f-216b-4efb-8f3a-615d5c7cf0e8,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+50ff4b84-0a43-4a0a-bc7d-707e4f6231d4,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+51fb6454-d2ae-4a08-8c0e-f203b5252e28,B,0.85,2,2,2,0,2,1,0,1,0,0,2,0,12,false,Semantic annotation (aligned dimensions)
+5266f1a9-1b62-4986-b007-9707a471c062,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+53ee9cbe-3eb1-4c72-a418-f93969dd160b,C,0.7,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+54138b07-be95-4aec-a781-ab0798869783,C,0.75,2,2,1,0,1,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+54e7f3fa-e7cd-42f9-b738-87255af9ea46,C,0.8,2,2,1,0,2,1,0,1,0,0,2,0,11,false,Semantic annotation (aligned dimensions)
+54eb466e-9e26-42c1-a89b-f64d923259c3,F,0.85,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+55d66a67-c7d3-4fd1-b110-285bc25a3a73,C,0.75,2,1,0,0,1,1,0,1,0,0,1,0,7,false,Semantic annotation (aligned dimensions)
+5877a3ee-750f-4f20-9ace-9e02db0bffb2,F,0.9,0,0,0,0,0,0,0,0,0,0,0,0,0,false,Semantic annotation (aligned dimensions)
+58c89d1b-a8bb-49d1-9d30-90731c3ebcfe,C,0.75,2,2,2,0,1,0,0,0,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+58deb5fc-7301-4a35-bcb0-f215add7be67,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+5a28af10-e75f-4f80-a93f-a25c110e54fe,C,0.75,2,2,1,0,1,1,0,1,0,0,1,0,9,false,Semantic annotation (aligned dimensions)
+5bb94b54-0831-4f0c-be50-6455b51c1f76,F,0.85,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+5d08501a-9c44-4025-b9e3-0aea1b65e000,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+5d1e2c83-c8f5-4538-92ac-98fbea3736d9,C,0.75,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+5d2b9752-e9e0-4326-9515-dad1a8f3356c,C,0.8,2,2,2,0,2,1,0,1,0,0,2,0,12,false,Semantic annotation (aligned dimensions)
+5e33886d-0b9d-44f1-bc10-4353d2acf786,F,0.85,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+5efbbaa9-7398-4e31-b417-69db1b4b3a94,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+5efdc80b-a00f-42a3-98ac-fff45f8380a4,C,0.7,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+5f35958a-d110-424a-adf1-6393eee7e26d,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+60474aa1-7017-47b0-836c-9cdb84410d17,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+6077676a-ebee-44c1-83f0-ae30446debdf,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+60f5098b-9ed7-440e-9c34-cd0f71b0c181,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+630cc0ed-f97c-447a-9d97-6e8bfed8569b,F,0.85,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+632578fb-49cb-4de4-8a7c-18a2af25a673,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+635d08aa-4896-4a91-ad56-4daf40126b30,C,0.7,1,1,0,0,1,0,0,0,0,0,1,0,4,false,Semantic annotation (aligned dimensions)
+63d84c6d-9828-4516-a0b8-1d2fe859f2f0,C,0.7,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+64f3f339-716b-4a9c-85c2-cc78167eb9b7,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+66197561-4b4e-4214-af08-98f9b17e2957,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+66ae1bd1-675c-46ca-bc13-c3a7add7e779,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+67e43cb4-dacd-4feb-a4f6-1bf0b0f5e7cb,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+6869eb6b-e091-4bc8-ab08-2aaf8e639731,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+6874fa08-100b-48ef-9a6d-3aa38d59f295,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+68a3be8d-f7b9-49ba-bdd5-010f3ce4b5fa,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+6902f924-f27e-466f-99b7-bd334abffa9f,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+691ef1bb-7257-45af-99db-f5e2309ed4ff,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+6c0e251b-6772-4e16-9d69-8fab83168301,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+6df44071-bf22-4ad6-b47c-3fbdee03b606,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+6e1d5934-5e22-470a-b40a-19312bf3ede3,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+6e7c40bd-c9e3-494a-ba89-68093d0b2bcf,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+72cba964-2a6d-4c32-9147-48424408a27d,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+72df3146-7202-4a9c-8a74-413916e4b252,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+731d8a7f-e051-4515-ab07-ca16e1763a00,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+73319292-8652-4e00-97b8-940d3940c527,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+7421d324-39d0-4741-8091-0d9c24f9d059,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+758a174f-fec4-48dd-852f-aa7b5c63fa54,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+76a286e4-1884-4df0-b70f-aaf271c2f614,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+78161a9f-d085-48c7-b418-a8ddd355fcc6,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+7906f7ef-09dd-4759-bd6d-7c1fbe46854a,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+7944aada-3032-42fc-ae96-f184985b4c28,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+798fbb6d-45c5-463b-ab3d-2608c80160f0,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+7b348c75-f137-49c5-b5fb-2e6062378fc6,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+7be739f6-a8d8-4944-9877-7df185d4b854,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+7c510bdc-a015-4ec0-b00f-9e286ef9e2d0,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+7db11d48-432d-4ff5-9b97-42b4d89729d7,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+7e184af7-e805-447c-810b-bd07b6ba6dc1,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+7e531994-257b-4964-ba60-98c83fc795dc,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+810cecf6-f323-4dd5-8a9e-5ccad3e742a0,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+830cceff-a415-44b7-a71e-b2d5cd468721,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+84dab563-2714-41ea-9d2e-6c013600861d,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+87b7ded1-ab31-4639-8bec-314aa5471a59,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+8896797c-d98a-4276-90bb-4908b1ec4fe2,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+8987c65f-11e2-4e3e-9084-f832799e1a00,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+8a12da42-10d5-49b6-8e6a-a97187aefe92,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+8a21ef75-5b63-4690-8d98-4304319a465f,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+8a73146d-e041-4ad7-8fcc-d049740ebe03,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+8bfe145e-798b-4b37-8eae-58ac18590be3,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+8c2684d5-377b-44df-ae98-3b95190b8f68,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+8c6d1585-cd9c-477c-a8ae-3d7dbe625729,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+8c73c5db-5918-4dba-ac2d-32a9e093bdd6,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+8cc396ac-ad69-483c-83f7-b4e4088dc822,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+8e3145bb-a5e5-40ac-bc0d-d00408e19093,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+8e5b0cdc-781e-4657-a95f-6f88a5add4c9,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+9061fc8b-130d-40bc-b494-4a7451c041ba,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+906e529c-7704-4b35-b6b4-c0dcf14db6d6,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+908ee2bb-2d91-4b32-bf01-81c502fedec2,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+91c8b63d-7223-486d-9e71-bcfd1fa3a1d5,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+92a37e0e-e674-4301-a25c-1056ae612c38,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+97286872-f1e3-4057-9309-f689e0bde519,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+9731460e-0884-4426-8e1f-a28275f958d2,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+979e1b71-8ce8-4b48-8b9a-ff8f7d2f0822,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+97cee636-f4f1-4ec7-ac81-665900284587,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+989b83d2-d1bb-4260-8624-4fd52045d288,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+98d88b0f-81ae-40b4-ae1f-d84823aa23f2,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+9932e316-174d-4098-94dc-311da62054c9,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+99d74ef9-3221-45c3-bf67-a29d57e21af4,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+99e235e8-839c-4015-a594-f72b115ef7d7,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+9acf5ab7-5a2d-42e9-9a5b-c228ef5c366b,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+9b2fdd39-2396-4881-9bbf-5c609af5fbbd,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+9b647114-f581-423f-9e55-e35fbf76d1e8,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+9c219b44-c7f5-411b-93cb-97e745c3756e,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+9d36ca7c-5212-4f37-b933-cde3729cb018,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+9ee8f5e5-d15e-4e8c-aa1b-53cddeed4f51,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+9f1d3ace-b035-4aa0-9ebf-442926a51c3d,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+a0bc7a29-34d8-4bf8-baf6-2c5926e40133,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+a11b7f90-a727-4c7b-aabb-ab79945cd291,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+a18ef405-be5d-4e06-9770-0ac0963b389b,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+a1a3b66f-7f20-4924-8f84-580e45d499ff,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+a251e1be-13e2-49e8-8ad1-79ee19d031a9,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+a2704219-a556-4374-ae41-2144cd1c6110,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+a436e2db-733e-4218-b55b-a90d586f50e6,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+a4538fb6-1a9d-4d46-b6fd-3bdba31b0433,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+a75efe00-c7c2-4c99-a1e2-104dd44d7232,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+a8c420d1-277d-4c63-8aea-3c129e72ab21,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+a9b445ca-7416-40e0-b938-aeab76897b90,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+aaaeae86-d1d9-4682-8bcb-c3367cc48f37,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+ab220331-6bfe-46cd-8762-716acdcb2f5d,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+ac9c4b15-1a10-400b-9ec5-80dcacde5537,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+aca6426d-eb7f-4c4d-bef7-0414cdb8672f,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+ad36900b-8bd1-4edf-b46b-d466406562e6,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+afb5461f-eee5-4eb9-83a5-87f5f5091279,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b01ef3a2-6aae-48e1-9864-eb218c2f621d,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+b0a59fea-899d-49cd-9864-01280ff8b911,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b1a8fb89-cfbb-4eb6-a05f-849d7923c17a,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+b365599b-5889-4d08-9821-123b50c9d5bf,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b6cdf11f-aec0-4f47-b56c-fa1522f3d3a9,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b7653442-88ff-4f5d-97b2-f8e4b9696599,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b7a8c4ce-445b-4f65-af2d-7fb07ef1f590,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b91d8736-7b18-470b-84e1-cd1b5a151928,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b938a6fb-b04a-4c93-ad1f-ba5de9de5639,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b94e0578-9bc3-4ccf-9e96-e49a7e879a1c,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+ba7857ba-6965-4017-92b4-6dc250954eb5,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+bc5d1eb1-b8c6-4a82-bc9c-db893e6da50f,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+bd09aa3f-c804-4f80-bc24-18e3ca1d7e01,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+bdd12bf2-19ae-482f-a80c-c867525c4a57,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+be6d54bd-8f93-4fc1-b8a5-26b47f3474d5,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+bf96db48-4ba3-4882-8da4-c4cd1d9e984c,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+c156b7f9-dc7b-4a04-81d0-353f7865b73d,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+c5fb40c6-524a-4e34-8969-67448dd62623,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+c6fdc59a-a1d7-4714-b964-b60c5543e538,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+c7107ed6-dc22-42fc-a314-c024f2ed9567,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+c95d3039-b268-45be-a23a-48f1d3daed3f,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+c9d48a02-0ac3-47b0-94ef-444c802bb54e,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+cbb102a4-02b7-4f4d-aa0f-8ac1f5be61ec,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+cc372ba5-6f22-4212-ad46-80d325bea735,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+cd08d966-f7df-44ba-b3f8-426c0f1141b6,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+cdadc75b-6f3c-4886-9bdb-45558c335023,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+ce080fd9-d1f3-4b7a-b12d-58f4c2d128f8,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+cead2db9-b80a-4535-a8cd-0af05b6e4494,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+cf10adec-9868-43c2-86d4-10af2567726b,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+cf537bdd-c7d5-432c-9979-6ecd31381501,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+cfc66cf9-7416-4705-852a-3ad1a9dd3eec,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+d25f93d6-959a-4d39-a63a-95ba90d27661,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+d3e2e975-404f-4a2c-a1e3-1f8ee9d29899,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+d560e9c5-b337-4433-ad36-cae72353d809,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+d601bd43-a1ab-44ec-97cf-9b0c46bfb956,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+d6280e69-bd84-4f55-b450-20f2b9fceee5,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+d8108c8b-0518-4632-9d2e-00a34dcda1bb,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+da909e7d-fb8c-40a7-b56e-ef471eba7f0e,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+daa6bfd2-5126-4294-b985-56a73a28e057,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+daa934c3-93db-4af1-8855-733ab6754db0,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+dad7ecf3-c755-49a9-aa31-c086c4fe2548,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+dade7dad-6fbe-47c5-b691-de2adbd45d83,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+dce40392-845f-4d98-8b48-484e2c50ebd5,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+dd0dcd3f-15b0-4525-9150-12d6fbccb0d3,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+ddbb3f6e-09f0-43d8-926c-720cb2991015,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+dec8e6cc-d87c-4e64-8fdf-cb4bdfc1da1f,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+decc4c79-02e7-4652-a7df-f2dc4891e001,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+df156220-6695-4ab5-b32f-adc799f032c1,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+e149c248-b5f7-4b6c-90a3-66bdf4944fa0,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+e360817d-5d90-4089-993f-3003a1f3802e,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+e37d14a8-9534-4285-94c7-57a390783e41,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+e497f98c-15b6-40e6-ba67-3f22aee969ba,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+e557a23c-ebe8-45b8-a7bb-a9c42ad6d973,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+e7cb9dd7-39c4-4118-9461-f108c9e03d10,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+e808c425-a941-4cdd-a08a-ce1c1c9ba1f0,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+eac5f544-9b7f-4de4-b115-35dd58d1390e,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+eb1b7e23-08f1-4cfe-a088-ac04328fa258,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+eb81d751-4916-47c1-bd6a-8c3c12e5dc8c,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+ed0acda3-7e36-4b1b-96d6-4921cd9fb821,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+ef9db05f-5b04-4340-a7a3-aa980a4cc96c,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+f0249f10-eb0d-43e1-baca-efc44e9a047e,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+f0559f26-9584-4a72-8554-2a90225dfe06,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+f2a36e35-478f-4bf0-bf86-c893bb43f089,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+f3274a50-479f-4cdb-8147-390681ced26d,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+f43e3235-bb89-4760-ade6-dcf8fddecf99,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+f4dd9f3c-44d5-4116-9017-0f29441f18fb,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+f6252421-a5a7-44e8-a47d-ff24eb2f5ff7,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+f767abbb-5d6b-4836-9211-d01aba41ebda,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+f8a572f1-0222-45da-aedc-dcca50a3e267,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+fcd68a56-d1ec-4076-8f5f-5971d593d0c6,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+fd68e116-0ba8-4692-b34a-93e42f3a3305,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+fd940a6e-e199-4512-9349-7a3a80ce69b3,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+fe4e498f-cdee-41b6-8f44-5c65a64223b6,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+ffec35a4-cc27-4335-83d4-fe2e44534078,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b3afb2e5-2e1e-4528-80c3-102334d1d13c,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+b54c4794-f4ac-47b1-ae49-40ca8ba42f0d,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+a7399082-e511-4ba5-a3a6-e6b861b103c1,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+8b141d91-820d-49e5-a4de-55fe0d2b175d,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+e5098446-1d64-4a07-9708-52159add5752,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+e8e9bd40-d2ab-4e26-abf3-bbac2e3ea891,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+f2c9e39d-8fc3-4568-99f7-8850b951ee41,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+dcd98199-a614-4e4f-87b4-1e9f3a070aac,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+de5d49a5-1dad-49f8-9f7b-be065fecfaba,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+741000e8-caba-4194-8f02-e8abdb11249a,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+8a821446-cdbc-4d59-8f8c-4070cabdbb98,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+90a9ecb5-64c1-4574-9b0e-5ff934c35baa,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+d4232fb2-66dc-4990-bc6a-4288eb7601a7,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+895e43a9-73f1-403c-9e2b-49dd6096b814,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+a889be17-ebaa-4a6f-b416-f2ed507fa263,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+e517180b-3a7b-4461-ac18-89bc28baf2d8,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+d3536ffc-d1db-4f32-9e72-c2ab65cd735f,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+9cc2f197-5cd6-4679-a15e-ee0604c39836,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+a4642d73-73ee-4c7b-81b4-f67f3e473c30,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+b5121c70-067f-4634-b546-a462a1413cf8,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+7458718c-e599-4e9a-abbb-5a067c69f5e3,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+717549db-9e2f-4e81-a0f4-f7b181d2b726,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+731ac70b-004f-4d8a-80b5-328e2f332c4b,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+ddde66b4-6235-4cac-b8a8-608182f41214,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+9e7f408e-755f-4304-892d-1af610960672,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+fa4ec82b-f409-48a9-aea7-3acccf531e7b,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+779facae-4a78-4db2-bb94-478dd623a8e4,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+8b19cb54-a8b0-4098-9db9-a387d657dd11,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+9cb21d47-9653-4acc-b80d-5f15f44f8480,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b72adf21-93d5-4f55-9c47-5591d8531128,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+dc3107e2-6f9f-40f2-b880-e9ae873817f0,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+adceff6c-a74a-4b7b-872e-b1341a3755df,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+7c1cfba2-9e6f-47e4-a7d8-2f73ccc86e1f,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+b63b531c-3c07-4026-ab50-f94c90b8b177,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+f9a76a92-3cfb-4231-9374-bb85a69db0a3,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+6d94835a-f0ce-4535-a0c3-c192bed94eb9,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+8a920542-fb0e-4c10-b8fe-d4a6f4fa9232,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+931bc988-cbd0-4aa5-a9bd-f2910c29da73,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+94553666-f9ab-4e4a-b89e-cb9eed4446df,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+a08a9090-8dd6-42e3-b8cd-258a276037a2,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+b4df2cec-2a1a-4c1c-a5db-d6d7bb9e93e8,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+cd279dc3-9d7e-416d-b100-3bdf4c8ef701,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+d857d240-9adb-43f2-bd09-d78c8b157b17,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+e24ec191-f90e-4cd4-90ff-67a4674d461e,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+e3900c3f-5d23-4777-9e47-c0d3d9e320a4,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+e4cde6f4-ae0c-4e8a-9a59-edc47aee9bae,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+e91cc905-dfe1-4da7-bec3-3246395fe639,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+fb313677-dfc4-4bb0-b24b-724ede8f426b,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+703ef106-5549-483d-a53b-d5e63ba9695e,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+916f15c7-9d11-46c2-8d98-3fbe0e7c8d74,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+a40b3e53-42ea-4a64-8dac-dd3f711cd405,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+c354b7fb-fa6b-4430-be21-137d5f5d8ea6,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+cbca08d0-d551-4d35-9a76-bb6895e3d39b,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+e2ac9a25-5e13-4595-b8d8-3b2dd1bf3c81,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+bc0900ed-14bb-43cf-a928-2187d30719e5,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+f04ef933-3ef8-43b7-9420-46d9e0bfbba8,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+e9ff2822-b3f4-4d43-bc66-1df4b099d8da,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+c5a631e9-477f-4fd8-8aa5-0c503a83ece4,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+c85432b5-5c18-4988-a269-c5fdb61d0be3,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+90502d74-166b-4d8a-8831-a5d953a89a7f,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+89f9415b-c45e-44a8-b94d-ad94c4f6f017,C,0.7,2,1,1,0,1,1,0,1,0,0,1,0,8,false,Semantic annotation (aligned dimensions)
+d2c62a37-d083-4632-8b94-d9f3d6013536,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+ff6043a2-b55a-4a4b-9503-61007aed6560,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+94623ab1-002c-446c-b9a3-25628dcb79ad,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+7394ff1a-0c5e-40ad-b53a-6536e683fef5,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)
+d3560cb7-31a6-425c-9fcc-fd03d531b57b,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+74b08f82-ec68-4a70-89b2-3c6c128efa1b,C,0.6,2,1,0,0,1,0,0,0,0,0,1,0,5,false,Semantic annotation (aligned dimensions)
+6f8e7ffb-9a48-4579-b9a4-6d9c66fa04b2,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+7e8af39a-75f3-4e67-8282-a2845af3a301,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+e2afc742-6834-4364-bc9b-f9d230a48da3,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+c445e058-eb87-4428-93e9-c7b1ed32f506,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+b1d475de-12c1-4fb3-a407-35cc904cd97c,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+d7ccf37c-43c4-405c-89cc-dc1adae2c7b7,C,0.65,2,1,1,0,1,0,0,0,0,0,1,0,6,false,Semantic annotation (aligned dimensions)
+bdc51ef4-a0e6-41b3-b447-21740a81ee05,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+932ec878-bef7-4e09-a6b3-839f6b402cb4,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+a7ed07e2-8981-4291-acb6-e5e3911aa5b4,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+ddec7f5e-e319-4602-94b4-c96f745c2e53,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+89b4754e-f35f-4927-9ef8-eff7c52b901c,F,0.8,1,0,0,0,0,0,0,0,0,0,0,0,1,false,Semantic annotation (aligned dimensions)
+dc5e0d92-7626-4d66-8b2b-6a03f5e81492,F,0.8,1,1,0,0,0,0,0,0,0,0,0,0,2,false,Semantic annotation (aligned dimensions)
+ff90e55b-b50e-41f2-b83c-849cb91d4604,C,0.75,2,1,1,0,2,2,1,2,0,0,1,0,12,false,Semantic annotation (aligned dimensions)

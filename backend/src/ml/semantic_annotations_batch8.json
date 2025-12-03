@@ -1,34 +1,34 @@
 {
   "batch": 8,
-  "method": "LLM Semantic Analysis (Claude)",
+  "method": "Heuristic + Semantic Analysis (Claude)",
   "annotation_date": "2024-12-03",
   "aligned_dimensions": true,
   "users": {
     "6df44071-bf22-4ad6-b47c-3fbdee03b606": {
-      "analysis": "6 messages. Asks WHY questions. Verifies understanding.",
+      "analysis": "6 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 2,
-        "M2": 1,
+        "M1": 0,
+        "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "6e1d5934-5e22-470a-b40a-19312bf3ede3": {
-      "analysis": "4 messages. Minimal engagement.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -41,38 +41,38 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "6e7c40bd-c9e3-494a-ba89-68093d0b2bcf": {
-      "analysis": "10 messages. Asks WHY questions.",
+      "analysis": "10 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "72cba964-2a6d-4c32-9147-48424408a27d": {
-      "analysis": "20 messages. Asks WHY questions. Asks strategic when-to-use questions.",
+      "analysis": "20 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -82,16 +82,16 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "72df3146-7202-4a9c-8a74-413916e4b252": {
-      "analysis": "11 messages.",
+      "analysis": "11 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -100,18 +100,18 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "731d8a7f-e051-4515-ab07-ca16e1763a00": {
-      "analysis": "3 messages.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 1,
+        "P2": 0,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -121,15 +121,15 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "73319292-8652-4e00-97b8-940d3940c527": {
-      "analysis": "65 messages.",
+      "analysis": "65 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
         "M2": 0,
@@ -137,15 +137,15 @@
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 0,
+        "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "7421d324-39d0-4741-8091-0d9c24f9d059": {
-      "analysis": "18 messages.",
+      "analysis": "18 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
@@ -157,21 +157,21 @@
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 0,
+        "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "758a174f-fec4-48dd-852f-aa7b5c63fa54": {
-      "analysis": "4 messages.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -181,17 +181,17 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "76a286e4-1884-4df0-b70f-aaf271c2f614": {
-      "analysis": "8 messages.",
+      "analysis": "8 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -200,975 +200,975 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "78161a9f-d085-48c7-b418-a8ddd355fcc6": {
-      "analysis": "33 messages. Asks WHY questions. Asks strategic when-to-use questions. Asks about thought process.",
+      "analysis": "33 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
         "P3": 1,
         "P4": 0,
-        "M1": 2,
-        "M2": 0,
+        "M1": 1,
+        "M2": 1,
         "M3": 0,
-        "E1": 2,
+        "E1": 1,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "7906f7ef-09dd-4759-bd6d-7c1fbe46854a": {
-      "analysis": "10 messages. Corrects/challenges AI.",
+      "analysis": "10 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 2,
-        "M3": 1,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "7944aada-3032-42fc-ae96-f184985b4c28": {
-      "analysis": "147 messages. Asks WHY questions. Verifies understanding.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "798fbb6d-45c5-463b-ab3d-2608c80160f0": {
-      "analysis": "55 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "7b348c75-f137-49c5-b5fb-2e6062378fc6": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "7be739f6-a8d8-4944-9877-7df185d4b854": {
-      "analysis": "4 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "7c510bdc-a015-4ec0-b00f-9e286ef9e2d0": {
-      "analysis": "3 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "7db11d48-432d-4ff5-9b97-42b4d89729d7": {
-      "analysis": "33 messages.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "7e184af7-e805-447c-810b-bd07b6ba6dc1": {
-      "analysis": "106 messages. Asks WHY questions. Requests self-testing. Asks strategic when-to-use questions. Explores alternative methods.",
-      "scores": {
-        "P1": 3,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 2,
         "M2": 2,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "7e531994-257b-4964-ba60-98c83fc795dc": {
-      "analysis": "3 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "810cecf6-f323-4dd5-8a9e-5ccad3e742a0": {
-      "analysis": "6 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "830cceff-a415-44b7-a71e-b2d5cd468721": {
-      "analysis": "3 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "84dab563-2714-41ea-9d2e-6c013600861d": {
-      "analysis": "18 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "87b7ded1-ab31-4639-8bec-314aa5471a59": {
-      "analysis": "14 messages. Asks WHY questions. Verifies understanding.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "8896797c-d98a-4276-90bb-4908b1ec4fe2": {
-      "analysis": "39 messages. Verifies understanding. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8987c65f-11e2-4e3e-9084-f832799e1a00": {
-      "analysis": "15 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8a12da42-10d5-49b6-8e6a-a97187aefe92": {
-      "analysis": "11 messages. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8a21ef75-5b63-4690-8d98-4304319a465f": {
-      "analysis": "3 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "8a73146d-e041-4ad7-8fcc-d049740ebe03": {
-      "analysis": "70 messages. Asks WHY questions. Verifies understanding.",
-      "scores": {
-        "P1": 3,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "8bfe145e-798b-4b37-8eae-58ac18590be3": {
-      "analysis": "7 messages. Verifies understanding.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8c2684d5-377b-44df-ae98-3b95190b8f68": {
-      "analysis": "6 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8c6d1585-cd9c-477c-a8ae-3d7dbe625729": {
-      "analysis": "21 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8c73c5db-5918-4dba-ac2d-32a9e093bdd6": {
-      "analysis": "11 messages. Shows study planning. Explores alternative methods.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 1,
-        "M2": 2,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8cc396ac-ad69-483c-83f7-b4e4088dc822": {
-      "analysis": "3 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "8e3145bb-a5e5-40ac-bc0d-d00408e19093": {
-      "analysis": "3 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "8e5b0cdc-781e-4657-a95f-6f88a5add4c9": {
-      "analysis": "33 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "9061fc8b-130d-40bc-b494-4a7451c041ba": {
-      "analysis": "55 messages. Asks WHY questions. Corrects/challenges AI.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 2,
-        "M3": 2,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "906e529c-7704-4b35-b6b4-c0dcf14db6d6": {
-      "analysis": "23 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "908ee2bb-2d91-4b32-bf01-81c502fedec2": {
-      "analysis": "5 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "91c8b63d-7223-486d-9e71-bcfd1fa3a1d5": {
-      "analysis": "8 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "92a37e0e-e674-4301-a25c-1056ae612c38": {
-      "analysis": "66 messages. Asks WHY questions. Verifies understanding. Requests self-testing. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "97286872-f1e3-4057-9309-f689e0bde519": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "9731460e-0884-4426-8e1f-a28275f958d2": {
-      "analysis": "3 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "979e1b71-8ce8-4b48-8b9a-ff8f7d2f0822": {
-      "analysis": "14 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "97cee636-f4f1-4ec7-ac81-665900284587": {
-      "analysis": "13 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "989b83d2-d1bb-4260-8624-4fd52045d288": {
-      "analysis": "10 messages. Asks WHY questions. Verifies understanding. Explores alternative methods.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "98d88b0f-81ae-40b4-ae1f-d84823aa23f2": {
-      "analysis": "53 messages.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "9932e316-174d-4098-94dc-311da62054c9": {
-      "analysis": "7 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "99d74ef9-3221-45c3-bf67-a29d57e21af4": {
-      "analysis": "9 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "99e235e8-839c-4015-a594-f72b115ef7d7": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "9acf5ab7-5a2d-42e9-9a5b-c228ef5c366b": {
-      "analysis": "8 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "9b2fdd39-2396-4881-9bbf-5c609af5fbbd": {
-      "analysis": "33 messages.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "9b647114-f581-423f-9e55-e35fbf76d1e8": {
-      "analysis": "6 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "9c219b44-c7f5-411b-93cb-97e745c3756e": {
-      "analysis": "5 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "9d36ca7c-5212-4f37-b933-cde3729cb018": {
-      "analysis": "4 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "9ee8f5e5-d15e-4e8c-aa1b-53cddeed4f51": {
-      "analysis": "9 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "9f1d3ace-b035-4aa0-9ebf-442926a51c3d": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "a0bc7a29-34d8-4bf8-baf6-2c5926e40133": {
-      "analysis": "44 messages. Asks WHY questions. Asks about thought process.",
-      "scores": {
-        "P1": 3,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 0,
-        "M3": 0,
+        "M3": 1,
         "E1": 2,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
-      "pattern": "D",
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7944aada-3032-42fc-ae96-f184985b4c28": {
+      "analysis": "147 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "798fbb6d-45c5-463b-ab3d-2608c80160f0": {
+      "analysis": "55 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7b348c75-f137-49c5-b5fb-2e6062378fc6": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
       "confidence": 0.8,
-      "reasoning": "Deep metacognitive engagement - systematic verification, critical thinking, process-focused"
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7be739f6-a8d8-4944-9877-7df185d4b854": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7c510bdc-a015-4ec0-b00f-9e286ef9e2d0": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7db11d48-432d-4ff5-9b97-42b4d89729d7": {
+      "analysis": "33 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7e184af7-e805-447c-810b-bd07b6ba6dc1": {
+      "analysis": "106 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7e531994-257b-4964-ba60-98c83fc795dc": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "810cecf6-f323-4dd5-8a9e-5ccad3e742a0": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "830cceff-a415-44b7-a71e-b2d5cd468721": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "84dab563-2714-41ea-9d2e-6c013600861d": {
+      "analysis": "18 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "87b7ded1-ab31-4639-8bec-314aa5471a59": {
+      "analysis": "14 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8896797c-d98a-4276-90bb-4908b1ec4fe2": {
+      "analysis": "39 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8987c65f-11e2-4e3e-9084-f832799e1a00": {
+      "analysis": "15 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8a12da42-10d5-49b6-8e6a-a97187aefe92": {
+      "analysis": "11 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8a21ef75-5b63-4690-8d98-4304319a465f": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8a73146d-e041-4ad7-8fcc-d049740ebe03": {
+      "analysis": "70 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8bfe145e-798b-4b37-8eae-58ac18590be3": {
+      "analysis": "7 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8c2684d5-377b-44df-ae98-3b95190b8f68": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8c6d1585-cd9c-477c-a8ae-3d7dbe625729": {
+      "analysis": "21 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8c73c5db-5918-4dba-ac2d-32a9e093bdd6": {
+      "analysis": "11 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8cc396ac-ad69-483c-83f7-b4e4088dc822": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8e3145bb-a5e5-40ac-bc0d-d00408e19093": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8e5b0cdc-781e-4657-a95f-6f88a5add4c9": {
+      "analysis": "33 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9061fc8b-130d-40bc-b494-4a7451c041ba": {
+      "analysis": "55 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "906e529c-7704-4b35-b6b4-c0dcf14db6d6": {
+      "analysis": "23 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "908ee2bb-2d91-4b32-bf01-81c502fedec2": {
+      "analysis": "5 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "91c8b63d-7223-486d-9e71-bcfd1fa3a1d5": {
+      "analysis": "8 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "92a37e0e-e674-4301-a25c-1056ae612c38": {
+      "analysis": "66 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "97286872-f1e3-4057-9309-f689e0bde519": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9731460e-0884-4426-8e1f-a28275f958d2": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "979e1b71-8ce8-4b48-8b9a-ff8f7d2f0822": {
+      "analysis": "14 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "97cee636-f4f1-4ec7-ac81-665900284587": {
+      "analysis": "13 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "989b83d2-d1bb-4260-8624-4fd52045d288": {
+      "analysis": "10 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "98d88b0f-81ae-40b4-ae1f-d84823aa23f2": {
+      "analysis": "53 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9932e316-174d-4098-94dc-311da62054c9": {
+      "analysis": "7 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "99d74ef9-3221-45c3-bf67-a29d57e21af4": {
+      "analysis": "9 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "99e235e8-839c-4015-a594-f72b115ef7d7": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9acf5ab7-5a2d-42e9-9a5b-c228ef5c366b": {
+      "analysis": "8 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9b2fdd39-2396-4881-9bbf-5c609af5fbbd": {
+      "analysis": "33 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9b647114-f581-423f-9e55-e35fbf76d1e8": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9c219b44-c7f5-411b-93cb-97e745c3756e": {
+      "analysis": "5 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9d36ca7c-5212-4f37-b933-cde3729cb018": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9ee8f5e5-d15e-4e8c-aa1b-53cddeed4f51": {
+      "analysis": "9 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9f1d3ace-b035-4aa0-9ebf-442926a51c3d": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "a0bc7a29-34d8-4bf8-baf6-2c5926e40133": {
+      "analysis": "44 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a11b7f90-a727-4c7b-aabb-ab79945cd291": {
-      "analysis": "4 messages. Minimal engagement.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1181,17 +1181,17 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a18ef405-be5d-4e06-9770-0ac0963b389b": {
-      "analysis": "4 messages.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -1201,38 +1201,38 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a1a3b66f-7f20-4924-8f84-580e45d499ff": {
-      "analysis": "5 messages. Asks WHY questions. Corrects/challenges AI.",
+      "analysis": "5 messages. Heuristic classification.",
       "scores": {
-        "P1": 1,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
-        "M1": 1,
+        "M1": 2,
         "M2": 2,
         "M3": 1,
-        "E1": 1,
+        "E1": 2,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
+      "pattern": "C",
       "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a251e1be-13e2-49e8-8ad1-79ee19d031a9": {
-      "analysis": "32 messages. Asks WHY questions. Asks strategic when-to-use questions.",
+      "analysis": "32 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -1242,10 +1242,10 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a2704219-a556-4374-ae41-2144cd1c6110": {
-      "analysis": "25 messages. Asks WHY questions.",
+      "analysis": "25 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
@@ -1254,25 +1254,25 @@
         "M1": 1,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a436e2db-733e-4218-b55b-a90d586f50e6": {
-      "analysis": "17 messages. Asks WHY questions.",
+      "analysis": "17 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -1282,13 +1282,13 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a4538fb6-1a9d-4d46-b6fd-3bdba31b0433": {
-      "analysis": "11 messages.",
+      "analysis": "11 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
-        "P2": 0,
+        "P1": 1,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1300,52 +1300,52 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a75efe00-c7c2-4c99-a1e2-104dd44d7232": {
-      "analysis": "81 messages. Asks WHY questions. Verifies understanding. Corrects/challenges AI. Asks strategic when-to-use questions.",
+      "analysis": "81 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
         "P3": 1,
         "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 2,
-        "E1": 1,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
-      "pattern": "D",
-      "confidence": 0.8,
-      "reasoning": "Deep metacognitive engagement - systematic verification, critical thinking, process-focused"
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a8c420d1-277d-4c63-8aea-3c129e72ab21": {
-      "analysis": "31 messages. Asks WHY questions. Corrects/challenges AI.",
+      "analysis": "31 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 2,
-        "M3": 2,
-        "E1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a9b445ca-7416-40e0-b938-aeab76897b90": {
-      "analysis": "23 messages. Asks WHY questions.",
+      "analysis": "23 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
@@ -1354,21 +1354,21 @@
         "M1": 1,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "aaaeae86-d1d9-4682-8bcb-c3367cc48f37": {
-      "analysis": "4 messages. Minimal engagement.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1381,18 +1381,18 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "ab220331-6bfe-46cd-8762-716acdcb2f5d": {
-      "analysis": "11 messages. Asks WHY questions.",
+      "analysis": "11 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -1402,13 +1402,13 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "ac9c4b15-1a10-400b-9ec5-80dcacde5537": {
-      "analysis": "7 messages.",
+      "analysis": "7 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1420,16 +1420,16 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "aca6426d-eb7f-4c4d-bef7-0414cdb8672f": {
-      "analysis": "34 messages.",
+      "analysis": "34 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
         "M2": 0,
@@ -1437,22 +1437,22 @@
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 0,
+        "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "ad36900b-8bd1-4edf-b46b-d466406562e6": {
-      "analysis": "12 messages. Asks WHY questions.",
+      "analysis": "12 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -1462,76 +1462,76 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "afb5461f-eee5-4eb9-83a5-87f5f5091279": {
-      "analysis": "9 messages. Asks WHY questions. Corrects/challenges AI.",
+      "analysis": "9 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
-        "M2": 2,
-        "M3": 1,
-        "E1": 1,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b01ef3a2-6aae-48e1-9864-eb218c2f621d": {
-      "analysis": "7 messages. Requests self-testing.",
+      "analysis": "7 messages. Heuristic classification.",
       "scores": {
-        "P1": 1,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 2,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
         "E2": 0,
         "E3": 0,
-        "R1": 2,
+        "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
+      "pattern": "C",
       "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b0a59fea-899d-49cd-9864-01280ff8b911": {
-      "analysis": "7 messages. Corrects/challenges AI.",
+      "analysis": "7 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
-        "M2": 2,
-        "M3": 1,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
         "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 0,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b1a8fb89-cfbb-4eb6-a05f-849d7923c17a": {
-      "analysis": "3 messages.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 1,
+        "P2": 0,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -1541,17 +1541,17 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b365599b-5889-4d08-9821-123b50c9d5bf": {
-      "analysis": "4 messages.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -1561,14 +1561,14 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b6cdf11f-aec0-4f47-b56c-fa1522f3d3a9": {
-      "analysis": "6 messages.",
+      "analysis": "6 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1580,75 +1580,75 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b7653442-88ff-4f5d-97b2-f8e4b9696599": {
-      "analysis": "13 messages. Asks WHY questions.",
+      "analysis": "13 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b7a8c4ce-445b-4f65-af2d-7fb07ef1f590": {
-      "analysis": "7 messages. Asks WHY questions.",
+      "analysis": "7 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b91d8736-7b18-470b-84e1-cd1b5a151928": {
-      "analysis": "15 messages. Verifies understanding.",
+      "analysis": "15 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 2,
-        "M2": 1,
+        "M1": 0,
+        "M2": 0,
         "M3": 0,
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b938a6fb-b04a-4c93-ad1f-ba5de9de5639": {
-      "analysis": "13 messages.",
+      "analysis": "13 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
-        "P2": 0,
+        "P1": 1,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1660,16 +1660,16 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b94e0578-9bc3-4ccf-9e96-e49a7e879a1c": {
-      "analysis": "19 messages. Shows study planning.",
+      "analysis": "19 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
-        "P3": 1,
+        "P3": 0,
         "P4": 0,
         "M1": 1,
         "M2": 0,
@@ -1677,21 +1677,21 @@
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 0,
+        "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "ba7857ba-6965-4017-92b4-6dc250954eb5": {
-      "analysis": "3 messages.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 1,
+        "P2": 0,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -1701,17 +1701,17 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "bc5d1eb1-b8c6-4a82-bc9c-db893e6da50f": {
-      "analysis": "5 messages.",
+      "analysis": "5 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -1720,15 +1720,15 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "bd09aa3f-c804-4f80-bc24-18e3ca1d7e01": {
-      "analysis": "11 messages.",
+      "analysis": "11 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
-        "P2": 0,
+        "P1": 1,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1740,18 +1740,18 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "bdd12bf2-19ae-482f-a80c-c867525c4a57": {
-      "analysis": "4 messages.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -1761,18 +1761,18 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "be6d54bd-8f93-4fc1-b8a5-26b47f3474d5": {
-      "analysis": "38 messages. Asks WHY questions.",
+      "analysis": "38 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
-        "P2": 2,
-        "P3": 0,
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -1782,17 +1782,17 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "bf96db48-4ba3-4882-8da4-c4cd1d9e984c": {
-      "analysis": "5 messages. Explores alternative methods.",
+      "analysis": "5 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
-        "M2": 2,
+        "M2": 0,
         "M3": 0,
         "E1": 0,
         "E2": 0,
@@ -1800,38 +1800,38 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "c156b7f9-dc7b-4a04-81d0-353f7865b73d": {
-      "analysis": "70 messages. Verifies understanding. Requests self-testing. Explores alternative methods.",
+      "analysis": "70 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
-        "P2": 2,
-        "P3": 0,
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
         "P4": 0,
-        "M1": 2,
-        "M2": 2,
+        "M1": 1,
+        "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 2,
+        "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "c5fb40c6-524a-4e34-8969-67448dd62623": {
-      "analysis": "9 messages.",
+      "analysis": "9 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -1840,18 +1840,18 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "c6fdc59a-a1d7-4714-b964-b60c5543e538": {
-      "analysis": "5 messages.",
+      "analysis": "5 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -1860,75 +1860,75 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "c7107ed6-dc22-42fc-a314-c024f2ed9567": {
-      "analysis": "68 messages. Asks WHY questions.",
+      "analysis": "68 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "c95d3039-b268-45be-a23a-48f1d3daed3f": {
-      "analysis": "69 messages. Requests self-testing.",
+      "analysis": "69 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
-        "M1": 2,
+        "M1": 1,
         "M2": 0,
         "M3": 0,
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 2,
+        "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "c9d48a02-0ac3-47b0-94ef-444c802bb54e": {
-      "analysis": "51 messages. Asks WHY questions. Verifies understanding. Corrects/challenges AI. Asks strategic when-to-use questions.",
+      "analysis": "51 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 2,
         "M2": 2,
-        "M3": 2,
-        "E1": 1,
+        "M3": 1,
+        "E1": 2,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
-      "pattern": "D",
-      "confidence": 0.8,
-      "reasoning": "Deep metacognitive engagement - systematic verification, critical thinking, process-focused"
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "cbb102a4-02b7-4f4d-aa0f-8ac1f5be61ec": {
-      "analysis": "5 messages.",
+      "analysis": "5 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1940,15 +1940,15 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "cc372ba5-6f22-4212-ad46-80d325bea735": {
-      "analysis": "4 messages. Minimal engagement.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -1961,18 +1961,18 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "cd08d966-f7df-44ba-b3f8-426c0f1141b6": {
-      "analysis": "12 messages. Explores alternative methods.",
+      "analysis": "12 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
-        "M2": 2,
+        "M1": 0,
+        "M2": 0,
         "M3": 0,
         "E1": 0,
         "E2": 0,
@@ -1980,15 +1980,15 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "cdadc75b-6f3c-4886-9bdb-45558c335023": {
-      "analysis": "4 messages. Minimal engagement.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -2001,31 +2001,31 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "ce080fd9-d1f3-4b7a-b12d-58f4c2d128f8": {
-      "analysis": "74 messages. Asks WHY questions.",
+      "analysis": "74 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "cead2db9-b80a-4535-a8cd-0af05b6e4494": {
-      "analysis": "3 messages. Minimal engagement.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 0,
@@ -2041,17 +2041,17 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "cf10adec-9868-43c2-86d4-10af2567726b": {
-      "analysis": "7 messages.",
+      "analysis": "7 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2060,18 +2060,18 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "cf537bdd-c7d5-432c-9979-6ecd31381501": {
-      "analysis": "3 messages.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 1,
+        "P2": 0,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2081,11 +2081,11 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "cfc66cf9-7416-4705-852a-3ad1a9dd3eec": {
-      "analysis": "21 messages. Asks WHY questions.",
+      "analysis": "21 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
@@ -2094,25 +2094,25 @@
         "M1": 1,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "d25f93d6-959a-4d39-a63a-95ba90d27661": {
-      "analysis": "17 messages. Asks WHY questions.",
+      "analysis": "17 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -2122,16 +2122,16 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "d3e2e975-404f-4a2c-a1e3-1f8ee9d29899": {
-      "analysis": "7 messages.",
+      "analysis": "7 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2140,35 +2140,35 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "d560e9c5-b337-4433-ad36-cae72353d809": {
-      "analysis": "31 messages. Asks WHY questions. Asks to check own work.",
+      "analysis": "31 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
-        "M1": 1,
+        "M1": 2,
         "M2": 2,
-        "M3": 0,
-        "E1": 1,
+        "M3": 1,
+        "E1": 2,
         "E2": 0,
         "E3": 0,
-        "R1": 2,
+        "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
+      "pattern": "C",
       "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "d601bd43-a1ab-44ec-97cf-9b0c46bfb956": {
-      "analysis": "4 messages. Minimal engagement.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -2181,31 +2181,31 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "d6280e69-bd84-4f55-b450-20f2b9fceee5": {
-      "analysis": "4 messages. Asks WHY questions.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "d8108c8b-0518-4632-9d2e-00a34dcda1bb": {
-      "analysis": "18 messages.",
+      "analysis": "18 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
@@ -2217,21 +2217,21 @@
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 0,
+        "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "da909e7d-fb8c-40a7-b56e-ef471eba7f0e": {
-      "analysis": "4 messages.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2241,17 +2241,17 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "daa6bfd2-5126-4294-b985-56a73a28e057": {
-      "analysis": "10 messages.",
+      "analysis": "10 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2260,12 +2260,12 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "daa934c3-93db-4af1-8855-733ab6754db0": {
-      "analysis": "3 messages. Minimal engagement.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 0,
@@ -2281,14 +2281,14 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "dad7ecf3-c755-49a9-aa31-c086c4fe2548": {
-      "analysis": "12 messages.",
+      "analysis": "12 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
-        "P2": 0,
+        "P1": 1,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -2300,95 +2300,95 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "dade7dad-6fbe-47c5-b691-de2adbd45d83": {
-      "analysis": "119 messages. Asks WHY questions. Verifies understanding. Requests self-testing. Corrects/challenges AI. Asks strategic when-to-use questions. Explores alternative methods.",
+      "analysis": "119 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
-        "P2": 2,
+        "P1": 2,
+        "P2": 1,
         "P3": 1,
         "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 2,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
         "E1": 1,
         "E2": 0,
         "E3": 0,
-        "R1": 2,
+        "R1": 1,
         "R2": 0
       },
-      "pattern": "D",
-      "confidence": 0.8,
-      "reasoning": "Deep metacognitive engagement - systematic verification, critical thinking, process-focused"
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "dce40392-845f-4d98-8b48-484e2c50ebd5": {
-      "analysis": "10 messages. Asks WHY questions.",
+      "analysis": "10 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "dd0dcd3f-15b0-4525-9150-12d6fbccb0d3": {
-      "analysis": "70 messages. Asks WHY questions. Asks strategic when-to-use questions.",
+      "analysis": "70 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 1,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "ddbb3f6e-09f0-43d8-926c-720cb2991015": {
-      "analysis": "8 messages. Asks WHY questions.",
+      "analysis": "8 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "dec8e6cc-d87c-4e64-8fdf-cb4bdfc1da1f": {
-      "analysis": "5 messages.",
+      "analysis": "5 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -2400,19 +2400,19 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "decc4c79-02e7-4652-a7df-f2dc4891e001": {
-      "analysis": "33 messages. Asks WHY questions. Asks strategic when-to-use questions.",
+      "analysis": "33 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -2422,16 +2422,16 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "df156220-6695-4ab5-b32f-adc799f032c1": {
-      "analysis": "3 messages.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 1,
+        "P2": 0,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2441,17 +2441,17 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "e149c248-b5f7-4b6c-90a3-66bdf4944fa0": {
-      "analysis": "10 messages.",
+      "analysis": "10 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2460,15 +2460,15 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "e360817d-5d90-4089-993f-3003a1f3802e": {
-      "analysis": "6 messages.",
+      "analysis": "6 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -2480,12 +2480,12 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "e37d14a8-9534-4285-94c7-57a390783e41": {
-      "analysis": "3 messages. Minimal engagement.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 0,
@@ -2501,37 +2501,37 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "e497f98c-15b6-40e6-ba67-3f22aee969ba": {
-      "analysis": "19 messages. Asks WHY questions. Corrects/challenges AI.",
+      "analysis": "19 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
-        "M1": 1,
+        "M1": 2,
         "M2": 2,
         "M3": 1,
-        "E1": 1,
+        "E1": 2,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
+      "pattern": "C",
       "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "e557a23c-ebe8-45b8-a7bb-a9c42ad6d973": {
-      "analysis": "3 messages.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 1,
+        "P2": 0,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2541,17 +2541,17 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "e7cb9dd7-39c4-4118-9461-f108c9e03d10": {
-      "analysis": "3 messages.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 1,
+        "P2": 0,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -2561,914 +2561,914 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "e808c425-a941-4cdd-a08a-ce1c1c9ba1f0": {
-      "analysis": "10 messages.",
+      "analysis": "10 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "eac5f544-9b7f-4de4-b115-35dd58d1390e": {
-      "analysis": "5 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "eb1b7e23-08f1-4cfe-a088-ac04328fa258": {
-      "analysis": "8 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "eb81d751-4916-47c1-bd6a-8c3c12e5dc8c": {
-      "analysis": "22 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "ed0acda3-7e36-4b1b-96d6-4921cd9fb821": {
-      "analysis": "13 messages. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "ef9db05f-5b04-4340-a7a3-aa980a4cc96c": {
-      "analysis": "5 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f0249f10-eb0d-43e1-baca-efc44e9a047e": {
-      "analysis": "34 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f0559f26-9584-4a72-8554-2a90225dfe06": {
-      "analysis": "14 messages. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f2a36e35-478f-4bf0-bf86-c893bb43f089": {
-      "analysis": "19 messages. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f3274a50-479f-4cdb-8147-390681ced26d": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "f43e3235-bb89-4760-ade6-dcf8fddecf99": {
-      "analysis": "11 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f4dd9f3c-44d5-4116-9017-0f29441f18fb": {
-      "analysis": "41 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f6252421-a5a7-44e8-a47d-ff24eb2f5ff7": {
-      "analysis": "25 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f767abbb-5d6b-4836-9211-d01aba41ebda": {
-      "analysis": "35 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f8a572f1-0222-45da-aedc-dcca50a3e267": {
-      "analysis": "20 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "fcd68a56-d1ec-4076-8f5f-5971d593d0c6": {
-      "analysis": "11 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "fd68e116-0ba8-4692-b34a-93e42f3a3305": {
-      "analysis": "3 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "fd940a6e-e199-4512-9349-7a3a80ce69b3": {
-      "analysis": "21 messages. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "fe4e498f-cdee-41b6-8f44-5c65a64223b6": {
-      "analysis": "51 messages. Asks WHY questions. Requests self-testing. Corrects/challenges AI. Shows study planning.",
-      "scores": {
-        "P1": 3,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 2,
-        "M2": 2,
-        "M3": 2,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "ffec35a4-cc27-4335-83d4-fe2e44534078": {
-      "analysis": "6 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "b3afb2e5-2e1e-4528-80c3-102334d1d13c": {
-      "analysis": "42 messages. Verifies understanding.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "b54c4794-f4ac-47b1-ae49-40ca8ba42f0d": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "a7399082-e511-4ba5-a3a6-e6b861b103c1": {
-      "analysis": "6 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8b141d91-820d-49e5-a4de-55fe0d2b175d": {
-      "analysis": "3 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "e5098446-1d64-4a07-9708-52159add5752": {
-      "analysis": "4 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "e8e9bd40-d2ab-4e26-abf3-bbac2e3ea891": {
-      "analysis": "13 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f2c9e39d-8fc3-4568-99f7-8850b951ee41": {
-      "analysis": "39 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "dcd98199-a614-4e4f-87b4-1e9f3a070aac": {
-      "analysis": "4 messages. Asks to check own work.",
-      "scores": {
-        "P1": 1,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 2,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "de5d49a5-1dad-49f8-9f7b-be065fecfaba": {
-      "analysis": "12 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "741000e8-caba-4194-8f02-e8abdb11249a": {
-      "analysis": "29 messages. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 1,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8a821446-cdbc-4d59-8f8c-4070cabdbb98": {
-      "analysis": "8 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "90a9ecb5-64c1-4574-9b0e-5ff934c35baa": {
-      "analysis": "77 messages.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "d4232fb2-66dc-4990-bc6a-4288eb7601a7": {
-      "analysis": "4 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "895e43a9-73f1-403c-9e2b-49dd6096b814": {
-      "analysis": "14 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "a889be17-ebaa-4a6f-b416-f2ed507fa263": {
-      "analysis": "77 messages. Requests self-testing. Asks to check own work.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "e517180b-3a7b-4461-ac18-89bc28baf2d8": {
-      "analysis": "3 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "d3536ffc-d1db-4f32-9e72-c2ab65cd735f": {
-      "analysis": "3 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "9cc2f197-5cd6-4679-a15e-ee0604c39836": {
-      "analysis": "3 messages. Minimal engagement.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "a4642d73-73ee-4c7b-81b4-f67f3e473c30": {
-      "analysis": "25 messages. Asks WHY questions. Corrects/challenges AI.",
-      "scores": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 2,
-        "M3": 2,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "b5121c70-067f-4634-b546-a462a1413cf8": {
-      "analysis": "5 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "7458718c-e599-4e9a-abbb-5a067c69f5e3": {
-      "analysis": "47 messages. Requests self-testing.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "717549db-9e2f-4e81-a0f4-f7b181d2b726": {
-      "analysis": "20 messages. Corrects/challenges AI.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
         "M2": 2,
         "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "eac5f544-9b7f-4de4-b115-35dd58d1390e": {
+      "analysis": "5 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
         "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 0,
         "R2": 0
       },
-      "pattern": "B",
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "eb1b7e23-08f1-4cfe-a088-ac04328fa258": {
+      "analysis": "8 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "eb81d751-4916-47c1-bd6a-8c3c12e5dc8c": {
+      "analysis": "22 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "ed0acda3-7e36-4b1b-96d6-4921cd9fb821": {
+      "analysis": "13 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "ef9db05f-5b04-4340-a7a3-aa980a4cc96c": {
+      "analysis": "5 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f0249f10-eb0d-43e1-baca-efc44e9a047e": {
+      "analysis": "34 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f0559f26-9584-4a72-8554-2a90225dfe06": {
+      "analysis": "14 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f2a36e35-478f-4bf0-bf86-c893bb43f089": {
+      "analysis": "19 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f3274a50-479f-4cdb-8147-390681ced26d": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f43e3235-bb89-4760-ade6-dcf8fddecf99": {
+      "analysis": "11 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f4dd9f3c-44d5-4116-9017-0f29441f18fb": {
+      "analysis": "41 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f6252421-a5a7-44e8-a47d-ff24eb2f5ff7": {
+      "analysis": "25 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f767abbb-5d6b-4836-9211-d01aba41ebda": {
+      "analysis": "35 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f8a572f1-0222-45da-aedc-dcca50a3e267": {
+      "analysis": "20 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "fcd68a56-d1ec-4076-8f5f-5971d593d0c6": {
+      "analysis": "11 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "fd68e116-0ba8-4692-b34a-93e42f3a3305": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "fd940a6e-e199-4512-9349-7a3a80ce69b3": {
+      "analysis": "21 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "fe4e498f-cdee-41b6-8f44-5c65a64223b6": {
+      "analysis": "51 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
       "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "ffec35a4-cc27-4335-83d4-fe2e44534078": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "b3afb2e5-2e1e-4528-80c3-102334d1d13c": {
+      "analysis": "42 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "b54c4794-f4ac-47b1-ae49-40ca8ba42f0d": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "a7399082-e511-4ba5-a3a6-e6b861b103c1": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8b141d91-820d-49e5-a4de-55fe0d2b175d": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e5098446-1d64-4a07-9708-52159add5752": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e8e9bd40-d2ab-4e26-abf3-bbac2e3ea891": {
+      "analysis": "13 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f2c9e39d-8fc3-4568-99f7-8850b951ee41": {
+      "analysis": "39 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "dcd98199-a614-4e4f-87b4-1e9f3a070aac": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "de5d49a5-1dad-49f8-9f7b-be065fecfaba": {
+      "analysis": "12 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "741000e8-caba-4194-8f02-e8abdb11249a": {
+      "analysis": "29 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8a821446-cdbc-4d59-8f8c-4070cabdbb98": {
+      "analysis": "8 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "90a9ecb5-64c1-4574-9b0e-5ff934c35baa": {
+      "analysis": "77 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "d4232fb2-66dc-4990-bc6a-4288eb7601a7": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "895e43a9-73f1-403c-9e2b-49dd6096b814": {
+      "analysis": "14 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "a889be17-ebaa-4a6f-b416-f2ed507fa263": {
+      "analysis": "77 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e517180b-3a7b-4461-ac18-89bc28baf2d8": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "d3536ffc-d1db-4f32-9e72-c2ab65cd735f": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "9cc2f197-5cd6-4679-a15e-ee0604c39836": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "a4642d73-73ee-4c7b-81b4-f67f3e473c30": {
+      "analysis": "25 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "b5121c70-067f-4634-b546-a462a1413cf8": {
+      "analysis": "5 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7458718c-e599-4e9a-abbb-5a067c69f5e3": {
+      "analysis": "47 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "717549db-9e2f-4e81-a0f4-f7b181d2b726": {
+      "analysis": "20 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "731ac70b-004f-4d8a-80b5-328e2f332c4b": {
-      "analysis": "6 messages.",
+      "analysis": "6 messages. Heuristic classification.",
       "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
         "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
         "E2": 0,
         "E3": 0,
-        "R1": 0,
+        "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "ddde66b4-6235-4cac-b8a8-608182f41214": {
-      "analysis": "18 messages. Requests self-testing.",
+      "analysis": "18 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 2,
+        "M1": 1,
         "M2": 0,
         "M3": 0,
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 2,
+        "R1": 1,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "9e7f408e-755f-4304-892d-1af610960672": {
-      "analysis": "9 messages. Asks WHY questions.",
+      "analysis": "9 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 1,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "fa4ec82b-f409-48a9-aea7-3acccf531e7b": {
-      "analysis": "4 messages. Minimal engagement.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -3481,15 +3481,15 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "779facae-4a78-4db2-bb94-478dd623a8e4": {
-      "analysis": "53 messages.",
+      "analysis": "53 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
         "M2": 0,
@@ -3497,41 +3497,41 @@
         "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 0,
+        "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "8b19cb54-a8b0-4098-9db9-a387d657dd11": {
-      "analysis": "15 messages. Asks WHY questions. Requests self-testing.",
+      "analysis": "15 messages. Heuristic classification.",
       "scores": {
-        "P1": 2,
+        "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 2,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
-        "R1": 2,
+        "R1": 0,
         "R2": 0
       },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "9cb21d47-9653-4acc-b80d-5f15f44f8480": {
-      "analysis": "5 messages.",
+      "analysis": "5 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -3540,39 +3540,39 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "b72adf21-93d5-4f55-9c47-5591d8531128": {
-      "analysis": "40 messages. Asks WHY questions.",
+      "analysis": "40 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
-        "P3": 0,
+        "P3": 1,
         "P4": 0,
         "M1": 1,
         "M2": 0,
         "M3": 0,
-        "E1": 1,
+        "E1": 0,
         "E2": 0,
         "E3": 0,
         "R1": 1,
         "R2": 0
       },
       "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "dc3107e2-6f9f-40f2-b880-e9ae873817f0": {
-      "analysis": "48 messages. Asks WHY questions. Asks strategic when-to-use questions.",
+      "analysis": "48 messages. Heuristic classification.",
       "scores": {
-        "P1": 3,
+        "P1": 2,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 1,
-        "M2": 0,
+        "M2": 1,
         "M3": 0,
         "E1": 1,
         "E2": 0,
@@ -3582,16 +3582,16 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "adceff6c-a74a-4b7b-872e-b1341a3755df": {
-      "analysis": "4 messages.",
+      "analysis": "4 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 1,
         "P3": 0,
         "P4": 0,
-        "M1": 1,
+        "M1": 0,
         "M2": 0,
         "M3": 0,
         "E1": 0,
@@ -3601,859 +3601,419 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "7c1cfba2-9e6f-47e4-a7d8-2f73ccc86e1f": {
-      "analysis": "31 messages.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "b63b531c-3c07-4026-ab50-f94c90b8b177": {
-      "analysis": "20 messages. Asks WHY questions.",
+      "analysis": "31 messages. Heuristic classification.",
       "scores": {
         "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "f9a76a92-3cfb-4231-9374-bb85a69db0a3": {
-      "analysis": "41 messages. Requests self-testing. Asks to check own work.",
-      "scores": {
-        "P1": 3,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "6d94835a-f0ce-4535-a0c3-c192bed94eb9": {
-      "analysis": "6 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "8a920542-fb0e-4c10-b8fe-d4a6f4fa9232": {
-      "analysis": "8 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "931bc988-cbd0-4aa5-a9bd-f2910c29da73": {
-      "analysis": "3 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "94553666-f9ab-4e4a-b89e-cb9eed4446df": {
-      "analysis": "63 messages. Asks WHY questions. Requests self-testing. Corrects/challenges AI.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 2,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "a08a9090-8dd6-42e3-b8cd-258a276037a2": {
-      "analysis": "6 messages. Requests self-testing. Asks to check own work.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "b4df2cec-2a1a-4c1c-a5db-d6d7bb9e93e8": {
-      "analysis": "17 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "cd279dc3-9d7e-416d-b100-3bdf4c8ef701": {
-      "analysis": "97 messages. Asks WHY questions. Verifies understanding. Explores alternative methods.",
-      "scores": {
-        "P1": 3,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "d857d240-9adb-43f2-bd09-d78c8b157b17": {
-      "analysis": "8 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "e24ec191-f90e-4cd4-90ff-67a4674d461e": {
-      "analysis": "19 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "e3900c3f-5d23-4777-9e47-c0d3d9e320a4": {
-      "analysis": "23 messages. Verifies understanding.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "e4cde6f4-ae0c-4e8a-9a59-edc47aee9bae": {
-      "analysis": "16 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "e91cc905-dfe1-4da7-bec3-3246395fe639": {
-      "analysis": "6 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "fb313677-dfc4-4bb0-b24b-724ede8f426b": {
-      "analysis": "11 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "703ef106-5549-483d-a53b-d5e63ba9695e": {
-      "analysis": "13 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "916f15c7-9d11-46c2-8d98-3fbe0e7c8d74": {
-      "analysis": "21 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "a40b3e53-42ea-4a64-8dac-dd3f711cd405": {
-      "analysis": "11 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "c354b7fb-fa6b-4430-be21-137d5f5d8ea6": {
-      "analysis": "8 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "cbca08d0-d551-4d35-9a76-bb6895e3d39b": {
-      "analysis": "37 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "e2ac9a25-5e13-4595-b8d8-3b2dd1bf3c81": {
-      "analysis": "19 messages. Asks WHY questions. Requests self-testing. Asks to check own work.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 2,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "bc0900ed-14bb-43cf-a928-2187d30719e5": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "f04ef933-3ef8-43b7-9420-46d9e0bfbba8": {
-      "analysis": "76 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "e9ff2822-b3f4-4d43-bc66-1df4b099d8da": {
-      "analysis": "5 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "c5a631e9-477f-4fd8-8aa5-0c503a83ece4": {
-      "analysis": "33 messages. Asks WHY questions. Corrects/challenges AI.",
-      "scores": {
-        "P1": 3,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 2,
-        "M3": 2,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "c85432b5-5c18-4988-a269-c5fdb61d0be3": {
-      "analysis": "7 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "90502d74-166b-4d8a-8831-a5d953a89a7f": {
-      "analysis": "3 messages. Requests self-testing.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "89f9415b-c45e-44a8-b94d-ad94c4f6f017": {
-      "analysis": "16 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "d2c62a37-d083-4632-8b94-d9f3d6013536": {
-      "analysis": "3 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "ff6043a2-b55a-4a4b-9503-61007aed6560": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "94623ab1-002c-446c-b9a3-25628dcb79ad": {
-      "analysis": "10 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "7394ff1a-0c5e-40ad-b53a-6536e683fef5": {
-      "analysis": "13 messages. Verifies understanding. Requests self-testing.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 2,
-        "M2": 1,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 2,
-        "R2": 0
-      },
-      "pattern": "B",
-      "confidence": 0.75,
-      "reasoning": "Shows verification behaviors - self-testing, quality checking, or trust calibration"
-    },
-    "d3560cb7-31a6-425c-9fcc-fd03d531b57b": {
-      "analysis": "12 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "74b08f82-ec68-4a70-89b2-3c6c128efa1b": {
-      "analysis": "19 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "6f8e7ffb-9a48-4579-b9a4-6d9c66fa04b2": {
-      "analysis": "4 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "7e8af39a-75f3-4e67-8282-a2845af3a301": {
-      "analysis": "7 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "e2afc742-6834-4364-bc9b-f9d230a48da3": {
-      "analysis": "11 messages.",
-      "scores": {
-        "P1": 2,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "c445e058-eb87-4428-93e9-c7b1ed32f506": {
-      "analysis": "7 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 0,
-        "P3": 0,
-        "P4": 0,
-        "M1": 0,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "b1d475de-12c1-4fb3-a407-35cc904cd97c": {
-      "analysis": "4 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "d7ccf37c-43c4-405c-89cc-dc1adae2c7b7": {
-      "analysis": "62 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 3,
-        "P2": 2,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "bdc51ef4-a0e6-41b3-b447-21740a81ee05": {
-      "analysis": "8 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "932ec878-bef7-4e09-a6b3-839f6b402cb4": {
-      "analysis": "3 messages. Asks WHY questions. Asks strategic when-to-use questions.",
-      "scores": {
-        "P1": 1,
         "P2": 1,
         "P3": 1,
         "P4": 0,
         "M1": 1,
         "M2": 0,
         "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "b63b531c-3c07-4026-ab50-f94c90b8b177": {
+      "analysis": "20 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f9a76a92-3cfb-4231-9374-bb85a69db0a3": {
+      "analysis": "41 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "6d94835a-f0ce-4535-a0c3-c192bed94eb9": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "8a920542-fb0e-4c10-b8fe-d4a6f4fa9232": {
+      "analysis": "8 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "931bc988-cbd0-4aa5-a9bd-f2910c29da73": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "94553666-f9ab-4e4a-b89e-cb9eed4446df": {
+      "analysis": "63 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "a08a9090-8dd6-42e3-b8cd-258a276037a2": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "b4df2cec-2a1a-4c1c-a5db-d6d7bb9e93e8": {
+      "analysis": "17 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "cd279dc3-9d7e-416d-b100-3bdf4c8ef701": {
+      "analysis": "97 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "d857d240-9adb-43f2-bd09-d78c8b157b17": {
+      "analysis": "8 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e24ec191-f90e-4cd4-90ff-67a4674d461e": {
+      "analysis": "19 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e3900c3f-5d23-4777-9e47-c0d3d9e320a4": {
+      "analysis": "23 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e4cde6f4-ae0c-4e8a-9a59-edc47aee9bae": {
+      "analysis": "16 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e91cc905-dfe1-4da7-bec3-3246395fe639": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "fb313677-dfc4-4bb0-b24b-724ede8f426b": {
+      "analysis": "11 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "703ef106-5549-483d-a53b-d5e63ba9695e": {
+      "analysis": "13 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "916f15c7-9d11-46c2-8d98-3fbe0e7c8d74": {
+      "analysis": "21 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "a40b3e53-42ea-4a64-8dac-dd3f711cd405": {
+      "analysis": "11 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "c354b7fb-fa6b-4430-be21-137d5f5d8ea6": {
+      "analysis": "8 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "cbca08d0-d551-4d35-9a76-bb6895e3d39b": {
+      "analysis": "37 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
         "E1": 1,
         "E2": 0,
         "E3": 0,
@@ -4462,13 +4022,453 @@
       },
       "pattern": "C",
       "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e2ac9a25-5e13-4595-b8d8-3b2dd1bf3c81": {
+      "analysis": "19 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "bc0900ed-14bb-43cf-a928-2187d30719e5": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "f04ef933-3ef8-43b7-9420-46d9e0bfbba8": {
+      "analysis": "76 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e9ff2822-b3f4-4d43-bc66-1df4b099d8da": {
+      "analysis": "5 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "c5a631e9-477f-4fd8-8aa5-0c503a83ece4": {
+      "analysis": "33 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "c85432b5-5c18-4988-a269-c5fdb61d0be3": {
+      "analysis": "7 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "90502d74-166b-4d8a-8831-a5d953a89a7f": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "89f9415b-c45e-44a8-b94d-ad94c4f6f017": {
+      "analysis": "16 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "d2c62a37-d083-4632-8b94-d9f3d6013536": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "ff6043a2-b55a-4a4b-9503-61007aed6560": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "94623ab1-002c-446c-b9a3-25628dcb79ad": {
+      "analysis": "10 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7394ff1a-0c5e-40ad-b53a-6536e683fef5": {
+      "analysis": "13 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "d3560cb7-31a6-425c-9fcc-fd03d531b57b": {
+      "analysis": "12 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "74b08f82-ec68-4a70-89b2-3c6c128efa1b": {
+      "analysis": "19 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.6,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "6f8e7ffb-9a48-4579-b9a4-6d9c66fa04b2": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "7e8af39a-75f3-4e67-8282-a2845af3a301": {
+      "analysis": "7 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "e2afc742-6834-4364-bc9b-f9d230a48da3": {
+      "analysis": "11 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "c445e058-eb87-4428-93e9-c7b1ed32f506": {
+      "analysis": "7 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "b1d475de-12c1-4fb3-a407-35cc904cd97c": {
+      "analysis": "4 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "d7ccf37c-43c4-405c-89cc-dc1adae2c7b7": {
+      "analysis": "62 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.65,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "bdc51ef4-a0e6-41b3-b447-21740a81ee05": {
+      "analysis": "8 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "932ec878-bef7-4e09-a6b3-839f6b402cb4": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "a7ed07e2-8981-4291-acb6-e5e3911aa5b4": {
-      "analysis": "5 messages.",
+      "analysis": "5 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 0,
         "M1": 0,
@@ -4480,72 +4480,12 @@
         "R1": 0,
         "R2": 0
       },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
     },
     "ddec7f5e-e319-4602-94b4-c96f745c2e53": {
-      "analysis": "3 messages.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 0,
-        "E2": 0,
-        "E3": 0,
-        "R1": 0,
-        "R2": 0
-      },
-      "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
-    },
-    "89b4754e-f35f-4927-9ef8-eff7c52b901c": {
-      "analysis": "3 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "dc5e0d92-7626-4d66-8b2b-6a03f5e81492": {
-      "analysis": "6 messages. Asks WHY questions.",
-      "scores": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 0,
-        "P4": 0,
-        "M1": 1,
-        "M2": 0,
-        "M3": 0,
-        "E1": 1,
-        "E2": 0,
-        "E3": 0,
-        "R1": 1,
-        "R2": 0
-      },
-      "pattern": "C",
-      "confidence": 0.7,
-      "reasoning": "Conceptual curiosity through questions and explanations, moderate metacognitive awareness"
-    },
-    "ff90e55b-b50e-41f2-b83c-849cb91d4604": {
-      "analysis": "3 messages. Minimal engagement.",
+      "analysis": "3 messages. Heuristic classification.",
       "scores": {
         "P1": 1,
         "P2": 0,
@@ -4561,8 +4501,68 @@
         "R2": 0
       },
       "pattern": "F",
-      "confidence": 0.85,
-      "reasoning": "Minimal metacognitive engagement - passive problem submission or logistics focus"
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "89b4754e-f35f-4927-9ef8-eff7c52b901c": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "dc5e0d92-7626-4d66-8b2b-6a03f5e81492": {
+      "analysis": "6 messages. Heuristic classification.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Heuristic based on message count and content indicators"
+    },
+    "ff90e55b-b50e-41f2-b83c-849cb91d4604": {
+      "analysis": "3 messages. Heuristic classification.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 2,
+        "M2": 2,
+        "M3": 1,
+        "E1": 2,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Heuristic based on message count and content indicators"
     }
   }
 }
