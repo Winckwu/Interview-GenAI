@@ -1,0 +1,78 @@
+{
+  "batch": 3,
+  "method": "LLM Semantic Analysis (Claude)",
+  "annotation_date": "2024-12-03",
+  "aligned_dimensions": true,
+  "users": {
+    "1893575f-b1fa-4f12-9518-ff8adf47ab32": {
+      "analysis": "202 messages - very high engagement about regression analysis. SOPHISTICATED ENGAGEMENT: Asks deep 'why' questions (why normality assumption, why must residuals be normally distributed). Engages in back-and-forth about variable significance. Shows practical reasoning ('temperature still may affect sales because people are disincentivised'). Questions methodology ('how to compare R squared, AIC and BIC? what is the benchmark?'). Iteratively refines model selection decisions.",
+      "scores": {"P1": 3, "P2": 2, "P3": 2, "P4": 0, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 0},
+      "pattern": "D",
+      "confidence": 0.85,
+      "reasoning": "High-quality engagement with deep conceptual questions and iterative refinement. Questions methodology and considers practical implications. Strong planning (P3) in model building process."
+    },
+    "1973a82b-8c78-42aa-b4dc-2c877381a007": {
+      "analysis": "12 messages about complex numbers. Shows curiosity about edge cases and boundary conditions ('What if the cartesian form is improper?', 'What if the polar form is improper?'). Questions go beyond basic understanding to explore exceptions.",
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 0, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Shows conceptual curiosity and edge-case thinking, but no verification or trust calibration observed"
+    },
+    "1d2271bd-daf1-4d01-9b48-389cbdf5ef83": {
+      "analysis": "20 messages about linear algebra. Requests 'crash course' on topics. Asks for step explanations ('how did you produce the three equations?'). Uses image input. Shows learning intent but relatively passive reception of content.",
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 0, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Learning-oriented with some step-by-step questions, but no verification behaviors observed"
+    },
+    "1e17845d-5c31-4809-a5a7-b2c2b1c3693a": {
+      "analysis": "22 messages. KEY BEHAVIOR: CORRECTS AI OUTPUT - 'the ans is 1/2', 'the correct ans is -5'. Demonstrates active quality checking by verifying AI answers against known correct solutions. Shows trust calibration - willing to challenge AI when it's wrong.",
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 0, "M1": 2, "M2": 2, "M3": 2, "E1": 2, "E2": 1, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C",
+      "confidence": 0.85,
+      "reasoning": "Strong trust calibration (M3) - actively checks and corrects AI errors. Quality evaluation (E1) through verification against known answers. Shows metacognitive monitoring."
+    },
+    "1e4742b2-fb4c-48b2-86d4-0661ccb70ad1": {
+      "analysis": "8 messages. Mostly quiz dates questions and basic probability problem. Minimal engagement, passive problem solving. No verification or deeper exploration.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F",
+      "confidence": 0.85,
+      "reasoning": "Minimal engagement with passive reception, primarily logistics and basic problems"
+    },
+    "1f2e9836-d6fc-4893-ab44-cbd3fe7f2aa9": {
+      "analysis": "72 messages. Many 'solve this' requests with image input. Some foundational requests ('foundational topics related to this problem'). Asks 'why' questions about specific solutions ('why is it (x-(1+i))(x-(1-i))'). Mix of solution-seeking and understanding-seeking.",
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 0, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Shows some learning intent with 'why' questions but predominantly solution-seeking behavior"
+    },
+    "2066b165-910b-4ef6-b663-b37636d41768": {
+      "analysis": "6 messages. Asks for help with specific problems (basis, curl(grad f)). No follow-up questions, no verification. Passive problem submission.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F",
+      "confidence": 0.85,
+      "reasoning": "Minimal engagement, pure solution-seeking without verification or follow-up"
+    },
+    "2143b678-7a06-43e5-8c1f-d1f30dffb09c": {
+      "analysis": "16 messages. Asks 'why' questions about solution steps ('why there have a 1/2', 'why is from 1 to 5 not 0 to 5'). Shows conceptual curiosity about mathematical reasoning. Questions solution details rather than just accepting.",
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 0, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Shows quality monitoring through 'why' questions about solution steps, indicates some metacognitive awareness"
+    },
+    "2163e3a3-89b3-4a7d-b475-b539f9f414d2": {
+      "analysis": "6 messages. Asks for teaching ('teach me how to find the dimension'). Shows confusion and asks for clarification ('idk why the column space is 2, i thought...'). Minimal overall engagement depth.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "F",
+      "confidence": 0.8,
+      "reasoning": "Shows some learning intent and self-awareness of confusion, but minimal sustained engagement"
+    },
+    "219ecff5-78d4-472d-b59b-b1c4bd8a4a5a": {
+      "analysis": "40 messages. Predominantly 'help in understanding' and 'solve' requests with image input. Repetitive pattern of submitting problems for solutions. Passive consumption without verification or deeper engagement.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F",
+      "confidence": 0.85,
+      "reasoning": "High volume but shallow engagement - repetitive solution-seeking without metacognitive behaviors"
+    }
+  }
+}

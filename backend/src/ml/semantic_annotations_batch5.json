@@ -1,0 +1,128 @@
+{
+  "batch": 5,
+  "method": "LLM Semantic Analysis (Claude)",
+  "annotation_date": "2024-12-03",
+  "aligned_dimensions": true,
+  "users": {
+    "29f82768-3163-42fd-8979-0633c746eb7a": {
+      "analysis": "3 messages. Repeats same question twice, then submits image. Minimal engagement, no depth.",
+      "scores": {"P1": 1, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.9,
+      "reasoning": "Minimal engagement with repeated question, no metacognitive behaviors"
+    },
+    "29fa83f2-4303-4b50-95ae-445c698ed11b": {
+      "analysis": "11 messages. Asks for course content explanation, mock quiz preparation, statistical analysis questions. Shows some learning structure.",
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 0, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C", "confidence": 0.7,
+      "reasoning": "Shows learning intent with course content requests but passive reception"
+    },
+    "2b1dae76-2a18-4568-bf12-2b78c5d3f480": {
+      "analysis": "6 messages. Past paper help requests, asks about specific questions and matrix procedures. Minimal verification.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "F", "confidence": 0.8,
+      "reasoning": "Solution-seeking for past papers without deeper engagement"
+    },
+    "2c6556cd-0052-4eec-8fbd-768423012162": {
+      "analysis": "5 messages. Mix of logistics (dates, test portions) and math questions. Clarifies initial question ('no like what chapters'). Minimal depth.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "F", "confidence": 0.8,
+      "reasoning": "Mix of logistics and problem-solving with minimal depth"
+    },
+    "2d713990-ecfe-4541-b41c-3c6cea8841fb": {
+      "analysis": "4 messages. Basic formula questions about integration and differentiation. No follow-up or verification.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.85,
+      "reasoning": "Simple formula lookup without metacognitive engagement"
+    },
+    "2e1e6c7c-557e-4594-8e96-4e7051ef8179": {
+      "analysis": "41 messages about limits. KEY: Asks conceptual 'why' questions ('why do we rationalise both numerator and denominator'). Shows reasoning about techniques rather than just solution-seeking.",
+      "scores": {"P1": 2, "P2": 2, "P3": 1, "P4": 0, "M1": 1, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C", "confidence": 0.75,
+      "reasoning": "Shows conceptual curiosity about mathematical techniques and reasoning"
+    },
+    "2e78147b-7b3a-4e63-991c-4d7e0f30ed16": {
+      "analysis": "8 messages. Asks strategic 'how do I know which' questions about integration by parts, limits, and methods. Shows metacognitive awareness of decision-making process.",
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 0, "M1": 1, "M2": 1, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C", "confidence": 0.8,
+      "reasoning": "Strategic questioning about method selection shows metacognitive awareness of problem-solving process"
+    },
+    "2f9933ae-7b83-4d01-bc8a-9567cdfbafb0": {
+      "analysis": "4 messages. Asks AI to write a poem about math - off-topic engagement. Minimal substantive learning content.",
+      "scores": {"P1": 1, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.85,
+      "reasoning": "Off-topic engagement, minimal learning focus"
+    },
+    "305b36d8-07ca-4be8-8ccf-68b36357c108": {
+      "analysis": "5 messages. Asks conceptual 'why' question ('why does Ib = b'). Asks about strategy ('How can I get an A for this mod'). Seeks hints rather than full solutions.",
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 0, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C", "confidence": 0.7,
+      "reasoning": "Shows conceptual curiosity and strategic thinking about performance"
+    },
+    "31d893c7-92a3-44b7-8edd-462146106f8d": {
+      "analysis": "54 messages with deep engagement. CRITICAL QUESTIONS: 'why do we only consider the subset', 'is it normal for diagonalised matrices to be different'. Asks for regeneration with formulas. Shows systematic learning progression.",
+      "scores": {"P1": 2, "P2": 2, "P3": 2, "P4": 0, "M1": 2, "M2": 1, "M3": 0, "E1": 1, "E2": 0, "E3": 0, "R1": 2, "R2": 0},
+      "pattern": "C", "confidence": 0.8,
+      "reasoning": "Deep conceptual questions showing reasoning about mathematical proofs and structures"
+    },
+    "32741cc7-6129-4c71-932c-57ab8424d40b": {
+      "analysis": "4 messages. Basic help requests with images. No verification or deeper engagement.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.85,
+      "reasoning": "Minimal engagement with basic solution-seeking"
+    },
+    "32d31dc2-2d7e-4488-941f-536eab32f72b": {
+      "analysis": "24 messages. STRATEGIC: 'how should i prepare for this test'. Math problems with some learning structure. Mix of logistics and problem-solving.",
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 0, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C", "confidence": 0.7,
+      "reasoning": "Shows strategic planning through test preparation questions"
+    },
+    "340f87cf-a63b-4bf4-92f1-be4228565dcd": {
+      "analysis": "7 messages. Asks for quiz answers ('Do you have the answers for tomorrows quiz'). Seeks shortcuts rather than understanding.",
+      "scores": {"P1": 1, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.9,
+      "reasoning": "Answer-seeking without learning engagement"
+    },
+    "34154468-a4f5-481d-81fd-f46bf7305eec": {
+      "analysis": "27 messages. KEY BEHAVIOR: 'Check my working in the attached image' - asks AI to verify their work. QUALITY CHECKING behavior. Persists when not understanding ('i still dont get it').",
+      "scores": {"P1": 2, "P2": 1, "P3": 0, "P4": 0, "M1": 2, "M2": 2, "M3": 1, "E1": 2, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C", "confidence": 0.8,
+      "reasoning": "Shows quality checking (M2) by requesting verification of own work, indicates monitoring behavior"
+    },
+    "3438b814-c1b0-444a-91cf-07487f45eb23": {
+      "analysis": "79 messages with deep engagement. CRITICAL THINKING: 'How did the numerator become...', 'How small must x be to use small-angle approximation', 'My rationale just by looking at the functions is...'. Shows reasoning process and shares own thinking.",
+      "scores": {"P1": 3, "P2": 2, "P3": 2, "P4": 0, "M1": 2, "M2": 2, "M3": 0, "E1": 2, "E2": 1, "E3": 0, "R1": 2, "R2": 0},
+      "pattern": "D", "confidence": 0.85,
+      "reasoning": "High metacognitive engagement - shares own rationale, questions derivations, shows deep conceptual reasoning"
+    },
+    "35368d19-384d-44a8-a6f5-8fe1aa5077b0": {
+      "analysis": "11 messages. Mostly 'solve' with images. One 'justify it' request. Primarily solution-seeking.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.8,
+      "reasoning": "Passive solution-seeking with minimal metacognitive engagement"
+    },
+    "35374a3f-b3aa-4c35-b53b-4383b6f41eb7": {
+      "analysis": "3 messages. All-caps 'GUIDE ME'. Asks for matrix operations. Minimal engagement.",
+      "scores": {"P1": 1, "P2": 0, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.9,
+      "reasoning": "Minimal engagement with directive requests"
+    },
+    "354c0bf9-9fcb-45ef-b2aa-6d7842e3fcd7": {
+      "analysis": "17 messages. Asks many formula and method questions. Asks 'another method?' showing interest in alternative approaches. Requests examples for multiple topics.",
+      "scores": {"P1": 2, "P2": 1, "P3": 1, "P4": 0, "M1": 1, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 1, "R2": 0},
+      "pattern": "C", "confidence": 0.7,
+      "reasoning": "Shows learning intent through comprehensive formula and method collection"
+    },
+    "35b99140-ac17-4712-a080-800df4851d7f": {
+      "analysis": "4 messages. Basic concept questions about De Moivre, vectors, limits. No depth or verification.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.85,
+      "reasoning": "Basic concept lookup without metacognitive depth"
+    },
+    "368bde76-5538-4be4-96dd-42bfd155c1e4": {
+      "analysis": "4 messages. Asks about R code and problem explanations. Repeats same problem. Minimal engagement.",
+      "scores": {"P1": 1, "P2": 1, "P3": 0, "P4": 0, "M1": 0, "M2": 0, "M3": 0, "E1": 0, "E2": 0, "E3": 0, "R1": 0, "R2": 0},
+      "pattern": "F", "confidence": 0.85,
+      "reasoning": "Basic problem-solving with repetition suggesting lack of engagement"
+    }
+  }
+}
