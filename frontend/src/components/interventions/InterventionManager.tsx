@@ -608,7 +608,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onDontShowAgain={intervention.onDismiss}
         onDismiss={intervention.onDismiss}
         onSkip={intervention.onSkip}
-        autoCloseSec={0}
+        autoCloseSec={60}
       />
     );
   }
