@@ -359,9 +359,14 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
    * Priority: Backend MRs > Frontend detection
    */
   useEffect(() => {
+    // Minimum display time: don't replace intervention too quickly (10 seconds)
+    const MIN_DISPLAY_TIME_MS = 10000;
+    const timeSinceLastIntervention = Date.now() - interventionStartTime;
+
     if (activeMRs.length === 0) {
       // Clear any previously displayed backend MR if activeMRs is now empty
-      if (lastDisplayedMRId) {
+      // But only after minimum display time has passed
+      if (lastDisplayedMRId && timeSinceLastIntervention > MIN_DISPLAY_TIME_MS) {
         setLastDisplayedMRId(null);
       }
       return;
@@ -374,6 +379,11 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     // Avoid re-displaying the same MR
     if (lastDisplayedMRId === topMR.mrId) {
+      return;
+    }
+
+    // Don't replace current intervention if it hasn't been displayed long enough
+    if (lastDisplayedMRId && timeSinceLastIntervention < MIN_DISPLAY_TIME_MS) {
       return;
     }
 
@@ -511,6 +521,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onDismiss={intervention.onDismiss}
         onLearnMore={intervention.onLearnMore}
         learnMoreLabel="Learn more"
+        autoCloseSec={15}
       />
     );
   }
@@ -527,6 +538,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onAction={intervention.onAction}
         onDismiss={intervention.onDismiss}
         onSkip={intervention.onSkip}
+        autoCloseSec={20}
       />
     );
   }
