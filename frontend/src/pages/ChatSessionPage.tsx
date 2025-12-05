@@ -4069,21 +4069,54 @@ Message: "${firstMessage.slice(0, 200)}"`,
           // Mark MR as dismissed when user takes action
           setDismissedMRs((prev) => new Set([...prev, mrType]));
 
+          // Map mrType to corresponding MR tool opener function
+          const mrToolOpeners: Record<string, () => void> = {
+            'MR1': openMR1Decomposition,
+            'MR2': openMR2History,
+            'MR3': openMR3AgencyControl,
+            'MR4': openMR4RoleDefinition,
+            'MR5': openMR5Iteration,
+            'MR6': openMR6CrossModel,
+            'MR7': openMR7FailureLearning,
+            'MR10': openMR10CostBenefit,
+            'MR11': openMR11Verification,
+            'MR12': openMR12CriticalThinking,
+            'MR13': openMR13Uncertainty,
+            'MR14': openMR14Reflection,
+            'MR15': openMR15StrategyGuide,
+            'MR16': openMR16SkillAtrophy,
+            'MR17': openMR17LearningVisualization,
+          };
+
+          // Extract MR number from mrType (e.g., "MR1", "MR13_Uncertainty", "MR_PATTERN_F_BARRIER")
+          const getMRKey = (type: string): string | null => {
+            const match = type.match(/MR(\d+)/);
+            return match ? `MR${match[1]}` : null;
+          };
+
           // Handle specific actions - open relevant MR tools
           if (action === 'reflect') {
             // User clicked "Pause and Reflect" on Hard Barrier
-            // Open the MR14 Guided Reflection tool and show the sidebar
             console.log('[ChatSessionPage] Opening MR14 Reflection tool...');
             setShowPatternPanel(true);
             setShowMRToolsSection(true);
             openMR14Reflection();
           } else if (action === 'learn_more') {
-            // User clicked "Learn More" or "Review Now" on Soft/Medium interventions
-            // Open MR11 Verification tool to encourage verification behavior
-            console.log('[ChatSessionPage] Opening MR11 Verification tool...');
+            // User clicked "Learn More" - open the corresponding MR tool
+            const mrKey = getMRKey(mrType);
+            const opener = mrKey ? mrToolOpeners[mrKey] : null;
+
+            console.log(`[ChatSessionPage] Opening tool for ${mrType} (key: ${mrKey})`);
             setShowPatternPanel(true);
             setShowMRToolsSection(true);
-            openMR11Verification();
+
+            if (opener) {
+              opener();
+            } else {
+              // Fallback to MR11 Verification if no specific tool found
+              console.log('[ChatSessionPage] No specific tool found, falling back to MR11');
+              openMR11Verification();
+            }
           }
           // Note: 'dismiss', 'skip', 'override' actions just close the intervention without opening a tool
         }}
