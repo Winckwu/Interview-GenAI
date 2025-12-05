@@ -6,6 +6,7 @@ import { useSessionStore } from '../stores/sessionStore';
 import { useUIStore } from '../stores/uiStore';
 import { useAssessmentStore } from '../stores/assessmentStore';
 import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
+import InterventionManager from '../components/interventions/InterventionManager';
 // import VirtualizedMessageList from '../components/VirtualizedMessageList';
 // DISABLED: react-window compatibility issue - using simple list instead
 import EmptyState, { EmptyStateError } from '../components/EmptyState';
@@ -4098,35 +4099,21 @@ Message: "${firstMessage.slice(0, 200)}"`,
         </footer>
       </div>
 
-      {/* Modal MR Display - OPTIMIZATION: Lazy-loaded component */}
-      {displayedModalMR && (
-        <Suspense fallback={<ComponentLoader />}>
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={`mr-modal-${displayedModalMR.mrId}`}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              zIndex: 2001,
-            }}
-          >
-            <div id={`mr-modal-${displayedModalMR.mrId}`} style={{ display: 'none' }}>
-              {displayedModalMR.title || 'Recommendation'}
-            </div>
-            <MRDisplay
-              mr={displayedModalMR}
-              onClose={() => setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]))}
-              onAcknowledge={() => {
-                setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]));
-              }}
-            />
-          </div>
-        </Suspense>
-      )}
+      {/* Intervention Manager - Handles Soft/Medium/Hard tier interventions */}
+      <InterventionManager
+        sessionId={sessionId || ''}
+        messages={messagesHook.messages}
+        activeMRs={activeMRs || []}
+        minMessagesForDetection={5}
+        onInterventionDisplayed={(tier, mrType) => {
+          console.log(`[ChatSessionPage] Intervention displayed: ${tier} - ${mrType}`);
+        }}
+        onUserAction={(mrType, action) => {
+          console.log(`[ChatSessionPage] User action: ${mrType} - ${action}`);
+          // Mark MR as dismissed when user takes action
+          setDismissedMRs((prev) => new Set([...prev, mrType]));
+        }}
+      />
 
       {/* CSS for animations */}
       <style>{`
