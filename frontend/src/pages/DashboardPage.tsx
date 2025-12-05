@@ -64,12 +64,20 @@ const DashboardPage: React.FC = () => {
     }
   }, [user?.id, fetchLatestAssessment, fetchAssessments, fetchPatterns]);
 
-  // Analyze behavior data for 12-dimensional scores
+  // Analyze behavior data for 12-dimensional scores (filtered by dateRange)
   useEffect(() => {
     const analyzeBehavior = async () => {
       try {
         const response = await apiService.sessions.getAll({ limit: 100, includeInteractions: true });
-        const sessionsWithInteractions = response.data.data?.sessions || [];
+        const allSessions = response.data.data?.sessions || [];
+
+        // Filter sessions by dateRange
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - dateRange);
+        const sessionsWithInteractions = allSessions.filter((session: any) => {
+          const sessionDate = new Date(session.createdAt || session.startedAt);
+          return sessionDate >= cutoffDate;
+        });
 
         let totalInteractions = 0;
         let verifiedCount = 0;
@@ -246,7 +254,7 @@ const DashboardPage: React.FC = () => {
     };
 
     analyzeBehavior();
-  }, [latestAssessment]);
+  }, [latestAssessment, dateRange]);
 
   useEffect(() => {
     // Show welcome modal only ONCE for users without assessment
