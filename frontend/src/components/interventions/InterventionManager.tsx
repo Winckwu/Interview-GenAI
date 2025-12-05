@@ -71,6 +71,10 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const [lastInterventionId, setLastInterventionId] = useState<string | null>(null);
   const [interventionStartTime, setInterventionStartTime] = useState<number>(0);
   const [lastDisplayedMRId, setLastDisplayedMRId] = useState<string | null>(null);
+  const [lastHardBarrierTime, setLastHardBarrierTime] = useState<number>(0);
+
+  // Hard barrier cooldown: 5 minutes between hard barriers
+  const HARD_BARRIER_COOLDOWN_MS = 5 * 60 * 1000;
 
   /**
    * Handle soft signal dismiss
@@ -176,8 +180,20 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const convertActiveMRToIntervention = useCallback(
     (mr: ActiveMR) => {
       // Use tier from unified analysis if available, otherwise infer from urgency
-      const tier: 'soft' | 'medium' | 'hard' = mr.tier ||
+      let tier: 'soft' | 'medium' | 'hard' = mr.tier ||
         (mr.urgency === 'enforce' ? 'hard' : mr.urgency === 'remind' ? 'medium' : 'soft');
+
+      // Hard barrier cooldown: downgrade to medium if last hard barrier was too recent
+      const timeSinceLastHardBarrier = Date.now() - lastHardBarrierTime;
+      if (tier === 'hard' && timeSinceLastHardBarrier < HARD_BARRIER_COOLDOWN_MS) {
+        console.log(`[InterventionManager] Downgrading hard to medium (cooldown: ${Math.round(timeSinceLastHardBarrier / 1000)}s < ${HARD_BARRIER_COOLDOWN_MS / 1000}s)`);
+        tier = 'medium';
+      }
+
+      // Track hard barrier time
+      if (tier === 'hard') {
+        setLastHardBarrierTime(Date.now());
+      }
 
       const baseIntervention = {
         id: `intervention-${mr.mrId}`,
@@ -243,7 +259,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onCancel: () => handleDismiss(mr.mrId),
       };
     },
-    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm]
+    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, lastHardBarrierTime, HARD_BARRIER_COOLDOWN_MS]
   );
 
   /**
@@ -315,9 +331,22 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
    * Create intervention UI based on detection result
    * Defined before useEffects to avoid TDZ (Temporal Dead Zone) errors
    */
-  const createInterventionUI = useCallback((detection: any, tier: string, msgs: Message[]) => {
+  const createInterventionUI = useCallback((detection: any, tierInput: string, msgs: Message[]) => {
     const triggeredRules = detection.layer1?.triggeredRules || [];
     const ruleContent = generateRuleBasedContent(triggeredRules, detection.layer1);
+
+    // Apply hard barrier cooldown
+    let tier = tierInput;
+    const timeSinceLastHardBarrier = Date.now() - lastHardBarrierTime;
+    if (tier === 'hard' && timeSinceLastHardBarrier < HARD_BARRIER_COOLDOWN_MS) {
+      console.log(`[createInterventionUI] Downgrading hard to medium (cooldown)`);
+      tier = 'medium';
+    }
+
+    // Track hard barrier time
+    if (tier === 'hard') {
+      setLastHardBarrierTime(Date.now());
+    }
 
     const baseIntervention = {
       id: `intervention-${Date.now()}`,
@@ -383,7 +412,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
       onCancel: () => handleDismiss(baseIntervention.mrType),
     };
-  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm]);
+  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, lastHardBarrierTime, HARD_BARRIER_COOLDOWN_MS]);
 
   // Initialize session in store
   useEffect(() => {

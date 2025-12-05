@@ -111,17 +111,22 @@ If triggered, generate critical thinking prompts.
 **MR18 (Over-Dependence Warning)** - Trigger if: aiRelianceDegree >= 3 AND verificationIntent == false AND reflectionDepth < 1
 This is a serious pattern - use tier "hard" for this MR.
 
-### 4. Tier Selection Guidelines (IMPORTANT)
+### 4. Tier Selection Guidelines (CRITICAL - Follow Strictly)
 For each triggered MR, assign the appropriate tier:
-- **"soft"**: Gentle information tip (blue sidebar). Use for: first-time nudges, low-risk situations, educational reminders.
-- **"medium"**: Warning alert (orange sidebar). Use for: repeated patterns, moderate concern, user should pay attention.
-- **"hard"**: Blocking barrier (red modal, requires action). Use ONLY when:
-  * aiRelianceDegree >= 3 (complete reliance on AI)
-  * verificationIntent == false (no plan to verify)
-  * reflectionDepth == 0 (no reflection at all)
-  * Pattern is F (Over-reliant User)
-  * MR18 is triggered
-  * User accepts complex AI output without any critical engagement
+
+- **"soft"**: DEFAULT tier. Use for most MRs (MR1, MR13, MR14, etc.). Gentle blue notification.
+
+- **"medium"**: Use sparingly for moderate concerns. Orange popup alert.
+  Criteria: aiRelianceDegree >= 2 AND (verificationIntent == false OR reflectionDepth < 1)
+
+- **"hard"**: RARELY USED. Red blocking modal. Use ONLY for MR18 AND ALL of these must be true:
+  * aiRelianceDegree == 3 (MUST be exactly 3, complete reliance)
+  * verificationIntent == false
+  * reflectionDepth == 0 (MUST be exactly 0)
+  * Pattern is F with confidence > 0.7
+  * turnCount > 3 (not early in conversation)
+
+IMPORTANT: Most interventions should be "soft" or "medium". Use "hard" very rarely (less than 10% of cases).
 
 ## Response Format (JSON only):
 {
@@ -157,8 +162,8 @@ For each triggered MR, assign the appropriate tier:
       "mrId": "MR18",
       "shouldTrigger": true,
       "priority": "high",
-      "tier": "hard",
-      "message": "You appear to be fully relying on AI without verification. For your learning, please review the output critically.",
+      "tier": "medium",
+      "message": "Consider verifying this AI response before proceeding.",
       "content": {
         "warningType": "over-dependence",
         "suggestions": ["Verify key facts", "Consider alternative approaches", "Question assumptions"]
