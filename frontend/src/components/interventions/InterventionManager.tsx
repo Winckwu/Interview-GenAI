@@ -206,11 +206,12 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       if (tier === 'medium') {
         return {
           ...baseIntervention,
-          icon: '⚠️',
-          title: 'Review Recommended',
-          message: mr.message,
-          description: `MR: ${mr.name}`,
-          actionLabel: 'View Details',
+          icon: '🔔',
+          title: 'MCA Reminder',
+          message: mr.message || 'You have not verified AI output for {count} consecutive interactions.',
+          suggestion: 'Pause and review whether recent AI responses meet your expectations.',
+          consecutiveCount: 3, // TODO: Get actual count from session state
+          actionLabel: 'Verify Now',
           onAction: () => {
             console.log(`[InterventionManager] Medium action clicked for MR: ${mr.mrId}`);
             handleLearnMore(mr.mrId);
@@ -220,37 +221,23 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         };
       }
 
-      // Hard barrier
-      const options: BarrierOption[] = [
-        {
-          label: '✓ I will verify it carefully',
-          value: 'verify',
-          description: 'Review the response for accuracy before accepting',
-        },
-        {
-          label: '✎ I will modify it before use',
-          value: 'modify',
-          description: 'Edit or improve the response',
-        },
-        {
-          label: '↻ I will reject and re-ask',
-          value: 'reject',
-          description: 'Ask the AI to regenerate the response',
-        },
-        {
-          label: '→ I understand risks, proceed anyway',
-          value: 'override',
-          description: 'Accept the response as-is',
-        },
-      ];
-
+      // Hard barrier - new simplified design with risks and suggestions
       return {
         ...baseIntervention,
-        icon: '🚨',
-        title: 'Safety Check Required',
-        message: mr.message,
-        description: `MR: ${mr.name}`,
-        options,
+        icon: '⚠️',
+        title: 'Warning: Over-Reliance Risk Detected',
+        message: mr.message || 'You have not verified AI output for {count} consecutive interactions.',
+        consecutiveCount: 4, // TODO: Get actual count from session state
+        risks: [
+          'May have accepted incorrect information',
+          'Independent thinking ability may decline',
+          'Learning effectiveness may be affected',
+        ],
+        suggestions: [
+          'Pause current task',
+          'Review recent AI responses',
+          'Try completing the next step independently',
+        ],
         isDangerous: true,
         onConfirm: (value: string) => handleBarrierConfirm(value, mr.mrId),
         onCancel: () => handleDismiss(mr.mrId),
@@ -295,11 +282,12 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     if (tier === 'medium') {
       return {
         ...baseIntervention,
-        icon: '⚠️',
-        title: 'Review Recommended',
-        message: detection.explanation.summary,
-        description: `Based on ${detection.layer1.triggeredCount} pattern indicators`,
-        actionLabel: 'View Details',
+        icon: '🔔',
+        title: 'MCA Reminder',
+        message: `You have not verified AI output for ${detection.layer1.triggeredCount} consecutive interactions.`,
+        suggestion: 'Pause and review whether recent AI responses meet your expectations.',
+        consecutiveCount: detection.layer1.triggeredCount,
+        actionLabel: 'Verify Now',
         onAction: () => {
           console.log(`[createInterventionUI] Medium alert action clicked for ${baseIntervention.mrType}`);
           handleLearnMore(baseIntervention.mrType);
@@ -309,40 +297,23 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       };
     }
 
-    // Hard barrier
-    const options: BarrierOption[] = [
-      {
-        label: '✓ I will verify it carefully',
-        value: 'verify',
-        description: 'Review the response for accuracy before accepting',
-      },
-      {
-        label: '✎ I will modify it before use',
-        value: 'modify',
-        description: 'Edit or improve the response',
-      },
-      {
-        label: '↻ I will reject and re-ask',
-        value: 'reject',
-        description: 'Ask the AI to regenerate the response',
-      },
-      {
-        label: '→ I understand risks, proceed anyway',
-        value: 'override',
-        description: 'Accept the response as-is',
-      },
-    ];
-
+    // Hard barrier - new simplified design
     return {
       ...baseIntervention,
-      icon: '🚨',
-      title: 'Safety Check Required',
-      message:
-        'We detected a pattern suggesting this response should be verified before use in real-world context.',
-      description: detection.explanation.triggeredRuleDetails
-        .map((r: any) => r.ruleName)
-        .join(', '),
-      options,
+      icon: '⚠️',
+      title: 'Warning: Over-Reliance Risk Detected',
+      message: `You have not verified AI output for ${detection.layer1.triggeredCount} consecutive interactions.`,
+      consecutiveCount: detection.layer1.triggeredCount,
+      risks: [
+        'May have accepted incorrect information',
+        'Independent thinking ability may decline',
+        'Learning effectiveness may be affected',
+      ],
+      suggestions: [
+        'Pause current task',
+        `Review the last ${detection.layer1.triggeredCount} AI responses`,
+        'Try completing the next step independently',
+      ],
       isDangerous: true,
       onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
       onCancel: () => handleDismiss(baseIntervention.mrType),
@@ -530,15 +501,19 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     return (
       <Tier2MediumAlert
         id={intervention.id}
-        icon={intervention.icon}
-        title={intervention.title}
+        icon={intervention.icon || '🔔'}
+        title={intervention.title || 'MCA Reminder'}
         message={intervention.message}
+        suggestion={intervention.suggestion || 'Pause and review whether recent AI responses meet your expectations.'}
         description={intervention.description}
-        actionLabel={intervention.actionLabel || 'Learn More'}
+        consecutiveCount={intervention.consecutiveCount}
+        actionLabel={intervention.actionLabel || 'Verify Now'}
         onAction={intervention.onAction}
+        onRemindLater={intervention.onSkip}
+        onDontShowAgain={intervention.onDismiss}
         onDismiss={intervention.onDismiss}
         onSkip={intervention.onSkip}
-        autoCloseSec={120}
+        autoCloseSec={0}
       />
     );
   }
@@ -547,11 +522,14 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     return (
       <Tier3HardBarrier
         id={intervention.id}
-        icon={intervention.icon}
-        title={intervention.title}
+        icon={intervention.icon || '⚠️'}
+        title={intervention.title || 'Warning: Over-Reliance Risk Detected'}
         message={intervention.message}
         description={intervention.description}
-        options={intervention.options || []}
+        consecutiveCount={intervention.consecutiveCount}
+        risks={intervention.risks}
+        suggestions={intervention.suggestions}
+        options={intervention.options}
         isDangerous={intervention.isDangerous}
         onConfirm={intervention.onConfirm}
         onCancel={intervention.onCancel}

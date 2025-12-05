@@ -1,179 +1,236 @@
 /**
  * Tier 2 Medium Alert Styles
- * More prominent than soft signals, still non-blocking
+ * Popup dialog with backdrop - requires user response
  */
 
-.tier2-medium-alert {
+/* Backdrop */
+.tier2-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.875rem;
-  margin-bottom: 0.75rem;
-  background-color: #fffbeb;
-  border: 1px solid #fcd34d;
-  border-left: 4px solid #f59e0b;
-  border-radius: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeInBackdrop 0.2s ease-out;
+}
+
+.tier2-backdrop.removing {
+  animation: fadeOutBackdrop 0.3s ease-in forwards;
+}
+
+@keyframes fadeInBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOutBackdrop {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Alert Modal */
+.tier2-medium-alert {
+  background-color: #ffffff;
+  border: 2px solid #f59e0b;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 420px;
+  width: 90%;
   animation: scaleInAlert 0.3s ease-out;
-  transition: opacity 0.3s ease-in;
-  position: relative;
+  overflow: hidden;
 }
 
 @keyframes scaleInAlert {
   from {
-    transform: scale(0.95) translateX(50px);
+    transform: scale(0.9);
     opacity: 0;
   }
   to {
-    transform: scale(1) translateX(0);
+    transform: scale(1);
     opacity: 1;
   }
 }
 
 .tier2-medium-alert.removing {
-  animation: slideOutAlert 0.3s ease-in forwards;
+  animation: scaleOutAlert 0.3s ease-in forwards;
 }
 
-@keyframes slideOutAlert {
+@keyframes scaleOutAlert {
   from {
-    transform: scale(1) translateX(0);
+    transform: scale(1);
     opacity: 1;
   }
   to {
-    transform: scale(0.95) translateX(50px);
+    transform: scale(0.9);
     opacity: 0;
   }
 }
 
-/* Accent bar */
-.alert-accent-bar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
-  border-radius: 0.5rem 0 0 0.5rem;
-}
-
-/* Icon */
-.medium-alert-icon {
-  flex-shrink: 0;
-  font-size: 1.35rem;
+/* Header */
+.medium-alert-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-bottom: 1px solid #fcd34d;
+}
+
+.medium-alert-icon {
+  font-size: 1.5rem;
   animation: pulseIcon 2s ease-in-out infinite;
 }
 
 @keyframes pulseIcon {
   0%, 100% {
     opacity: 1;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.7;
+    opacity: 0.8;
+    transform: scale(1.1);
   }
-}
-
-/* Content */
-.medium-alert-content {
-  flex: 1;
-  padding-left: 0.5rem;
 }
 
 .medium-alert-title {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: #92400e;
-  margin-bottom: 0.25rem;
+  margin: 0;
+}
+
+/* Divider */
+.medium-alert-divider {
+  height: 3px;
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 50%, #f59e0b 100%);
+}
+
+/* Content */
+.medium-alert-content {
+  padding: 1.25rem;
 }
 
 .medium-alert-message {
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  color: #1f2937;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.medium-alert-suggestion {
+  background-color: #fef3c7;
+  border-left: 3px solid #f59e0b;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0.375rem 0.375rem 0;
+  font-size: 0.9rem;
   color: #78350f;
   line-height: 1.5;
-  font-weight: 500;
+}
+
+.medium-alert-suggestion strong {
+  color: #92400e;
 }
 
 .medium-alert-description {
-  font-size: 0.8rem;
-  color: #a16207;
-  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.75rem;
 }
 
 /* Actions */
 .medium-alert-actions {
   display: flex;
-  gap: 0.4rem;
-  flex-shrink: 0;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 1.25rem 1.25rem;
 }
 
 .medium-alert-btn {
-  padding: 0.4rem 0.75rem;
+  padding: 0.625rem 1rem;
   border: none;
-  border-radius: 0.375rem;
-  font-size: 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  white-space: nowrap;
+  text-align: center;
 }
 
-.medium-alert-btn-action {
+.medium-alert-btn-primary {
   background-color: #f59e0b;
   color: white;
 }
 
-.medium-alert-btn-action:hover {
+.medium-alert-btn-primary:hover {
   background-color: #d97706;
-  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
   transform: translateY(-1px);
 }
 
-.medium-alert-btn-action:focus {
+.medium-alert-btn-primary:focus {
   outline: 2px solid #f59e0b;
   outline-offset: 2px;
 }
 
-.medium-alert-btn-skip {
+.medium-alert-btn-secondary {
   background-color: #fef3c7;
   color: #92400e;
   border: 1px solid #fcd34d;
 }
 
-.medium-alert-btn-skip:hover {
+.medium-alert-btn-secondary:hover {
   background-color: #fde68a;
   border-color: #f59e0b;
 }
 
-.medium-alert-btn-skip:focus {
+.medium-alert-btn-secondary:focus {
   outline: 2px solid #f59e0b;
   outline-offset: 2px;
 }
 
-.medium-alert-btn-dismiss {
+.medium-alert-btn-tertiary {
   background-color: transparent;
-  color: #a16207;
-  padding: 0.4rem 0.5rem;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.8rem;
 }
 
-.medium-alert-btn-dismiss:hover {
-  background-color: #fed7aa;
+.medium-alert-btn-tertiary:hover {
+  color: #92400e;
+  text-decoration: underline;
 }
 
-.medium-alert-btn-dismiss:focus {
+.medium-alert-btn-tertiary:focus {
   outline: 2px solid #f59e0b;
   outline-offset: 2px;
 }
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
+  .tier2-backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
   .tier2-medium-alert {
-    background-color: rgba(245, 158, 11, 0.1);
-    border-color: rgba(245, 158, 11, 0.3);
+    background-color: #1f2937;
+    border-color: #f59e0b;
+  }
+
+  .medium-alert-header {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.2) 100%);
+    border-bottom-color: rgba(245, 158, 11, 0.3);
   }
 
   .medium-alert-title {
@@ -181,64 +238,75 @@
   }
 
   .medium-alert-message {
-    color: #fed7aa;
+    color: #f3f4f6;
+  }
+
+  .medium-alert-suggestion {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #fef3c7;
+  }
+
+  .medium-alert-suggestion strong {
+    color: #fcd34d;
   }
 
   .medium-alert-description {
-    color: #fbbf24;
+    color: #9ca3af;
   }
 
-  .medium-alert-btn-skip {
+  .medium-alert-btn-secondary {
     background-color: rgba(245, 158, 11, 0.15);
     color: #fcd34d;
     border-color: rgba(245, 158, 11, 0.3);
   }
 
-  .medium-alert-btn-skip:hover {
+  .medium-alert-btn-secondary:hover {
     background-color: rgba(245, 158, 11, 0.25);
   }
 
-  .medium-alert-btn-dismiss {
-    color: #fed7aa;
+  .medium-alert-btn-tertiary {
+    color: #9ca3af;
   }
 
-  .medium-alert-btn-dismiss:hover {
-    background-color: rgba(245, 158, 11, 0.2);
+  .medium-alert-btn-tertiary:hover {
+    color: #fcd34d;
   }
 }
 
 /* Responsive */
 @media (max-width: 640px) {
   .tier2-medium-alert {
-    flex-direction: column;
-    gap: 0.5rem;
+    max-width: 95%;
+    margin: 1rem;
+  }
+
+  .medium-alert-header {
+    padding: 0.875rem 1rem;
+  }
+
+  .medium-alert-content {
+    padding: 1rem;
   }
 
   .medium-alert-actions {
-    width: 100%;
-    justify-content: flex-end;
+    padding: 0 1rem 1rem;
   }
 
   .medium-alert-btn {
-    font-size: 0.75rem;
-    padding: 0.35rem 0.6rem;
-  }
-
-  .medium-alert-icon {
-    width: 32px;
-    height: 32px;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8rem;
   }
 }
 
 /* Accessibility: Reduce motion */
 @media (prefers-reduced-motion: reduce) {
+  .tier2-backdrop,
   .tier2-medium-alert {
     animation: none;
   }
 
   .medium-alert-icon {
     animation: none;
-    opacity: 1;
   }
 
   .medium-alert-btn {
@@ -248,6 +316,7 @@
 
 /* Print styles */
 @media print {
+  .tier2-backdrop,
   .tier2-medium-alert {
     display: none;
   }
