@@ -247,10 +247,74 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   );
 
   /**
+   * Generate contextual messages based on triggered rules
+   */
+  const generateRuleBasedContent = (triggeredRules: string[], layer1: any) => {
+    const messages: string[] = [];
+    const risks: string[] = [];
+    const suggestions: string[] = [];
+
+    // F-R1: Quick acceptance (skimming)
+    if (triggeredRules.includes('F-R1')) {
+      messages.push('You are accepting AI responses very quickly without reading carefully.');
+      risks.push('May miss important details or errors in the response');
+      suggestions.push('Take more time to read through AI responses before accepting');
+    }
+
+    // F-R2: Zero verification
+    if (triggeredRules.includes('F-R2')) {
+      messages.push('You have not verified any AI outputs.');
+      risks.push('May have accepted incorrect or misleading information');
+      suggestions.push('Try verifying key facts or claims in the AI response');
+    }
+
+    // F-R3: No modifications (accepting verbatim)
+    if (triggeredRules.includes('F-R3')) {
+      messages.push('You are accepting AI responses without any modifications.');
+      risks.push('May be missing opportunities to improve or customize the output');
+      suggestions.push('Consider editing or adapting the AI response to better fit your needs');
+    }
+
+    // F-R4: Burst usage pattern
+    if (triggeredRules.includes('F-R4')) {
+      messages.push('Your usage pattern suggests task-completion focus rather than learning.');
+      risks.push('Knowledge retention may be affected by concentrated usage');
+      suggestions.push('Try spacing out your learning sessions for better retention');
+    }
+
+    // F-R5: Complete passivity
+    if (triggeredRules.includes('F-R5')) {
+      messages.push('You have not verified, modified, or rejected any AI responses.');
+      risks.push('Independent thinking ability may decline with passive consumption');
+      suggestions.push('Engage more actively by questioning, editing, or critiquing responses');
+    }
+
+    // Default fallbacks
+    if (messages.length === 0) {
+      messages.push('We detected patterns suggesting passive AI usage.');
+    }
+    if (risks.length === 0) {
+      risks.push('Learning effectiveness may be affected');
+    }
+    if (suggestions.length === 0) {
+      suggestions.push('Try to engage more actively with AI responses');
+    }
+
+    return {
+      message: messages.join(' '),
+      risks,
+      suggestions,
+    };
+  };
+
+  /**
    * Create intervention UI based on detection result
    * Defined before useEffects to avoid TDZ (Temporal Dead Zone) errors
    */
   const createInterventionUI = useCallback((detection: any, tier: string, msgs: Message[]) => {
+    const triggeredRules = detection.layer1?.triggeredRules || [];
+    const ruleContent = generateRuleBasedContent(triggeredRules, detection.layer1);
+
     const baseIntervention = {
       id: `intervention-${Date.now()}`,
       mrType:
@@ -269,8 +333,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         ...baseIntervention,
         icon: '📊',
         title: 'Pattern Insight',
-        message: detection.explanation.summary,
-        description: `Confidence: ${(detection.confidence * 100).toFixed(0)}%`,
+        message: ruleContent.message,
+        description: `Based on ${triggeredRules.length} behavior indicator${triggeredRules.length > 1 ? 's' : ''}`,
         onDismiss: () => handleDismiss(baseIntervention.mrType),
         onLearnMore: () => {
           console.log(`[createInterventionUI] Soft signal Learn More clicked for ${baseIntervention.mrType}`);
@@ -284,10 +348,10 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         ...baseIntervention,
         icon: '🔔',
         title: 'MCA Reminder',
-        message: `You have not verified AI output for ${detection.layer1.triggeredCount} consecutive interactions.`,
-        suggestion: 'Pause and review whether recent AI responses meet your expectations.',
+        message: ruleContent.message,
+        suggestion: ruleContent.suggestions[0] || 'Pause and review whether recent AI responses meet your expectations.',
         consecutiveCount: detection.layer1.triggeredCount,
-        actionLabel: 'Verify Now',
+        actionLabel: 'Review Now',
         onAction: () => {
           console.log(`[createInterventionUI] Medium alert action clicked for ${baseIntervention.mrType}`);
           handleLearnMore(baseIntervention.mrType);
@@ -297,21 +361,17 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       };
     }
 
-    // Hard barrier - new simplified design
+    // Hard barrier - contextual design based on triggered rules
     return {
       ...baseIntervention,
       icon: '⚠️',
-      title: 'Warning: Over-Reliance Risk Detected',
-      message: `You have not verified AI output for ${detection.layer1.triggeredCount} consecutive interactions.`,
+      title: 'Warning: Passive Usage Pattern Detected',
+      message: ruleContent.message,
       consecutiveCount: detection.layer1.triggeredCount,
-      risks: [
-        'May have accepted incorrect information',
-        'Independent thinking ability may decline',
-        'Learning effectiveness may be affected',
-      ],
+      risks: ruleContent.risks,
       suggestions: [
         'Pause current task',
-        `Review the last ${detection.layer1.triggeredCount} AI responses`,
+        ...ruleContent.suggestions,
         'Try completing the next step independently',
       ],
       isDangerous: true,
