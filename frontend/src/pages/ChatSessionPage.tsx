@@ -4118,6 +4118,21 @@ Message: "${firstMessage.slice(0, 200)}"`,
           console.log(`[ChatSessionPage] User action: ${mrType} - ${action}`);
           // Mark MR as dismissed when user takes action
           setDismissedMRs((prev) => new Set([...prev, mrType]));
+
+          // Handle specific actions - open relevant MR tools
+          if (action === 'reflect') {
+            // User clicked "Pause and Reflect" on Hard Barrier
+            // Open the MR14 Guided Reflection tool and show the sidebar
+            setShowPatternPanel(true);
+            setShowMRToolsSection(true);
+            openMR14Reflection();
+          } else if (action === 'learn_more' || action === 'acted') {
+            // User clicked "Learn More" or took action on Soft/Medium interventions
+            // Open MR11 Verification tool to encourage verification behavior
+            setShowPatternPanel(true);
+            setShowMRToolsSection(true);
+            openMR11Verification();
+          }
         }}
       />
 
