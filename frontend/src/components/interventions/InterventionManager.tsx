@@ -521,7 +521,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onDismiss={intervention.onDismiss}
         onLearnMore={intervention.onLearnMore}
         learnMoreLabel="Learn more"
-        autoCloseSec={15}
+        autoCloseSec={60}
       />
     );
   }
@@ -538,7 +538,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onAction={intervention.onAction}
         onDismiss={intervention.onDismiss}
         onSkip={intervention.onSkip}
-        autoCloseSec={20}
+        autoCloseSec={120}
       />
     );
   }

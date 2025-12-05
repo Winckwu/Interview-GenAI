@@ -108,6 +108,21 @@ If triggered, generate 3 reflection questions.
 **MR12 (Critical Thinking)** - Trigger if: verificationIntent == false AND aiRelianceDegree > 2
 If triggered, generate critical thinking prompts.
 
+**MR18 (Over-Dependence Warning)** - Trigger if: aiRelianceDegree >= 3 AND verificationIntent == false AND reflectionDepth < 1
+This is a serious pattern - use tier "hard" for this MR.
+
+### 4. Tier Selection Guidelines (IMPORTANT)
+For each triggered MR, assign the appropriate tier:
+- **"soft"**: Gentle information tip (blue sidebar). Use for: first-time nudges, low-risk situations, educational reminders.
+- **"medium"**: Warning alert (orange sidebar). Use for: repeated patterns, moderate concern, user should pay attention.
+- **"hard"**: Blocking barrier (red modal, requires action). Use ONLY when:
+  * aiRelianceDegree >= 3 (complete reliance on AI)
+  * verificationIntent == false (no plan to verify)
+  * reflectionDepth == 0 (no reflection at all)
+  * Pattern is F (Over-reliant User)
+  * MR18 is triggered
+  * User accepts complex AI output without any critical engagement
+
 ## Response Format (JSON only):
 {
   "signals": {
@@ -129,14 +144,24 @@ If triggered, generate critical thinking prompts.
       "mrId": "MR1",
       "shouldTrigger": true,
       "priority": "high",
-      "tier": "medium",
+      "tier": "soft",
       "message": "This task is complex. Breaking it into smaller steps will help you manage it better.",
       "content": {
         "suggestedSubtasks": [
-          {"id": "1", "title": "...", "description": "...", "estimatedTime": "..."},
-          ...
+          {"id": "1", "title": "...", "description": "...", "estimatedTime": "..."}
         ],
         "reasoning": "..."
+      }
+    },
+    {
+      "mrId": "MR18",
+      "shouldTrigger": true,
+      "priority": "high",
+      "tier": "hard",
+      "message": "You appear to be fully relying on AI without verification. For your learning, please review the output critically.",
+      "content": {
+        "warningType": "over-dependence",
+        "suggestions": ["Verify key facts", "Consider alternative approaches", "Question assumptions"]
       }
     }
   ],
