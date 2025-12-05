@@ -25,6 +25,7 @@ export interface Tier2MediumAlertProps {
   icon?: string;
   title: string;
   message: string;
+  detectedBehaviors?: string[]; // List of detected behavior patterns
   suggestion?: string;
   description?: string;
   consecutiveCount?: number; // Number of consecutive interactions without verification
@@ -54,6 +55,7 @@ const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
   icon = '🔔',
   title,
   message,
+  detectedBehaviors,
   suggestion,
   description,
   consecutiveCount,
@@ -146,11 +148,23 @@ const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
 
         {/* Content */}
         <div className="medium-alert-content">
-          <p id="medium-alert-message" className="medium-alert-message">
-            {consecutiveCount
-              ? message.replace('{count}', String(consecutiveCount))
-              : message}
-          </p>
+          {/* Show detected behaviors as a list if multiple, otherwise show message */}
+          {detectedBehaviors && detectedBehaviors.length > 1 ? (
+            <div className="medium-alert-behaviors">
+              <p className="medium-alert-behaviors-title">Detected patterns:</p>
+              <ul className="medium-alert-behaviors-list">
+                {detectedBehaviors.map((behavior, index) => (
+                  <li key={index}>{behavior}</li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p id="medium-alert-message" className="medium-alert-message">
+              {consecutiveCount
+                ? message.replace('{count}', String(consecutiveCount))
+                : message}
+            </p>
+          )}
 
           {suggestion && (
             <div className="medium-alert-suggestion">

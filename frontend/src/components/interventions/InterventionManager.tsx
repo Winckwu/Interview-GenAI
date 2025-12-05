@@ -248,6 +248,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
   /**
    * Generate contextual messages based on triggered rules
+   * Returns arrays for flexible formatting at each tier level
    */
   const generateRuleBasedContent = (triggeredRules: string[], layer1: any) => {
     const messages: string[] = [];
@@ -256,42 +257,42 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     // F-R1: Quick acceptance (skimming)
     if (triggeredRules.includes('F-R1')) {
-      messages.push('You are accepting AI responses very quickly without reading carefully.');
+      messages.push('Accepting AI responses too quickly');
       risks.push('May miss important details or errors in the response');
       suggestions.push('Take more time to read through AI responses before accepting');
     }
 
     // F-R2: Zero verification
     if (triggeredRules.includes('F-R2')) {
-      messages.push('You have not verified any AI outputs.');
+      messages.push('No verification of AI outputs');
       risks.push('May have accepted incorrect or misleading information');
       suggestions.push('Try verifying key facts or claims in the AI response');
     }
 
     // F-R3: No modifications (accepting verbatim)
     if (triggeredRules.includes('F-R3')) {
-      messages.push('You are accepting AI responses without any modifications.');
+      messages.push('Accepting responses without modifications');
       risks.push('May be missing opportunities to improve or customize the output');
       suggestions.push('Consider editing or adapting the AI response to better fit your needs');
     }
 
     // F-R4: Burst usage pattern
     if (triggeredRules.includes('F-R4')) {
-      messages.push('Your usage pattern suggests task-completion focus rather than learning.');
+      messages.push('Task-completion focused usage pattern');
       risks.push('Knowledge retention may be affected by concentrated usage');
       suggestions.push('Try spacing out your learning sessions for better retention');
     }
 
     // F-R5: Complete passivity
     if (triggeredRules.includes('F-R5')) {
-      messages.push('You have not verified, modified, or rejected any AI responses.');
+      messages.push('Complete passive consumption');
       risks.push('Independent thinking ability may decline with passive consumption');
       suggestions.push('Engage more actively by questioning, editing, or critiquing responses');
     }
 
     // Default fallbacks
     if (messages.length === 0) {
-      messages.push('We detected patterns suggesting passive AI usage.');
+      messages.push('Passive AI usage detected');
     }
     if (risks.length === 0) {
       risks.push('Learning effectiveness may be affected');
@@ -301,7 +302,10 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }
 
     return {
-      message: messages.join(' '),
+      // For single display: join with " • " for readability
+      message: messages.length === 1 ? messages[0] : messages.join(' • '),
+      // Keep arrays for list display
+      messageList: messages,
       risks,
       suggestions,
     };
@@ -349,6 +353,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         icon: '🔔',
         title: 'MCA Reminder',
         message: ruleContent.message,
+        detectedBehaviors: ruleContent.messageList, // For list display when multiple
         suggestion: ruleContent.suggestions[0] || 'Pause and review whether recent AI responses meet your expectations.',
         consecutiveCount: detection.layer1.triggeredCount,
         actionLabel: 'Review Now',
@@ -564,6 +569,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         icon={intervention.icon || '🔔'}
         title={intervention.title || 'MCA Reminder'}
         message={intervention.message}
+        detectedBehaviors={intervention.detectedBehaviors}
         suggestion={intervention.suggestion || 'Pause and review whether recent AI responses meet your expectations.'}
         description={intervention.description}
         consecutiveCount={intervention.consecutiveCount}

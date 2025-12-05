@@ -129,6 +129,44 @@
   margin: 0 0 1rem 0;
 }
 
+/* Detected behaviors list */
+.medium-alert-behaviors {
+  margin-bottom: 1rem;
+}
+
+.medium-alert-behaviors-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #92400e;
+  margin: 0 0 0.5rem 0;
+}
+
+.medium-alert-behaviors-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #fffbeb;
+  border-left: 3px solid #f59e0b;
+  border-radius: 0 0.375rem 0.375rem 0;
+  padding: 0.5rem 1rem;
+}
+
+.medium-alert-behaviors-list li {
+  position: relative;
+  padding: 0.375rem 0 0.375rem 1.25rem;
+  font-size: 0.9rem;
+  color: #78350f;
+  line-height: 1.4;
+}
+
+.medium-alert-behaviors-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #f59e0b;
+  font-weight: bold;
+}
+
 .medium-alert-suggestion {
   background-color: #fef3c7;
   border-left: 3px solid #f59e0b;
