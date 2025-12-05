@@ -46,6 +46,15 @@ const DashboardPage: React.FC = () => {
   const { currentUserPattern } = usePatternStore();
   const [verificationStrategyData, setVerificationStrategyData] = useState<any[]>([]);
 
+  // 12-dimensional behavior analysis state
+  const [behaviorScores, setBehaviorScores] = useState<{
+    dimension: string;
+    fullName: string;
+    behaviorScore: number;
+    assessmentScore: number;
+    combinedScore: number;
+  }[]>([]);
+
   useEffect(() => {
     // Fetch latest assessment and all assessments when component mounts
     if (user?.id) {
@@ -54,6 +63,190 @@ const DashboardPage: React.FC = () => {
       fetchPatterns(user.id);
     }
   }, [user?.id, fetchLatestAssessment, fetchAssessments, fetchPatterns]);
+
+  // Analyze behavior data for 12-dimensional scores
+  useEffect(() => {
+    const analyzeBehavior = async () => {
+      try {
+        const response = await apiService.sessions.getAll({ limit: 100, includeInteractions: true });
+        const sessionsWithInteractions = response.data.data?.sessions || [];
+
+        let totalInteractions = 0;
+        let verifiedCount = 0;
+        let modifiedCount = 0;
+
+        const dimensionCounts = {
+          p1: 0, p2: 0, p3: 0, p4: 0,
+          m1: 0, m2: 0, m3: 0,
+          e1: 0, e2: 0, e3: 0,
+          r1: 0, r2: 0,
+        };
+
+        const strategies = new Set<string>();
+        const taskTypes = new Map<string, number>();
+
+        sessionsWithInteractions.forEach((session: any) => {
+          const interactions = session.interactions || [];
+          totalInteractions += interactions.length;
+
+          interactions.forEach((interaction: any, idx: number) => {
+            if (interaction.wasVerified) verifiedCount++;
+            if (interaction.wasModified) modifiedCount++;
+
+            const prompt = (interaction.userPrompt || '').toLowerCase();
+            const promptLength = (interaction.userPrompt || '').trim().split(/\s+/).length;
+
+            // P1: Task Decomposition
+            if (prompt.match(/步骤|step\s*\d|first.*then|列出|list|分解|break.*down/) ||
+                prompt.match(/\d+[.、)]\s*\w+/) || prompt.includes('how to') && promptLength > 15) {
+              dimensionCounts.p1++;
+            }
+
+            // P2: Goal Setting
+            if (prompt.match(/目标|goal|需要.*实现|achieve|要求|requirement|具体|specific/) ||
+                prompt.match(/确保|make sure|必须|must/) || promptLength > 20) {
+              dimensionCounts.p2++;
+            }
+
+            // P3: Strategy Selection
+            if (prompt.includes('代码') || prompt.includes('code')) strategies.add('code');
+            if (prompt.includes('解释') || prompt.includes('explain')) strategies.add('explain');
+            if (prompt.includes('调试') || prompt.includes('debug')) strategies.add('debug');
+            if (prompt.includes('优化') || prompt.includes('optimize')) strategies.add('optimize');
+            if (prompt.includes('设计') || prompt.includes('design')) strategies.add('design');
+            if (strategies.size > 0) dimensionCounts.p3++;
+
+            // P4: Resource Planning
+            if (prompt.match(/我.*自己|independently|我来|帮助.*理解|explain.*so.*understand/) ||
+                prompt.match(/不要.*直接|don't.*directly|引导|guide/)) {
+              dimensionCounts.p4++;
+            }
+
+            // M1: Progress Tracking
+            if (prompt.match(/进度|progress|完成.*吗|done|接下来|next step|继续|continue/) ||
+                (idx > 0 && prompt.includes('然后'))) {
+              dimensionCounts.m1++;
+            }
+
+            // M2: Quality Checking
+            if (interaction.wasVerified || prompt.match(/检查|verify|正确.*吗|is.*correct|验证|validate|测试|test/)) {
+              dimensionCounts.m2++;
+            }
+
+            // M3: Context Monitoring
+            if (prompt.match(/可靠|reliable|确定|sure|信任|trust/) ||
+                prompt.match(/这个.*对吗|is this right|会不会.*错|might.*wrong/)) {
+              dimensionCounts.m3++;
+            }
+            const taskType = prompt.includes('代码') || prompt.includes('code') ? 'code' :
+                            prompt.includes('解释') || prompt.includes('explain') ? 'explain' :
+                            prompt.includes('设计') || prompt.includes('design') ? 'design' : 'other';
+            taskTypes.set(taskType, (taskTypes.get(taskType) || 0) + 1);
+
+            // E1: Result Evaluation
+            if (prompt.match(/质量|quality|评估|evaluate|好不好|效果|effectiveness/) ||
+                prompt.match(/更好|better|最佳|best|compare|比较/)) {
+              dimensionCounts.e1++;
+            }
+
+            // E2: Learning Reflection
+            if (prompt.match(/学到|learn|理解|understand|为什么|why|原理|principle/) ||
+                prompt.match(/怎么.*工作|how.*work|机制|mechanism/)) {
+              dimensionCounts.e2++;
+            }
+
+            // E3: Capability Judgment
+            if (prompt.match(/我.*能|can I|我.*会|我.*懂|understand/) ||
+                prompt.match(/不会|don't know|不懂|不理解/) ||
+                prompt.match(/基础|basic|入门|beginner/)) {
+              dimensionCounts.e3++;
+            }
+
+            // R1: Strategy Adjustment
+            if (interaction.wasModified || interaction.wasRejected ||
+                prompt.match(/改进|improve|优化|optimize|调整|adjust|换个|try another/) ||
+                prompt.match(/重新|redo|再.*一次|again/)) {
+              dimensionCounts.r1++;
+            }
+
+            // R2: Trust Calibration
+            if (prompt.match(/换.*方法|try.*different|别的.*工具|another.*tool/) ||
+                prompt.match(/或者|alternatively|还是|or/) || taskTypes.size > 2) {
+              dimensionCounts.r2++;
+            }
+          });
+        });
+
+        // Calculate scores (0-5 scale to match assessment)
+        const calculateScore = (count: number, total: number, thresholds: number[]): number => {
+          const ratio = total > 0 ? count / total : 0;
+          if (ratio >= thresholds[2]) return 5;
+          if (ratio >= thresholds[1]) return 3.5;
+          if (ratio >= thresholds[0]) return 2;
+          return 0.5;
+        };
+
+        const behaviorDimensionScores = {
+          P1: calculateScore(dimensionCounts.p1, totalInteractions, [0.10, 0.25, 0.40]),
+          P2: calculateScore(dimensionCounts.p2, totalInteractions, [0.20, 0.40, 0.60]),
+          P3: Math.min(5, strategies.size * 1.25),
+          P4: calculateScore(dimensionCounts.p4, totalInteractions, [0.05, 0.15, 0.30]),
+          M1: calculateScore(dimensionCounts.m1, totalInteractions, [0.10, 0.25, 0.45]),
+          M2: verifiedCount > 0 ? calculateScore(verifiedCount, totalInteractions, [0.10, 0.30, 0.60]) : 0.5,
+          M3: Math.min(5, taskTypes.size * 1.25),
+          E1: calculateScore(dimensionCounts.e1, totalInteractions, [0.08, 0.20, 0.40]),
+          E2: calculateScore(dimensionCounts.e2, totalInteractions, [0.15, 0.30, 0.50]),
+          E3: calculateScore(dimensionCounts.e3, totalInteractions, [0.05, 0.15, 0.30]),
+          R1: (modifiedCount) > 0 ? calculateScore(modifiedCount, totalInteractions, [0.10, 0.25, 0.45]) : 0.5,
+          R2: Math.min(5, taskTypes.size * 1.5),
+        };
+
+        // Get assessment scores
+        const subdimScores = latestAssessment?.responses?.subdimensionScores || [];
+
+        const dimensions = [
+          { code: 'P1', name: 'Task Decomp', fullName: 'P1: Task Decomposition' },
+          { code: 'P2', name: 'Goal Setting', fullName: 'P2: Goal Setting' },
+          { code: 'P3', name: 'Strategy', fullName: 'P3: Strategy Selection' },
+          { code: 'P4', name: 'Resource', fullName: 'P4: Resource Planning' },
+          { code: 'M1', name: 'Progress', fullName: 'M1: Progress Tracking' },
+          { code: 'M2', name: 'Quality', fullName: 'M2: Quality Checking' },
+          { code: 'M3', name: 'Context', fullName: 'M3: Context Monitoring' },
+          { code: 'E1', name: 'Result Eval', fullName: 'E1: Result Evaluation' },
+          { code: 'E2', name: 'Reflection', fullName: 'E2: Learning Reflection' },
+          { code: 'E3', name: 'Capability', fullName: 'E3: Capability Judgment' },
+          { code: 'R1', name: 'Adjustment', fullName: 'R1: Strategy Adjustment' },
+          { code: 'R2', name: 'Trust Cal', fullName: 'R2: Trust Calibration' },
+        ];
+
+        const combined = dimensions.map(dim => {
+          const assessmentFound = subdimScores.find((s: any) => s.dimension === dim.code);
+          const assessmentScore = assessmentFound ? assessmentFound.score : 0;
+          const behaviorScore = behaviorDimensionScores[dim.code as keyof typeof behaviorDimensionScores] || 0;
+
+          // Combined: 30% assessment + 70% behavior (behavior takes priority as it reflects actual usage)
+          // If no behavior data, use assessment only
+          const combinedScore = totalInteractions > 0
+            ? (assessmentScore > 0 ? assessmentScore * 0.3 + behaviorScore * 0.7 : behaviorScore)
+            : assessmentScore;
+
+          return {
+            dimension: dim.name,
+            fullName: dim.fullName,
+            behaviorScore,
+            assessmentScore,
+            combinedScore: Math.max(0, Math.min(5, combinedScore)),
+          };
+        });
+
+        setBehaviorScores(combined);
+      } catch (error) {
+        console.error('Failed to analyze behavior:', error);
+      }
+    };
+
+    analyzeBehavior();
+  }, [latestAssessment]);
 
   useEffect(() => {
     // Show welcome modal only ONCE for users without assessment
@@ -1326,79 +1519,119 @@ const DashboardPage: React.FC = () => {
             <div className="chart-container">
               <h3 className="chart-title">
                 Metacognitive Abilities (12 Dimensions)
-                <InfoTooltip text="Radar chart showing your metacognitive capabilities across 12 sub-dimensions: Planning (P1-P4), Monitoring (M1-M3), Evaluation (E1-E3), and Regulation (R1-R2)." size="small" />
+                <InfoTooltip text="Combined view: 30% questionnaire baseline + 70% actual behavior analysis. Updates dynamically as you interact with AI." size="small" />
               </h3>
-              {latestAssessment?.responses?.subdimensionScores ? (
-                <ResponsiveContainer width="100%" height={280}>
-                  <RadarChart
-                    cx="50%"
-                    cy="50%"
-                    outerRadius="70%"
-                    data={(() => {
-                      const subdimScores = latestAssessment.responses.subdimensionScores || [];
-                      const dimensions = [
-                        { code: 'P1', name: 'Task Decomp', fullName: 'P1: Task Decomposition' },
-                        { code: 'P2', name: 'Goal Setting', fullName: 'P2: Goal Setting' },
-                        { code: 'P3', name: 'Strategy', fullName: 'P3: Strategy Selection' },
-                        { code: 'P4', name: 'Resource', fullName: 'P4: Resource Planning' },
-                        { code: 'M1', name: 'Progress', fullName: 'M1: Progress Tracking' },
-                        { code: 'M2', name: 'Quality', fullName: 'M2: Quality Checking' },
-                        { code: 'M3', name: 'Context', fullName: 'M3: Context Monitoring' },
-                        { code: 'E1', name: 'Result Eval', fullName: 'E1: Result Evaluation' },
-                        { code: 'E2', name: 'Reflection', fullName: 'E2: Learning Reflection' },
-                        { code: 'E3', name: 'Capability', fullName: 'E3: Capability Judgment' },
-                        { code: 'R1', name: 'Adjustment', fullName: 'R1: Strategy Adjustment' },
-                        { code: 'R2', name: 'Trust Cal', fullName: 'R2: Trust Calibration' },
-                      ];
-                      return dimensions.map(dim => {
-                        const found = subdimScores.find((s: any) => s.dimension === dim.code);
-                        return {
-                          dimension: dim.name,
-                          fullName: dim.fullName,
-                          score: found ? found.score : 0,
-                          fullMark: 5,
-                        };
-                      });
-                    })()}
-                  >
-                    <PolarGrid stroke="#e5e7eb" />
-                    <PolarAngleAxis
-                      dataKey="dimension"
-                      tick={{ fontSize: 10, fill: '#6b7280', fontWeight: 500 }}
-                    />
-                    <PolarRadiusAxis
-                      angle={90}
-                      domain={[0, 5]}
-                      tick={{ fontSize: 10, fill: '#9ca3af' }}
-                      tickCount={6}
-                    />
-                    <Radar
-                      name="Your Score"
-                      dataKey="score"
-                      stroke="#8b5cf6"
-                      fill="#8b5cf6"
-                      fillOpacity={0.4}
-                      strokeWidth={2}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        borderRadius: '8px',
-                        border: 'none',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        padding: '8px 12px'
-                      }}
-                      formatter={(value: number, name: string, props: any) => [
-                        `${value.toFixed(1)} / 5.0`,
-                        props.payload.fullName
-                      ]}
-                    />
-                    <Legend
-                      wrapperStyle={{ fontSize: '12px', fontWeight: 600, paddingTop: '10px' }}
-                    />
-                  </RadarChart>
-                </ResponsiveContainer>
+              {behaviorScores.length > 0 || latestAssessment?.responses?.subdimensionScores ? (
+                <>
+                  <ResponsiveContainer width="100%" height={280}>
+                    <RadarChart
+                      cx="50%"
+                      cy="50%"
+                      outerRadius="70%"
+                      data={behaviorScores.length > 0 ? behaviorScores.map(s => ({
+                        dimension: s.dimension,
+                        fullName: s.fullName,
+                        combined: s.combinedScore,
+                        behavior: s.behaviorScore,
+                        assessment: s.assessmentScore,
+                        fullMark: 5,
+                      })) : (() => {
+                        const subdimScores = latestAssessment?.responses?.subdimensionScores || [];
+                        const dimensions = [
+                          { code: 'P1', name: 'Task Decomp', fullName: 'P1: Task Decomposition' },
+                          { code: 'P2', name: 'Goal Setting', fullName: 'P2: Goal Setting' },
+                          { code: 'P3', name: 'Strategy', fullName: 'P3: Strategy Selection' },
+                          { code: 'P4', name: 'Resource', fullName: 'P4: Resource Planning' },
+                          { code: 'M1', name: 'Progress', fullName: 'M1: Progress Tracking' },
+                          { code: 'M2', name: 'Quality', fullName: 'M2: Quality Checking' },
+                          { code: 'M3', name: 'Context', fullName: 'M3: Context Monitoring' },
+                          { code: 'E1', name: 'Result Eval', fullName: 'E1: Result Evaluation' },
+                          { code: 'E2', name: 'Reflection', fullName: 'E2: Learning Reflection' },
+                          { code: 'E3', name: 'Capability', fullName: 'E3: Capability Judgment' },
+                          { code: 'R1', name: 'Adjustment', fullName: 'R1: Strategy Adjustment' },
+                          { code: 'R2', name: 'Trust Cal', fullName: 'R2: Trust Calibration' },
+                        ];
+                        return dimensions.map(dim => {
+                          const found = subdimScores.find((s: any) => s.dimension === dim.code);
+                          return {
+                            dimension: dim.name,
+                            fullName: dim.fullName,
+                            combined: found ? found.score : 0,
+                            behavior: 0,
+                            assessment: found ? found.score : 0,
+                            fullMark: 5,
+                          };
+                        });
+                      })()}
+                    >
+                      <PolarGrid stroke="#e5e7eb" />
+                      <PolarAngleAxis
+                        dataKey="dimension"
+                        tick={{ fontSize: 10, fill: '#6b7280', fontWeight: 500 }}
+                      />
+                      <PolarRadiusAxis
+                        angle={90}
+                        domain={[0, 5]}
+                        tick={{ fontSize: 10, fill: '#9ca3af' }}
+                        tickCount={6}
+                      />
+                      {/* Behavior score (outer, primary) */}
+                      <Radar
+                        name="Behavior"
+                        dataKey="behavior"
+                        stroke="#10b981"
+                        fill="#10b981"
+                        fillOpacity={0.2}
+                        strokeWidth={2}
+                        strokeDasharray="5 5"
+                      />
+                      {/* Combined score (filled) */}
+                      <Radar
+                        name="Combined"
+                        dataKey="combined"
+                        stroke="#8b5cf6"
+                        fill="#8b5cf6"
+                        fillOpacity={0.4}
+                        strokeWidth={2}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          borderRadius: '8px',
+                          border: 'none',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                          fontSize: '11px',
+                          fontWeight: 500,
+                          padding: '8px 12px'
+                        }}
+                        formatter={(value: number, name: string, props: any) => {
+                          if (name === 'Combined') {
+                            return [`${value.toFixed(1)} / 5.0`, props.payload.fullName];
+                          }
+                          return [`${value.toFixed(1)}`, name];
+                        }}
+                      />
+                      <Legend
+                        wrapperStyle={{ fontSize: '11px', fontWeight: 600, paddingTop: '5px' }}
+                      />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                  <div style={{
+                    marginTop: '0.25rem',
+                    padding: '0.5rem 0.75rem',
+                    backgroundColor: '#f0fdf4',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.75rem',
+                    color: '#166534',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem'
+                  }}>
+                    <span>📊</span>
+                    <span>
+                      <strong>Combined</strong> = 30% Questionnaire + 70% Behavior Analysis
+                    </span>
+                  </div>
+                </>
               ) : (
                 <div style={{
                   display: 'flex',
@@ -1411,11 +1644,14 @@ const DashboardPage: React.FC = () => {
                   padding: '1rem'
                 }}>
                   <span style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🧠</span>
-                  <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 500 }}>No assessment data yet</p>
+                  <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 500 }}>No data yet</p>
+                  <p style={{ margin: '0.5rem 0', fontSize: '0.75rem', color: '#9ca3af' }}>
+                    Take assessment or start chatting to see your profile
+                  </p>
                   <button
                     onClick={() => navigate('/assessment')}
                     style={{
-                      marginTop: '1rem',
+                      marginTop: '0.5rem',
                       padding: '0.5rem 1rem',
                       background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
                       color: 'white',
