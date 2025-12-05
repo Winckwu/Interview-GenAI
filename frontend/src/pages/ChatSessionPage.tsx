@@ -1741,8 +1741,10 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
       trustScore = trustResult.score;
 
-      // Store trust score
-      setMessageTrustScores((prev) => new Map(prev).set(message.id, trustScore));
+      // Store trust score - defer to avoid setState during render
+      setTimeout(() => {
+        setMessageTrustScores((prev) => new Map(prev).set(message.id, trustScore));
+      }, 0);
 
       // If needs deep analysis, trigger async GPT analysis (non-blocking)
       if (trustResult.needsDeepAnalysis && message.content.length > 200) {
@@ -1795,17 +1797,21 @@ Message: "${firstMessage.slice(0, 200)}"`,
     // Use adaptive orchestration (evidence-based from 49 interviews)
     const result = orchestrateMRActivationAdaptive(context, userProfile, triggerContext);
 
-    // Track which MRs were shown for fatigue control
+    // Track which MRs were shown for fatigue control - defer to avoid setState during render
     if (result.recommendations.length > 0) {
       const newShownMRs = new Set(previousMRsShown);
       result.recommendations.slice(0, 3).forEach(rec => {
         newShownMRs.add(rec.tool);
       });
-      setPreviousMRsShown(newShownMRs);
+      setTimeout(() => {
+        setPreviousMRsShown(newShownMRs);
+      }, 0);
     }
 
-    // Store orchestration result
-    setOrchestrationResults((prev) => new Map(prev).set(message.id, result));
+    // Store orchestration result - defer to avoid setState during render
+    setTimeout(() => {
+      setOrchestrationResults((prev) => new Map(prev).set(message.id, result));
+    }, 0);
 
     return result;
   }, [sessionData, consecutiveNoVerify, orchestrationResults, messageTrustScores, userProfile, sessionStartTime, iterationCount, previousMRsShown]);
