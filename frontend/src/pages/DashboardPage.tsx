@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
 import { useAuthStore } from '../stores/authStore';
 import { usePatternStore } from '../stores/patternStore';
 import { useUIStore } from '../stores/uiStore';
@@ -1322,7 +1322,117 @@ const DashboardPage: React.FC = () => {
               </div>
               </div>
 
-            {/* 3. Quick Stats */}
+            {/* 3. 12-Dimension Metacognitive Radar */}
+            <div className="chart-container">
+              <h3 className="chart-title">
+                Metacognitive Abilities (12 Dimensions)
+                <InfoTooltip text="Radar chart showing your metacognitive capabilities across 12 sub-dimensions: Planning (P1-P4), Monitoring (M1-M3), Evaluation (E1-E3), and Regulation (R1-R2)." size="small" />
+              </h3>
+              {latestAssessment?.responses?.subdimensionScores ? (
+                <ResponsiveContainer width="100%" height={280}>
+                  <RadarChart
+                    cx="50%"
+                    cy="50%"
+                    outerRadius="70%"
+                    data={(() => {
+                      const subdimScores = latestAssessment.responses.subdimensionScores || [];
+                      const dimensions = [
+                        { code: 'P1', name: 'Task Decomp', fullName: 'P1: Task Decomposition' },
+                        { code: 'P2', name: 'Goal Setting', fullName: 'P2: Goal Setting' },
+                        { code: 'P3', name: 'Strategy', fullName: 'P3: Strategy Selection' },
+                        { code: 'P4', name: 'Resource', fullName: 'P4: Resource Planning' },
+                        { code: 'M1', name: 'Progress', fullName: 'M1: Progress Tracking' },
+                        { code: 'M2', name: 'Quality', fullName: 'M2: Quality Checking' },
+                        { code: 'M3', name: 'Context', fullName: 'M3: Context Monitoring' },
+                        { code: 'E1', name: 'Result Eval', fullName: 'E1: Result Evaluation' },
+                        { code: 'E2', name: 'Reflection', fullName: 'E2: Learning Reflection' },
+                        { code: 'E3', name: 'Capability', fullName: 'E3: Capability Judgment' },
+                        { code: 'R1', name: 'Adjustment', fullName: 'R1: Strategy Adjustment' },
+                        { code: 'R2', name: 'Trust Cal', fullName: 'R2: Trust Calibration' },
+                      ];
+                      return dimensions.map(dim => {
+                        const found = subdimScores.find((s: any) => s.dimension === dim.code);
+                        return {
+                          dimension: dim.name,
+                          fullName: dim.fullName,
+                          score: found ? found.score : 0,
+                          fullMark: 5,
+                        };
+                      });
+                    })()}
+                  >
+                    <PolarGrid stroke="#e5e7eb" />
+                    <PolarAngleAxis
+                      dataKey="dimension"
+                      tick={{ fontSize: 10, fill: '#6b7280', fontWeight: 500 }}
+                    />
+                    <PolarRadiusAxis
+                      angle={90}
+                      domain={[0, 5]}
+                      tick={{ fontSize: 10, fill: '#9ca3af' }}
+                      tickCount={6}
+                    />
+                    <Radar
+                      name="Your Score"
+                      dataKey="score"
+                      stroke="#8b5cf6"
+                      fill="#8b5cf6"
+                      fillOpacity={0.4}
+                      strokeWidth={2}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        borderRadius: '8px',
+                        border: 'none',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        padding: '8px 12px'
+                      }}
+                      formatter={(value: number, name: string, props: any) => [
+                        `${value.toFixed(1)} / 5.0`,
+                        props.payload.fullName
+                      ]}
+                    />
+                    <Legend
+                      wrapperStyle={{ fontSize: '12px', fontWeight: 600, paddingTop: '10px' }}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 280,
+                  color: '#9ca3af',
+                  textAlign: 'center',
+                  padding: '1rem'
+                }}>
+                  <span style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🧠</span>
+                  <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 500 }}>No assessment data yet</p>
+                  <button
+                    onClick={() => navigate('/assessment')}
+                    style={{
+                      marginTop: '1rem',
+                      padding: '0.5rem 1rem',
+                      background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      fontSize: '0.8125rem',
+                      fontWeight: 600,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Take Assessment
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* 4. Quick Stats */}
             <div className="chart-container stats-container">
               <h3>Quick Stats</h3>
 
