@@ -1,0 +1,308 @@
+{
+  "batch": 4,
+  "method": "LLM Semantic Analysis (Claude)",
+  "annotation_date": "2024-12-03",
+  "aligned_dimensions": true,
+  "users": {
+    "228bba58-5df0-402f-8b05-67ae39ab42ff": {
+      "analysis": "7 messages. All are statistics problems copied and pasted without context or interaction. Pure problem dumping with no questions, no verification, no follow-up.",
+      "scores": {
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.95,
+      "reasoning": "Zero metacognitive engagement - purely passive problem submission"
+    },
+    "22a39fc6-8722-46ae-8d8b-2248660f26b8": {
+      "analysis": "12 messages about linear algebra. Asks conceptual questions (gaussian elimination, linear combinations). Uses images for comparison. Asks 'why' questions about differences in conclusions between similar-looking matrices. Shows analytical comparison.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Shows conceptual curiosity and comparative analysis, but no verification behaviors"
+    },
+    "231e6e6d-ec64-49c4-84fd-c366184af81c": {
+      "analysis": "11 messages about linear algebra and eigenspaces. Asks conceptual questions about Gram-Schmidt process. Asks practical questions about calculator use. Asks about topic scope. Mix of conceptual and logistical queries.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Shows learning curiosity with conceptual and practical questions, but passive reception of answers"
+    },
+    "240e97f6-804d-425b-b9eb-d43e18979661": {
+      "analysis": "5 messages. Asks for tutorial guidance. Some clarifying questions about transpose notation. Minimal depth of engagement.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.8,
+      "reasoning": "Minimal engagement with some clarifying questions but no sustained metacognitive behavior"
+    },
+    "257f675a-0559-4c93-abb1-d9b7f56765a4": {
+      "analysis": "36 messages about materials science. KEY BEHAVIOR: Challenges AI accuracy ('are you sure', 'i feel the information is wrong'). Questions source of information ('where was this mention?', 'which part of the notes'). Demonstrates TRUST CALIBRATION by questioning AI reliability.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 2,
+        "M3": 2,
+        "E1": 1,
+        "E2": 1,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "B",
+      "confidence": 0.8,
+      "reasoning": "Strong trust calibration (M3) - actively questions AI accuracy and asks for sources. Critical evaluation of AI output."
+    },
+    "258b96e0-ec44-4533-a967-c72277ee8124": {
+      "analysis": "7 messages. Mostly logistics questions about course assessment and group project. Some strategic thinking about how to ace the project. Asks about sample projects.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.8,
+      "reasoning": "Primarily logistics-focused with minimal learning engagement"
+    },
+    "25bf4a2b-6e18-4dd8-87da-ddca3b71dc46": {
+      "analysis": "3 messages. Only quiz dates and assessment questions. Pure logistics queries with no learning content.",
+      "scores": {
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.95,
+      "reasoning": "Only administrative queries, zero learning engagement"
+    },
+    "26ec786a-60d1-4831-9195-f86127e41012": {
+      "analysis": "19 messages. Mix of logistics (quiz dates, mock quiz) and learning content (probability concept, specific question explanations). Asks for practice questions and explanation of formula derivations.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Shows some learning intent through practice question requests and explanation seeking"
+    },
+    "26f1add3-fec4-48f8-89e7-f187347d8c38": {
+      "analysis": "3 messages. Asks about code snippets and data visualization. One 'why' question about data conversion. Minimal depth.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.85,
+      "reasoning": "Minimal engagement with some conceptual curiosity but no depth"
+    },
+    "270bb903-d6c5-4e7f-a38a-91e86f1eeea5": {
+      "analysis": "11 messages. Mostly single-letter inputs ('s', 'f') with image uploads - appears to be submitting solutions. One substantive 'why' question ('why does that imply y = 0?'). Very minimal text engagement.",
+      "scores": {
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "P4": 0,
+        "M1": 0,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "F",
+      "confidence": 0.85,
+      "reasoning": "Minimal meaningful engagement despite one 'why' question"
+    },
+    "27459493-d86f-41a0-9817-2016384e3354": {
+      "analysis": "56 messages about calculus/math. Asks conceptual 'why' questions ('why does g(x) not need to be continuous'). Requests topic summaries. Submits problems for solving. Mix of passive and active engagement.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.75,
+      "reasoning": "Shows conceptual curiosity through 'why' questions and requests for summaries, moderate metacognitive awareness"
+    },
+    "287a4c8c-2501-4a2b-8ec3-fc927a14b878": {
+      "analysis": "23 messages about statistics (OLS, p-value). Asks for definitions and conceptual explanations about log transformation and R-squared. Requests mock quiz. Shows learning intent through conceptual questions.",
+      "scores": {
+        "P1": 2,
+        "P2": 1,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.7,
+      "reasoning": "Shows learning progression through conceptual questions about statistical methods"
+    },
+    "28a1a2c6-5306-47d4-80d4-daab857f8b6d": {
+      "analysis": "36 messages about calculus. CRITICAL THINKING: Questions assumptions ('how can we assume that is the width when the formula for the width is...'). Asks 'how do I identify' questions. Shows reasoning about formulas rather than passive acceptance.",
+      "scores": {
+        "P1": 2,
+        "P2": 2,
+        "P3": 1,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 0,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.8,
+      "reasoning": "Shows critical thinking by questioning assumptions and formula derivations"
+    },
+    "29c29419-bd5e-4054-b86e-b90cb8acf8e7": {
+      "analysis": "5 messages. Expresses confusion ('im unsure', 'it can get a bit confusing'). Asks for formatting help. Shows metacognitive awareness of own confusion but minimal depth of engagement.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 0,
+        "M3": 0,
+        "E1": 0,
+        "E2": 0,
+        "E3": 0,
+        "R1": 0,
+        "R2": 0
+      },
+      "pattern": "C",
+      "confidence": 0.8,
+      "reasoning": "Shows awareness of confusion but limited depth of engagement"
+    },
+    "29f54056-506b-4b7d-8a4e-3d4a164ebc4a": {
+      "analysis": "5 messages. KEY BEHAVIOR: CORRECTS AI - 'actually determinant is (alpha)^3 - 3alpha + 2'. Provides corrections to AI output showing verification behavior. Expresses lack of understanding but then checks AI work.",
+      "scores": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 0,
+        "P4": 0,
+        "M1": 1,
+        "M2": 1,
+        "M3": 1,
+        "E1": 1,
+        "E2": 0,
+        "E3": 0,
+        "R1": 1,
+        "R2": 0
+      },
+      "pattern": "B",
+      "confidence": 0.75,
+      "reasoning": "Shows trust calibration (M3) by correcting AI output, demonstrates quality checking despite minimal overall engagement"
+    }
+  }
+}
