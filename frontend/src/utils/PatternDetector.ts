@@ -266,25 +266,30 @@ export const getConfidenceLevel = (
 /**
  * Determine intervention tier based on confidence
  * Used by InterventionScheduler to decide what to display
+ *
+ * Thresholds (updated for better sensitivity):
+ * - Hard: >= 0.6 (3+ rules) - for serious over-reliance patterns
+ * - Medium: >= 0.4 (2+ rules) - moderate concern
+ * - Soft: >= 0.2 (1+ rule) - gentle nudge
  */
 export const recommendInterventionTier = (
   confidence: number,
   triggeredRules: string[]
 ): 'none' | 'soft' | 'medium' | 'hard' => {
-  // Hard barrier only if:
-  // - Confidence >= 0.8 (4 out of 5 rules triggered)
-  // - At least 2 rules triggered
-  if (confidence >= 0.8 && triggeredRules.length >= 2) {
+  // Hard barrier if:
+  // - Confidence >= 0.6 (3 out of 5 rules triggered)
+  // - Must include F-R5 (complete passivity) for safety check
+  if (confidence >= 0.6 && triggeredRules.includes('F-R5')) {
     return 'hard';
   }
 
-  // Medium warning if confidence >= 0.6 (3 out of 5 rules)
-  if (confidence >= 0.6) {
+  // Medium warning if confidence >= 0.4 (2 out of 5 rules)
+  if (confidence >= 0.4) {
     return 'medium';
   }
 
-  // Soft signal if confidence >= 0.4 (2 out of 5 rules)
-  if (confidence >= 0.4) {
+  // Soft signal if confidence >= 0.2 (1 out of 5 rules)
+  if (confidence >= 0.2) {
     return 'soft';
   }
 

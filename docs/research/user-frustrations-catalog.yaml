@@ -321,7 +321,7 @@ user_frustrations:
 
   - id: UF023
     mr_id: MR13
-    user_id: I50
+    user_id: I35
     category: "Knowledge Error - Version Compatibility Error"
     description: "版本兼容性误导 - 信息过时"
     severity: 4/5

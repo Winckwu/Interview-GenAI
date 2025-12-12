@@ -71,6 +71,10 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const [lastInterventionId, setLastInterventionId] = useState<string | null>(null);
   const [interventionStartTime, setInterventionStartTime] = useState<number>(0);
   const [lastDisplayedMRId, setLastDisplayedMRId] = useState<string | null>(null);
+  const [lastHardBarrierTime, setLastHardBarrierTime] = useState<number>(0);
+
+  // Hard barrier cooldown: 5 minutes between hard barriers
+  const HARD_BARRIER_COOLDOWN_MS = 5 * 60 * 1000;
 
   /**
    * Handle soft signal dismiss
@@ -176,8 +180,20 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const convertActiveMRToIntervention = useCallback(
     (mr: ActiveMR) => {
       // Use tier from unified analysis if available, otherwise infer from urgency
-      const tier: 'soft' | 'medium' | 'hard' = mr.tier ||
+      let tier: 'soft' | 'medium' | 'hard' = mr.tier ||
         (mr.urgency === 'enforce' ? 'hard' : mr.urgency === 'remind' ? 'medium' : 'soft');
+
+      // Hard barrier cooldown: downgrade to medium if last hard barrier was too recent
+      const timeSinceLastHardBarrier = Date.now() - lastHardBarrierTime;
+      if (tier === 'hard' && timeSinceLastHardBarrier < HARD_BARRIER_COOLDOWN_MS) {
+        console.log(`[InterventionManager] Downgrading hard to medium (cooldown: ${Math.round(timeSinceLastHardBarrier / 1000)}s < ${HARD_BARRIER_COOLDOWN_MS / 1000}s)`);
+        tier = 'medium';
+      }
+
+      // Track hard barrier time
+      if (tier === 'hard') {
+        setLastHardBarrierTime(Date.now());
+      }
 
       const baseIntervention = {
         id: `intervention-${mr.mrId}`,
@@ -206,11 +222,12 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       if (tier === 'medium') {
         return {
           ...baseIntervention,
-          icon: '⚠️',
-          title: 'Review Recommended',
-          message: mr.message,
-          description: `MR: ${mr.name}`,
-          actionLabel: 'View Details',
+          icon: '🔔',
+          title: 'MCA Reminder',
+          message: mr.message || 'You have not verified AI output for {count} consecutive interactions.',
+          suggestion: 'Pause and review whether recent AI responses meet your expectations.',
+          consecutiveCount: 3, // TODO: Get actual count from session state
+          actionLabel: 'Verify Now',
           onAction: () => {
             console.log(`[InterventionManager] Medium action clicked for MR: ${mr.mrId}`);
             handleLearnMore(mr.mrId);
@@ -220,50 +237,117 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         };
       }
 
-      // Hard barrier
-      const options: BarrierOption[] = [
-        {
-          label: '✓ I will verify it carefully',
-          value: 'verify',
-          description: 'Review the response for accuracy before accepting',
-        },
-        {
-          label: '✎ I will modify it before use',
-          value: 'modify',
-          description: 'Edit or improve the response',
-        },
-        {
-          label: '↻ I will reject and re-ask',
-          value: 'reject',
-          description: 'Ask the AI to regenerate the response',
-        },
-        {
-          label: '→ I understand risks, proceed anyway',
-          value: 'override',
-          description: 'Accept the response as-is',
-        },
-      ];
-
+      // Hard barrier - new simplified design with risks and suggestions
       return {
         ...baseIntervention,
-        icon: '🚨',
-        title: 'Safety Check Required',
-        message: mr.message,
-        description: `MR: ${mr.name}`,
-        options,
+        icon: '⚠️',
+        title: 'Warning: Over-Reliance Risk Detected',
+        message: mr.message || 'You have not verified AI output for {count} consecutive interactions.',
+        consecutiveCount: 4, // TODO: Get actual count from session state
+        risks: [
+          'May have accepted incorrect information',
+          'Independent thinking ability may decline',
+          'Learning effectiveness may be affected',
+        ],
+        suggestions: [
+          'Pause current task',
+          'Review recent AI responses',
+          'Try completing the next step independently',
+        ],
         isDangerous: true,
         onConfirm: (value: string) => handleBarrierConfirm(value, mr.mrId),
         onCancel: () => handleDismiss(mr.mrId),
       };
     },
-    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm]
+    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, lastHardBarrierTime, HARD_BARRIER_COOLDOWN_MS]
   );
+
+  /**
+   * Generate contextual messages based on triggered rules
+   * Returns arrays for flexible formatting at each tier level
+   */
+  const generateRuleBasedContent = (triggeredRules: string[], layer1: any) => {
+    const messages: string[] = [];
+    const risks: string[] = [];
+    const suggestions: string[] = [];
+
+    // F-R1: Quick acceptance (skimming)
+    if (triggeredRules.includes('F-R1')) {
+      messages.push('Accepting AI responses too quickly');
+      risks.push('May miss important details or errors in the response');
+      suggestions.push('Take more time to read through AI responses before accepting');
+    }
+
+    // F-R2: Zero verification
+    if (triggeredRules.includes('F-R2')) {
+      messages.push('No verification of AI outputs');
+      risks.push('May have accepted incorrect or misleading information');
+      suggestions.push('Try verifying key facts or claims in the AI response');
+    }
+
+    // F-R3: No modifications (accepting verbatim)
+    if (triggeredRules.includes('F-R3')) {
+      messages.push('Accepting responses without modifications');
+      risks.push('May be missing opportunities to improve or customize the output');
+      suggestions.push('Consider editing or adapting the AI response to better fit your needs');
+    }
+
+    // F-R4: Burst usage pattern
+    if (triggeredRules.includes('F-R4')) {
+      messages.push('Task-completion focused usage pattern');
+      risks.push('Knowledge retention may be affected by concentrated usage');
+      suggestions.push('Try spacing out your learning sessions for better retention');
+    }
+
+    // F-R5: Complete passivity
+    if (triggeredRules.includes('F-R5')) {
+      messages.push('Complete passive consumption');
+      risks.push('Independent thinking ability may decline with passive consumption');
+      suggestions.push('Engage more actively by questioning, editing, or critiquing responses');
+    }
+
+    // Default fallbacks
+    if (messages.length === 0) {
+      messages.push('Passive AI usage detected');
+    }
+    if (risks.length === 0) {
+      risks.push('Learning effectiveness may be affected');
+    }
+    if (suggestions.length === 0) {
+      suggestions.push('Try to engage more actively with AI responses');
+    }
+
+    return {
+      // For single display: join with " • " for readability
+      message: messages.length === 1 ? messages[0] : messages.join(' • '),
+      // Keep arrays for list display
+      messageList: messages,
+      risks,
+      suggestions,
+    };
+  };
 
   /**
    * Create intervention UI based on detection result
    * Defined before useEffects to avoid TDZ (Temporal Dead Zone) errors
    */
-  const createInterventionUI = useCallback((detection: any, tier: string, msgs: Message[]) => {
+  const createInterventionUI = useCallback((detection: any, tierInput: string, msgs: Message[]) => {
+    const triggeredRules = detection.layer1?.triggeredRules || [];
+    const ruleContent = generateRuleBasedContent(triggeredRules, detection.layer1);
+
+    // Apply hard barrier cooldown
+    let tier = tierInput;
+    const timeSinceLastHardBarrier = Date.now() - lastHardBarrierTime;
+    if (tier === 'hard' && timeSinceLastHardBarrier < HARD_BARRIER_COOLDOWN_MS) {
+      console.log(`[createInterventionUI] Downgrading hard to medium (cooldown)`);
+      tier = 'medium';
+    }
+
+    // Track hard barrier time
+    if (tier === 'hard') {
+      setLastHardBarrierTime(Date.now());
+    }
+
     const baseIntervention = {
       id: `intervention-${Date.now()}`,
       mrType:
@@ -282,8 +366,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         ...baseIntervention,
         icon: '📊',
         title: 'Pattern Insight',
-        message: detection.explanation.summary,
-        description: `Confidence: ${(detection.confidence * 100).toFixed(0)}%`,
+        message: ruleContent.message,
+        description: `Based on ${triggeredRules.length} behavior indicator${triggeredRules.length > 1 ? 's' : ''}`,
         onDismiss: () => handleDismiss(baseIntervention.mrType),
         onLearnMore: () => {
           console.log(`[createInterventionUI] Soft signal Learn More clicked for ${baseIntervention.mrType}`);
@@ -295,11 +379,13 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     if (tier === 'medium') {
       return {
         ...baseIntervention,
-        icon: '⚠️',
-        title: 'Review Recommended',
-        message: detection.explanation.summary,
-        description: `Based on ${detection.layer1.triggeredCount} pattern indicators`,
-        actionLabel: 'View Details',
+        icon: '🔔',
+        title: 'MCA Reminder',
+        message: ruleContent.message,
+        detectedBehaviors: ruleContent.messageList, // For list display when multiple
+        suggestion: ruleContent.suggestions[0] || 'Pause and review whether recent AI responses meet your expectations.',
+        consecutiveCount: detection.layer1.triggeredCount,
+        actionLabel: 'Review Now',
         onAction: () => {
           console.log(`[createInterventionUI] Medium alert action clicked for ${baseIntervention.mrType}`);
           handleLearnMore(baseIntervention.mrType);
@@ -309,45 +395,24 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       };
     }
 
-    // Hard barrier
-    const options: BarrierOption[] = [
-      {
-        label: '✓ I will verify it carefully',
-        value: 'verify',
-        description: 'Review the response for accuracy before accepting',
-      },
-      {
-        label: '✎ I will modify it before use',
-        value: 'modify',
-        description: 'Edit or improve the response',
-      },
-      {
-        label: '↻ I will reject and re-ask',
-        value: 'reject',
-        description: 'Ask the AI to regenerate the response',
-      },
-      {
-        label: '→ I understand risks, proceed anyway',
-        value: 'override',
-        description: 'Accept the response as-is',
-      },
-    ];
-
+    // Hard barrier - contextual design based on triggered rules
     return {
       ...baseIntervention,
-      icon: '🚨',
-      title: 'Safety Check Required',
-      message:
-        'We detected a pattern suggesting this response should be verified before use in real-world context.',
-      description: detection.explanation.triggeredRuleDetails
-        .map((r: any) => r.ruleName)
-        .join(', '),
-      options,
+      icon: '⚠️',
+      title: 'Warning: Passive Usage Pattern Detected',
+      message: ruleContent.message,
+      consecutiveCount: detection.layer1.triggeredCount,
+      risks: ruleContent.risks,
+      suggestions: [
+        'Pause current task',
+        ...ruleContent.suggestions,
+        'Try completing the next step independently',
+      ],
       isDangerous: true,
       onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
       onCancel: () => handleDismiss(baseIntervention.mrType),
     };
-  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm]);
+  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, lastHardBarrierTime, HARD_BARRIER_COOLDOWN_MS]);
 
   // Initialize session in store
   useEffect(() => {
@@ -359,9 +424,14 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
    * Priority: Backend MRs > Frontend detection
    */
   useEffect(() => {
+    // Minimum display time: don't replace intervention too quickly (10 seconds)
+    const MIN_DISPLAY_TIME_MS = 10000;
+    const timeSinceLastIntervention = Date.now() - interventionStartTime;
+
     if (activeMRs.length === 0) {
       // Clear any previously displayed backend MR if activeMRs is now empty
-      if (lastDisplayedMRId) {
+      // But only after minimum display time has passed
+      if (lastDisplayedMRId && timeSinceLastIntervention > MIN_DISPLAY_TIME_MS) {
         setLastDisplayedMRId(null);
       }
       return;
@@ -374,6 +444,11 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     // Avoid re-displaying the same MR
     if (lastDisplayedMRId === topMR.mrId) {
+      return;
+    }
+
+    // Don't replace current intervention if it hasn't been displayed long enough
+    if (lastDisplayedMRId && timeSinceLastIntervention < MIN_DISPLAY_TIME_MS) {
       return;
     }
 
@@ -511,6 +586,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onDismiss={intervention.onDismiss}
         onLearnMore={intervention.onLearnMore}
         learnMoreLabel="Learn more"
+        autoCloseSec={60}
       />
     );
   }
@@ -519,14 +595,20 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     return (
       <Tier2MediumAlert
         id={intervention.id}
-        icon={intervention.icon}
-        title={intervention.title}
+        icon={intervention.icon || '🔔'}
+        title={intervention.title || 'MCA Reminder'}
         message={intervention.message}
+        detectedBehaviors={intervention.detectedBehaviors}
+        suggestion={intervention.suggestion || 'Pause and review whether recent AI responses meet your expectations.'}
         description={intervention.description}
-        actionLabel={intervention.actionLabel || 'Learn More'}
+        consecutiveCount={intervention.consecutiveCount}
+        actionLabel={intervention.actionLabel || 'Verify Now'}
         onAction={intervention.onAction}
+        onRemindLater={intervention.onSkip}
+        onDontShowAgain={intervention.onDismiss}
         onDismiss={intervention.onDismiss}
         onSkip={intervention.onSkip}
+        autoCloseSec={0}
       />
     );
   }
@@ -535,11 +617,14 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     return (
       <Tier3HardBarrier
         id={intervention.id}
-        icon={intervention.icon}
-        title={intervention.title}
+        icon={intervention.icon || '⚠️'}
+        title={intervention.title || 'Warning: Over-Reliance Risk Detected'}
         message={intervention.message}
         description={intervention.description}
-        options={intervention.options || []}
+        consecutiveCount={intervention.consecutiveCount}
+        risks={intervention.risks}
+        suggestions={intervention.suggestions}
+        options={intervention.options}
         isDangerous={intervention.isDangerous}
         onConfirm={intervention.onConfirm}
         onCancel={intervention.onCancel}

@@ -6,6 +6,7 @@ import { useSessionStore } from '../stores/sessionStore';
 import { useUIStore } from '../stores/uiStore';
 import { useAssessmentStore } from '../stores/assessmentStore';
 import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
+import InterventionManager from '../components/interventions/InterventionManager';
 // import VirtualizedMessageList from '../components/VirtualizedMessageList';
 // DISABLED: react-window compatibility issue - using simple list instead
 import EmptyState, { EmptyStateError } from '../components/EmptyState';
@@ -56,8 +57,9 @@ import { type ReflectionResponse } from '../components/QuickReflection';
 // Phase 3 Refactoring: Panel Components
 import SessionSidebar, { type SessionItem } from '../components/SessionSidebar';
 import MRToolsPanel from '../components/MRToolsPanel';
-import GlobalRecommendationPanel from '../components/GlobalRecommendationPanel';
-import MRInterventionNotification, {
+// GlobalRecommendationPanel and MRInterventionNotification UI removed - using InterventionManager now
+// Keep type imports for internal tracking (logic still used for adaptive MR triggering)
+import {
   type MRNotification,
   shouldAutoOpenSidebar,
 } from '../components/MRInterventionNotification';
@@ -1740,8 +1742,10 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
       trustScore = trustResult.score;
 
-      // Store trust score
-      setMessageTrustScores((prev) => new Map(prev).set(message.id, trustScore));
+      // Store trust score - defer to avoid setState during render
+      setTimeout(() => {
+        setMessageTrustScores((prev) => new Map(prev).set(message.id, trustScore));
+      }, 0);
 
       // If needs deep analysis, trigger async GPT analysis (non-blocking)
       if (trustResult.needsDeepAnalysis && message.content.length > 200) {
@@ -1794,17 +1798,21 @@ Message: "${firstMessage.slice(0, 200)}"`,
     // Use adaptive orchestration (evidence-based from 49 interviews)
     const result = orchestrateMRActivationAdaptive(context, userProfile, triggerContext);
 
-    // Track which MRs were shown for fatigue control
+    // Track which MRs were shown for fatigue control - defer to avoid setState during render
     if (result.recommendations.length > 0) {
       const newShownMRs = new Set(previousMRsShown);
       result.recommendations.slice(0, 3).forEach(rec => {
         newShownMRs.add(rec.tool);
       });
-      setPreviousMRsShown(newShownMRs);
+      setTimeout(() => {
+        setPreviousMRsShown(newShownMRs);
+      }, 0);
     }
 
-    // Store orchestration result
-    setOrchestrationResults((prev) => new Map(prev).set(message.id, result));
+    // Store orchestration result - defer to avoid setState during render
+    setTimeout(() => {
+      setOrchestrationResults((prev) => new Map(prev).set(message.id, result));
+    }, 0);
 
     return result;
   }, [sessionData, consecutiveNoVerify, orchestrationResults, messageTrustScores, userProfile, sessionStartTime, iterationCount, previousMRsShown]);
@@ -3895,58 +3903,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 renderActiveTool={renderActiveMRTool}
               />
 
-              {/* Sidebar MRs - Recommendations */}
-              {activeMRs && activeMRs.some((mr) => mr.displayMode === 'sidebar') && (
-                <div style={{
-                  padding: '0.5rem 0.75rem',
-                  borderTop: '1px solid #e2e8f0',
-                  borderBottom: '1px solid #e2e8f0',
-                }}>
-                  <h3 style={{
-                    margin: '0 0 0.5rem 0',
-                    fontSize: '0.6875rem',
-                    fontWeight: '600',
-                    color: '#6b7280',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                  }}>
-                    💡 Recommendations
-                  </h3>
-                  {activeMRs
-                    .filter((mr) => mr.displayMode === 'sidebar' && !dismissedMRs.has(mr.mrId))
-                    .map((mr) => {
-                      // Map MR ID to tool
-                      const mrToolMap: Record<string, ActiveMRTool> = {
-                        'MR1': 'mr1-decomposition', 'MR2': 'mr2-transparency',
-                        'MR3': 'mr3-agency', 'MR4': 'mr4-roles',
-                        'MR5': 'mr5-iteration', 'MR6': 'mr6-models',
-                        'MR7': 'mr7-failure', 'MR10': 'mr10-cost',
-                        'MR11': 'mr11-verify', 'MR12': 'mr12-critical',
-                        'MR13': 'mr13-uncertainty', 'MR14': 'mr14-reflection',
-                        'MR15': 'mr15-strategies', 'MR16': 'mr16-atrophy',
-                        'MR17': 'mr17-visualization',
-                      };
-                      const match = mr.mrId.match(/MR(\d+)/);
-                      const tool = match ? mrToolMap[`MR${match[1]}`] : null;
-
-                      return (
-                        <div key={mr.mrId} style={{ marginBottom: '0.5rem' }}>
-                          <Suspense fallback={<ComponentLoader />}>
-                            <MRDisplay
-                              mr={mr}
-                              onClose={() => setDismissedMRs((prev) => new Set([...prev, mr.mrId]))}
-                              onViewDetails={tool ? () => {
-                                setActiveMRTool(tool);
-                                setShowPatternPanel(true);
-                                setShowMRToolsSection(true);
-                              } : undefined}
-                            />
-                          </Suspense>
-                        </div>
-                      );
-                    })}
-                </div>
-              )}
+              {/* Sidebar MRs removed - now using InterventionManager for tier-based interventions */}
             </div>
           )}
         </div>
@@ -4098,35 +4055,72 @@ Message: "${firstMessage.slice(0, 200)}"`,
         </footer>
       </div>
 
-      {/* Modal MR Display - OPTIMIZATION: Lazy-loaded component */}
-      {displayedModalMR && (
-        <Suspense fallback={<ComponentLoader />}>
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={`mr-modal-${displayedModalMR.mrId}`}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              zIndex: 2001,
-            }}
-          >
-            <div id={`mr-modal-${displayedModalMR.mrId}`} style={{ display: 'none' }}>
-              {displayedModalMR.title || 'Recommendation'}
-            </div>
-            <MRDisplay
-              mr={displayedModalMR}
-              onClose={() => setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]))}
-              onAcknowledge={() => {
-                setDismissedMRs((prev) => new Set([...prev, displayedModalMR.mrId]));
-              }}
-            />
-          </div>
-        </Suspense>
-      )}
+      {/* Intervention Manager - Handles Soft/Medium/Hard tier interventions */}
+      <InterventionManager
+        sessionId={sessionId || ''}
+        messages={messagesHook.messages}
+        activeMRs={activeMRs || []}
+        minMessagesForDetection={5}
+        onInterventionDisplayed={(tier, mrType) => {
+          console.log(`[ChatSessionPage] Intervention displayed: ${tier} - ${mrType}`);
+        }}
+        onUserAction={(mrType, action) => {
+          console.log(`[ChatSessionPage] User action received: mrType=${mrType}, action=${action}`);
+          // Mark MR as dismissed when user takes action
+          setDismissedMRs((prev) => new Set([...prev, mrType]));
+
+          // Map mrType to corresponding MR tool opener function
+          const mrToolOpeners: Record<string, () => void> = {
+            'MR1': openMR1Decomposition,
+            'MR2': openMR2History,
+            'MR3': openMR3AgencyControl,
+            'MR4': openMR4RoleDefinition,
+            'MR5': openMR5Iteration,
+            'MR6': openMR6CrossModel,
+            'MR7': openMR7FailureLearning,
+            'MR10': openMR10CostBenefit,
+            'MR11': openMR11Verification,
+            'MR12': openMR12CriticalThinking,
+            'MR13': openMR13Uncertainty,
+            'MR14': openMR14Reflection,
+            'MR15': openMR15StrategyGuide,
+            'MR16': openMR16SkillAtrophy,
+            'MR17': openMR17LearningVisualization,
+          };
+
+          // Extract MR number from mrType (e.g., "MR1", "MR13_Uncertainty", "MR_PATTERN_F_BARRIER")
+          const getMRKey = (type: string): string | null => {
+            const match = type.match(/MR(\d+)/);
+            return match ? `MR${match[1]}` : null;
+          };
+
+          // Handle specific actions - open relevant MR tools
+          if (action === 'reflect') {
+            // User clicked "Pause and Reflect" on Hard Barrier
+            console.log('[ChatSessionPage] Opening MR14 Reflection tool...');
+            setShowPatternPanel(true);
+            setShowMRToolsSection(true);
+            openMR14Reflection();
+          } else if (action === 'learn_more') {
+            // User clicked "Learn More" - open the corresponding MR tool
+            const mrKey = getMRKey(mrType);
+            const opener = mrKey ? mrToolOpeners[mrKey] : null;
+
+            console.log(`[ChatSessionPage] Opening tool for ${mrType} (key: ${mrKey})`);
+            setShowPatternPanel(true);
+            setShowMRToolsSection(true);
+
+            if (opener) {
+              opener();
+            } else {
+              // Fallback to MR11 Verification if no specific tool found
+              console.log('[ChatSessionPage] No specific tool found, falling back to MR11');
+              openMR11Verification();
+            }
+          }
+          // Note: 'dismiss', 'skip', 'override' actions just close the intervention without opening a tool
+        }}
+      />
 
       {/* CSS for animations */}
       <style>{`
@@ -4140,31 +4134,8 @@ Message: "${firstMessage.slice(0, 200)}"`,
             transform: translateY(0);
           }
         }
-      {/* Phase 3: GlobalRecommendationPanel Component */}
-      <GlobalRecommendationPanel
-        recommendations={mrRecommendations}
-        welcomeMessage={recommendationsHook.welcomeMessage}
-        behaviorPattern={recommendationsHook.behaviorPattern}
-        sessionPhase={recommendationsHook.sessionPhase}
-        isVisible={showRecommendationPanel}
-        onClose={() => setShowRecommendationPanel(false)}
-        expandedRecommendation={expandedRecommendation}
-        onToggleExpanded={(id) => setExpandedRecommendation(expandedRecommendation === id ? null : id)}
-        onActivateRecommendation={(id) => activateRecommendation(id, setActiveMRTool)}
-        onDismissRecommendation={dismissRecommendation}
-        verifiedCount={recommendationsHook.verifiedCount}
-        modifiedCount={recommendationsHook.modifiedCount}
-        totalMessages={messagesHook.messages.length}
-      />
-
-      {/* MR Intervention Notifications - Pattern-based display */}
-      <MRInterventionNotification
-        notifications={pendingNotifications}
-        userPattern={userProfile.pattern}
-        onNotificationClick={handleNotificationClick}
-        onDismiss={handleDismissNotification}
-        onDismissAll={handleDismissAllNotifications}
-      />
+      {/* GlobalRecommendationPanel and MRInterventionNotification removed -
+          now using InterventionManager for tier-based interventions */}
 
       `}</style>
     </div>

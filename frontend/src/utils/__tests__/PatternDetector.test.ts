@@ -334,29 +334,29 @@ describe('Pattern F Detection - Layer 1 Rules', () => {
   });
 
   describe('Intervention Tier Recommendation', () => {
-    it('should recommend "none" when confidence < 0.4', () => {
-      expect(recommendInterventionTier(0.3, [])).toBe('none');
+    it('should recommend "none" when confidence < 0.2', () => {
+      expect(recommendInterventionTier(0.1, [])).toBe('none');
     });
 
-    it('should recommend "soft" when 0.4 <= confidence < 0.6', () => {
-      expect(recommendInterventionTier(0.4, ['F-R1'])).toBe('soft');
-      expect(recommendInterventionTier(0.5, ['F-R1', 'F-R2'])).toBe('soft');
+    it('should recommend "soft" when 0.2 <= confidence < 0.4', () => {
+      expect(recommendInterventionTier(0.2, ['F-R1'])).toBe('soft');
+      expect(recommendInterventionTier(0.3, ['F-R1'])).toBe('soft');
     });
 
-    it('should recommend "medium" when 0.6 <= confidence < 0.8', () => {
+    it('should recommend "medium" when confidence >= 0.4 without F-R5', () => {
       expect(recommendInterventionTier(0.6, ['F-R1', 'F-R2', 'F-R3'])).toBe(
         'medium'
       );
     });
 
-    it('should recommend "hard" when confidence >= 0.8 AND >= 2 rules', () => {
+    it('should recommend "hard" when confidence >= 0.6 AND includes F-R5', () => {
       expect(
-        recommendInterventionTier(0.8, ['F-R1', 'F-R2', 'F-R3', 'F-R4'])
+        recommendInterventionTier(0.6, ['F-R2', 'F-R3', 'F-R5'])
       ).toBe('hard');
     });
 
-    it('should NOT recommend "hard" with high confidence but < 2 rules', () => {
-      expect(recommendInterventionTier(0.85, ['F-R1'])).toBe('none');
+    it('should NOT recommend "hard" without F-R5 even with high confidence', () => {
+      expect(recommendInterventionTier(0.8, ['F-R1', 'F-R2', 'F-R3', 'F-R4'])).toBe('medium');
     });
   });
 
