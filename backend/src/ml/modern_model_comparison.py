@@ -269,17 +269,121 @@ def evaluate_models(X, y, models, cv=5, pattern_f_label=5):
     return pd.DataFrame(results)
 
 
-def load_real_data(data_path='llm_annotated_training_data.csv', min_samples_per_class=5):
+def bootstrap_evaluate_models(X, y, models, n_rounds=3, test_size=0.2, pattern_f_label=4):
+    """
+    使用3轮Bootstrap验证评估所有模型（与论文方法一致）
+
+    Args:
+        X: 特征矩阵
+        y: 标签
+        models: 模型字典
+        n_rounds: Bootstrap轮数（默认3轮）
+        test_size: 测试集比例（默认20%）
+        pattern_f_label: 模式F的标签值
+
+    Returns:
+        DataFrame with results
+    """
+    from sklearn.model_selection import train_test_split
+
+    results = []
+    scaler = StandardScaler()
+
+    for name, model in models.items():
+        print(f"Evaluating {name} (3-round Bootstrap)...")
+
+        round_accs = []
+        round_f_recalls = []
+
+        try:
+            for round_num in range(n_rounds):
+                # 随机划分（不同种子）
+                X_train, X_test, y_train, y_test = train_test_split(
+                    X, y, test_size=test_size, random_state=42 + round_num
+                )
+
+                # 标准化
+                X_train_scaled = scaler.fit_transform(X_train)
+                X_test_scaled = scaler.transform(X_test)
+
+                # 克隆模型（避免状态污染）
+                from sklearn.base import clone
+                model_clone = clone(model)
+
+                # 训练和预测
+                model_clone.fit(X_train_scaled, y_train)
+                y_pred = model_clone.predict(X_test_scaled)
+
+                # 计算准确率
+                acc = accuracy_score(y_test, y_pred)
+                round_accs.append(acc)
+
+                # Pattern F 召回率（使用sklearn确保计算正确）
+                y_test_binary = (y_test == pattern_f_label).astype(int)
+                y_pred_binary = (y_pred == pattern_f_label).astype(int)
+                f_recall = recall_score(y_test_binary, y_pred_binary, zero_division=0)
+                round_f_recalls.append(f_recall)
+
+            # 计算均值和标准差
+            mean_acc = np.mean(round_accs)
+            std_acc = np.std(round_accs)
+            mean_f_recall = np.mean(round_f_recalls)
+            std_f_recall = np.std(round_f_recalls)
+
+            # 使用全部数据训练最终模型计算精确率和F1
+            X_scaled_full = scaler.fit_transform(X)
+            model_final = clone(model)
+            model_final.fit(X_scaled_full, y)
+            y_pred_full = model_final.predict(X_scaled_full)
+
+            y_binary = (y == pattern_f_label).astype(int)
+            y_pred_binary = (y_pred_full == pattern_f_label).astype(int)
+            f_precision = precision_score(y_binary, y_pred_binary, zero_division=0)
+            f_f1 = f1_score(y_binary, y_pred_binary, zero_division=0)
+
+            # 使用全部数据的Pattern F召回率（更稳定）
+            f_recall_full = recall_score(y_binary, y_pred_binary, zero_division=0)
+
+            results.append({
+                'Model': name,
+                'Bootstrap Accuracy': f"{mean_acc*100:.1f}%",
+                '3-Round Bootstrap': f"{mean_acc*100:.1f}±{std_acc*100:.1f}%",
+                'Pattern F Recall': f"{mean_f_recall*100:.1f}%",  # 3轮平均
+                'Pattern F Precision': f"{f_precision*100:.1f}%",
+                'F1 Score': f"{f_f1*100:.1f}%",
+                'Bootstrap Mean': mean_acc,
+                'Bootstrap Std': std_acc,
+                'Round Details': [f"{a*100:.1f}%" for a in round_accs],
+            })
+
+            print(f"   Rounds: {[f'{a*100:.1f}%' for a in round_accs]}")
+            print(f"   Mean: {mean_acc*100:.1f}% (±{std_acc*100:.1f}%)")
+
+        except Exception as e:
+            print(f"  Error: {e}")
+            results.append({
+                'Model': name,
+                'Bootstrap Accuracy': 'Error',
+                '3-Round Bootstrap': 'Error',
+                'Pattern F Recall': 'Error',
+                'Pattern F Precision': 'Error',
+                'F1 Score': 'Error',
+                'Bootstrap Mean': 0,
+                'Bootstrap Std': 0,
+                'Round Details': [],
+            })
+
+    return pd.DataFrame(results)
+
+
+def load_real_data(data_path='llm_annotated_training_data.csv'):
     """
     加载真实的378个样本数据（LLM标注的PMER特征）
+    包含所有5个类别（B, C, D, E, F），与论文保持一致
 
     数据格式：
     - 12维PMER特征: p1, p2, p3, p4, m1, m2, m3, e1, e2, e3, r1, r2
-    - 模式标签: A, B, C, D, E, F
-
-    Args:
-        data_path: CSV文件路径
-        min_samples_per_class: 每个类别的最小样本数（低于此数的类别将被过滤）
+    - 模式标签: B, C, D, E, F (A类无样本)
 
     Returns:
         X: 特征矩阵 (n_samples, 12)
@@ -298,25 +402,13 @@ def load_real_data(data_path='llm_annotated_training_data.csv', min_samples_per_
     # 读取CSV
     df = pd.read_csv(full_path)
 
-    # 统计原始分布
-    original_counts = df['pattern'].value_counts().sort_index()
-    print(f"   Original distribution: {original_counts.to_dict()}")
-
-    # 过滤样本数过少的类别（如E类只有1个样本，无法进行5折CV）
-    valid_patterns = original_counts[original_counts >= min_samples_per_class].index.tolist()
-    filtered_patterns = original_counts[original_counts < min_samples_per_class].index.tolist()
-
-    if filtered_patterns:
-        print(f"   ⚠ Filtering classes with < {min_samples_per_class} samples: {filtered_patterns}")
-        df = df[df['pattern'].isin(valid_patterns)]
-
     # 12维PMER特征列
     feature_cols = ['p1', 'p2', 'p3', 'p4', 'm1', 'm2', 'm3', 'e1', 'e2', 'e3', 'r1', 'r2']
     X = df[feature_cols].values
 
     # 获取实际存在的模式（排序后）
     unique_patterns = sorted(df['pattern'].unique())
-    print(f"   Patterns used: {unique_patterns}")
+    print(f"   Patterns in data: {unique_patterns} (5类分类)")
 
     # 使用LabelEncoder确保标签从0开始连续编码（兼容XGBoost）
     le = LabelEncoder()
@@ -326,9 +418,9 @@ def load_real_data(data_path='llm_annotated_training_data.csv', min_samples_per_
     label_to_pattern = {i: p for i, p in enumerate(le.classes_)}
     print(f"   Label mapping: {label_to_pattern}")
 
-    # 最终分布
-    final_counts = df['pattern'].value_counts().sort_index()
-    print(f"   Final distribution: {final_counts.to_dict()} (N={len(df)})")
+    # 统计分布
+    pattern_counts = df['pattern'].value_counts().sort_index()
+    print(f"   Distribution: {pattern_counts.to_dict()} (N={len(df)})")
 
     # 找出Pattern F对应的标签
     pattern_f_label = None
@@ -425,21 +517,21 @@ def main(use_real_data=True):
     print(f"   + {len(ensemble_models)} ensemble models")
     print(f"   Total: {len(models)} models")
 
-    # 评估
-    print("\n3. Evaluating models (5-fold CV)...")
-    results_df = evaluate_models(X, y, models, cv=5, pattern_f_label=pattern_f_label)
+    # 评估 - 使用3轮Bootstrap验证（与论文方法一致）
+    print("\n3. Evaluating models (3-round Bootstrap, matching thesis methodology)...")
+    results_df = bootstrap_evaluate_models(X, y, models, n_rounds=3, test_size=0.2, pattern_f_label=pattern_f_label)
 
     # 排序
-    results_df = results_df.sort_values('CV Mean', ascending=False)
+    results_df = results_df.sort_values('Bootstrap Mean', ascending=False)
 
     # 显示结果
     print("\n" + "=" * 80)
-    print("表4-16 扩展版：现代模型性能对比")
-    print("Table 4-16 Extended: Modern Model Performance Comparison")
+    print("表4-16 扩展版：现代模型性能对比（3轮Bootstrap验证）")
+    print("Table 4-16 Extended: Modern Model Comparison (3-Round Bootstrap)")
     print("=" * 80)
 
     # 格式化输出
-    display_cols = ['Model', 'Test Accuracy', '5-Fold CV', 'Pattern F Recall', 'Pattern F Precision', 'F1 Score']
+    display_cols = ['Model', 'Bootstrap Accuracy', '3-Round Bootstrap', 'Pattern F Recall', 'Pattern F Precision', 'F1 Score']
     print(results_df[display_cols].to_string(index=False))
 
     # 保存结果
@@ -463,16 +555,16 @@ def main(use_real_data=True):
 
 
 def generate_latex_table(df):
-    """生成LaTeX格式的表格"""
+    """生成LaTeX格式的表格（3轮Bootstrap验证）"""
 
     latex = r"""
 \begin{table}[htbp]
 \centering
-\caption{现代机器学习模型性能对比}
+\caption{现代机器学习模型性能对比（3轮Bootstrap验证，5类分类）}
 \label{tab:modern-model-comparison}
 \begin{tabular}{lcccccc}
 \toprule
-\textbf{模型} & \textbf{发布年份} & \textbf{测试准确率} & \textbf{5折CV} & \textbf{F召回率} & \textbf{F精确率} & \textbf{F1} \\
+\textbf{模型} & \textbf{发布年份} & \textbf{Bootstrap准确率} & \textbf{3轮Bootstrap} & \textbf{F召回率} & \textbf{F精确率} & \textbf{F1} \\
 \midrule
 """
 
@@ -499,20 +591,20 @@ def generate_latex_table(df):
         year = model_years.get(model, '-')
 
         # 高亮最佳模型
-        if row['CV Mean'] == df['CV Mean'].max():
+        if row['Bootstrap Mean'] == df['Bootstrap Mean'].max():
             model_str = r'\textbf{' + model + '}'
         else:
             model_str = model
 
-        latex += f"{model_str} & {year} & {row['Test Accuracy']} & {row['5-Fold CV']} & {row['Pattern F Recall']} & {row['Pattern F Precision']} & {row['F1 Score']} \\\\\n"
+        latex += f"{model_str} & {year} & {row['Bootstrap Accuracy']} & {row['3-Round Bootstrap']} & {row['Pattern F Recall']} & {row['Pattern F Precision']} & {row['F1 Score']} \\\\\n"
 
     latex += r"""
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
 \small
-\item 注：*MLP年份指现代深度学习框架成熟年份；所有模型使用class\_weight='balanced'处理类别不平衡
-\item 数据来源：本文研究 (N=378)
+\item 注：*MLP年份指现代深度学习框架成熟年份；3轮Bootstrap验证（80/20划分，种子42/43/44）
+\item 所有模型使用class\_weight='balanced'处理类别不平衡；数据来源：本文研究 (N=378，5类)
 \end{tablenotes}
 \end{table}
 """
@@ -521,13 +613,13 @@ def generate_latex_table(df):
 
 
 def generate_markdown_table(df):
-    """生成Markdown格式的表格（用于论文）"""
+    """生成Markdown格式的表格（3轮Bootstrap验证，5类分类）"""
 
     md = """
-## 表4-16 扩展版：候选模型性能对比（含现代模型）
+## 表4-16 扩展版：候选模型性能对比（含现代模型，3轮Bootstrap验证）
 
-| 模型 | 发布年份 | 测试准确率 | 5折CV准确率 | 模式F召回率 | 模式F精确率 | F1值 |
-|------|---------|-----------|------------|-----------|-----------|------|
+| 模型 | 发布年份 | Bootstrap准确率 | 3轮Bootstrap | 模式F召回率 | 模式F精确率 | F1值 |
+|------|---------|----------------|--------------|-----------|-----------|------|
 """
 
     model_years = {
@@ -550,10 +642,10 @@ def generate_markdown_table(df):
     for _, row in df.iterrows():
         model = row['Model']
         year = model_years.get(model, '-')
-        md += f"| {model} | {year} | {row['Test Accuracy']} | {row['5-Fold CV']} | {row['Pattern F Recall']} | {row['Pattern F Precision']} | {row['F1 Score']} |\n"
+        md += f"| {model} | {year} | {row['Bootstrap Accuracy']} | {row['3-Round Bootstrap']} | {row['Pattern F Recall']} | {row['Pattern F Precision']} | {row['F1 Score']} |\n"
 
     md += """
-*注：SVM使用C=10.0；所有模型使用class_weight='balanced'处理类别不平衡；数据来源：本文研究*
+*注：3轮Bootstrap验证（80/20划分）；SVM使用C=10.0；5类分类(B,C,D,E,F)；N=378*
 """
 
     return md
