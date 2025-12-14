@@ -3,18 +3,18 @@
  *
  * Three-Layer Real-Time Adaptive MR System:
  * Layer 1: Behavior Signal Detection
- * Layer 2: Pattern Recognition (Bayesian or CatBoost)
+ * Layer 2: Pattern Recognition (Bayesian or SVM)
  * Layer 3: Adaptive MR Activation
  *
  * Supports two classifiers:
  * - Bayesian: Fast, no external dependencies
- * - CatBoost: ML-based (93.0% accuracy), requires Python microservice on port 5002
+ * - SVM: ML-based (92.1% accuracy, 98.9% Pattern F recall), requires Python microservice on port 5002
  */
 
 import express, { Request, Response } from 'express';
 import BehaviorSignalDetector, { ConversationTurn } from '../services/BehaviorSignalDetector';
 import RealtimePatternRecognizer from '../services/RealtimePatternRecognizer';
-import CatBoostPatternClassifier from '../services/CatBoostPatternClassifier';
+import SVMPatternClassifier from '../services/SVMPatternClassifier';
 import AdaptiveMRActivator from '../services/AdaptiveMRActivator';
 import UnifiedMCAAnalyzer from '../services/UnifiedMCAAnalyzer';
 import pool from '../config/database';
@@ -194,9 +194,9 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
     let patternEstimate: any;
     let isHighRiskF: boolean;
 
-    if (classifier === 'catboost' || classifier === 'svm') {
-      // Use CatBoost ML classifier (93.0% accuracy)
-      patternEstimate = await CatBoostPatternClassifier.predictPattern(signals);
+    if (classifier === 'svm') {
+      // Use SVM ML classifier (92.1% accuracy, 98.9% Pattern F recall)
+      patternEstimate = await SVMPatternClassifier.predictPattern(signals);
       isHighRiskF = patternEstimate.topPattern === 'F' && patternEstimate.probability > 0.7;
     } else {
       // Default: Use Bayesian classifier
