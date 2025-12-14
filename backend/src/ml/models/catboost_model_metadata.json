@@ -1,0 +1,64 @@
+{
+  "training_date": "2025-12-14T06:23:01.434076",
+  "data_source": "llm_annotated_training_data.csv",
+  "total_samples": 378,
+  "model_type": "CatBoost",
+  "model_params": {
+    "iterations": 500,
+    "depth": 6,
+    "learning_rate": 0.1,
+    "loss_function": "MultiClass"
+  },
+  "bootstrap_validation": {
+    "n_rounds": 3,
+    "mean_accuracy": 0.9254385964912281,
+    "std_accuracy": 0.00620269106303991,
+    "mean_f_recall": 0.978494623655914,
+    "std_f_recall": 0.030413194889744005,
+    "rounds": [
+      {
+        "round": 1,
+        "accuracy": 0.9210526315789473,
+        "pattern_f_recall": 0.9354838709677419,
+        "pattern_f_precision": 0.9666666666666667
+      },
+      {
+        "round": 2,
+        "accuracy": 0.9210526315789473,
+        "pattern_f_recall": 1.0,
+        "pattern_f_precision": 1.0
+      },
+      {
+        "round": 3,
+        "accuracy": 0.9342105263157895,
+        "pattern_f_recall": 1.0,
+        "pattern_f_precision": 0.9615384615384616
+      }
+    ]
+  },
+  "cv_accuracy_mean": 0.8967017543859649,
+  "cv_accuracy_std": 0.043547577488058785,
+  "pattern_distribution": {
+    "A": 0,
+    "B": 30,
+    "C": 183,
+    "D": 8,
+    "E": 1,
+    "F": 156
+  },
+  "feature_columns": [
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "m1",
+    "m2",
+    "m3",
+    "e1",
+    "e2",
+    "e3",
+    "r1",
+    "r2"
+  ],
+  "notes": "CatBoost model trained on LLM-annotated real user data (378 users). Best accuracy among all models tested."
+}

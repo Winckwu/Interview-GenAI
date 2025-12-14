@@ -1,45 +1,45 @@
 /**
  * Hybrid Pattern Estimator
- * Fuses Bayesian and SVM predictions with pattern stability tracking
+ * Fuses Bayesian and CatBoost predictions with pattern stability tracking
  *
  * Purpose:
  * - Dynamic ensemble prediction with turn-adaptive weights
  * - Stability-aware confidence adjustment
- * - Graceful fallback to Bayesian-only if SVM unavailable
+ * - Graceful fallback to Bayesian-only if CatBoost unavailable
  * - Integration with initial assessment questionnaire (NEW)
  *
- * Architecture (Updated 2024-11-24):
+ * Architecture (Updated 2024-12):
  * - Bayesian: Uses combined prior (assessment + history), hand-crafted likelihoods
- * - SVM: 94.2% accuracy, 100% Pattern F recall (trained on 427 samples, 378 real users)
- * - Dynamic weights: Early turns favor Bayesian, later turns favor SVM
+ * - CatBoost: 93.0% accuracy, 97.9% Pattern F recall (trained on 378 real users)
+ * - Dynamic weights: Early turns favor Bayesian, later turns favor CatBoost
  *
  * Weight Schedule (Default - no assessment):
- * - Turn 1-2: 70% Bayesian / 30% SVM (cold-start, limited signals)
- * - Turn 3-4: 50% Bayesian / 50% SVM (transition phase)
- * - Turn 5+:  30% Bayesian / 70% SVM (warm-start, trust SVM accuracy)
+ * - Turn 1-2: 70% Bayesian / 30% CatBoost (cold-start, limited signals)
+ * - Turn 3-4: 50% Bayesian / 50% CatBoost (transition phase)
+ * - Turn 5+:  30% Bayesian / 70% CatBoost (warm-start, trust CatBoost accuracy)
  *
  * Weight Schedule (With assessment questionnaire):
- * - Turn 1-2: 80% Bayesian / 20% SVM (informed prior from questionnaire)
- * - Turn 3-4: 55% Bayesian / 45% SVM (still favor informed Bayesian)
- * - Turn 5+:  35% Bayesian / 65% SVM (SVM with more weight, but Bayesian still contributes)
+ * - Turn 1-2: 80% Bayesian / 20% CatBoost (informed prior from questionnaire)
+ * - Turn 3-4: 55% Bayesian / 45% CatBoost (still favor informed Bayesian)
+ * - Turn 5+:  35% Bayesian / 65% CatBoost (CatBoost with more weight, but Bayesian still contributes)
  */
 
 import RealtimePatternRecognizer, { PatternEstimate, Pattern } from './RealtimePatternRecognizer';
-import SVMPatternClassifier from './SVMPatternClassifier';
+import CatBoostPatternClassifier from './CatBoostPatternClassifier';
 import PatternStabilityCalculator, { PatternHistoryEntry, StabilityMetrics } from './PatternStabilityCalculator';
 import PatternHistoryService from './PatternHistoryService';
 import { BehavioralSignals } from './BehaviorSignalDetector';
 
 export interface HybridPatternEstimate extends PatternEstimate {
-  // ✨ Enhanced with stability metrics
+  // Enhanced with stability metrics
   stability: StabilityMetrics;
 
   // Individual predictions
   bayesianPrediction: PatternEstimate;
-  svmPrediction: PatternEstimate | null;
+  catboostPrediction: PatternEstimate | null;
 
   // Metadata
-  method: 'bayesian' | 'svm' | 'ensemble';  // Which method was used
+  method: 'bayesian' | 'catboost' | 'ensemble';  // Which method was used
   turnCount: number;
 }
 
@@ -56,23 +56,23 @@ export class HybridPatternEstimator {
   private priorConfidence: number = 0;
 
   // Dynamic ensemble weights based on turn count
-  // Rationale: SVM achieves 94.2% accuracy with real data, but needs sufficient signals
+  // Rationale: CatBoost achieves 93.0% accuracy with real data, but needs sufficient signals
   // Early turns: Bayesian prior is more reliable (limited signal data)
-  // Later turns: SVM is more accurate (sufficient data accumulated)
+  // Later turns: CatBoost is more accurate (sufficient data accumulated)
 
   // Default weights (no assessment data)
   private readonly DEFAULT_WEIGHT_SCHEDULE = {
-    early: { bayesian: 0.70, svm: 0.30 },  // Turn 1-2
-    mid: { bayesian: 0.50, svm: 0.50 },    // Turn 3-4
-    late: { bayesian: 0.30, svm: 0.70 }    // Turn 5+
+    early: { bayesian: 0.70, catboost: 0.30 },  // Turn 1-2
+    mid: { bayesian: 0.50, catboost: 0.50 },    // Turn 3-4
+    late: { bayesian: 0.30, catboost: 0.70 }    // Turn 5+
   };
 
   // Enhanced weights when assessment questionnaire is available
   // Rationale: Assessment provides informed prior, so Bayesian is more trustworthy
   private readonly ASSESSMENT_WEIGHT_SCHEDULE = {
-    early: { bayesian: 0.80, svm: 0.20 },  // Turn 1-2: Strong trust in informed prior
-    mid: { bayesian: 0.55, svm: 0.45 },    // Turn 3-4: Still favor informed Bayesian
-    late: { bayesian: 0.35, svm: 0.65 }    // Turn 5+: SVM gains more weight, but Bayesian still contributes
+    early: { bayesian: 0.80, catboost: 0.20 },  // Turn 1-2: Strong trust in informed prior
+    mid: { bayesian: 0.55, catboost: 0.45 },    // Turn 3-4: Still favor informed Bayesian
+    late: { bayesian: 0.35, catboost: 0.65 }    // Turn 5+: CatBoost gains more weight, but Bayesian still contributes
   };
 
   constructor(userId: string, sessionId: string) {
@@ -125,26 +125,26 @@ export class HybridPatternEstimator {
     // 1. Bayesian prediction (always available)
     const bayesianEstimate = this.bayesianRecognizer.updateProbabilities(signals);
 
-    // 2. SVM prediction (optional - may fail if service unavailable)
-    let svmEstimate: PatternEstimate | null = null;
-    let useSVM = false;
+    // 2. CatBoost prediction (optional - may fail if service unavailable)
+    let catboostEstimate: PatternEstimate | null = null;
+    let useCatBoost = false;
 
     try {
-      svmEstimate = await SVMPatternClassifier.predictPattern(signals);
-      useSVM = true;
-      console.log(`[HybridPatternEstimator] SVM prediction: ${svmEstimate.topPattern} (${(svmEstimate.probability * 100).toFixed(1)}%)`);
+      catboostEstimate = await CatBoostPatternClassifier.predictPattern(signals);
+      useCatBoost = true;
+      console.log(`[HybridPatternEstimator] CatBoost prediction: ${catboostEstimate.topPattern} (${(catboostEstimate.probability * 100).toFixed(1)}%)`);
     } catch (error: any) {
       // Silently fall back to Bayesian-only
-      console.log('[HybridPatternEstimator] SVM unavailable, using Bayesian only');
+      console.log('[HybridPatternEstimator] CatBoost unavailable, using Bayesian only');
     }
 
     // 3. Fuse predictions
     let fusedEstimate: PatternEstimate;
-    let method: 'bayesian' | 'svm' | 'ensemble';
+    let method: 'bayesian' | 'catboost' | 'ensemble';
 
-    if (useSVM && svmEstimate) {
-      // Ensemble: weighted average of Bayesian and SVM
-      fusedEstimate = this.fusePredictions(bayesianEstimate, svmEstimate);
+    if (useCatBoost && catboostEstimate) {
+      // Ensemble: weighted average of Bayesian and CatBoost
+      fusedEstimate = this.fusePredictions(bayesianEstimate, catboostEstimate);
       method = 'ensemble';
     } else {
       // Fallback: Bayesian only
@@ -189,17 +189,17 @@ export class HybridPatternEstimator {
     return {
       topPattern: fusedEstimate.topPattern,
       probability: fusedEstimate.probability,
-      confidence: adjustedConfidence,  // ✅ Stability-adjusted
+      confidence: adjustedConfidence,  // Stability-adjusted
       probabilities: fusedEstimate.probabilities,
       needMoreData: fusedEstimate.needMoreData,
       evidence: fusedEstimate.evidence,
 
-      // ✨ NEW: Stability metrics
+      // Stability metrics
       stability,
 
       // Individual predictions
       bayesianPrediction: bayesianEstimate,
-      svmPrediction: svmEstimate,
+      catboostPrediction: catboostEstimate,
 
       // Metadata
       method,
@@ -211,16 +211,16 @@ export class HybridPatternEstimator {
    * Get dynamic weights based on current turn count and prior availability
    *
    * Default (no assessment):
-   * - Turn 1-2: 70% Bayesian / 30% SVM
-   * - Turn 3-4: 50% Bayesian / 50% SVM
-   * - Turn 5+:  30% Bayesian / 70% SVM
+   * - Turn 1-2: 70% Bayesian / 30% CatBoost
+   * - Turn 3-4: 50% Bayesian / 50% CatBoost
+   * - Turn 5+:  30% Bayesian / 70% CatBoost
    *
    * With assessment/history:
-   * - Turn 1-2: 80% Bayesian / 20% SVM (informed prior)
-   * - Turn 3-4: 55% Bayesian / 45% SVM
-   * - Turn 5+:  35% Bayesian / 65% SVM
+   * - Turn 1-2: 80% Bayesian / 20% CatBoost (informed prior)
+   * - Turn 3-4: 55% Bayesian / 45% CatBoost
+   * - Turn 5+:  35% Bayesian / 65% CatBoost
    */
-  private getCurrentWeights(): { bayesian: number; svm: number } {
+  private getCurrentWeights(): { bayesian: number; catboost: number } {
     // Select weight schedule based on whether we have informed prior
     const schedule = this.priorSource !== 'uniform'
       ? this.ASSESSMENT_WEIGHT_SCHEDULE
@@ -236,7 +236,7 @@ export class HybridPatternEstimator {
   }
 
   /**
-   * Fuse Bayesian and SVM predictions with dynamic weights
+   * Fuse Bayesian and CatBoost predictions with dynamic weights
    *
    * Algorithm:
    * 1. Get turn-adaptive weights
@@ -245,13 +245,13 @@ export class HybridPatternEstimator {
    * 4. Calculate new top pattern and confidence
    *
    * Weight Evolution:
-   * - Early (turn 1-2): 70% Bayesian / 30% SVM
-   * - Mid (turn 3-4): 50% Bayesian / 50% SVM
-   * - Late (turn 5+): 30% Bayesian / 70% SVM
+   * - Early (turn 1-2): 70% Bayesian / 30% CatBoost
+   * - Mid (turn 3-4): 50% Bayesian / 50% CatBoost
+   * - Late (turn 5+): 30% Bayesian / 70% CatBoost
    */
   private fusePredictions(
     bayesian: PatternEstimate,
-    svm: PatternEstimate
+    catboost: PatternEstimate
   ): PatternEstimate {
     // Get dynamic weights based on turn count
     const weights = this.getCurrentWeights();
@@ -261,11 +261,11 @@ export class HybridPatternEstimator {
 
     (['A', 'B', 'C', 'D', 'E', 'F'] as Pattern[]).forEach(pattern => {
       const bayesianProb = bayesian.probabilities.get(pattern) || 0;
-      const svmProb = svm.probabilities.get(pattern) || 0;
+      const catboostProb = catboost.probabilities.get(pattern) || 0;
 
       const fusedProb =
         bayesianProb * weights.bayesian +
-        svmProb * weights.svm;
+        catboostProb * weights.catboost;
 
       fusedProbs.set(pattern, fusedProb);
     });
@@ -286,7 +286,7 @@ export class HybridPatternEstimator {
     const confidence = topProb - secondProb;
 
     // Log weight usage for debugging
-    console.log(`[HybridPatternEstimator] Turn ${this.turnCount}: Using weights ${Math.round(weights.bayesian * 100)}% Bayesian / ${Math.round(weights.svm * 100)}% SVM`);
+    console.log(`[HybridPatternEstimator] Turn ${this.turnCount}: Using weights ${Math.round(weights.bayesian * 100)}% Bayesian / ${Math.round(weights.catboost * 100)}% CatBoost`);
 
     return {
       topPattern,
@@ -296,8 +296,8 @@ export class HybridPatternEstimator {
       needMoreData: confidence < 0.3 && this.turnCount < 5,
       evidence: [
         ...bayesian.evidence,
-        `SVM prediction: ${svm.topPattern} (${(svm.probability * 100).toFixed(0)}% confidence)`,
-        `Ensemble: ${Math.round(weights.bayesian * 100)}% Bayesian + ${Math.round(weights.svm * 100)}% SVM (turn ${this.turnCount})`
+        `CatBoost prediction: ${catboost.topPattern} (${(catboost.probability * 100).toFixed(0)}% confidence)`,
+        `Ensemble: ${Math.round(weights.bayesian * 100)}% Bayesian + ${Math.round(weights.catboost * 100)}% CatBoost (turn ${this.turnCount})`
       ]
     };
   }
