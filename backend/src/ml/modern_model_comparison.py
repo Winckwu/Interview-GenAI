@@ -269,10 +269,80 @@ def evaluate_models(X, y, models, cv=5, pattern_f_label=5):
     return pd.DataFrame(results)
 
 
+def load_real_data(data_path='llm_annotated_training_data.csv', min_samples_per_class=5):
+    """
+    加载真实的378个样本数据（LLM标注的PMER特征）
+
+    数据格式：
+    - 12维PMER特征: p1, p2, p3, p4, m1, m2, m3, e1, e2, e3, r1, r2
+    - 模式标签: A, B, C, D, E, F
+
+    Args:
+        data_path: CSV文件路径
+        min_samples_per_class: 每个类别的最小样本数（低于此数的类别将被过滤）
+
+    Returns:
+        X: 特征矩阵 (n_samples, 12)
+        y: 标签数组 (0-based连续编码，兼容XGBoost)
+        pattern_names: 模式名称列表
+        pattern_f_label: Pattern F对应的标签
+    """
+    import os
+
+    # 获取脚本所在目录
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    full_path = os.path.join(script_dir, data_path)
+
+    print(f"   Loading data from: {full_path}")
+
+    # 读取CSV
+    df = pd.read_csv(full_path)
+
+    # 统计原始分布
+    original_counts = df['pattern'].value_counts().sort_index()
+    print(f"   Original distribution: {original_counts.to_dict()}")
+
+    # 过滤样本数过少的类别（如E类只有1个样本，无法进行5折CV）
+    valid_patterns = original_counts[original_counts >= min_samples_per_class].index.tolist()
+    filtered_patterns = original_counts[original_counts < min_samples_per_class].index.tolist()
+
+    if filtered_patterns:
+        print(f"   ⚠ Filtering classes with < {min_samples_per_class} samples: {filtered_patterns}")
+        df = df[df['pattern'].isin(valid_patterns)]
+
+    # 12维PMER特征列
+    feature_cols = ['p1', 'p2', 'p3', 'p4', 'm1', 'm2', 'm3', 'e1', 'e2', 'e3', 'r1', 'r2']
+    X = df[feature_cols].values
+
+    # 获取实际存在的模式（排序后）
+    unique_patterns = sorted(df['pattern'].unique())
+    print(f"   Patterns used: {unique_patterns}")
+
+    # 使用LabelEncoder确保标签从0开始连续编码（兼容XGBoost）
+    le = LabelEncoder()
+    y = le.fit_transform(df['pattern'].values)
+
+    # 创建标签到模式的映射
+    label_to_pattern = {i: p for i, p in enumerate(le.classes_)}
+    print(f"   Label mapping: {label_to_pattern}")
+
+    # 最终分布
+    final_counts = df['pattern'].value_counts().sort_index()
+    print(f"   Final distribution: {final_counts.to_dict()} (N={len(df)})")
+
+    # 找出Pattern F对应的标签
+    pattern_f_label = None
+    for label, pattern in label_to_pattern.items():
+        if pattern == 'F':
+            pattern_f_label = label
+            break
+
+    return X, y, unique_patterns, pattern_f_label
+
+
 def generate_synthetic_data(n_samples=378, n_features=12, random_state=42):
     """
-    生成模拟数据（用于演示）
-    实际使用时应替换为真实数据
+    生成模拟数据（备用，当真实数据不可用时使用）
 
     注意：标签使用0-based索引 (0=B, 1=C, 2=D, 3=E, 4=F)
     以兼容XGBoost等要求标签从0开始的模型
@@ -281,10 +351,7 @@ def generate_synthetic_data(n_samples=378, n_features=12, random_state=42):
 
     # 模拟5个模式的分布 (B-F，跳过A因为没有样本)
     # 基于真实数据分布: B=7.9%, C=48.4%, D=2.1%, E=0.3%, F=41.3%
-    # 使用0-based索引: 0=B, 1=C, 2=D, 3=E, 4=F
-    # 注意：E类至少需要5个样本才能支持5折分层交叉验证
     pattern_counts = [30, 180, 8, 5, 155]  # B, C, D, E, F (总计378)
-    pattern_names = ['B', 'C', 'D', 'E', 'F']
 
     X_list = []
     y_list = []
@@ -294,48 +361,58 @@ def generate_synthetic_data(n_samples=378, n_features=12, random_state=42):
             continue
 
         # 为每个模式生成不同的特征分布
-        if idx == 4:  # Pattern F (over-reliant) - idx 4
-            # 低元认知得分
+        if idx == 4:  # Pattern F (over-reliant)
             X_pattern = np.random.randn(count, n_features) * 0.5 - 1
-        elif idx == 1:  # Pattern C (curious explorer) - idx 1
-            # 中等元认知得分
+        elif idx == 1:  # Pattern C (curious explorer)
             X_pattern = np.random.randn(count, n_features) * 0.8
-        elif idx == 0:  # Pattern B - idx 0
-            # 较高元认知得分
+        elif idx == 0:  # Pattern B
             X_pattern = np.random.randn(count, n_features) * 0.5 + 0.5
         else:
             X_pattern = np.random.randn(count, n_features) * 0.7
 
         X_list.append(X_pattern)
-        y_list.extend([idx] * count)  # 使用0-based索引
+        # 使用1-based索引匹配真实数据 (B=1, C=2, D=3, E=4, F=5)
+        y_list.extend([idx + 1] * count)
 
     X = np.vstack(X_list)
     y = np.array(y_list)
 
-    # 打乱数据
     shuffle_idx = np.random.permutation(len(y))
     X = X[shuffle_idx]
     y = y[shuffle_idx]
 
-    return X, y
+    return X, y, ['B', 'C', 'D', 'E', 'F']
 
 
 # ============================================================
 # 5. 主函数
 # ============================================================
 
-def main():
+def main(use_real_data=True):
     print("=" * 60)
     print("现代机器学习模型对比实验")
     print("Modern ML Model Comparison for Pattern Classification")
     print("=" * 60)
 
-    # 生成/加载数据
+    # 加载数据
     print("\n1. Loading data...")
-    X, y = generate_synthetic_data(n_samples=378, n_features=12)
+    if use_real_data:
+        try:
+            X, y, pattern_names, pattern_f_label = load_real_data('llm_annotated_training_data.csv')
+            print(f"   ✓ Using REAL data (378 LLM-annotated samples)")
+        except Exception as e:
+            print(f"   ✗ Failed to load real data: {e}")
+            print(f"   → Falling back to synthetic data")
+            X, y, pattern_names = generate_synthetic_data(n_samples=378, n_features=12)
+            pattern_f_label = 4  # F在合成数据中的标签
+    else:
+        X, y, pattern_names = generate_synthetic_data(n_samples=378, n_features=12)
+        pattern_f_label = 4
+        print(f"   Using synthetic data")
+
     print(f"   Dataset: {X.shape[0]} samples, {X.shape[1]} features")
-    print(f"   Classes: {np.unique(y)} (0=B, 1=C, 2=D, 3=E, 4=F)")
-    print(f"   Distribution: {np.bincount(y)}")
+    print(f"   Classes: {np.unique(y)}")
+    print(f"   Pattern F label: {pattern_f_label}")
 
     # 获取模型
     print("\n2. Initializing models...")
@@ -350,7 +427,7 @@ def main():
 
     # 评估
     print("\n3. Evaluating models (5-fold CV)...")
-    results_df = evaluate_models(X, y, models, cv=5, pattern_f_label=4)  # 4=Pattern F (0-based index)
+    results_df = evaluate_models(X, y, models, cv=5, pattern_f_label=pattern_f_label)
 
     # 排序
     results_df = results_df.sort_values('CV Mean', ascending=False)
