@@ -68,8 +68,8 @@ def get_models(random_state=42):
 
     models = {
         # === 传统模型 (1990s-2000s) ===
-        'SVM (RBF)': SVC(
-            kernel='rbf', C=1.0, gamma='scale',
+        'SVM (RBF, C=10)': SVC(
+            kernel='rbf', C=10.0, gamma='scale',
             class_weight='balanced', probability=True,
             random_state=random_state
         ),
@@ -155,7 +155,7 @@ def get_ensemble_models(base_models, random_state=42):
     # Voting Ensemble
     voting = VotingClassifier(
         estimators=[
-            ('svm', base_models['SVM (RBF)']),
+            ('svm', base_models['SVM (RBF, C=10)']),
             ('rf', base_models['Random Forest']),
             ('mlp', base_models['MLP Neural Network']),
         ],
@@ -478,7 +478,7 @@ def generate_latex_table(df):
 
     # 模型年份映射
     model_years = {
-        'SVM (RBF)': '1995',
+        'SVM (RBF, C=10)': '1995',
         'Random Forest': '2001',
         'Logistic Regression': '1958',
         'KNN': '1967',
@@ -531,7 +531,7 @@ def generate_markdown_table(df):
 """
 
     model_years = {
-        'SVM (RBF)': '1995',
+        'SVM (RBF, C=10)': '1995',
         'Random Forest': '2001',
         'Logistic Regression': '1958',
         'KNN': '1967',
@@ -553,7 +553,7 @@ def generate_markdown_table(df):
         md += f"| {model} | {year} | {row['Test Accuracy']} | {row['5-Fold CV']} | {row['Pattern F Recall']} | {row['Pattern F Precision']} | {row['F1 Score']} |\n"
 
     md += """
-*注：所有模型使用class_weight='balanced'处理类别不平衡；数据来源：本文研究 (N=378)*
+*注：SVM使用C=10.0；所有模型使用class_weight='balanced'处理类别不平衡；数据来源：本文研究*
 """
 
     return md

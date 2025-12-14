@@ -1,5 +1,5 @@
 {
-  "comparison_date": "2025-11-24T08:07:15.309051",
+  "comparison_date": "2025-12-14T06:11:37.673190",
   "data_source": "llm_annotated_training_data.csv",
   "total_samples": 378,
   "pattern_distribution": {
@@ -15,7 +15,7 @@
       "model_name": "AdaBoost",
       "train_accuracy": 0.9271523178807947,
       "test_accuracy": 0.9078947368421053,
-      "train_time_seconds": 0.15802836418151855,
+      "train_time_seconds": 0.11515593528747559,
       "per_class": {
         "A": {
           "precision": 0,
@@ -67,7 +67,7 @@
       "model_name": "Gradient Boosting",
       "train_accuracy": 1.0,
       "test_accuracy": 0.8947368421052632,
-      "train_time_seconds": 0.5632855892181396,
+      "train_time_seconds": 0.4952371120452881,
       "per_class": {
         "A": {
           "precision": 0,
@@ -119,7 +119,7 @@
       "model_name": "SVM (RBF, C=10)",
       "train_accuracy": 0.9867549668874173,
       "test_accuracy": 0.881578947368421,
-      "train_time_seconds": 0.011330366134643555,
+      "train_time_seconds": 0.009423017501831055,
       "per_class": {
         "A": {
           "precision": 0,
@@ -171,7 +171,7 @@
       "model_name": "SVM (RBF, C=1)",
       "train_accuracy": 0.9403973509933775,
       "test_accuracy": 0.881578947368421,
-      "train_time_seconds": 0.01086735725402832,
+      "train_time_seconds": 0.010111808776855469,
       "per_class": {
         "A": {
           "precision": 0,
@@ -223,7 +223,7 @@
       "model_name": "Random Forest",
       "train_accuracy": 1.0,
       "test_accuracy": 0.881578947368421,
-      "train_time_seconds": 0.12555146217346191,
+      "train_time_seconds": 0.105194091796875,
       "per_class": {
         "A": {
           "precision": 0,
@@ -275,7 +275,7 @@
       "model_name": "Logistic Regression",
       "train_accuracy": 0.8874172185430463,
       "test_accuracy": 0.868421052631579,
-      "train_time_seconds": 0.016913414001464844,
+      "train_time_seconds": 0.01586604118347168,
       "per_class": {
         "A": {
           "precision": 0,
@@ -327,7 +327,7 @@
       "model_name": "KNN (k=5)",
       "train_accuracy": 1.0,
       "test_accuracy": 0.868421052631579,
-      "train_time_seconds": 0.0008156299591064453,
+      "train_time_seconds": 0.0007164478302001953,
       "per_class": {
         "A": {
           "precision": 0,
@@ -379,7 +379,7 @@
       "model_name": "SVM (Linear)",
       "train_accuracy": 0.9139072847682119,
       "test_accuracy": 0.8552631578947368,
-      "train_time_seconds": 0.007154703140258789,
+      "train_time_seconds": 0.0067713260650634766,
       "per_class": {
         "A": {
           "precision": 0,
@@ -431,7 +431,7 @@
       "model_name": "Decision Tree",
       "train_accuracy": 1.0,
       "test_accuracy": 0.8552631578947368,
-      "train_time_seconds": 0.002021312713623047,
+      "train_time_seconds": 0.0012981891632080078,
       "per_class": {
         "A": {
           "precision": 0,
@@ -483,7 +483,7 @@
       "model_name": "KNN (k=3)",
       "train_accuracy": 1.0,
       "test_accuracy": 0.8421052631578947,
-      "train_time_seconds": 0.0005512237548828125,
+      "train_time_seconds": 0.0004992485046386719,
       "per_class": {
         "A": {
           "precision": 0,
@@ -535,7 +535,7 @@
       "model_name": "Naive Bayes",
       "train_accuracy": 0.847682119205298,
       "test_accuracy": 0.8421052631578947,
-      "train_time_seconds": 0.0009012222290039062,
+      "train_time_seconds": 0.0005795955657958984,
       "per_class": {
         "A": {
           "precision": 0,
@@ -587,7 +587,7 @@
       "model_name": "MLP Neural Network",
       "train_accuracy": 0.8509933774834437,
       "test_accuracy": 0.7894736842105263,
-      "train_time_seconds": 0.04904794692993164,
+      "train_time_seconds": 0.04230785369873047,
       "per_class": {
         "A": {
           "precision": 0,

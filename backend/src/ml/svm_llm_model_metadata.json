@@ -1,5 +1,5 @@
 {
-  "training_date": "2025-11-24T08:08:00.263205",
+  "training_date": "2025-12-14T06:10:59.846050",
   "data_source": "llm_annotated_training_data.csv",
   "total_samples": 378,
   "model_type": "SVM",
