@@ -1,0 +1,32 @@
+
+\begin{table}[htbp]
+\centering
+\caption{现代机器学习模型性能对比}
+\label{tab:modern-model-comparison}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{模型} & \textbf{发布年份} & \textbf{测试准确率} & \textbf{5折CV} & \textbf{F召回率} & \textbf{F精确率} & \textbf{F1} \\
+\midrule
+\textbf{CatBoost} & 2017 & 94.2% & 94.2±1.1% & 100.0% & 100.0% & 100.0% \\
+\textbf{Stacking Ensemble} & 2017 & 94.2% & 94.2±1.6% & 100.0% & 100.0% & 100.0% \\
+Voting Ensemble & - & 93.9% & 93.9±1.8% & 100.0% & 100.0% & 100.0% \\
+Random Forest & 2001 & 93.4% & 93.4±1.8% & 100.0% & 100.0% & 100.0% \\
+Naive Bayes & 1960s & 93.4% & 93.4±1.7% & 100.0% & 100.0% & 100.0% \\
+XGBoost & 2014 & 92.6% & 92.6±1.3% & 100.0% & 100.0% & 100.0% \\
+MLP Neural Network & 2012* & 92.3% & 92.3±2.2% & 100.0% & 100.0% & 100.0% \\
+LightGBM & 2017 & 92.1% & 92.1±1.4% & 100.0% & 100.0% & 100.0% \\
+KNN & 1967 & 88.6% & 88.6±1.3% & 100.0% & 99.4% & 99.7% \\
+SVM (RBF) & 1995 & 88.4% & 88.4±2.3% & 100.0% & 100.0% & 100.0% \\
+Gradient Boosting & 2001 & 88.1% & 88.1±2.9% & 100.0% & 100.0% & 100.0% \\
+AdaBoost & 1997 & 82.8% & 82.8±1.9% & 92.3% & 100.0% & 96.0% \\
+Decision Tree & 1986 & 81.0% & 81.0±1.3% & 100.0% & 100.0% & 100.0% \\
+Logistic Regression & 1958 & 64.0% & 64.0±5.1% & 100.0% & 99.4% & 99.7% \\
+
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item 注：*MLP年份指现代深度学习框架成熟年份；所有模型使用class\_weight='balanced'处理类别不平衡
+\item 数据来源：本文研究 (N=378)
+\end{tablenotes}
+\end{table}
