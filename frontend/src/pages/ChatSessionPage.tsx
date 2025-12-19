@@ -3277,7 +3277,68 @@ Message: "${firstMessage.slice(0, 200)}"`,
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-            {/* Quick Actions */}
+            {/* Conversation Branch Selector - Show before MR Tools when multiple branches exist */}
+            {availableBranchPaths.length > 1 && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                paddingRight: '0.75rem',
+                borderRight: '1px solid #e5e7eb',
+              }}>
+                <span style={{ fontSize: '0.7rem', color: '#6b7280', fontWeight: '500' }}>🌿</span>
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <select
+                    value={currentBranchPath}
+                    onChange={(e) => switchBranchPath(e.target.value)}
+                    style={{
+                      padding: '0.4rem 1.75rem 0.4rem 0.6rem',
+                      fontSize: '0.75rem',
+                      borderRadius: '0.375rem',
+                      border: '1px solid #c7d2fe',
+                      backgroundColor: '#eef2ff',
+                      color: '#4338ca',
+                      cursor: 'pointer',
+                      fontWeight: '500',
+                      minWidth: '100px',
+                      appearance: 'none',
+                      WebkitAppearance: 'none',
+                      MozAppearance: 'none',
+                    }}
+                  >
+                    {availableBranchPaths.map((path) => (
+                      <option key={path} value={path}>
+                        {path === 'main' ? 'Main' : path.replace('branch-', '').split('-').slice(0, -1).join('-') || path}
+                      </option>
+                    ))}
+                  </select>
+                  {/* Custom dropdown arrow */}
+                  <span style={{
+                    position: 'absolute',
+                    right: '0.5rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    pointerEvents: 'none',
+                    fontSize: '0.5rem',
+                    color: '#6366f1',
+                  }}>
+                    ▼
+                  </span>
+                </div>
+                <span style={{
+                  fontSize: '0.6rem',
+                  color: '#6366f1',
+                  backgroundColor: '#e0e7ff',
+                  padding: '0.15rem 0.35rem',
+                  borderRadius: '0.25rem',
+                  fontWeight: '600',
+                }}>
+                  {availableBranchPaths.length}
+                </span>
+              </div>
+            )}
+
+            {/* Quick Actions - MR Tools */}
             <div style={{ display: 'flex', gap: '0.5rem', paddingRight: '0.5rem', borderRight: '1px solid #e5e7eb' }}>
               <button
                 data-tour="mr-tools-btn"
@@ -3307,43 +3368,6 @@ Message: "${firstMessage.slice(0, 200)}"`,
               >
                 🧠 MR Tools
               </button>
-
-              {/* Conversation Branch Selector - Only show when multiple branches exist */}
-              {availableBranchPaths.length > 1 && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ fontSize: '0.7rem', color: '#6b7280' }}>Branch:</span>
-                  <select
-                    value={currentBranchPath}
-                    onChange={(e) => switchBranchPath(e.target.value)}
-                    style={{
-                      padding: '0.4rem 0.6rem',
-                      fontSize: '0.75rem',
-                      borderRadius: '0.375rem',
-                      border: '1px solid #d1d5db',
-                      backgroundColor: '#fff',
-                      color: '#374151',
-                      cursor: 'pointer',
-                      fontWeight: '500',
-                      minWidth: '120px',
-                    }}
-                  >
-                    {availableBranchPaths.map((path) => (
-                      <option key={path} value={path}>
-                        {path === 'main' ? 'Main' : path.replace('branch-', '').split('-').slice(0, -1).join('-') || path}
-                      </option>
-                    ))}
-                  </select>
-                  <span style={{
-                    fontSize: '0.65rem',
-                    color: '#9ca3af',
-                    backgroundColor: '#f3f4f6',
-                    padding: '0.2rem 0.4rem',
-                    borderRadius: '0.25rem',
-                  }}>
-                    {availableBranchPaths.length} branches
-                  </span>
-                </div>
-              )}
             </div>
 
             {/* Main Actions */}
