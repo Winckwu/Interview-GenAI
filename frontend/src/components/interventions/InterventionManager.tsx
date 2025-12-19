@@ -197,22 +197,47 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
       // Note: caller must update lastHardBarrierTimeRef.current if tier === 'hard'
 
+      // MR-specific metadata for diverse, personalized interventions
+      const MR_METADATA: Record<string, { icon: string; category: string; risks: string[]; suggestions: string[] }> = {
+        MR1:  { icon: '🧩', category: 'Task Planning', risks: ['May feel overwhelmed by complexity', 'Missing important subtasks'], suggestions: ['Break task into 3-5 smaller steps', 'Identify dependencies between steps'] },
+        MR2:  { icon: '🔍', category: 'Process Understanding', risks: ['May not understand AI reasoning', 'Harder to verify correctness'], suggestions: ['Ask AI to explain its process', 'Request step-by-step breakdown'] },
+        MR3:  { icon: '🎯', category: 'Human Agency', risks: ['AI may make decisions for you', 'Reduced sense of control'], suggestions: ['Clarify your decision points', 'Take ownership of key choices'] },
+        MR4:  { icon: '🎭', category: 'Role Definition', risks: ['Unclear expectations', 'Misaligned collaboration'], suggestions: ['Define your role clearly', 'Specify what you want AI to do'] },
+        MR5:  { icon: '🔄', category: 'Iteration', risks: ['Losing previous good versions', 'Inefficient exploration'], suggestions: ['Use branching to preserve progress', 'Compare multiple approaches'] },
+        MR6:  { icon: '⚖️', category: 'Cross-Validation', risks: ['Single point of failure', 'Unverified claims'], suggestions: ['Compare with another AI model', 'Cross-check important facts'] },
+        MR7:  { icon: '📚', category: 'Learning from Failure', risks: ['Repeating same mistakes', 'Missing learning opportunities'], suggestions: ['Reflect on what went wrong', 'Document lessons learned'] },
+        MR8:  { icon: '📋', category: 'Task Recognition', risks: ['Using wrong approach', 'Suboptimal results'], suggestions: ['Consider task characteristics', 'Adjust strategy accordingly'] },
+        MR9:  { icon: '📊', category: 'Trust Calibration', risks: ['Over/under trusting AI', 'Uncalibrated expectations'], suggestions: ['Adjust trust based on evidence', 'Track AI accuracy over time'] },
+        MR10: { icon: '⚖️', category: 'Cost-Benefit', risks: ['Unintended consequences', 'Resource waste'], suggestions: ['Weigh pros and cons', 'Consider reversibility'] },
+        MR11: { icon: '✅', category: 'Verification', risks: ['Accepting incorrect info', 'Building on faulty assumptions'], suggestions: ['Verify key claims', 'Use fact-checking tools'] },
+        MR12: { icon: '🤔', category: 'Critical Thinking', risks: ['Accepting at face value', 'Missing logical flaws'], suggestions: ['Question assumptions', 'Look for evidence'] },
+        MR13: { icon: '❓', category: 'Uncertainty', risks: ['False confidence', 'Ignoring limitations'], suggestions: ['Note confidence levels', 'Verify uncertain parts'] },
+        MR14: { icon: '📝', category: 'Reflection', risks: ['Shallow learning', 'Missing insights'], suggestions: ['Pause and reflect', 'Connect to prior knowledge'] },
+        MR15: { icon: '🎓', category: 'Metacognitive Strategy', risks: ['Ineffective learning', 'Missed opportunities'], suggestions: ['Apply learning strategies', 'Monitor your understanding'] },
+        MR16: { icon: '💪', category: 'Skill Development', risks: ['Skill atrophy', 'Over-dependence on AI'], suggestions: ['Practice independently', 'Modify AI outputs'] },
+        MR17: { icon: '📈', category: 'Progress Tracking', risks: ['Unclear progress', 'Missed milestones'], suggestions: ['Review your learning journey', 'Celebrate achievements'] },
+        MR18: { icon: '🚨', category: 'Over-Reliance Warning', risks: ['Critical thinking decline', 'Accepting errors', 'Reduced learning'], suggestions: ['Verify before accepting', 'Make modifications', 'Question AI output'] },
+        MR19: { icon: '🧠', category: 'Self-Assessment', risks: ['Overestimating abilities', 'Blind spots'], suggestions: ['Assess your understanding', 'Identify knowledge gaps'] },
+      };
+
+      const metadata = MR_METADATA[mr.mrId] || MR_METADATA.MR18;
+
       const baseIntervention = {
         id: `intervention-${mr.mrId}`,
         mrType: mr.mrId,
         tier,
-        confidence: 0.7, // Backend MR confidence is implicit in its activation
+        confidence: 0.7,
         timestamp: Date.now(),
-        content: mr.content, // Pre-generated content from unified GPT analysis
+        content: mr.content,
       };
 
       if (tier === 'soft') {
         return {
           ...baseIntervention,
-          icon: '📊',
+          icon: metadata.icon,
           title: mr.name,
           message: mr.message,
-          description: `Priority: ${mr.priority}`,
+          description: `${metadata.category} • Priority: ${mr.priority}`,
           onDismiss: () => handleDismiss(mr.mrId),
           onLearnMore: () => {
             console.log(`[InterventionManager] Learn More clicked for MR: ${mr.mrId}`);
@@ -224,12 +249,12 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       if (tier === 'medium') {
         return {
           ...baseIntervention,
-          icon: '🔔',
-          title: 'MCA Reminder',
-          message: mr.message || 'You have not verified AI output for {count} consecutive interactions.',
-          suggestion: 'Pause and review whether recent AI responses meet your expectations.',
-          consecutiveCount: 3, // TODO: Get actual count from session state
-          actionLabel: 'Verify Now',
+          icon: metadata.icon,
+          title: mr.name,  // Use MR-specific title instead of generic "MCA Reminder"
+          message: mr.message,
+          suggestion: metadata.suggestions[0],
+          consecutiveCount: 3,
+          actionLabel: 'Take Action',
           onAction: () => {
             console.log(`[InterventionManager] Medium action clicked for MR: ${mr.mrId}`);
             handleLearnMore(mr.mrId);
@@ -239,23 +264,15 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         };
       }
 
-      // Hard barrier - new simplified design with risks and suggestions
+      // Hard barrier - use MR-specific risks and suggestions
       return {
         ...baseIntervention,
-        icon: '⚠️',
-        title: 'Warning: Over-Reliance Risk Detected',
-        message: mr.message || 'You have not verified AI output for {count} consecutive interactions.',
-        consecutiveCount: 4, // TODO: Get actual count from session state
-        risks: [
-          'May have accepted incorrect information',
-          'Independent thinking ability may decline',
-          'Learning effectiveness may be affected',
-        ],
-        suggestions: [
-          'Pause current task',
-          'Review recent AI responses',
-          'Try completing the next step independently',
-        ],
+        icon: metadata.icon,
+        title: `Warning: ${mr.name}`,  // MR-specific title
+        message: mr.message,
+        consecutiveCount: 4,
+        risks: metadata.risks,
+        suggestions: metadata.suggestions,
         isDangerous: true,
         onConfirm: (value: string) => handleBarrierConfirm(value, mr.mrId),
         onCancel: () => handleDismiss(mr.mrId),
