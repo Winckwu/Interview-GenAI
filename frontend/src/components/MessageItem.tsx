@@ -97,6 +97,20 @@ export const MessageItem: React.FC<MessageItemProps> = ({
 
   // Export state
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close export menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(event.target as Node)) {
+        setShowExportMenu(false);
+      }
+    };
+    if (showExportMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showExportMenu]);
 
   // Export handler
   const handleExport = (format: 'json' | 'csv' | 'markdown') => {
@@ -599,7 +613,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
 
                 {/* Export branches button - show when there are branches */}
                 {hasBranches && message.branches && (
-                  <div style={{ position: 'relative', marginLeft: '0.5rem' }}>
+                  <div ref={exportMenuRef} style={{ position: 'relative', marginLeft: '0.5rem' }}>
                     <button
                       onClick={() => setShowExportMenu(!showExportMenu)}
                       title="Export branch history"
@@ -624,27 +638,27 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                           position: 'absolute',
                           top: '100%',
                           right: 0,
-                          marginTop: '0.5rem',
+                          marginTop: '0.375rem',
                           backgroundColor: 'white',
                           border: '1px solid #d1d5db',
-                          borderRadius: '0.5rem',
+                          borderRadius: '0.375rem',
                           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                          padding: '0.5rem',
-                          minWidth: '150px',
-                          zIndex: 100,
+                          padding: '0.375rem',
+                          minWidth: '130px',
+                          zIndex: 1000,
                         }}
                       >
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.125rem' }}>
                           <button
                             onClick={() => handleExport('json')}
                             style={{
-                              padding: '0.5rem 0.75rem',
+                              padding: '0.375rem 0.5rem',
                               background: 'none',
                               border: 'none',
                               cursor: 'pointer',
                               textAlign: 'left',
-                              borderRadius: '0.375rem',
-                              fontSize: '0.875rem',
+                              borderRadius: '0.25rem',
+                              fontSize: '0.7rem',
                               color: '#374151',
                               transition: 'background-color 0.2s',
                             }}
@@ -656,13 +670,13 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                           <button
                             onClick={() => handleExport('csv')}
                             style={{
-                              padding: '0.5rem 0.75rem',
+                              padding: '0.375rem 0.5rem',
                               background: 'none',
                               border: 'none',
                               cursor: 'pointer',
                               textAlign: 'left',
-                              borderRadius: '0.375rem',
-                              fontSize: '0.875rem',
+                              borderRadius: '0.25rem',
+                              fontSize: '0.7rem',
                               color: '#374151',
                               transition: 'background-color 0.2s',
                             }}
@@ -674,13 +688,13 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                           <button
                             onClick={() => handleExport('markdown')}
                             style={{
-                              padding: '0.5rem 0.75rem',
+                              padding: '0.375rem 0.5rem',
                               background: 'none',
                               border: 'none',
                               cursor: 'pointer',
                               textAlign: 'left',
-                              borderRadius: '0.375rem',
-                              fontSize: '0.875rem',
+                              borderRadius: '0.25rem',
+                              fontSize: '0.7rem',
                               color: '#374151',
                               transition: 'background-color 0.2s',
                             }}
