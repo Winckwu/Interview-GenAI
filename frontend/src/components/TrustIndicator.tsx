@@ -51,7 +51,7 @@ export const TrustIndicator: React.FC<TrustIndicatorProps> = ({
           gap: '0.375rem',
           padding: '0.375rem 0.625rem',
           backgroundColor: badge.bgColor,
-          border: `1px solid ${badge.color}`,
+          border: 'none',
           borderRadius: '1rem',
           fontSize: '0.75rem',
           fontWeight: 600,
