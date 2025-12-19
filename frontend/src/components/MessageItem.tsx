@@ -812,7 +812,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                         }}
                       >
-                        💡 点击 Fork 可以从这里创建新的对话分支！
+                        💡 Click Fork to create a new conversation branch!
                         <div
                           style={{
                             position: 'absolute',

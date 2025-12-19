@@ -1558,11 +1558,11 @@ Message: "${firstMessage.slice(0, 200)}"`,
   /**
    * Handle exporting selected conversation messages
    */
-  const handleExportConversation = useCallback((format: 'json' | 'markdown' | 'txt') => {
+  const handleExportConversation = useCallback((format: 'json' | 'markdown' | 'txt' | 'pdf') => {
     const selectedMessages = messages.filter(m => selectedExportMessages.has(m.id));
 
     if (selectedMessages.length === 0) {
-      setError('请先选择要导出的对话');
+      setError('Please select messages to export');
       setTimeout(() => setError(null), 3000);
       return;
     }
@@ -1589,17 +1589,58 @@ Message: "${firstMessage.slice(0, 200)}"`,
       filename = `conversation-${timestamp}.json`;
       mimeType = 'application/json';
     } else if (format === 'markdown') {
-      content = `# 对话导出\n\n导出时间: ${new Date().toLocaleString()}\n\n---\n\n`;
+      content = `# Conversation Export\n\nExported: ${new Date().toLocaleString()}\n\n---\n\n`;
       selectedMessages.forEach(m => {
-        const role = m.role === 'user' ? '👤 用户' : '🤖 AI';
+        const role = m.role === 'user' ? '👤 User' : '🤖 AI';
         content += `### ${role}\n\n${m.content}\n\n---\n\n`;
       });
       filename = `conversation-${timestamp}.md`;
       mimeType = 'text/markdown';
+    } else if (format === 'pdf') {
+      // Generate PDF using browser print
+      const printContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Conversation Export</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+            h1 { color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+            .meta { color: #6b7280; font-size: 14px; margin-bottom: 30px; }
+            .message { margin-bottom: 24px; padding: 16px; border-radius: 8px; }
+            .user { background: #eff6ff; border-left: 4px solid #3b82f6; }
+            .ai { background: #f0fdf4; border-left: 4px solid #22c55e; }
+            .role { font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+            .content { white-space: pre-wrap; line-height: 1.6; }
+          </style>
+        </head>
+        <body>
+          <h1>📝 Conversation Export</h1>
+          <div class="meta">Exported: ${new Date().toLocaleString()} • ${selectedMessages.length} messages</div>
+          ${selectedMessages.map(m => `
+            <div class="message ${m.role}">
+              <div class="role">${m.role === 'user' ? '👤 User' : '🤖 AI'}</div>
+              <div class="content">${m.content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+            </div>
+          `).join('')}
+        </body>
+        </html>
+      `;
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+        printWindow.onload = () => {
+          printWindow.print();
+        };
+      }
+      setShowExportModal(false);
+      setSelectedExportMessages(new Set());
+      return;
     } else {
-      content = `对话导出 - ${new Date().toLocaleString()}\n${'='.repeat(50)}\n\n`;
+      content = `Conversation Export - ${new Date().toLocaleString()}\n${'='.repeat(50)}\n\n`;
       selectedMessages.forEach(m => {
-        const role = m.role === 'user' ? '[用户]' : '[AI]';
+        const role = m.role === 'user' ? '[User]' : '[AI]';
         content += `${role}\n${m.content}\n\n${'-'.repeat(30)}\n\n`;
       });
       filename = `conversation-${timestamp}.txt`;
@@ -1618,7 +1659,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
     setShowExportModal(false);
     setSelectedExportMessages(new Set());
-    setSuccessMessage(`已导出 ${selectedMessages.length} 条对话`);
+    setSuccessMessage(`Exported ${selectedMessages.length} messages`);
     setTimeout(() => setSuccessMessage(null), 3000);
   }, [messages, selectedExportMessages, sessionId, setError, setSuccessMessage]);
 
@@ -4190,7 +4231,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 setShowExportModal(true);
               }}
               disabled={messages.length === 0}
-              title="导出对话"
+              title="Export conversation"
               style={{
                 padding: '0.5rem',
                 backgroundColor: '#fff',
@@ -4302,7 +4343,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <h3 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '600', color: '#1f2937' }}>
-                📥 导出对话
+                📥 Export Conversation
               </h3>
               <button
                 onClick={() => setShowExportModal(false)}
@@ -4332,7 +4373,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                   cursor: 'pointer',
                 }}
               >
-                全选
+                Select All
               </button>
               <button
                 onClick={() => setSelectedExportMessages(new Set())}
@@ -4346,10 +4387,10 @@ Message: "${firstMessage.slice(0, 200)}"`,
                   cursor: 'pointer',
                 }}
               >
-                清除
+                Clear
               </button>
               <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: '#6b7280' }}>
-                已选择 {selectedExportMessages.size} / {messages.length} 条
+                Selected {selectedExportMessages.size} / {messages.length}
               </span>
             </div>
 
@@ -4378,7 +4419,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                   />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: '0.7rem', color: '#6b7280', marginBottom: '0.25rem' }}>
-                      {msg.role === 'user' ? '👤 用户' : '🤖 AI'}
+                      {msg.role === 'user' ? '👤 User' : '🤖 AI'}
                     </div>
                     <div style={{
                       fontSize: '0.8rem',
@@ -4397,13 +4438,13 @@ Message: "${firstMessage.slice(0, 200)}"`,
             </div>
 
             {/* Export buttons */}
-            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
               <button
                 onClick={() => handleExportConversation('txt')}
                 disabled={selectedExportMessages.size === 0}
                 style={{
-                  padding: '0.5rem 1rem',
-                  fontSize: '0.8rem',
+                  padding: '0.5rem 0.75rem',
+                  fontSize: '0.75rem',
                   backgroundColor: selectedExportMessages.size === 0 ? '#f3f4f6' : '#fff',
                   color: selectedExportMessages.size === 0 ? '#9ca3af' : '#374151',
                   border: '1px solid #e5e7eb',
@@ -4417,8 +4458,8 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 onClick={() => handleExportConversation('markdown')}
                 disabled={selectedExportMessages.size === 0}
                 style={{
-                  padding: '0.5rem 1rem',
-                  fontSize: '0.8rem',
+                  padding: '0.5rem 0.75rem',
+                  fontSize: '0.75rem',
                   backgroundColor: selectedExportMessages.size === 0 ? '#f3f4f6' : '#fff',
                   color: selectedExportMessages.size === 0 ? '#9ca3af' : '#374151',
                   border: '1px solid #e5e7eb',
@@ -4426,22 +4467,37 @@ Message: "${firstMessage.slice(0, 200)}"`,
                   cursor: selectedExportMessages.size === 0 ? 'not-allowed' : 'pointer',
                 }}
               >
-                📝 Markdown
+                📝 MD
               </button>
               <button
                 onClick={() => handleExportConversation('json')}
                 disabled={selectedExportMessages.size === 0}
                 style={{
-                  padding: '0.5rem 1rem',
-                  fontSize: '0.8rem',
-                  backgroundColor: selectedExportMessages.size === 0 ? '#e5e7eb' : '#4338ca',
+                  padding: '0.5rem 0.75rem',
+                  fontSize: '0.75rem',
+                  backgroundColor: selectedExportMessages.size === 0 ? '#f3f4f6' : '#fff',
+                  color: selectedExportMessages.size === 0 ? '#9ca3af' : '#374151',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '0.375rem',
+                  cursor: selectedExportMessages.size === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
+                📊 JSON
+              </button>
+              <button
+                onClick={() => handleExportConversation('pdf')}
+                disabled={selectedExportMessages.size === 0}
+                style={{
+                  padding: '0.5rem 0.75rem',
+                  fontSize: '0.75rem',
+                  backgroundColor: selectedExportMessages.size === 0 ? '#e5e7eb' : '#dc2626',
                   color: selectedExportMessages.size === 0 ? '#9ca3af' : '#fff',
                   border: 'none',
                   borderRadius: '0.375rem',
                   cursor: selectedExportMessages.size === 0 ? 'not-allowed' : 'pointer',
                 }}
               >
-                📊 JSON
+                📕 PDF
               </button>
             </div>
           </div>
