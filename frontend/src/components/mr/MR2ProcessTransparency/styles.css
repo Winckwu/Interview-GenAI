@@ -1094,3 +1094,19 @@
   border-radius: 0.375rem;
   border: 1px solid #e5e7eb;
 }
+
+/* Timeline hint */
+.mr2-timeline-hint {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.mr2-timeline-hint p {
+  margin: 0.5rem 0;
+}
+
+.mr2-hint-stats {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}

@@ -260,58 +260,24 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   );
 
   /**
-   * Render timeline view
+   * Render timeline view - now just shows a hint since Turns section handles the display
    */
   const renderTimelineView = () => {
-    const timeline = createTimeline(versions);
+    if (versions.length === 0) {
+      return (
+        <div className="mr2-empty-state">
+          <p>No conversation turns yet</p>
+        </div>
+      );
+    }
 
     return (
       <div className="mr2-timeline-view">
-        <h2>📅 Interaction Timeline</h2>
-
-        <div className="mr2-timeline">
-          {timeline.map((event, idx) => (
-            <div key={idx} className="mr2-timeline-event">
-              <div className="mr2-timeline-marker">
-                <div className="mr2-marker-dot" />
-              </div>
-
-              <div className="mr2-timeline-content">
-                <div className="mr2-event-header">
-                  <h3 className="mr2-event-title">
-                    {event.eventType === 'prompt' ? '🎯' : '💭'} {event.title}
-                  </h3>
-                  <time className="mr2-event-time">{event.formattedTime}</time>
-                </div>
-
-                <p className="mr2-event-description">{event.description}</p>
-
-                {event.changes && (
-                  <div className="mr2-event-changes">
-                    <span className="mr2-change-badge mr2-change-added">
-                      +{event.changes.added}
-                    </span>
-                    <span className="mr2-change-badge mr2-change-removed">
-                      -{event.changes.removed}
-                    </span>
-                    <span className="mr2-change-badge mr2-change-modified">
-                      ~{event.changes.modified}
-                    </span>
-                  </div>
-                )}
-
-                {event.versionId && (
-                  <button
-                    className="mr2-btn-view"
-                    onClick={() => handleVersionSelect(event.versionId!, 'diff')}
-                    title="查看此版本的详细变更"
-                  >
-                    查看版本详情
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
+        <div className="mr2-timeline-hint">
+          <p>👆 Click on a Turn above to expand and view the conversation</p>
+          <p className="mr2-hint-stats">
+            Total: {versions.length} turn{versions.length > 1 ? 's' : ''}
+          </p>
         </div>
       </div>
     );
