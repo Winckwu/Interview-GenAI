@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { MessageBranch } from '../hooks/useMessages';
 import styles from './BranchFilterPanel.module.css';
 
@@ -21,6 +21,18 @@ export const BranchFilterPanel: React.FC<BranchFilterPanelProps> = ({
   onFilterChange,
   onClose,
 }) => {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Close panel when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose]);
   // Count branches by source
   const sourceCounts = {
     mr6: branches.filter(b => b.source === 'mr6').length,
@@ -65,7 +77,7 @@ export const BranchFilterPanel: React.FC<BranchFilterPanelProps> = ({
     filter.showModified !== null;
 
   return (
-    <div className={styles.filterPanel}>
+    <div ref={panelRef} className={styles.filterPanel}>
       <div className={styles.filterHeader}>
         <h3>Filter Branches</h3>
         <button className={styles.closeButton} onClick={onClose}>✕</button>
