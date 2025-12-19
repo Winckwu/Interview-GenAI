@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MessageBranch } from '../hooks/useMessages';
+import MarkdownText from './common/MarkdownText';
 import styles from './BranchComparisonModal.module.css';
 
 interface BranchComparisonModalProps {
@@ -126,7 +127,9 @@ export const BranchComparisonModal: React.FC<BranchComparisonModalProps> = ({
               )}
             </div>
             <div className={styles.contentPanel}>
-              <pre className={styles.contentText}>{leftContent}</pre>
+              <div className={styles.contentText}>
+                <MarkdownText content={leftContent} />
+              </div>
             </div>
             <div className={styles.stats}>
               Characters: {leftContent.length} | Words: {leftContent.split(/\s+/).filter(w => w).length}
@@ -162,7 +165,9 @@ export const BranchComparisonModal: React.FC<BranchComparisonModalProps> = ({
               )}
             </div>
             <div className={styles.contentPanel}>
-              <pre className={styles.contentText}>{rightContent}</pre>
+              <div className={styles.contentText}>
+                <MarkdownText content={rightContent} />
+              </div>
             </div>
             <div className={styles.stats}>
               Characters: {rightContent.length} | Words: {rightContent.split(/\s+/).filter(w => w).length}
