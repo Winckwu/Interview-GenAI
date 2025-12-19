@@ -12,7 +12,14 @@
  * and recommending appropriate MR interventions based on context.
  */
 
-import { calculateTrustScore, TrustProfile } from '../components/mr/MR9DynamicTrustCalibration/utils';
+import {
+  calculateTrustScore,
+  TrustProfile,
+  classifyModification,
+  ModificationContext,
+  recordCalibrationOutcome,
+  getTaskTypeMetadata,
+} from '../components/mr/MR9DynamicTrustCalibration/utils';
 import {
   UserProfile,
   TriggerContext,
@@ -464,6 +471,16 @@ export function analyzeMessageConfidenceHybrid(
  * Calculate trust score from message context
  * Uses real message content analysis for confidence scoring
  * Returns score and whether GPT deep analysis is recommended
+ *
+ * IMPROVED: Now uses intelligent modification classification
+ * - Corrections reduce trust (AI made an error)
+ * - Preferences don't affect trust (style choice)
+ * - Extensions slightly increase trust (AI provided good foundation)
+ *
+ * THEORETICAL BASIS:
+ * - Okamura & Yamada (2020): Trust calibration framework
+ * - LLM Uncertainty (arxiv:2404.15993): Content-based confidence
+ * - Metacognitive Sensitivity (PMC 2025): Calibration quality
  */
 export function calculateMessageTrustScore(options: {
   taskType?: string;
@@ -472,8 +489,10 @@ export function calculateMessageTrustScore(options: {
   messageContent?: string;
   messageWasVerified?: boolean;
   messageWasModified?: boolean;
+  originalContent?: string; // For modification classification
+  modifiedContent?: string; // For modification classification
   userValidationHistory?: Array<{ taskType: string; correct: boolean; timestamp: Date }>;
-}): { score: number; needsDeepAnalysis: boolean } {
+}): { score: number; needsDeepAnalysis: boolean; modificationContext?: ModificationContext; theoreticalBasis?: string } {
   const {
     taskType = 'general',
     taskCriticality = 'medium',
@@ -481,6 +500,8 @@ export function calculateMessageTrustScore(options: {
     messageContent = '',
     messageWasVerified = false,
     messageWasModified = false,
+    originalContent = '',
+    modifiedContent = '',
     userValidationHistory = [],
   } = options;
 
@@ -509,6 +530,15 @@ export function calculateMessageTrustScore(options: {
 
   const mappedTaskType = taskTypeMapping[taskType.toLowerCase()] || 'analysis';
 
+  // Classify modification type if modification occurred
+  let modificationContext: ModificationContext | undefined;
+  if (messageWasModified && originalContent && modifiedContent) {
+    modificationContext = classifyModification(originalContent, modifiedContent);
+  } else if (messageWasModified) {
+    // Fallback: assume preference if we don't have content to analyze
+    modificationContext = { type: 'preference', changeRatio: 0.2, wasFactualCorrection: false };
+  }
+
   const profile = calculateTrustScore({
     taskType: mappedTaskType,
     aiConfidenceScore: realConfidence,
@@ -516,21 +546,35 @@ export function calculateMessageTrustScore(options: {
     taskFamiliarity: 'moderate',
     timePressure: 'medium',
     userValidationHistory,
+    modificationContext,
   });
 
-  // Adjust based on verification status
+  // Adjust based on verification status (verification is always positive)
   let adjustedScore = profile.score;
   if (messageWasVerified) {
-    adjustedScore = Math.min(100, adjustedScore + 10); // Boost if verified
+    adjustedScore = Math.min(100, adjustedScore + 8); // Boost if verified
   }
-  if (messageWasModified) {
-    adjustedScore = Math.max(0, adjustedScore - 5); // Slight penalty if modified
-  }
+
+  // Get task type metadata for context
+  const taskMetadata = getTaskTypeMetadata(mappedTaskType);
 
   return {
     score: adjustedScore,
     needsDeepAnalysis: analysis.needsDeepAnalysis,
+    modificationContext,
+    theoreticalBasis: profile.theoreticalBasis,
   };
+}
+
+/**
+ * Record verification outcome for calibration learning
+ * Call this when user verifies an AI output
+ */
+export function recordVerificationOutcome(
+  predictedTrustScore: number,
+  wasCorrect: boolean
+): void {
+  recordCalibrationOutcome(predictedTrustScore, wasCorrect);
 }
 
 /**
@@ -767,6 +811,7 @@ export default {
   orchestrateMRActivation,
   orchestrateMRActivationAdaptive,
   calculateMessageTrustScore,
+  recordVerificationOutcome,
   getTopRecommendations,
   shouldShowMRTool,
   generateInterventionMessage,
