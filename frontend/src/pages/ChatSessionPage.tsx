@@ -473,6 +473,10 @@ const ChatSessionPage: React.FC = () => {
   const [patternLoading, setPatternLoading] = useState(false);
   const [showModifiedChoiceUI, setShowModifiedChoiceUI] = useState(false);
 
+  // Conversation export modal state
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [selectedExportMessages, setSelectedExportMessages] = useState<Set<string>>(new Set());
+
   // Track quick reflections on messages (MR14)
   const [reflectedMessages, setReflectedMessages] = useState<Set<string>>(new Set());
   const [showQuickReflection, setShowQuickReflection] = useState<string | null>(null);
@@ -1550,6 +1554,95 @@ Message: "${firstMessage.slice(0, 200)}"`,
       setTimeout(() => setError(null), 3000);
     }
   }, [forkConversation, setError]);
+
+  /**
+   * Handle exporting selected conversation messages
+   */
+  const handleExportConversation = useCallback((format: 'json' | 'markdown' | 'txt') => {
+    const selectedMessages = messages.filter(m => selectedExportMessages.has(m.id));
+
+    if (selectedMessages.length === 0) {
+      setError('请先选择要导出的对话');
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+
+    const timestamp = new Date().toISOString().split('T')[0];
+    let content = '';
+    let filename = '';
+    let mimeType = '';
+
+    if (format === 'json') {
+      const exportData = {
+        exportedAt: new Date().toISOString(),
+        sessionId,
+        messageCount: selectedMessages.length,
+        messages: selectedMessages.map(m => ({
+          role: m.role,
+          content: m.content,
+          timestamp: m.timestamp,
+          wasVerified: m.wasVerified,
+          wasModified: m.wasModified,
+        })),
+      };
+      content = JSON.stringify(exportData, null, 2);
+      filename = `conversation-${timestamp}.json`;
+      mimeType = 'application/json';
+    } else if (format === 'markdown') {
+      content = `# 对话导出\n\n导出时间: ${new Date().toLocaleString()}\n\n---\n\n`;
+      selectedMessages.forEach(m => {
+        const role = m.role === 'user' ? '👤 用户' : '🤖 AI';
+        content += `### ${role}\n\n${m.content}\n\n---\n\n`;
+      });
+      filename = `conversation-${timestamp}.md`;
+      mimeType = 'text/markdown';
+    } else {
+      content = `对话导出 - ${new Date().toLocaleString()}\n${'='.repeat(50)}\n\n`;
+      selectedMessages.forEach(m => {
+        const role = m.role === 'user' ? '[用户]' : '[AI]';
+        content += `${role}\n${m.content}\n\n${'-'.repeat(30)}\n\n`;
+      });
+      filename = `conversation-${timestamp}.txt`;
+      mimeType = 'text/plain';
+    }
+
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    setShowExportModal(false);
+    setSelectedExportMessages(new Set());
+    setSuccessMessage(`已导出 ${selectedMessages.length} 条对话`);
+    setTimeout(() => setSuccessMessage(null), 3000);
+  }, [messages, selectedExportMessages, sessionId, setError, setSuccessMessage]);
+
+  /**
+   * Toggle message selection for export
+   */
+  const toggleExportMessageSelection = useCallback((messageId: string) => {
+    setSelectedExportMessages(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(messageId)) {
+        newSet.delete(messageId);
+      } else {
+        newSet.add(messageId);
+      }
+      return newSet;
+    });
+  }, []);
+
+  /**
+   * Select all messages for export
+   */
+  const selectAllForExport = useCallback(() => {
+    setSelectedExportMessages(new Set(messages.map(m => m.id)));
+  }, [messages]);
 
   /**
    * Handle MR5 variant selection - Create a new branch with selected variant
@@ -4089,6 +4182,33 @@ Message: "${firstMessage.slice(0, 200)}"`,
               }}
             />
 
+            {/* Export Conversation Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedExportMessages(new Set());
+                setShowExportModal(true);
+              }}
+              disabled={messages.length === 0}
+              title="导出对话"
+              style={{
+                padding: '0.5rem',
+                backgroundColor: '#fff',
+                color: messages.length === 0 ? '#cbd5e1' : '#64748b',
+                border: '1px solid #e2e8f0',
+                borderRadius: '0.5rem',
+                cursor: messages.length === 0 ? 'not-allowed' : 'pointer',
+                fontSize: '1rem',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: messages.length === 0 ? 0.6 : 1,
+              }}
+            >
+              📥
+            </button>
+
             {/* Web Search Toggle Button - Next to Send */}
             <button
               type="button"
@@ -4146,6 +4266,187 @@ Message: "${firstMessage.slice(0, 200)}"`,
           </form>
         </footer>
       </div>
+
+      {/* Export Conversation Modal */}
+      {showExportModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+          onClick={() => setShowExportModal(false)}
+        >
+          <div
+            style={{
+              backgroundColor: '#fff',
+              borderRadius: '0.75rem',
+              padding: '1.5rem',
+              maxWidth: '600px',
+              width: '90%',
+              maxHeight: '80vh',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '600', color: '#1f2937' }}>
+                📥 导出对话
+              </h3>
+              <button
+                onClick={() => setShowExportModal(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '1.25rem',
+                  cursor: 'pointer',
+                  color: '#6b7280',
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Selection controls */}
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+              <button
+                onClick={selectAllForExport}
+                style={{
+                  padding: '0.375rem 0.75rem',
+                  fontSize: '0.75rem',
+                  backgroundColor: '#eef2ff',
+                  color: '#4338ca',
+                  border: '1px solid #c7d2fe',
+                  borderRadius: '0.375rem',
+                  cursor: 'pointer',
+                }}
+              >
+                全选
+              </button>
+              <button
+                onClick={() => setSelectedExportMessages(new Set())}
+                style={{
+                  padding: '0.375rem 0.75rem',
+                  fontSize: '0.75rem',
+                  backgroundColor: '#f3f4f6',
+                  color: '#6b7280',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '0.375rem',
+                  cursor: 'pointer',
+                }}
+              >
+                清除
+              </button>
+              <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: '#6b7280' }}>
+                已选择 {selectedExportMessages.size} / {messages.length} 条
+              </span>
+            </div>
+
+            {/* Message list */}
+            <div style={{ flex: 1, overflowY: 'auto', marginBottom: '1rem', border: '1px solid #e5e7eb', borderRadius: '0.5rem' }}>
+              {messages.map((msg, index) => (
+                <div
+                  key={msg.id}
+                  onClick={() => toggleExportMessageSelection(msg.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.75rem',
+                    padding: '0.75rem',
+                    borderBottom: index < messages.length - 1 ? '1px solid #f3f4f6' : 'none',
+                    cursor: 'pointer',
+                    backgroundColor: selectedExportMessages.has(msg.id) ? '#eef2ff' : 'transparent',
+                    transition: 'background-color 0.15s',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedExportMessages.has(msg.id)}
+                    onChange={() => toggleExportMessageSelection(msg.id)}
+                    style={{ marginTop: '0.25rem', cursor: 'pointer' }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '0.7rem', color: '#6b7280', marginBottom: '0.25rem' }}>
+                      {msg.role === 'user' ? '👤 用户' : '🤖 AI'}
+                    </div>
+                    <div style={{
+                      fontSize: '0.8rem',
+                      color: '#374151',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                    }}>
+                      {msg.content.substring(0, 150)}{msg.content.length > 150 ? '...' : ''}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Export buttons */}
+            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => handleExportConversation('txt')}
+                disabled={selectedExportMessages.size === 0}
+                style={{
+                  padding: '0.5rem 1rem',
+                  fontSize: '0.8rem',
+                  backgroundColor: selectedExportMessages.size === 0 ? '#f3f4f6' : '#fff',
+                  color: selectedExportMessages.size === 0 ? '#9ca3af' : '#374151',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '0.375rem',
+                  cursor: selectedExportMessages.size === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
+                📄 TXT
+              </button>
+              <button
+                onClick={() => handleExportConversation('markdown')}
+                disabled={selectedExportMessages.size === 0}
+                style={{
+                  padding: '0.5rem 1rem',
+                  fontSize: '0.8rem',
+                  backgroundColor: selectedExportMessages.size === 0 ? '#f3f4f6' : '#fff',
+                  color: selectedExportMessages.size === 0 ? '#9ca3af' : '#374151',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '0.375rem',
+                  cursor: selectedExportMessages.size === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
+                📝 Markdown
+              </button>
+              <button
+                onClick={() => handleExportConversation('json')}
+                disabled={selectedExportMessages.size === 0}
+                style={{
+                  padding: '0.5rem 1rem',
+                  fontSize: '0.8rem',
+                  backgroundColor: selectedExportMessages.size === 0 ? '#e5e7eb' : '#4338ca',
+                  color: selectedExportMessages.size === 0 ? '#9ca3af' : '#fff',
+                  border: 'none',
+                  borderRadius: '0.375rem',
+                  cursor: selectedExportMessages.size === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
+                📊 JSON
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Intervention Manager - Handles Soft/Medium/Hard tier interventions */}
       <InterventionManager
