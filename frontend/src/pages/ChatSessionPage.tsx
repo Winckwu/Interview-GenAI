@@ -3292,7 +3292,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                     value={currentBranchPath}
                     onChange={(e) => switchBranchPath(e.target.value)}
                     style={{
-                      padding: '0.4rem 1.75rem 0.4rem 0.6rem',
+                      padding: '0.4rem 1.5rem 0.4rem 0.5rem',
                       fontSize: '0.75rem',
                       borderRadius: '0.375rem',
                       border: '1px solid #c7d2fe',
@@ -3300,10 +3300,12 @@ Message: "${firstMessage.slice(0, 200)}"`,
                       color: '#4338ca',
                       cursor: 'pointer',
                       fontWeight: '500',
-                      minWidth: '100px',
+                      minWidth: '80px',
                       appearance: 'none',
                       WebkitAppearance: 'none',
                       MozAppearance: 'none',
+                      outline: 'none',
+                      backgroundImage: 'none',
                     }}
                   >
                     {availableBranchPaths.map((path) => (
