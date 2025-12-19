@@ -72,6 +72,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   const [diffs, setDiffs] = useState<DiffChange[]>([]);
   const [chainOfThought, setChainOfThought] = useState<ChainOfThoughtStep[]>([]);
   const [isDifferentTopic, setIsDifferentTopic] = useState<boolean>(false);
+  const [expandedTurnId, setExpandedTurnId] = useState<string | null>(null);
 
   /**
    * Check if two prompts are similar (indicating a refinement/regeneration vs new topic)
@@ -646,26 +647,56 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   };
 
   /**
-   * Render version selector sidebar
+   * Handle turn expand/collapse toggle
+   */
+  const handleTurnToggle = useCallback((versionId: string) => {
+    setExpandedTurnId(prev => prev === versionId ? null : versionId);
+  }, []);
+
+  /**
+   * Render version selector sidebar with expandable turns
    */
   const renderVersionSelector = () => {
     return (
       <div className="mr2-version-selector-panel">
         <h3>Turns</h3>
         <div className="mr2-version-list">
-          {versions.map((version, idx) => (
-            <button
-              key={version.id}
-              className={`mr2-version-item ${selectedVersionId === version.id ? 'active' : ''}`}
-              onClick={() => handleVersionSelect(version.id)}
-              title={`Turn ${version.promptVersion}: ${version.modelName}`}
-            >
-              <span className="mr2-version-num">Turn {version.promptVersion}</span>
-              <span className="mr2-version-time">
-                {new Date(version.timestamp).toLocaleTimeString()}
-              </span>
-            </button>
-          ))}
+          {versions.map((version) => {
+            const isExpanded = expandedTurnId === version.id;
+            return (
+              <div key={version.id} className="mr2-turn-container">
+                <button
+                  className={`mr2-version-item ${isExpanded ? 'active' : ''}`}
+                  onClick={() => handleTurnToggle(version.id)}
+                  title={`Turn ${version.promptVersion}: ${version.modelName}`}
+                >
+                  <span className="mr2-turn-expand-icon">{isExpanded ? '▼' : '▶'}</span>
+                  <span className="mr2-version-num">Turn {version.promptVersion}</span>
+                  <span className="mr2-version-time">
+                    {new Date(version.timestamp).toLocaleTimeString()}
+                  </span>
+                </button>
+                {isExpanded && (
+                  <div className="mr2-turn-expanded-content">
+                    <div className="mr2-turn-message mr2-turn-user">
+                      <div className="mr2-turn-role">👤 User</div>
+                      <div className="mr2-turn-text">{version.userPrompt}</div>
+                    </div>
+                    <div className="mr2-turn-message mr2-turn-ai">
+                      <div className="mr2-turn-role">🤖 AI</div>
+                      <div className="mr2-turn-text">{version.aiOutput}</div>
+                    </div>
+                    {version.reasoning && (
+                      <div className="mr2-turn-message mr2-turn-reasoning">
+                        <div className="mr2-turn-role">🧠 Reasoning</div>
+                        <div className="mr2-turn-text">{version.reasoning}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
