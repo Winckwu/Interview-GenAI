@@ -296,91 +296,20 @@ function evaluateTriggerCondition(
   profile: UserProfile,
   ctx: TriggerContext
 ): boolean {
-  const scores = profile.subprocessScores;
-
-  switch (mr) {
-    case 'mr1-decomposition':
-      // (taskComplexity=high OR msgLength>1500) AND P1<3
-      return (ctx.taskComplexity === 'high' || ctx.messageLength > 1500) && scores.P1 < 3;
-
-    case 'mr2-transparency':
-      // (isNewUser OR low familiarity indicator) AND E3<2
-      return (profile.behavioralIndicators.totalInteractions < 10) && scores.E3 < 2;
-
-    case 'mr3-agency':
-      // (aiSuggestsAction OR containsDecisions) AND pattern≠A
-      return (ctx.containsDecisions) && profile.pattern !== 'A';
-
-    case 'mr4-roles':
-      // (isNewSession AND taskTypeChanged) OR pattern=C
-      return (ctx.messageIndex === 0 && ctx.isNewTaskType) || profile.pattern === 'C';
-
-    case 'mr5-iteration':
-      // (iterationCount>=2 OR modified) AND R1>=2
-      return (ctx.iterationCount >= 2 || ctx.messageWasModified) && scores.R1 >= 2;
-
-    case 'mr6-models':
-      // pattern=D OR (trustScore<45 AND criticality=high)
-      return profile.pattern === 'D' || (ctx.trustScore < 45 && ctx.taskCriticality === 'high');
-
-    case 'mr7-failure':
-      // (hasFailedBefore OR trustDecline>20%) AND E2>=2
-      return (ctx.hasFailedBefore || ctx.recentTrustChange < -20) && scores.E2 >= 2;
-
-    case 'mr8-recognition':
-      // (pattern=C OR taskTypeNew) AND M3>=2
-      return (profile.pattern === 'C' || ctx.isNewTaskType) && scores.M3 >= 2;
-
-    case 'mr9-trust':
-      // (trustChange>15% OR R2>=2) AND msgIndex>=3
-      return (Math.abs(ctx.recentTrustChange) > 15 || scores.R2 >= 2) && ctx.messageIndex >= 3;
-
-    case 'mr10-cost':
-      // (criticality=high OR irreversibleAction) AND P4<2
-      return ctx.taskCriticality === 'high' && scores.P4 < 2;
-
-    case 'mr11-verify':
-      // (M2<2 AND unverified>=2) OR criticality=high
-      return (scores.M2 < 2 && ctx.consecutiveUnverified >= 2) || ctx.taskCriticality === 'high';
-
-    case 'mr12-critical':
-      // DISABLED: Removed from inline display - redundant with trust score color
-      // The functionality still exists in MR panel if user wants to access it
-      return false;
-
-    case 'mr13-uncertainty':
-      // (hasUncertainty OR aiConfidence<0.5) AND E3>=2
-      return ctx.uncertaintyIndicators > 0 && scores.E3 >= 2;
-
-    case 'mr14-reflection':
-      // (msgIndex mod 3 = 0) AND pattern≠A
-      return (ctx.messageIndex % 3 === 0) && profile.pattern !== 'A';
-
-    case 'mr15-strategies':
-      // pattern=E OR (E2>=2 AND sessionDuration>15)
-      return profile.pattern === 'E' || (scores.E2 >= 2 && ctx.sessionDuration > 15);
-
-    case 'mr16-warnings':
-      // Only trigger if trust score < 60% AND risk detected
-      // Rationale: High confidence outputs don't need redundant risk warnings
-      if (ctx.trustScore >= 60) return false;
-      return ctx.hasControversialClaim || ctx.taskCriticality === 'high';
-
-    case 'mr17-metrics':
-      // (pattern=B AND iterationCount>=3) OR session ending
-      return (profile.pattern === 'B' && ctx.iterationCount >= 3);
-
-    case 'mr18-warnings':
-      // unverifiedConsecutive>=4 AND M2<2
-      return ctx.consecutiveUnverified >= 4 && scores.M2 < 2;
-
-    case 'mr19-assessment':
-      // (sessionEnding OR milestone) AND E1+E2+E3>=5
-      return ctx.sessionDuration > 30 && (scores.E1 + scores.E2 + scores.E3) >= 5;
-
-    default:
-      return false;
-  }
+  // ============================================================
+  // ALL INLINE MR TAGS DISABLED
+  // ============================================================
+  // Rationale: Inline tags cluttered the UI and confused users.
+  // The trust score + Verify/Modify buttons are sufficient for inline feedback.
+  //
+  // Important MR interventions are now handled by the 3-tier intervention system:
+  // - Tier 1 (Soft): Subtle signals for uncertainty, reflection
+  // - Tier 2 (Medium): Alerts for skill atrophy, over-dependence
+  // - Tier 3 (Hard): Barriers for Pattern F (high-risk over-reliance)
+  //
+  // Users can still access all MR tools via the MR panel if needed.
+  // ============================================================
+  return false;
 }
 
 /**
