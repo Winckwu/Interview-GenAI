@@ -524,15 +524,15 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     onClick={onBranchSetAsMain}
                     title="Set this branch as the main answer"
                     style={{
-                      background: 'none',
-                      border: '1px solid #10b981',
+                      background: '#fef3c7',
+                      border: '1px solid #f59e0b',
                       cursor: 'pointer',
-                      padding: '0.125rem 0.375rem',
+                      padding: '0.25rem 0.5rem',
                       fontSize: '0.7rem',
-                      color: '#10b981',
+                      color: '#92400e',
                       marginLeft: '0.5rem',
                       borderRadius: '0.25rem',
-                      fontWeight: '500',
+                      fontWeight: '600',
                     }}
                   >
                     ⭐ Set as Main
@@ -564,15 +564,15 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     onClick={() => setShowComparison(true)}
                     title="Compare branches side-by-side"
                     style={{
-                      background: 'none',
+                      background: '#dbeafe',
                       border: '1px solid #3b82f6',
                       cursor: 'pointer',
-                      padding: '0.125rem 0.375rem',
+                      padding: '0.25rem 0.5rem',
                       fontSize: '0.7rem',
-                      color: '#3b82f6',
+                      color: '#1e40af',
                       marginLeft: '0.5rem',
                       borderRadius: '0.25rem',
-                      fontWeight: '500',
+                      fontWeight: '600',
                     }}
                   >
                     🔍 Compare
@@ -586,14 +586,14 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                       onClick={() => setShowFilter(!showFilter)}
                       title="Filter branches by source and status"
                       style={{
-                        background: 'none',
+                        background: '#ede9fe',
                         border: '1px solid #8b5cf6',
                         cursor: 'pointer',
-                        padding: '0.125rem 0.375rem',
+                        padding: '0.25rem 0.5rem',
                         fontSize: '0.7rem',
-                        color: '#8b5cf6',
+                        color: '#5b21b6',
                         borderRadius: '0.25rem',
-                        fontWeight: '500',
+                        fontWeight: '600',
                       }}
                     >
                       🔧 Filter {filteredBranches.length !== message.branches.length ? `(${filteredBranches.length})` : ''}
@@ -618,14 +618,14 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                       onClick={() => setShowExportMenu(!showExportMenu)}
                       title="Export branch history"
                       style={{
-                        background: 'none',
-                        border: '1px solid #059669',
+                        background: '#d1fae5',
+                        border: '1px solid #10b981',
                         cursor: 'pointer',
-                        padding: '0.125rem 0.375rem',
+                        padding: '0.25rem 0.5rem',
                         fontSize: '0.7rem',
-                        color: '#059669',
+                        color: '#065f46',
                         borderRadius: '0.25rem',
-                        fontWeight: '500',
+                        fontWeight: '600',
                       }}
                     >
                       📥 Export
@@ -715,15 +715,15 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     onClick={() => setShowAnalytics(true)}
                     title="View branch analytics"
                     style={{
-                      background: 'none',
+                      background: '#fef3c7',
                       border: '1px solid #f59e0b',
                       cursor: 'pointer',
-                      padding: '0.125rem 0.375rem',
+                      padding: '0.25rem 0.5rem',
                       fontSize: '0.7rem',
-                      color: '#f59e0b',
+                      color: '#92400e',
                       marginLeft: '0.5rem',
                       borderRadius: '0.25rem',
-                      fontWeight: '500',
+                      fontWeight: '600',
                     }}
                   >
                     📈 Analytics
