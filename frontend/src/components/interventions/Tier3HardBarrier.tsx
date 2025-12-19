@@ -29,7 +29,6 @@
  */
 
 import React, { useEffect, useRef, useState, ReactNode } from 'react';
-import { AlertTriangle } from 'lucide-react';
 import './Tier3HardBarrier.css';
 
 export interface BarrierOption {
@@ -68,7 +67,7 @@ export interface Tier3HardBarrierProps {
  */
 const Tier3HardBarrier: React.FC<Tier3HardBarrierProps> = ({
   id,
-  icon = <AlertTriangle size={20} strokeWidth={2} />,
+  icon = '⚠️',
   title,
   message,
   description,
@@ -301,7 +300,7 @@ const Tier3HardBarrier: React.FC<Tier3HardBarrierProps> = ({
 
         {/* Warning logged notice */}
         <div className="barrier-logged-notice">
-          <span className="notice-icon"><AlertTriangle size={14} strokeWidth={2} /></span>
+          <span className="notice-icon">⚠️</span>
           This warning has been logged to the system
         </div>
 

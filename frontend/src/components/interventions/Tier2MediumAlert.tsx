@@ -18,7 +18,6 @@
  */
 
 import React, { useState, useEffect, useRef, ReactNode } from 'react';
-import { Bell } from 'lucide-react';
 import './Tier2MediumAlert.css';
 
 export interface Tier2MediumAlertProps {
@@ -53,7 +52,7 @@ export interface Tier2MediumAlertProps {
  */
 const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
   id,
-  icon = <Bell size={18} strokeWidth={2} />,
+  icon = '🔔',
   title,
   message,
   detectedBehaviors,

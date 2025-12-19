@@ -1,5 +1,4 @@
 import React from 'react';
-import { Inbox, Search, AlertTriangle, Lock } from 'lucide-react';
 import './EmptyState.css';
 
 interface EmptyStateProps {
@@ -28,7 +27,7 @@ interface EmptyStateProps {
  * />
  */
 const EmptyState: React.FC<EmptyStateProps> = ({
-  icon = <Inbox size={48} strokeWidth={1.5} />,
+  icon = '📭',
   title,
   description,
   action,
@@ -62,7 +61,7 @@ export default EmptyState;
 export const EmptyStateNotFound: React.FC<{ onGoBack?: () => void }> = ({ onGoBack }) => {
   return (
     <EmptyState
-      icon={<Search size={48} strokeWidth={1.5} />}
+      icon="🔍"
       title="Not found"
       description="The page or content you're looking for doesn't exist"
       action={onGoBack ? { label: 'Go back', onClick: onGoBack } : undefined}
@@ -76,7 +75,7 @@ export const EmptyStateNoResults: React.FC<{ query?: string; onClear?: () => voi
 }) => {
   return (
     <EmptyState
-      icon={<Search size={48} strokeWidth={1.5} />}
+      icon="🔍"
       title="No results found"
       description={
         query ? `No results found for "${query}". Try a different search.` : 'Try adjusting your search criteria'
@@ -89,7 +88,7 @@ export const EmptyStateNoResults: React.FC<{ query?: string; onClear?: () => voi
 export const EmptyStateError: React.FC<{ onRetry?: () => void }> = ({ onRetry }) => {
   return (
     <EmptyState
-      icon={<AlertTriangle size={48} strokeWidth={1.5} />}
+      icon="⚠️"
       title="Something went wrong"
       description="We encountered an error while loading the content"
       action={onRetry ? { label: 'Try again', onClick: onRetry } : undefined}
@@ -100,7 +99,7 @@ export const EmptyStateError: React.FC<{ onRetry?: () => void }> = ({ onRetry })
 export const EmptyStateNoAccess: React.FC<{ onGoBack?: () => void }> = ({ onGoBack }) => {
   return (
     <EmptyState
-      icon={<Lock size={48} strokeWidth={1.5} />}
+      icon="🔒"
       title="Access denied"
       description="You don't have permission to access this resource"
       action={onGoBack ? { label: 'Go back', onClick: onGoBack } : undefined}

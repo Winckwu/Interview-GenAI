@@ -1,5 +1,4 @@
-import React, { useState, useCallback, ReactNode } from 'react';
-import { Search, Lock, BookOpen, Rocket, RefreshCw, ClipboardList, Lightbulb } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
 import './VerificationToolbar.css';
 
 /**
@@ -35,7 +34,7 @@ interface VerifyButtonProps {
   label: string;
   status: VerificationStatus;
   onClick: () => void;
-  icon: ReactNode;
+  icon: string;
   description: string;
 }
 
@@ -682,7 +681,7 @@ export const VerificationToolbar: React.FC<VerificationToolbarProps> = ({
     <div className="verification-toolbar">
       {/* Header */}
       <div className="verification-header">
-        <h3 className="verification-title"><Search size={18} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} /> Integrated Verification Toolbar</h3>
+        <h3 className="verification-title">🔍 Integrated Verification Toolbar</h3>
         <p className="verification-subtitle">
           Multi-layer validation: code integrity, security, tests, math, citations, facts
         </p>
@@ -703,7 +702,7 @@ export const VerificationToolbar: React.FC<VerificationToolbarProps> = ({
           label="Security Scan"
           status={statuses.security}
           onClick={runSecurityScan}
-          icon={<Lock size={16} />}
+          icon="🔒"
           description="Scan for security vulnerabilities (SonarQube-like rules)"
         />
         <VerifyButton
@@ -727,7 +726,7 @@ export const VerificationToolbar: React.FC<VerificationToolbarProps> = ({
           label="Citations"
           status={statuses.citation}
           onClick={verifyCitations}
-          icon={<BookOpen size={16} />}
+          icon="📚"
           description="Verify academic citations against Scholar database"
         />
         <VerifyButton
@@ -747,7 +746,7 @@ export const VerificationToolbar: React.FC<VerificationToolbarProps> = ({
           onClick={runAllVerifications}
           disabled={Object.values(statuses).some((s) => s === 'pending')}
         >
-          <Rocket size={14} style={{ marginRight: '0.25rem', verticalAlign: 'middle' }} /> Verify All
+          🚀 Verify All
         </button>
         <button
           className="verification-action-button"
@@ -763,7 +762,7 @@ export const VerificationToolbar: React.FC<VerificationToolbarProps> = ({
             });
           }}
         >
-          <RefreshCw size={14} style={{ marginRight: '0.25rem', verticalAlign: 'middle' }} /> Reset
+          🔄 Reset
         </button>
         <button
           className="verification-action-button"
@@ -778,7 +777,7 @@ export const VerificationToolbar: React.FC<VerificationToolbarProps> = ({
       {results.length > 0 && (
         <div className="verification-results">
           <div className="verification-results-header">
-            <h4><ClipboardList size={16} style={{ marginRight: '0.25rem', verticalAlign: 'middle' }} /> Verification Results</h4>
+            <h4>📋 Verification Results</h4>
             <div className="verification-summary">
               <span className="summary-item">
                 Total: <strong>{results.length}</strong>
@@ -860,7 +859,7 @@ export const VerificationToolbar: React.FC<VerificationToolbarProps> = ({
 
                   {result.suggestions && result.suggestions.length > 0 && (
                     <div className="suggestions-section">
-                      <h5><Lightbulb size={14} style={{ marginRight: '0.25rem', verticalAlign: 'middle' }} /> Suggestions:</h5>
+                      <h5>💡 Suggestions:</h5>
                       <ul className="suggestions-list">
                         {result.suggestions.map((suggestion, idx) => (
                           <li key={idx} className="suggestion-item">

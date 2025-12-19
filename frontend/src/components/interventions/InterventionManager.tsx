@@ -36,7 +36,6 @@ import {
   TrendingUp,
   AlertTriangle,
   Lightbulb,
-  Bell,
 } from 'lucide-react';
 import {
   scheduleIntervention,
@@ -406,7 +405,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     if (tier === 'soft') {
       return {
         ...baseIntervention,
-        icon: <BarChart3 size={18} strokeWidth={2} />,
+        icon: '📊',
         title: 'Pattern Insight',
         message: ruleContent.message,
         description: `Based on ${triggeredRules.length} behavior indicator${triggeredRules.length > 1 ? 's' : ''}`,
@@ -421,7 +420,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     if (tier === 'medium') {
       return {
         ...baseIntervention,
-        icon: <Bell size={18} strokeWidth={2} />,
+        icon: '🔔',
         title: 'MCA Reminder',
         message: ruleContent.message,
         detectedBehaviors: ruleContent.messageList, // For list display when multiple
@@ -440,7 +439,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     // Hard barrier - contextual design based on triggered rules
     return {
       ...baseIntervention,
-      icon: <AlertTriangle size={20} strokeWidth={2} />,
+      icon: '⚠️',
       title: 'Warning: Passive Usage Pattern Detected',
       message: ruleContent.message,
       consecutiveCount: detection.layer1.triggeredCount,
@@ -652,7 +651,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     return (
       <Tier2MediumAlert
         id={intervention.id}
-        icon={intervention.icon || <Bell size={18} strokeWidth={2} />}
+        icon={intervention.icon || '🔔'}
         title={intervention.title || 'MCA Reminder'}
         message={intervention.message}
         detectedBehaviors={intervention.detectedBehaviors}
@@ -674,7 +673,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     return (
       <Tier3HardBarrier
         id={intervention.id}
-        icon={intervention.icon || <AlertTriangle size={20} strokeWidth={2} />}
+        icon={intervention.icon || '⚠️'}
         title={intervention.title || 'Warning: Over-Reliance Risk Detected'}
         message={intervention.message}
         description={intervention.description}

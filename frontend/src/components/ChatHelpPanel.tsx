@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Info, Brain, RefreshCw, AlertTriangle, BarChart3, Lightbulb } from 'lucide-react';
 import './ChatHelpPanel.css';
 
 interface ChatHelpPanelProps {
@@ -81,7 +80,7 @@ const ChatHelpPanel: React.FC<ChatHelpPanelProps> = ({
             </div>
 
             <div className="chat-help-info-box">
-              <div className="info-icon"><Info size={20} strokeWidth={2} /></div>
+              <div className="info-icon">ℹ️</div>
               <div className="info-content">
                 <h4>What happens during a chat?</h4>
                 <ul>
@@ -98,7 +97,7 @@ const ChatHelpPanel: React.FC<ChatHelpPanelProps> = ({
         {activeSection === 'mr' && (
           <div className="chat-help-section">
             <div className="chat-help-info-box">
-              <div className="info-icon"><Brain size={20} strokeWidth={2} /></div>
+              <div className="info-icon">🧠</div>
               <div className="info-content">
                 <h4>MR Intervention System</h4>
                 <p>Metacognitive Recommendation (MR) interventions help prevent skill degradation and improve AI collaboration effectiveness.</p>
@@ -108,21 +107,21 @@ const ChatHelpPanel: React.FC<ChatHelpPanelProps> = ({
             <div className="chat-help-mr-list">
               <h4>When do MR interventions appear?</h4>
               <div className="mr-trigger-item">
-                <span className="mr-icon"><RefreshCw size={16} strokeWidth={2} /></span>
+                <span className="mr-icon">🔄</span>
                 <div className="mr-trigger-text">
                   <strong>Low verification behavior</strong>
                   <p>System detects you're not validating AI outputs</p>
                 </div>
               </div>
               <div className="mr-trigger-item">
-                <span className="mr-icon"><AlertTriangle size={16} strokeWidth={2} /></span>
+                <span className="mr-icon">⚠️</span>
                 <div className="mr-trigger-text">
                   <strong>Pattern recognition</strong>
                   <p>System identifies risky usage patterns (D, E, or F)</p>
                 </div>
               </div>
               <div className="mr-trigger-item">
-                <span className="mr-icon"><BarChart3 size={16} strokeWidth={2} /></span>
+                <span className="mr-icon">📊</span>
                 <div className="mr-trigger-text">
                   <strong>Metacognitive assessment</strong>
                   <p>Periodic evaluation of your cognitive capabilities</p>
@@ -191,7 +190,7 @@ const ChatHelpPanel: React.FC<ChatHelpPanelProps> = ({
 
       <div className="chat-help-footer">
         <p className="help-note">
-          <Lightbulb size={14} strokeWidth={2} style={{ marginRight: '0.25rem', verticalAlign: 'middle' }} /> <strong>Tip:</strong> The system learns from your behavior to provide personalized guidance
+          💡 <strong>Tip:</strong> The system learns from your behavior to provide personalized guidance
         </p>
       </div>
     </div>

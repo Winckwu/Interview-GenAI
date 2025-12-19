@@ -6,7 +6,6 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { RefreshCw, Scale } from 'lucide-react';
 
 export interface MR6SuggestionProps {
   messageId: string;
@@ -66,7 +65,7 @@ export const MR6Suggestion: React.FC<MR6SuggestionProps> = ({
           e.currentTarget.style.transform = 'scale(1)';
         }}
       >
-        <Scale size={16} strokeWidth={2} />
+        🔄
       </button>
 
       {/* Dropdown Menu */}
@@ -92,11 +91,8 @@ export const MR6Suggestion: React.FC<MR6SuggestionProps> = ({
             fontWeight: 600,
             color: '#1f2937',
             marginBottom: '0.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.375rem',
           }}>
-            <Scale size={14} strokeWidth={2} /> Multi-Model Comparison
+            🔄 Multi-Model Comparison
           </div>
 
           <div style={{
