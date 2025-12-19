@@ -4396,60 +4396,58 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
             {/* Message list */}
             <div style={{ flex: 1, overflowY: 'auto', marginBottom: '1rem', border: '1px solid #e5e7eb', borderRadius: '0.5rem' }}>
-              {messages.map((msg, index) => (
-                <div
-                  key={msg.id}
-                  onClick={() => toggleExportMessageSelection(msg.id)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '0.75rem',
-                    padding: '0.75rem',
-                    borderBottom: index < messages.length - 1 ? '1px solid #f3f4f6' : 'none',
-                    cursor: 'pointer',
-                    backgroundColor: selectedExportMessages.has(msg.id) ? '#eef2ff' : 'transparent',
-                    transition: 'background-color 0.15s',
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedExportMessages.has(msg.id)}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      toggleExportMessageSelection(msg.id);
-                    }}
+              {messages.map((msg, index) => {
+                const isSelected = selectedExportMessages.has(msg.id);
+                return (
+                  <label
+                    key={msg.id}
                     style={{
-                      marginTop: '0.25rem',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '0.75rem',
+                      padding: '0.75rem',
+                      borderBottom: index < messages.length - 1 ? '1px solid #e5e7eb' : 'none',
                       cursor: 'pointer',
-                      width: '16px',
-                      height: '16px',
-                      flexShrink: 0,
-                      accentColor: '#4f46e5',
+                      backgroundColor: isSelected ? '#dbeafe' : (index % 2 === 0 ? '#fafafa' : '#ffffff'),
+                      transition: 'background-color 0.15s',
+                      userSelect: 'none',
                     }}
-                  />
-                  <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
-                    <div style={{
-                      fontSize: '0.7rem',
-                      color: msg.role === 'user' ? '#2563eb' : '#059669',
-                      marginBottom: '0.25rem',
-                      fontWeight: 500,
-                    }}>
-                      {msg.role === 'user' ? '👤 User' : '🤖 AI'}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleExportMessageSelection(msg.id)}
+                      style={{
+                        marginTop: '0.125rem',
+                        cursor: 'pointer',
+                        width: '18px',
+                        height: '18px',
+                        flexShrink: 0,
+                        accentColor: '#4f46e5',
+                      }}
+                    />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{
+                        fontSize: '0.75rem',
+                        color: msg.role === 'user' ? '#1d4ed8' : '#047857',
+                        marginBottom: '0.375rem',
+                        fontWeight: 600,
+                      }}>
+                        {msg.role === 'user' ? '👤 User' : '🤖 AI'}
+                      </div>
+                      <div style={{
+                        fontSize: '0.85rem',
+                        color: '#1f2937',
+                        lineHeight: '1.5',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-word',
+                      }}>
+                        {msg.content ? (msg.content.substring(0, 200) + (msg.content.length > 200 ? '...' : '')) : '(empty message)'}
+                      </div>
                     </div>
-                    <div style={{
-                      fontSize: '0.8rem',
-                      color: '#374151',
-                      lineHeight: '1.4',
-                      whiteSpace: 'pre-wrap',
-                      wordBreak: 'break-word',
-                      maxHeight: '3.5em',
-                      overflow: 'hidden',
-                    }}>
-                      {msg.content ? (msg.content.substring(0, 150) + (msg.content.length > 150 ? '...' : '')) : '(empty message)'}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                  </label>
+                );
+              })}
             </div>
 
             {/* Export buttons */}
