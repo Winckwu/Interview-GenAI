@@ -360,7 +360,9 @@ function evaluateTriggerCondition(
       return profile.pattern === 'E' || (scores.E2 >= 2 && ctx.sessionDuration > 15);
 
     case 'mr16-warnings':
-      // Always trigger if risk detected (unconditional)
+      // Only trigger if trust score < 60% AND risk detected
+      // Rationale: High confidence outputs don't need redundant risk warnings
+      if (ctx.trustScore >= 60) return false;
       return ctx.hasControversialClaim || ctx.taskCriticality === 'high';
 
     case 'mr17-metrics':
@@ -466,7 +468,9 @@ function generateReason(mr: MRToolType, profile: UserProfile, ctx: TriggerContex
     'mr13-uncertainty': 'AI expressed uncertainty. Review confidence levels carefully.',
     'mr14-reflection': 'Take a moment to reflect on this interaction.',
     'mr15-strategies': 'Building metacognitive strategies improves long-term AI collaboration.',
-    'mr16-warnings': 'Potential risk detected. Please review carefully.',
+    'mr16-warnings': ctx.hasControversialClaim
+      ? `Controversial claim detected (trust: ${ctx.trustScore}%). Verify facts before using.`
+      : `High-risk task type (trust: ${ctx.trustScore}%). Extra verification recommended.`,
     'mr17-metrics': `${ctx.iterationCount} iterations completed. Review progress metrics.`,
     'mr18-warnings': `${ctx.consecutiveUnverified} consecutive responses accepted without verification. Consider checking recent outputs.`,
     'mr19-assessment': 'Session milestone reached. Self-assessment can strengthen skills.',
