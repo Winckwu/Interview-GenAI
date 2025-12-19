@@ -17,12 +17,12 @@
  *  [Verify Now] [Remind Later] [Don't show this type of reminder]"
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, ReactNode } from 'react';
 import './Tier2MediumAlert.css';
 
 export interface Tier2MediumAlertProps {
   id: string;
-  icon?: string;
+  icon?: ReactNode;  // Support both string emoji and React components (e.g., Lucide icons)
   title: string;
   message: string;
   detectedBehaviors?: string[]; // List of detected behavior patterns

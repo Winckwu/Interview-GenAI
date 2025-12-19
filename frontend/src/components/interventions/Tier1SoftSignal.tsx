@@ -13,12 +13,12 @@
  * - "✨ Pro tip: Verify before use"
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ReactNode } from 'react';
 import './Tier1SoftSignal.css';
 
 export interface Tier1SoftSignalProps {
   id: string;
-  icon?: string;
+  icon?: ReactNode;  // Support both string emoji and React components (e.g., Lucide icons)
   title?: string;
   message: string;
   description?: string;

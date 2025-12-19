@@ -28,7 +28,7 @@
  *  ⚠️ This warning has been logged to the system"
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, ReactNode } from 'react';
 import './Tier3HardBarrier.css';
 
 export interface BarrierOption {
@@ -39,7 +39,7 @@ export interface BarrierOption {
 
 export interface Tier3HardBarrierProps {
   id: string;
-  icon?: string;
+  icon?: ReactNode;  // Support both string emoji and React components (e.g., Lucide icons)
   title: string;
   message: string;
   description?: string;

@@ -14,9 +14,29 @@
  * This component is invisible - it manages everything behind the scenes
  */
 
-import React, { useEffect, useCallback, useState, useRef } from 'react';
+import React, { useEffect, useCallback, useState, useRef, ReactNode } from 'react';
 import { Message } from '../../types';
 import { detectPatternF, extractUserSignals } from '../../utils/PatternDetector';
+import {
+  Puzzle,
+  Search,
+  Target,
+  Users,
+  GitBranch,
+  Scale,
+  BookOpen,
+  ClipboardList,
+  BarChart3,
+  CheckCircle,
+  Brain,
+  HelpCircle,
+  FileText,
+  GraduationCap,
+  Dumbbell,
+  TrendingUp,
+  AlertTriangle,
+  Lightbulb,
+} from 'lucide-react';
 import {
   scheduleIntervention,
   recordInterventionAction as updateInterventionAction,
@@ -197,27 +217,29 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
       // Note: caller must update lastHardBarrierTimeRef.current if tier === 'hard'
 
-      // MR-specific metadata for diverse, personalized interventions
-      const MR_METADATA: Record<string, { icon: string; category: string; risks: string[]; suggestions: string[] }> = {
-        MR1:  { icon: '🧩', category: 'Task Planning', risks: ['May feel overwhelmed by complexity', 'Missing important subtasks'], suggestions: ['Break task into 3-5 smaller steps', 'Identify dependencies between steps'] },
-        MR2:  { icon: '🔍', category: 'Process Understanding', risks: ['May not understand AI reasoning', 'Harder to verify correctness'], suggestions: ['Ask AI to explain its process', 'Request step-by-step breakdown'] },
-        MR3:  { icon: '🎯', category: 'Human Agency', risks: ['AI may make decisions for you', 'Reduced sense of control'], suggestions: ['Clarify your decision points', 'Take ownership of key choices'] },
-        MR4:  { icon: '🎭', category: 'Role Definition', risks: ['Unclear expectations', 'Misaligned collaboration'], suggestions: ['Define your role clearly', 'Specify what you want AI to do'] },
-        MR5:  { icon: '🔄', category: 'Iteration', risks: ['Losing previous good versions', 'Inefficient exploration'], suggestions: ['Use branching to preserve progress', 'Compare multiple approaches'] },
-        MR6:  { icon: '⚖️', category: 'Cross-Validation', risks: ['Single point of failure', 'Unverified claims'], suggestions: ['Compare with another AI model', 'Cross-check important facts'] },
-        MR7:  { icon: '📚', category: 'Learning from Failure', risks: ['Repeating same mistakes', 'Missing learning opportunities'], suggestions: ['Reflect on what went wrong', 'Document lessons learned'] },
-        MR8:  { icon: '📋', category: 'Task Recognition', risks: ['Using wrong approach', 'Suboptimal results'], suggestions: ['Consider task characteristics', 'Adjust strategy accordingly'] },
-        MR9:  { icon: '📊', category: 'Trust Calibration', risks: ['Over/under trusting AI', 'Uncalibrated expectations'], suggestions: ['Adjust trust based on evidence', 'Track AI accuracy over time'] },
-        MR10: { icon: '⚖️', category: 'Cost-Benefit', risks: ['Unintended consequences', 'Resource waste'], suggestions: ['Weigh pros and cons', 'Consider reversibility'] },
-        MR11: { icon: '✅', category: 'Verification', risks: ['Accepting incorrect info', 'Building on faulty assumptions'], suggestions: ['Verify key claims', 'Use fact-checking tools'] },
-        MR12: { icon: '🤔', category: 'Critical Thinking', risks: ['Accepting at face value', 'Missing logical flaws'], suggestions: ['Question assumptions', 'Look for evidence'] },
-        MR13: { icon: '❓', category: 'Uncertainty', risks: ['False confidence', 'Ignoring limitations'], suggestions: ['Note confidence levels', 'Verify uncertain parts'] },
-        MR14: { icon: '📝', category: 'Reflection', risks: ['Shallow learning', 'Missing insights'], suggestions: ['Pause and reflect', 'Connect to prior knowledge'] },
-        MR15: { icon: '🎓', category: 'Metacognitive Strategy', risks: ['Ineffective learning', 'Missed opportunities'], suggestions: ['Apply learning strategies', 'Monitor your understanding'] },
-        MR16: { icon: '💪', category: 'Skill Development', risks: ['Skill atrophy', 'Over-dependence on AI'], suggestions: ['Practice independently', 'Modify AI outputs'] },
-        MR17: { icon: '📈', category: 'Progress Tracking', risks: ['Unclear progress', 'Missed milestones'], suggestions: ['Review your learning journey', 'Celebrate achievements'] },
-        MR18: { icon: '🚨', category: 'Over-Reliance Warning', risks: ['Critical thinking decline', 'Accepting errors', 'Reduced learning'], suggestions: ['Verify before accepting', 'Make modifications', 'Question AI output'] },
-        MR19: { icon: '🧠', category: 'Self-Assessment', risks: ['Overestimating abilities', 'Blind spots'], suggestions: ['Assess your understanding', 'Identify knowledge gaps'] },
+      // MR-specific metadata for diverse, personalized interventions (using Lucide icons)
+      const iconSize = 18;
+      const iconStyle = { strokeWidth: 2 };
+      const MR_METADATA: Record<string, { icon: ReactNode; category: string; risks: string[]; suggestions: string[] }> = {
+        MR1:  { icon: <Puzzle size={iconSize} {...iconStyle} />, category: 'Task Planning', risks: ['May feel overwhelmed by complexity', 'Missing important subtasks'], suggestions: ['Break task into 3-5 smaller steps', 'Identify dependencies between steps'] },
+        MR2:  { icon: <Search size={iconSize} {...iconStyle} />, category: 'Process Understanding', risks: ['May not understand AI reasoning', 'Harder to verify correctness'], suggestions: ['Ask AI to explain its process', 'Request step-by-step breakdown'] },
+        MR3:  { icon: <Target size={iconSize} {...iconStyle} />, category: 'Human Agency', risks: ['AI may make decisions for you', 'Reduced sense of control'], suggestions: ['Clarify your decision points', 'Take ownership of key choices'] },
+        MR4:  { icon: <Users size={iconSize} {...iconStyle} />, category: 'Role Definition', risks: ['Unclear expectations', 'Misaligned collaboration'], suggestions: ['Define your role clearly', 'Specify what you want AI to do'] },
+        MR5:  { icon: <GitBranch size={iconSize} {...iconStyle} />, category: 'Iteration', risks: ['Losing previous good versions', 'Inefficient exploration'], suggestions: ['Use branching to preserve progress', 'Compare multiple approaches'] },
+        MR6:  { icon: <Scale size={iconSize} {...iconStyle} />, category: 'Cross-Validation', risks: ['Single point of failure', 'Unverified claims'], suggestions: ['Compare with another AI model', 'Cross-check important facts'] },
+        MR7:  { icon: <BookOpen size={iconSize} {...iconStyle} />, category: 'Learning from Failure', risks: ['Repeating same mistakes', 'Missing learning opportunities'], suggestions: ['Reflect on what went wrong', 'Document lessons learned'] },
+        MR8:  { icon: <ClipboardList size={iconSize} {...iconStyle} />, category: 'Task Recognition', risks: ['Using wrong approach', 'Suboptimal results'], suggestions: ['Consider task characteristics', 'Adjust strategy accordingly'] },
+        MR9:  { icon: <BarChart3 size={iconSize} {...iconStyle} />, category: 'Trust Calibration', risks: ['Over/under trusting AI', 'Uncalibrated expectations'], suggestions: ['Adjust trust based on evidence', 'Track AI accuracy over time'] },
+        MR10: { icon: <Scale size={iconSize} {...iconStyle} />, category: 'Cost-Benefit', risks: ['Unintended consequences', 'Resource waste'], suggestions: ['Weigh pros and cons', 'Consider reversibility'] },
+        MR11: { icon: <CheckCircle size={iconSize} {...iconStyle} />, category: 'Verification', risks: ['Accepting incorrect info', 'Building on faulty assumptions'], suggestions: ['Verify key claims', 'Use fact-checking tools'] },
+        MR12: { icon: <Brain size={iconSize} {...iconStyle} />, category: 'Critical Thinking', risks: ['Accepting at face value', 'Missing logical flaws'], suggestions: ['Question assumptions', 'Look for evidence'] },
+        MR13: { icon: <HelpCircle size={iconSize} {...iconStyle} />, category: 'Uncertainty', risks: ['False confidence', 'Ignoring limitations'], suggestions: ['Note confidence levels', 'Verify uncertain parts'] },
+        MR14: { icon: <FileText size={iconSize} {...iconStyle} />, category: 'Reflection', risks: ['Shallow learning', 'Missing insights'], suggestions: ['Pause and reflect', 'Connect to prior knowledge'] },
+        MR15: { icon: <GraduationCap size={iconSize} {...iconStyle} />, category: 'Metacognitive Strategy', risks: ['Ineffective learning', 'Missed opportunities'], suggestions: ['Apply learning strategies', 'Monitor your understanding'] },
+        MR16: { icon: <Dumbbell size={iconSize} {...iconStyle} />, category: 'Skill Development', risks: ['Skill atrophy', 'Over-dependence on AI'], suggestions: ['Practice independently', 'Modify AI outputs'] },
+        MR17: { icon: <TrendingUp size={iconSize} {...iconStyle} />, category: 'Progress Tracking', risks: ['Unclear progress', 'Missed milestones'], suggestions: ['Review your learning journey', 'Celebrate achievements'] },
+        MR18: { icon: <AlertTriangle size={iconSize} {...iconStyle} />, category: 'Over-Reliance Warning', risks: ['Critical thinking decline', 'Accepting errors', 'Reduced learning'], suggestions: ['Verify before accepting', 'Make modifications', 'Question AI output'] },
+        MR19: { icon: <Lightbulb size={iconSize} {...iconStyle} />, category: 'Self-Assessment', risks: ['Overestimating abilities', 'Blind spots'], suggestions: ['Assess your understanding', 'Identify knowledge gaps'] },
       };
 
       const metadata = MR_METADATA[mr.mrId] || MR_METADATA.MR18;
