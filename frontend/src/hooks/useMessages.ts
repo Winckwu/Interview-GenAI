@@ -41,7 +41,11 @@ export interface Message {
   wasModified?: boolean;
   wasRejected?: boolean;
 
-  // Conversation branching support
+  // Conversation tree support (true forking)
+  parentId?: string | null;  // Reference to parent message for tree structure
+  branchPath?: string;       // Which conversation path this message belongs to (e.g., 'main', 'branch-1')
+
+  // Conversation branching support (alternative responses at same point)
   branches?: MessageBranch[]; // Alternative responses for this message
   currentBranchIndex?: number; // Which branch is currently displayed (0 = original, 1+ = branches)
 
@@ -77,6 +81,10 @@ export interface UseMessagesReturn {
   editingMessageId: string | null;
   editedContent: string;
 
+  // Conversation tree state
+  currentBranchPath: string;
+  availableBranchPaths: string[];
+
   // Streaming state
   isStreaming: boolean;
   streamingContent: string;
@@ -99,6 +107,10 @@ export interface UseMessagesReturn {
   loadMoreMessages: () => Promise<void>;
   editUserMessageAndRegenerate: (userMessageId: string, newContent: string) => Promise<void>;
 
+  // Conversation tree operations
+  switchBranchPath: (branchPath: string) => Promise<void>;
+  forkConversation: (sourceMessageId: string, newBranchName: string) => Promise<string>;
+
   // Setters (for external state updates)
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
@@ -108,6 +120,7 @@ export interface UseMessagesReturn {
   setHasMoreMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLoadingMore: React.Dispatch<React.SetStateAction<boolean>>;
   setTotalMessagesCount: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentBranchPath: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // ============================================================

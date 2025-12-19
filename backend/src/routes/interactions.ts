@@ -25,6 +25,8 @@ router.post(
       wasModified = false,
       wasRejected = false,
       reasoning = null,
+      parentId = null,  // For conversation tree support
+      branchPath = 'main',  // For conversation tree support
     } = req.body;
 
     // Validation
@@ -63,10 +65,12 @@ router.post(
     const result = await pool.query(
       `INSERT INTO interactions (
         id, session_id, user_id, user_prompt, ai_response, ai_model,
-        response_time_ms, was_verified, was_modified, was_rejected, reasoning, created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        response_time_ms, was_verified, was_modified, was_rejected, reasoning,
+        parent_id, branch_path, created_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       RETURNING id, session_id, user_id, user_prompt, ai_response, ai_model,
-                response_time_ms, was_verified, was_modified, was_rejected, reasoning, created_at, updated_at`,
+                response_time_ms, was_verified, was_modified, was_rejected, reasoning,
+                parent_id, branch_path, created_at, updated_at`,
       [
         interactionId,
         sessionId,
@@ -79,6 +83,8 @@ router.post(
         wasModified,
         wasRejected,
         reasoning,
+        parentId,
+        branchPath,
         new Date(),
       ]
     );
@@ -99,6 +105,8 @@ router.post(
           wasModified: interaction.was_modified,
           wasRejected: interaction.was_rejected,
           reasoning: interaction.reasoning,
+          parentId: interaction.parent_id,
+          branchPath: interaction.branch_path,
           createdAt: interaction.created_at,
           updatedAt: interaction.updated_at,
         },
@@ -130,7 +138,8 @@ router.get(
 
     const result = await pool.query(
       `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
-              i.response_time_ms, i.was_verified, i.was_modified, i.was_rejected, i.created_at, i.updated_at
+              i.response_time_ms, i.was_verified, i.was_modified, i.was_rejected,
+              i.parent_id, i.branch_path, i.created_at, i.updated_at
        FROM interactions i
        WHERE i.id = $1 AND i.user_id = $2`,
       [interactionId, userId]
@@ -159,6 +168,8 @@ router.get(
           wasVerified: interaction.was_verified,
           wasModified: interaction.was_modified,
           wasRejected: interaction.was_rejected,
+          parentId: interaction.parent_id,
+          branchPath: interaction.branch_path,
           createdAt: interaction.created_at,
           updatedAt: interaction.updated_at,
         },
@@ -350,7 +361,7 @@ router.get(
     // Get paginated results
     const dataQuery = `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
                               i.response_time_ms, i.was_verified, i.was_modified,
-                              i.was_rejected, i.created_at, i.updated_at
+                              i.was_rejected, i.parent_id, i.branch_path, i.created_at, i.updated_at
                        FROM interactions i
                        ${whereClause}
                        ORDER BY i.created_at DESC LIMIT $${paramCount++} OFFSET $${paramCount}`;
@@ -409,6 +420,8 @@ router.get(
           wasVerified: i.was_verified,
           wasModified: i.was_modified,
           wasRejected: i.was_rejected,
+          parentId: i.parent_id,
+          branchPath: i.branch_path,
           createdAt: i.created_at,
           updatedAt: i.updated_at,
           branches: branchesMap.get(i.id) || [], // Include branches
@@ -416,6 +429,224 @@ router.get(
         total: total,
       },
       count: result.rows.length,
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
+ * GET /api/interactions/tree/:sessionId
+ * Get interactions for a session organized as a conversation tree
+ * Returns messages filtered by branchPath for tree navigation
+ */
+router.get(
+  '/tree/:sessionId',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { sessionId } = req.params;
+    const userId = req.user?.id;
+    const { branchPath = 'main' } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Verify session belongs to user
+    const sessionCheck = await pool.query(
+      'SELECT id FROM work_sessions WHERE id = $1 AND user_id = $2',
+      [sessionId, userId]
+    );
+
+    if (sessionCheck.rows.length === 0) {
+      return res.status(403).json({
+        success: false,
+        error: 'Session not found or does not belong to user',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Get all messages for this session and branch path
+    const result = await pool.query(
+      `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
+              i.response_time_ms, i.was_verified, i.was_modified, i.was_rejected,
+              i.parent_id, i.branch_path, i.created_at, i.updated_at
+       FROM interactions i
+       WHERE i.session_id = $1 AND i.branch_path = $2
+       ORDER BY i.created_at ASC`,
+      [sessionId, branchPath]
+    );
+
+    // Get all available branch paths for this session
+    const branchPathsResult = await pool.query(
+      `SELECT DISTINCT branch_path FROM interactions WHERE session_id = $1 ORDER BY branch_path`,
+      [sessionId]
+    );
+
+    // Load branches for all interactions
+    const interactionIds = result.rows.map((i: any) => i.id);
+    let branchesMap = new Map<string, any[]>();
+
+    if (interactionIds.length > 0) {
+      const branchesResult = await pool.query(
+        `SELECT id, interaction_id, branch_content, source, model,
+                was_verified, was_modified, is_main, created_by, created_at, updated_at
+         FROM message_branches
+         WHERE interaction_id = ANY($1)
+         ORDER BY created_at ASC`,
+        [interactionIds]
+      );
+
+      for (const branch of branchesResult.rows) {
+        const interactionId = branch.interaction_id;
+        if (!branchesMap.has(interactionId)) {
+          branchesMap.set(interactionId, []);
+        }
+        branchesMap.get(interactionId)!.push({
+          id: branch.id,
+          content: branch.branch_content,
+          source: branch.source,
+          model: branch.model,
+          wasVerified: branch.was_verified,
+          wasModified: branch.was_modified,
+          isMain: branch.is_main,
+          createdBy: branch.created_by,
+          createdAt: branch.created_at,
+          updatedAt: branch.updated_at,
+        });
+      }
+    }
+
+    res.json({
+      success: true,
+      data: {
+        interactions: result.rows.map((i: any) => ({
+          id: i.id,
+          sessionId: i.session_id,
+          userId: i.user_id,
+          userPrompt: i.user_prompt,
+          aiResponse: i.ai_response,
+          aiModel: i.ai_model,
+          responseTimeMs: i.response_time_ms,
+          wasVerified: i.was_verified,
+          wasModified: i.was_modified,
+          wasRejected: i.was_rejected,
+          parentId: i.parent_id,
+          branchPath: i.branch_path,
+          createdAt: i.created_at,
+          updatedAt: i.updated_at,
+          branches: branchesMap.get(i.id) || [],
+        })),
+        currentBranchPath: branchPath,
+        availableBranchPaths: branchPathsResult.rows.map((r: any) => r.branch_path),
+      },
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
+ * POST /api/interactions/fork
+ * Create a new conversation branch from an existing message
+ * Copies the message and sets up a new branch path
+ */
+router.post(
+  '/fork',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const {
+      sourceInteractionId,  // The interaction to fork from
+      newBranchPath,        // The new branch path name
+      userPrompt,           // Optional: new user prompt for this branch
+      aiResponse,           // Optional: new AI response for this branch
+    } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    if (!sourceInteractionId || !newBranchPath) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: sourceInteractionId, newBranchPath',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Get the source interaction
+    const sourceResult = await pool.query(
+      `SELECT * FROM interactions WHERE id = $1 AND user_id = $2`,
+      [sourceInteractionId, userId]
+    );
+
+    if (sourceResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Source interaction not found',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const source = sourceResult.rows[0];
+    const newInteractionId = uuidv4();
+
+    // Create the forked interaction
+    const result = await pool.query(
+      `INSERT INTO interactions (
+        id, session_id, user_id, user_prompt, ai_response, ai_model,
+        response_time_ms, was_verified, was_modified, was_rejected, reasoning,
+        parent_id, branch_path, created_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+      RETURNING *`,
+      [
+        newInteractionId,
+        source.session_id,
+        userId,
+        userPrompt || source.user_prompt,
+        aiResponse || source.ai_response,
+        source.ai_model,
+        source.response_time_ms,
+        false,
+        false,
+        false,
+        source.reasoning,
+        sourceInteractionId,  // Link to parent
+        newBranchPath,
+        new Date(),
+      ]
+    );
+
+    const interaction = result.rows[0];
+    res.status(201).json({
+      success: true,
+      data: {
+        interaction: {
+          id: interaction.id,
+          sessionId: interaction.session_id,
+          userId: interaction.user_id,
+          userPrompt: interaction.user_prompt,
+          aiResponse: interaction.ai_response,
+          aiModel: interaction.ai_model,
+          responseTimeMs: interaction.response_time_ms,
+          wasVerified: interaction.was_verified,
+          wasModified: interaction.was_modified,
+          wasRejected: interaction.was_rejected,
+          reasoning: interaction.reasoning,
+          parentId: interaction.parent_id,
+          branchPath: interaction.branch_path,
+          createdAt: interaction.created_at,
+          updatedAt: interaction.updated_at,
+        },
+      },
+      message: 'Conversation forked successfully',
       timestamp: new Date().toISOString(),
     });
   })
