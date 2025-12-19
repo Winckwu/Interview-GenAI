@@ -50,7 +50,7 @@ export const MR6Suggestion: React.FC<MR6SuggestionProps> = ({
           height: '32px',
           padding: 0,
           backgroundColor: showMenu ? '#dbeafe' : '#eff6ff',
-          border: '1px solid #93c5fd',
+          border: 'none',
           borderRadius: '50%',
           fontSize: '1rem',
           cursor: 'pointer',

@@ -50,7 +50,7 @@ export const QuickReflection: React.FC<QuickReflectionProps> = ({
           height: '32px',
           padding: 0,
           backgroundColor: showMenu ? '#fef3c7' : '#fffbeb',
-          border: '1px solid #fcd34d',
+          border: 'none',
           borderRadius: '50%',
           fontSize: '1rem',
           cursor: 'pointer',
