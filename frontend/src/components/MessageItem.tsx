@@ -442,7 +442,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               <div
                 className={styles.branchNavigation}
                 style={{
-                  display: 'inline-flex',
+                  display: 'flex',
+                  flexWrap: 'wrap',
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.25rem 0.625rem',
