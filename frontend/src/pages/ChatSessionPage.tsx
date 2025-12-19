@@ -4414,23 +4414,38 @@ Message: "${firstMessage.slice(0, 200)}"`,
                   <input
                     type="checkbox"
                     checked={selectedExportMessages.has(msg.id)}
-                    onChange={() => toggleExportMessageSelection(msg.id)}
-                    style={{ marginTop: '0.25rem', cursor: 'pointer' }}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      toggleExportMessageSelection(msg.id);
+                    }}
+                    style={{
+                      marginTop: '0.25rem',
+                      cursor: 'pointer',
+                      width: '16px',
+                      height: '16px',
+                      flexShrink: 0,
+                      accentColor: '#4f46e5',
+                    }}
                   />
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '0.7rem', color: '#6b7280', marginBottom: '0.25rem' }}>
+                  <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                    <div style={{
+                      fontSize: '0.7rem',
+                      color: msg.role === 'user' ? '#2563eb' : '#059669',
+                      marginBottom: '0.25rem',
+                      fontWeight: 500,
+                    }}>
                       {msg.role === 'user' ? '👤 User' : '🤖 AI'}
                     </div>
                     <div style={{
                       fontSize: '0.8rem',
                       color: '#374151',
+                      lineHeight: '1.4',
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word',
+                      maxHeight: '3.5em',
                       overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
                     }}>
-                      {msg.content.substring(0, 150)}{msg.content.length > 150 ? '...' : ''}
+                      {msg.content ? (msg.content.substring(0, 150) + (msg.content.length > 150 ? '...' : '')) : '(empty message)'}
                     </div>
                   </div>
                 </div>
