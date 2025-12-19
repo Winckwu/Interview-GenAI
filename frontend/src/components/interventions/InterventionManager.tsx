@@ -14,7 +14,7 @@
  * This component is invisible - it manages everything behind the scenes
  */
 
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { Message } from '../../types';
 import { detectPatternF, extractUserSignals } from '../../utils/PatternDetector';
 import {
@@ -71,7 +71,11 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const [lastInterventionId, setLastInterventionId] = useState<string | null>(null);
   const [interventionStartTime, setInterventionStartTime] = useState<number>(0);
   const [lastDisplayedMRId, setLastDisplayedMRId] = useState<string | null>(null);
-  const [lastHardBarrierTime, setLastHardBarrierTime] = useState<number>(0);
+
+  // Use ref for lastHardBarrierTime to avoid triggering re-renders and infinite loops
+  const lastHardBarrierTimeRef = useRef<number>(0);
+  // Track if we've recorded metrics for current MR to avoid duplicates
+  const lastRecordedMRIdRef = useRef<string | null>(null);
 
   // Hard barrier cooldown: 5 minutes between hard barriers
   const HARD_BARRIER_COOLDOWN_MS = 5 * 60 * 1000;
@@ -176,24 +180,22 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
   /**
    * Convert backend ActiveMR to intervention UI format
+   * Note: Does NOT set lastHardBarrierTime - caller must handle that to avoid infinite loops
    */
   const convertActiveMRToIntervention = useCallback(
-    (mr: ActiveMR) => {
+    (mr: ActiveMR, currentLastHardBarrierTime: number) => {
       // Use tier from unified analysis if available, otherwise infer from urgency
       let tier: 'soft' | 'medium' | 'hard' = mr.tier ||
         (mr.urgency === 'enforce' ? 'hard' : mr.urgency === 'remind' ? 'medium' : 'soft');
 
       // Hard barrier cooldown: downgrade to medium if last hard barrier was too recent
-      const timeSinceLastHardBarrier = Date.now() - lastHardBarrierTime;
+      const timeSinceLastHardBarrier = Date.now() - currentLastHardBarrierTime;
       if (tier === 'hard' && timeSinceLastHardBarrier < HARD_BARRIER_COOLDOWN_MS) {
         console.log(`[InterventionManager] Downgrading hard to medium (cooldown: ${Math.round(timeSinceLastHardBarrier / 1000)}s < ${HARD_BARRIER_COOLDOWN_MS / 1000}s)`);
         tier = 'medium';
       }
 
-      // Track hard barrier time
-      if (tier === 'hard') {
-        setLastHardBarrierTime(Date.now());
-      }
+      // Note: caller must update lastHardBarrierTimeRef.current if tier === 'hard'
 
       const baseIntervention = {
         id: `intervention-${mr.mrId}`,
@@ -259,7 +261,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onCancel: () => handleDismiss(mr.mrId),
       };
     },
-    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, lastHardBarrierTime, HARD_BARRIER_COOLDOWN_MS]
+    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, HARD_BARRIER_COOLDOWN_MS]
   );
 
   /**
@@ -337,15 +339,15 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     // Apply hard barrier cooldown
     let tier = tierInput;
-    const timeSinceLastHardBarrier = Date.now() - lastHardBarrierTime;
+    const timeSinceLastHardBarrier = Date.now() - lastHardBarrierTimeRef.current;
     if (tier === 'hard' && timeSinceLastHardBarrier < HARD_BARRIER_COOLDOWN_MS) {
       console.log(`[createInterventionUI] Downgrading hard to medium (cooldown)`);
       tier = 'medium';
     }
 
-    // Track hard barrier time
+    // Track hard barrier time (using ref to avoid triggering re-renders)
     if (tier === 'hard') {
-      setLastHardBarrierTime(Date.now());
+      lastHardBarrierTimeRef.current = Date.now();
     }
 
     const baseIntervention = {
@@ -412,7 +414,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
       onCancel: () => handleDismiss(baseIntervention.mrType),
     };
-  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, lastHardBarrierTime, HARD_BARRIER_COOLDOWN_MS]);
+  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, HARD_BARRIER_COOLDOWN_MS]);
 
   // Initialize session in store
   useEffect(() => {
@@ -454,19 +456,32 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     console.log(`[InterventionManager] Displaying backend MR: ${topMR.mrId} (${topMR.name})`);
 
-    const intervention = convertActiveMRToIntervention(topMR);
+    // Pass lastHardBarrierTime as parameter to avoid dependency issues
+    const intervention = convertActiveMRToIntervention(topMR, lastHardBarrierTimeRef.current);
 
-    // Record intervention display
-    metricsStore.recordInterventionDisplay({
-      sessionId,
-      timestamp: Date.now(),
-      mrType: topMR.mrId,
-      patternType: 'Pattern from MCA Orchestrator',
-      confidence: 0.7,
-      triggeredRules: [topMR.name],
-      tier: intervention.tier as 'soft' | 'medium' | 'hard',
-      messageCountAtDisplay: messages.length,
-    });
+    // Update hard barrier time if needed (using ref to avoid triggering re-renders)
+    if (intervention.tier === 'hard') {
+      lastHardBarrierTimeRef.current = Date.now();
+    }
+
+    // Record intervention display - only if we haven't already recorded this MR
+    if (lastRecordedMRIdRef.current !== topMR.mrId) {
+      lastRecordedMRIdRef.current = topMR.mrId;
+      try {
+        metricsStore.recordInterventionDisplay({
+          sessionId,
+          timestamp: Date.now(),
+          mrType: topMR.mrId,
+          patternType: 'Pattern from MCA Orchestrator',
+          confidence: 0.7,
+          triggeredRules: [topMR.name],
+          tier: intervention.tier as 'soft' | 'medium' | 'hard',
+          messageCountAtDisplay: messages.length,
+        });
+      } catch (err) {
+        console.error('[InterventionManager] Error recording metrics:', err);
+      }
+    }
 
     // Track intervention
     setLastInterventionId(intervention.id);
@@ -476,7 +491,9 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     // Display the intervention
     store.setActiveIntervention(intervention);
     onInterventionDisplayed?.(intervention.tier, topMR.mrId);
-  }, [activeMRs, lastDisplayedMRId, convertActiveMRToIntervention, sessionId, messages.length, onInterventionDisplayed]);
+    // Note: metricsStore and store are stable Zustand stores, excluded from deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime]);
 
   /**
    * Core detection and scheduling logic - Frontend fallback
