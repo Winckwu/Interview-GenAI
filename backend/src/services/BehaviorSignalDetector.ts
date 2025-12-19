@@ -25,98 +25,343 @@ export interface RiskFactors {
   isPublicFacing: boolean;         // public-facing task indicator
 }
 
+/**
+ * Session context for MR triggering (from MR-Triggering-Framework-Paper.md)
+ * These signals require session-level tracking beyond single message analysis
+ */
+export interface SessionContext {
+  userId: string;
+  sessionId: string;
+  sessionStartTime: Date;
+  messageIndex: number;                   // Current message index (0-based)
+  previousTrustScore?: number;            // Trust score from previous message
+  currentTrustScore: number;              // Current calculated trust score
+  unverifiedCount: number;                // Consecutive unverified responses
+  isNewUser: boolean;                     // First session for this user
+  previousTaskType?: string;              // Task type from previous message
+  currentTaskType?: string;               // Current task type
+  previousAiResponse?: string;            // Previous AI response (for modification detection)
+  hasFailedBefore: boolean;               // Any previous rejection/failure in session
+  aiConfidence?: number;                  // AI's confidence in current response
+}
+
 export interface BehavioralSignals {
-  // Planning signals (P1-P4)
-  taskDecompositionEvidence: number;      // 0-3: evidence of breaking task into parts
-  goalClarityScore: number;               // 0-3: clarity of stated goals
-  strategyMentioned: boolean;             // Has user mentioned a strategy/approach
-  preparationActions: string[];           // Pre-task preparation mentioned
+  // ========== Planning signals (P1-P4) ==========
+  taskDecompositionEvidence: number;      // P1: 0-3: evidence of breaking task into parts
+  goalClarityScore: number;               // P2: 0-3: clarity of stated goals
+  strategyMentioned: boolean;             // P3: Has user mentioned a strategy/approach
+  preparationActions: string[];           // P4: Pre-task preparation mentioned
+  preparationScore: number;               // P4: 0-3 normalized score
 
-  // Monitoring signals (M1-M3)
-  verificationAttempted: boolean;         // Did user mention verification?
-  qualityCheckMentioned: boolean;         // Quality assurance indicators
-  contextAwarenessIndicator: number;      // 0-3: awareness of task context/constraints
+  // ========== Monitoring signals (M1-M3) ==========
+  verificationAttempted: boolean;         // M2: Did user mention verification?
+  qualityCheckMentioned: boolean;         // M2: Quality assurance indicators
+  qualityCheckScore: number;              // M2: 0-3 normalized score
+  contextAwarenessIndicator: number;      // M3: 0-3: awareness of task context/constraints
 
-  // Evaluation signals (E1-E3)
-  outputEvaluationPresent: boolean;       // Did user evaluate AI output?
-  reflectionDepth: number;                // 0-3: depth of metacognitive reflection
-  capabilityJudgmentShown: boolean;       // Awareness of AI limitations?
+  // ========== Evaluation signals (E1-E3) ==========
+  outputEvaluationPresent: boolean;       // E1: Did user evaluate AI output?
+  outputEvaluationScore: number;          // E1: 0-3 normalized score
+  reflectionDepth: number;                // E2: 0-3: depth of metacognitive reflection
+  capabilityJudgmentShown: boolean;       // E3: Awareness of AI limitations?
+  capabilityJudgmentScore: number;        // E3: 0-3 normalized score
 
-  // Regulation signals (R1-R2)
-  iterationCount: number;                 // Number of refinements in history
-  trustCalibrationEvidence: string[];     // Evidence of trust calibration
+  // ========== Regulation signals (R1-R2) ==========
+  iterationCount: number;                 // R1: Number of refinements in history
+  strategyAdjustmentScore: number;        // R1: 0-3 normalized score
+  trustCalibrationEvidence: string[];     // R2: Evidence of trust calibration
+  trustCalibrationScore: number;          // R2: 0-3 normalized score
 
-  // Additional signals
+  // ========== Task characteristics ==========
   taskComplexity: number;                 // 0-3: inferred task complexity
   aiRelianceDegree: number;               // 0-3: extent of AI reliance in request
-
-  // ✨ NEW: Input quality assessment (added 2024-11-24 based on real data analysis)
   inputComplexity: number;                // 0-3: complexity/detail level of user input
-                                          // Real data: 21.9% users had <30 char avg (low complexity)
+  taskRiskLevel: 'low' | 'medium' | 'high' | 'critical';
+  riskFactors: RiskFactors;
 
-  // ✨ Task risk assessment
-  taskRiskLevel: 'low' | 'medium' | 'high' | 'critical';  // comprehensive risk level
-  riskFactors: RiskFactors;               // detailed risk breakdown
+  // ========== Session context signals (NEW - from MR-Triggering-Framework-Paper) ==========
+  messageLength: number;                  // Character count of current message
+  messageIndex: number;                   // Index of message in session (0-based)
+  sessionDuration: number;                // Minutes since session start
+
+  // Trust tracking
+  trustScore: number;                     // 0-100: current trust score
+  trustChange: number;                    // % change from previous trust score
+  unverifiedConsecutive: number;          // Count of consecutive unverified AI responses
+
+  // User/session state
+  isNewUser: boolean;                     // First session for this user
+  isNewSession: boolean;                  // First message in session
+  taskTypeChanged: boolean;               // Task type differs from previous
+
+  // Content analysis
+  modified: boolean;                      // User modified previous AI output
+  hasFailedBefore: boolean;               // Previous AI response was rejected/failed
+  hasUncertainty: boolean;                // AI response contains uncertainty markers
+  aiConfidence: number;                   // 0-1: AI's confidence in response
+  containsDecisions: boolean;             // Message contains decision points
+  irreversibleAction: boolean;            // Task involves irreversible actions
+  controversialClaim: boolean;            // Content contains controversial claims
+
+  // Session lifecycle
+  sessionEnding: boolean;                 // User indicated session end
+  isMilestone: boolean;                   // Reached a learning milestone
 }
 
 export class BehaviorSignalDetector {
   /**
-   * Detect all 12 behavioral signals from a single conversation turn
+   * Detect all behavioral signals from a conversation turn
+   * Enhanced with session context for MR triggering (MR-Triggering-Framework-Paper.md)
+   *
+   * @param currentTurn - Current conversation turn
+   * @param history - Previous conversation turns
+   * @param sessionContext - Optional session-level context for advanced signals
    */
   detectSignals(
     currentTurn: ConversationTurn,
-    history: ConversationTurn[]
+    history: ConversationTurn[],
+    sessionContext?: SessionContext
   ): BehavioralSignals {
     const userMsg = currentTurn.userMessage.toLowerCase();
-    const prevTurns = history.map(t => t.userMessage.toLowerCase());
+    const originalMsg = currentTurn.userMessage;
+
+    // Detect basic signals
+    const preparationActions = this.detectPreparation(userMsg);
+    const verificationAttempted = this.detectVerificationIntent(userMsg);
+    const qualityCheckMentioned = this.detectQualityChecks(userMsg);
+    const outputEvaluationPresent = this.detectOutputEvaluation(userMsg);
+    const capabilityJudgmentShown = this.detectCapabilityAwareness(userMsg);
+    const trustCalibrationEvidence = this.detectTrustCalibration(userMsg);
+    const iterationCount = this.countIterations(history, currentTurn);
+
+    // Calculate normalized scores (convert boolean/array to 0-3 scale)
+    const preparationScore = Math.min(preparationActions.length, 3);
+    const qualityCheckScore = this.calculateQualityCheckScore(userMsg, verificationAttempted, qualityCheckMentioned);
+    const outputEvaluationScore = outputEvaluationPresent ? 2 : 0;
+    const capabilityJudgmentScore = capabilityJudgmentShown ? 2 : 0;
+    const trustCalibrationScore = Math.min(trustCalibrationEvidence.length, 3);
+    const strategyAdjustmentScore = Math.min(Math.floor(iterationCount / 2), 3);
+
+    // Session context signals (with defaults if not provided)
+    const ctx = sessionContext || this.createDefaultSessionContext();
+    const sessionDuration = this.calculateSessionDuration(ctx.sessionStartTime);
+    const trustChange = ctx.previousTrustScore !== undefined
+      ? ((ctx.currentTrustScore - ctx.previousTrustScore) / Math.max(ctx.previousTrustScore, 1)) * 100
+      : 0;
+
+    // Content analysis signals
+    const modified = this.detectModification(userMsg, ctx.previousAiResponse);
+    const hasUncertainty = this.detectUncertaintyInAI(currentTurn.aiResponse);
+    const containsDecisions = this.detectDecisionPoints(userMsg);
+    const irreversibleAction = this.detectIrreversibleAction(userMsg);
+    const controversialClaim = this.detectControversialClaim(currentTurn.aiResponse);
+    const sessionEnding = this.detectSessionEnding(userMsg);
+    const isMilestone = this.detectMilestone(userMsg, iterationCount);
 
     return {
-      // P1: Task Decomposition
+      // ========== Planning signals (P1-P4) ==========
       taskDecompositionEvidence: this.detectDecomposition(userMsg),
-
-      // P2: Goal Clarity
       goalClarityScore: this.detectGoalClarity(userMsg),
-
-      // P4: Strategy Mention
       strategyMentioned: this.detectStrategyMention(userMsg),
+      preparationActions,
+      preparationScore,
 
-      // P3: Preparation Actions
-      preparationActions: this.detectPreparation(userMsg),
-
-      // M2: Verification Intent
-      verificationAttempted: this.detectVerificationIntent(userMsg),
-
-      // M1/M3: Quality Checks
-      qualityCheckMentioned: this.detectQualityChecks(userMsg),
-
-      // M3: Context Awareness
+      // ========== Monitoring signals (M1-M3) ==========
+      verificationAttempted,
+      qualityCheckMentioned,
+      qualityCheckScore,
       contextAwarenessIndicator: this.detectContextAwareness(userMsg),
 
-      // E1: Output Evaluation
-      outputEvaluationPresent: this.detectOutputEvaluation(userMsg),
-
-      // E2: Reflection
+      // ========== Evaluation signals (E1-E3) ==========
+      outputEvaluationPresent,
+      outputEvaluationScore,
       reflectionDepth: this.detectReflection(userMsg),
+      capabilityJudgmentShown,
+      capabilityJudgmentScore,
 
-      // E3: Capability Awareness
-      capabilityJudgmentShown: this.detectCapabilityAwareness(userMsg),
+      // ========== Regulation signals (R1-R2) ==========
+      iterationCount,
+      strategyAdjustmentScore,
+      trustCalibrationEvidence,
+      trustCalibrationScore,
 
-      // R1: Iteration
-      iterationCount: this.countIterations(history, currentTurn),
-
-      // R2: Trust Calibration
-      trustCalibrationEvidence: this.detectTrustCalibration(userMsg),
-
-      // Additional features
+      // ========== Task characteristics ==========
       taskComplexity: this.inferTaskComplexity(userMsg),
       aiRelianceDegree: this.inferAIReliance(userMsg),
-
-      // ✨ NEW: Input complexity assessment (2024-11-24)
-      inputComplexity: this.detectInputComplexity(currentTurn.userMessage),
-
-      // ✨ Task risk assessment
+      inputComplexity: this.detectInputComplexity(originalMsg),
       ...this.assessTaskRisk(userMsg),
+
+      // ========== Session context signals ==========
+      messageLength: originalMsg.length,
+      messageIndex: ctx.messageIndex,
+      sessionDuration,
+
+      // Trust tracking
+      trustScore: ctx.currentTrustScore,
+      trustChange,
+      unverifiedConsecutive: ctx.unverifiedCount,
+
+      // User/session state
+      isNewUser: ctx.isNewUser,
+      isNewSession: ctx.messageIndex === 0,
+      taskTypeChanged: ctx.previousTaskType !== undefined && ctx.previousTaskType !== ctx.currentTaskType,
+
+      // Content analysis
+      modified,
+      hasFailedBefore: ctx.hasFailedBefore,
+      hasUncertainty,
+      aiConfidence: ctx.aiConfidence ?? 0.7,
+      containsDecisions,
+      irreversibleAction,
+      controversialClaim,
+
+      // Session lifecycle
+      sessionEnding,
+      isMilestone,
     };
+  }
+
+  /**
+   * Create default session context when not provided
+   */
+  private createDefaultSessionContext(): SessionContext {
+    return {
+      userId: 'unknown',
+      sessionId: 'unknown',
+      sessionStartTime: new Date(),
+      messageIndex: 0,
+      currentTrustScore: 70,
+      unverifiedCount: 0,
+      isNewUser: false,
+      hasFailedBefore: false,
+    };
+  }
+
+  /**
+   * Calculate session duration in minutes
+   */
+  private calculateSessionDuration(startTime: Date): number {
+    return Math.floor((Date.now() - startTime.getTime()) / 60000);
+  }
+
+  /**
+   * Calculate quality check score (M2) as 0-3
+   */
+  private calculateQualityCheckScore(
+    message: string,
+    verificationAttempted: boolean,
+    qualityCheckMentioned: boolean
+  ): number {
+    let score = 0;
+    if (verificationAttempted) score += 1;
+    if (qualityCheckMentioned) score += 1;
+
+    // Additional quality indicators
+    const systematicCheck = /逐字|逐句|仔细|详细|全面|系统|word.by.word|careful|thorough|systematic/gi.test(message);
+    if (systematicCheck) score += 1;
+
+    return Math.min(score, 3);
+  }
+
+  /**
+   * Detect if user modified previous AI output
+   */
+  private detectModification(userMessage: string, previousAiResponse?: string): boolean {
+    if (!previousAiResponse) return false;
+
+    const modificationIndicators = [
+      '修改', '改', '调整', '更新', '换', '替换',
+      '不对', '错了', '有问题', '改一下',
+      'modify', 'change', 'update', 'fix', 'wrong', 'incorrect'
+    ];
+
+    return modificationIndicators.some(ind => userMessage.includes(ind));
+  }
+
+  /**
+   * Detect uncertainty markers in AI response
+   */
+  private detectUncertaintyInAI(aiResponse?: string): boolean {
+    if (!aiResponse) return false;
+
+    const uncertaintyMarkers = [
+      '可能', '也许', '不确定', '大概', '或许', '估计',
+      '建议验证', '需要确认', '仅供参考',
+      'might', 'maybe', 'perhaps', 'uncertain', 'possibly',
+      'I\'m not sure', 'please verify', 'for reference only'
+    ];
+
+    return uncertaintyMarkers.some(marker => aiResponse.toLowerCase().includes(marker));
+  }
+
+  /**
+   * Detect decision points in message
+   */
+  private detectDecisionPoints(message: string): boolean {
+    const decisionIndicators = [
+      '选择', '决定', '采用', '使用', '方案', '选项',
+      '应该', '是否', '要不要', '还是',
+      'choose', 'decide', 'option', 'should', 'whether', 'or'
+    ];
+
+    return decisionIndicators.some(ind => message.includes(ind));
+  }
+
+  /**
+   * Detect irreversible actions
+   */
+  private detectIrreversibleAction(message: string): boolean {
+    const irreversibleIndicators = [
+      '删除', '发布', '提交', '确认', '签署', '执行',
+      '不可逆', '永久', '最终',
+      'delete', 'publish', 'submit', 'confirm', 'sign', 'execute',
+      'irreversible', 'permanent', 'final'
+    ];
+
+    return irreversibleIndicators.some(ind => message.includes(ind));
+  }
+
+  /**
+   * Detect controversial claims in AI response
+   */
+  private detectControversialClaim(aiResponse?: string): boolean {
+    if (!aiResponse) return false;
+
+    const controversialIndicators = [
+      '争议', '有人认为', '不同观点', '分歧',
+      'controversial', 'debated', 'some argue', 'disputed',
+      'opposing views', 'contentious'
+    ];
+
+    return controversialIndicators.some(ind => aiResponse.toLowerCase().includes(ind));
+  }
+
+  /**
+   * Detect session ending intent
+   */
+  private detectSessionEnding(message: string): boolean {
+    const endingIndicators = [
+      '谢谢', '好的', '明白了', '结束', '完成',
+      '就这样', '足够了', '可以了',
+      'thanks', 'thank you', 'got it', 'done', 'finished',
+      'that\'s all', 'enough', 'perfect'
+    ];
+
+    return endingIndicators.some(ind => message.includes(ind));
+  }
+
+  /**
+   * Detect learning milestone
+   */
+  private detectMilestone(message: string, iterationCount: number): boolean {
+    // Milestone if: multiple iterations completed + learning indicator
+    const learningIndicators = [
+      '学会了', '理解了', '明白了', '掌握了', '懂了',
+      'learned', 'understand', 'got it', 'mastered'
+    ];
+
+    const hasLearningIndicator = learningIndicators.some(ind => message.includes(ind));
+    return iterationCount >= 3 && hasLearningIndicator;
   }
 
   /**

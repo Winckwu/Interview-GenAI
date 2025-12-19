@@ -1,9 +1,14 @@
 /**
- * Adaptive MR Activator
- * Determines which MRs should be active based on:
- * 1. Detected behavioral signals
- * 2. Current pattern estimate
- * 3. Conversation context
+ * Adaptive MR Activator - Complete Implementation
+ * Based on MR-Triggering-Framework-Paper.md (Table 2 & Table 3)
+ *
+ * Implements all 19 MR trigger conditions with:
+ * - Evidence-based trigger conditions from 49 user interviews
+ * - Pattern-specific priority modifiers
+ * - Subprocess score adjustments
+ * - Fatigue control mechanisms
+ *
+ * Reference: MR-Triggering-Framework-Paper.md Section 6.2
  */
 
 import { BehavioralSignals } from './BehaviorSignalDetector';
@@ -12,22 +17,6 @@ import { PatternEstimate, Pattern } from './RealtimePatternRecognizer';
 export type Urgency = 'observe' | 'remind' | 'enforce';
 export type DisplayMode = 'inline' | 'sidebar' | 'modal';
 
-export interface TriggerCondition {
-  signal: keyof BehavioralSignals;
-  operator: '<' | '>' | '<=' | '>=' | '==' | '!=' | 'in';
-  threshold: number | boolean | string[];
-  description: string;
-}
-
-export interface MRActivationRule {
-  mrId: string;
-  name: string;
-  triggerConditions: TriggerCondition[];
-  urgency: Urgency;
-  targetPatterns?: Pattern[];
-  description: string;
-}
-
 export interface ActiveMR {
   mrId: string;
   name: string;
@@ -35,494 +24,577 @@ export interface ActiveMR {
   displayMode: DisplayMode;
   message: string;
   priority: number;
+  reason: string;
 }
 
 /**
- * Define all MR activation rules
- * Based on Phase-5.5 design document
- *
- * CALIBRATED 2024-11-24: Thresholds adjusted based on real user data analysis
- * - 378 real users from course interaction data
- * - 54.8% Pattern F prevalence (passive over-reliance)
- * - E1 (verification) average: 0.00 (critical concern)
- * - M1 (iteration) average: 0.84 (very low)
+ * Pattern-specific priority modifiers (from Table 2)
  */
-const MR_ACTIVATION_RULES: MRActivationRule[] = [
-  {
-    mrId: 'MR1',
-    name: 'Task Decomposition Scaffold',
-    triggerConditions: [
-      {
-        signal: 'taskDecompositionEvidence',
-        operator: '<',
-        threshold: 2,
-        description: 'User lacks task decomposition'
-      },
-      {
-        signal: 'taskComplexity',
-        operator: '>',
-        threshold: 1.5,
-        description: 'Task is moderately complex'
-      }
-    ],
-    urgency: 'remind',
-    targetPatterns: ['B', 'F'],
-    description: 'Help user break down complex tasks'
-  },
+const PATTERN_MODIFIERS: Record<string, Record<Pattern, number>> = {
+  MR1:  { A: -20, B: 10, C: 0, D: 0, E: 0, F: 0 },
+  MR2:  { A: 0, B: 0, C: 0, D: -15, E: 0, F: 0 },
+  MR3:  { A: -100, B: 0, C: 0, D: 0, E: 0, F: 0 },  // A: skip
+  MR4:  { A: 0, B: 0, C: 15, D: 0, E: 0, F: 0 },
+  MR5:  { A: 0, B: 20, C: 0, D: 0, E: 0, F: 0 },
+  MR6:  { A: 0, B: 0, C: 0, D: 20, E: 0, F: 0 },
+  MR7:  { A: 0, B: 0, C: 0, D: 0, E: 15, F: 0 },
+  MR8:  { A: 0, B: 0, C: 10, D: 0, E: 0, F: 0 },
+  MR9:  { A: 0, B: 0, C: 0, D: 10, E: 0, F: 0 },
+  MR10: { A: -10, B: 0, C: 0, D: 0, E: 0, F: 0 },
+  MR11: { A: 0, B: 0, C: 0, D: -15, E: 0, F: 0 },  // D already verifies
+  MR12: { A: 0, B: 0, C: 0, D: 10, E: 0, F: 0 },
+  MR13: { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 },
+  MR14: { A: -100, B: 0, C: 0, D: 0, E: 15, F: 0 },  // A: skip
+  MR15: { A: 0, B: 0, C: 0, D: 0, E: 25, F: 0 },
+  MR16: { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 },  // Unconditional
+  MR17: { A: 0, B: 15, C: 0, D: 0, E: 0, F: 0 },
+  MR18: { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 },  // Unconditional
+  MR19: { A: 0, B: 0, C: 0, D: 0, E: 10, F: 0 },
+};
 
-  {
-    mrId: 'MR3',
-    name: 'Human Agency Control',
-    triggerConditions: [
-      {
-        signal: 'strategyMentioned',
-        operator: '==',
-        threshold: true,
-        description: 'User mentioned a strategy'
-      },
-      {
-        signal: 'taskDecompositionEvidence',
-        operator: '>=',
-        threshold: 2,
-        description: 'Clear task decomposition'
-      }
-    ],
-    urgency: 'observe',
-    targetPatterns: ['A', 'C'],
-    description: 'Remind about role definition'
-  },
+/**
+ * MR Tool Metadata
+ */
+const MR_METADATA: Record<string, { name: string; baseUrgency: Urgency }> = {
+  MR1:  { name: 'Task Decomposition Scaffolding', baseUrgency: 'remind' },
+  MR2:  { name: 'Process Transparency', baseUrgency: 'observe' },
+  MR3:  { name: 'Human Agency Control', baseUrgency: 'observe' },
+  MR4:  { name: 'Role Definition Guidance', baseUrgency: 'observe' },
+  MR5:  { name: 'Low-Cost Iteration', baseUrgency: 'observe' },
+  MR6:  { name: 'Cross-Model Experimentation', baseUrgency: 'remind' },
+  MR7:  { name: 'Failure Tolerance Learning', baseUrgency: 'observe' },
+  MR8:  { name: 'Task Characteristic Recognition', baseUrgency: 'observe' },
+  MR9:  { name: 'Dynamic Trust Calibration', baseUrgency: 'observe' },
+  MR10: { name: 'Cost-Benefit Analysis', baseUrgency: 'remind' },
+  MR11: { name: 'Integrated Verification Tools', baseUrgency: 'remind' },
+  MR12: { name: 'Critical Thinking Scaffolding', baseUrgency: 'remind' },
+  MR13: { name: 'Transparent Uncertainty Display', baseUrgency: 'observe' },
+  MR14: { name: 'Guided Reflection Mechanism', baseUrgency: 'observe' },
+  MR15: { name: 'Metacognitive Strategy Guide', baseUrgency: 'observe' },
+  MR16: { name: 'Skill Atrophy Prevention', baseUrgency: 'enforce' },
+  MR17: { name: 'Learning Progress Visualization', baseUrgency: 'observe' },
+  MR18: { name: 'Over-Reliance Warning', baseUrgency: 'enforce' },
+  MR19: { name: 'Metacognitive Assessment', baseUrgency: 'observe' },
+};
 
-  {
-    mrId: 'MR11',
-    name: 'Integrated Verification Tools',
-    triggerConditions: [
-      {
-        signal: 'verificationAttempted',
-        operator: '==',
-        threshold: false,
-        description: 'User has not verified'
-      }
-    ],
-    urgency: 'remind',
-    targetPatterns: ['B', 'F'],
-    description: 'Provide verification tools and suggestions'
-  },
+/**
+ * Priority threshold for activation
+ */
+const ACTIVATION_THRESHOLD = 30;
 
-  {
-    mrId: 'MR13',
-    name: 'Transparent Uncertainty Display',
-    triggerConditions: [
-      {
-        signal: 'taskComplexity',
-        operator: '>',
-        threshold: 1,
-        description: 'Any non-trivial task'
-      }
-    ],
-    urgency: 'observe',
-    description: 'Display uncertainty indicators (always available)'
-  },
-
-  {
-    mrId: 'MR16',
-    name: 'Skill Degradation Prevention',
-    triggerConditions: [
-      {
-        signal: 'aiRelianceDegree',
-        operator: '>',
-        threshold: 2,
-        description: 'High AI reliance'
-      },
-      {
-        signal: 'iterationCount',
-        operator: '<',
-        threshold: 1,
-        description: 'Low iteration/refinement'
-      }
-    ],
-    urgency: 'enforce',
-    targetPatterns: ['F', 'B'],
-    description: 'Prevent skill degradation'
-  },
-
-  {
-    mrId: 'MR18',
-    name: 'Over-reliance Warning',
-    triggerConditions: [
-      {
-        signal: 'aiRelianceDegree',
-        operator: '>',
-        threshold: 2.0,  // CALIBRATED: lowered from 2.5 based on real data (M1 avg: 0.84)
-        description: 'High AI reliance detected'
-      },
-      {
-        signal: 'verificationAttempted',
-        operator: '==',
-        threshold: false,
-        description: 'No verification behavior'
-      }
-    ],
-    urgency: 'enforce',
-    targetPatterns: ['F'],
-    description: 'Alert about over-reliance on AI'
-  },
-
-  // NEW RULE: Added based on real data analysis (2024-11-24)
-  // 21.9% of users had short inputs (<30 chars avg), correlating with Pattern F
-  {
-    mrId: 'MR19',
-    name: 'Input Enhancement Prompt',
-    triggerConditions: [
-      {
-        signal: 'inputComplexity',
-        operator: '<',
-        threshold: 2,
-        description: 'Short or simple input detected'
-      }
-    ],
-    urgency: 'remind',
-    targetPatterns: ['F', 'C'],
-    description: 'Encourage more detailed input for better AI assistance'
-  },
-
-  // ========== PATTERN D (Deep Verification) RULES ==========
-  // Pattern D users already verify thoroughly - help them optimize efficiency
-  {
-    mrId: 'MR10',
-    name: 'Verification Efficiency Optimizer',
-    triggerConditions: [
-      {
-        signal: 'verificationAttempted',
-        operator: '==',
-        threshold: true,
-        description: 'User actively verifies'
-      },
-      {
-        signal: 'taskComplexity',
-        operator: '<',
-        threshold: 2,
-        description: 'Task is relatively simple'
-      }
-    ],
-    urgency: 'observe',
-    targetPatterns: ['D'],
-    description: 'Suggest proportional verification for low-complexity tasks'
-  },
-
-  {
-    mrId: 'MR15',
-    name: 'Advanced Verification Strategies',
-    triggerConditions: [
-      {
-        signal: 'verificationAttempted',
-        operator: '==',
-        threshold: true,
-        description: 'User shows verification behavior'
-      },
-      {
-        signal: 'qualityCheckMentioned',
-        operator: '==',
-        threshold: true,
-        description: 'Quality check behavior present'
-      }
-    ],
-    urgency: 'observe',
-    targetPatterns: ['D'],
-    description: 'Provide advanced metacognitive strategies for expert verifiers'
-  },
-
-  // ========== PATTERN E (Teaching & Learning) RULES ==========
-  // Pattern E users reflect deeply - help them convert insights to action
-  {
-    mrId: 'MR14',
-    name: 'Reflection to Action Bridge',
-    triggerConditions: [
-      {
-        signal: 'reflectionDepth',
-        operator: '>=',
-        threshold: 2,
-        description: 'Deep reflection demonstrated'
-      }
-    ],
-    urgency: 'observe',
-    targetPatterns: ['E'],
-    description: 'Help convert deep reflection into practical application'
-  },
-
-  {
-    mrId: 'MR17',
-    name: 'Learning Progress Visualization',
-    triggerConditions: [
-      {
-        signal: 'reflectionDepth',
-        operator: '>=',
-        threshold: 2,
-        description: 'Reflective learning behavior'
-      },
-      {
-        signal: 'capabilityJudgmentShown',
-        operator: '==',
-        threshold: true,
-        description: 'Shows capability awareness'
-      }
-    ],
-    urgency: 'observe',
-    targetPatterns: ['E'],
-    description: 'Visualize learning journey and knowledge growth'
-  },
-
-  // Pattern E also benefits from guided reflection enhancement
-  {
-    mrId: 'MR14-Enhanced',
-    name: 'Structured Reflection Guide',
-    triggerConditions: [
-      {
-        signal: 'reflectionDepth',
-        operator: '>=',
-        threshold: 1,
-        description: 'Some reflection shown'
-      },
-      {
-        signal: 'outputEvaluationPresent',
-        operator: '==',
-        threshold: true,
-        description: 'Evaluates AI output'
-      }
-    ],
-    urgency: 'observe',
-    targetPatterns: ['E', 'D'],
-    description: 'Provide structured reflection framework for deep learners'
-  },
-];
+/**
+ * Recently shown MRs for fatigue control
+ */
+let recentlyShownMRs: Set<string> = new Set();
+let lastResetTime = Date.now();
 
 export class AdaptiveMRActivator {
   /**
    * Determine which MRs should be activated based on signals and pattern
+   * Implements the complete triggering framework from MR-Triggering-Framework-Paper.md
    */
   determineActiveMRs(
     signals: BehavioralSignals,
     patternEstimate: PatternEstimate,
     turnCount: number
   ): ActiveMR[] {
+    const pattern = patternEstimate.topPattern;
     const activeMRs: ActiveMR[] = [];
 
-    for (const rule of MR_ACTIVATION_RULES) {
-      // 1. Check if rule applies to current pattern
-      if (rule.targetPatterns &&
-          !rule.targetPatterns.includes(patternEstimate.topPattern)) {
-        continue;
+    // Reset fatigue control every 5 messages
+    if (turnCount % 5 === 0) {
+      recentlyShownMRs.clear();
+    }
+
+    // Evaluate each MR trigger condition
+    const mrEvaluations: Array<{ mrId: string; triggered: boolean; priority: number; reason: string }> = [
+      this.evaluateMR1(signals, pattern),
+      this.evaluateMR2(signals, pattern),
+      this.evaluateMR3(signals, pattern),
+      this.evaluateMR4(signals, pattern),
+      this.evaluateMR5(signals, pattern),
+      this.evaluateMR6(signals, pattern),
+      this.evaluateMR7(signals, pattern),
+      this.evaluateMR8(signals, pattern),
+      this.evaluateMR9(signals, pattern),
+      this.evaluateMR10(signals, pattern),
+      this.evaluateMR11(signals, pattern),
+      this.evaluateMR12(signals, pattern),
+      this.evaluateMR13(signals, pattern),
+      this.evaluateMR14(signals, pattern),
+      this.evaluateMR15(signals, pattern),
+      this.evaluateMR16(signals, pattern),
+      this.evaluateMR17(signals, pattern),
+      this.evaluateMR18(signals, pattern),
+      this.evaluateMR19(signals, pattern),
+    ];
+
+    // Filter triggered MRs and create ActiveMR objects
+    for (const evaluation of mrEvaluations) {
+      if (!evaluation.triggered) continue;
+      if (evaluation.priority < ACTIVATION_THRESHOLD) continue;
+
+      // Fatigue control: reduce priority if recently shown
+      let adjustedPriority = evaluation.priority;
+      if (recentlyShownMRs.has(evaluation.mrId)) {
+        adjustedPriority -= 30;
+        if (adjustedPriority < ACTIVATION_THRESHOLD) continue;
       }
 
-      // 2. Evaluate all trigger conditions (AND logic)
-      const conditionsMet = rule.triggerConditions.every(condition =>
-        this.evaluateCondition(condition, signals)
-      );
+      const metadata = MR_METADATA[evaluation.mrId];
+      const urgency = this.adjustUrgency(metadata.baseUrgency, signals, pattern);
 
-      if (!conditionsMet) continue;
-
-      // 3. ✨ Adjust urgency based on task risk level
-      let adjustedUrgency = rule.urgency;
-
-      // Pattern A + High Risk Task → upgrade observe to remind
-      if (patternEstimate.topPattern === 'A' &&
-          signals.taskRiskLevel === 'high' &&
-          rule.urgency === 'observe') {
-        adjustedUrgency = 'remind';
-        console.log(`🔼 [RiskAdjustment] Pattern A in high-risk task: upgrading ${rule.mrId} from observe to remind`);
-      }
-
-      // Pattern A + Critical Risk Task → upgrade observe to enforce
-      if (patternEstimate.topPattern === 'A' &&
-          signals.taskRiskLevel === 'critical' &&
-          rule.urgency === 'observe') {
-        adjustedUrgency = 'enforce';
-        console.log(`🔼 [RiskAdjustment] Pattern A in critical-risk task: upgrading ${rule.mrId} from observe to enforce`);
-      }
-
-      // Pattern F + High/Critical Risk → force enforce
-      if (patternEstimate.topPattern === 'F' &&
-          (signals.taskRiskLevel === 'high' || signals.taskRiskLevel === 'critical')) {
-        adjustedUrgency = 'enforce';
-        console.log(`🚨 [RiskAdjustment] Pattern F in high-risk task: forcing enforce for ${rule.mrId}`);
-      }
-
-      // Any pattern + Critical Risk → upgrade at least to remind
-      if (signals.taskRiskLevel === 'critical' && adjustedUrgency === 'observe') {
-        adjustedUrgency = 'remind';
-        console.log(`🔼 [RiskAdjustment] Critical-risk task: upgrading ${rule.mrId} from observe to remind`);
-      }
-
-      // 4. Create active MR with adjusted urgency
-      const activeMR: ActiveMR = {
-        mrId: rule.mrId,
-        name: rule.name,
-        urgency: adjustedUrgency,  // ✅ Use adjusted urgency
-        displayMode: this.determineDisplayMode(adjustedUrgency),
-        message: this.generateContextualMessage(
-          rule,
-          signals,
-          patternEstimate,
-          turnCount
-        ),
-        priority: this.calculatePriority(rule, patternEstimate, signals),
-      };
-
-      activeMRs.push(activeMR);
+      activeMRs.push({
+        mrId: evaluation.mrId,
+        name: metadata.name,
+        urgency,
+        displayMode: this.determineDisplayMode(urgency),
+        message: this.generateContextualMessage(evaluation.mrId, signals, pattern),
+        priority: adjustedPriority,
+        reason: evaluation.reason,
+      });
     }
 
     // Sort by priority and return top 3
-    return this.prioritizeAndDedup(activeMRs);
+    const result = activeMRs
+      .sort((a, b) => b.priority - a.priority)
+      .slice(0, 3);
+
+    // Update recently shown for fatigue control
+    result.forEach(mr => recentlyShownMRs.add(mr.mrId));
+
+    return result;
+  }
+
+  // ========== MR Trigger Condition Evaluators (from Table 2) ==========
+
+  /**
+   * MR1: Task Decomposition Scaffolding
+   * Trigger: (taskComplexity=high ∨ msgLength>1500) ∧ P1<3
+   * Priority: 60 + (3-P1)×15
+   */
+  private evaluateMR1(signals: BehavioralSignals, pattern: Pattern) {
+    const P1 = signals.taskDecompositionEvidence;
+    const triggered =
+      (signals.taskComplexity >= 2 || signals.messageLength > 1500) && P1 < 3;
+
+    const basePriority = 60 + (3 - P1) * 15;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR1[pattern] || 0);
+
+    return {
+      mrId: 'MR1',
+      triggered,
+      priority,
+      reason: `Complex task (${signals.taskComplexity.toFixed(1)}) with low decomposition (P1=${P1})`,
+    };
   }
 
   /**
-   * Evaluate a single trigger condition
+   * MR2: Process Transparency
+   * Trigger: (isNewUser ∨ familiarity=unfamiliar) ∧ E3<2
+   * Priority: 40 + (2-E3)×20
    */
-  private evaluateCondition(
-    condition: TriggerCondition,
-    signals: BehavioralSignals
-  ): boolean {
-    const signalValue = signals[condition.signal];
+  private evaluateMR2(signals: BehavioralSignals, pattern: Pattern) {
+    const E3 = signals.capabilityJudgmentScore;
+    const triggered = (signals.isNewUser || signals.isNewSession) && E3 < 2;
 
-    switch (condition.operator) {
-      case '<':
-        return (signalValue as number) < (condition.threshold as number);
-      case '>':
-        return (signalValue as number) > (condition.threshold as number);
-      case '<=':
-        return (signalValue as number) <= (condition.threshold as number);
-      case '>=':
-        return (signalValue as number) >= (condition.threshold as number);
-      case '==':
-        return signalValue === condition.threshold;
-      case '!=':
-        return signalValue !== condition.threshold;
-      case 'in':
-        if (Array.isArray(condition.threshold)) {
-          return condition.threshold.includes(signalValue as unknown as string);
-        }
-        return false;
-      default:
-        return false;
-    }
+    const basePriority = 40 + (2 - E3) * 20;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR2[pattern] || 0);
+
+    return {
+      mrId: 'MR2',
+      triggered,
+      priority,
+      reason: `New user/session with low capability judgment (E3=${E3})`,
+    };
   }
 
   /**
-   * Generate contextual message based on pattern and signals
+   * MR3: Human Agency Control
+   * Trigger: (aiSuggestsAction ∨ containsDecisions) ∧ pattern≠A
+   * Priority: 50 + decisionCount×10
    */
-  private generateContextualMessage(
-    rule: MRActivationRule,
+  private evaluateMR3(signals: BehavioralSignals, pattern: Pattern) {
+    const triggered = signals.containsDecisions && pattern !== 'A';
+
+    const basePriority = 50 + (signals.containsDecisions ? 10 : 0);
+    const priority = basePriority + (PATTERN_MODIFIERS.MR3[pattern] || 0);
+
+    return {
+      mrId: 'MR3',
+      triggered,
+      priority,
+      reason: 'Decision points detected, need agency reminder',
+    };
+  }
+
+  /**
+   * MR4: Role Definition Guidance
+   * Trigger: (isNewSession ∧ taskTypeChanged) ∨ pattern=C
+   * Priority: 45 + M3×5
+   */
+  private evaluateMR4(signals: BehavioralSignals, pattern: Pattern) {
+    const M3 = signals.contextAwarenessIndicator;
+    const triggered =
+      (signals.isNewSession && signals.taskTypeChanged) || pattern === 'C';
+
+    const basePriority = 45 + M3 * 5;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR4[pattern] || 0);
+
+    return {
+      mrId: 'MR4',
+      triggered,
+      priority,
+      reason: 'New task type or context-adaptive pattern needs role clarity',
+    };
+  }
+
+  /**
+   * MR5: Low-Cost Iteration
+   * Trigger: (iterationCount≥2 ∨ modified) ∧ R1≥2
+   * Priority: 55 + R1×10
+   */
+  private evaluateMR5(signals: BehavioralSignals, pattern: Pattern) {
+    const R1 = signals.strategyAdjustmentScore;
+    const triggered =
+      (signals.iterationCount >= 2 || signals.modified) && R1 >= 2;
+
+    const basePriority = 55 + R1 * 10;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR5[pattern] || 0);
+
+    return {
+      mrId: 'MR5',
+      triggered,
+      priority,
+      reason: `Iterative behavior (${signals.iterationCount} iterations) with strategy adjustment (R1=${R1})`,
+    };
+  }
+
+  /**
+   * MR6: Cross-Model Experimentation
+   * Trigger: pattern=D ∨ (trustScore<45 ∧ criticality=high)
+   * Priority: 65 + (pattern=D?20:0)
+   */
+  private evaluateMR6(signals: BehavioralSignals, pattern: Pattern) {
+    const triggered =
+      pattern === 'D' ||
+      (signals.trustScore < 45 && signals.taskRiskLevel === 'high');
+
+    const basePriority = 65 + (pattern === 'D' ? 20 : 0);
+    const priority = basePriority + (PATTERN_MODIFIERS.MR6[pattern] || 0);
+
+    return {
+      mrId: 'MR6',
+      triggered,
+      priority,
+      reason: pattern === 'D'
+        ? 'Deep verification pattern benefits from cross-model comparison'
+        : 'Low trust + high risk suggests cross-validation',
+    };
+  }
+
+  /**
+   * MR7: Failure Tolerance Learning
+   * Trigger: (hasFailedBefore ∨ trustDecline>20%) ∧ E2≥2
+   * Priority: 50 + E2×15
+   */
+  private evaluateMR7(signals: BehavioralSignals, pattern: Pattern) {
+    const E2 = signals.reflectionDepth;
+    const triggered =
+      (signals.hasFailedBefore || signals.trustChange < -20) && E2 >= 2;
+
+    const basePriority = 50 + E2 * 15;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR7[pattern] || 0);
+
+    return {
+      mrId: 'MR7',
+      triggered,
+      priority,
+      reason: 'Previous failure + reflective capacity enables learning from mistakes',
+    };
+  }
+
+  /**
+   * MR8: Task Characteristic Recognition
+   * Trigger: (pattern=C ∨ taskTypeNew) ∧ M3≥2
+   * Priority: 55 + M3×10
+   */
+  private evaluateMR8(signals: BehavioralSignals, pattern: Pattern) {
+    const M3 = signals.contextAwarenessIndicator;
+    const triggered = (pattern === 'C' || signals.taskTypeChanged) && M3 >= 2;
+
+    const basePriority = 55 + M3 * 10;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR8[pattern] || 0);
+
+    return {
+      mrId: 'MR8',
+      triggered,
+      priority,
+      reason: 'Context-aware user encountering new task type',
+    };
+  }
+
+  /**
+   * MR9: Dynamic Trust Calibration
+   * Trigger: (trustChange>15% ∨ R2≥2) ∧ msgIndex≥3
+   * Priority: 50 + R2×10
+   */
+  private evaluateMR9(signals: BehavioralSignals, pattern: Pattern) {
+    const R2 = signals.trustCalibrationScore;
+    const triggered =
+      (Math.abs(signals.trustChange) > 15 || R2 >= 2) &&
+      signals.messageIndex >= 3;
+
+    const basePriority = 50 + R2 * 10;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR9[pattern] || 0);
+
+    return {
+      mrId: 'MR9',
+      triggered,
+      priority,
+      reason: `Trust dynamics detected (${signals.trustChange.toFixed(1)}% change) after sufficient interaction`,
+    };
+  }
+
+  /**
+   * MR10: Cost-Benefit Analysis
+   * Trigger: (criticality=high ∨ irreversibleAction) ∧ P4<2
+   * Priority: 60 + risk×15
+   */
+  private evaluateMR10(signals: BehavioralSignals, pattern: Pattern) {
+    const P4 = signals.preparationScore;
+    const triggered =
+      (signals.taskRiskLevel === 'high' || signals.irreversibleAction) &&
+      P4 < 2;
+
+    const riskMultiplier = signals.taskRiskLevel === 'critical' ? 3 : signals.taskRiskLevel === 'high' ? 2 : 1;
+    const basePriority = 60 + riskMultiplier * 15;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR10[pattern] || 0);
+
+    return {
+      mrId: 'MR10',
+      triggered,
+      priority,
+      reason: 'High-risk/irreversible action with insufficient preparation',
+    };
+  }
+
+  /**
+   * MR11: Integrated Verification Tools
+   * Trigger: (M2<2 ∧ unverified≥2) ∨ criticality=high
+   * Priority: 70 + (3-M2)×10
+   */
+  private evaluateMR11(signals: BehavioralSignals, pattern: Pattern) {
+    const M2 = signals.qualityCheckScore;
+    const triggered =
+      (M2 < 2 && signals.unverifiedConsecutive >= 2) ||
+      signals.taskRiskLevel === 'high' ||
+      signals.taskRiskLevel === 'critical';
+
+    const basePriority = 70 + (3 - M2) * 10;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR11[pattern] || 0);
+
+    return {
+      mrId: 'MR11',
+      triggered,
+      priority,
+      reason: `Low verification (M2=${M2}) with ${signals.unverifiedConsecutive} unverified responses`,
+    };
+  }
+
+  /**
+   * MR12: Critical Thinking Scaffolding
+   * Trigger: (trustScore<50 ∨ controversialClaim) ∧ E1≥2
+   * Priority: 65 + E1×10
+   */
+  private evaluateMR12(signals: BehavioralSignals, pattern: Pattern) {
+    const E1 = signals.outputEvaluationScore;
+    const triggered =
+      (signals.trustScore < 50 || signals.controversialClaim) && E1 >= 2;
+
+    const basePriority = 65 + E1 * 10;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR12[pattern] || 0);
+
+    return {
+      mrId: 'MR12',
+      triggered,
+      priority,
+      reason: 'Low trust or controversial content with evaluation capability',
+    };
+  }
+
+  /**
+   * MR13: Transparent Uncertainty Display
+   * Trigger: (hasUncertainty ∨ aiConfidence<0.5) ∧ E3≥2
+   * Priority: 75 + uncertaintyCount×5
+   */
+  private evaluateMR13(signals: BehavioralSignals, pattern: Pattern) {
+    const E3 = signals.capabilityJudgmentScore;
+    const triggered =
+      (signals.hasUncertainty || signals.aiConfidence < 0.5) && E3 >= 2;
+
+    const basePriority = 75 + (signals.hasUncertainty ? 5 : 0);
+    const priority = basePriority + (PATTERN_MODIFIERS.MR13[pattern] || 0);
+
+    return {
+      mrId: 'MR13',
+      triggered,
+      priority,
+      reason: `Uncertainty detected (confidence=${signals.aiConfidence.toFixed(2)}) with capability awareness`,
+    };
+  }
+
+  /**
+   * MR14: Guided Reflection Mechanism
+   * Trigger: (msgIndex mod 3 = 0) ∧ pattern≠A
+   * Priority: 45 - (pattern=A?15:0)
+   */
+  private evaluateMR14(signals: BehavioralSignals, pattern: Pattern) {
+    const triggered = signals.messageIndex % 3 === 0 && pattern !== 'A';
+
+    const basePriority = 45 - (pattern === 'A' ? 15 : 0);
+    const priority = basePriority + (PATTERN_MODIFIERS.MR14[pattern] || 0);
+
+    return {
+      mrId: 'MR14',
+      triggered,
+      priority,
+      reason: 'Periodic reflection checkpoint',
+    };
+  }
+
+  /**
+   * MR15: Metacognitive Strategy Guide
+   * Trigger: pattern=E ∨ (E2≥2 ∧ sessionDuration>15)
+   * Priority: 35 + E2×15
+   */
+  private evaluateMR15(signals: BehavioralSignals, pattern: Pattern) {
+    const E2 = signals.reflectionDepth;
+    const triggered =
+      pattern === 'E' || (E2 >= 2 && signals.sessionDuration > 15);
+
+    const basePriority = 35 + E2 * 15;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR15[pattern] || 0);
+
+    return {
+      mrId: 'MR15',
+      triggered,
+      priority,
+      reason: pattern === 'E'
+        ? 'Learning-oriented pattern benefits from strategy guidance'
+        : 'Deep reflector in extended session',
+    };
+  }
+
+  /**
+   * MR16: Skill Atrophy Prevention (WARNING - UNCONDITIONAL)
+   * Trigger: riskDetected ∨ securityConcern (simplified: high AI reliance + no iteration)
+   * Priority: 90 (unconditional)
+   */
+  private evaluateMR16(signals: BehavioralSignals, pattern: Pattern) {
+    const triggered =
+      signals.aiRelianceDegree >= 2.5 &&
+      signals.iterationCount === 0 &&
+      signals.unverifiedConsecutive >= 3;
+
+    return {
+      mrId: 'MR16',
+      triggered,
+      priority: 90,  // Unconditional high priority
+      reason: 'Skill atrophy risk: high AI reliance without independent effort',
+    };
+  }
+
+  /**
+   * MR17: Learning Progress Visualization
+   * Trigger: (pattern=B ∧ iterationCount≥3) ∨ sessionComplete
+   * Priority: 40 + M1×10
+   */
+  private evaluateMR17(signals: BehavioralSignals, pattern: Pattern) {
+    const triggered =
+      (pattern === 'B' && signals.iterationCount >= 3) || signals.sessionEnding;
+
+    // M1 approximated by iteration-based progress
+    const M1 = Math.min(signals.iterationCount, 3);
+    const basePriority = 40 + M1 * 10;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR17[pattern] || 0);
+
+    return {
+      mrId: 'MR17',
+      triggered,
+      priority,
+      reason: pattern === 'B'
+        ? `Iterative pattern with ${signals.iterationCount} iterations`
+        : 'Session completion - show progress summary',
+    };
+  }
+
+  /**
+   * MR18: Over-Reliance Warning (CRITICAL - UNCONDITIONAL)
+   * Trigger: unverifiedConsecutive≥4 ∧ M2<2
+   * Priority: 70 + (5-consecutive)×5
+   */
+  private evaluateMR18(signals: BehavioralSignals, pattern: Pattern) {
+    const M2 = signals.qualityCheckScore;
+    const triggered = signals.unverifiedConsecutive >= 4 && M2 < 2;
+
+    const basePriority = 70 + (5 - Math.min(signals.unverifiedConsecutive, 5)) * 5;
+
+    return {
+      mrId: 'MR18',
+      triggered,
+      priority: basePriority,
+      reason: `Critical: ${signals.unverifiedConsecutive} consecutive unverified responses with low quality checking`,
+    };
+  }
+
+  /**
+   * MR19: Metacognitive Assessment
+   * Trigger: (sessionEnding ∨ milestone) ∧ E1+E2+E3≥5
+   * Priority: 45 + totalE×5
+   */
+  private evaluateMR19(signals: BehavioralSignals, pattern: Pattern) {
+    const totalE = signals.outputEvaluationScore + signals.reflectionDepth + signals.capabilityJudgmentScore;
+    const triggered = (signals.sessionEnding || signals.isMilestone) && totalE >= 5;
+
+    const basePriority = 45 + totalE * 5;
+    const priority = basePriority + (PATTERN_MODIFIERS.MR19[pattern] || 0);
+
+    return {
+      mrId: 'MR19',
+      triggered,
+      priority,
+      reason: 'Session milestone with sufficient metacognitive engagement',
+    };
+  }
+
+  // ========== Helper Methods ==========
+
+  /**
+   * Adjust urgency based on task risk and pattern
+   */
+  private adjustUrgency(
+    baseUrgency: Urgency,
     signals: BehavioralSignals,
-    pattern: PatternEstimate,
-    turnCount: number
-  ): string {
-    const topPattern = pattern.topPattern;
-
-    // MR1: Task Decomposition
-    if (rule.mrId === 'MR1') {
-      if (topPattern === 'F') {
-        return 'I notice you\'re asking for a complete solution. Consider breaking this down into smaller steps first. This helps you better understand the process.';
-      } else if (signals.taskComplexity > 2) {
-        return 'This task looks complex. Would you like to use task decomposition to plan the steps?';
-      }
-      return 'Breaking down the task first makes it easier to manage.';
+    pattern: Pattern
+  ): Urgency {
+    // Critical risk always escalates to enforce
+    if (signals.taskRiskLevel === 'critical') {
+      return 'enforce';
     }
 
-    // MR3: Human Agency Control
-    if (rule.mrId === 'MR3') {
-      return 'Remember to clarify which parts you handle and which AI assists with. This helps you maintain control of your work.';
+    // High risk escalates observe to remind
+    if (signals.taskRiskLevel === 'high' && baseUrgency === 'observe') {
+      return 'remind';
     }
 
-    // MR11: Verification Tools
-    if (rule.mrId === 'MR11') {
-      if (topPattern === 'F') {
-        return '⚠️ Before using this output, I strongly recommend verifying the key content. I\'ve prepared verification tools for you.';
-      }
-      return 'Before using this output, I recommend verifying the key content. Verification tools are available.';
+    // Pattern F always escalates for safety MRs
+    if (pattern === 'F' && signals.taskRiskLevel !== 'low') {
+      if (baseUrgency === 'observe') return 'remind';
+      if (baseUrgency === 'remind') return 'enforce';
     }
 
-    // MR13: Uncertainty
-    if (rule.mrId === 'MR13') {
-      return 'Note: Some parts may have lower confidence. I recommend verifying this information.';
-    }
-
-    // MR16: Skill Degradation
-    if (rule.mrId === 'MR16') {
-      if (signals.iterationCount === 0) {
-        return 'I notice you\'re accepting AI outputs without making modifications or iterations. To maintain your skills, try making some independent changes or verification.';
-      }
-      return 'Remember to maintain control of your work and avoid over-relying on AI. I recommend more independent thinking and verification.';
-    }
-
-    // MR18: Over-reliance Warning
-    if (rule.mrId === 'MR18') {
-      return '⚠️ CRITICAL: Over-reliance on AI detected. This may impact your skill development. I recommend:\n' +
-             '1. Try solving problems yourself first\n' +
-             '2. Verify AI output accuracy\n' +
-             '3. Regularly complete tasks without AI\n' +
-             'Please confirm you understand the risks before continuing.';
-    }
-
-    // MR19: Input Enhancement Prompt (NEW - based on real data analysis)
-    if (rule.mrId === 'MR19') {
-      if (topPattern === 'F') {
-        return '💡 Your question is quite brief. To get better assistance and develop your understanding, try:\n' +
-               '• Describe your current understanding\n' +
-               '• Explain what you\'ve already tried\n' +
-               '• Ask specific questions about concepts you find confusing';
-      }
-      return '💡 Adding more detail to your question can help me provide more targeted assistance. What specific aspects would you like to explore?';
-    }
-
-    // ========== Pattern D (Deep Verification) Messages ==========
-
-    // MR10: Verification Efficiency Optimizer
-    if (rule.mrId === 'MR10') {
-      if (signals.taskComplexity < 1.5) {
-        return '✨ Great verification habit! For this simpler task, a quick spot-check may be sufficient. ' +
-               'Save your thorough verification energy for higher-stakes content.';
-      }
-      return '✨ Your thorough verification approach is excellent. Consider prioritizing verification ' +
-             'effort based on task criticality to optimize your workflow.';
-    }
-
-    // MR15: Advanced Verification Strategies
-    if (rule.mrId === 'MR15') {
-      return '🎯 Advanced Verification Strategies for Expert Users:\n' +
-             '• Cross-reference with authoritative sources\n' +
-             '• Test edge cases and boundary conditions\n' +
-             '• Use the "explain back" technique to verify understanding\n' +
-             '• Consider creating verification checklists for repeated tasks';
-    }
-
-    // ========== Pattern E (Teaching & Learning) Messages ==========
-
-    // MR14: Reflection to Action Bridge
-    if (rule.mrId === 'MR14') {
-      return '🌱 Your reflection shows deep understanding. Ready to apply these insights?\n' +
-             '• What specific action can you take based on this learning?\n' +
-             '• How might you teach this concept to someone else?\n' +
-             '• What would be a good practice exercise to solidify this knowledge?';
-    }
-
-    // MR17: Learning Progress Visualization
-    if (rule.mrId === 'MR17') {
-      return '📊 Your Learning Journey:\n' +
-             '• You\'ve demonstrated strong reflection and self-awareness\n' +
-             '• Consider mapping your knowledge growth over time\n' +
-             '• Track concepts you\'ve mastered vs. areas for growth\n' +
-             '• Your metacognitive skills are developing well!';
-    }
-
-    // MR14-Enhanced: Structured Reflection Guide
-    if (rule.mrId === 'MR14-Enhanced') {
-      return '📝 Structured Reflection Framework:\n' +
-             '1. What did I learn from this interaction?\n' +
-             '2. How does this connect to what I already know?\n' +
-             '3. Where might I apply this knowledge?\n' +
-             '4. What questions remain for deeper exploration?';
-    }
-
-    return rule.description;
+    return baseUrgency;
   }
 
   /**
@@ -530,63 +602,105 @@ export class AdaptiveMRActivator {
    */
   private determineDisplayMode(urgency: Urgency): DisplayMode {
     switch (urgency) {
-      case 'observe':
-        return 'inline';     // Non-intrusive, part of message
-      case 'remind':
-        return 'sidebar';    // Visible but not blocking
-      case 'enforce':
-        return 'modal';      // Blocks interaction, requires response
+      case 'observe': return 'inline';
+      case 'remind': return 'sidebar';
+      case 'enforce': return 'modal';
+      default: return 'inline';
+    }
+  }
+
+  /**
+   * Generate contextual message for each MR
+   */
+  private generateContextualMessage(
+    mrId: string,
+    signals: BehavioralSignals,
+    pattern: Pattern
+  ): string {
+    switch (mrId) {
+      case 'MR1':
+        if (pattern === 'F') {
+          return 'I notice you\'re asking for a complete solution. Consider breaking this down into smaller steps first. This helps you better understand the process.';
+        }
+        return 'This task looks complex. Would you like to break it down into smaller, manageable steps?';
+
+      case 'MR2':
+        return 'Welcome! I\'ll show you how I process your requests so you can better understand and verify my outputs.';
+
+      case 'MR3':
+        return 'This involves a decision. Remember to clarify which parts you handle and which AI assists with.';
+
+      case 'MR4':
+        return 'New task type detected. Consider defining your role and expectations for this interaction.';
+
+      case 'MR5':
+        return `You've iterated ${signals.iterationCount} times. Consider using branching to explore alternatives without losing progress.`;
+
+      case 'MR6':
+        if (pattern === 'D') {
+          return '🔄 As a thorough verifier, you might benefit from comparing outputs across different AI models.';
+        }
+        return '⚠️ Given the importance of this task and current uncertainty, consider cross-validating with another AI model.';
+
+      case 'MR7':
+        return '📚 I notice a previous response didn\'t work out. Let\'s reflect on what happened and how to improve.';
+
+      case 'MR8':
+        return 'This appears to be a different type of task. I\'ve adjusted my approach accordingly.';
+
+      case 'MR9':
+        return `📊 Your trust level has changed by ${Math.abs(signals.trustChange).toFixed(0)}%. Let's calibrate expectations for this task type.`;
+
+      case 'MR10':
+        return '⚖️ This action has significant consequences. Consider weighing the costs and benefits before proceeding.';
+
+      case 'MR11':
+        if (pattern === 'F') {
+          return '⚠️ Before using this output, I strongly recommend verifying the key content. Verification tools are available.';
+        }
+        return 'I recommend verifying the key content before use. Would you like to use the verification tools?';
+
+      case 'MR12':
+        return '🤔 This content may benefit from critical examination. Consider: What assumptions are being made? What evidence supports this?';
+
+      case 'MR13':
+        return `⚠️ Confidence level: ${(signals.aiConfidence * 100).toFixed(0)}%. I recommend additional verification for the highlighted sections.`;
+
+      case 'MR14':
+        return '📝 Reflection checkpoint: What have you learned so far? How might you apply this knowledge?';
+
+      case 'MR15':
+        if (pattern === 'E') {
+          return '🎓 As a learning-oriented user, here are advanced metacognitive strategies you might find valuable...';
+        }
+        return '💡 You\'ve been reflecting deeply. Consider documenting your insights for future reference.';
+
+      case 'MR16':
+        return '⚠️ SKILL DEVELOPMENT ALERT: I notice you\'re accepting outputs without modification. To maintain your skills:\n' +
+               '1. Try solving part of the problem yourself first\n' +
+               '2. Make at least one modification to my output\n' +
+               '3. Explain why you made (or didn\'t make) changes';
+
+      case 'MR17':
+        if (signals.sessionEnding) {
+          return '📊 Session Summary: Here\'s your learning progress and areas for continued growth...';
+        }
+        return `📈 Progress Update: ${signals.iterationCount} iterations completed. Your persistence is building expertise!`;
+
+      case 'MR18':
+        return `🚨 CRITICAL: ${signals.unverifiedConsecutive} consecutive responses accepted without verification.\n` +
+               'This pattern may impact your skill development and increase error risk.\n' +
+               'Please verify at least one key claim before continuing.';
+
+      case 'MR19':
+        return '🎯 Milestone reached! Time for a metacognitive check-in:\n' +
+               '• What strategies worked well?\n' +
+               '• What would you do differently?\n' +
+               '• What questions remain?';
+
       default:
-        return 'inline';
+        return MR_METADATA[mrId]?.name || 'Metacognitive support available';
     }
-  }
-
-  /**
-   * Calculate priority for MR activation
-   * Used to determine which MRs to show when multiple are active
-   */
-  private calculatePriority(
-    rule: MRActivationRule,
-    pattern: PatternEstimate,
-    signals: BehavioralSignals
-  ): number {
-    let priority = 0;
-
-    // Base urgency score
-    const urgencyScore = { observe: 1, remind: 2, enforce: 3 };
-    priority += urgencyScore[rule.urgency] * 10;
-
-    // Pattern F is highest priority
-    if (pattern.topPattern === 'F') priority += 50;
-
-    // Critical risk indicators
-    if (signals.aiRelianceDegree > 2.5 && !signals.verificationAttempted) {
-      priority += 30;
-    }
-
-    if (signals.iterationCount === 0 && pattern.topPattern !== 'A') {
-      priority += 20;
-    }
-
-    return priority;
-  }
-
-  /**
-   * Remove duplicate MRs and return top by priority
-   */
-  private prioritizeAndDedup(activeMRs: ActiveMR[]): ActiveMR[] {
-    // Remove duplicates (keep highest priority)
-    const uniqueMRs = new Map<string, ActiveMR>();
-    activeMRs.forEach(mr => {
-      if (!uniqueMRs.has(mr.mrId) || mr.priority > uniqueMRs.get(mr.mrId)!.priority) {
-        uniqueMRs.set(mr.mrId, mr);
-      }
-    });
-
-    // Sort by priority and return top 3
-    return Array.from(uniqueMRs.values())
-      .sort((a, b) => b.priority - a.priority)
-      .slice(0, 3);
   }
 }
 
