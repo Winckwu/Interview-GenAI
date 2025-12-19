@@ -613,11 +613,17 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   };
 
   /**
-   * Handle turn expand/collapse toggle
+   * Handle turn expand/collapse toggle - also selects the version for Changes/Reasoning views
    */
   const handleTurnToggle = useCallback((versionId: string) => {
-    setExpandedTurnId(prev => prev === versionId ? null : versionId);
-  }, []);
+    const isCurrentlyExpanded = expandedTurnId === versionId;
+    setExpandedTurnId(isCurrentlyExpanded ? null : versionId);
+
+    // Always select the version so Changes/Reasoning views work
+    if (!isCurrentlyExpanded) {
+      handleVersionSelect(versionId);
+    }
+  }, [expandedTurnId, handleVersionSelect]);
 
   /**
    * Render version selector sidebar with expandable turns
