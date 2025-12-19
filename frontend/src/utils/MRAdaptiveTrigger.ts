@@ -344,8 +344,9 @@ function evaluateTriggerCondition(
       return (scores.M2 < 2 && ctx.consecutiveUnverified >= 2) || ctx.taskCriticality === 'high';
 
     case 'mr12-critical':
-      // (trustScore<50 OR controversialClaim) AND E1>=2
-      return (ctx.trustScore < 50 || ctx.hasControversialClaim) && scores.E1 >= 2;
+      // DISABLED: Removed from inline display - redundant with trust score color
+      // The functionality still exists in MR panel if user wants to access it
+      return false;
 
     case 'mr13-uncertainty':
       // (hasUncertainty OR aiConfidence<0.5) AND E3>=2
