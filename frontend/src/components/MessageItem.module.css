@@ -25,6 +25,22 @@
   }
 }
 
+/* Fork hint tooltip animation - global so it works with inline styles */
+:global(.fork-hint-tooltip) {
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 /* Blinking cursor for streaming */
 @keyframes blink {
   0%, 50% {

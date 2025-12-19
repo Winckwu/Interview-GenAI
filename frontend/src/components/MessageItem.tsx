@@ -103,6 +103,42 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   const [showExportMenu, setShowExportMenu] = useState(false);
   const exportMenuRef = useRef<HTMLDivElement>(null);
 
+  // Fork hint state - shows tooltip when navigating branches
+  const [showForkHint, setShowForkHint] = useState(false);
+  const forkHintTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Show fork hint when navigating branches
+  const handleBranchNavWithHint = (direction: 'prev' | 'next') => {
+    // Call the actual navigation
+    if (direction === 'prev' && onBranchPrev) {
+      onBranchPrev();
+    } else if (direction === 'next' && onBranchNext) {
+      onBranchNext();
+    }
+
+    // Show fork hint if fork is available
+    if (onForkConversation) {
+      setShowForkHint(true);
+      // Clear any existing timeout
+      if (forkHintTimeoutRef.current) {
+        clearTimeout(forkHintTimeoutRef.current);
+      }
+      // Auto-hide after 4 seconds
+      forkHintTimeoutRef.current = setTimeout(() => {
+        setShowForkHint(false);
+      }, 4000);
+    }
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (forkHintTimeoutRef.current) {
+        clearTimeout(forkHintTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Close export menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -473,9 +509,9 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                 title="Keyboard: ← Previous | → Next | Delete to remove | Ctrl+Enter to set as main"
               >
                 <button
-                  onClick={onBranchPrev}
+                  onClick={() => handleBranchNavWithHint('prev')}
                   disabled={!canGoPrev}
-                  title="Previous branch"
+                  title="Previous branch (←)"
                   style={{
                     background: 'none',
                     border: 'none',
@@ -507,9 +543,9 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                 )}
 
                 <button
-                  onClick={onBranchNext}
+                  onClick={() => handleBranchNavWithHint('next')}
                   disabled={!canGoNext}
-                  title="Next branch"
+                  title="Next branch (→)"
                   style={{
                     background: 'none',
                     border: 'none',
@@ -736,23 +772,63 @@ export const MessageItem: React.FC<MessageItemProps> = ({
 
                 {/* Fork Conversation button - creates a new conversation timeline from this message */}
                 {onForkConversation && (
-                  <button
-                    onClick={onForkConversation}
-                    title="Fork conversation from this point - create a new conversation timeline"
-                    style={{
-                      background: '#ddd6fe',
-                      border: '1px solid #8b5cf6',
-                      cursor: 'pointer',
-                      padding: '0.125rem 0.375rem',
-                      fontSize: '0.7rem',
-                      color: '#5b21b6',
-                      marginLeft: '0.5rem',
-                      borderRadius: '0.25rem',
-                      fontWeight: '600',
-                    }}
-                  >
-                    🔀 Fork
-                  </button>
+                  <div style={{ position: 'relative', display: 'inline-block', marginLeft: '0.5rem' }}>
+                    <button
+                      onClick={onForkConversation}
+                      title="Fork conversation from this point - create a new conversation timeline"
+                      style={{
+                        background: showForkHint ? '#c4b5fd' : '#ddd6fe',
+                        border: `1px solid ${showForkHint ? '#7c3aed' : '#8b5cf6'}`,
+                        cursor: 'pointer',
+                        padding: '0.125rem 0.375rem',
+                        fontSize: '0.7rem',
+                        color: '#5b21b6',
+                        borderRadius: '0.25rem',
+                        fontWeight: '600',
+                        transition: 'all 0.3s ease',
+                        transform: showForkHint ? 'scale(1.05)' : 'scale(1)',
+                        boxShadow: showForkHint ? '0 2px 8px rgba(139, 92, 246, 0.4)' : 'none',
+                      }}
+                    >
+                      🔀 Fork
+                    </button>
+                    {/* Fork hint tooltip */}
+                    {showForkHint && (
+                      <div
+                        className="fork-hint-tooltip"
+                        style={{
+                          position: 'absolute',
+                          bottom: '100%',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          marginBottom: '0.5rem',
+                          padding: '0.5rem 0.75rem',
+                          backgroundColor: '#5b21b6',
+                          color: '#fff',
+                          fontSize: '0.7rem',
+                          borderRadius: '0.375rem',
+                          whiteSpace: 'nowrap',
+                          zIndex: 100,
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                        }}
+                      >
+                        💡 点击 Fork 可以从这里创建新的对话分支！
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: 0,
+                            height: 0,
+                            borderLeft: '6px solid transparent',
+                            borderRight: '6px solid transparent',
+                            borderTop: '6px solid #5b21b6',
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 {/* Bulk operations button - show when there are multiple branches */}
