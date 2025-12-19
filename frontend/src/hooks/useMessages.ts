@@ -177,6 +177,10 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [totalMessagesCount, setTotalMessagesCount] = useState(0);
 
+  // Conversation tree state
+  const [currentBranchPath, setCurrentBranchPath] = useState<string>('main');
+  const [availableBranchPaths, setAvailableBranchPaths] = useState<string[]>(['main']);
+
   /**
    * Load messages for a specific page with pagination
    */
@@ -320,15 +324,16 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     const tempId = `temp-${Date.now()}`;
     const timestamp = new Date().toISOString();
 
-    // Add user message immediately
+    // Add user message immediately with branch context
     const userMessage: Message = {
       id: `user-${tempId}`,
       role: 'user',
       content: userInput,
       timestamp,
+      branchPath: currentBranchPath,
     };
 
-    // Add placeholder AI message for streaming
+    // Add placeholder AI message for streaming with branch context
     const placeholderAiMessage: Message = {
       id: tempId,
       role: 'ai',
@@ -337,6 +342,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       wasVerified: false,
       wasModified: false,
       wasRejected: false,
+      branchPath: currentBranchPath,
     };
 
     setMessages((prev) => [...prev, userMessage, placeholderAiMessage]);
@@ -420,7 +426,11 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       // Use cleanContent for storage and display (without thinking tags)
       const finalContent = cleanContent || fullContent.replace(/<thinking>[\s\S]*?<\/thinking>\s*/g, '').trim();
 
-      // Log interaction to backend (with reasoning)
+      // Find the last AI message to use as parent for tree structure
+      const lastAiMessage = [...messages].reverse().find(m => m.role === 'ai' && !m.id.startsWith('temp-'));
+      const parentId = lastAiMessage?.id || null;
+
+      // Log interaction to backend (with reasoning and tree context)
       const interactionResponse = await api.post('/interactions', {
         sessionId,
         userPrompt: userInput,
@@ -432,6 +442,8 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
         wasRejected: false,
         confidenceScore: 0.85,
         reasoning: reasoning || undefined,
+        parentId: parentId,
+        branchPath: currentBranchPath,
       });
 
       const interaction = interactionResponse.data.data.interaction;
@@ -455,11 +467,17 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
         console.error('Failed to update global store:', storeErr);
       }
 
-      // Update messages with real IDs and reasoning
+      // Update messages with real IDs, reasoning, and tree context
       setMessages((prev) =>
         prev.map((msg) => {
           if (msg.id === `user-${tempId}`) {
-            return { ...msg, id: `user-${interaction.id}`, timestamp: interaction.createdAt };
+            return {
+              ...msg,
+              id: `user-${interaction.id}`,
+              timestamp: interaction.createdAt,
+              parentId: parentId,
+              branchPath: currentBranchPath,
+            };
           }
           if (msg.id === tempId) {
             return {
@@ -470,6 +488,8 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
               webSearchUsed,
               searchResults,
               reasoning: reasoning || undefined,
+              parentId: parentId,
+              branchPath: currentBranchPath,
             };
           }
           return msg;
@@ -495,7 +515,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     } finally {
       setLoading(false);
     }
-  }, [sessionId, messages, systemPrompt, addInteraction, onSendSuccess, onError]);
+  }, [sessionId, messages, systemPrompt, currentBranchPath, addInteraction, onSendSuccess, onError]);
 
   /**
    * Mark interaction as verified
@@ -649,6 +669,100 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     setTimeout(() => setSuccessMessage(null), 3000);
   }, [sessionId, messages, handleSendMessage, cancelEditingMessage]);
 
+  /**
+   * Switch to a different conversation branch path
+   * Reloads messages for the selected path
+   */
+  const switchBranchPath = useCallback(async (branchPath: string) => {
+    if (!sessionId || branchPath === currentBranchPath) return;
+
+    try {
+      setLoading(true);
+      setCurrentBranchPath(branchPath);
+
+      // Load messages for the new branch path using tree endpoint
+      const response = await api.get(`/interactions/tree/${sessionId}`, {
+        params: { branchPath }
+      });
+
+      const { interactions, availableBranchPaths: paths } = response.data.data;
+
+      // Transform interactions to messages
+      const loadedMessages: Message[] = [];
+      for (const interaction of interactions) {
+        // Add user message
+        loadedMessages.push({
+          id: `user-${interaction.id}`,
+          role: 'user',
+          content: interaction.userPrompt,
+          timestamp: interaction.createdAt,
+          parentId: interaction.parentId,
+          branchPath: interaction.branchPath,
+        });
+
+        // Add AI message
+        loadedMessages.push({
+          id: interaction.id,
+          role: 'ai',
+          content: interaction.aiResponse,
+          timestamp: interaction.createdAt,
+          wasVerified: interaction.wasVerified,
+          wasModified: interaction.wasModified,
+          wasRejected: interaction.wasRejected,
+          branches: interaction.branches,
+          parentId: interaction.parentId,
+          branchPath: interaction.branchPath,
+        });
+      }
+
+      setMessages(loadedMessages);
+      setAvailableBranchPaths(paths || ['main']);
+      setSuccessMessage(`Switched to branch: ${branchPath}`);
+      setTimeout(() => setSuccessMessage(null), 2000);
+    } catch (err: any) {
+      console.error('Failed to switch branch:', err);
+      setError('Failed to switch conversation branch');
+    } finally {
+      setLoading(false);
+    }
+  }, [sessionId, currentBranchPath]);
+
+  /**
+   * Fork conversation from a specific message to create a new branch
+   * Returns the new branch path name
+   */
+  const forkConversation = useCallback(async (sourceMessageId: string, newBranchName: string): Promise<string> => {
+    if (!sessionId) {
+      throw new Error('No session ID');
+    }
+
+    try {
+      // Create new branch path name
+      const newBranchPath = `branch-${newBranchName}-${Date.now()}`;
+
+      // Call fork API
+      const response = await api.post('/interactions/fork', {
+        sourceInteractionId: sourceMessageId,
+        newBranchPath,
+      });
+
+      // Update available branch paths
+      setAvailableBranchPaths(prev => [...prev, newBranchPath]);
+
+      // Switch to the new branch
+      await switchBranchPath(newBranchPath);
+
+      setSuccessMessage(`Created new branch: ${newBranchName}`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+
+      return newBranchPath;
+    } catch (err: any) {
+      console.error('Failed to fork conversation:', err);
+      setError('Failed to create conversation branch');
+      throw err;
+    }
+  }, [sessionId, switchBranchPath]);
+
   return {
     // State
     messages,
@@ -658,6 +772,10 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     updatingMessageId,
     editingMessageId,
     editedContent,
+
+    // Conversation tree state
+    currentBranchPath,
+    availableBranchPaths,
 
     // Streaming state
     isStreaming,
@@ -681,6 +799,10 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     loadMoreMessages,
     editUserMessageAndRegenerate,
 
+    // Conversation tree operations
+    switchBranchPath,
+    forkConversation,
+
     // Setters
     setMessages,
     setError,
@@ -690,6 +812,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     setHasMoreMessages,
     setIsLoadingMore,
     setTotalMessagesCount,
+    setCurrentBranchPath,
   };
 }
 

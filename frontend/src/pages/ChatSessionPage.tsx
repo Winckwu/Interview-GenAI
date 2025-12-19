@@ -407,6 +407,12 @@ const ChatSessionPage: React.FC = () => {
     isStreaming,
     streamingContent,
     stopStreaming,
+    // Conversation tree/forking
+    currentBranchPath,
+    availableBranchPaths,
+    switchBranchPath,
+    forkConversation,
+    setCurrentBranchPath,
   } = messagesHook;
 
   const {
@@ -1522,6 +1528,28 @@ Message: "${firstMessage.slice(0, 200)}"`,
       setTimeout(() => setErrorMessage(null), 3000);
     }
   }, [messages, setMessages]);
+
+  /**
+   * Handle fork conversation - Creates a new conversation timeline from a specific message
+   * User will be prompted to name the branch, then can continue chatting on the new branch
+   */
+  const handleForkConversation = useCallback(async (messageId: string) => {
+    // Prompt user for branch name
+    const branchName = window.prompt('Enter a name for this conversation branch:', 'new-branch');
+    if (!branchName || !branchName.trim()) {
+      return; // User cancelled
+    }
+
+    try {
+      // Create the fork using the hook function
+      const newBranchPath = await forkConversation(messageId, branchName.trim());
+      console.log('[Fork] Created new branch:', newBranchPath);
+    } catch (error) {
+      console.error('[Fork] Failed to fork conversation:', error);
+      setError('Failed to create conversation branch. Please try again.');
+      setTimeout(() => setError(null), 3000);
+    }
+  }, [forkConversation, setError]);
 
   /**
    * Handle MR5 variant selection - Create a new branch with selected variant
@@ -3279,6 +3307,43 @@ Message: "${firstMessage.slice(0, 200)}"`,
               >
                 🧠 MR Tools
               </button>
+
+              {/* Conversation Branch Selector - Only show when multiple branches exist */}
+              {availableBranchPaths.length > 1 && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontSize: '0.7rem', color: '#6b7280' }}>Branch:</span>
+                  <select
+                    value={currentBranchPath}
+                    onChange={(e) => switchBranchPath(e.target.value)}
+                    style={{
+                      padding: '0.4rem 0.6rem',
+                      fontSize: '0.75rem',
+                      borderRadius: '0.375rem',
+                      border: '1px solid #d1d5db',
+                      backgroundColor: '#fff',
+                      color: '#374151',
+                      cursor: 'pointer',
+                      fontWeight: '500',
+                      minWidth: '120px',
+                    }}
+                  >
+                    {availableBranchPaths.map((path) => (
+                      <option key={path} value={path}>
+                        {path === 'main' ? 'Main' : path.replace('branch-', '').split('-').slice(0, -1).join('-') || path}
+                      </option>
+                    ))}
+                  </select>
+                  <span style={{
+                    fontSize: '0.65rem',
+                    color: '#9ca3af',
+                    backgroundColor: '#f3f4f6',
+                    padding: '0.2rem 0.4rem',
+                    borderRadius: '0.25rem',
+                  }}>
+                    {availableBranchPaths.length} branches
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Main Actions */}
@@ -3767,6 +3832,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 onBranchSwitch={handleBranchSwitch}
                 onBranchDelete={handleDeleteBranch}
                 onBranchSetAsMain={handleSetBranchAsMain}
+                onForkConversation={handleForkConversation}
                 showTrustIndicator={showTrustIndicator}
                 messageTrustScores={messageTrustScores}
                 getTrustBadge={getTrustBadge}

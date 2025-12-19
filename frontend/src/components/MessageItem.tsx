@@ -49,6 +49,9 @@ export interface MessageItemProps {
   onBranchDelete?: () => void;
   onBranchSetAsMain?: () => void;
 
+  // Conversation forking (true branch from this message)
+  onForkConversation?: () => void;
+
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
   quickReflection?: React.ReactNode;
@@ -76,6 +79,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onBranchNext,
   onBranchDelete,
   onBranchSetAsMain,
+  onForkConversation,
   trustIndicator,
   quickReflection,
   mr6Suggestion,
@@ -727,6 +731,27 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     }}
                   >
                     📈 Analytics
+                  </button>
+                )}
+
+                {/* Fork Conversation button - creates a new conversation timeline from this message */}
+                {onForkConversation && (
+                  <button
+                    onClick={onForkConversation}
+                    title="Fork conversation from this point - create a new conversation timeline"
+                    style={{
+                      background: '#ddd6fe',
+                      border: '1px solid #8b5cf6',
+                      cursor: 'pointer',
+                      padding: '0.125rem 0.375rem',
+                      fontSize: '0.7rem',
+                      color: '#5b21b6',
+                      marginLeft: '0.5rem',
+                      borderRadius: '0.25rem',
+                      fontWeight: '600',
+                    }}
+                  >
+                    🔀 Fork
                   </button>
                 )}
 
