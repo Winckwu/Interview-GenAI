@@ -2,7 +2,7 @@
  * TrustIndicator Component - Compact Version
  *
  * Displays MR9 Dynamic Trust Calibration indicator for AI messages.
- * Shows trust score badge and recommended MR tool to activate.
+ * Shows only trust score badge (MR recommendations moved to 3-tier intervention system).
  * Redesigned: Single-line compact layout with hover tooltips.
  */
 
@@ -34,14 +34,12 @@ export interface TrustIndicatorProps {
 export const TrustIndicator: React.FC<TrustIndicatorProps> = ({
   trustScore,
   badge,
-  recommendations,
-  onRecommendationClick,
+  // recommendations and onRecommendationClick kept for API compatibility but not rendered
+  // MR recommendations are now handled by the 3-tier intervention system
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   if (!badge) return null;
-
-  const topRecommendation = recommendations[0];
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative' }}>
@@ -92,39 +90,7 @@ export const TrustIndicator: React.FC<TrustIndicatorProps> = ({
         </div>
       )}
 
-      {/* MR Recommendation Button - Compact */}
-      {topRecommendation && (
-        <button
-          onClick={() => onRecommendationClick(topRecommendation)}
-          title={topRecommendation.reason}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.375rem',
-            padding: '0.375rem 0.75rem',
-            backgroundColor: badge.color,
-            color: 'white',
-            border: 'none',
-            borderRadius: '1rem',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-1px)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-          }}
-        >
-          <span>{topRecommendation.icon}</span>
-          <span>{topRecommendation.toolName}</span>
-        </button>
-      )}
+      {/* MR Recommendation Button REMOVED - now handled by 3-tier intervention system */}
     </div>
   );
 };
