@@ -14,6 +14,7 @@
  */
 
 import React, { useEffect, useState, ReactNode } from 'react';
+import { BarChart3 } from 'lucide-react';
 import './Tier1SoftSignal.css';
 
 export interface Tier1SoftSignalProps {
@@ -41,7 +42,7 @@ export interface Tier1SoftSignalProps {
  */
 const Tier1SoftSignal: React.FC<Tier1SoftSignalProps> = ({
   id,
-  icon = '📊',
+  icon = <BarChart3 size={18} strokeWidth={2} />,
   title,
   message,
   description,
