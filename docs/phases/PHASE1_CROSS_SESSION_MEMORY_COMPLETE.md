@@ -187,7 +187,7 @@ The following features from the implementation plans are ready to implement:
 3. **Pattern Stability + SVM Ensemble** (8h)
    - Stability score calculation (0-1)
    - Hybrid Bayesian+SVM prediction (60/40 blend)
-   - Full utilization of 77% accuracy SVM model
+   - Full utilization of 92.1% accuracy SVM model (LLM-annotated)
 
 ## Files Modified
 

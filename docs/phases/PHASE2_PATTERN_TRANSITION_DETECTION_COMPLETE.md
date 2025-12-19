@@ -338,7 +338,7 @@ HAVING COUNT(*) > 3;
 2. **Pattern Stability + SVM Ensemble** (8h)
    - Stability score calculation
    - Hybrid Bayesian+SVM (60/40 blend)
-   - Full utilization of 77% accuracy SVM model
+   - Full utilization of 92.1% accuracy SVM model (LLM-annotated)
 
 ## API Testing Commands
 

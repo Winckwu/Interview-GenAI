@@ -184,6 +184,115 @@ const MR_ACTIVATION_RULES: MRActivationRule[] = [
     targetPatterns: ['F', 'C'],
     description: 'Encourage more detailed input for better AI assistance'
   },
+
+  // ========== PATTERN D (Deep Verification) RULES ==========
+  // Pattern D users already verify thoroughly - help them optimize efficiency
+  {
+    mrId: 'MR10',
+    name: 'Verification Efficiency Optimizer',
+    triggerConditions: [
+      {
+        signal: 'verificationAttempted',
+        operator: '==',
+        threshold: true,
+        description: 'User actively verifies'
+      },
+      {
+        signal: 'taskComplexity',
+        operator: '<',
+        threshold: 2,
+        description: 'Task is relatively simple'
+      }
+    ],
+    urgency: 'observe',
+    targetPatterns: ['D'],
+    description: 'Suggest proportional verification for low-complexity tasks'
+  },
+
+  {
+    mrId: 'MR15',
+    name: 'Advanced Verification Strategies',
+    triggerConditions: [
+      {
+        signal: 'verificationAttempted',
+        operator: '==',
+        threshold: true,
+        description: 'User shows verification behavior'
+      },
+      {
+        signal: 'qualityCheckMentioned',
+        operator: '==',
+        threshold: true,
+        description: 'Quality check behavior present'
+      }
+    ],
+    urgency: 'observe',
+    targetPatterns: ['D'],
+    description: 'Provide advanced metacognitive strategies for expert verifiers'
+  },
+
+  // ========== PATTERN E (Teaching & Learning) RULES ==========
+  // Pattern E users reflect deeply - help them convert insights to action
+  {
+    mrId: 'MR14',
+    name: 'Reflection to Action Bridge',
+    triggerConditions: [
+      {
+        signal: 'reflectionDepth',
+        operator: '>=',
+        threshold: 2,
+        description: 'Deep reflection demonstrated'
+      }
+    ],
+    urgency: 'observe',
+    targetPatterns: ['E'],
+    description: 'Help convert deep reflection into practical application'
+  },
+
+  {
+    mrId: 'MR17',
+    name: 'Learning Progress Visualization',
+    triggerConditions: [
+      {
+        signal: 'reflectionDepth',
+        operator: '>=',
+        threshold: 2,
+        description: 'Reflective learning behavior'
+      },
+      {
+        signal: 'capabilityJudgmentShown',
+        operator: '==',
+        threshold: true,
+        description: 'Shows capability awareness'
+      }
+    ],
+    urgency: 'observe',
+    targetPatterns: ['E'],
+    description: 'Visualize learning journey and knowledge growth'
+  },
+
+  // Pattern E also benefits from guided reflection enhancement
+  {
+    mrId: 'MR14-Enhanced',
+    name: 'Structured Reflection Guide',
+    triggerConditions: [
+      {
+        signal: 'reflectionDepth',
+        operator: '>=',
+        threshold: 1,
+        description: 'Some reflection shown'
+      },
+      {
+        signal: 'outputEvaluationPresent',
+        operator: '==',
+        threshold: true,
+        description: 'Evaluates AI output'
+      }
+    ],
+    urgency: 'observe',
+    targetPatterns: ['E', 'D'],
+    description: 'Provide structured reflection framework for deep learners'
+  },
 ];
 
 export class AdaptiveMRActivator {
@@ -362,6 +471,55 @@ export class AdaptiveMRActivator {
                '• Ask specific questions about concepts you find confusing';
       }
       return '💡 Adding more detail to your question can help me provide more targeted assistance. What specific aspects would you like to explore?';
+    }
+
+    // ========== Pattern D (Deep Verification) Messages ==========
+
+    // MR10: Verification Efficiency Optimizer
+    if (rule.mrId === 'MR10') {
+      if (signals.taskComplexity < 1.5) {
+        return '✨ Great verification habit! For this simpler task, a quick spot-check may be sufficient. ' +
+               'Save your thorough verification energy for higher-stakes content.';
+      }
+      return '✨ Your thorough verification approach is excellent. Consider prioritizing verification ' +
+             'effort based on task criticality to optimize your workflow.';
+    }
+
+    // MR15: Advanced Verification Strategies
+    if (rule.mrId === 'MR15') {
+      return '🎯 Advanced Verification Strategies for Expert Users:\n' +
+             '• Cross-reference with authoritative sources\n' +
+             '• Test edge cases and boundary conditions\n' +
+             '• Use the "explain back" technique to verify understanding\n' +
+             '• Consider creating verification checklists for repeated tasks';
+    }
+
+    // ========== Pattern E (Teaching & Learning) Messages ==========
+
+    // MR14: Reflection to Action Bridge
+    if (rule.mrId === 'MR14') {
+      return '🌱 Your reflection shows deep understanding. Ready to apply these insights?\n' +
+             '• What specific action can you take based on this learning?\n' +
+             '• How might you teach this concept to someone else?\n' +
+             '• What would be a good practice exercise to solidify this knowledge?';
+    }
+
+    // MR17: Learning Progress Visualization
+    if (rule.mrId === 'MR17') {
+      return '📊 Your Learning Journey:\n' +
+             '• You\'ve demonstrated strong reflection and self-awareness\n' +
+             '• Consider mapping your knowledge growth over time\n' +
+             '• Track concepts you\'ve mastered vs. areas for growth\n' +
+             '• Your metacognitive skills are developing well!';
+    }
+
+    // MR14-Enhanced: Structured Reflection Guide
+    if (rule.mrId === 'MR14-Enhanced') {
+      return '📝 Structured Reflection Framework:\n' +
+             '1. What did I learn from this interaction?\n' +
+             '2. How does this connect to what I already know?\n' +
+             '3. Where might I apply this knowledge?\n' +
+             '4. What questions remain for deeper exploration?';
     }
 
     return rule.description;

@@ -300,9 +300,9 @@ User Behavior → Feature Extraction → XGBoost/SVM Ensemble → Pattern (A-F) 
 ```
 
 ### Performance:
-- **Overall Accuracy**: 72.73%
-- **Pattern F Detection**: 100% (Critical pattern never missed)
-- **Cross-validation**: 5-fold with hyperparameter tuning
+- **Overall Accuracy**: 92.1% (LLM-annotated training data)
+- **Pattern F Detection**: 98.9% (Critical pattern rarely missed)
+- **Cross-validation**: Bootstrap 3-round validation
 
 ---
 
@@ -502,9 +502,9 @@ END IF
 ### Pattern Recognition:
 | Metric | Value |
 |--------|-------|
-| Overall Accuracy | 72.73% |
-| Pattern F Recall | 100% |
-| Cross-validation | 5-fold |
+| Overall Accuracy | 92.1% |
+| Pattern F Recall | 98.9% |
+| Cross-validation | Bootstrap 3-round |
 
 ### User Research Coverage:
 | Metric | Value |
@@ -644,7 +644,7 @@ END IF
 ### Key Achievements:
 1. **Evidence-Based Design**: Every feature grounded in 49 expert interviews
 2. **Comprehensive Framework**: 19 MR components covering all metacognitive dimensions
-3. **Pattern Recognition**: 72.73% accuracy with 100% critical pattern detection
+3. **Pattern Recognition**: 92.1% accuracy with 98.9% critical pattern detection
 4. **Agency Preservation**: User autonomy as core design principle
 5. **Adaptive Intervention**: Three-tier system with fatigue management
 

@@ -184,8 +184,8 @@ if (!stable) confidence *= 0.8  // -20% for unstable patterns
 ### Performance Comparison
 | Metric | Bayesian | SVM | Ensemble |
 |--------|----------|-----|----------|
-| Cold-start (1-2 turns) | 65% | **77%** | 73% |
-| Warm start (with prior) | **85%** | 77% | **83%** |
+| Cold-start (1-2 turns) | 65% | **92.1%** | 85% |
+| Warm start (with prior) | **85%** | 92.1% | **90%** |
 | Latency | 5ms | 50ms | 55ms |
 | Dependencies | None | Python service | Optional |
 

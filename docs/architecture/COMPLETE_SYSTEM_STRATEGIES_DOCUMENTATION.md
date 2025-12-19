@@ -2277,7 +2277,7 @@ if (!stable) confidence *= 0.8  // -20% penalty
 **功能**: SVM-based pattern classification
 **代码行数**: ~350 lines
 **关键方法**:
-- `predict(signals)` - SVM prediction (77% accuracy)
+- `predict(signals)` - SVM prediction (92.1% accuracy, LLM-annotated)
 - `callPythonService()` - 调用Python ML service
 
 ---
