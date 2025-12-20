@@ -9,7 +9,7 @@
  * Styles extracted to CSS Module as part of Phase 4 refactoring.
  */
 
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { type ActiveMRTool } from '../hooks/useMRTools';
 import styles from './MRToolsPanel.module.css';
@@ -63,56 +63,64 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
 }) => {
   // Get active tool info
   const activeTool = mrTools.find(t => t.id === activeMRTool);
+  const isModalOpen = activeMRTool !== 'none' && !!activeTool;
+
+  // Resizable modal state
+  const [modalSize, setModalSize] = useState({ width: 900, height: 600 });
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeRef = useRef<{ startX: number; startY: number; startWidth: number; startHeight: number } | null>(null);
 
   // Handle ESC key to close modal
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && activeMRTool !== 'none') {
+      if (e.key === 'Escape' && isModalOpen) {
         onToolChange('none');
       }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [activeMRTool, onToolChange]);
+  }, [isModalOpen, onToolChange]);
 
-  // Floating Modal Component
-  const FloatingModal = () => {
-    if (activeMRTool === 'none' || !activeTool) return null;
-
-    return createPortal(
-      <div className={styles.modalOverlay} onClick={() => onToolChange('none')}>
-        <div
-          className={styles.modalContent}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Modal Header */}
-          <div className={styles.modalHeader} style={{ borderColor: activeTool.color }}>
-            <div className={styles.modalTitleArea}>
-              <span className={styles.modalIcon}>{activeTool.label.split(' ')[0]}</span>
-              <div>
-                <h2 className={styles.modalTitle}>{activeTool.title}</h2>
-                <p className={styles.modalSubtitle}>{activeTool.fullTitle}</p>
-              </div>
-            </div>
-            <button
-              onClick={() => onToolChange('none')}
-              className={styles.modalCloseButton}
-              title="Close (ESC)"
-            >
-              ✕
-            </button>
-          </div>
-          {/* Modal Body */}
-          <div className={styles.modalBody}>
-            <Suspense fallback={loadingFallback}>
-              {renderActiveTool()}
-            </Suspense>
-          </div>
-        </div>
-      </div>,
-      document.body
-    );
+  // Handle resize
+  const handleResizeStart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+    resizeRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startWidth: modalSize.width,
+      startHeight: modalSize.height,
+    };
   };
+
+  useEffect(() => {
+    const handleResizeMove = (e: MouseEvent) => {
+      if (!isResizing || !resizeRef.current) return;
+
+      const deltaX = e.clientX - resizeRef.current.startX;
+      const deltaY = e.clientY - resizeRef.current.startY;
+
+      setModalSize({
+        width: Math.max(400, Math.min(window.innerWidth * 0.95, resizeRef.current.startWidth + deltaX)),
+        height: Math.max(300, Math.min(window.innerHeight * 0.9, resizeRef.current.startHeight + deltaY)),
+      });
+    };
+
+    const handleResizeEnd = () => {
+      setIsResizing(false);
+      resizeRef.current = null;
+    };
+
+    if (isResizing) {
+      window.addEventListener('mousemove', handleResizeMove);
+      window.addEventListener('mouseup', handleResizeEnd);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleResizeMove);
+      window.removeEventListener('mouseup', handleResizeEnd);
+    };
+  }, [isResizing]);
 
   return (
     <>
@@ -158,8 +166,56 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
         )}
       </div>
 
-      {/* Floating Modal for Active MR Tool */}
-      <FloatingModal />
+      {/* Floating Modal for Active MR Tool - rendered via portal */}
+      {isModalOpen && activeTool && createPortal(
+        <div
+          className={styles.modalOverlay}
+          onClick={() => onToolChange('none')}
+          style={{ cursor: isResizing ? 'nwse-resize' : undefined }}
+        >
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: modalSize.width,
+              height: modalSize.height,
+              maxWidth: '95vw',
+              maxHeight: '90vh',
+            }}
+          >
+            {/* Modal Header */}
+            <div className={styles.modalHeader} style={{ borderColor: activeTool.color }}>
+              <div className={styles.modalTitleArea}>
+                <span className={styles.modalIcon}>{activeTool.label.split(' ')[0]}</span>
+                <div>
+                  <h2 className={styles.modalTitle}>{activeTool.title}</h2>
+                  <p className={styles.modalSubtitle}>{activeTool.fullTitle}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => onToolChange('none')}
+                className={styles.modalCloseButton}
+                title="Close (ESC)"
+              >
+                ✕
+              </button>
+            </div>
+            {/* Modal Body */}
+            <div className={styles.modalBody}>
+              <Suspense fallback={loadingFallback}>
+                {renderActiveTool()}
+              </Suspense>
+            </div>
+            {/* Resize Handle */}
+            <div
+              className={styles.resizeHandle}
+              onMouseDown={handleResizeStart}
+              title="Drag to resize"
+            />
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 };

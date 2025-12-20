@@ -184,12 +184,10 @@
 }
 
 .modalContent {
+  position: relative;
   background: white;
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  width: 90vw;
-  max-width: 900px;
-  max-height: 85vh;
   display: flex;
   flex-direction: column;
   animation: slideUp 0.25s ease-out;
@@ -295,7 +293,8 @@
 /* Responsive */
 @media (max-width: 768px) {
   .modalContent {
-    width: 95vw;
+    width: 95vw !important;
+    height: 90vh !important;
     max-height: 90vh;
     border-radius: 12px;
   }
@@ -313,4 +312,40 @@
   .modalTitle {
     font-size: 1rem;
   }
+
+  .resizeHandle {
+    display: none;
+  }
+}
+
+/* Resize Handle */
+.resizeHandle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+  cursor: nwse-resize;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 50%,
+    #cbd5e1 50%,
+    #cbd5e1 60%,
+    transparent 60%,
+    transparent 70%,
+    #cbd5e1 70%,
+    #cbd5e1 80%,
+    transparent 80%,
+    transparent 90%,
+    #cbd5e1 90%,
+    #cbd5e1 100%
+  );
+  border-radius: 0 0 16px 0;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.resizeHandle:hover {
+  opacity: 1;
 }
