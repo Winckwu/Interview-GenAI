@@ -260,7 +260,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   );
 
   /**
-   * Render timeline view - now just shows a hint since Turns section handles the display
+   * Render timeline view - shows selected turn content in main view
    */
   const renderTimelineView = () => {
     if (versions.length === 0) {
@@ -271,13 +271,53 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
       );
     }
 
+    // Find selected version
+    const selectedVersion = expandedTurnId
+      ? versions.find(v => v.id === expandedTurnId)
+      : null;
+
+    if (!selectedVersion) {
+      return (
+        <div className="mr2-timeline-view">
+          <div className="mr2-timeline-hint">
+            <p>👈 Click on a Turn to view the conversation</p>
+            <p className="mr2-hint-stats">
+              Total: {versions.length} turn{versions.length > 1 ? 's' : ''}
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="mr2-timeline-view">
-        <div className="mr2-timeline-hint">
-          <p>👆 Click on a Turn above to expand and view the conversation</p>
-          <p className="mr2-hint-stats">
-            Total: {versions.length} turn{versions.length > 1 ? 's' : ''}
-          </p>
+        <div className="mr2-selected-turn-content">
+          <div className="mr2-selected-turn-header">
+            <h2>Turn {selectedVersion.promptVersion}</h2>
+            <span className="mr2-selected-turn-time">
+              {new Date(selectedVersion.timestamp).toLocaleString()}
+            </span>
+            <span className="mr2-selected-turn-model">
+              Model: {selectedVersion.modelName}
+            </span>
+          </div>
+
+          <div className="mr2-turn-message mr2-turn-user">
+            <div className="mr2-turn-role">👤 User</div>
+            <div className="mr2-turn-text">{selectedVersion.userPrompt}</div>
+          </div>
+
+          <div className="mr2-turn-message mr2-turn-ai">
+            <div className="mr2-turn-role">🤖 AI</div>
+            <div className="mr2-turn-text">{selectedVersion.aiOutput}</div>
+          </div>
+
+          {selectedVersion.reasoning && (
+            <div className="mr2-turn-message mr2-turn-reasoning">
+              <div className="mr2-turn-role">🧠 Reasoning</div>
+              <div className="mr2-turn-text">{selectedVersion.reasoning}</div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -613,20 +653,15 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   };
 
   /**
-   * Handle turn expand/collapse toggle - also selects the version for Changes/Reasoning views
+   * Handle turn selection - selects the version for display in main view
    */
-  const handleTurnToggle = useCallback((versionId: string) => {
-    const isCurrentlyExpanded = expandedTurnId === versionId;
-    setExpandedTurnId(isCurrentlyExpanded ? null : versionId);
-
-    // Always select the version so Changes/Reasoning views work
-    if (!isCurrentlyExpanded) {
-      handleVersionSelect(versionId);
-    }
-  }, [expandedTurnId, handleVersionSelect]);
+  const handleTurnSelect = useCallback((versionId: string) => {
+    setExpandedTurnId(versionId);
+    handleVersionSelect(versionId);
+  }, [handleVersionSelect]);
 
   /**
-   * Render version selector sidebar with expandable turns
+   * Render version selector sidebar - simple list, content shows in main view
    */
   const renderVersionSelector = () => {
     return (
@@ -634,39 +669,19 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
         <h3>Turns</h3>
         <div className="mr2-version-list">
           {versions.map((version) => {
-            const isExpanded = expandedTurnId === version.id;
+            const isSelected = expandedTurnId === version.id;
             return (
-              <div key={version.id} className="mr2-turn-container">
-                <button
-                  className={`mr2-version-item ${isExpanded ? 'active' : ''}`}
-                  onClick={() => handleTurnToggle(version.id)}
-                  title={`Turn ${version.promptVersion}: ${version.modelName}`}
-                >
-                  <span className="mr2-turn-expand-icon">{isExpanded ? '▼' : '▶'}</span>
-                  <span className="mr2-version-num">Turn {version.promptVersion}</span>
-                  <span className="mr2-version-time">
-                    {new Date(version.timestamp).toLocaleTimeString()}
-                  </span>
-                </button>
-                {isExpanded && (
-                  <div className="mr2-turn-expanded-content">
-                    <div className="mr2-turn-message mr2-turn-user">
-                      <div className="mr2-turn-role">👤 User</div>
-                      <div className="mr2-turn-text">{version.userPrompt}</div>
-                    </div>
-                    <div className="mr2-turn-message mr2-turn-ai">
-                      <div className="mr2-turn-role">🤖 AI</div>
-                      <div className="mr2-turn-text">{version.aiOutput}</div>
-                    </div>
-                    {version.reasoning && (
-                      <div className="mr2-turn-message mr2-turn-reasoning">
-                        <div className="mr2-turn-role">🧠 Reasoning</div>
-                        <div className="mr2-turn-text">{version.reasoning}</div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <button
+                key={version.id}
+                className={`mr2-version-item ${isSelected ? 'active' : ''}`}
+                onClick={() => handleTurnSelect(version.id)}
+                title={`Turn ${version.promptVersion}: ${version.modelName}`}
+              >
+                <span className="mr2-version-num">Turn {version.promptVersion}</span>
+                <span className="mr2-version-time">
+                  {new Date(version.timestamp).toLocaleTimeString()}
+                </span>
+              </button>
             );
           })}
         </div>
