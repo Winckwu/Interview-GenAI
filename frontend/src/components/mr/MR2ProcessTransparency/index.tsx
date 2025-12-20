@@ -368,11 +368,15 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
               <div className="mr2-topic-comparison">
                 <div className="mr2-topic-item">
                   <strong>Turn {prevVersion.promptVersion}:</strong>
-                  <span className="mr2-topic-prompt">{prevVersion.userPrompt.substring(0, 100)}{prevVersion.userPrompt.length > 100 ? '...' : ''}</span>
+                  <span className="mr2-topic-prompt">
+                    <MarkdownText content={prevVersion.userPrompt.substring(0, 100) + (prevVersion.userPrompt.length > 100 ? '...' : '')} />
+                  </span>
                 </div>
                 <div className="mr2-topic-item">
                   <strong>Turn {selectedVersion?.promptVersion}:</strong>
-                  <span className="mr2-topic-prompt">{selectedVersion?.userPrompt.substring(0, 100)}{(selectedVersion?.userPrompt.length || 0) > 100 ? '...' : ''}</span>
+                  <span className="mr2-topic-prompt">
+                    <MarkdownText content={(selectedVersion?.userPrompt.substring(0, 100) || '') + ((selectedVersion?.userPrompt.length || 0) > 100 ? '...' : '')} />
+                  </span>
                 </div>
               </div>
             )}
@@ -426,22 +430,22 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
 
               <div className="mr2-diff-content">
                 {diff.type === 'add' && (
-                  <div className="mr2-diff-text mr2-text-added">+ {diff.content}</div>
+                  <div className="mr2-diff-text mr2-text-added">+ <MarkdownText content={diff.content} /></div>
                 )}
                 {diff.type === 'remove' && (
-                  <div className="mr2-diff-text mr2-text-removed">- {diff.content}</div>
+                  <div className="mr2-diff-text mr2-text-removed">- <MarkdownText content={diff.content} /></div>
                 )}
                 {diff.type === 'modify' && (
                   <div className="mr2-diff-text mr2-text-modified">
-                    <div className="mr2-old-text">- {diff.oldContent}</div>
-                    <div className="mr2-new-text">+ {diff.content}</div>
+                    <div className="mr2-old-text">- <MarkdownText content={diff.oldContent || ''} /></div>
+                    <div className="mr2-new-text">+ <MarkdownText content={diff.content} /></div>
                   </div>
                 )}
               </div>
 
               {diff.context && (
                 <div className="mr2-diff-context">
-                  <em>Context: {diff.context}</em>
+                  <em>Context: <MarkdownText content={diff.context} /></em>
                 </div>
               )}
             </div>
@@ -496,7 +500,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
 
         <div className="mr2-reasoning-prompt">
           <h4>User Prompt</h4>
-          <p>{selectedVersion.userPrompt}</p>
+          <p><MarkdownText content={selectedVersion.userPrompt} /></p>
         </div>
 
         <div className="mr2-reasoning-content">
@@ -504,13 +508,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
           <div className="mr2-reasoning-steps">
             {steps.map((step: string, idx: number) => (
               <div key={idx} className="mr2-reasoning-step">
-                {step.match(/^\d+\./) ? (
-                  <span className="mr2-step-text">{step}</span>
-                ) : step.match(/^[-*]/) ? (
-                  <span className="mr2-step-bullet">{step}</span>
-                ) : (
-                  <span className="mr2-step-text">{step}</span>
-                )}
+                <MarkdownText content={step} />
               </div>
             ))}
           </div>
