@@ -475,14 +475,14 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
       return (
         <div className="mr2-empty-state">
           <div className="mr2-reasoning-empty">
-            <h3>🧠 暂无思考过程记录</h3>
-            <p>这条回复没有记录 AI 的思考过程。</p>
+            <h3>🧠 No Reasoning Available</h3>
+            <p>This response doesn't have recorded reasoning data.</p>
             <p className="mr2-reasoning-hint">
-              <strong>什么是 AI Reasoning？</strong><br/>
-              AI 在回答问题时的内部思考过程，包括：理解问题、分析要点、制定回答策略。<br/><br/>
-              <strong>为什么没有显示？</strong><br/>
-              • 旧的对话可能没有保存思考过程<br/>
-              • 发送新消息后刷新页面可查看最新的思考过程
+              <strong>What is AI Reasoning?</strong><br/>
+              The AI's internal thinking process when answering questions, including: understanding the question, analyzing key points, and formulating a response strategy.<br/><br/>
+              <strong>Why isn't it showing?</strong><br/>
+              • Older conversations may not have saved reasoning data<br/>
+              • Send a new message and refresh the page to see the latest reasoning
             </p>
           </div>
         </div>
@@ -734,9 +734,9 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
           <button
             className={`mr2-tab ${viewMode === 'reasoning' ? 'active' : ''}`}
             onClick={() => setViewMode('reasoning')}
-            title="查看 AI 的思考过程 - AI 是如何分析问题并得出回答的"
+            title="View AI's step-by-step thinking process for each response"
           >
-            🧠 思考过程
+            🧠 Reasoning
           </button>
         </div>
 
