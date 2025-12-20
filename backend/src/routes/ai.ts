@@ -206,6 +206,9 @@ router.post(
               reasoning = thinkingMatch[1].trim();
               // Remove thinking tags from display content
               cleanContent = fullContent.replace(/<thinking>[\s\S]*?<\/thinking>\s*/, '').trim();
+              console.log('[AI] Extracted reasoning:', reasoning.substring(0, 100) + '...');
+            } else {
+              console.log('[AI] No <thinking> tags found in response. First 200 chars:', fullContent.substring(0, 200));
             }
 
             // Send completion event with metadata and reasoning
