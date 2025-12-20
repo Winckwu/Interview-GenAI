@@ -4073,44 +4073,34 @@ Message: "${firstMessage.slice(0, 200)}"`,
           )}
           </div>
 
-          {/* Right Sidebar - Week 1-4: Intervention Manager & Monitoring Dashboard */}
+          {/* Right Sidebar - MR Tools */}
           {showPatternPanel && (
             <div style={{
-              width: '380px',
-              minWidth: '380px',
-              maxWidth: '380px',
+              width: '280px',
+              minWidth: '280px',
+              maxWidth: '280px',
               borderLeft: '1px solid #e2e8f0',
-              overflowY: 'scroll',
+              overflowY: 'auto',
               overflowX: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: '#f9fafb',
+              backgroundColor: '#fff',
               height: '100%',
             }}>
-              {/* Sidebar Header with Close Button */}
+              {/* Compact header with close button */}
               <div style={{
-                padding: '0.75rem',
+                padding: '0.5rem 0.75rem',
                 borderBottom: '1px solid #e2e8f0',
-                backgroundColor: '#fff',
                 display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                justifyContent: 'flex-end',
               }}>
-                <h3 style={{
-                  margin: 0,
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  color: '#1f2937',
-                }}>
-                  Analysis Panel
-                </h3>
                 <button
                   onClick={() => setShowPatternPanel(false)}
                   style={{
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
-                    fontSize: '1rem',
+                    fontSize: '0.875rem',
                     color: '#9ca3af',
                     padding: '0.25rem',
                   }}
