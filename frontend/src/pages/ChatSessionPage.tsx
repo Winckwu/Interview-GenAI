@@ -552,23 +552,32 @@ const ChatSessionPage: React.FC = () => {
   const patternCallCountRef = useRef<number>(0); // Track number of pattern detection calls
 
   // Auto-scroll to bottom when new messages arrive or during streaming
-  const scrollToBottom = useCallback(() => {
+  const scrollToBottom = useCallback((immediate = false) => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTo({
         top: messagesContainerRef.current.scrollHeight,
-        behavior: 'smooth',
+        behavior: immediate ? 'auto' : 'smooth',
       });
     }
   }, []);
 
+  // Scroll when messages change - use multiple timeouts to ensure it works after render
   useEffect(() => {
-    // Scroll to bottom when messages change or streaming content updates
-    // Use setTimeout to ensure DOM has updated
-    const timer = setTimeout(() => {
-      scrollToBottom();
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [messages.length, streamingContent, scrollToBottom]);
+    const timers = [
+      setTimeout(() => scrollToBottom(true), 50),
+      setTimeout(() => scrollToBottom(), 200),
+      setTimeout(() => scrollToBottom(), 500),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [messages.length, scrollToBottom]);
+
+  // Scroll during streaming
+  useEffect(() => {
+    if (streamingContent) {
+      const timer = setTimeout(() => scrollToBottom(), 150);
+      return () => clearTimeout(timer);
+    }
+  }, [streamingContent, scrollToBottom]);
 
   // Initialize metrics for this session
   useEffect(() => {
