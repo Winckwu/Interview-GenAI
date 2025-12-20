@@ -754,6 +754,10 @@ const ChatSessionPage: React.FC = () => {
         setCurrentPage(1);
         setMessages([]);
 
+        // Clear historical message tracking for new session
+        historicalMessageIds.current.clear();
+        processedNotificationIds.current.clear();
+
         // Load previous interactions/messages from this session (with pagination)
         await loadMessagesPage(1);
       } catch (err: any) {
@@ -830,6 +834,13 @@ const ChatSessionPage: React.FC = () => {
           pageMessages.sort((a, b) =>
             new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
           );
+
+          // Mark all AI messages from history as historical (should not trigger interventions)
+          pageMessages.forEach((msg) => {
+            if (msg.role === 'ai') {
+              historicalMessageIds.current.add(msg.id);
+            }
+          });
 
           // For initial load, replace messages. For loading more, prepend older messages
           if (isInitialLoad) {
@@ -2052,6 +2063,9 @@ Message: "${firstMessage.slice(0, 200)}"`,
   // Track which messages have been processed for notifications
   const processedNotificationIds = useRef<Set<string>>(new Set());
 
+  // Track which messages were loaded from history (should not trigger interventions)
+  const historicalMessageIds = useRef<Set<string>>(new Set());
+
   /**
    * Effect: Process new orchestration results for notifications
    * When MR panel is closed and new recommendations come in, show notifications
@@ -2071,6 +2085,9 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
       // Mark as processed
       processedNotificationIds.current.add(messageId);
+
+      // Skip interventions for historical messages (loaded from previous sessions)
+      if (historicalMessageIds.current.has(messageId)) return;
 
       // If result has recommendations, handle intervention
       if (result?.recommendations?.length > 0) {
