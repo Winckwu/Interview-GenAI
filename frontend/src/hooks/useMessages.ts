@@ -641,6 +641,64 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   }, [messages, startEditingMessage]);
 
   /**
+   * Switch to a different conversation branch path
+   * Reloads messages for the selected path
+   */
+  const switchBranchPath = useCallback(async (branchPath: string) => {
+    if (!sessionId || branchPath === currentBranchPath) return;
+
+    try {
+      setLoading(true);
+      setCurrentBranchPath(branchPath);
+
+      // Load messages for the new branch path using tree endpoint
+      const response = await api.get(`/interactions/tree/${sessionId}`, {
+        params: { branchPath }
+      });
+
+      const { interactions, availableBranchPaths: paths } = response.data.data;
+
+      // Transform interactions to messages
+      const loadedMessages: Message[] = [];
+      for (const interaction of interactions) {
+        // Add user message
+        loadedMessages.push({
+          id: `user-${interaction.id}`,
+          role: 'user',
+          content: interaction.userPrompt,
+          timestamp: interaction.createdAt,
+          parentId: interaction.parentId,
+          branchPath: interaction.branchPath,
+        });
+
+        // Add AI message
+        loadedMessages.push({
+          id: interaction.id,
+          role: 'ai',
+          content: interaction.aiResponse,
+          timestamp: interaction.createdAt,
+          wasVerified: interaction.wasVerified,
+          wasModified: interaction.wasModified,
+          wasRejected: interaction.wasRejected,
+          branches: interaction.branches,
+          parentId: interaction.parentId,
+          branchPath: interaction.branchPath,
+        });
+      }
+
+      setMessages(loadedMessages);
+      setAvailableBranchPaths(paths || ['main']);
+      setSuccessMessage(`Switched to branch: ${branchPath}`);
+      setTimeout(() => setSuccessMessage(null), 2000);
+    } catch (err: any) {
+      console.error('Failed to switch branch:', err);
+      setError('Failed to switch conversation branch');
+    } finally {
+      setLoading(false);
+    }
+  }, [sessionId, currentBranchPath]);
+
+  /**
    * Edit user message and regenerate AI response (Fork-based branching)
    * Creates a new conversation branch from the edited message
    * Preserves original conversation - user can switch back to it
@@ -703,64 +761,6 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       setLoading(false);
     }
   }, [sessionId, messages, currentBranchPath, handleSendMessage, cancelEditingMessage, switchBranchPath]);
-
-  /**
-   * Switch to a different conversation branch path
-   * Reloads messages for the selected path
-   */
-  const switchBranchPath = useCallback(async (branchPath: string) => {
-    if (!sessionId || branchPath === currentBranchPath) return;
-
-    try {
-      setLoading(true);
-      setCurrentBranchPath(branchPath);
-
-      // Load messages for the new branch path using tree endpoint
-      const response = await api.get(`/interactions/tree/${sessionId}`, {
-        params: { branchPath }
-      });
-
-      const { interactions, availableBranchPaths: paths } = response.data.data;
-
-      // Transform interactions to messages
-      const loadedMessages: Message[] = [];
-      for (const interaction of interactions) {
-        // Add user message
-        loadedMessages.push({
-          id: `user-${interaction.id}`,
-          role: 'user',
-          content: interaction.userPrompt,
-          timestamp: interaction.createdAt,
-          parentId: interaction.parentId,
-          branchPath: interaction.branchPath,
-        });
-
-        // Add AI message
-        loadedMessages.push({
-          id: interaction.id,
-          role: 'ai',
-          content: interaction.aiResponse,
-          timestamp: interaction.createdAt,
-          wasVerified: interaction.wasVerified,
-          wasModified: interaction.wasModified,
-          wasRejected: interaction.wasRejected,
-          branches: interaction.branches,
-          parentId: interaction.parentId,
-          branchPath: interaction.branchPath,
-        });
-      }
-
-      setMessages(loadedMessages);
-      setAvailableBranchPaths(paths || ['main']);
-      setSuccessMessage(`Switched to branch: ${branchPath}`);
-      setTimeout(() => setSuccessMessage(null), 2000);
-    } catch (err: any) {
-      console.error('Failed to switch branch:', err);
-      setError('Failed to switch conversation branch');
-    } finally {
-      setLoading(false);
-    }
-  }, [sessionId, currentBranchPath]);
 
   /**
    * Fork conversation from a specific message to create a new branch
