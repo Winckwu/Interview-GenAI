@@ -167,20 +167,14 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
       </div>
 
       {/* Floating Modal for Active MR Tool - rendered via portal */}
+      {/* Modal only closes via X button or ESC key to prevent accidental closure */}
       {isModalOpen && activeTool && createPortal(
         <div
           className={styles.modalOverlay}
-          onClick={() => {
-            // Don't close if currently resizing
-            if (!isResizing) {
-              onToolChange('none');
-            }
-          }}
           style={{ cursor: isResizing ? 'nwse-resize' : undefined }}
         >
           <div
             className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
             style={{
               width: modalSize.width,
               height: modalSize.height,
