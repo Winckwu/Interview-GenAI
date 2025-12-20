@@ -106,7 +106,7 @@
 /* Content area */
 .mr2-content-area {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -114,12 +114,55 @@
 
 .mr2-main-view {
   background: white;
-  padding: 1.5rem;
+  padding: 1.25rem;
   border-radius: 8px;
   border: 1px solid var(--mr2-border, #e0e0e0);
   min-height: 0;
   overflow-y: auto;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make all view containers fill available space */
+.mr2-timeline-view,
+.mr2-diff-view,
+.mr2-reasoning-view,
+.mr2-comparison-view,
+.mr2-metrics-view,
+.mr2-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Empty state and hint centering */
+.mr2-empty-state {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #64748b;
+}
+
+.mr2-timeline-hint {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.mr2-timeline-hint p {
+  margin: 0.5rem 0;
+}
+
+.mr2-hint-stats {
+  font-size: 0.9rem;
+  color: #94a3b8;
 }
 
 /* Timeline view */
@@ -726,13 +769,14 @@
 }
 
 .mr2-version-selector-panel h3 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   font-size: 1.1rem;
   color: #1e293b;
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .mr2-version-list {

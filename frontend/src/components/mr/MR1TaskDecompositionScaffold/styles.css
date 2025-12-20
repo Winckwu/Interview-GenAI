@@ -113,6 +113,14 @@
   flex: 1;
   overflow-y: auto;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mr1-step-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes fadeIn {
@@ -142,14 +150,15 @@
 /* Task input */
 .mr1-task-input {
   width: 100%;
-  height: 150px;
+  min-height: 120px;
+  flex: 1;
   padding: 1rem;
   border: 2px solid var(--mr1-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
   font-size: 1rem;
   line-height: 1.6;
-  resize: vertical;
+  resize: none;
   margin-bottom: 1rem;
 }
 
