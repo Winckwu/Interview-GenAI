@@ -123,6 +123,13 @@
   color: var(--mr1-accent, #0066ff);
 }
 
+.mr1-step > p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--mr1-secondary, #666);
+  margin-bottom: 1.25rem;
+}
+
 /* Task input */
 .mr1-task-input {
   width: 100%;
@@ -131,9 +138,15 @@
   border: 2px solid var(--mr1-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  line-height: 1.6;
   resize: vertical;
   margin-bottom: 1rem;
+}
+
+.mr1-task-input::placeholder {
+  font-size: 0.95rem;
+  color: #9ca3af;
 }
 
 .mr1-task-input:focus {
@@ -151,7 +164,7 @@
 
 .mr1-char-count {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--mr1-secondary, #666);
 }
 
