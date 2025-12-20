@@ -107,6 +107,7 @@
 /* Content area */
 .mr2-content-area {
   display: flex;
+  flex-direction: row;
   gap: 1rem;
   flex: 1 1 0;
   min-height: 0;
@@ -960,12 +961,18 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .mr2-content-area {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 
   .mr2-version-selector-panel {
+    width: 100%;
+    flex: 0 0 auto;
     max-height: 200px;
-    max-width: 100%;
+  }
+
+  .mr2-main-view {
+    flex: 1 1 0;
+    min-height: 300px;
   }
 }
 
