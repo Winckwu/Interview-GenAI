@@ -15,6 +15,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import './styles.css';
+import MarkdownText from '../../common/MarkdownText';
 import {
   generateDiff,
   createTimeline,
@@ -314,18 +315,24 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
 
           <div className="mr2-turn-message mr2-turn-user">
             <div className="mr2-turn-role">👤 User</div>
-            <div className="mr2-turn-text">{selectedVersion.userPrompt}</div>
+            <div className="mr2-turn-text">
+              <MarkdownText content={selectedVersion.userPrompt} />
+            </div>
           </div>
 
           <div className="mr2-turn-message mr2-turn-ai">
             <div className="mr2-turn-role">🤖 AI</div>
-            <div className="mr2-turn-text">{selectedVersion.aiOutput}</div>
+            <div className="mr2-turn-text">
+              <MarkdownText content={selectedVersion.aiOutput} />
+            </div>
           </div>
 
           {selectedVersion.reasoning && (
             <div className="mr2-turn-message mr2-turn-reasoning">
               <div className="mr2-turn-role">🧠 Reasoning</div>
-              <div className="mr2-turn-text">{selectedVersion.reasoning}</div>
+              <div className="mr2-turn-text">
+                <MarkdownText content={selectedVersion.reasoning} />
+              </div>
             </div>
           )}
         </div>
