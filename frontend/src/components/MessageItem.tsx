@@ -56,6 +56,7 @@ export interface MessageItemProps {
   availableBranchPaths?: string[];
   currentBranchPath?: string;
   onSwitchBranchPath?: (branchPath: string) => void;
+  editForkMessageIndex?: number | null;
 
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
@@ -71,6 +72,7 @@ export interface MessageItemProps {
 
 export const MessageItem: React.FC<MessageItemProps> = ({
   message,
+  index,
   isEditing,
   editedContent,
   isUpdating,
@@ -88,6 +90,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   availableBranchPaths = ['main'],
   currentBranchPath = 'main',
   onSwitchBranchPath,
+  editForkMessageIndex = null,
   trustIndicator,
   quickReflection,
   mr6Suggestion,
@@ -913,8 +916,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* Branch navigation for user messages - show when there are edit branches */}
-              {availableBranchPaths.length > 1 && onSwitchBranchPath && (() => {
+              {/* Branch navigation for user messages - only show on the edited message */}
+              {availableBranchPaths.length > 1 && onSwitchBranchPath && editForkMessageIndex === index && (() => {
                 // Find current branch index
                 const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
                 const canGoPrev = currentIndex > 0;

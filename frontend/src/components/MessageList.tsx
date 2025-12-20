@@ -79,6 +79,7 @@ export interface MessageListProps {
   availableBranchPaths?: string[];
   currentBranchPath?: string;
   onSwitchBranchPath?: (branchPath: string) => void;
+  editForkMessageIndex?: number | null;
 
   // Trust Indicator (MR9)
   showTrustIndicator: boolean;
@@ -130,6 +131,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   availableBranchPaths = ['main'],
   currentBranchPath = 'main',
   onSwitchBranchPath,
+  editForkMessageIndex = null,
   showTrustIndicator,
   messageTrustScores,
   getTrustBadge,
@@ -251,6 +253,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             availableBranchPaths={availableBranchPaths}
             currentBranchPath={currentBranchPath}
             onSwitchBranchPath={onSwitchBranchPath}
+            editForkMessageIndex={editForkMessageIndex}
             trustIndicator={renderTrustIndicator(message, index)}
             quickReflection={renderQuickReflection(message, index)}
             mr6Suggestion={renderMR6Suggestion(message, index)}

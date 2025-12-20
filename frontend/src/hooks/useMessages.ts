@@ -84,6 +84,7 @@ export interface UseMessagesReturn {
   // Conversation tree state
   currentBranchPath: string;
   availableBranchPaths: string[];
+  editForkMessageIndex: number | null;
 
   // Streaming state
   isStreaming: boolean;
@@ -180,6 +181,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   // Conversation tree state
   const [currentBranchPath, setCurrentBranchPath] = useState<string>('main');
   const [availableBranchPaths, setAvailableBranchPaths] = useState<string[]>(['main']);
+  const [editForkMessageIndex, setEditForkMessageIndex] = useState<number | null>(null); // Index of message where edit fork happened
 
   /**
    * Load messages for a specific page with pagination
@@ -740,6 +742,9 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       // Add new branch to available paths
       setAvailableBranchPaths(prev => [...prev, newBranchPath]);
 
+      // Track the message index where edit fork happened
+      setEditForkMessageIndex(userMessageIndex);
+
       // Get conversation history up to (but not including) this user message for context
       const conversationHistory = messages.slice(0, userMessageIndex);
 
@@ -811,6 +816,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     // Conversation tree state
     currentBranchPath,
     availableBranchPaths,
+    editForkMessageIndex,
 
     // Streaming state
     isStreaming,
