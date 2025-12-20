@@ -542,7 +542,7 @@ const ChatSessionPage: React.FC = () => {
 
   // Virtualized list configuration
   const virtualizedListRef = useRef<any>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const MESSAGE_ROW_HEIGHT = 140; // Approximate height of each message row (px)
   const MESSAGES_CONTAINER_HEIGHT = 600; // Height of messages container (px)
 
@@ -553,12 +553,21 @@ const ChatSessionPage: React.FC = () => {
 
   // Auto-scroll to bottom when new messages arrive or during streaming
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   }, []);
 
   useEffect(() => {
     // Scroll to bottom when messages change or streaming content updates
-    scrollToBottom();
+    // Use setTimeout to ensure DOM has updated
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+    return () => clearTimeout(timer);
   }, [messages.length, streamingContent, scrollToBottom]);
 
   // Initialize metrics for this session
@@ -3910,14 +3919,17 @@ Message: "${firstMessage.slice(0, 200)}"`,
         {/* Center + Right Layout - Scrollable area */}
         <div style={{ display: 'flex', flex: '1 1 0', overflow: 'hidden', minHeight: 0 }}>
           {/* Center - Messages Area */}
-          <div style={{
-          flex: '1 1 0',
-          overflowY: 'auto', // Enable scrolling for messages
-          padding: '0.25rem 0.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: 0, // Important for flex overflow scrolling
-        }}>
+          <div
+            ref={messagesContainerRef}
+            style={{
+              flex: '1 1 0',
+              overflowY: 'auto', // Enable scrolling for messages
+              padding: '0.25rem 0.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 0, // Important for flex overflow scrolling
+            }}
+          >
           {/* Personalized Tips Banner */}
           {latestAssessment && latestAssessment.responses && showPersonalizedTips && (() => {
             const dimensions = latestAssessment.responses.dimensions;
@@ -4153,8 +4165,6 @@ Message: "${firstMessage.slice(0, 200)}"`,
               </div>
             </div>
           )}
-          {/* Scroll target for auto-scroll to bottom */}
-          <div ref={messagesEndRef} />
           </div>
 
           {/* Right Sidebar - MR Tools */}
