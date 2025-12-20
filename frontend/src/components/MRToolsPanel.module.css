@@ -10,8 +10,8 @@
    ======================================== */
 
 .toolsSection {
-  border-bottom: 1px solid #e2e8f0;
   background-color: #fff;
+  flex: 1;
 }
 
 /* ========================================
@@ -52,8 +52,6 @@
 
 .gridContainer {
   padding: 0.5rem;
-  max-height: 400px;
-  overflow-y: auto;
 }
 
 .toolsGrid {
