@@ -4156,7 +4156,6 @@ Message: "${firstMessage.slice(0, 200)}"`,
               display: 'flex',
               flexDirection: 'column',
               backgroundColor: '#fff',
-              alignSelf: 'flex-start',
             }}>
               {/* Compact header with close button */}
               <div style={{
