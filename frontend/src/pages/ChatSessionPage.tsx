@@ -3444,7 +3444,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                         }}
                         style={{
                           margin: '0',
-                          fontSize: '1.25rem',
+                          fontSize: '1rem',
                           fontWeight: '600',
                           color: '#1f2937',
                           cursor: 'pointer',
