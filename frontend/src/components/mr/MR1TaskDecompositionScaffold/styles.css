@@ -3,9 +3,9 @@
  */
 
 .mr1-container {
-  max-width: 100%;
+  width: 100%;
   height: 100%;
-  margin: 0 auto;
+  margin: 0;
   padding: 1.5rem;
   background: var(--mr1-bg, #ffffff);
   font-family: system-ui, -apple-system, sans-serif;
@@ -14,6 +14,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .mr1-header {
