@@ -728,9 +728,14 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
             <button
               className="mr1-btn-reset"
               onClick={() => setShowHistory(!showHistory)}
-              title="View past decompositions"
+              title={showHistory ? "Close history panel" : "View past decompositions"}
+              style={{
+                background: showHistory ? '#fee2e2' : undefined,
+                borderColor: showHistory ? '#fca5a5' : undefined,
+                color: showHistory ? '#dc2626' : undefined,
+              }}
             >
-              📜 History
+              {showHistory ? '✕ Close' : '📜 History'}
             </button>
             {step !== 'input' && (
               <button className="mr1-btn-reset" onClick={handleReset} title="Start over with a new task">
@@ -748,7 +753,38 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       {/* History Panel - shows saved decompositions from database */}
       {showHistory && (
         <div className="mr1-history-panel" style={{ marginBottom: '1.5rem' }}>
-          <h3 style={{ marginTop: 0 }}>📜 Saved Decompositions</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <h3 style={{ margin: 0 }}>📁 Saved Decompositions</h3>
+            <button
+              onClick={() => setShowHistory(false)}
+              style={{
+                padding: '0.25rem 0.5rem',
+                background: '#f1f5f9',
+                border: '1px solid #e2e8f0',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.25rem',
+                fontSize: '0.875rem',
+                color: '#64748b',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#fee2e2';
+                e.currentTarget.style.borderColor = '#fca5a5';
+                e.currentTarget.style.color = '#dc2626';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#f1f5f9';
+                e.currentTarget.style.borderColor = '#e2e8f0';
+                e.currentTarget.style.color = '#64748b';
+              }}
+            >
+              <span style={{ fontSize: '1rem', lineHeight: 1 }}>✕</span>
+              Close History
+            </button>
+          </div>
           {isLoadingHistory ? (
             <p>Loading history...</p>
           ) : dbHistory.length > 0 ? (
@@ -854,19 +890,6 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
               No saved decompositions yet. Complete a task decomposition to save it here.
             </p>
           )}
-          <button
-            onClick={() => setShowHistory(false)}
-            style={{
-              marginTop: '1rem',
-              padding: '0.5rem 1rem',
-              background: '#e0e0e0',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Close History
-          </button>
         </div>
       )}
 
