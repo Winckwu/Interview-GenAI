@@ -166,8 +166,8 @@
 /* Content Area - separated from metadata */
 .messageContent {
   padding: 0.875rem 1rem;
-  line-height: 1.5;
-  font-size: 0.875rem;
+  line-height: 1.6;
+  font-size: 1.05rem;
 }
 
 /* Metadata Section - Compact Single Row */
