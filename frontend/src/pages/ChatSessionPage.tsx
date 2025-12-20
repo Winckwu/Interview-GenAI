@@ -3331,7 +3331,30 @@ Message: "${firstMessage.slice(0, 200)}"`,
           alignItems: 'center',
           flexShrink: 0, // Prevent header from shrinking
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
+            {/* Back to Dashboard */}
+            <button
+              onClick={() => navigate('/dashboard')}
+              aria-label="Back to Dashboard"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '1.25rem',
+                color: '#6b7280',
+                padding: '0.25rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'color 0.2s',
+              }}
+              title="Back to Dashboard"
+              onMouseOver={(e) => (e.currentTarget.style.color = '#3b82f6')}
+              onMouseOut={(e) => (e.currentTarget.style.color = '#6b7280')}
+            >
+              ←
+            </button>
+            {/* Open sessions sidebar */}
             <button
               onClick={() => setSessionSidebarOpen(true)}
               aria-label="Open conversations sidebar"
