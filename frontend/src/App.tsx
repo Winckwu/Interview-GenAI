@@ -158,6 +158,28 @@ const App: React.FC = () => {
           <Route path="/register" element={<RegisterPage />} />
         </Route>
 
+        {/* Full-screen Chat Routes - Protected but no MainLayout */}
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Suspense fallback={<PageLoader />}>
+                <ChatSessionPage />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/session/:sessionId"
+          element={
+            <ProtectedRoute>
+              <Suspense fallback={<PageLoader />}>
+                <ChatSessionPage />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+
         {/* Protected Routes - Main Layout */}
         <Route
           element={
@@ -194,22 +216,6 @@ const App: React.FC = () => {
             element={
               <Suspense fallback={<PageLoader />}>
                 <ABTestPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/chat"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ChatSessionPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/session/:sessionId"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ChatSessionPage />
               </Suspense>
             }
           />
