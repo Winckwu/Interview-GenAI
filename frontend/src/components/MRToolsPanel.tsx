@@ -70,6 +70,11 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
   const [isResizing, setIsResizing] = useState(false);
   const resizeRef = useRef<{ startX: number; startY: number; startWidth: number; startHeight: number } | null>(null);
 
+  // Draggable modal state
+  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragRef = useRef<{ startX: number; startY: number; startPosX: number; startPosY: number } | null>(null);
+
   // Handle ESC key to close modal
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -122,6 +127,57 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
     };
   }, [isResizing]);
 
+  // Handle drag
+  const handleDragStart = (e: React.MouseEvent) => {
+    // Only start drag if clicking on the header area (not buttons)
+    if ((e.target as HTMLElement).closest('button')) return;
+
+    e.preventDefault();
+    setIsDragging(true);
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startPosX: modalPosition.x,
+      startPosY: modalPosition.y,
+    };
+  };
+
+  useEffect(() => {
+    const handleDragMove = (e: MouseEvent) => {
+      if (!isDragging || !dragRef.current) return;
+
+      const deltaX = e.clientX - dragRef.current.startX;
+      const deltaY = e.clientY - dragRef.current.startY;
+
+      setModalPosition({
+        x: dragRef.current.startPosX + deltaX,
+        y: dragRef.current.startPosY + deltaY,
+      });
+    };
+
+    const handleDragEnd = () => {
+      setIsDragging(false);
+      dragRef.current = null;
+    };
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleDragMove);
+      window.removeEventListener('mouseup', handleDragEnd);
+    };
+  }, [isDragging]);
+
+  // Reset position when modal opens
+  useEffect(() => {
+    if (isModalOpen) {
+      setModalPosition({ x: 0, y: 0 });
+    }
+  }, [isModalOpen]);
+
   return (
     <>
       {/* MR Tools Quick Access - Collapsible */}
@@ -167,11 +223,11 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
       </div>
 
       {/* Floating Modal for Active MR Tool - rendered via portal */}
-      {/* Modal only closes via X button or ESC key to prevent accidental closure */}
+      {/* Modal can be dragged and allows interaction with chat behind */}
       {isModalOpen && activeTool && createPortal(
         <div
           className={styles.modalOverlay}
-          style={{ cursor: isResizing ? 'nwse-resize' : undefined }}
+          style={{ cursor: isResizing ? 'nwse-resize' : isDragging ? 'grabbing' : undefined }}
         >
           <div
             className={styles.modalContent}
@@ -180,10 +236,15 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
               height: modalSize.height,
               maxWidth: '95vw',
               maxHeight: '90vh',
+              transform: `translate(${modalPosition.x}px, ${modalPosition.y}px)`,
             }}
           >
-            {/* Modal Header */}
-            <div className={styles.modalHeader} style={{ borderColor: activeTool.color }}>
+            {/* Modal Header - Draggable */}
+            <div
+              className={styles.modalHeader}
+              style={{ borderColor: activeTool.color, cursor: isDragging ? 'grabbing' : 'grab' }}
+              onMouseDown={handleDragStart}
+            >
               <div className={styles.modalTitleArea}>
                 <span className={styles.modalIcon}>{activeTool.label.split(' ')[0]}</span>
                 <div>
