@@ -652,4 +652,122 @@ router.post(
   })
 );
 
+/**
+ * POST /api/interactions/fork-for-edit
+ * Create a new branch with conversation history up to (but not including) a specific message
+ * Used when editing a user message - preserves original conversation and creates new branch
+ */
+router.post(
+  '/fork-for-edit',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const {
+      sessionId,           // The session to fork from
+      beforeMessageIndex,  // Copy all messages before this index
+      newBranchPath,       // The new branch path name
+      originalBranchPath = 'main', // The original branch to copy from
+    } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    if (!sessionId || beforeMessageIndex === undefined || !newBranchPath) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: sessionId, beforeMessageIndex, newBranchPath',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Get all interactions from the original branch up to the specified index
+    const sourceResult = await pool.query(
+      `SELECT * FROM interactions
+       WHERE session_id = $1 AND branch_path = $2 AND user_id = $3
+       ORDER BY created_at ASC`,
+      [sessionId, originalBranchPath, userId]
+    );
+
+    if (sourceResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No interactions found in source branch',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Get interactions to copy (up to but not including beforeMessageIndex)
+    // Note: Each interaction is a pair (user prompt + AI response), so we count interactions
+    const interactionsToCopy = sourceResult.rows.slice(0, beforeMessageIndex);
+
+    if (interactionsToCopy.length === 0) {
+      // No history to copy - just return success, the new message will be first on the branch
+      return res.status(200).json({
+        success: true,
+        data: {
+          copiedCount: 0,
+          newBranchPath,
+        },
+        message: 'Branch created (no history to copy)',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Copy each interaction to the new branch
+    const copiedInteractions = [];
+    for (const source of interactionsToCopy) {
+      const newInteractionId = uuidv4();
+      const result = await pool.query(
+        `INSERT INTO interactions (
+          id, session_id, user_id, user_prompt, ai_response, ai_model,
+          response_time_ms, was_verified, was_modified, was_rejected, reasoning,
+          parent_id, branch_path, created_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+        RETURNING *`,
+        [
+          newInteractionId,
+          source.session_id,
+          userId,
+          source.user_prompt,
+          source.ai_response,
+          source.ai_model,
+          source.response_time_ms,
+          source.was_verified,
+          source.was_modified,
+          source.was_rejected,
+          source.reasoning,
+          source.id, // Link to original as parent
+          newBranchPath,
+          source.created_at, // Keep original timestamp for ordering
+        ]
+      );
+      copiedInteractions.push(result.rows[0]);
+    }
+
+    res.status(201).json({
+      success: true,
+      data: {
+        copiedCount: copiedInteractions.length,
+        newBranchPath,
+        interactions: copiedInteractions.map((i: any) => ({
+          id: i.id,
+          sessionId: i.session_id,
+          userPrompt: i.user_prompt,
+          aiResponse: i.ai_response,
+          parentId: i.parent_id,
+          branchPath: i.branch_path,
+          createdAt: i.created_at,
+        })),
+      },
+      message: `Forked ${copiedInteractions.length} interactions to new branch`,
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
 export default router;

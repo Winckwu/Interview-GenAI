@@ -3472,11 +3472,24 @@ Message: "${firstMessage.slice(0, 200)}"`,
                       backgroundImage: 'none',
                     }}
                   >
-                    {availableBranchPaths.map((path) => (
-                      <option key={path} value={path}>
-                        {path === 'main' ? 'Main' : path.replace('branch-', '').split('-').slice(0, -1).join('-') || path}
-                      </option>
-                    ))}
+                    {availableBranchPaths.map((path, index) => {
+                      // Format branch name for display
+                      let displayName = path;
+                      if (path === 'main') {
+                        displayName = '📌 Main';
+                      } else if (path.startsWith('edit-')) {
+                        // edit-{timestamp} -> "Edit #N"
+                        const editIndex = availableBranchPaths.filter((p, i) => p.startsWith('edit-') && i <= index).length;
+                        displayName = `✏️ Edit #${editIndex}`;
+                      } else if (path.startsWith('branch-')) {
+                        displayName = `🌿 ${path.replace('branch-', '').split('-').slice(0, -1).join('-') || path}`;
+                      }
+                      return (
+                        <option key={path} value={path}>
+                          {displayName}
+                        </option>
+                      );
+                    })}
                   </select>
                   {/* Custom dropdown arrow */}
                   <span style={{

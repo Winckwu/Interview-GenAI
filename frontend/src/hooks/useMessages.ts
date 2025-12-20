@@ -313,8 +313,11 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
    * @param conversationHistory - Optional conversation history to use instead of current messages
    * @param useWebSearch - Whether to enable web search for this message
    */
-  const handleSendMessage = useCallback(async (userInput: string, conversationHistory?: Message[], useWebSearch?: boolean) => {
+  const handleSendMessage = useCallback(async (userInput: string, conversationHistory?: Message[], useWebSearch?: boolean, overrideBranchPath?: string) => {
     if (!userInput.trim() || !sessionId) return;
+
+    // Use override branch path if provided (for fork-edit operations)
+    const effectiveBranchPath = overrideBranchPath || currentBranchPath;
 
     setLoading(true);
     setError(null);
@@ -330,7 +333,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       role: 'user',
       content: userInput,
       timestamp,
-      branchPath: currentBranchPath,
+      branchPath: effectiveBranchPath,
     };
 
     // Add placeholder AI message for streaming with branch context
@@ -342,7 +345,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       wasVerified: false,
       wasModified: false,
       wasRejected: false,
-      branchPath: currentBranchPath,
+      branchPath: effectiveBranchPath,
     };
 
     setMessages((prev) => [...prev, userMessage, placeholderAiMessage]);
@@ -443,7 +446,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
         confidenceScore: 0.85,
         reasoning: reasoning || undefined,
         parentId: parentId,
-        branchPath: currentBranchPath,
+        branchPath: effectiveBranchPath,
       });
 
       const interaction = interactionResponse.data.data.interaction;
@@ -476,7 +479,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
               id: `user-${interaction.id}`,
               timestamp: interaction.createdAt,
               parentId: parentId,
-              branchPath: currentBranchPath,
+              branchPath: effectiveBranchPath,
             };
           }
           if (msg.id === tempId) {
@@ -489,7 +492,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
               searchResults,
               reasoning: reasoning || undefined,
               parentId: parentId,
-              branchPath: currentBranchPath,
+              branchPath: effectiveBranchPath,
             };
           }
           return msg;
@@ -638,8 +641,9 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   }, [messages, startEditingMessage]);
 
   /**
-   * Edit user message and regenerate AI response (Claude-style branching)
+   * Edit user message and regenerate AI response (Fork-based branching)
    * Creates a new conversation branch from the edited message
+   * Preserves original conversation - user can switch back to it
    */
   const editUserMessageAndRegenerate = useCallback(async (userMessageId: string, newContent: string) => {
     if (!newContent.trim() || !sessionId) return;
@@ -651,23 +655,54 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       return;
     }
 
-    // Get conversation history up to (but not including) this user message
-    // This creates a "branch" from this point forward
-    const conversationHistory = messages.slice(0, userMessageIndex);
+    // Calculate interaction index (each interaction = user + AI message pair)
+    // userMessageIndex / 2 gives us the interaction index (assuming alternating user/AI messages)
+    const interactionIndex = Math.floor(userMessageIndex / 2);
 
-    // Exit editing mode
-    cancelEditingMessage();
+    // Generate new branch name
+    const newBranchPath = `edit-${Date.now()}`;
 
-    // Remove all messages from this point forward (will be replaced with new branch)
-    setMessages(prev => prev.slice(0, userMessageIndex));
+    try {
+      setLoading(true);
 
-    // Send the edited message as a new message with the truncated history
-    // This will create new user message + AI response
-    await handleSendMessage(newContent, conversationHistory);
+      // Fork conversation history to new branch (copy all interactions before this one)
+      await api.post('/interactions/fork-for-edit', {
+        sessionId,
+        beforeMessageIndex: interactionIndex,
+        newBranchPath,
+        originalBranchPath: currentBranchPath,
+      });
 
-    setSuccessMessage('Message edited - new response generated');
-    setTimeout(() => setSuccessMessage(null), 3000);
-  }, [sessionId, messages, handleSendMessage, cancelEditingMessage]);
+      // Exit editing mode
+      cancelEditingMessage();
+
+      // Update current branch path
+      setCurrentBranchPath(newBranchPath);
+
+      // Add new branch to available paths
+      setAvailableBranchPaths(prev => [...prev, newBranchPath]);
+
+      // Get conversation history up to (but not including) this user message for context
+      const conversationHistory = messages.slice(0, userMessageIndex);
+
+      // Update messages to show only the copied history (will be updated by handleSendMessage)
+      setMessages(conversationHistory);
+
+      // Send the edited message as a new message on the new branch
+      // This will create new user message + AI response
+      await handleSendMessage(newContent, conversationHistory, false, newBranchPath);
+
+      setSuccessMessage(`Message edited on new branch - original preserved. Use branch switcher to go back.`);
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } catch (err: any) {
+      console.error('Failed to fork for edit:', err);
+      setError('Failed to create edit branch');
+      // Reload original messages on error
+      await switchBranchPath(currentBranchPath);
+    } finally {
+      setLoading(false);
+    }
+  }, [sessionId, messages, currentBranchPath, handleSendMessage, cancelEditingMessage, switchBranchPath]);
 
   /**
    * Switch to a different conversation branch path
