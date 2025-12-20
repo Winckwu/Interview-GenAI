@@ -543,6 +543,7 @@ const ChatSessionPage: React.FC = () => {
   // Virtualized list configuration
   const virtualizedListRef = useRef<any>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const MESSAGE_ROW_HEIGHT = 140; // Approximate height of each message row (px)
   const MESSAGES_CONTAINER_HEIGHT = 600; // Height of messages container (px)
 
@@ -553,7 +554,15 @@ const ChatSessionPage: React.FC = () => {
 
   // Auto-scroll to bottom when new messages arrive or during streaming
   const scrollToBottom = useCallback((immediate = false) => {
-    if (messagesContainerRef.current) {
+    // Method 1: Use scrollIntoView on anchor element (more reliable)
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: immediate ? 'auto' : 'smooth',
+        block: 'end',
+      });
+    }
+    // Method 2: Fallback to scrollTo on container
+    else if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTo({
         top: messagesContainerRef.current.scrollHeight,
         behavior: immediate ? 'auto' : 'smooth',
@@ -561,21 +570,28 @@ const ChatSessionPage: React.FC = () => {
     }
   }, []);
 
-  // Scroll when messages change - use multiple timeouts to ensure it works after render
+  // Scroll when messages change - use requestAnimationFrame for reliable timing
   useEffect(() => {
-    const timers = [
-      setTimeout(() => scrollToBottom(true), 50),
-      setTimeout(() => scrollToBottom(), 200),
-      setTimeout(() => scrollToBottom(), 500),
-    ];
-    return () => timers.forEach(clearTimeout);
+    // Use requestAnimationFrame to ensure DOM is updated before scrolling
+    const scrollAfterRender = () => {
+      requestAnimationFrame(() => {
+        scrollToBottom(true);
+        // Schedule a smooth scroll shortly after for visual feedback
+        setTimeout(() => scrollToBottom(false), 100);
+      });
+    };
+
+    scrollAfterRender();
+
+    // Also schedule additional scrolls for lazy-loaded content
+    const timer = setTimeout(scrollAfterRender, 300);
+    return () => clearTimeout(timer);
   }, [messages.length, scrollToBottom]);
 
   // Scroll during streaming
   useEffect(() => {
     if (streamingContent) {
-      const timer = setTimeout(() => scrollToBottom(), 150);
-      return () => clearTimeout(timer);
+      requestAnimationFrame(() => scrollToBottom(false));
     }
   }, [streamingContent, scrollToBottom]);
 
@@ -1047,6 +1063,12 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
     // Call hook's sendMessage with web search flag
     await sendMessage(userInput, messages, webSearchEnabled);
+
+    // Scroll to bottom after sending message
+    requestAnimationFrame(() => {
+      scrollToBottom(true);
+      setTimeout(() => scrollToBottom(false), 100);
+    });
 
     // Clear input after sending
     setUserInput('');
@@ -4174,6 +4196,9 @@ Message: "${firstMessage.slice(0, 200)}"`,
               </div>
             </div>
           )}
+
+          {/* Scroll anchor - invisible element at the bottom for auto-scroll */}
+          <div ref={messagesEndRef} style={{ height: 1, flexShrink: 0 }} />
           </div>
 
           {/* Right Sidebar - MR Tools */}
