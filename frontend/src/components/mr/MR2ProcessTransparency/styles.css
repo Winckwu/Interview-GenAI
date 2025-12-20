@@ -140,19 +140,18 @@
   overflow: auto;
 }
 
+/* Empty state - used for "no content" messages and different topic notices */
 .mr2-empty-state {
-  flex: 1 1 0;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-}
-
-/* Empty state and hint centering */
-.mr2-empty-state {
+  min-height: 200px;
+  padding: 1.5rem;
   justify-content: center;
   align-items: center;
   text-align: center;
   color: #64748b;
+  overflow-y: auto;
 }
 
 .mr2-timeline-hint {
@@ -876,13 +875,6 @@
 .mr2-conf-50 {
   background: #ffe0b2 !important;
   color: #e65100 !important;
-}
-
-/* Empty state */
-.mr2-empty-state {
-  padding: 2rem;
-  text-align: center;
-  color: var(--mr2-secondary, #666);
 }
 
 /* Different topic notice */
