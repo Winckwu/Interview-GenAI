@@ -725,7 +725,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
       </div>
 
       <div className="mr2-content-area">
-        {versions.length > 1 && renderVersionSelector()}
+        {versions.length > 0 && renderVersionSelector()}
 
         <div className="mr2-main-view">
           {viewMode === 'timeline' && renderTimelineView()}
