@@ -359,6 +359,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
     <div
       ref={messageRef}
       className={`${styles.messageContainer} ${styles[message.role]}`}
+      data-message-id={message.id}
+      data-message-role={message.role}
       tabIndex={hasBranches && message.role === 'ai' ? 0 : undefined}
     >
       <div

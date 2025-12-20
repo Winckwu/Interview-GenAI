@@ -554,18 +554,21 @@ const ChatSessionPage: React.FC = () => {
 
   // Auto-scroll to bottom when new messages arrive or during streaming
   const scrollToBottom = useCallback((immediate = false) => {
-    // Method 1: Use scrollIntoView on anchor element (more reliable)
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({
+    // Find the last message element using data attribute and scroll to it
+    const allMessages = document.querySelectorAll('[data-message-id]');
+    const lastMessage = allMessages[allMessages.length - 1] as HTMLElement;
+
+    if (lastMessage) {
+      lastMessage.scrollIntoView({
         behavior: immediate ? 'auto' : 'smooth',
         block: 'end',
       });
     }
-    // Method 2: Fallback to scrollTo on container
-    else if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTo({
-        top: messagesContainerRef.current.scrollHeight,
+    // Fallback: scroll anchor element
+    else if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
         behavior: immediate ? 'auto' : 'smooth',
+        block: 'end',
       });
     }
   }, []);
