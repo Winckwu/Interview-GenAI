@@ -132,13 +132,19 @@
 .mr2-diff-view,
 .mr2-reasoning-view,
 .mr2-comparison-view,
-.mr2-metrics-view,
+.mr2-metrics-view {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+}
+
 .mr2-empty-state {
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden;
 }
 
 /* Empty state and hint centering */
