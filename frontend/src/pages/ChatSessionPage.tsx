@@ -280,6 +280,9 @@ const ChatSessionPage: React.FC = () => {
   const [sessionStartTime] = useState(Date.now());
   const [showPersonalizedTips, setShowPersonalizedTips] = useState(true);
 
+  // Track if we're viewing a historical session (to skip MR interventions)
+  const [isHistoricalSession, setIsHistoricalSession] = useState(false);
+
   // ========================================================
   // PHASE 1 REFACTORING: Custom Hooks Integration
   // ========================================================
@@ -528,7 +531,8 @@ const ChatSessionPage: React.FC = () => {
   const [savingTitle, setSavingTitle] = useState(false);
 
   // MCA orchestration states - Use GPT for accurate signal detection and pre-generated MR content
-  const { result: mcaResult, activeMRs } = useMCAOrchestrator(sessionId || '', messages, true, 'gpt');
+  // Disabled for historical sessions to prevent triggering interventions on old messages
+  const { result: mcaResult, activeMRs } = useMCAOrchestrator(sessionId || '', messages, !isHistoricalSession, 'gpt');
   const [displayedModalMR, setDisplayedModalMR] = useState<ActiveMR | null>(null);
   const [dismissedMRs, setDismissedMRs] = useState<Set<string>>(new Set());
 
@@ -757,6 +761,9 @@ const ChatSessionPage: React.FC = () => {
         // Clear historical message tracking for new session
         historicalMessageIds.current.clear();
         processedNotificationIds.current.clear();
+
+        // Mark as historical session to skip MR interventions until user sends new message
+        setIsHistoricalSession(true);
 
         // Load previous interactions/messages from this session (with pagination)
         await loadMessagesPage(1);
@@ -1002,6 +1009,11 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
     // Track iteration count for adaptive MR triggering
     setIterationCount(prev => prev + 1);
+
+    // User is now actively chatting, enable MR interventions
+    if (isHistoricalSession) {
+      setIsHistoricalSession(false);
+    }
 
     // Call hook's sendMessage with web search flag
     await sendMessage(userInput, messages, webSearchEnabled);
@@ -2163,6 +2175,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
       setShowPattern(false);
       setUserInput('');
       setSessionActive(true);
+      setIsHistoricalSession(false); // New session, enable MR interventions
 
       // Close sidebar and navigate to new session
       setSessionSidebarOpen(false);
