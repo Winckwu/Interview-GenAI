@@ -52,6 +52,11 @@ export interface MessageItemProps {
   // Conversation forking (true branch from this message)
   onForkConversation?: () => void;
 
+  // Conversation branch paths (for user message edits)
+  availableBranchPaths?: string[];
+  currentBranchPath?: string;
+  onSwitchBranchPath?: (branchPath: string) => void;
+
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
   quickReflection?: React.ReactNode;
@@ -80,6 +85,9 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onBranchDelete,
   onBranchSetAsMain,
   onForkConversation,
+  availableBranchPaths = ['main'],
+  currentBranchPath = 'main',
+  onSwitchBranchPath,
   trustIndicator,
   quickReflection,
   mr6Suggestion,
@@ -889,7 +897,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
           </div>
         )}
 
-        {/* Footer for user messages - timestamp and edit button */}
+        {/* Footer for user messages - timestamp, branch navigation, and edit button */}
         {message.role === 'user' && !isEditing && (
           <div style={{
             display: 'flex',
@@ -904,37 +912,117 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                 minute: '2-digit',
               })}
             </p>
-            {/* Edit button for user messages */}
-            {onEditUserMessage && (
-              <button
-                onClick={onEditUserMessage}
-                title="Edit this message and regenerate AI response"
-                style={{
-                  background: 'none',
-                  border: '1px solid #9ca3af',
-                  cursor: 'pointer',
-                  padding: '0.25rem 0.5rem',
-                  fontSize: '0.75rem',
-                  color: '#6b7280',
-                  borderRadius: '0.25rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.25rem',
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#3b82f6';
-                  e.currentTarget.style.color = '#3b82f6';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#9ca3af';
-                  e.currentTarget.style.color = '#6b7280';
-                }}
-              >
-                <span style={{ fontSize: '0.875rem' }}>✎</span>
-                Edit
-              </button>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              {/* Branch navigation for user messages - show when there are edit branches */}
+              {availableBranchPaths.length > 1 && onSwitchBranchPath && (() => {
+                // Find current branch index
+                const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
+                const canGoPrev = currentIndex > 0;
+                const canGoNext = currentIndex < availableBranchPaths.length - 1;
+
+                // Format branch name for display
+                const formatBranchName = (path: string) => {
+                  if (path === 'main') return 'Main';
+                  if (path.startsWith('edit-')) {
+                    const editIndex = availableBranchPaths.filter(p => p.startsWith('edit-')).indexOf(path) + 1;
+                    return `Edit #${editIndex}`;
+                  }
+                  return path;
+                };
+
+                return (
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    background: '#f0f9ff',
+                    border: '1px solid #bae6fd',
+                    borderRadius: '0.375rem',
+                    padding: '0.15rem 0.35rem',
+                  }}>
+                    <button
+                      onClick={() => canGoPrev && onSwitchBranchPath(availableBranchPaths[currentIndex - 1])}
+                      disabled={!canGoPrev}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: canGoPrev ? 'pointer' : 'not-allowed',
+                        padding: '0 0.25rem',
+                        fontSize: '0.75rem',
+                        color: canGoPrev ? '#0284c7' : '#cbd5e1',
+                        fontWeight: 'bold',
+                      }}
+                      title="Previous version"
+                    >
+                      ◀
+                    </button>
+                    <span style={{
+                      fontSize: '0.7rem',
+                      color: '#0369a1',
+                      fontWeight: '500',
+                      minWidth: '50px',
+                      textAlign: 'center',
+                    }}>
+                      {formatBranchName(currentBranchPath)}
+                    </span>
+                    <button
+                      onClick={() => canGoNext && onSwitchBranchPath(availableBranchPaths[currentIndex + 1])}
+                      disabled={!canGoNext}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: canGoNext ? 'pointer' : 'not-allowed',
+                        padding: '0 0.25rem',
+                        fontSize: '0.75rem',
+                        color: canGoNext ? '#0284c7' : '#cbd5e1',
+                        fontWeight: 'bold',
+                      }}
+                      title="Next version"
+                    >
+                      ▶
+                    </button>
+                    <span style={{
+                      fontSize: '0.65rem',
+                      color: '#64748b',
+                      marginLeft: '0.15rem',
+                    }}>
+                      {currentIndex + 1}/{availableBranchPaths.length}
+                    </span>
+                  </div>
+                );
+              })()}
+              {/* Edit button for user messages */}
+              {onEditUserMessage && (
+                <button
+                  onClick={onEditUserMessage}
+                  title="Edit this message and regenerate AI response"
+                  style={{
+                    background: 'none',
+                    border: '1px solid #9ca3af',
+                    cursor: 'pointer',
+                    padding: '0.25rem 0.5rem',
+                    fontSize: '0.75rem',
+                    color: '#6b7280',
+                    borderRadius: '0.25rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#3b82f6';
+                    e.currentTarget.style.color = '#3b82f6';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#9ca3af';
+                    e.currentTarget.style.color = '#6b7280';
+                  }}
+                >
+                  <span style={{ fontSize: '0.875rem' }}>✎</span>
+                  Edit
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

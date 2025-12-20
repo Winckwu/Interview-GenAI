@@ -75,6 +75,11 @@ export interface MessageListProps {
   // Conversation forking
   onForkConversation?: (messageId: string) => void;
 
+  // Conversation branch paths (for user message edits)
+  availableBranchPaths?: string[];
+  currentBranchPath?: string;
+  onSwitchBranchPath?: (branchPath: string) => void;
+
   // Trust Indicator (MR9)
   showTrustIndicator: boolean;
   messageTrustScores: Map<string, number>;
@@ -122,6 +127,9 @@ export const MessageList: React.FC<MessageListProps> = ({
   onBranchDelete,
   onBranchSetAsMain,
   onForkConversation,
+  availableBranchPaths = ['main'],
+  currentBranchPath = 'main',
+  onSwitchBranchPath,
   showTrustIndicator,
   messageTrustScores,
   getTrustBadge,
@@ -240,6 +248,9 @@ export const MessageList: React.FC<MessageListProps> = ({
             onBranchDelete={onBranchDelete ? () => onBranchDelete(message.id) : undefined}
             onBranchSetAsMain={onBranchSetAsMain ? () => onBranchSetAsMain(message.id) : undefined}
             onForkConversation={message.role === 'ai' && onForkConversation ? () => onForkConversation(message.id) : undefined}
+            availableBranchPaths={availableBranchPaths}
+            currentBranchPath={currentBranchPath}
+            onSwitchBranchPath={onSwitchBranchPath}
             trustIndicator={renderTrustIndicator(message, index)}
             quickReflection={renderQuickReflection(message, index)}
             mr6Suggestion={renderMR6Suggestion(message, index)}

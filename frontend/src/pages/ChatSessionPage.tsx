@@ -4036,6 +4036,9 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 onBranchDelete={handleDeleteBranch}
                 onBranchSetAsMain={handleSetBranchAsMain}
                 onForkConversation={handleForkConversation}
+                availableBranchPaths={availableBranchPaths}
+                currentBranchPath={currentBranchPath}
+                onSwitchBranchPath={switchBranchPath}
                 showTrustIndicator={showTrustIndicator}
                 messageTrustScores={messageTrustScores}
                 getTrustBadge={getTrustBadge}
