@@ -5,6 +5,7 @@
  */
 
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { UserInterventionHistory, InterventionSuppressionState } from '../utils/InterventionScheduler';
 
 export type InterventionTier = 'soft' | 'medium' | 'hard' | 'none';
@@ -87,167 +88,218 @@ export interface InterventionStoreState {
  * - Track suppression state
  * - Log compliance metrics per session
  * - Coordinate tier transitions (soft → medium → hard)
+ *
+ * Persistence: userHistory and suppressionState are persisted to localStorage
+ * so dismissal counts survive page refreshes.
  */
-export const useInterventionStore = create<InterventionStoreState>((set, get) => ({
-  activeIntervention: null,
-  isDisplaying: false,
-  userHistory: {},
-  suppressionState: {
-    suppressedMRTypes: new Set(),
-    suppressionExpiresAt: {},
-    lastCalculatedFatigueScore: 0,
-    lastCalculatedAt: Date.now(),
-  },
-  currentSessionId: null,
-  metricsHistory: {},
-
-  /**
-   * Set active intervention (will display in UI)
-   */
-  setActiveIntervention: (intervention: PendingIntervention | null) => {
-    set({
-      activeIntervention: intervention,
-      isDisplaying: intervention !== null,
-    });
-  },
-
-  /**
-   * Clear active intervention
-   */
-  clearActiveIntervention: () => {
-    set({
+export const useInterventionStore = create<InterventionStoreState>()(
+  persist(
+    (set, get) => ({
       activeIntervention: null,
       isDisplaying: false,
-    });
-  },
-
-  /**
-   * Record user action on intervention
-   * Updates history and suppression state
-   */
-  recordUserAction: (mrType: string, action: 'dismiss' | 'skip' | 'acted' | 'override') => {
-    const state = get();
-    let updatedHistory = { ...state.userHistory };
-    let updatedSuppression = {
-      ...state.suppressionState,
-      suppressionExpiresAt: { ...state.suppressionState.suppressionExpiresAt },
-    };
-
-    // Initialize if not exists
-    if (!updatedHistory[mrType]) {
-      updatedHistory[mrType] = {
-        dismissalCount: 0,
-        lastDismissalTime: 0,
-        userActedOnCount: 0,
-        cumulativeExposureMs: 0,
-        createdAtMs: Date.now(),
-      };
-    }
-
-    // Update based on action
-    if (action === 'dismiss' || action === 'skip') {
-      updatedHistory[mrType].dismissalCount += 1;
-      updatedHistory[mrType].lastDismissalTime = Date.now();
-
-      // Suppress after 3 dismissals
-      if (updatedHistory[mrType].dismissalCount >= 3) {
-        updatedSuppression.suppressionExpiresAt[mrType] = Date.now() + 30 * 60 * 1000; // 30 min
-        updatedSuppression.suppressedMRTypes.add(mrType);
-      }
-    } else if (action === 'acted') {
-      updatedHistory[mrType].userActedOnCount += 1;
-      updatedHistory[mrType].dismissalCount = 0; // Reset on engagement
-      updatedSuppression.suppressedMRTypes.delete(mrType);
-      delete updatedSuppression.suppressionExpiresAt[mrType];
-    } else if (action === 'override') {
-      updatedHistory[mrType].userActedOnCount += 1;
-      updatedSuppression.suppressedMRTypes.delete(mrType);
-      delete updatedSuppression.suppressionExpiresAt[mrType];
-    }
-
-    set({
-      userHistory: updatedHistory,
-      suppressionState: updatedSuppression,
-    });
-  },
-
-  /**
-   * Record engagement or compliance event for metrics
-   */
-  recordEngagement: (sessionId: string, eventType: 'engagement' | 'compliance') => {
-    const state = get();
-    const metrics = state.metricsHistory[sessionId];
-
-    if (!metrics) return;
-
-    const updatedMetrics = { ...metrics };
-    if (eventType === 'engagement') {
-      updatedMetrics.engagementCount += 1;
-    } else if (eventType === 'compliance') {
-      updatedMetrics.complianceCount += 1;
-    }
-
-    set({
-      metricsHistory: {
-        ...state.metricsHistory,
-        [sessionId]: updatedMetrics,
+      userHistory: {},
+      suppressionState: {
+        suppressedMRTypes: new Set(),
+        suppressionExpiresAt: {},
+        lastCalculatedFatigueScore: 0,
+        lastCalculatedAt: Date.now(),
       },
-    });
-  },
-
-  /**
-   * Set current session (for metrics tracking)
-   */
-  setCurrentSession: (sessionId: string) => {
-    const state = get();
-    if (!state.metricsHistory[sessionId]) {
-      state.metricsHistory[sessionId] = {
-        sessionId,
-        totalInterventionsShown: 0,
-        softSignalCount: 0,
-        mediumAlertCount: 0,
-        hardBarrierCount: 0,
-        dismissalCount: 0,
-        engagementCount: 0,
-        complianceCount: 0,
-        overrideCount: 0,
-      };
-    }
-
-    set({
-      currentSessionId: sessionId,
-      metricsHistory: { ...state.metricsHistory },
-    });
-  },
-
-  /**
-   * Update user interaction history (from InterventionScheduler)
-   */
-  updateUserHistory: (history: UserInterventionHistory) => {
-    set({ userHistory: history });
-  },
-
-  /**
-   * Update suppression state (from InterventionScheduler)
-   */
-  updateSuppressionState: (state: InterventionSuppressionState) => {
-    set({ suppressionState: state });
-  },
-
-  /**
-   * Get metrics for specific session
-   */
-  getSessionMetrics: (sessionId: string) => {
-    return get().metricsHistory[sessionId];
-  },
-
-  /**
-   * Reset metrics for new session
-   */
-  resetSessionMetrics: () => {
-    set({
-      metricsHistory: {},
       currentSessionId: null,
-    });
-  },
-}));
+      metricsHistory: {},
+
+      /**
+       * Set active intervention (will display in UI)
+       */
+      setActiveIntervention: (intervention: PendingIntervention | null) => {
+        set({
+          activeIntervention: intervention,
+          isDisplaying: intervention !== null,
+        });
+      },
+
+      /**
+       * Clear active intervention
+       */
+      clearActiveIntervention: () => {
+        set({
+          activeIntervention: null,
+          isDisplaying: false,
+        });
+      },
+
+      /**
+       * Record user action on intervention
+       * Updates history and suppression state
+       */
+      recordUserAction: (mrType: string, action: 'dismiss' | 'skip' | 'acted' | 'override') => {
+        const state = get();
+        let updatedHistory = { ...state.userHistory };
+        let updatedSuppression = {
+          ...state.suppressionState,
+          suppressionExpiresAt: { ...state.suppressionState.suppressionExpiresAt },
+        };
+
+        // Initialize if not exists
+        if (!updatedHistory[mrType]) {
+          updatedHistory[mrType] = {
+            dismissalCount: 0,
+            lastDismissalTime: 0,
+            userActedOnCount: 0,
+            cumulativeExposureMs: 0,
+            createdAtMs: Date.now(),
+          };
+        }
+
+        // Update based on action
+        if (action === 'dismiss' || action === 'skip') {
+          updatedHistory[mrType].dismissalCount += 1;
+          updatedHistory[mrType].lastDismissalTime = Date.now();
+
+          // Suppress after 3 dismissals
+          if (updatedHistory[mrType].dismissalCount >= 3) {
+            updatedSuppression.suppressionExpiresAt[mrType] = Date.now() + 30 * 60 * 1000; // 30 min
+            updatedSuppression.suppressedMRTypes.add(mrType);
+          }
+        } else if (action === 'acted') {
+          updatedHistory[mrType].userActedOnCount += 1;
+          updatedHistory[mrType].dismissalCount = 0; // Reset on engagement
+          updatedSuppression.suppressedMRTypes.delete(mrType);
+          delete updatedSuppression.suppressionExpiresAt[mrType];
+        } else if (action === 'override') {
+          updatedHistory[mrType].userActedOnCount += 1;
+          updatedSuppression.suppressedMRTypes.delete(mrType);
+          delete updatedSuppression.suppressionExpiresAt[mrType];
+        }
+
+        set({
+          userHistory: updatedHistory,
+          suppressionState: updatedSuppression,
+        });
+      },
+
+      /**
+       * Record engagement or compliance event for metrics
+       */
+      recordEngagement: (sessionId: string, eventType: 'engagement' | 'compliance') => {
+        const state = get();
+        const metrics = state.metricsHistory[sessionId];
+
+        if (!metrics) return;
+
+        const updatedMetrics = { ...metrics };
+        if (eventType === 'engagement') {
+          updatedMetrics.engagementCount += 1;
+        } else if (eventType === 'compliance') {
+          updatedMetrics.complianceCount += 1;
+        }
+
+        set({
+          metricsHistory: {
+            ...state.metricsHistory,
+            [sessionId]: updatedMetrics,
+          },
+        });
+      },
+
+      /**
+       * Set current session (for metrics tracking)
+       */
+      setCurrentSession: (sessionId: string) => {
+        const state = get();
+        if (!state.metricsHistory[sessionId]) {
+          state.metricsHistory[sessionId] = {
+            sessionId,
+            totalInterventionsShown: 0,
+            softSignalCount: 0,
+            mediumAlertCount: 0,
+            hardBarrierCount: 0,
+            dismissalCount: 0,
+            engagementCount: 0,
+            complianceCount: 0,
+            overrideCount: 0,
+          };
+        }
+
+        set({
+          currentSessionId: sessionId,
+          metricsHistory: { ...state.metricsHistory },
+        });
+      },
+
+      /**
+       * Update user interaction history (from InterventionScheduler)
+       */
+      updateUserHistory: (history: UserInterventionHistory) => {
+        set({ userHistory: history });
+      },
+
+      /**
+       * Update suppression state (from InterventionScheduler)
+       */
+      updateSuppressionState: (state: InterventionSuppressionState) => {
+        set({ suppressionState: state });
+      },
+
+      /**
+       * Get metrics for specific session
+       */
+      getSessionMetrics: (sessionId: string) => {
+        return get().metricsHistory[sessionId];
+      },
+
+      /**
+       * Reset metrics for new session
+       */
+      resetSessionMetrics: () => {
+        set({
+          metricsHistory: {},
+          currentSessionId: null,
+        });
+      },
+    }),
+    {
+      name: 'intervention-storage', // localStorage key
+      // Only persist userHistory and suppressionState
+      partialize: (state) => ({
+        userHistory: state.userHistory,
+        suppressionState: {
+          ...state.suppressionState,
+          // Convert Set to Array for JSON serialization
+          suppressedMRTypes: Array.from(state.suppressionState.suppressedMRTypes),
+        },
+      }),
+      // Custom storage to handle Set deserialization
+      storage: {
+        getItem: (name) => {
+          const str = localStorage.getItem(name);
+          if (!str) return null;
+          const parsed = JSON.parse(str);
+          // Convert suppressedMRTypes array back to Set
+          if (parsed?.state?.suppressionState?.suppressedMRTypes) {
+            parsed.state.suppressionState.suppressedMRTypes = new Set(
+              parsed.state.suppressionState.suppressedMRTypes
+            );
+          }
+          // Check and clear expired suppressions
+          if (parsed?.state?.suppressionState?.suppressionExpiresAt) {
+            const now = Date.now();
+            const expiresAt = parsed.state.suppressionState.suppressionExpiresAt;
+            for (const [mrType, expireTime] of Object.entries(expiresAt)) {
+              if ((expireTime as number) < now) {
+                delete expiresAt[mrType];
+                parsed.state.suppressionState.suppressedMRTypes.delete(mrType);
+              }
+            }
+          }
+          return parsed;
+        },
+        setItem: (name, value) => {
+          localStorage.setItem(name, JSON.stringify(value));
+        },
+        removeItem: (name) => {
+          localStorage.removeItem(name);
+        },
+      },
+    }
+  )
+);
