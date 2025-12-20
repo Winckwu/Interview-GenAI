@@ -120,7 +120,7 @@
   border-radius: 8px;
   border: 1px solid var(--mr2-border, #e0e0e0);
   min-height: 0;
-  overflow-y: auto;
+  overflow: hidden;
   flex: 1 1 0;
   align-self: stretch;
   display: flex;
@@ -134,10 +134,11 @@
 .mr2-comparison-view,
 .mr2-metrics-view,
 .mr2-empty-state {
-  flex: 1;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
 /* Empty state and hint centering */
@@ -1230,8 +1231,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  height: 100%;
+  flex: 1 1 0;
+  min-height: 0;
   overflow-y: auto;
+  padding-right: 0.5rem;
 }
 
 .mr2-selected-turn-header {
