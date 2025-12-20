@@ -123,22 +123,28 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
       let newPosY = resizeRef.current.startPosY;
 
       // Handle horizontal resizing
+      // Note: Modal is centered via flexbox, so position change = half of size change
       if (resizeDirection.includes('e')) {
         newWidth = Math.max(400, Math.min(window.innerWidth * 0.95, resizeRef.current.startWidth + deltaX));
+        // Compensate for flexbox centering: move right by half the width increase
+        newPosX = resizeRef.current.startPosX + (newWidth - resizeRef.current.startWidth) / 2;
       }
       if (resizeDirection.includes('w')) {
-        const widthChange = Math.min(deltaX, resizeRef.current.startWidth - 400);
         newWidth = Math.max(400, resizeRef.current.startWidth - deltaX);
-        newPosX = resizeRef.current.startPosX + (resizeRef.current.startWidth - newWidth);
+        // Compensate for flexbox centering: move left by half the width increase
+        newPosX = resizeRef.current.startPosX - (newWidth - resizeRef.current.startWidth) / 2;
       }
 
       // Handle vertical resizing
       if (resizeDirection.includes('s')) {
         newHeight = Math.max(300, Math.min(window.innerHeight * 0.9, resizeRef.current.startHeight + deltaY));
+        // Compensate for flexbox centering: move down by half the height increase
+        newPosY = resizeRef.current.startPosY + (newHeight - resizeRef.current.startHeight) / 2;
       }
       if (resizeDirection.includes('n')) {
         newHeight = Math.max(300, resizeRef.current.startHeight - deltaY);
-        newPosY = resizeRef.current.startPosY + (resizeRef.current.startHeight - newHeight);
+        // Compensate for flexbox centering: move up by half the height increase
+        newPosY = resizeRef.current.startPosY - (newHeight - resizeRef.current.startHeight) / 2;
       }
 
       setModalSize({ width: newWidth, height: newHeight });
