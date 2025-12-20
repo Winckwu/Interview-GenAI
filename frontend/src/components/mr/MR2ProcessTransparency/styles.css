@@ -4,12 +4,16 @@
 
 .mr2-container {
   max-width: 100%;
+  height: 100%;
   margin: 0 auto;
   padding: 1.25rem;
   background: var(--mr2-bg, #ffffff);
   font-family: system-ui, -apple-system, sans-serif;
   color: var(--mr2-text, #1a1a1a);
   font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .mr2-header {
@@ -103,6 +107,9 @@
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 1.5rem;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .mr2-main-view {
@@ -110,7 +117,8 @@
   padding: 1.5rem;
   border-radius: 8px;
   border: 1px solid var(--mr2-border, #e0e0e0);
-  min-height: 300px;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 /* Timeline view */
@@ -707,9 +715,11 @@
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 12px;
   border: 1px solid #e2e8f0;
-  max-height: 100%;
+  min-height: 0;
   overflow-y: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
 }
 
 .mr2-version-selector-panel h3 {
@@ -726,6 +736,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .mr2-version-item {

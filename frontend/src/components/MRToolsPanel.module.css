@@ -268,8 +268,15 @@
 
 .modalBody {
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalBody > * {
+  flex: 1;
+  min-height: 0;
 }
 
 /* Scrollbar for modal body */
