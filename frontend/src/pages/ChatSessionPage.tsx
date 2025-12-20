@@ -542,6 +542,7 @@ const ChatSessionPage: React.FC = () => {
 
   // Virtualized list configuration
   const virtualizedListRef = useRef<any>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const MESSAGE_ROW_HEIGHT = 140; // Approximate height of each message row (px)
   const MESSAGES_CONTAINER_HEIGHT = 600; // Height of messages container (px)
 
@@ -549,6 +550,16 @@ const ChatSessionPage: React.FC = () => {
   // Reference to debounced function (will be initialized in useEffect)
   const debouncedDetectPatternRef = useRef<(() => Promise<void>) | null>(null);
   const patternCallCountRef = useRef<number>(0); // Track number of pattern detection calls
+
+  // Auto-scroll to bottom when new messages arrive or during streaming
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
+    // Scroll to bottom when messages change or streaming content updates
+    scrollToBottom();
+  }, [messages.length, streamingContent, scrollToBottom]);
 
   // Initialize metrics for this session
   useEffect(() => {
@@ -4142,6 +4153,8 @@ Message: "${firstMessage.slice(0, 200)}"`,
               </div>
             </div>
           )}
+          {/* Scroll target for auto-scroll to bottom */}
+          <div ref={messagesEndRef} />
           </div>
 
           {/* Right Sidebar - MR Tools */}
