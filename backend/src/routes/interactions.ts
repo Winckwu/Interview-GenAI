@@ -361,7 +361,7 @@ router.get(
     // Get paginated results
     const dataQuery = `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
                               i.response_time_ms, i.was_verified, i.was_modified,
-                              i.was_rejected, i.parent_id, i.branch_path, i.created_at, i.updated_at
+                              i.was_rejected, i.parent_id, i.branch_path, i.reasoning, i.created_at, i.updated_at
                        FROM interactions i
                        ${whereClause}
                        ORDER BY i.created_at DESC LIMIT $${paramCount++} OFFSET $${paramCount}`;
@@ -422,6 +422,7 @@ router.get(
           wasRejected: i.was_rejected,
           parentId: i.parent_id,
           branchPath: i.branch_path,
+          reasoning: i.reasoning, // AI chain-of-thought reasoning
           createdAt: i.created_at,
           updatedAt: i.updated_at,
           branches: branchesMap.get(i.id) || [], // Include branches

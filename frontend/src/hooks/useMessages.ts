@@ -242,6 +242,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
             wasVerified: interaction.wasVerified,
             wasModified: interaction.wasModified,
             wasRejected: interaction.wasRejected,
+            reasoning: interaction.reasoning, // AI chain-of-thought reasoning
             branches: interaction.branches?.map((branch: any) => ({
               id: branch.id,
               content: branch.content,
