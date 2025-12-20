@@ -325,14 +325,14 @@
 .mr19-detail-label {
   margin: 0 0 0.5rem 0;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr19-text, #1a1a1a);
 }
 
 .mr19-detail-list {
   margin: 0;
   padding-left: 1.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr19-secondary, #666);
 }
 
@@ -488,7 +488,7 @@
 .mr19-interpretation {
   margin: 0.75rem 0 0 0;
   color: var(--mr19-secondary, #666);
-  font-size: 0.85rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
@@ -661,14 +661,14 @@
   display: block;
   margin: 0 0 0.5rem 0;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr19-text, #1a1a1a);
 }
 
 .mr19-features-list {
   margin: 0;
   padding-left: 1.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr19-secondary, #666);
 }
 
@@ -689,7 +689,7 @@
 
 .mr19-mrs-label {
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--mr19-secondary, #666);
 }
 
@@ -824,7 +824,7 @@
   .mr19-step {
     min-width: 80px;
     padding: 0.75rem;
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .mr19-intro-cards {
@@ -899,7 +899,7 @@
 
   .mr19-rating-btn {
     padding: 0.5rem;
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .mr19-rec-header {

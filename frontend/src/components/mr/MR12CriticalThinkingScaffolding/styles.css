@@ -121,7 +121,7 @@
   padding: 0.75rem;
   background: #e3f2fd;
   border-radius: 4px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #1565c0;
 }
 
@@ -337,7 +337,7 @@
 .mr12-areas ul {
   margin: 0;
   padding-left: 1.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .mr12-strengths li,

@@ -389,7 +389,7 @@
 }
 
 .mr13-bar {
-  font-size: 0.8rem;
+  font-size: 1rem;
   letter-spacing: 2px;
 }
 
@@ -432,7 +432,7 @@
 
 .mr13-detail-section p {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr13-secondary, #666);
   line-height: 1.5;
 }
@@ -440,7 +440,7 @@
 .mr13-reasons-list {
   margin: 0;
   padding-left: 1.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr13-secondary, #666);
 }
 
@@ -465,7 +465,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
 }
 
@@ -612,7 +612,7 @@
 }
 
 .mr13-history-date {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #999;
 }
 
@@ -647,7 +647,7 @@
 .mr13-history-metrics {
   display: flex;
   gap: 1.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr13-secondary, #666);
 }
 
@@ -752,7 +752,7 @@
 
 .mr13-domain-card p {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr13-secondary, #666);
 }
 
@@ -806,7 +806,7 @@
 
   .mr13-tab {
     padding: 0.75rem 1rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .mr13-sentence-header {
@@ -855,7 +855,7 @@
   }
 
   .mr13-bar-label {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .mr13-bar-display {

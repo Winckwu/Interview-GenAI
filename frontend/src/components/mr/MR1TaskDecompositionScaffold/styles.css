@@ -51,7 +51,7 @@
   top: 50%;
   transform: translateY(-50%);
   padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   background: #f0f0f0;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -67,7 +67,7 @@
 
 .mr1-restored-notice {
   margin: 0.5rem 0 0 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #059669;
   font-style: italic;
 }
@@ -100,7 +100,7 @@
   top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
   background: var(--mr1-bg, #ffffff);
@@ -521,6 +521,13 @@
   background: #fff9e6;
   border-left: 4px solid #ff9800;
   border-radius: 6px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.mr1-next-steps h4 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
 }
 
 .mr1-next-steps ol {
@@ -531,6 +538,7 @@
 .mr1-next-steps li {
   margin-bottom: 0.5rem;
   color: var(--mr1-text, #1a1a1a);
+  font-size: 1.05rem;
 }
 
 .mr1-completion-actions {

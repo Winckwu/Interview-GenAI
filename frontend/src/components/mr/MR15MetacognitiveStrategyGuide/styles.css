@@ -225,7 +225,7 @@
   background: #4caf50;
   color: white;
   border-radius: 12px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -402,7 +402,7 @@
 }
 
 .mr15-case-type {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -418,7 +418,7 @@
 
 .mr15-case-brief {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr15-text-secondary, #666);
   line-height: 1.5;
 }
@@ -453,7 +453,7 @@
 .mr15-case-detail-type {
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -590,7 +590,7 @@
 }
 
 .mr15-proficiency-text {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr15-text-secondary, #666);
 }
 

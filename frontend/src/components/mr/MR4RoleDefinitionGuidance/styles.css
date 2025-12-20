@@ -179,7 +179,7 @@
 .mr4-card-trust-level {
   padding: 0.5rem 0.75rem;
   border-radius: 4px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
   margin-bottom: 1rem;
   text-align: center;
@@ -214,7 +214,7 @@
   color: var(--mr4-text, #1a1a1a);
   border-radius: 4px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -321,7 +321,7 @@
 
 .mr4-example-text {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
   font-style: italic;
   line-height: 1.5;
@@ -343,7 +343,7 @@
 
 .mr4-prompt-text {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
   line-height: 1.5;
 }
@@ -406,7 +406,7 @@
 
 .mr4-summary-description {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
 }
 
@@ -662,7 +662,7 @@
   border-left: 3px solid var(--mr4-accent, #0066ff);
   border-radius: 4px;
   font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
   overflow-x: auto;
   display: block;
@@ -793,7 +793,7 @@
 
   .mr4-tab {
     padding: 0.75rem 1rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .mr4-view-title {

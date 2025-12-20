@@ -260,7 +260,7 @@
 }
 
 .mr11-method-desc {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--mr11-secondary, #666);
 }
 
@@ -507,13 +507,13 @@
 }
 
 .mr11-history-method {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr11-secondary, #666);
   margin-top: 0.25rem;
 }
 
 .mr11-history-date {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #999;
 }
 
@@ -538,7 +538,7 @@
   padding: 0.75rem;
   background: var(--mr11-bg, #ffffff);
   border-radius: 4px;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .mr11-history-notes strong,
@@ -668,7 +668,7 @@
 .mr11-trust-message strong {
   display: block;
   margin-bottom: 0.25rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .mr11-trust-message p {
@@ -723,7 +723,7 @@
 
   .mr11-tab {
     padding: 0.75rem 1rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .mr11-type-buttons {

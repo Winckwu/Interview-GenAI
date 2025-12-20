@@ -58,7 +58,7 @@
   border: 2px solid var(--mr6-border, #e0e0e0);
   border-radius: 4px;
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 1rem;
   resize: vertical;
   background: var(--mr6-bg, #ffffff);
   color: var(--mr6-text, #1a1a1a);
@@ -240,7 +240,7 @@
 .mr6-metric {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .mr6-metric-value {

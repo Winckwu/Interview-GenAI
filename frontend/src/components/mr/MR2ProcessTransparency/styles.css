@@ -261,7 +261,7 @@
 }
 
 .mr2-event-time {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
   white-space: nowrap;
 }
@@ -282,7 +282,7 @@
 .mr2-change-badge {
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -460,7 +460,7 @@
 }
 
 .mr2-diff-context {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
   margin-top: 0.5rem;
   font-style: italic;
@@ -597,7 +597,7 @@
 
 .mr2-time-ago,
 .mr2-time-current {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
   font-weight: 400;
 }
@@ -638,7 +638,7 @@
 }
 
 .mr2-metric-values {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
 }
 
@@ -680,7 +680,7 @@
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--mr2-border, #e0e0e0);
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
 }
 
@@ -712,7 +712,7 @@
 }
 
 .mr2-metric-label {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -762,7 +762,7 @@
 .mr2-iteration-changes,
 .mr2-iteration-tokens {
   color: var(--mr2-secondary, #666);
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 /* Version selector panel */
@@ -921,7 +921,7 @@
 }
 
 .mr2-topic-prompt {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
   font-style: italic;
   word-break: break-word;
@@ -929,7 +929,7 @@
 
 .mr2-topic-hint {
   margin: 1rem 0 0 0 !important;
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #888);
   font-style: italic;
 }
@@ -1077,7 +1077,7 @@
   padding: 0.5rem 0.75rem;
   background: rgba(255, 255, 255, 0.7);
   border-radius: 4px;
-  font-size: 0.8125rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: #374151;
 }
@@ -1238,7 +1238,7 @@
 }
 
 .mr2-hint-stats {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #9ca3af;
 }
 

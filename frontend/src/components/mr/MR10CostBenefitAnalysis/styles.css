@@ -253,7 +253,7 @@
 }
 
 .mr10-roi-detail {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
 }
 
@@ -343,13 +343,13 @@
 .mr10-skills strong {
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .mr10-skills ul {
   margin: 0;
   padding-left: 1.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
 }
 
@@ -426,7 +426,7 @@
 }
 
 .mr10-decision-desc {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
   text-align: center;
 }
@@ -496,7 +496,7 @@
 .mr10-log-meta {
   display: flex;
   gap: 1rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .mr10-log-date {
@@ -525,7 +525,7 @@
 
 .mr10-log-stat-label {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
 }
 
@@ -730,7 +730,7 @@
 
   .mr10-tab {
     padding: 0.75rem 1rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .mr10-form-row {
@@ -779,6 +779,6 @@
   }
 
   .mr10-complexity-btn {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 }

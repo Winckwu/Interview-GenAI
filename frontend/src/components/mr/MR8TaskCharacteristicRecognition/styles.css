@@ -90,7 +90,7 @@
 }
 
 .mr8-char-count {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr8-secondary, #666);
 }
 
@@ -249,7 +249,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 1rem;
   text-align: center;
   transition: all 0.2s ease;
   color: var(--mr8-text, #1a1a1a);
@@ -267,7 +267,7 @@
 }
 
 .mr8-option-description {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--mr8-secondary, #666);
   margin-top: 0.5rem;
   line-height: 1.4;
@@ -398,7 +398,7 @@
 
 .mr8-history-item-title {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr8-text, #1a1a1a);
   margin-bottom: 0.25rem;
   white-space: nowrap;
@@ -497,7 +497,7 @@
 }
 
 .mr8-recommendation-rationale {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr8-secondary, #666);
   font-style: italic;
   padding: 0.5rem;
@@ -509,7 +509,7 @@
 }
 
 .mr8-recommendation-impact {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #1565c0;
   font-weight: 600;
   margin-bottom: 0.75rem;
@@ -528,7 +528,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
 }
 
@@ -629,7 +629,7 @@
 }
 
 .mr8-intervention-description {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr8-secondary, #666);
   margin-top: 0.75rem;
   line-height: 1.4;
@@ -722,7 +722,7 @@
 
   .mr8-task-type-btn {
     padding: 0.5rem;
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .mr8-recommendations-list {
@@ -752,7 +752,7 @@
 
   .mr8-risk-factor {
     padding: 0.5rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 }
 
@@ -852,7 +852,7 @@
 
 .mr8-text-muted {
   color: var(--mr8-secondary, #666);
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .mr8-flex-center {

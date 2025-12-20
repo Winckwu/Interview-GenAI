@@ -195,7 +195,7 @@
 }
 
 .mr18-word-count {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--mr18-secondary, #666);
 }
 
@@ -436,7 +436,7 @@
 }
 
 .mr18-warning-date {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--mr18-secondary, #666);
 }
 
@@ -639,7 +639,7 @@
 
   .mr18-tab {
     padding: 0.75rem 1rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .mr18-metrics-grid {
@@ -677,6 +677,6 @@
   }
 
   .mr18-checkbox span {
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 }
