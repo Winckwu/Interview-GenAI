@@ -3,12 +3,13 @@
  */
 
 .mr1-container {
-  max-width: 1000px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 1.5rem;
   background: var(--mr1-bg, #ffffff);
   font-family: system-ui, -apple-system, sans-serif;
   color: var(--mr1-text, #1a1a1a);
+  font-size: 1rem;
 }
 
 .mr1-header {
@@ -92,11 +93,11 @@
   top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
   background: var(--mr1-bg, #ffffff);
-  padding: 0 0.25rem;
+  padding: 0 0.375rem;
   color: var(--mr1-secondary, #666);
 }
 
@@ -237,27 +238,29 @@
 }
 
 .mr1-dimension-card {
-  padding: 1rem;
+  padding: 1.25rem;
   background: var(--mr1-secondary-bg, #f9f9f9);
   border: 1px solid var(--mr1-border, #e0e0e0);
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .mr1-dimension-title {
-  margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
+  margin: 0 0 0.625rem 0;
+  font-size: 1rem;
   font-weight: 700;
 }
 
 .mr1-dimension-value {
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.625rem 0;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--mr1-accent, #0066ff);
 }
 
 .mr1-dimension-analysis {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: var(--mr1-secondary, #666);
 }
 
@@ -300,9 +303,9 @@
 
 .mr1-strategy-description {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--mr1-secondary, #666);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* Subtasks section */
@@ -352,9 +355,9 @@
 }
 
 .mr1-difficulty {
-  padding: 0.25rem 0.75rem;
+  padding: 0.375rem 0.875rem;
   border-radius: 12px;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -375,25 +378,28 @@
 }
 
 .mr1-estimate {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--mr1-secondary, #666);
 }
 
 .mr1-dependencies {
-  padding: 0.75rem;
+  padding: 1rem;
   background: #fce4ec;
   border-left: 3px solid #e91e63;
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
   margin-bottom: 0.75rem;
 }
 
 .mr1-verification {
   margin-bottom: 1rem;
-  padding: 0.75rem;
+  padding: 1rem;
   background: #e3f2fd;
   border-left: 3px solid #2196f3;
   border-radius: 4px;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .mr1-verification strong {
@@ -466,13 +472,13 @@
 .mr1-summary-label {
   font-weight: 600;
   color: var(--mr1-secondary, #666);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }
 
 .mr1-summary-value {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--mr1-accent, #0066ff);
 }
