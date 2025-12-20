@@ -327,19 +327,81 @@
     font-size: 1rem;
   }
 
-  .resizeHandle {
+  .resizeHandleN,
+  .resizeHandleS,
+  .resizeHandleE,
+  .resizeHandleW,
+  .resizeHandleNE,
+  .resizeHandleNW,
+  .resizeHandleSE,
+  .resizeHandleSW {
     display: none;
   }
 }
 
-/* Resize Handle */
-.resizeHandle {
+/* Resize Handles - All edges and corners */
+/* Edge handles */
+.resizeHandleN,
+.resizeHandleS {
   position: absolute;
-  right: 0;
+  left: 10px;
+  right: 10px;
+  height: 6px;
+  cursor: ns-resize;
+}
+
+.resizeHandleN {
+  top: 0;
+}
+
+.resizeHandleS {
   bottom: 0;
-  width: 20px;
-  height: 20px;
+}
+
+.resizeHandleE,
+.resizeHandleW {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  width: 6px;
+  cursor: ew-resize;
+}
+
+.resizeHandleE {
+  right: 0;
+}
+
+.resizeHandleW {
+  left: 0;
+}
+
+/* Corner handles */
+.resizeHandleNE,
+.resizeHandleNW,
+.resizeHandleSE,
+.resizeHandleSW {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+}
+
+.resizeHandleNE {
+  top: 0;
+  right: 0;
+  cursor: nesw-resize;
+}
+
+.resizeHandleNW {
+  top: 0;
+  left: 0;
   cursor: nwse-resize;
+}
+
+.resizeHandleSE {
+  bottom: 0;
+  right: 0;
+  cursor: nwse-resize;
+  /* Visual indicator for SE corner */
   background: linear-gradient(
     135deg,
     transparent 0%,
@@ -360,6 +422,12 @@
   transition: opacity 0.15s;
 }
 
-.resizeHandle:hover {
+.resizeHandleSE:hover {
   opacity: 1;
+}
+
+.resizeHandleSW {
+  bottom: 0;
+  left: 0;
+  cursor: nesw-resize;
 }

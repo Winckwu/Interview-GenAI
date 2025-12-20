@@ -68,7 +68,15 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
   // Resizable modal state
   const [modalSize, setModalSize] = useState({ width: 900, height: 600 });
   const [isResizing, setIsResizing] = useState(false);
-  const resizeRef = useRef<{ startX: number; startY: number; startWidth: number; startHeight: number } | null>(null);
+  const [resizeDirection, setResizeDirection] = useState<string | null>(null);
+  const resizeRef = useRef<{
+    startX: number;
+    startY: number;
+    startWidth: number;
+    startHeight: number;
+    startPosX: number;
+    startPosY: number;
+  } | null>(null);
 
   // Draggable modal state
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
@@ -86,33 +94,60 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isModalOpen, onToolChange]);
 
-  // Handle resize
-  const handleResizeStart = (e: React.MouseEvent) => {
+  // Handle resize from any edge/corner
+  const handleResizeStart = (direction: string) => (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsResizing(true);
+    setResizeDirection(direction);
     resizeRef.current = {
       startX: e.clientX,
       startY: e.clientY,
       startWidth: modalSize.width,
       startHeight: modalSize.height,
+      startPosX: modalPosition.x,
+      startPosY: modalPosition.y,
     };
   };
 
   useEffect(() => {
     const handleResizeMove = (e: MouseEvent) => {
-      if (!isResizing || !resizeRef.current) return;
+      if (!isResizing || !resizeRef.current || !resizeDirection) return;
 
       const deltaX = e.clientX - resizeRef.current.startX;
       const deltaY = e.clientY - resizeRef.current.startY;
 
-      setModalSize({
-        width: Math.max(400, Math.min(window.innerWidth * 0.95, resizeRef.current.startWidth + deltaX)),
-        height: Math.max(300, Math.min(window.innerHeight * 0.9, resizeRef.current.startHeight + deltaY)),
-      });
+      let newWidth = resizeRef.current.startWidth;
+      let newHeight = resizeRef.current.startHeight;
+      let newPosX = resizeRef.current.startPosX;
+      let newPosY = resizeRef.current.startPosY;
+
+      // Handle horizontal resizing
+      if (resizeDirection.includes('e')) {
+        newWidth = Math.max(400, Math.min(window.innerWidth * 0.95, resizeRef.current.startWidth + deltaX));
+      }
+      if (resizeDirection.includes('w')) {
+        const widthChange = Math.min(deltaX, resizeRef.current.startWidth - 400);
+        newWidth = Math.max(400, resizeRef.current.startWidth - deltaX);
+        newPosX = resizeRef.current.startPosX + (resizeRef.current.startWidth - newWidth);
+      }
+
+      // Handle vertical resizing
+      if (resizeDirection.includes('s')) {
+        newHeight = Math.max(300, Math.min(window.innerHeight * 0.9, resizeRef.current.startHeight + deltaY));
+      }
+      if (resizeDirection.includes('n')) {
+        newHeight = Math.max(300, resizeRef.current.startHeight - deltaY);
+        newPosY = resizeRef.current.startPosY + (resizeRef.current.startHeight - newHeight);
+      }
+
+      setModalSize({ width: newWidth, height: newHeight });
+      setModalPosition({ x: newPosX, y: newPosY });
     };
 
     const handleResizeEnd = () => {
       setIsResizing(false);
+      setResizeDirection(null);
       resizeRef.current = null;
     };
 
@@ -125,7 +160,7 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
       window.removeEventListener('mousemove', handleResizeMove);
       window.removeEventListener('mouseup', handleResizeEnd);
     };
-  }, [isResizing]);
+  }, [isResizing, resizeDirection]);
 
   // Handle drag
   const handleDragStart = (e: React.MouseEvent) => {
@@ -227,7 +262,14 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
       {isModalOpen && activeTool && createPortal(
         <div
           className={styles.modalOverlay}
-          style={{ cursor: isResizing ? 'nwse-resize' : isDragging ? 'grabbing' : undefined }}
+          style={{
+            cursor: isResizing
+              ? resizeDirection === 'n' || resizeDirection === 's' ? 'ns-resize'
+              : resizeDirection === 'e' || resizeDirection === 'w' ? 'ew-resize'
+              : resizeDirection === 'ne' || resizeDirection === 'sw' ? 'nesw-resize'
+              : 'nwse-resize'
+              : isDragging ? 'grabbing' : undefined
+          }}
         >
           <div
             className={styles.modalContent}
@@ -266,12 +308,15 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
                 {renderActiveTool()}
               </Suspense>
             </div>
-            {/* Resize Handle */}
-            <div
-              className={styles.resizeHandle}
-              onMouseDown={handleResizeStart}
-              title="Drag to resize"
-            />
+            {/* Resize Handles - All edges and corners */}
+            <div className={styles.resizeHandleN} onMouseDown={handleResizeStart('n')} />
+            <div className={styles.resizeHandleS} onMouseDown={handleResizeStart('s')} />
+            <div className={styles.resizeHandleE} onMouseDown={handleResizeStart('e')} />
+            <div className={styles.resizeHandleW} onMouseDown={handleResizeStart('w')} />
+            <div className={styles.resizeHandleNE} onMouseDown={handleResizeStart('ne')} />
+            <div className={styles.resizeHandleNW} onMouseDown={handleResizeStart('nw')} />
+            <div className={styles.resizeHandleSE} onMouseDown={handleResizeStart('se')} />
+            <div className={styles.resizeHandleSW} onMouseDown={handleResizeStart('sw')} />
           </div>
         </div>,
         document.body
