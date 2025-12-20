@@ -28,7 +28,7 @@
 .mr6-subtitle {
   margin: 0;
   color: var(--mr6-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .mr6-layout {
@@ -79,7 +79,7 @@
 .mr6-label {
   margin: 0 0 1rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr6-text, #1a1a1a);
 }
 
@@ -96,7 +96,7 @@
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   padding: 0.625rem 0.75rem;
   background: var(--mr6-bg, #ffffff);
   border: 1.5px solid var(--mr6-border, #e0e0e0);
@@ -224,7 +224,7 @@
 .mr6-output-title {
   margin: 0 0 1rem 0;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr6-text, #1a1a1a);
 }
 
@@ -251,7 +251,7 @@
 .mr6-output-content {
   flex: 1;
   margin-bottom: 1rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr6-secondary, #666);
   line-height: 1.6;
 }
@@ -281,7 +281,7 @@
 .mr6-recommendation-title {
   margin: 0 0 0.5rem 0;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr6-text, #1a1a1a);
 }
 
@@ -328,14 +328,14 @@
 .mr6-guide-card h4 {
   margin: 0 0 1rem 0;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr6-accent, #0066ff);
 }
 
 .mr6-guide-card ul {
   margin: 0;
   padding-left: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr6-secondary, #666);
 }
 

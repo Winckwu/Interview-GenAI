@@ -59,7 +59,7 @@
 
 .mr15-nav-btn {
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   border: 2px solid var(--mr15-border-color, #e0e0e0);
   border-radius: 6px;
@@ -137,7 +137,7 @@
 
 .mr15-tab-label {
   text-transform: capitalize;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 /* ============================================
@@ -232,7 +232,7 @@
 
 .mr15-strategy-description {
   margin: 0 0 1rem 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr15-text-secondary, #666);
   line-height: 1.5;
 }
@@ -247,7 +247,7 @@
 
 .mr15-strategy-content h4 {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--mr15-text-primary, #1a1a1a);
@@ -257,7 +257,7 @@
 .mr15-when-to-use,
 .mr15-why-it-matters {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr15-text-secondary, #666);
   line-height: 1.6;
   padding-left: 1rem;
@@ -266,7 +266,7 @@
 .mr15-how-to-apply {
   margin: 0;
   padding-left: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr15-text-secondary, #666);
   line-height: 1.8;
 }
@@ -289,7 +289,7 @@
   padding: 0.6rem 1rem;
   border: none;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -335,7 +335,7 @@
 
 .mr15-scaffold-fade-notice p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #856404;
 }
 
@@ -480,7 +480,7 @@
 .mr15-case-outcome h4,
 .mr15-case-lesson h4 {
   margin: 0 0 0.75rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--mr15-text-primary, #1a1a1a);
 }
@@ -490,7 +490,7 @@
 .mr15-case-outcome p,
 .mr15-case-lesson p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr15-text-secondary, #666);
   line-height: 1.7;
 }
@@ -521,7 +521,7 @@
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -572,7 +572,7 @@
   font-weight: 600;
   color: var(--mr15-text-primary, #1a1a1a);
   margin-bottom: 0.75rem;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .mr15-proficiency-bar {
@@ -624,7 +624,7 @@
 
 .mr15-scaffold-explanation {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr15-text-secondary, #666);
   line-height: 1.6;
 }
@@ -677,7 +677,7 @@
 
 .mr15-jit-message {
   margin: 0 0 1.5rem 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr15-text-secondary, #666);
   line-height: 1.6;
 }
@@ -692,14 +692,14 @@
 
 .mr15-jit-recommendation h4 {
   margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--mr15-accent, #0066ff);
 }
 
 .mr15-jit-recommendation p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr15-text-secondary, #666);
   line-height: 1.5;
 }
@@ -715,7 +715,7 @@
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 6px;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -878,7 +878,7 @@
   }
 
   .mr15-subtitle {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .mr15-category-tabs {
@@ -976,7 +976,7 @@
 .mr15-practice-guidance h4,
 .mr15-practice-tips h4 {
   margin: 0 0 0.75rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #1f2937;
 }
@@ -990,7 +990,7 @@
 .mr15-practice-guidance li,
 .mr15-practice-tips li {
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #4b5563;
   line-height: 1.5;
 }
@@ -1008,7 +1008,7 @@
   color: #ffffff;
   border: none;
   border-radius: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;

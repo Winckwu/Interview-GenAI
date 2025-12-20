@@ -29,7 +29,7 @@
 .mr4-subtitle {
   margin: 0;
   color: var(--mr4-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.5;
 }
 
@@ -48,7 +48,7 @@
   background: transparent;
   color: var(--mr4-secondary, #666);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   cursor: pointer;
   border-bottom: 3px solid transparent;
   transition: all 0.2s ease;
@@ -101,7 +101,7 @@
 .mr4-view-subtitle {
   margin: 0;
   color: var(--mr4-secondary, #666);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.5;
 }
 
@@ -171,7 +171,7 @@
 
 .mr4-card-description {
   margin: 0 0 1rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
   line-height: 1.5;
 }
@@ -274,7 +274,7 @@
 
 .mr4-detail-section-label {
   margin: 0 0 0.75rem 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--mr4-text, #1a1a1a);
 }
@@ -289,7 +289,7 @@
 .mr4-capability-item,
 .mr4-limitation-item {
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
   line-height: 1.5;
 }
@@ -314,7 +314,7 @@
 
 .mr4-example-title {
   margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--mr4-accent, #0066ff);
 }
@@ -336,7 +336,7 @@
 
 .mr4-prompt-title {
   margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #1565c0;
 }
@@ -400,7 +400,7 @@
 .mr4-summary-role-name {
   margin: 0 0 0.25rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr4-text, #1a1a1a);
 }
 
@@ -437,13 +437,13 @@
 .mr4-info-title {
   margin: 0 0 0.5rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #1565c0;
 }
 
 .mr4-info-text {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #0d47a1;
   line-height: 1.5;
 }
@@ -455,7 +455,7 @@
 .mr4-notes-label {
   display: block;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   margin-bottom: 0.5rem;
   color: var(--mr4-text, #1a1a1a);
 }
@@ -467,7 +467,7 @@
   border: 2px solid var(--mr4-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   resize: vertical;
   color: var(--mr4-text, #1a1a1a);
   background: var(--mr4-bg, #ffffff);
@@ -490,7 +490,7 @@
 .mr4-guidelines-title {
   margin: 0 0 1rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #e65100;
 }
 
@@ -501,7 +501,7 @@
 
 .mr4-guideline-item {
   margin-bottom: 0.75rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
   line-height: 1.5;
 }
@@ -520,7 +520,7 @@
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -622,7 +622,7 @@
 
 .mr4-modal-description {
   margin: 0 0 1.5rem 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr4-secondary, #666);
   line-height: 1.5;
 }
@@ -634,7 +634,7 @@
 .mr4-modal-section-title {
   margin: 0 0 0.75rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr4-text, #1a1a1a);
 }
 
@@ -645,7 +645,7 @@
 
 .mr4-modal-list li {
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
   line-height: 1.5;
 }
@@ -697,7 +697,7 @@
 
 .mr4-footer-text {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr4-secondary, #666);
   line-height: 1.5;
 }
@@ -788,7 +788,7 @@
   }
 
   .mr4-subtitle {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr4-tab {
@@ -801,7 +801,7 @@
   }
 
   .mr4-card-title {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .mr4-role-detail-title {
@@ -817,14 +817,14 @@
     width: 28px;
     height: 28px;
     min-width: 28px;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr4-next-btn,
   .mr4-confirm-btn,
   .mr4-back-btn {
     padding: 0.65rem 1rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr4-modal-content {

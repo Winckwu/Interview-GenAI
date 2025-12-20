@@ -28,7 +28,7 @@
 .mr8-subtitle {
   margin: 0;
   color: var(--mr8-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 /* Main layout grid */
@@ -57,7 +57,7 @@
 .mr8-task-input-label {
   display: block;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin-bottom: 0.75rem;
   color: var(--mr8-text, #1a1a1a);
 }
@@ -69,7 +69,7 @@
   border: 2px solid var(--mr8-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   resize: vertical;
   margin-bottom: 0.75rem;
   color: var(--mr8-text, #1a1a1a);
@@ -142,7 +142,7 @@
 
 .mr8-characteristic-label {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr8-text, #1a1a1a);
 }
 
@@ -174,7 +174,7 @@
 
 .mr8-section-title {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin: 0 0 1rem 0;
   color: var(--mr8-text, #1a1a1a);
 }
@@ -192,7 +192,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-align: center;
   transition: all 0.2s ease;
   color: var(--mr8-text, #1a1a1a);
@@ -230,7 +230,7 @@
 
 .mr8-option-label {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   margin-bottom: 0.75rem;
   color: var(--mr8-text, #1a1a1a);
   display: block;
@@ -284,7 +284,7 @@
 
 .mr8-slider-label {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
@@ -365,7 +365,7 @@
 
 .mr8-history-title {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   margin: 0 0 1rem 0;
   color: var(--mr8-text, #1a1a1a);
 }
@@ -416,7 +416,7 @@
   text-align: center;
   padding: 2rem 0;
   color: var(--mr8-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 /* Recommendations panel */
@@ -461,7 +461,7 @@
 
 .mr8-recommendation-title {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr8-text, #1a1a1a);
 }
 
@@ -490,7 +490,7 @@
 }
 
 .mr8-recommendation-description {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr8-text, #1a1a1a);
   margin-bottom: 0.5rem;
   line-height: 1.5;
@@ -579,7 +579,7 @@
   background: var(--mr8-bg, #ffffff);
   border-left: 3px solid #ff9800;
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr8-text, #1a1a1a);
   line-height: 1.4;
 }
@@ -613,7 +613,7 @@
 
 .mr8-intervention-label {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #6a1b9a;
   margin-bottom: 0.5rem;
 }
@@ -766,7 +766,7 @@
   }
 
   .mr8-subtitle {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr8-analysis-panel {
@@ -801,7 +801,7 @@
   }
 
   .mr8-recommendation-title {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr8-risk-factor {

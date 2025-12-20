@@ -10,7 +10,7 @@
   background: var(--mr2-bg, #ffffff);
   font-family: system-ui, -apple-system, sans-serif;
   color: var(--mr2-text, #1a1a1a);
-  font-size: 1rem;
+  font-size: 1.05rem;
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -33,7 +33,7 @@
 
 .mr2-subtitle {
   margin: 0 0 0.75rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #64748b;
 }
 
@@ -52,7 +52,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
   color: #475569;
 }
@@ -89,7 +89,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
 }
 
@@ -162,7 +162,7 @@
   align-items: center;
   text-align: center;
   color: #64748b;
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .mr2-timeline-hint p {
@@ -170,7 +170,7 @@
 }
 
 .mr2-hint-stats {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #94a3b8;
 }
 
@@ -310,7 +310,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
 }
 
@@ -335,7 +335,7 @@
 
 .mr2-stat-label {
   display: block;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
   margin-bottom: 0.5rem;
 }
@@ -418,7 +418,7 @@
 .mr2-diff-content {
   flex: 1;
   font-family: 'Monaco', 'Courier New', monospace;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr2-diff-text {
@@ -505,7 +505,7 @@
 
 .mr2-cot-step-type {
   color: var(--mr2-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
   flex: 1;
 }
 
@@ -539,7 +539,7 @@
 }
 
 .mr2-cot-confidence {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr2-secondary, #666);
   padding: 0.5rem;
   background: var(--mr2-secondary-bg, #f9f9f9);
@@ -590,7 +590,7 @@
 }
 
 .mr2-version-label {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
 }
@@ -615,7 +615,7 @@
 
 .mr2-metric-label {
   display: block;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -752,7 +752,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr2-iteration-num {
@@ -809,7 +809,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
-  font-size: 1rem;
+  font-size: 1.05rem;
   display: flex;
   gap: 0.75rem;
   align-items: center;
@@ -916,7 +916,7 @@
 }
 
 .mr2-topic-item strong {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--mr2-text, #1a1a1a);
 }
 
@@ -1038,7 +1038,7 @@
 
 .mr2-reasoning-prompt p {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #374151;
 }
 
@@ -1057,7 +1057,7 @@
 
 .mr2-reasoning-content h4 {
   margin: 0 0 0.75rem 0;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #4338ca;
   display: flex;
   align-items: center;
@@ -1110,13 +1110,13 @@
 
 .mr2-reasoning-empty h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #6b7280;
 }
 
 .mr2-reasoning-empty p {
   margin: 0 0 0.5rem 0;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #9ca3af;
 }
 
@@ -1270,7 +1270,7 @@
 }
 
 .mr2-selected-turn-time {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #64748b;
   background: #f1f5f9;
   padding: 0.25rem 0.75rem;
@@ -1278,7 +1278,7 @@
 }
 
 .mr2-selected-turn-model {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #64748b;
   background: #e0f2fe;
   padding: 0.25rem 0.75rem;

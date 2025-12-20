@@ -28,7 +28,7 @@
 .mr7-subtitle {
   margin: 0;
   color: var(--mr7-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .mr7-encouragement-banner {
@@ -50,7 +50,7 @@
 .mr7-banner-text {
   margin: 0;
   color: var(--mr7-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.5;
 }
 
@@ -72,7 +72,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .mr7-tab:hover {
@@ -129,7 +129,7 @@
 }
 
 .mr7-stat-label {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr7-secondary, #666);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -165,7 +165,7 @@
 
 .mr7-log-task {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr7-text, #1a1a1a);
   margin-bottom: 0.5rem;
 }
@@ -227,7 +227,7 @@
 
 .mr7-label {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr7-text, #1a1a1a);
 }
 
@@ -237,7 +237,7 @@
   border: 1px solid var(--mr7-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr7-text, #1a1a1a);
   background: var(--mr7-bg, #ffffff);
   resize: vertical;
@@ -258,7 +258,7 @@
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -314,7 +314,7 @@
 
 .mr7-subsection-title {
   margin: 1.5rem 0 1rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--mr7-text, #1a1a1a);
 }
@@ -335,7 +335,7 @@
 
 .mr7-insight-item {
   color: var(--mr7-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
@@ -374,7 +374,7 @@
 
 .mr7-strategies-list li {
   color: var(--mr7-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
@@ -480,7 +480,7 @@
 
 .mr7-log-section h5 {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--mr7-text, #1a1a1a);
 }
@@ -580,7 +580,7 @@
 
 .mr7-badge-title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--mr7-text, #1a1a1a);
 }
@@ -691,13 +691,13 @@
 }
 
 .mr7-pattern-content {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr7-text, #1a1a1a);
 }
 
 .mr7-patterns-insight-text {
   margin-top: 1rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr7-secondary, #666);
   line-height: 1.5;
 }
@@ -726,7 +726,7 @@
   min-width: 100px;
   font-weight: 600;
   color: var(--mr7-text, #1a1a1a);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr7-expectation-bar {
@@ -748,7 +748,7 @@
   text-align: right;
   font-weight: 600;
   color: var(--mr7-accent, #0066ff);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr7-expectations-note {
@@ -852,7 +852,7 @@
   }
 
   .mr7-banner-text {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr7-tabs {

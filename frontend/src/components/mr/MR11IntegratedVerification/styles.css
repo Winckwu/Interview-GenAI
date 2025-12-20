@@ -28,7 +28,7 @@
 .mr11-subtitle {
   margin: 0;
   color: var(--mr11-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 /* Tabs */
@@ -49,7 +49,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .mr11-tab:hover {
@@ -109,7 +109,7 @@
 
 .mr11-label {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr11-text, #1a1a1a);
 }
 
@@ -118,7 +118,7 @@
   border: 1px solid var(--mr11-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr11-text, #1a1a1a);
   background: var(--mr11-bg, #ffffff);
   resize: vertical;
@@ -150,7 +150,7 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr11-type-btn:hover {
@@ -177,7 +177,7 @@
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -213,7 +213,7 @@
 
 .mr11-guidance p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr11-secondary, #666);
 }
 
@@ -255,7 +255,7 @@
 
 .mr11-method-name {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr11-text, #1a1a1a);
 }
 
@@ -330,7 +330,7 @@
 }
 
 .mr11-confidence-text {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.5;
 }
 
@@ -362,7 +362,7 @@
 .mr11-detail-section h4 {
   margin: 0 0 1rem 0;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr11-text, #1a1a1a);
 }
 
@@ -379,7 +379,7 @@
 .mr11-findings-list li,
 .mr11-discrepancies-list li,
 .mr11-suggestions-list li {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr11-secondary, #666);
   line-height: 1.4;
 }
@@ -401,7 +401,7 @@
 
 .mr11-action-recommendation p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr11-secondary, #666);
 }
 
@@ -459,7 +459,7 @@
 
 .mr11-decision-title {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr11-text, #1a1a1a);
 }
 
@@ -502,7 +502,7 @@
 
 .mr11-history-status {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr11-accent, #0066ff);
 }
 
@@ -524,12 +524,12 @@
 
 .mr11-decision-label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr11-text, #1a1a1a);
 }
 
 .mr11-decision-value {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr11-secondary, #666);
 }
 
@@ -603,7 +603,7 @@
 
 .mr11-method-performance h3 {
   margin: 0 0 0.75rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 

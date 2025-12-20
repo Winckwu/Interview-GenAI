@@ -10,7 +10,7 @@
   background: var(--mr1-bg, #ffffff);
   font-family: system-ui, -apple-system, sans-serif;
   color: var(--mr1-text, #1a1a1a);
-  font-size: 1rem;
+  font-size: 1.05rem;
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -142,7 +142,7 @@
 }
 
 .mr1-step > p {
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: var(--mr1-secondary, #666);
   margin-bottom: 1.25rem;
@@ -157,14 +157,14 @@
   border: 2px solid var(--mr1-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  line-height: 1.7;
   resize: none;
   margin-bottom: 1rem;
 }
 
 .mr1-task-input::placeholder {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #9ca3af;
 }
 
@@ -183,7 +183,7 @@
 
 .mr1-char-count {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr1-secondary, #666);
 }
 
@@ -278,20 +278,20 @@
 
 .mr1-dimension-title {
   margin: 0 0 0.625rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
 }
 
 .mr1-dimension-value {
   margin: 0 0 0.625rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--mr1-accent, #0066ff);
 }
 
 .mr1-dimension-analysis {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: var(--mr1-secondary, #666);
 }
@@ -335,7 +335,7 @@
 
 .mr1-strategy-description {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr1-secondary, #666);
   line-height: 1.6;
 }
@@ -389,7 +389,7 @@
 .mr1-difficulty {
   padding: 0.375rem 0.875rem;
   border-radius: 12px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -410,7 +410,7 @@
 }
 
 .mr1-estimate {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr1-secondary, #666);
 }
 
@@ -419,7 +419,7 @@
   background: #fce4ec;
   border-left: 3px solid #e91e63;
   border-radius: 4px;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.5;
   margin-bottom: 0.75rem;
 }
@@ -430,7 +430,7 @@
   background: #e3f2fd;
   border-left: 3px solid #2196f3;
   border-radius: 4px;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.5;
 }
 
@@ -452,7 +452,7 @@
   border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
 }
 
@@ -504,7 +504,7 @@
 .mr1-summary-label {
   font-weight: 600;
   color: var(--mr1-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }

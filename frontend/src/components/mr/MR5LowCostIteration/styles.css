@@ -29,7 +29,7 @@
 .mr5-subtitle {
   margin: 0;
   color: var(--mr5-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.5;
 }
 
@@ -49,7 +49,7 @@
   background: transparent;
   color: var(--mr5-secondary, #666);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   cursor: pointer;
   border-bottom: 3px solid transparent;
   transition: all 0.2s ease;
@@ -99,7 +99,7 @@
   padding: 3rem 1rem;
   color: var(--mr5-secondary, #666);
   font-style: italic;
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 /* History view */
@@ -150,7 +150,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr5-msg-role {
@@ -222,7 +222,7 @@
 .mr5-branching-subtitle {
   margin: 0 0 1rem 0;
   color: var(--mr5-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr5-branching-input {
@@ -232,7 +232,7 @@
   border: 2px solid var(--mr5-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   resize: vertical;
   margin-bottom: 1rem;
   color: var(--mr5-text, #1a1a1a);
@@ -324,7 +324,7 @@
 }
 
 .mr5-branch-rating {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
@@ -370,7 +370,7 @@
 .mr5-promising-subtitle {
   margin: 0 0 1rem 0;
   color: #558b2f;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr5-promising-list {
@@ -386,7 +386,7 @@
   padding: 0.75rem;
   background: var(--mr5-bg, #ffffff);
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr5-promising-rank {
@@ -429,7 +429,7 @@
 
 .mr5-control-label {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr5-text, #1a1a1a);
 }
 
@@ -466,7 +466,7 @@
 }
 
 .mr5-control-value {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--mr5-accent, #0066ff);
 }
@@ -485,7 +485,7 @@
   text-align: center;
   font-weight: 700;
   color: var(--mr5-accent, #0066ff);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr5-variants-list {
@@ -551,7 +551,7 @@
 .mr5-variant-content {
   margin: 0 0 1rem 0;
   color: var(--mr5-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -658,7 +658,7 @@
 .mr5-comparison-title {
   margin: 0 0 0.5rem 0;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr5-text, #1a1a1a);
 }
 
@@ -705,7 +705,7 @@
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -737,7 +737,7 @@
 .mr5-tip-title {
   margin: 0 0 0.75rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #e65100;
 }
 
@@ -748,7 +748,7 @@
 
 .mr5-tip-list li {
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr5-secondary, #666);
   line-height: 1.5;
 }
@@ -835,7 +835,7 @@
   }
 
   .mr5-subtitle {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr5-action-btn {
@@ -866,7 +866,7 @@
   }
 
   .mr5-msg-content {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 }
 

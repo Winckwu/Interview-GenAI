@@ -24,7 +24,7 @@
 .mr14-subtitle {
   margin: 0;
   color: var(--mr14-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .mr14-progress {
@@ -84,7 +84,7 @@
 .mr14-stage-subtitle {
   margin: 0;
   color: var(--mr14-secondary, #666);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .mr14-prompt-item {
@@ -105,7 +105,7 @@
   align-items: flex-start;
   gap: 0.75rem;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   padding: 0.75rem;
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -138,7 +138,7 @@
 .mr14-prompt-question {
   margin: 0;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr14-text, #1a1a1a);
 }
 
@@ -147,7 +147,7 @@
   border: 2px solid var(--mr14-border, #e0e0e0);
   border-radius: 4px;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   resize: vertical;
   color: var(--mr14-text, #1a1a1a);
   background: var(--mr14-bg, #ffffff);
@@ -167,7 +167,7 @@
   border: none;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
   align-self: flex-end;
@@ -215,7 +215,7 @@
 .mr14-success-message p {
   margin: 0;
   color: var(--mr14-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 @media (prefers-color-scheme: dark) {

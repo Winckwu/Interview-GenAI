@@ -29,7 +29,7 @@
 .mr9-subtitle {
   margin: 0;
   color: var(--mr9-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.5;
 }
 
@@ -68,7 +68,7 @@
 
 .mr9-panel-subtitle {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr9-secondary, #666);
 }
 
@@ -101,7 +101,7 @@
 }
 
 .mr9-score-label {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--mr9-secondary, #666);
   margin-top: 0.5rem;
@@ -142,7 +142,7 @@
 
 .mr9-comparison-label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr9-text, #1a1a1a);
 }
 
@@ -186,7 +186,7 @@
   padding: 0.75rem 1rem;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr9-risk-icon {
@@ -245,7 +245,7 @@
 
 .mr9-section-subtitle {
   margin: 0 0 1rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr9-secondary, #666);
 }
 
@@ -268,13 +268,13 @@
 .mr9-strategy-label {
   margin: 0 0 0.5rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr9-text, #1a1a1a);
 }
 
 .mr9-strategy-text {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr9-secondary, #666);
   line-height: 1.5;
 }
@@ -287,7 +287,7 @@
 .mr9-strategy-list-item {
   margin-bottom: 0.5rem;
   color: var(--mr9-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr9-red-flags {
@@ -303,7 +303,7 @@
 .mr9-red-flag-item {
   margin-bottom: 0.5rem;
   color: #c62828;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
@@ -317,7 +317,7 @@
 .mr9-estimate-label {
   font-weight: 600;
   color: var(--mr9-secondary, #666);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr9-estimate-value {
@@ -348,7 +348,7 @@
   border: none;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
@@ -381,7 +381,7 @@
 .mr9-validations-title {
   margin: 0 0 0.75rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr9-text, #1a1a1a);
 }
 
@@ -494,7 +494,7 @@
   margin: 0 0 0.75rem 0;
   font-weight: 700;
   color: var(--mr9-accent, #0066ff);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   text-transform: capitalize;
 }
 
@@ -600,7 +600,7 @@
 .mr9-factor-name {
   margin: 0 0 0.5rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr9-text, #1a1a1a);
 }
 
@@ -628,14 +628,14 @@
 .mr9-formula-label {
   margin: 0 0 0.5rem 0;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr9-secondary, #666);
 }
 
 .mr9-formula {
   margin: 0;
   font-family: 'Courier New', monospace;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr9-text, #1a1a1a);
   word-break: break-all;
 }
@@ -675,7 +675,7 @@
 .mr9-info-title {
   margin: 0 0 1rem 0;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr9-text, #1a1a1a);
 }
 
@@ -695,7 +695,7 @@
   margin: 0;
   font-weight: 700;
   color: var(--mr9-accent, #0066ff);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr9-guideline-text {
@@ -716,7 +716,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr9-secondary, #666);
 }
 
@@ -840,7 +840,7 @@
   }
 
   .mr9-subtitle {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr9-trust-score-panel {
@@ -862,7 +862,7 @@
 
   .mr9-validation-btn {
     padding: 0.75rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr9-accuracy-metrics {
@@ -874,11 +874,11 @@
   }
 
   .mr9-metric-value {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .mr9-section-title {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .mr9-strategy-item {
@@ -886,7 +886,7 @@
   }
 
   .mr9-strategy-label {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 }
 

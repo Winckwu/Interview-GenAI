@@ -41,7 +41,7 @@
 
 .mr12-section-title {
   margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--mr12-text, #1a1a1a);
 }
@@ -103,7 +103,7 @@
   border: 2px solid var(--mr12-border, #e0e0e0);
   border-radius: 4px;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   resize: vertical;
   color: var(--mr12-text, #1a1a1a);
   background: var(--mr12-bg, #ffffff);
@@ -187,7 +187,7 @@
   align-items: flex-start;
   gap: 0.75rem;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   padding: 0.625rem 0.75rem;
   background: var(--mr12-bg, #ffffff);
   border: 1.5px solid var(--mr12-border, #e0e0e0);
@@ -329,7 +329,7 @@
 .mr12-areas h3 {
   margin: 0 0 0.75rem 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr12-text, #1a1a1a);
 }
 
@@ -351,7 +351,7 @@
   background: var(--mr12-bg, #ffffff);
   border-left: 3px solid var(--mr12-accent, #0066ff);
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr12-secondary, #666);
   line-height: 1.6;
 }

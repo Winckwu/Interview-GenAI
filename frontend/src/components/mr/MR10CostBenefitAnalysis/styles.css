@@ -28,7 +28,7 @@
 .mr10-subtitle {
   margin: 0;
   color: var(--mr10-secondary, #666);
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 /* Tabs */
@@ -49,7 +49,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .mr10-tab:hover {
@@ -102,7 +102,7 @@
 
 .mr10-label {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr10-text, #1a1a1a);
 }
 
@@ -113,7 +113,7 @@
   border: 1px solid var(--mr10-border, #e0e0e0);
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-text, #1a1a1a);
   background: var(--mr10-bg, #ffffff);
   transition: border-color 0.2s ease;
@@ -169,7 +169,7 @@
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -238,7 +238,7 @@
 
 .mr10-roi-label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -267,7 +267,7 @@
 .mr10-message {
   padding: 1rem;
   border-radius: 6px;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.5;
 }
 
@@ -316,14 +316,14 @@
 
 .mr10-analysis-section h4 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--mr10-text, #1a1a1a);
 }
 
 .mr10-analysis-section p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
   line-height: 1.5;
 }
@@ -360,7 +360,7 @@
 .mr10-strategy-steps {
   margin: 0;
   padding-left: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
 }
 
@@ -421,7 +421,7 @@
 
 .mr10-decision-title {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr10-text, #1a1a1a);
 }
 
@@ -439,7 +439,7 @@
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -488,7 +488,7 @@
 
 .mr10-log-task {
   margin: 0 0 0.5rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--mr10-text, #1a1a1a);
 }
@@ -543,12 +543,12 @@
 .mr10-log-reasoning strong {
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .mr10-log-reasoning p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
   line-height: 1.5;
 }
@@ -567,7 +567,7 @@
 
 .mr10-log-outcome p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #2e7d32;
 }
 
@@ -608,7 +608,7 @@
 
 .mr10-pattern-label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -623,7 +623,7 @@
 }
 
 .mr10-pattern-percent {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
   margin-left: 0.5rem;
 }
@@ -650,7 +650,7 @@
 
 .mr10-insight-card p {
   margin: 0.5rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
   line-height: 1.5;
 }
@@ -683,7 +683,7 @@
   padding: 0.75rem;
   background: var(--mr10-bg, #ffffff);
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr10-secondary, #666);
   line-height: 1.5;
 }

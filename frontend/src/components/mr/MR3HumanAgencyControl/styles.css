@@ -118,7 +118,7 @@
 .mr3-slider-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr3-text-secondary, #666);
   font-weight: 500;
 }
@@ -204,7 +204,7 @@
 }
 
 .mr3-indicator-label {
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-transform: capitalize;
 }
 
@@ -214,7 +214,7 @@
   background: var(--mr3-bg-secondary, #f9f9f9);
   border-left: 3px solid var(--mr3-accent, #0066ff);
   border-radius: 4px;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr3-text-secondary, #666);
   line-height: 1.5;
 }
@@ -310,7 +310,7 @@
   padding: 2rem 1rem;
   text-align: center;
   color: var(--mr3-text-secondary, #999);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .mr3-suggestion {
@@ -361,7 +361,7 @@
 }
 
 .mr3-suggestion-confidence {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr3-text-secondary, #666);
   white-space: nowrap;
 }
@@ -379,7 +379,7 @@
 .mr3-context-text,
 .mr3-content-text {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr3-text-primary, #1a1a1a);
   line-height: 1.6;
 }
@@ -398,7 +398,7 @@
   padding: 0.6rem 1rem;
   border: 1px solid transparent;
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -470,7 +470,7 @@
 
 .mr3-btn-pause {
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   border: 2px solid var(--mr3-accent, #0066ff);
   border-radius: 6px;
@@ -510,7 +510,7 @@
 .mr3-session-duration,
 .mr3-pause-notice {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr3-text-secondary, #666);
 }
 
@@ -544,7 +544,7 @@
   flex: 1;
   min-width: 200px;
   padding: 0.75rem 1rem;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 600;
   border: 2px solid transparent;
   border-radius: 6px;
@@ -592,7 +592,7 @@
 
 .mr3-version-history h4 {
   margin: 0 0 1rem 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--mr3-text-primary, #1a1a1a);
 }
 
@@ -621,7 +621,7 @@
 
 .mr3-history-reason {
   flex: 1;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr3-text-primary, #1a1a1a);
   text-transform: capitalize;
 }
@@ -664,7 +664,7 @@
 
 .mr3-btn-exit {
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   background: #e91e63;
   color: white;
@@ -686,7 +686,7 @@
 
 .mr3-exit-description {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr3-text-secondary, #666);
   line-height: 1.5;
 }
@@ -769,7 +769,7 @@
 
 .mr3-indicator-label {
   margin: 0 0 0.75rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--mr3-text-primary, #1a1a1a);
   font-weight: 600;
 }
@@ -835,7 +835,7 @@
 
 .mr3-dialog-message {
   margin: 0 0 1.5rem 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--mr3-text-secondary, #666);
   line-height: 1.6;
 }
@@ -849,7 +849,7 @@
 .mr3-btn-cancel,
 .mr3-btn-confirm {
   padding: 0.75rem 1.5rem;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 600;
   border: none;
   border-radius: 6px;
@@ -1198,11 +1198,11 @@
   }
 
   .mr3-title {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .mr3-control-title {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .mr3-metrics-grid {
