@@ -238,25 +238,30 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
           <div className={styles.gridContainer}>
             <div className={styles.toolsGrid}>
               {/* User-facing MR tools only. MR8/9/18/19 are automatic backend systems */}
-              {mrTools.map((tool) => (
-                <button
-                  key={tool.id}
-                  onClick={() => onToolChange(tool.id)}
-                  title={`${tool.title} - ${tool.fullTitle}`}
-                  className={styles.toolButton}
-                  style={{
-                    backgroundColor: activeMRTool === tool.id ? tool.color : undefined,
-                  }}
-                >
-                  {tool.label}
-                </button>
-              ))}
+              {mrTools.map((tool) => {
+                const [icon, num] = tool.label.split(' ');
+                return (
+                  <button
+                    key={tool.id}
+                    onClick={() => onToolChange(tool.id)}
+                    title={tool.fullTitle}
+                    className={styles.toolButton}
+                    style={{
+                      backgroundColor: activeMRTool === tool.id ? tool.color : undefined,
+                      borderColor: activeMRTool === tool.id ? tool.color : undefined,
+                    }}
+                  >
+                    <span className={styles.toolIcon}>{icon}</span>
+                    <span className={styles.toolName}>{num}. {tool.title}</span>
+                  </button>
+                );
+              })}
               <button
                 onClick={() => onToolChange('none')}
                 title="Close MR tool"
                 className={styles.closeToolButton}
               >
-                ✕
+                ✕ Close
               </button>
             </div>
           </div>
