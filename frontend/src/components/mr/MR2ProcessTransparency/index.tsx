@@ -13,7 +13,7 @@
  * Design principle: Transparency builds understanding and appropriate trust calibration
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import './styles.css';
 import {
   generateDiff,
@@ -72,7 +72,17 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   const [diffs, setDiffs] = useState<DiffChange[]>([]);
   const [chainOfThought, setChainOfThought] = useState<ChainOfThoughtStep[]>([]);
   const [isDifferentTopic, setIsDifferentTopic] = useState<boolean>(false);
-  const [expandedTurnId, setExpandedTurnId] = useState<string | null>(null);
+  // Default to first version if available
+  const [expandedTurnId, setExpandedTurnId] = useState<string | null>(
+    versions.length > 0 ? versions[0].id : null
+  );
+
+  // Update expandedTurnId when versions change (e.g., loaded asynchronously)
+  useEffect(() => {
+    if (versions.length > 0 && !expandedTurnId) {
+      setExpandedTurnId(versions[0].id);
+    }
+  }, [versions, expandedTurnId]);
 
   /**
    * Check if two prompts are similar (indicating a refinement/regeneration vs new topic)
