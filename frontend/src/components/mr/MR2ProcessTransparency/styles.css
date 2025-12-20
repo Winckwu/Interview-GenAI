@@ -1177,9 +1177,9 @@
 }
 
 .mr2-turn-role {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.625rem;
+  margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1198,11 +1198,11 @@
 }
 
 .mr2-turn-text {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #1e293b;
-  line-height: 1.7;
+  line-height: 1.8;
   word-break: break-word;
-  padding: 1rem;
+  padding: 1.25rem;
   background: #f8fafc;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
