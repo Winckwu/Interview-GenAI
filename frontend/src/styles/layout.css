@@ -38,7 +38,7 @@
 
 .content-wrapper {
   flex: 1;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-sm) var(--spacing-md);
   display: flex;
   flex-direction: column;
 }

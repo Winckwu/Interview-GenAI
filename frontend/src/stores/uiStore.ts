@@ -35,7 +35,7 @@ export const useUIStore = create<UIState>(
   persist(
     (set, get) => ({
       notifications: [],
-      sidebarOpen: true,
+      sidebarOpen: false,  // Default to collapsed sidebar
       theme: 'light',
 
       addNotification: (message: string, type: NotificationType, duration = 5000) => {

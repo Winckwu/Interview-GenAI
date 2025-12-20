@@ -3322,10 +3322,10 @@ Message: "${firstMessage.slice(0, 200)}"`,
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
         {/* Header - Fixed at top */}
         <header style={{
-          padding: '1.5rem',
+          padding: '0.5rem 1rem',
           backgroundColor: '#fff',
           borderBottom: '1px solid #e2e8f0',
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -3879,7 +3879,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
           <div style={{
           flex: '1 1 0',
           overflowY: 'auto', // Enable scrolling for messages
-          padding: '0.75rem 1rem',
+          padding: '0.25rem 0.5rem',
           display: 'flex',
           flexDirection: 'column',
           minHeight: 0, // Important for flex overflow scrolling
@@ -4174,10 +4174,10 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
         {/* Input Area - Stays at bottom via flexbox */}
         <footer style={{
-          padding: '0.75rem 1rem',
+          padding: '0.5rem 1rem',
           backgroundColor: '#ffffff',
           borderTop: '1px solid #e2e8f0',
-          boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.05)',
+          boxShadow: '0 -1px 4px rgba(0, 0, 0, 0.03)',
           flexShrink: 0,
         }}>
           {/* MR4: Active Role Indicator */}
