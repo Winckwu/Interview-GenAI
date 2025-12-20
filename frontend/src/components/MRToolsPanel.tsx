@@ -170,7 +170,12 @@ export const MRToolsPanel: React.FC<MRToolsPanelProps> = ({
       {isModalOpen && activeTool && createPortal(
         <div
           className={styles.modalOverlay}
-          onClick={() => onToolChange('none')}
+          onClick={() => {
+            // Don't close if currently resizing
+            if (!isResizing) {
+              onToolChange('none');
+            }
+          }}
           style={{ cursor: isResizing ? 'nwse-resize' : undefined }}
         >
           <div
