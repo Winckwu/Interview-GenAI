@@ -753,38 +753,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       {/* History Panel - shows saved decompositions from database */}
       {showHistory && (
         <div className="mr1-history-panel" style={{ marginBottom: '1.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-            <h3 style={{ margin: 0 }}>📁 Saved Decompositions</h3>
-            <button
-              onClick={() => setShowHistory(false)}
-              style={{
-                padding: '0.25rem 0.5rem',
-                background: '#f1f5f9',
-                border: '1px solid #e2e8f0',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.25rem',
-                fontSize: '0.875rem',
-                color: '#64748b',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#fee2e2';
-                e.currentTarget.style.borderColor = '#fca5a5';
-                e.currentTarget.style.color = '#dc2626';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#f1f5f9';
-                e.currentTarget.style.borderColor = '#e2e8f0';
-                e.currentTarget.style.color = '#64748b';
-              }}
-            >
-              <span style={{ fontSize: '1rem', lineHeight: 1 }}>✕</span>
-              Close History
-            </button>
-          </div>
+          <h3 style={{ margin: '0 0 0.75rem 0' }}>📁 Saved Decompositions</h3>
           {isLoadingHistory ? (
             <p>Loading history...</p>
           ) : dbHistory.length > 0 ? (
