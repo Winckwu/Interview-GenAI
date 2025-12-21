@@ -372,6 +372,16 @@ router.get(
     const result = await pool.query(dataQuery, params);
     console.log(`[interactions] Result rows: ${result.rows.length}`);
 
+    // Debug: Check if insights exist in the returned data
+    if (result.rows.length > 0) {
+      const insightsStatus = result.rows.map((r: any) => ({
+        id: r.id?.substring(0, 8),
+        hasInsights: r.insights !== null && r.insights !== undefined,
+        insightsKeys: r.insights ? Object.keys(r.insights) : []
+      }));
+      console.log(`[interactions] Insights status:`, JSON.stringify(insightsStatus));
+    }
+
     // Load branches for all interactions
     const interactionIds = result.rows.map((i: any) => i.id);
     let branchesMap = new Map<string, any[]>();
