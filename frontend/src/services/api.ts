@@ -604,6 +604,23 @@ export const apiService = {
     // ============ Aggregated Stats ============
     getStats: () => api.get('/mr-history/stats'),
   },
+
+  /**
+   * Learning Progress & Achievements endpoints
+   */
+  learningProgress: {
+    // Get user's learning progress
+    get: () => api.get('/learning-progress'),
+
+    // Increment verify count and check for achievements
+    incrementVerify: () => api.post('/learning-progress/verify'),
+
+    // Increment modify count and check for achievements
+    incrementModify: () => api.post('/learning-progress/modify'),
+
+    // Increment session count
+    incrementSession: () => api.post('/learning-progress/session'),
+  },
 };
 
 export default api;

@@ -120,6 +120,7 @@ import branchesRoutes from './routes/branches';
 import decompositionsRoutes from './routes/decompositions';
 import mrHistoryRoutes from './routes/mrHistory';
 import verificationRoutes from './routes/verification';
+import learningProgressRoutes from './routes/learningProgress';
 
 // ============================================================================
 // API Routes
@@ -172,6 +173,9 @@ app.use('/api/mr-history', mrHistoryRoutes);
 
 // MR11 Verification API
 app.use('/api/verification', verificationRoutes);
+
+// Learning Progress & Achievements
+app.use('/api/learning-progress', learningProgressRoutes);
 
 // Placeholder routes - backward compatibility
 app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {

@@ -201,3 +201,22 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
 CREATE INDEX IF NOT EXISTS idx_auth_tokens_user ON auth_tokens(user_id);
 CREATE INDEX IF NOT EXISTS idx_auth_tokens_token ON auth_tokens(token);
 CREATE INDEX IF NOT EXISTS idx_auth_tokens_expired ON auth_tokens(expires_at);
+
+-- ============================================================================
+-- User Learning Progress (Achievement System)
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS user_learning_progress (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE UNIQUE,
+  verify_count INTEGER DEFAULT 0,
+  modify_count INTEGER DEFAULT 0,
+  streak_count INTEGER DEFAULT 0,
+  best_streak INTEGER DEFAULT 0,
+  total_sessions INTEGER DEFAULT 0,
+  achievements_unlocked JSONB DEFAULT '[]'::jsonb,
+  last_activity_date DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_learning_progress_user ON user_learning_progress(user_id);

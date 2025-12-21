@@ -49,6 +49,7 @@ import { useMessages, type Message, MESSAGES_PER_PAGE } from '../hooks/useMessag
 import { useMRTools, type ActiveMRTool } from '../hooks/useMRTools';
 import { useGlobalRecommendations } from '../hooks/useGlobalRecommendations';
 import { useAnalytics } from '../hooks/useAnalytics';
+import { useLearningProgress } from '../hooks/useLearningProgress';
 
 // Phase 2 Refactoring: Message Components
 import MessageList from '../components/MessageList';
@@ -516,9 +517,8 @@ const ChatSessionPage: React.FC = () => {
     count?: number;
   } | null>(null);
 
-  // Track verification/modification counts for achievements
-  const [verifyCount, setVerifyCount] = useState(0);
-  const [modifyCount, setModifyCount] = useState(0);
+  // Track verification/modification counts for achievements (persistent via API)
+  const { progress: learningProgress, incrementVerify, incrementModify } = useLearningProgress();
 
   // Track MR9 Dynamic Orchestration - Trust-based MR activation
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
@@ -1209,7 +1209,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
   /**
    * showPositiveFeedback - Display positive reinforcement for good behaviors
    */
-  const showPositiveFeedback = useCallback((type: FeedbackType, customMessage?: string) => {
+  const showPositiveFeedback = useCallback((type: FeedbackType, customMessage?: string, count?: number) => {
     const messages: Record<FeedbackType, { msg: string; sub?: string }> = {
       verify: {
         msg: 'You verified this response!',
@@ -1235,46 +1235,63 @@ Message: "${firstMessage.slice(0, 200)}"`,
       type,
       message: customMessage || msg,
       subMessage: sub,
-      count: type === 'verify' ? verifyCount + 1 : type === 'modify' ? modifyCount + 1 : undefined,
+      count,
     });
-  }, [verifyCount, modifyCount]);
+  }, []);
 
   /**
    * handleVerifyWithFeedback - Wrapper for markAsVerified with positive feedback
    */
-  const handleVerifyWithFeedback = useCallback((messageId: string) => {
+  const handleVerifyWithFeedback = useCallback(async (messageId: string) => {
     markAsVerified(messageId);
-    setVerifyCount(prev => prev + 1);
 
-    // Show positive feedback
-    const newCount = verifyCount + 1;
-    if (newCount === 5) {
-      // Achievement unlocked
+    // Increment verify count via API and check for achievements
+    const { newAchievements } = await incrementVerify();
+    const newCount = (learningProgress?.verifyCount || 0) + 1;
+
+    // Show achievement notification if any new achievements unlocked
+    if (newAchievements && newAchievements.length > 0) {
+      const achievement = newAchievements[0];
       setPositiveFeedback({
         id: `feedback-${Date.now()}`,
         type: 'achievement',
-        message: 'Verified 5 responses!',
-        subMessage: 'Your critical thinking is growing stronger.',
+        message: achievement.name,
+        subMessage: 'Achievement unlocked! Keep up the great work.',
         count: newCount,
       });
     } else {
-      showPositiveFeedback('verify');
+      showPositiveFeedback('verify', undefined, newCount);
     }
-  }, [markAsVerified, verifyCount, showPositiveFeedback]);
+  }, [markAsVerified, incrementVerify, learningProgress?.verifyCount, showPositiveFeedback]);
 
   /**
    * markAsModified Wrapper - Adds MR5 opening logic and positive feedback
    * Opens MR5 immediately so user can view iteration history while editing
    */
-  const markAsModifiedWithFeedback = useCallback((messageId: string) => {
+  const markAsModifiedWithFeedback = useCallback(async (messageId: string) => {
     // Call hook's base markAsModified function
     markAsModifiedBase(messageId);
     // Open MR5 for iteration workflow
     openMR5Iteration();
-    // Update count and show positive feedback
-    setModifyCount(prev => prev + 1);
-    showPositiveFeedback('modify');
-  }, [markAsModifiedBase, openMR5Iteration, showPositiveFeedback]);
+
+    // Increment modify count via API and check for achievements
+    const { newAchievements } = await incrementModify();
+    const newCount = (learningProgress?.modifyCount || 0) + 1;
+
+    // Show achievement notification if any new achievements unlocked
+    if (newAchievements && newAchievements.length > 0) {
+      const achievement = newAchievements[0];
+      setPositiveFeedback({
+        id: `feedback-${Date.now()}`,
+        type: 'achievement',
+        message: achievement.name,
+        subMessage: 'Achievement unlocked! Keep up the great work.',
+        count: newCount,
+      });
+    } else {
+      showPositiveFeedback('modify', undefined, newCount);
+    }
+  }, [markAsModifiedBase, openMR5Iteration, incrementModify, learningProgress?.modifyCount, showPositiveFeedback]);
 
   /**
    * handleSaveEdit - Wrapper for saving edited messages
