@@ -1,13 +1,11 @@
 /**
- * MR12: Critical Thinking Scaffolding - Guided Flow
+ * MR12: Critical Thinking Scaffolding - AI-Enhanced Guided Flow
  *
- * New design: One question at a time with content-type specific questions
- * - Shows AI content being evaluated
- * - Auto-detects content type (code, math, writing, design, general)
- * - Asks one question at a time
- * - Provides meaningful choice options with tips
- * - Gives instant feedback after selection
- * - Can link to MR11 for deeper verification
+ * New features:
+ * - AI-generated targeted questions specific to the content
+ * - Fallback to template questions if API fails
+ * - Save thinking records to database
+ * - View thinking history
  */
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -27,11 +25,26 @@ import {
 } from './utils';
 import './styles.css';
 
+// API base URL
+const API_BASE = '/api';
+
+interface AIQuestion {
+  id: string;
+  question: string;
+  description: string;
+  targetText?: string;
+  verificationTip?: string;
+}
+
 interface MR12Props {
   /** AI output content to evaluate */
   aiOutput?: string;
   /** Content type (auto-detected if not provided) */
   domain?: DomainType;
+  /** Session ID for saving records */
+  sessionId?: string;
+  /** Message ID being evaluated */
+  messageId?: string;
   /** Callback when assessment is complete */
   onAssessmentComplete?: (assessment: CriticalAssessment) => void;
   /** Callback to open MR11 for verification */
@@ -43,6 +56,8 @@ interface MR12Props {
 export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   aiOutput = '',
   domain,
+  sessionId,
+  messageId,
   onAssessmentComplete,
   onOpenMR11,
   compact = true,
@@ -53,6 +68,12 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     if (aiOutput) return detectContentType(aiOutput);
     return 'general';
   });
+
+  // AI questions state
+  const [aiQuestions, setAiQuestions] = useState<AIQuestion[]>([]);
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
+  const [useAIQuestions, setUseAIQuestions] = useState(true);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   // Current question index (0-based)
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -67,13 +88,87 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   // Assessment complete
   const [assessment, setAssessment] = useState<ThinkingAssessment | null>(null);
 
-  // Get questions for current content type
-  const questions = useMemo(() => getQuestionsForType(contentType), [contentType]);
+  // Saving state
+  const [isSaving, setIsSaving] = useState(false);
+  const [recordId, setRecordId] = useState<string | null>(null);
+
+  // Get template questions as fallback
+  const templateQuestions = useMemo(() => getQuestionsForType(contentType), [contentType]);
+
+  // Questions to use (AI or template)
+  const questions: ThinkingQuestion[] = useMemo(() => {
+    if (useAIQuestions && aiQuestions.length > 0) {
+      // Convert AI questions to ThinkingQuestion format
+      return aiQuestions.map(q => ({
+        id: q.id,
+        question: q.question,
+        description: q.description,
+        options: {
+          yes: { label: "Yes, I've verified this", tip: q.verificationTip || "Good job verifying!" },
+          no: { label: "No, this seems wrong", tip: "Consider double-checking this claim." },
+          unsure: { label: "I'm not sure", tip: "This might need more investigation." },
+        },
+        followUpTip: q.targetText ? `Referenced: "${q.targetText.slice(0, 100)}..."` : "Consider the context of this question.",
+      }));
+    }
+    return templateQuestions;
+  }, [useAIQuestions, aiQuestions, templateQuestions]);
+
   const currentQuestion = questions[currentIndex];
   const totalQuestions = questions.length;
 
   // Content type info for display
   const typeInfo = getContentTypeInfo(contentType);
+
+  /**
+   * Fetch AI-generated questions
+   */
+  const fetchAIQuestions = useCallback(async () => {
+    if (!aiOutput || aiOutput.length < 50) return;
+
+    setIsLoadingQuestions(true);
+    setAiError(null);
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE}/ai/mr/thinking-questions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+        body: JSON.stringify({
+          content: aiOutput,
+          contentType,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch AI questions');
+      }
+
+      const data = await response.json();
+      if (data.success && data.data.questions) {
+        setAiQuestions(data.data.questions);
+        setUseAIQuestions(true);
+      } else {
+        throw new Error('Invalid response format');
+      }
+    } catch (error: any) {
+      console.error('[MR12] AI questions error:', error);
+      setAiError(error.message);
+      setUseAIQuestions(false);
+    } finally {
+      setIsLoadingQuestions(false);
+    }
+  }, [aiOutput, contentType]);
+
+  // Fetch AI questions when content changes
+  useEffect(() => {
+    if (aiOutput && aiOutput.length >= 50) {
+      fetchAIQuestions();
+    }
+  }, [aiOutput]);
 
   // Re-detect content type when aiOutput changes
   useEffect(() => {
@@ -84,8 +179,46 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
       setCurrentIndex(0);
       setResponses([]);
       setAssessment(null);
+      setRecordId(null);
     }
   }, [aiOutput, domain]);
+
+  /**
+   * Save thinking record to database
+   */
+  const saveRecord = useCallback(async (finalResponses: UserResponse[], needsVerification: boolean) => {
+    setIsSaving(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE}/thinking-records`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+        body: JSON.stringify({
+          sessionId,
+          messageId,
+          messageContent: aiOutput,
+          contentType,
+          aiQuestions: useAIQuestions ? aiQuestions : templateQuestions,
+          userResponses: finalResponses,
+          needsVerification,
+          completedAt: new Date().toISOString(),
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setRecordId(data.data.id);
+        console.log('[MR12] Record saved:', data.data.id);
+      }
+    } catch (error) {
+      console.error('[MR12] Failed to save record:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [sessionId, messageId, aiOutput, contentType, useAIQuestions, aiQuestions, templateQuestions]);
 
   /**
    * Handle user selecting an option
@@ -118,6 +251,9 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
       const result = generateAssessment(contentType, responses);
       setAssessment(result);
 
+      // Save to database
+      saveRecord(responses, result.needsVerification);
+
       // Call legacy callback if provided
       if (onAssessmentComplete) {
         const legacyAssessment: CriticalAssessment = {
@@ -132,7 +268,7 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
         onAssessmentComplete(legacyAssessment);
       }
     }
-  }, [currentIndex, totalQuestions, contentType, responses, onAssessmentComplete]);
+  }, [currentIndex, totalQuestions, contentType, responses, onAssessmentComplete, saveRecord]);
 
   /**
    * Skip current question
@@ -152,10 +288,12 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
-      const result = generateAssessment(contentType, [...responses, response]);
+      const allResponses = [...responses, response];
+      const result = generateAssessment(contentType, allResponses);
       setAssessment(result);
+      saveRecord(allResponses, result.needsVerification);
     }
-  }, [currentQuestion, currentIndex, totalQuestions, contentType, responses]);
+  }, [currentQuestion, currentIndex, totalQuestions, contentType, responses, saveRecord]);
 
   /**
    * Reset and start over
@@ -166,6 +304,7 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     setAssessment(null);
     setShowFeedback(false);
     setLastResponse(null);
+    setRecordId(null);
   }, []);
 
   /**
@@ -176,7 +315,33 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     setCurrentIndex(0);
     setResponses([]);
     setAssessment(null);
+    // Refetch AI questions with new type
+    if (useAIQuestions) {
+      fetchAIQuestions();
+    }
+  }, [useAIQuestions, fetchAIQuestions]);
+
+  /**
+   * Toggle between AI and template questions
+   */
+  const handleToggleMode = useCallback(() => {
+    setUseAIQuestions(prev => !prev);
+    setCurrentIndex(0);
+    setResponses([]);
+    setAssessment(null);
   }, []);
+
+  // Loading state
+  if (isLoadingQuestions) {
+    return (
+      <div className={`mr12-container ${compact ? 'mr12-compact' : ''}`}>
+        <div className="mr12-loading">
+          <div className="mr12-loading-spinner" />
+          <p>🧠 Analyzing content and generating targeted questions...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Render assessment summary
   if (assessment) {
@@ -216,6 +381,13 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
             })}
           </div>
 
+          {/* Saved indicator */}
+          {recordId && (
+            <div className="mr12-saved-indicator">
+              ✓ Thinking record saved
+            </div>
+          )}
+
           {/* Actions */}
           <div className="mr12-assessment-actions">
             {assessment.needsVerification && onOpenMR11 && (
@@ -248,23 +420,38 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
                 {typeInfo.icon} {typeInfo.label}
               </span>
             </div>
-            <button
-              className="mr12-change-type-btn"
-              onClick={() => {
-                // Cycle through types
-                const types: ContentType[] = ['code', 'math', 'writing', 'design', 'general'];
-                const idx = types.indexOf(contentType);
-                handleChangeType(types[(idx + 1) % types.length]);
-              }}
-              title="Change content type"
-            >
-              Change
-            </button>
+            <div className="mr12-header-actions">
+              <button
+                className={`mr12-mode-btn ${useAIQuestions ? 'active' : ''}`}
+                onClick={handleToggleMode}
+                title={useAIQuestions ? "Using AI questions" : "Using template questions"}
+              >
+                {useAIQuestions ? '🤖 AI' : '📋 Template'}
+              </button>
+              <button
+                className="mr12-change-type-btn"
+                onClick={() => {
+                  const types: ContentType[] = ['code', 'math', 'writing', 'design', 'general'];
+                  const idx = types.indexOf(contentType);
+                  handleChangeType(types[(idx + 1) % types.length]);
+                }}
+                title="Change content type"
+              >
+                Change
+              </button>
+            </div>
           </div>
           <div className="mr12-preview-content">
             {aiOutput.slice(0, 300)}
             {aiOutput.length > 300 && '...'}
           </div>
+        </div>
+      )}
+
+      {/* AI Error notice */}
+      {aiError && !useAIQuestions && (
+        <div className="mr12-ai-notice">
+          ℹ️ Using template questions (AI unavailable)
         </div>
       )}
 

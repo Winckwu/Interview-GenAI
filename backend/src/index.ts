@@ -121,6 +121,7 @@ import decompositionsRoutes from './routes/decompositions';
 import mrHistoryRoutes from './routes/mrHistory';
 import verificationRoutes from './routes/verification';
 import learningProgressRoutes from './routes/learningProgress';
+import thinkingRecordsRoutes from './routes/thinkingRecords';
 
 // ============================================================================
 // API Routes
@@ -176,6 +177,9 @@ app.use('/api/verification', verificationRoutes);
 
 // Learning Progress & Achievements
 app.use('/api/learning-progress', learningProgressRoutes);
+
+// MR12 Critical Thinking Records
+app.use('/api/thinking-records', thinkingRecordsRoutes);
 
 // Placeholder routes - backward compatibility
 app.post('/api/predictions/predict', authenticateToken, asyncHandler(async (_req: Request, res: Response) => {

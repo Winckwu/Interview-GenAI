@@ -1008,4 +1008,142 @@ router.post(
   })
 );
 
+/**
+ * POST /api/ai/mr/thinking-questions
+ * MR12: Generate targeted critical thinking questions for specific content
+ */
+router.post(
+  '/mr/thinking-questions',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { content, contentType = 'general' } = req.body;
+
+    if (!content || content.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Content is required',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const prompt = `You are a critical thinking coach. Analyze this AI-generated content and create 3-4 targeted questions to help the user critically evaluate it.
+
+Content to evaluate:
+"""
+${content.substring(0, 2000)}
+"""
+
+Content type: ${contentType}
+
+Generate questions that are SPECIFIC to this exact content, not generic. Each question should:
+- Point to a specific claim, assumption, or aspect in the content
+- Help the user think deeper about that specific part
+- Be actionable (user can verify or investigate)
+
+Return a JSON object with this exact structure:
+{
+  "questions": [
+    {
+      "id": "q1",
+      "question": "specific question about the content",
+      "description": "why this question matters for this content",
+      "targetText": "quote the specific part this question addresses",
+      "verificationTip": "how to verify or investigate this"
+    }
+  ],
+  "contentSummary": "one sentence summary of what this content is about",
+  "overallConcerns": ["any major concerns with this content"],
+  "strengths": ["what the content does well"]
+}
+
+Make questions specific to the actual content, referencing specific claims or statements.
+Return ONLY valid JSON, no markdown.`;
+
+    try {
+      const aiResponse = await callOpenAI(prompt);
+      const parsed = JSON.parse(aiResponse.content);
+
+      res.json({
+        success: true,
+        data: parsed,
+        usage: aiResponse.usage,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Failed to generate thinking questions',
+        timestamp: new Date().toISOString(),
+      });
+    }
+  })
+);
+
+/**
+ * POST /api/ai/mr/thinking-insights
+ * MR12: Generate insights based on user's thinking responses
+ */
+router.post(
+  '/mr/thinking-insights',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { content, questions, responses } = req.body;
+
+    if (!content || !questions || !responses) {
+      return res.status(400).json({
+        success: false,
+        error: 'Content, questions, and responses are required',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const prompt = `Based on a user's critical thinking evaluation, provide personalized insights and next steps.
+
+Original AI content:
+"""
+${content.substring(0, 1500)}
+"""
+
+Questions asked and user responses:
+${questions.map((q: any, i: number) => `
+Q${i + 1}: ${q.question}
+User response: ${responses[i]?.response || 'skipped'}
+`).join('\n')}
+
+Provide personalized insights based on their responses. Return JSON:
+{
+  "summary": "overall assessment of their critical thinking",
+  "insights": [
+    {
+      "type": "strength|concern|suggestion",
+      "text": "specific insight based on their responses"
+    }
+  ],
+  "nextSteps": ["recommended actions based on their evaluation"],
+  "verificationNeeded": true/false,
+  "confidenceLevel": "high|medium|low"
+}
+
+Return ONLY valid JSON.`;
+
+    try {
+      const aiResponse = await callOpenAI(prompt);
+      const parsed = JSON.parse(aiResponse.content);
+
+      res.json({
+        success: true,
+        data: parsed,
+        usage: aiResponse.usage,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Failed to generate insights',
+        timestamp: new Date().toISOString(),
+      });
+    }
+  })
+);
+
 export default router;

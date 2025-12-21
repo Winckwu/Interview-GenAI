@@ -318,3 +318,37 @@ model FrustrationReport {
   @@index([frustrationId])
   @@unique([userId, frustrationId])
 }
+
+// ============ MR12: Critical Thinking Records ============
+
+model ThinkingRecord {
+  id              String    @id @default(uuid())
+
+  // Context
+  sessionId       String?   // Frontend session ID (optional)
+  messageId       String?   // Frontend message ID being evaluated
+  userId          String?   // User ID if logged in
+
+  // Content being evaluated
+  messageContent  String    @db.Text
+  contentType     String    // 'code', 'math', 'writing', 'design', 'general'
+
+  // AI-generated questions
+  aiQuestions     Json      // Array of {id, question, description, relevance}
+
+  // User responses
+  userResponses   Json      // Array of {questionId, response, timestamp}
+
+  // Assessment
+  needsVerification Boolean @default(false)
+  summary         String?   @db.Text
+  aiInsights      String?   @db.Text  // AI-generated insights based on responses
+
+  createdAt       DateTime  @default(now())
+  completedAt     DateTime?
+
+  @@map("thinking_records")
+  @@index([sessionId])
+  @@index([userId])
+  @@index([createdAt])
+}
