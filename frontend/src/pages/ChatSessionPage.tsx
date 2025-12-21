@@ -902,6 +902,9 @@ const ChatSessionPage: React.FC = () => {
               wasVerified: interaction.wasVerified,
               wasModified: interaction.wasModified,
               wasRejected: interaction.wasRejected,
+              reasoning: interaction.reasoning,
+              insights: interaction.insights,
+              branches: interaction.branches,
             });
           }
 
