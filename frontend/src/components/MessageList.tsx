@@ -65,6 +65,7 @@ export interface MessageListProps {
   // Actions
   onVerify: (messageId: string) => void;
   onModify: (messageId: string) => void;
+  onRegenerate?: (messageId: string) => void; // Regenerate AI response
   onViewInsights?: (messageId: string) => void; // Open MR2 insights for this message
   onEditUserMessage?: (messageId: string) => void; // Edit user message and regenerate
 
@@ -124,6 +125,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   onCancelEdit,
   onVerify,
   onModify,
+  onRegenerate,
   onViewInsights,
   onEditUserMessage,
   onBranchSwitch,
@@ -246,6 +248,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             onCancelEdit={onCancelEdit}
             onVerify={() => onVerify(message.id)}
             onModify={() => onModify(message.id)}
+            onRegenerate={message.role === 'ai' && onRegenerate ? () => onRegenerate(message.id) : undefined}
             onViewInsights={message.role === 'ai' && onViewInsights ? () => onViewInsights(message.id) : undefined}
             onEditUserMessage={message.role === 'user' && onEditUserMessage ? () => onEditUserMessage(message.id) : undefined}
             onBranchPrev={onBranchSwitch ? () => onBranchSwitch(message.id, 'prev') : undefined}
@@ -258,8 +261,6 @@ export const MessageList: React.FC<MessageListProps> = ({
             onSwitchBranchPath={onSwitchBranchPath}
             editForkMessageIndex={editForkMessageIndex}
             trustIndicator={renderTrustIndicator(message, index)}
-            quickReflection={renderQuickReflection(message, index)}
-            mr6Suggestion={renderMR6Suggestion(message, index)}
             hideActionButtons={shouldHideTools(message, index)}
             isStreaming={isStreaming && message.role === 'ai' && index === messages.length - 1}
           />

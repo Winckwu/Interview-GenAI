@@ -41,6 +41,7 @@ export interface MessageItemProps {
   // Actions
   onVerify: () => void;
   onModify: () => void;
+  onRegenerate?: () => void; // Regenerate AI response
   onViewInsights?: () => void; // Open MR2 insights for this message
   onEditUserMessage?: () => void; // Edit user message (creates new branch)
 
@@ -61,8 +62,6 @@ export interface MessageItemProps {
 
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
-  quickReflection?: React.ReactNode;
-  mr6Suggestion?: React.ReactNode;
 
   // Hide action buttons for simple messages (greetings, etc.)
   hideActionButtons?: boolean;
@@ -82,6 +81,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onCancelEdit,
   onVerify,
   onModify,
+  onRegenerate,
   onViewInsights,
   onEditUserMessage,
   onBranchPrev,
@@ -94,8 +94,6 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onSwitchBranchPath,
   editForkMessageIndex = null,
   trustIndicator,
-  quickReflection,
-  mr6Suggestion,
   hideActionButtons = false,
   isStreaming = false,
 }) => {
@@ -909,15 +907,21 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                       🔍 Insights
                     </button>
                   )}
+                  {onRegenerate && (
+                    <button
+                      onClick={onRegenerate}
+                      disabled={isUpdating}
+                      title="🔄 REGENERATE: Generate a new AI response for this question"
+                      className={`${styles.actionButton} ${styles.regenerateButton}`}
+                      style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+                    >
+                      🔄
+                    </button>
+                  )}
                 </div>
               );
             })()}
 
-            {/* Quick Reflection Prompt (MR14) - Rendered from parent */}
-            {quickReflection}
-
-            {/* MR6 Multi-Model Comparison Suggestion - Rendered from parent */}
-            {mr6Suggestion}
           </div>
         )}
 

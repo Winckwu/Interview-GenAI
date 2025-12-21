@@ -1350,6 +1350,31 @@ Message: "${firstMessage.slice(0, 200)}"`,
   }, [messages, setActiveMRTool, setShowMRToolsSection]);
 
   /**
+   * handleRegenerate - Regenerate AI response for a message
+   * Finds the corresponding user message and re-sends it to get a new response
+   */
+  const handleRegenerate = useCallback(async (aiMessageId: string) => {
+    // Find the AI message index
+    const aiMessageIndex = messages.findIndex(m => m.id === aiMessageId);
+    if (aiMessageIndex === -1 || aiMessageIndex === 0) return;
+
+    // The user message should be right before the AI message
+    const userMessage = messages[aiMessageIndex - 1];
+    if (!userMessage || userMessage.role !== 'user') return;
+
+    // Get conversation history up to (but not including) the user message being regenerated
+    const conversationHistory = messages.slice(0, aiMessageIndex - 1);
+
+    // Remove the current AI message from the messages array
+    setMessages(prev => prev.filter(m => m.id !== aiMessageId));
+
+    // Re-send the user message to get a new AI response
+    await handleSendMessage(userMessage.content, conversationHistory);
+
+    console.log('[Chat] Regenerating response for message:', aiMessageId);
+  }, [messages, handleSendMessage, setMessages]);
+
+  /**
    * handleMR11Decision - Called when user makes a decision in MR11
    * If decision is 'accept', mark the message as verified with positive feedback
    */
@@ -4243,6 +4268,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 onCancelEdit={cancelEditingMessage}
                 onVerify={handleVerifyClick}
                 onModify={markAsModifiedWithFeedback}
+                onRegenerate={handleRegenerate}
                 onViewInsights={handleViewInsights}
                 onEditUserMessage={(messageId) => {
                   const message = messages.find(m => m.id === messageId);
