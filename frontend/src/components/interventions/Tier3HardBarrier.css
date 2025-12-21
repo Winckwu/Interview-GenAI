@@ -1,6 +1,7 @@
 /**
- * Tier 3 Hard Barrier Styles
- * Modal dialog for serious over-reliance pattern detection
+ * Tier 3 Reflection Prompt Styles
+ * Modal dialog for supportive learning intervention
+ * Color scheme: Purple/Deep Blue (supportive, not alarming)
  */
 
 .tier3-barrier-backdrop {
@@ -9,13 +10,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(88, 28, 135, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
   animation: fadeInBackdrop 0.2s ease-out;
   padding: 1rem;
+  backdrop-filter: blur(4px);
 }
 
 @keyframes fadeInBackdrop {
@@ -31,9 +33,9 @@
 .tier3-hard-barrier {
   position: relative;
   background-color: white;
-  border: 2px solid #ef4444;
-  border-radius: 0.75rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  border: 2px solid #8b5cf6;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.35);
   max-width: 520px;
   width: 100%;
   animation: slideUpBarrier 0.3s ease-out;
@@ -58,22 +60,22 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
 }
 
 .barrier-icon {
   font-size: 1.75rem;
-  animation: pulseIcon 2s ease-in-out infinite;
+  animation: gentlePulse 3s ease-in-out infinite;
 }
 
-@keyframes pulseIcon {
+@keyframes gentlePulse {
   0%, 100% {
     opacity: 1;
     transform: scale(1);
   }
   50% {
-    opacity: 0.8;
-    transform: scale(1.1);
+    opacity: 0.9;
+    transform: scale(1.05);
   }
 }
 
@@ -81,14 +83,14 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #991b1b;
+  color: #5b21b6;
   line-height: 1.4;
 }
 
 /* Divider */
 .barrier-divider {
   height: 3px;
-  background: linear-gradient(90deg, #ef4444 0%, #dc2626 50%, #ef4444 100%);
+  background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 50%, #8b5cf6 100%);
 }
 
 /* Content */
@@ -116,41 +118,49 @@
   color: #1f2937;
 }
 
-/* Risks list */
-.barrier-risks-list {
+/* Opportunities list (reframed from risks) */
+.barrier-risks-list,
+.barrier-opportunities-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  background-color: #fef2f2;
-  border-left: 3px solid #ef4444;
+  background-color: #f0fdf4;
+  border-left: 3px solid #22c55e;
   border-radius: 0 0.375rem 0.375rem 0;
   padding: 0.75rem 1rem;
 }
 
-.barrier-risk-item {
+.barrier-risk-item,
+.barrier-opportunity-item {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
   padding: 0.25rem 0;
   font-size: 0.9rem;
-  color: #991b1b;
+  color: #166534;
   line-height: 1.5;
 }
 
-.risk-bullet {
-  color: #ef4444;
+.risk-bullet,
+.opportunity-bullet {
+  color: #22c55e;
   font-weight: bold;
 }
 
-/* Suggestions list */
-.barrier-suggestions-list {
+/* Reflection list (reframed from suggestions) */
+.barrier-suggestions-list,
+.barrier-reflection-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  counter-reset: suggestion-counter;
+  counter-reset: reflection-counter;
+  background-color: #f5f3ff;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
 }
 
-.barrier-suggestion-item {
+.barrier-suggestion-item,
+.barrier-reflection-item {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
@@ -158,13 +168,14 @@
   font-size: 0.9rem;
   color: #374151;
   line-height: 1.5;
-  counter-increment: suggestion-counter;
+  counter-increment: reflection-counter;
 }
 
-.barrier-suggestion-item::before {
-  content: counter(suggestion-counter) ".";
+.barrier-suggestion-item::before,
+.barrier-reflection-item::before {
+  content: counter(reflection-counter) ".";
   font-weight: 600;
-  color: #3b82f6;
+  color: #8b5cf6;
   min-width: 1.5rem;
 }
 
@@ -287,18 +298,18 @@
 }
 
 .barrier-btn-primary {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   color: white;
 }
 
 .barrier-btn-primary:hover:not(:disabled) {
-  background-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
   transform: translateY(-1px);
 }
 
 .barrier-btn-primary:focus {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #8b5cf6;
   outline-offset: 2px;
 }
 
@@ -351,8 +362,9 @@
   outline-offset: 2px;
 }
 
-/* Logged notice */
-.barrier-logged-notice {
+/* Progress notice (reframed from logged notice) */
+.barrier-logged-notice,
+.barrier-progress-notice {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -360,7 +372,9 @@
   padding: 0.75rem 1.5rem 1rem;
   font-size: 0.8rem;
   color: #6b7280;
-  font-style: italic;
+  background-color: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 0.5rem;
 }
 
 .notice-icon {
@@ -389,15 +403,15 @@
 @media (prefers-color-scheme: dark) {
   .tier3-hard-barrier {
     background-color: #1f2937;
-    border-color: #ef4444;
+    border-color: #8b5cf6;
   }
 
   .barrier-header {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
   }
 
   .barrier-title {
-    color: #fca5a5;
+    color: #c4b5fd;
   }
 
   .barrier-message {
@@ -408,15 +422,23 @@
     color: #f3f4f6;
   }
 
-  .barrier-risks-list {
-    background-color: rgba(239, 68, 68, 0.1);
+  .barrier-risks-list,
+  .barrier-opportunities-list {
+    background-color: rgba(34, 197, 94, 0.1);
   }
 
-  .barrier-risk-item {
-    color: #fca5a5;
+  .barrier-risk-item,
+  .barrier-opportunity-item {
+    color: #86efac;
   }
 
-  .barrier-suggestion-item {
+  .barrier-suggestions-list,
+  .barrier-reflection-list {
+    background-color: rgba(139, 92, 246, 0.1);
+  }
+
+  .barrier-suggestion-item,
+  .barrier-reflection-item {
     color: #d1d5db;
   }
 
@@ -453,16 +475,19 @@
   }
 
   .barrier-btn-danger-outline {
-    color: #fca5a5;
-    border-color: #ef4444;
+    color: #c4b5fd;
+    border-color: #8b5cf6;
   }
 
   .barrier-btn-danger-outline:hover:not(:disabled) {
-    background-color: rgba(239, 68, 68, 0.15);
+    background-color: rgba(139, 92, 246, 0.15);
   }
 
-  .barrier-logged-notice {
+  .barrier-logged-notice,
+  .barrier-progress-notice {
     color: #9ca3af;
+    background-color: #111827;
+    border-color: #374151;
   }
 }
 

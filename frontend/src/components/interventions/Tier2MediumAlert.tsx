@@ -1,20 +1,19 @@
 /**
- * Tier 2: Medium Alert Component
- * Popup dialog for concerning patterns requiring user response
+ * Tier 2: Pro Tip Component
+ * Popup dialog for helpful learning suggestions
  *
- * Purpose: Visible warnings about suboptimal learning behaviors
+ * Purpose: Supportive tips to enhance learning experience
  * Position: Center popup with backdrop
- * Color: Orange (warning)
- * Interaction: Requires user response (Verify Now / Remind Later / Don't show)
+ * Color: Blue/Purple (supportive)
+ * Interaction: User can act or postpone
  *
  * Example:
- * "🔔 MCA Reminder
- *  You have not verified AI output for 3 consecutive interactions.
+ * "💡 Pro Tip
+ *  Taking a moment to review can help you learn more effectively.
  *
- *  Suggestion: Pause and review whether recent AI responses
- *  meet your expectations.
+ *  Tip: A quick verification can improve understanding by up to 40%.
  *
- *  [Verify Now] [Remind Later] [Don't show this type of reminder]"
+ *  [Review Now] [Remind Me Later]"
  */
 
 import React, { useState, useEffect, useRef, ReactNode } from 'react';
@@ -177,7 +176,7 @@ const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
           )}
         </div>
 
-        {/* Actions */}
+        {/* Actions - simplified with positive framing */}
         <div className="medium-alert-actions">
           {onAction && (
             <button
@@ -194,15 +193,7 @@ const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
             onClick={handleRemindLater}
             aria-label="Remind me later"
           >
-            Remind Later
-          </button>
-
-          <button
-            className="medium-alert-btn medium-alert-btn-tertiary"
-            onClick={handleDontShowAgain}
-            aria-label="Don't show this type of reminder again"
-          >
-            Don't show this again
+            Remind Me Later
           </button>
         </div>
       </div>

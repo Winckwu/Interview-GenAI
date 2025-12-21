@@ -1,31 +1,30 @@
 /**
- * Tier 3: Hard Barrier Component
- * Modal dialog for high-confidence Pattern F detection
+ * Tier 3: Reflection Prompt Component
+ * Modal dialog for encouraging thoughtful AI interaction
  *
- * Purpose: Blocking intervention for serious learning pattern risks
+ * Purpose: Supportive intervention to enhance learning experience
  * Position: Modal (center, overlay, focus trap)
- * Color: Red (alert)
+ * Color: Purple/Deep Blue (supportive, not alarming)
  * Interaction: Requires explicit user action
- * Critical Feature: "I understand the risk, continue" button for user autonomy
+ * Critical Feature: Positive framing with user autonomy
  *
  * Example:
- * "⚠️ Warning: Over-Reliance Risk Detected
+ * "💭 Let's Take a Quick Pause
  *
- *  You have not verified AI output for 4 consecutive interactions.
+ *  You've been working hard! Let's make sure you're getting
+ *  the most out of this conversation.
  *
- *  Potential Risks:
- *  • May have accepted incorrect information
- *  • Independent thinking ability may decline
- *  • Learning effectiveness may be affected
+ *  This is a great opportunity to:
+ *  • Practice independent thinking
+ *  • Verify key information
+ *  • Build your expertise
  *
- *  Suggestions:
- *  1. Pause current task
- *  2. Review the last 4 AI responses
- *  3. Try completing the next step independently
+ *  Quick Reflection:
+ *  1. Did the recent responses fully address your needs?
+ *  2. Is there anything worth double-checking?
+ *  3. Any parts you could try on your own?
  *
- *  [Pause and Reflect] [I understand the risk, continue]
- *
- *  ⚠️ This warning has been logged to the system"
+ *  [I'm Ready to Reflect ✨] [Continue for Now]"
  */
 
 import React, { useEffect, useRef, useState, ReactNode } from 'react';
@@ -133,18 +132,18 @@ const Tier3HardBarrier: React.FC<Tier3HardBarrierProps> = ({
     }
   };
 
-  // Use default risks if not provided
+  // Use default opportunities if not provided (reframed from "risks")
   const displayRisks = risks.length > 0 ? risks : [
-    'May have accepted incorrect information',
-    'Independent thinking ability may decline',
-    'Learning effectiveness may be affected',
+    'Practice independent thinking',
+    'Verify key information for accuracy',
+    'Build your expertise step by step',
   ];
 
-  // Use default suggestions if not provided
+  // Use default reflection prompts if not provided (reframed from "suggestions")
   const displaySuggestions = suggestions.length > 0 ? suggestions : [
-    'Pause current task',
-    'Review recent AI responses',
-    'Try completing the next step independently',
+    'Did the recent responses fully address your needs?',
+    'Is there anything worth double-checking?',
+    'Any parts you could try on your own?',
   ];
 
   return (
@@ -178,26 +177,26 @@ const Tier3HardBarrier: React.FC<Tier3HardBarrierProps> = ({
               : message}
           </p>
 
-          {/* Potential Risks */}
+          {/* Opportunities - reframed from "Potential Risks" */}
           <div className="barrier-section">
-            <h4 className="barrier-section-title">Potential Risks:</h4>
-            <ul className="barrier-risks-list">
-              {displayRisks.map((risk, index) => (
-                <li key={index} className="barrier-risk-item">
-                  <span className="risk-bullet">•</span>
-                  {risk}
+            <h4 className="barrier-section-title">This is a great opportunity to:</h4>
+            <ul className="barrier-opportunities-list">
+              {displayRisks.map((item, index) => (
+                <li key={index} className="barrier-opportunity-item">
+                  <span className="opportunity-bullet">✓</span>
+                  {item}
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Suggestions */}
+          {/* Quick Reflection - reframed from "Suggestions" */}
           <div className="barrier-section">
-            <h4 className="barrier-section-title">Suggestions:</h4>
-            <ol className="barrier-suggestions-list">
-              {displaySuggestions.map((suggestion, index) => (
-                <li key={index} className="barrier-suggestion-item">
-                  {suggestion}
+            <h4 className="barrier-section-title">Quick Reflection:</h4>
+            <ol className="barrier-reflection-list">
+              {displaySuggestions.map((item, index) => (
+                <li key={index} className="barrier-reflection-item">
+                  {item}
                 </li>
               ))}
             </ol>
@@ -269,13 +268,13 @@ const Tier3HardBarrier: React.FC<Tier3HardBarrierProps> = ({
               </button>
             </>
           ) : (
-            // New simplified mode
+            // New simplified mode with positive framing
             <>
               <button
                 className="barrier-btn barrier-btn-primary"
                 onClick={handlePauseAndReflect}
                 disabled={isProcessing}
-                aria-label="Pause and reflect on your work"
+                aria-label="Take a moment to reflect"
               >
                 {isProcessing ? (
                   <>
@@ -283,30 +282,30 @@ const Tier3HardBarrier: React.FC<Tier3HardBarrierProps> = ({
                     Processing...
                   </>
                 ) : (
-                  'Pause and Reflect'
+                  "I'm Ready to Reflect ✨"
                 )}
               </button>
               <button
-                className="barrier-btn barrier-btn-danger-outline"
+                className="barrier-btn barrier-btn-secondary"
                 onClick={handleProceedAnyway}
                 disabled={isProcessing}
-                aria-label="I understand the risk and want to continue"
+                aria-label="Continue for now"
               >
-                I understand the risk, continue
+                Continue for Now
               </button>
             </>
           )}
         </div>
 
-        {/* Warning logged notice */}
-        <div className="barrier-logged-notice">
-          <span className="notice-icon">⚠️</span>
-          This warning has been logged to the system
+        {/* Progress tracking notice - positive framing */}
+        <div className="barrier-progress-notice">
+          <span className="notice-icon">📊</span>
+          Your learning progress is being tracked to help you grow
         </div>
 
         {/* Accessibility: Screen reader instructions */}
         <div className="sr-only" role="region" aria-live="polite" aria-atomic="true">
-          Over-reliance risk detected. Please review the potential risks and suggestions before proceeding.
+          Taking a moment to reflect can enhance your learning experience.
         </div>
       </div>
     </div>

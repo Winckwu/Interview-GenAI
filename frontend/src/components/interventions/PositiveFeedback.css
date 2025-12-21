@@ -1,0 +1,229 @@
+/**
+ * Positive Feedback Styles
+ * Toast notification for celebrating good learning behaviors
+ * Color scheme: Green (success, celebration)
+ */
+
+.positive-feedback {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: #ffffff;
+  border: 2px solid #22c55e;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(34, 197, 94, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  max-width: 360px;
+  width: calc(100% - 3rem);
+  overflow: hidden;
+  z-index: 1001;
+  animation: slideUpFeedback 0.4s ease-out;
+}
+
+@keyframes slideUpFeedback {
+  from {
+    transform: translateY(100%) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.positive-feedback.removing {
+  animation: slideDownFeedback 0.3s ease-in forwards;
+}
+
+@keyframes slideDownFeedback {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%) scale(0.95);
+    opacity: 0;
+  }
+}
+
+/* Progress bar */
+.positive-feedback-progress {
+  height: 4px;
+  background-color: #dcfce7;
+  overflow: hidden;
+}
+
+.positive-feedback-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+  transition: width 50ms linear;
+}
+
+/* Content */
+.positive-feedback-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.positive-feedback-icon {
+  font-size: 2rem;
+  line-height: 1;
+  animation: bounceIcon 0.6s ease-out;
+}
+
+@keyframes bounceIcon {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.positive-feedback-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.positive-feedback-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #166534;
+  margin-bottom: 0.25rem;
+}
+
+.positive-feedback-message {
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.4;
+}
+
+.positive-feedback-sub {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.positive-feedback-count {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.625rem;
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #166534;
+}
+
+.positive-feedback-close {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.2s;
+}
+
+.positive-feedback-close:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.positive-feedback-close:focus {
+  outline: 2px solid #22c55e;
+  outline-offset: 2px;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .positive-feedback {
+    background-color: #1f2937;
+    border-color: #22c55e;
+  }
+
+  .positive-feedback-progress {
+    background-color: rgba(34, 197, 94, 0.2);
+  }
+
+  .positive-feedback-title {
+    color: #86efac;
+  }
+
+  .positive-feedback-message {
+    color: #f3f4f6;
+  }
+
+  .positive-feedback-sub {
+    color: #9ca3af;
+  }
+
+  .positive-feedback-count {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.2) 100%);
+    color: #86efac;
+  }
+
+  .positive-feedback-close {
+    color: #6b7280;
+  }
+
+  .positive-feedback-close:hover {
+    background-color: #374151;
+    color: #f3f4f6;
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .positive-feedback {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+    width: auto;
+  }
+}
+
+/* Accessibility: Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .positive-feedback {
+    animation: none;
+  }
+
+  .positive-feedback.removing {
+    animation: none;
+    opacity: 0;
+  }
+
+  .positive-feedback-icon {
+    animation: none;
+  }
+
+  .positive-feedback-progress-bar {
+    transition: none;
+  }
+
+  .positive-feedback-close {
+    transition: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .positive-feedback {
+    display: none;
+  }
+}

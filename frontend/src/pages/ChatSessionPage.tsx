@@ -7,6 +7,7 @@ import { useUIStore } from '../stores/uiStore';
 import { useAssessmentStore } from '../stores/assessmentStore';
 import { useMCAOrchestrator, ActiveMR } from '../components/chat/MCAConversationOrchestrator';
 import InterventionManager from '../components/interventions/InterventionManager';
+import PositiveFeedback, { FeedbackType } from '../components/interventions/PositiveFeedback';
 // import VirtualizedMessageList from '../components/VirtualizedMessageList';
 // DISABLED: react-window compatibility issue - using simple list instead
 import EmptyState, { EmptyStateError } from '../components/EmptyState';
@@ -505,6 +506,19 @@ const ChatSessionPage: React.FC = () => {
 
   // MR2 context: Track the message to show insights for
   const [selectedInsightsMessageId, setSelectedInsightsMessageId] = useState<string | null>(null);
+
+  // Positive feedback state - for celebrating good behaviors
+  const [positiveFeedback, setPositiveFeedback] = useState<{
+    id: string;
+    type: FeedbackType;
+    message: string;
+    subMessage?: string;
+    count?: number;
+  } | null>(null);
+
+  // Track verification/modification counts for achievements
+  const [verifyCount, setVerifyCount] = useState(0);
+  const [modifyCount, setModifyCount] = useState(0);
 
   // Track MR9 Dynamic Orchestration - Trust-based MR activation
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
@@ -1193,15 +1207,74 @@ Message: "${firstMessage.slice(0, 200)}"`,
   // ========================================================
 
   /**
-   * markAsModified Wrapper - Adds MR5 opening logic to hook's markAsModified
+   * showPositiveFeedback - Display positive reinforcement for good behaviors
+   */
+  const showPositiveFeedback = useCallback((type: FeedbackType, customMessage?: string) => {
+    const messages: Record<FeedbackType, { msg: string; sub?: string }> = {
+      verify: {
+        msg: 'You verified this response!',
+        sub: 'Critical thinking helps you learn better.',
+      },
+      modify: {
+        msg: 'You made it your own!',
+        sub: 'Personalizing AI output deepens understanding.',
+      },
+      achievement: {
+        msg: 'Keep up the great work!',
+        sub: 'Your learning skills are improving.',
+      },
+      streak: {
+        msg: "You're on fire!",
+        sub: 'Consistent engagement leads to mastery.',
+      },
+    };
+
+    const { msg, sub } = messages[type];
+    setPositiveFeedback({
+      id: `feedback-${Date.now()}`,
+      type,
+      message: customMessage || msg,
+      subMessage: sub,
+      count: type === 'verify' ? verifyCount + 1 : type === 'modify' ? modifyCount + 1 : undefined,
+    });
+  }, [verifyCount, modifyCount]);
+
+  /**
+   * handleVerifyWithFeedback - Wrapper for markAsVerified with positive feedback
+   */
+  const handleVerifyWithFeedback = useCallback((messageId: string) => {
+    markAsVerified(messageId);
+    setVerifyCount(prev => prev + 1);
+
+    // Show positive feedback
+    const newCount = verifyCount + 1;
+    if (newCount === 5) {
+      // Achievement unlocked
+      setPositiveFeedback({
+        id: `feedback-${Date.now()}`,
+        type: 'achievement',
+        message: 'Verified 5 responses!',
+        subMessage: 'Your critical thinking is growing stronger.',
+        count: newCount,
+      });
+    } else {
+      showPositiveFeedback('verify');
+    }
+  }, [markAsVerified, verifyCount, showPositiveFeedback]);
+
+  /**
+   * markAsModified Wrapper - Adds MR5 opening logic and positive feedback
    * Opens MR5 immediately so user can view iteration history while editing
    */
-  const markAsModified = useCallback((messageId: string) => {
+  const markAsModifiedWithFeedback = useCallback((messageId: string) => {
     // Call hook's base markAsModified function
     markAsModifiedBase(messageId);
     // Open MR5 for iteration workflow
     openMR5Iteration();
-  }, [markAsModifiedBase, openMR5Iteration]);
+    // Update count and show positive feedback
+    setModifyCount(prev => prev + 1);
+    showPositiveFeedback('modify');
+  }, [markAsModifiedBase, openMR5Iteration, showPositiveFeedback]);
 
   /**
    * handleSaveEdit - Wrapper for saving edited messages
@@ -1258,17 +1331,17 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
   /**
    * handleMR11Decision - Called when user makes a decision in MR11
-   * If decision is 'accept', mark the message as verified
+   * If decision is 'accept', mark the message as verified with positive feedback
    */
   const handleMR11Decision = useCallback((messageId: string, decision: 'accept' | 'modify' | 'reject' | 'skip') => {
     if (decision === 'accept') {
-      // Mark message as verified in the backend
-      markAsVerified(messageId);
+      // Mark message as verified with positive feedback
+      handleVerifyWithFeedback(messageId);
     }
     // Clear the verifying state
     setVerifyingMessageId(null);
     setVerifyingMessageContent('');
-  }, [markAsVerified]);
+  }, [handleVerifyWithFeedback]);
 
   /**
    * Handle quick reflection response (MR14)
@@ -4142,7 +4215,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 onSaveEdit={handleSaveEdit}
                 onCancelEdit={cancelEditingMessage}
                 onVerify={handleVerifyClick}
-                onModify={markAsModified}
+                onModify={markAsModifiedWithFeedback}
                 onViewInsights={handleViewInsights}
                 onEditUserMessage={(messageId) => {
                   const message = messages.find(m => m.id === messageId);
@@ -4755,6 +4828,18 @@ Message: "${firstMessage.slice(0, 200)}"`,
         }
       {/* GlobalRecommendationPanel and MRInterventionNotification removed -
           now using InterventionManager for tier-based interventions */}
+
+      {/* Positive Feedback - Celebrates good learning behaviors */}
+      {positiveFeedback && (
+        <PositiveFeedback
+          id={positiveFeedback.id}
+          type={positiveFeedback.type}
+          message={positiveFeedback.message}
+          subMessage={positiveFeedback.subMessage}
+          count={positiveFeedback.count}
+          onDismiss={() => setPositiveFeedback(null)}
+        />
+      )}
 
       `}</style>
     </div>
