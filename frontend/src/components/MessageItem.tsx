@@ -41,6 +41,8 @@ export interface MessageItemProps {
   // Actions
   onVerify: () => void;
   onModify: () => void;
+  onViewInsights?: () => void; // Open MR2 insights for this message
+  onRegenerate?: () => void; // Regenerate response with different model
   onEditUserMessage?: () => void; // Edit user message (creates new branch)
 
   // Branch navigation
@@ -81,6 +83,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onCancelEdit,
   onVerify,
   onModify,
+  onViewInsights,
+  onRegenerate,
   onEditUserMessage,
   onBranchPrev,
   onBranchNext,
@@ -871,28 +875,57 @@ export const MessageItem: React.FC<MessageItemProps> = ({
             {trustIndicator}
 
             {/* Action Buttons - Hidden for simple messages */}
-            {!hideActionButtons && (
-              <div className={styles.actionButtons}>
-                <button
-                  onClick={onVerify}
-                  disabled={isUpdating}
-                  title="✓ VERIFY: Confirm this AI response is correct and helpful."
-                  className={`${styles.actionButton} ${message.wasVerified ? styles.verifiedBadge : styles.verifyButton}`}
-                  style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
-                >
-                  {isUpdating ? '⏳' : message.wasVerified ? '✓' : '✓'} {message.wasVerified ? 'Verified' : 'Verify'}
-                </button>
-                <button
-                  onClick={onModify}
-                  disabled={isUpdating}
-                  title="✎ MODIFY: Check this if you edited or improved the AI's response."
-                  className={`${styles.actionButton} ${message.wasModified ? styles.modifiedBadge : styles.modifyButton}`}
-                  style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
-                >
-                  {isUpdating ? '⏳' : message.wasModified ? '✎' : '✎'} {message.wasModified ? 'Modified' : 'Modify'}
-                </button>
-              </div>
-            )}
+            {!hideActionButtons && (() => {
+              // Calculate word count for conditional button display
+              const wordCount = message.content.split(/\s+/).filter(w => w.length > 0).length;
+              const showInsightsButton = wordCount >= 30 && onViewInsights; // Show for responses >= 30 words
+              const showRegenerateButton = onRegenerate;
+
+              return (
+                <div className={styles.actionButtons}>
+                  <button
+                    onClick={onVerify}
+                    disabled={isUpdating}
+                    title="✓ VERIFY: Confirm this AI response is correct and helpful."
+                    className={`${styles.actionButton} ${message.wasVerified ? styles.verifiedBadge : styles.verifyButton}`}
+                    style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+                  >
+                    {isUpdating ? '⏳' : message.wasVerified ? '✓' : '✓'} {message.wasVerified ? 'Verified' : 'Verify'}
+                  </button>
+                  <button
+                    onClick={onModify}
+                    disabled={isUpdating}
+                    title="✎ MODIFY: Check this if you edited or improved the AI's response."
+                    className={`${styles.actionButton} ${message.wasModified ? styles.modifiedBadge : styles.modifyButton}`}
+                    style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+                  >
+                    {isUpdating ? '⏳' : message.wasModified ? '✎' : '✎'} {message.wasModified ? 'Modified' : 'Modify'}
+                  </button>
+                  {showInsightsButton && (
+                    <button
+                      onClick={onViewInsights}
+                      disabled={isUpdating}
+                      title="🔍 INSIGHTS: Analyze this response - key points, assumptions, and follow-up questions"
+                      className={`${styles.actionButton} ${styles.insightsButton}`}
+                      style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+                    >
+                      🔍 Insights
+                    </button>
+                  )}
+                  {showRegenerateButton && (
+                    <button
+                      onClick={onRegenerate}
+                      disabled={isUpdating}
+                      title="🔄 REGENERATE: Get a new response from a different AI model"
+                      className={`${styles.actionButton} ${styles.regenerateButton}`}
+                      style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+                    >
+                      🔄 Regenerate
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Quick Reflection Prompt (MR14) - Rendered from parent */}
             {quickReflection}

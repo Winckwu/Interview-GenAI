@@ -65,6 +65,8 @@ export interface MessageListProps {
   // Actions
   onVerify: (messageId: string) => void;
   onModify: (messageId: string) => void;
+  onViewInsights?: (messageId: string) => void; // Open MR2 insights for this message
+  onRegenerate?: (messageId: string) => void; // Regenerate response with different model
   onEditUserMessage?: (messageId: string) => void; // Edit user message and regenerate
 
   // Branch navigation
@@ -123,6 +125,8 @@ export const MessageList: React.FC<MessageListProps> = ({
   onCancelEdit,
   onVerify,
   onModify,
+  onViewInsights,
+  onRegenerate,
   onEditUserMessage,
   onBranchSwitch,
   onBranchDelete,
@@ -244,6 +248,8 @@ export const MessageList: React.FC<MessageListProps> = ({
             onCancelEdit={onCancelEdit}
             onVerify={() => onVerify(message.id)}
             onModify={() => onModify(message.id)}
+            onViewInsights={message.role === 'ai' && onViewInsights ? () => onViewInsights(message.id) : undefined}
+            onRegenerate={message.role === 'ai' && onRegenerate ? () => onRegenerate(message.id) : undefined}
             onEditUserMessage={message.role === 'user' && onEditUserMessage ? () => onEditUserMessage(message.id) : undefined}
             onBranchPrev={onBranchSwitch ? () => onBranchSwitch(message.id, 'prev') : undefined}
             onBranchNext={onBranchSwitch ? () => onBranchSwitch(message.id, 'next') : undefined}
