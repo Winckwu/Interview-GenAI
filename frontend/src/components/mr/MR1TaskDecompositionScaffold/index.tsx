@@ -516,8 +516,51 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
                 </div>
               )}
 
+              {/* Enhanced Guidance Sections */}
+              {subtask.howToApproach && subtask.howToApproach.length > 0 && (
+                <div style={{ marginBottom: '0.75rem', background: '#f0fdf4', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #bbf7d0' }}>
+                  <strong style={{ fontSize: '0.85rem', color: '#166534', display: 'block', marginBottom: '0.5rem' }}>📋 How to Approach:</strong>
+                  <ol style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.85rem', color: '#166534' }}>
+                    {subtask.howToApproach.map((step, i) => (
+                      <li key={i} style={{ marginBottom: '0.25rem' }}>{step}</li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {subtask.tips && subtask.tips.length > 0 && (
+                <div style={{ marginBottom: '0.75rem', background: '#fefce8', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #fef08a' }}>
+                  <strong style={{ fontSize: '0.85rem', color: '#854d0e', display: 'block', marginBottom: '0.5rem' }}>💡 Tips:</strong>
+                  <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.85rem', color: '#854d0e' }}>
+                    {subtask.tips.map((tip, i) => (
+                      <li key={i} style={{ marginBottom: '0.25rem' }}>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {subtask.aiCanHelp && subtask.aiCanHelp.length > 0 && (
+                <div style={{ marginBottom: '0.75rem', background: '#eff6ff', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #bfdbfe' }}>
+                  <strong style={{ fontSize: '0.85rem', color: '#1e40af', display: 'block', marginBottom: '0.5rem' }}>🤖 AI Can Help With:</strong>
+                  <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.85rem', color: '#1e40af' }}>
+                    {subtask.aiCanHelp.map((help, i) => (
+                      <li key={i} style={{ marginBottom: '0.25rem' }}>{help}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {subtask.resources && subtask.resources.length > 0 && (
+                <div style={{ marginBottom: '0.75rem' }}>
+                  <strong style={{ fontSize: '0.85rem', color: '#444' }}>📚 Resources:</strong>
+                  <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#666' }}>
+                    {subtask.resources.join(', ')}
+                  </p>
+                </div>
+              )}
+
               <div className="mr1-verification">
-                <strong>How to verify:</strong>
+                <strong>✓ How to verify:</strong>
                 <p>{subtask.verificationMethod}</p>
               </div>
 
