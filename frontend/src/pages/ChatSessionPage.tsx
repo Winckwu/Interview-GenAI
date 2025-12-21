@@ -666,9 +666,12 @@ const ChatSessionPage: React.FC = () => {
 
               if (validInteractions.length > 0) {
                 console.log(`[loadSessions] Session ${session.id}: Has ${validInteractions.length} valid interactions - DISPLAYING`);
-                // Use the first user prompt as the session title (truncate to 50 chars)
-                const firstPrompt = validInteractions[0].userPrompt;
-                const title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
+                // Prefer session's stored taskDescription (AI-generated title), fallback to first user prompt
+                let title = session.taskDescription;
+                if (!title || title === 'General AI interaction') {
+                  const firstPrompt = validInteractions[0].userPrompt;
+                  title = firstPrompt.length > 50 ? firstPrompt.substring(0, 50) + '...' : firstPrompt;
+                }
                 return {
                   ...session,
                   taskDescription: title,
