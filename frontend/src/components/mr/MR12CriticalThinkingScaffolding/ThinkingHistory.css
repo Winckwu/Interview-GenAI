@@ -1,0 +1,297 @@
+/**
+ * ThinkingHistory Component Styles
+ */
+
+.th-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--th-bg, #ffffff);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.th-compact {
+  padding: 0.75rem;
+}
+
+/* Header */
+.th-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.th-header h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.th-count {
+  font-size: 0.7rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+}
+
+/* Loading & Error & Empty States */
+.th-loading,
+.th-error,
+.th-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.th-empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.th-empty p {
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+}
+
+.th-empty-hint {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.th-error button {
+  margin-top: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* List */
+.th-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Item */
+.th-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.15s;
+}
+
+.th-item:hover {
+  border-color: #d1d5db;
+}
+
+.th-item-expanded {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.th-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.625rem 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.th-item-header:hover {
+  background: #f3f4f6;
+}
+
+.th-item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.th-item-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.th-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.th-item-preview {
+  font-size: 0.8rem;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.th-item-time {
+  font-size: 0.65rem;
+  color: #9ca3af;
+}
+
+.th-item-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.th-item-arrow {
+  font-size: 0.6rem;
+  color: #9ca3af;
+}
+
+/* Badges */
+.th-badge {
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.th-badge-good {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.th-badge-warning {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.th-badge-unsure {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+/* Item Details */
+.th-item-details {
+  padding: 0.75rem;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+}
+
+.th-responses {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.th-response-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #f9fafb;
+  border-radius: 4px;
+}
+
+.th-response-question {
+  flex: 1;
+  font-size: 0.75rem;
+  color: #374151;
+  line-height: 1.4;
+}
+
+.th-response-answer {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.th-answer-yes {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.th-answer-no {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.th-answer-unsure {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.th-answer-skip {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Content Preview */
+.th-content-preview {
+  padding: 0.5rem;
+  background: #f3f4f6;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.th-content-preview strong {
+  display: block;
+  font-size: 0.7rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.th-content-preview p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #374151;
+  line-height: 1.4;
+}
+
+/* Action Button */
+.th-action-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.th-action-btn:hover {
+  background: #2563eb;
+}
+
+/* Compact mode adjustments */
+.th-compact .th-header h3 {
+  font-size: 0.85rem;
+}
+
+.th-compact .th-item-preview {
+  font-size: 0.75rem;
+}
+
+.th-compact .th-response-question {
+  font-size: 0.7rem;
+}

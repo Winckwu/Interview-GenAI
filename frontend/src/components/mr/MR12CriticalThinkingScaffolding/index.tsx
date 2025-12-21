@@ -23,6 +23,7 @@ import {
   DomainType,
   CriticalAssessment,
 } from './utils';
+import ThinkingHistory from './ThinkingHistory';
 import './styles.css';
 
 // API base URL
@@ -62,6 +63,9 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   onOpenMR11,
   compact = true,
 }) => {
+  // Tab state: 'evaluate' or 'history'
+  const [activeTab, setActiveTab] = useState<'evaluate' | 'history'>('evaluate');
+
   // Auto-detect or use provided content type
   const [contentType, setContentType] = useState<ContentType>(() => {
     if (domain) return domain as ContentType;
@@ -332,13 +336,38 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   }, []);
 
   // Loading state
-  if (isLoadingQuestions) {
+  if (isLoadingQuestions && activeTab === 'evaluate') {
     return (
       <div className={`mr12-container ${compact ? 'mr12-compact' : ''}`}>
         <div className="mr12-loading">
           <div className="mr12-loading-spinner" />
           <p>🧠 Analyzing content and generating targeted questions...</p>
         </div>
+      </div>
+    );
+  }
+
+  // History view
+  if (activeTab === 'history') {
+    return (
+      <div className={`mr12-container ${compact ? 'mr12-compact' : ''}`}>
+        {/* Tab Switcher */}
+        <div className="mr12-tabs">
+          <button
+            className={`mr12-tab ${activeTab === 'evaluate' ? 'active' : ''}`}
+            onClick={() => setActiveTab('evaluate')}
+          >
+            🧠 Evaluate
+          </button>
+          <button
+            className={`mr12-tab ${activeTab === 'history' ? 'active' : ''}`}
+            onClick={() => setActiveTab('history')}
+          >
+            📋 History
+          </button>
+        </div>
+
+        <ThinkingHistory sessionId={sessionId} compact={compact} />
       </div>
     );
   }
@@ -410,6 +439,22 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   // Render main evaluation flow
   return (
     <div className={`mr12-container ${compact ? 'mr12-compact' : ''}`}>
+      {/* Tab Switcher */}
+      <div className="mr12-tabs">
+        <button
+          className={`mr12-tab ${activeTab === 'evaluate' ? 'active' : ''}`}
+          onClick={() => setActiveTab('evaluate')}
+        >
+          🧠 Evaluate
+        </button>
+        <button
+          className={`mr12-tab ${activeTab === 'history' ? 'active' : ''}`}
+          onClick={() => setActiveTab('history')}
+        >
+          📋 History
+        </button>
+      </div>
+
       {/* Content Preview - Selected AI Response */}
       {aiOutput && (
         <div className="mr12-content-preview">

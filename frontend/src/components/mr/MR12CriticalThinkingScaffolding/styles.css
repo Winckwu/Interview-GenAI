@@ -696,3 +696,50 @@
   text-align: center;
   margin-top: 0.5rem;
 }
+
+/* ========================================
+   Tabs
+   ======================================== */
+
+.mr12-tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--mr12-secondary-bg, #f3f4f6);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.mr12-tab {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--mr12-secondary, #6b7280);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mr12-tab:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--mr12-text, #374151);
+}
+
+.mr12-tab.active {
+  background: white;
+  color: #3b82f6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mr12-compact .mr12-tabs {
+  padding: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.mr12-compact .mr12-tab {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.7rem;
+}
