@@ -71,7 +71,7 @@ export const RegenerateDropdown: React.FC<RegenerateDropdownProps> = ({
           cursor: (disabled || isLoading) ? 'not-allowed' : 'pointer',
         }}
       >
-        {isLoading ? '⏳' : '↻'}
+        {isLoading ? '⏳' : '🔄'}
         <span style={{ fontSize: '10px' }}>▾</span>
       </button>
 
