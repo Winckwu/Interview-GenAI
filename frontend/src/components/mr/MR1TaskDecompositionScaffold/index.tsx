@@ -157,6 +157,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   const [dbHistory, setDbHistory] = useState<any[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
+  const [expandedSubtaskId, setExpandedSubtaskId] = useState<string | null>(null);
 
   const historyRef = useRef<TaskDecomposition[]>(persistedState.current?.decompositionHistory || []);
 
@@ -803,29 +804,78 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
 
                         <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem' }}>✅ Subtasks ({item.subtasks?.length || 0}):</h4>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                          {(item.subtasks || []).map((subtask: any, sIdx: number) => (
-                            <div
-                              key={subtask.id || sIdx}
-                              style={{
-                                background: '#f9f9f9',
-                                padding: '0.5rem 0.75rem',
-                                borderRadius: '4px',
-                                borderLeft: '3px solid #0066ff',
-                              }}
-                            >
-                              <div style={{ fontWeight: 500, fontSize: '0.9rem' }}>
-                                {sIdx + 1}. {subtask.description || subtask.title}
+                          {(item.subtasks || []).map((subtask: any, sIdx: number) => {
+                            const subtaskKey = `${item.id}-${subtask.id || sIdx}`;
+                            const isSubtaskExpanded = expandedSubtaskId === subtaskKey;
+                            return (
+                              <div
+                                key={subtask.id || sIdx}
+                                style={{
+                                  background: isSubtaskExpanded ? '#e8f4fd' : '#f9f9f9',
+                                  padding: '0.5rem 0.75rem',
+                                  borderRadius: '4px',
+                                  borderLeft: `3px solid ${isSubtaskExpanded ? '#0066ff' : '#0066ff'}`,
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                }}
+                                onClick={() => setExpandedSubtaskId(isSubtaskExpanded ? null : subtaskKey)}
+                              >
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                  <div style={{ fontWeight: 500, fontSize: '0.9rem' }}>
+                                    {sIdx + 1}. {subtask.description || subtask.title}
+                                  </div>
+                                  <span style={{ color: '#666', fontSize: '0.8rem' }}>
+                                    {isSubtaskExpanded ? '▼' : '▶'}
+                                  </span>
+                                </div>
+                                <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.25rem' }}>
+                                  {subtask.estimatedTime && (
+                                    <small style={{ color: '#666' }}>⏱️ {subtask.estimatedTime} min</small>
+                                  )}
+                                  {subtask.difficulty && (
+                                    <small style={{ color: '#666' }}>
+                                      📊 {subtask.difficulty}
+                                    </small>
+                                  )}
+                                </div>
+
+                                {/* Expanded subtask details */}
+                                {isSubtaskExpanded && (
+                                  <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #ddd' }}>
+                                    {subtask.dependencies && subtask.dependencies.length > 0 && (
+                                      <div style={{ marginBottom: '0.5rem' }}>
+                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>🔗 Dependencies:</strong>
+                                        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#666' }}>
+                                          {subtask.dependencies.join(', ')}
+                                        </p>
+                                      </div>
+                                    )}
+                                    {subtask.verificationMethod && (
+                                      <div style={{ marginBottom: '0.5rem' }}>
+                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>✓ Verification:</strong>
+                                        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#666' }}>
+                                          {subtask.verificationMethod}
+                                        </p>
+                                      </div>
+                                    )}
+                                    {subtask.userModification && (
+                                      <div style={{ marginBottom: '0.5rem' }}>
+                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>✏️ User Modified:</strong>
+                                        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#059669' }}>
+                                          {subtask.userModification}
+                                        </p>
+                                      </div>
+                                    )}
+                                    {!subtask.dependencies?.length && !subtask.verificationMethod && !subtask.userModification && (
+                                      <p style={{ margin: 0, fontSize: '0.85rem', color: '#888', fontStyle: 'italic' }}>
+                                        No additional details available
+                                      </p>
+                                    )}
+                                  </div>
+                                )}
                               </div>
-                              {subtask.estimatedTime && (
-                                <small style={{ color: '#666' }}>⏱️ {subtask.estimatedTime} min</small>
-                              )}
-                              {subtask.difficulty && (
-                                <small style={{ color: '#666', marginLeft: '0.5rem' }}>
-                                  📊 {subtask.difficulty}
-                                </small>
-                              )}
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
 
                         {item.dimensions && item.dimensions.length > 0 && (
