@@ -2162,11 +2162,12 @@ Message: "${firstMessage.slice(0, 200)}"`,
         return <MR10CostBenefitAnalysis taskType={sessionData?.taskType || 'general'} onAnalysisComplete={(a) => console.log('Cost-Benefit:', a)} />;
       case 'mr11-verify':
         return <MR11IntegratedVerification
-          existingLogs={verificationLogs}
+          sessionId={sessionId || undefined}
           onDecisionMade={(log) => setVerificationLogs([...verificationLogs, log])}
           initialContent={verifyingMessageContent}
           messageId={verifyingMessageId || undefined}
           onMessageVerified={handleMR11Decision}
+          compact={true}
         />;
       case 'mr12-critical':
         return <MR12CriticalThinkingScaffolding aiOutput={messages[messages.length - 1]?.content || ''} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />;

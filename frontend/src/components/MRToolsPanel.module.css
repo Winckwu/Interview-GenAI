@@ -305,11 +305,26 @@
 }
 
 /* MR component containers should fill the modal body */
-.modalBody > div {
+.modalBody > div,
+.modalBody > * {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: auto;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure nested containers also fill */
+.modalBody > div > div,
+.modalBody > * > * {
   flex: 1 1 0;
   min-height: 0;
   height: 100%;
-  overflow: auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Scrollbar for modal body */
