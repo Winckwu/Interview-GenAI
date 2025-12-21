@@ -37,7 +37,7 @@ const ComponentLoader: React.FC = () => (
 // MR tool configuration with colors and titles
 const mrTools = [
   { id: 'mr1-decomposition' as ActiveMRTool, label: '📋 1', title: 'Task Decomposition', fullTitle: 'Break down complex tasks', color: '#dcfce7' },
-  { id: 'mr2-transparency' as ActiveMRTool, label: '🔍 2', title: 'Process Transparency', fullTitle: 'View AI reasoning', color: '#dbeafe' },
+  { id: 'mr2-transparency' as ActiveMRTool, label: '🔍 2', title: 'Response Insights', fullTitle: 'Analyze AI responses', color: '#dbeafe' },
   { id: 'mr3-agency' as ActiveMRTool, label: '🎛️ 3', title: 'Agency Control', fullTitle: 'Control AI intervention', color: '#fef3c7' },
   { id: 'mr4-roles' as ActiveMRTool, label: '🎭 4', title: 'Role Definition', fullTitle: 'Define AI roles', color: '#ffedd5' },
   { id: 'mr5-iteration' as ActiveMRTool, label: '🔄 5', title: 'Low-Cost Iteration', fullTitle: 'Branch conversations', color: '#e0f2fe' },

@@ -16,6 +16,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import './styles.css';
 import MarkdownText from '../../common/MarkdownText';
+import { apiService } from '../../../services/api';
 import {
   generateDiff,
   createTimeline,
@@ -42,7 +43,7 @@ export interface InteractionVersion {
   changesSummary?: string;
 }
 
-export type ViewMode = 'timeline' | 'diff' | 'reasoning';
+export type ViewMode = 'insights' | 'timeline' | 'diff' | 'reasoning';
 
 interface MR2Props {
   versions: InteractionVersion[];
@@ -64,7 +65,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   autoTrack = true
 }) => {
   // State management
-  const [viewMode, setViewMode] = useState<ViewMode>('timeline');
+  const [viewMode, setViewMode] = useState<ViewMode>('insights');
   const [selectedVersionId, setSelectedVersionId] = useState<string>(
     versions.length > 0 ? versions[versions.length - 1].id : ''
   );
@@ -77,6 +78,24 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   const [expandedTurnId, setExpandedTurnId] = useState<string | null>(
     versions.length > 0 ? versions[0].id : null
   );
+  // Insights state
+  const [insights, setInsights] = useState<{
+    keyPoints: string[];
+    aiApproach: string;
+    assumptions: string[];
+    missingAspects: string[];
+    suggestedFollowups: string[];
+    isLoading: boolean;
+    error: string | null;
+  }>({
+    keyPoints: [],
+    aiApproach: '',
+    assumptions: [],
+    missingAspects: [],
+    suggestedFollowups: [],
+    isLoading: false,
+    error: null
+  });
 
   // Update expandedTurnId when versions change (e.g., loaded asynchronously)
   useEffect(() => {
@@ -84,6 +103,48 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
       setExpandedTurnId(versions[0].id);
     }
   }, [versions, expandedTurnId]);
+
+  /**
+   * Fetch insights for a specific version
+   */
+  const fetchInsights = useCallback(async (version: InteractionVersion) => {
+    if (!version.userPrompt || !version.aiOutput) return;
+
+    setInsights(prev => ({ ...prev, isLoading: true, error: null }));
+
+    try {
+      const response = await apiService.ai.analyzeResponse(version.userPrompt, version.aiOutput);
+      if (response.data?.success && response.data?.data) {
+        const data = response.data.data;
+        setInsights({
+          keyPoints: data.keyPoints || [],
+          aiApproach: data.aiApproach || '',
+          assumptions: data.assumptions || [],
+          missingAspects: data.missingAspects || [],
+          suggestedFollowups: data.suggestedFollowups || [],
+          isLoading: false,
+          error: null
+        });
+      }
+    } catch (error: any) {
+      console.error('[MR2] Failed to fetch insights:', error);
+      setInsights(prev => ({
+        ...prev,
+        isLoading: false,
+        error: error.message || 'Failed to analyze response'
+      }));
+    }
+  }, []);
+
+  // Auto-fetch insights when selecting a version in insights mode
+  useEffect(() => {
+    if (viewMode === 'insights' && expandedTurnId) {
+      const version = versions.find(v => v.id === expandedTurnId);
+      if (version) {
+        fetchInsights(version);
+      }
+    }
+  }, [viewMode, expandedTurnId, versions, fetchInsights]);
 
   /**
    * Check if two prompts are similar (indicating a refinement/regeneration vs new topic)
@@ -269,6 +330,128 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
     },
     [versions, sessionId, onExport]
   );
+
+  /**
+   * Render insights view - AI response analysis
+   */
+  const renderInsightsView = () => {
+    const selectedVersion = expandedTurnId
+      ? versions.find(v => v.id === expandedTurnId)
+      : versions[versions.length - 1];
+
+    if (!selectedVersion) {
+      return (
+        <div className="mr2-empty-state">
+          <p>No conversation to analyze yet. Start a conversation first.</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mr2-insights-view">
+        {/* Question & Response Summary */}
+        <div className="mr2-insights-context">
+          <div className="mr2-insights-question">
+            <strong>📝 Question:</strong>
+            <p>{selectedVersion.userPrompt}</p>
+          </div>
+        </div>
+
+        {/* Loading State */}
+        {insights.isLoading && (
+          <div className="mr2-insights-loading">
+            <div className="mr2-loading-spinner"></div>
+            <p>Analyzing response...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {insights.error && (
+          <div className="mr2-insights-error">
+            <p>⚠️ {insights.error}</p>
+            <button onClick={() => fetchInsights(selectedVersion)}>Retry</button>
+          </div>
+        )}
+
+        {/* Insights Content */}
+        {!insights.isLoading && !insights.error && (
+          <div className="mr2-insights-content">
+            {/* Key Points */}
+            {insights.keyPoints.length > 0 && (
+              <div className="mr2-insight-section mr2-insight-keypoints">
+                <h3>🎯 Key Points</h3>
+                <ul>
+                  {insights.keyPoints.map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* AI's Approach */}
+            {insights.aiApproach && (
+              <div className="mr2-insight-section mr2-insight-approach">
+                <h3>💭 How AI Approached This</h3>
+                <p>{insights.aiApproach}</p>
+              </div>
+            )}
+
+            {/* Assumptions */}
+            {insights.assumptions.length > 0 && (
+              <div className="mr2-insight-section mr2-insight-assumptions">
+                <h3>⚠️ Assumptions Made</h3>
+                <ul>
+                  {insights.assumptions.map((assumption, idx) => (
+                    <li key={idx}>{assumption}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Missing Aspects */}
+            {insights.missingAspects.length > 0 && (
+              <div className="mr2-insight-section mr2-insight-missing">
+                <h3>🔍 What Might Be Missing</h3>
+                <ul>
+                  {insights.missingAspects.map((aspect, idx) => (
+                    <li key={idx}>{aspect}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Suggested Follow-ups */}
+            {insights.suggestedFollowups.length > 0 && (
+              <div className="mr2-insight-section mr2-insight-followups">
+                <h3>💡 Suggested Follow-up Questions</h3>
+                <div className="mr2-followup-list">
+                  {insights.suggestedFollowups.map((followup, idx) => (
+                    <div key={idx} className="mr2-followup-item">
+                      <span className="mr2-followup-icon">→</span>
+                      <span>{followup}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Empty state if no insights */}
+            {!insights.keyPoints.length && !insights.aiApproach && !insights.assumptions.length && (
+              <div className="mr2-insights-empty">
+                <p>Click "Analyze" to get insights on this response.</p>
+                <button
+                  className="mr2-btn-analyze"
+                  onClick={() => fetchInsights(selectedVersion)}
+                >
+                  🔍 Analyze Response
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   /**
    * Render timeline view - shows selected turn content in main view
@@ -713,10 +896,17 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   return (
     <div className="mr2-container">
       <div className="mr2-header">
-        <h1 className="mr2-title">📊 Process Transparency</h1>
-        <p className="mr2-subtitle">Track how outputs evolved through iterations</p>
+        <h1 className="mr2-title">🔍 AI Response Insights</h1>
+        <p className="mr2-subtitle">Understand and analyze AI responses</p>
 
         <div className="mr2-view-tabs">
+          <button
+            className={`mr2-tab ${viewMode === 'insights' ? 'active' : ''}`}
+            onClick={() => setViewMode('insights')}
+            title="Get key insights and analysis of AI responses"
+          >
+            💡 Insights
+          </button>
           <button
             className={`mr2-tab ${viewMode === 'timeline' ? 'active' : ''}`}
             onClick={() => setViewMode('timeline')}
@@ -761,6 +951,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
         {versions.length > 0 && renderVersionSelector()}
 
         <div className="mr2-main-view">
+          {viewMode === 'insights' && renderInsightsView()}
           {viewMode === 'timeline' && renderTimelineView()}
           {viewMode === 'diff' && renderDiffView()}
           {viewMode === 'reasoning' && renderReasoningView()}

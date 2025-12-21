@@ -418,6 +418,70 @@ Return ONLY valid JSON, no markdown or explanations.`;
 );
 
 /**
+ * POST /api/ai/mr/insights
+ * MR2: Analyze AI response and provide insights
+ */
+router.post(
+  '/mr/insights',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { userPrompt, aiResponse } = req.body;
+
+    if (!userPrompt || !aiResponse) {
+      return res.status(400).json({
+        success: false,
+        error: 'Both userPrompt and aiResponse are required',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const prompt = `You are an AI response analyst. Analyze this AI response and provide insights to help the user better understand and evaluate it.
+
+User's Question:
+"${userPrompt}"
+
+AI's Response:
+"${aiResponse}"
+
+Provide analysis in this exact JSON format:
+{
+  "keyPoints": ["main point 1", "main point 2", "main point 3"],
+  "aiApproach": "Brief description of how the AI approached this question (1-2 sentences)",
+  "assumptions": ["assumption the AI made 1", "assumption 2"],
+  "missingAspects": ["aspect that might be missing or could be explored further"],
+  "suggestedFollowups": ["follow-up question 1 to get more details", "follow-up question 2"]
+}
+
+Guidelines:
+- keyPoints: Extract 2-4 main takeaways from the response
+- aiApproach: Describe the AI's strategy/method in answering
+- assumptions: List any implicit assumptions the AI made
+- missingAspects: What the response might not cover or could improve
+- suggestedFollowups: 2-3 specific follow-up questions the user could ask
+
+Return ONLY valid JSON, no markdown or explanations.`;
+
+    try {
+      const aiAnalysis = await callOpenAI(prompt);
+      const parsed = JSON.parse(aiAnalysis.content);
+
+      res.json({
+        success: true,
+        data: parsed,
+        usage: aiAnalysis.usage,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Failed to analyze response',
+        timestamp: new Date().toISOString(),
+      });
+    }
+  })
+);
+
+/**
  * POST /api/ai/mr/variants
  * MR5: Generate prompt variants with different styles
  */

@@ -346,6 +346,10 @@ export const apiService = {
     decompose: (task: string, strategy: string = 'sequential') =>
       api.post('/ai/mr/decompose', { task, strategy }, { timeout: 30000 }),
 
+    // MR2: Response Insights (30s timeout)
+    analyzeResponse: (userPrompt: string, aiResponse: string) =>
+      api.post('/ai/mr/insights', { userPrompt, aiResponse }, { timeout: 30000 }),
+
     // MR5: Generate Variants (60s - generates multiple responses)
     generateVariants: (prompt: string, count: number = 3) =>
       api.post('/ai/mr/variants', { prompt, count }, { timeout: 60000 }),
