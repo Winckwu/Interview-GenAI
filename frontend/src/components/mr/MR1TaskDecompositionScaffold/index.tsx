@@ -792,7 +792,10 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
 
                     {/* Expanded Details */}
                     {isExpanded && (
-                      <div style={{ marginTop: '1rem', borderTop: '1px solid #ddd', paddingTop: '1rem' }}>
+                      <div
+                        style={{ marginTop: '1rem', borderTop: '1px solid #ddd', paddingTop: '1rem' }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem' }}>📋 Full Task:</h4>
                         <p style={{ margin: '0 0 1rem 0', background: '#f5f5f5', padding: '0.5rem', borderRadius: '4px', fontSize: '0.9rem' }}>
                           {item.originalTask}
