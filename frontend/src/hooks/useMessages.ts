@@ -523,18 +523,31 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       // Callback for success
       onSendSuccess?.(interaction);
     } catch (err: any) {
-      console.error('Send message error:', err);
+      // Check if this is an abort (user clicked stop button)
+      const isAbort = err.name === 'AbortError' || err.message?.includes('aborted');
 
-      // Remove placeholder messages on error
-      setMessages((prev) => prev.filter((msg) => msg.id !== tempId && msg.id !== `user-${tempId}`));
+      if (isAbort) {
+        // User stopped the streaming - remove the user message and AI placeholder
+        console.log('[useMessages] Streaming aborted by user');
+        setMessages((prev) => prev.filter((msg) => msg.id !== tempId && msg.id !== `user-${tempId}`));
+        setIsStreaming(false);
+        setStreamingContent('');
+        // Don't show error for user-initiated abort
+      } else {
+        console.error('Send message error:', err);
 
-      const errorMsg = err.message || 'Failed to send message';
-      setError(errorMsg);
-      onError?.(errorMsg);
-      setIsStreaming(false);
-      setStreamingContent('');
+        // Remove placeholder messages on error
+        setMessages((prev) => prev.filter((msg) => msg.id !== tempId && msg.id !== `user-${tempId}`));
+
+        const errorMsg = err.message || 'Failed to send message';
+        setError(errorMsg);
+        onError?.(errorMsg);
+        setIsStreaming(false);
+        setStreamingContent('');
+      }
     } finally {
       setLoading(false);
+      abortControllerRef.current = null;
     }
   }, [sessionId, messages, systemPrompt, currentBranchPath, addInteraction, onSendSuccess, onError]);
 
