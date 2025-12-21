@@ -134,7 +134,8 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     setAiError(null);
 
     try {
-      const token = localStorage.getItem('token');
+      const authStorage = localStorage.getItem('auth-storage');
+      const token = authStorage ? JSON.parse(authStorage).state?.token : null;
       const response = await fetch(`${API_BASE}/ai/mr/thinking-questions`, {
         method: 'POST',
         headers: {
@@ -193,7 +194,8 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   const saveRecord = useCallback(async (finalResponses: UserResponse[], needsVerification: boolean) => {
     setIsSaving(true);
     try {
-      const token = localStorage.getItem('token');
+      const authStorage = localStorage.getItem('auth-storage');
+      const token = authStorage ? JSON.parse(authStorage).state?.token : null;
       const response = await fetch(`${API_BASE}/thinking-records`, {
         method: 'POST',
         headers: {

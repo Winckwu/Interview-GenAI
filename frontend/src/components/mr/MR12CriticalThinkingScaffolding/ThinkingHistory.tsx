@@ -44,7 +44,8 @@ export const ThinkingHistory: React.FC<ThinkingHistoryProps> = ({
     setError(null);
 
     try {
-      const token = localStorage.getItem('token');
+      const authStorage = localStorage.getItem('auth-storage');
+      const token = authStorage ? JSON.parse(authStorage).state?.token : null;
       const params = new URLSearchParams();
       if (sessionId) params.append('sessionId', sessionId);
       params.append('limit', '10');
