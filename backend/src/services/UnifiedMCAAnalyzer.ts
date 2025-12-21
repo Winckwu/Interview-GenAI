@@ -108,8 +108,8 @@ If triggered, generate 3 reflection questions.
 **MR12 (Critical Thinking)** - Trigger if: verificationIntent == false AND aiRelianceDegree > 2
 If triggered, generate critical thinking prompts.
 
-**MR18 (Over-Dependence Warning)** - Trigger if: aiRelianceDegree >= 3 AND verificationIntent == false AND reflectionDepth < 1
-This is a serious pattern - use tier "hard" for this MR.
+**MR18 (Over-Dependence Warning)** - Trigger if: aiRelianceDegree >= 3 AND verificationIntent == false AND reflectionDepth < 1 AND turnCount > 3
+This is a warning pattern - ONLY trigger after user has had at least 3 exchanges with AI. Do NOT trigger on first few messages.
 
 ### 4. Tier Selection Guidelines (CRITICAL - Follow Strictly)
 For each triggered MR, assign the appropriate tier:
@@ -117,7 +117,8 @@ For each triggered MR, assign the appropriate tier:
 - **"soft"**: DEFAULT tier. Use for most MRs (MR1, MR13, MR14, etc.). Gentle blue notification.
 
 - **"medium"**: Use sparingly for moderate concerns. Orange popup alert.
-  Criteria: aiRelianceDegree >= 2 AND (verificationIntent == false OR reflectionDepth < 1)
+  Criteria: aiRelianceDegree >= 2 AND (verificationIntent == false OR reflectionDepth < 1) AND turnCount > 2
+  IMPORTANT: Never use medium tier on the first 2 turns of a conversation.
 
 - **"hard"**: RARELY USED. Red blocking modal. Use ONLY for MR18 AND ALL of these must be true:
   * aiRelianceDegree == 3 (MUST be exactly 3, complete reliance)
