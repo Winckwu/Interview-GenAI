@@ -506,6 +506,9 @@ const ChatSessionPage: React.FC = () => {
   const [verifyingMessageId, setVerifyingMessageId] = useState<string | null>(null);
   const [verifyingMessageContent, setVerifyingMessageContent] = useState<string>('');
 
+  // MR12 context: Track the message being critically evaluated
+  const [mr12TargetContent, setMr12TargetContent] = useState<string>('');
+
   // MR2 context: Track the message to show insights for
   const [selectedInsightsMessageId, setSelectedInsightsMessageId] = useState<string | null>(null);
 
@@ -1351,6 +1354,21 @@ Message: "${firstMessage.slice(0, 200)}"`,
   }, [messages, setActiveMRTool, setShowMRToolsSection]);
 
   /**
+   * handleCriticalThinking - Opens MR12 Critical Thinking for a specific message
+   * Allows user to critically evaluate a specific AI response
+   */
+  const handleCriticalThinking = useCallback((messageId: string, content: string) => {
+    // Store the message content for MR12
+    setMr12TargetContent(content);
+
+    // Set the MR12 tool as active and show the MR tools section
+    setActiveMRTool('mr12-critical');
+    setShowMRToolsSection(true);
+
+    console.log('[Chat] Opening critical thinking for message:', messageId);
+  }, [setActiveMRTool, setShowMRToolsSection]);
+
+  /**
    * handleRegenerate - Regenerate AI response for a message
    * Finds the corresponding user message and re-sends it to get a new response
    */
@@ -2170,7 +2188,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
           compact={true}
         />;
       case 'mr12-critical':
-        return <MR12CriticalThinkingScaffolding aiOutput={messages[messages.length - 1]?.content || ''} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} />;
+        return <MR12CriticalThinkingScaffolding aiOutput={mr12TargetContent || messages[messages.length - 1]?.content || ''} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} compact={true} />;
       case 'mr13-uncertainty':
         return <MR13TransparentUncertainty onAnalysisComplete={(u) => console.log('Uncertainty:', u)} onOpenMR11={openMR11Verification} onOpenMR6={openMR6CrossModel} />;
       case 'mr14-reflection':
@@ -4344,6 +4362,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 onModify={markAsModifiedWithFeedback}
                 onRegenerate={handleRegenerate}
                 onViewInsights={handleViewInsights}
+                onCriticalThinking={handleCriticalThinking}
                 onEditUserMessage={(messageId) => {
                   const message = messages.find(m => m.id === messageId);
                   if (message) {

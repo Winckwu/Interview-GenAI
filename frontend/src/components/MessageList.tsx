@@ -59,6 +59,7 @@ export interface MessageListProps {
   onModify: (messageId: string) => void;
   onRegenerate?: (messageId: string, options: RegenerateOptions) => void; // Regenerate AI response with options
   onViewInsights?: (messageId: string) => void; // Open MR2 insights for this message
+  onCriticalThinking?: (messageId: string, content: string) => void; // Open MR12 Critical Thinking for this message
   onEditUserMessage?: (messageId: string) => void; // Edit user message and regenerate
 
   // Branch navigation
@@ -119,6 +120,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   onModify,
   onRegenerate,
   onViewInsights,
+  onCriticalThinking,
   onEditUserMessage,
   onBranchSwitch,
   onBranchDelete,
@@ -243,6 +245,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             onModify={() => onModify(message.id)}
             onRegenerate={message.role === 'ai' && onRegenerate ? (options) => onRegenerate(message.id, options) : undefined}
             onViewInsights={message.role === 'ai' && onViewInsights ? () => onViewInsights(message.id) : undefined}
+            onCriticalThinking={message.role === 'ai' && onCriticalThinking ? (content: string) => onCriticalThinking(message.id, content) : undefined}
             onEditUserMessage={message.role === 'user' && onEditUserMessage ? () => onEditUserMessage(message.id) : undefined}
             onBranchPrev={onBranchSwitch ? () => onBranchSwitch(message.id, 'prev') : undefined}
             onBranchNext={onBranchSwitch ? () => onBranchSwitch(message.id, 'next') : undefined}

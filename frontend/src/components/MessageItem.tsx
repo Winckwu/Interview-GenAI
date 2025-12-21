@@ -42,6 +42,7 @@ export interface MessageItemProps {
   onModify: () => void;
   onRegenerate?: (options: RegenerateOptions) => void; // Regenerate AI response with model/branch options
   onViewInsights?: () => void; // Open MR2 insights for this message
+  onCriticalThinking?: (content: string) => void; // Open MR12 Critical Thinking for this message
   onEditUserMessage?: () => void; // Edit user message (creates new branch)
 
   // Branch navigation
@@ -82,6 +83,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onModify,
   onRegenerate,
   onViewInsights,
+  onCriticalThinking,
   onEditUserMessage,
   onBranchPrev,
   onBranchNext,
@@ -813,6 +815,17 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                       style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
                     >
                       🔍 Insights
+                    </button>
+                  )}
+                  {showInsightsButton && onCriticalThinking && (
+                    <button
+                      onClick={() => onCriticalThinking(currentContent)}
+                      disabled={isUpdating}
+                      title="🧠 THINK: Critically evaluate this AI response"
+                      className={`${styles.actionButton} ${styles.thinkButton}`}
+                      style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
+                    >
+                      🧠 Think
                     </button>
                   )}
                   {onRegenerate && (
