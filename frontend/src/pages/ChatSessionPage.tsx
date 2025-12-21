@@ -1369,10 +1369,11 @@ Message: "${firstMessage.slice(0, 200)}"`,
     setMessages(prev => prev.filter(m => m.id !== aiMessageId));
 
     // Re-send the user message to get a new AI response
-    await handleSendMessage(userMessage.content, conversationHistory);
+    // Use sendMessage (from hook) not handleSendMessage (form wrapper)
+    await sendMessage(userMessage.content, conversationHistory);
 
     console.log('[Chat] Regenerating response for message:', aiMessageId);
-  }, [messages, handleSendMessage, setMessages]);
+  }, [messages, sendMessage, setMessages]);
 
   /**
    * handleMR11Decision - Called when user makes a decision in MR11
