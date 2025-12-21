@@ -148,6 +148,11 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   const fetchInsights = useCallback(async (version: InteractionVersion) => {
     if (!version.userPrompt || !version.aiOutput) return;
 
+    // DEBUG: Log what we're checking
+    console.log('[MR2] fetchInsights called for:', version.id);
+    console.log('[MR2] version.insights:', version.insights);
+    console.log('[MR2] insightsCache has:', insightsCache.has(version.id));
+
     // 1. Check local cache first (for insights we just fetched in this session)
     const cachedInsights = insightsCache.get(version.id);
     if (cachedInsights && Object.keys(cachedInsights).length > 0) {
