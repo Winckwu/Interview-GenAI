@@ -45,6 +45,18 @@
   border-bottom: 1px solid var(--mr12-border, #e0e0e0);
 }
 
+.mr12-preview-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mr12-preview-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--mr12-secondary, #666);
+}
+
 .mr12-type-badge {
   display: inline-flex;
   align-items: center;

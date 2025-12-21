@@ -238,13 +238,16 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   // Render main evaluation flow
   return (
     <div className={`mr12-container ${compact ? 'mr12-compact' : ''}`}>
-      {/* Content Preview (collapsible) */}
+      {/* Content Preview - Latest AI Response */}
       {aiOutput && (
         <div className="mr12-content-preview">
           <div className="mr12-preview-header">
-            <span className="mr12-type-badge" style={{ background: typeInfo.color }}>
-              {typeInfo.icon} {typeInfo.label}
-            </span>
+            <div className="mr12-preview-title">
+              <span className="mr12-preview-label">Latest AI Response</span>
+              <span className="mr12-type-badge" style={{ background: typeInfo.color }}>
+                {typeInfo.icon} {typeInfo.label}
+              </span>
+            </div>
             <button
               className="mr12-change-type-btn"
               onClick={() => {
