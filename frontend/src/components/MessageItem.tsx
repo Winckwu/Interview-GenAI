@@ -498,7 +498,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   ◀
                 </button>
                 <span style={{ fontWeight: '500', color: '#374151', whiteSpace: 'nowrap' }}>
-                  {branchInfo.label} ({currentBranchIndex + 1}/{filteredTotalBranches})
+                  {branchInfo.label} ({currentBranchIndex + 1}/{totalBranches})
                 </span>
 
                 {/* Branch metadata info button */}
