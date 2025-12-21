@@ -60,6 +60,15 @@ export interface Message {
 
   // AI reasoning (chain of thought)
   reasoning?: string;
+
+  // MR2: AI Response Insights (stored in database)
+  insights?: {
+    keyPoints?: string[];
+    aiApproach?: string;
+    assumptions?: string[];
+    missingAspects?: string[];
+    suggestedFollowups?: string[];
+  };
 }
 
 export interface UseMessagesOptions {
@@ -233,7 +242,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
             timestamp: interaction.createdAt,
           });
 
-          // Add AI message with branches
+          // Add AI message with branches and insights
           pageMessages.push({
             id: interaction.id,
             role: 'ai',
@@ -243,6 +252,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
             wasModified: interaction.wasModified,
             wasRejected: interaction.wasRejected,
             reasoning: interaction.reasoning, // AI chain-of-thought reasoning
+            insights: interaction.insights, // MR2: Stored insights from database
             branches: interaction.branches?.map((branch: any) => ({
               id: branch.id,
               content: branch.content,

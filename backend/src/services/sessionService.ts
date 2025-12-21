@@ -19,6 +19,14 @@ export interface WorkSession {
   updatedAt: Date;
 }
 
+export interface InsightsData {
+  keyPoints?: string[];
+  aiApproach?: string;
+  assumptions?: string[];
+  missingAspects?: string[];
+  suggestedFollowups?: string[];
+}
+
 export interface Interaction {
   id: string;
   sessionId: string;
@@ -30,6 +38,7 @@ export interface Interaction {
   wasVerified: boolean;
   wasModified: boolean;
   wasRejected: boolean;
+  insights?: InsightsData;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -318,6 +327,36 @@ export class SessionService {
     };
   }
 
+  /**
+   * Update interaction insights (MR2: AI Response Insights)
+   */
+  async updateInteractionInsights(
+    interactionId: string,
+    insights: InsightsData
+  ): Promise<Interaction | null> {
+    const result = await pool.query(
+      `UPDATE interactions
+       SET insights = $1, updated_at = $2
+       WHERE id = $3
+       RETURNING *`,
+      [JSON.stringify(insights), new Date(), interactionId]
+    );
+
+    return result.rows.length > 0 ? this.mapToInteraction(result.rows[0]) : null;
+  }
+
+  /**
+   * Get interaction by ID
+   */
+  async getInteraction(interactionId: string): Promise<Interaction | null> {
+    const result = await pool.query(
+      'SELECT * FROM interactions WHERE id = $1',
+      [interactionId]
+    );
+
+    return result.rows.length > 0 ? this.mapToInteraction(result.rows[0]) : null;
+  }
+
   private mapToInteraction(row: any): Interaction {
     return {
       id: row.id,
@@ -330,6 +369,7 @@ export class SessionService {
       wasVerified: row.was_verified,
       wasModified: row.was_modified,
       wasRejected: row.was_rejected,
+      insights: row.insights,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     };

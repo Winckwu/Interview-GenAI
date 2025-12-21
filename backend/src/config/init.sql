@@ -50,9 +50,19 @@ CREATE TABLE IF NOT EXISTS interactions (
   was_verified BOOLEAN DEFAULT FALSE,
   was_modified BOOLEAN DEFAULT FALSE,
   was_rejected BOOLEAN DEFAULT FALSE,
+  reasoning TEXT,
+  insights JSONB,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Add insights column if not exists (for existing databases)
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'interactions' AND column_name = 'insights') THEN
+    ALTER TABLE interactions ADD COLUMN insights JSONB;
+  END IF;
+END $$;
 
 CREATE INDEX IF NOT EXISTS idx_interactions_session ON interactions(session_id);
 CREATE INDEX IF NOT EXISTS idx_interactions_user ON interactions(user_id);

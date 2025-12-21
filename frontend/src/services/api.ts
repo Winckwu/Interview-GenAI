@@ -205,6 +205,10 @@ export const apiService = {
     updateInteraction: (sessionId: string, interactionId: string, data: any) =>
       api.patch(`/sessions/${sessionId}/interactions/${interactionId}`, data),
 
+    // MR2: Save insights for an interaction
+    saveInsights: (sessionId: string, interactionId: string, insights: any) =>
+      api.patch(`/sessions/${sessionId}/interactions/${interactionId}/insights`, { insights }),
+
     getStats: (sessionId: string) => api.get(`/sessions/${sessionId}/stats`),
   },
 

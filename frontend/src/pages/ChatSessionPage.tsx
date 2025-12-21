@@ -1867,6 +1867,8 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 modelName: 'AI Assistant',
                 confidenceScore: 0.85,
                 reasoning: aiMsg.reasoning, // Pass AI reasoning for MR2 Reasoning tab
+                insights: aiMsg.insights, // MR2: Pass stored insights from database
+                sessionId: sessionId || '', // MR2: Pass sessionId for saving insights
               });
             }
             return acc;

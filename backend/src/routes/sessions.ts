@@ -305,6 +305,43 @@ router.patch(
 );
 
 /**
+ * PATCH /api/sessions/:sessionId/interactions/:interactionId/insights
+ * Update interaction insights (MR2: AI Response Insights)
+ */
+router.patch(
+  '/:sessionId/interactions/:interactionId/insights',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { interactionId } = req.params;
+    const { insights } = req.body;
+
+    if (!insights) {
+      return res.status(400).json({
+        success: false,
+        error: 'Insights data is required',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const interaction = await SessionService.updateInteractionInsights(interactionId, insights);
+
+    if (!interaction) {
+      return res.status(404).json({
+        success: false,
+        error: 'Interaction not found',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    res.json({
+      success: true,
+      data: interaction,
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
  * GET /api/sessions/:sessionId/stats
  * Get session statistics
  */

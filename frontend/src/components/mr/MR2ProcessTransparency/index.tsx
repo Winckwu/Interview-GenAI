@@ -30,6 +30,14 @@ import {
   type ChainOfThoughtStep
 } from './utils';
 
+export interface InsightsData {
+  keyPoints?: string[];
+  aiApproach?: string;
+  assumptions?: string[];
+  missingAspects?: string[];
+  suggestedFollowups?: string[];
+}
+
 export interface InteractionVersion {
   id: string;
   timestamp: Date;
@@ -41,6 +49,8 @@ export interface InteractionVersion {
   confidenceScore?: number;
   userAnnotation?: string;
   changesSummary?: string;
+  insights?: InsightsData; // Stored insights from database
+  sessionId?: string; // Session ID for saving insights
 }
 
 export type ViewMode = 'insights' | 'timeline' | 'diff' | 'reasoning';
@@ -106,9 +116,26 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
 
   /**
    * Fetch insights for a specific version
+   * First checks if insights are already stored in the database
+   * If not, calls API and saves the result
    */
   const fetchInsights = useCallback(async (version: InteractionVersion) => {
     if (!version.userPrompt || !version.aiOutput) return;
+
+    // Check if insights already exist in the version data (from database)
+    if (version.insights && Object.keys(version.insights).length > 0) {
+      console.log('[MR2] Using cached insights from database');
+      setInsights({
+        keyPoints: version.insights.keyPoints || [],
+        aiApproach: version.insights.aiApproach || '',
+        assumptions: version.insights.assumptions || [],
+        missingAspects: version.insights.missingAspects || [],
+        suggestedFollowups: version.insights.suggestedFollowups || [],
+        isLoading: false,
+        error: null
+      });
+      return;
+    }
 
     setInsights(prev => ({ ...prev, isLoading: true, error: null }));
 
@@ -116,15 +143,30 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
       const response = await apiService.ai.analyzeResponse(version.userPrompt, version.aiOutput);
       if (response.data?.success && response.data?.data) {
         const data = response.data.data;
-        setInsights({
+        const insightsData = {
           keyPoints: data.keyPoints || [],
           aiApproach: data.aiApproach || '',
           assumptions: data.assumptions || [],
           missingAspects: data.missingAspects || [],
-          suggestedFollowups: data.suggestedFollowups || [],
+          suggestedFollowups: data.suggestedFollowups || []
+        };
+
+        setInsights({
+          ...insightsData,
           isLoading: false,
           error: null
         });
+
+        // Save insights to database if we have session ID
+        if (version.sessionId && version.id) {
+          try {
+            await apiService.sessions.saveInsights(version.sessionId, version.id, insightsData);
+            console.log('[MR2] Insights saved to database');
+          } catch (saveError) {
+            console.warn('[MR2] Failed to save insights to database:', saveError);
+            // Don't show error to user - insights still work, just not cached
+          }
+        }
       }
     } catch (error: any) {
       console.error('[MR2] Failed to fetch insights:', error);
