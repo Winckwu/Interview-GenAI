@@ -90,7 +90,12 @@ export async function generateInitialDecomposition(
         verificationMethod: s.verificationMethod || 'Review and verify completion',
         userApproved: false,
         estimatedTime: parseInt(s.estimatedTime) || 30,
-        difficulty: s.difficulty || 'medium'
+        difficulty: s.difficulty || 'medium',
+        // Enhanced guidance fields
+        howToApproach: s.howToApproach || [],
+        tips: s.tips || [],
+        aiCanHelp: s.aiCanHelp || [],
+        resources: s.resources || []
       }));
 
       return {

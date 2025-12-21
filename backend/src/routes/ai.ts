@@ -353,7 +353,7 @@ router.post(
       });
     }
 
-    const prompt = `You are a task decomposition expert. Analyze and break down this task into manageable subtasks.
+    const prompt = `You are a task decomposition expert and mentor. Analyze and break down this task into manageable subtasks with actionable guidance.
 
 Task: "${task}"
 Strategy: ${strategy}
@@ -374,10 +374,21 @@ Return a JSON object with this exact structure:
       "description": "what needs to be done",
       "dependencies": ["id of dependent tasks"],
       "estimatedTime": "time in minutes",
-      "difficulty": "low/medium/high"
+      "difficulty": "low/medium/high",
+      "verificationMethod": "how to verify this subtask is complete",
+      "howToApproach": ["step 1: specific action", "step 2: specific action", "step 3: specific action"],
+      "tips": ["practical tip 1", "practical tip 2"],
+      "aiCanHelp": ["specific way AI can assist", "another way AI can help"],
+      "resources": ["tool or reference that might help"]
     }
   ]
 }
+
+IMPORTANT: For each subtask, provide:
+- howToApproach: 2-4 concrete steps the user should take
+- tips: 1-2 practical tips or best practices
+- aiCanHelp: 1-2 specific ways AI can assist with this subtask
+- resources: any tools, references, or skills needed
 
 Use ${strategy} decomposition strategy:
 - sequential: tasks must be done in order

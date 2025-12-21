@@ -842,33 +842,76 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
                                 {/* Expanded subtask details */}
                                 {isSubtaskExpanded && (
                                   <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #ddd' }}>
-                                    {subtask.dependencies && subtask.dependencies.length > 0 && (
+                                    {/* How to Approach - Most important */}
+                                    {subtask.howToApproach && subtask.howToApproach.length > 0 && (
+                                      <div style={{ marginBottom: '0.75rem', background: '#f0fdf4', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #bbf7d0' }}>
+                                        <strong style={{ fontSize: '0.85rem', color: '#166534', display: 'block', marginBottom: '0.5rem' }}>📋 How to Approach:</strong>
+                                        <ol style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.85rem', color: '#166534' }}>
+                                          {subtask.howToApproach.map((step: string, i: number) => (
+                                            <li key={i} style={{ marginBottom: '0.25rem' }}>{step}</li>
+                                          ))}
+                                        </ol>
+                                      </div>
+                                    )}
+
+                                    {/* Tips */}
+                                    {subtask.tips && subtask.tips.length > 0 && (
+                                      <div style={{ marginBottom: '0.75rem', background: '#fefce8', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #fef08a' }}>
+                                        <strong style={{ fontSize: '0.85rem', color: '#854d0e', display: 'block', marginBottom: '0.5rem' }}>💡 Tips:</strong>
+                                        <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.85rem', color: '#854d0e' }}>
+                                          {subtask.tips.map((tip: string, i: number) => (
+                                            <li key={i} style={{ marginBottom: '0.25rem' }}>{tip}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+
+                                    {/* AI Can Help */}
+                                    {subtask.aiCanHelp && subtask.aiCanHelp.length > 0 && (
+                                      <div style={{ marginBottom: '0.75rem', background: '#eff6ff', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #bfdbfe' }}>
+                                        <strong style={{ fontSize: '0.85rem', color: '#1e40af', display: 'block', marginBottom: '0.5rem' }}>🤖 AI Can Help With:</strong>
+                                        <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.85rem', color: '#1e40af' }}>
+                                          {subtask.aiCanHelp.map((help: string, i: number) => (
+                                            <li key={i} style={{ marginBottom: '0.25rem' }}>{help}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+
+                                    {/* Resources */}
+                                    {subtask.resources && subtask.resources.length > 0 && (
                                       <div style={{ marginBottom: '0.5rem' }}>
-                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>🔗 Dependencies:</strong>
+                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>📚 Resources:</strong>
                                         <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#666' }}>
-                                          {subtask.dependencies.join(', ')}
+                                          {subtask.resources.join(', ')}
                                         </p>
                                       </div>
                                     )}
+
+                                    {/* Verification */}
                                     {subtask.verificationMethod && (
                                       <div style={{ marginBottom: '0.5rem' }}>
-                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>✓ Verification:</strong>
+                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>✓ How to Verify:</strong>
                                         <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#666' }}>
                                           {subtask.verificationMethod}
                                         </p>
                                       </div>
                                     )}
-                                    {subtask.userModification && (
+
+                                    {/* Dependencies */}
+                                    {subtask.dependencies && subtask.dependencies.length > 0 && (
                                       <div style={{ marginBottom: '0.5rem' }}>
-                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>✏️ User Modified:</strong>
-                                        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#059669' }}>
-                                          {subtask.userModification}
+                                        <strong style={{ fontSize: '0.85rem', color: '#444' }}>🔗 Depends On:</strong>
+                                        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#666' }}>
+                                          {subtask.dependencies.join(', ')}
                                         </p>
                                       </div>
                                     )}
-                                    {!subtask.dependencies?.length && !subtask.verificationMethod && !subtask.userModification && (
+
+                                    {/* Fallback if no guidance */}
+                                    {!subtask.howToApproach?.length && !subtask.tips?.length && !subtask.aiCanHelp?.length && !subtask.verificationMethod && (
                                       <p style={{ margin: 0, fontSize: '0.85rem', color: '#888', fontStyle: 'italic' }}>
-                                        No additional details available
+                                        No detailed guidance available for this historical task.
                                       </p>
                                     )}
                                   </div>
