@@ -130,6 +130,12 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
 
           const data = analyzeResponse.data.data;
 
+          // DEBUG: Log raw backend response
+          console.log('[MCAOrchestrator] Raw backend response:', {
+            activeMRs: data.activeMRs,
+            pattern: data.pattern,
+          });
+
           // Convert unified analysis result to orchestrator result
           const activeMRs: ActiveMR[] = (data.activeMRs || []).map((mr: any) => ({
             mrId: mr.mrId,
@@ -141,6 +147,9 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
             tier: mr.tier,
             content: mr.content,
           }));
+
+          // DEBUG: Log converted activeMRs
+          console.log('[MCAOrchestrator] Converted activeMRs:', activeMRs);
 
           orchestrationResult = {
             signals: data.signals ? {
