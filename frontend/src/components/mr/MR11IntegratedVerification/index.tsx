@@ -352,7 +352,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       </div>
 
       {/* Content */}
-      <div className="mr11-content" ref={containerRef} style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+      <div className="mr11-content" ref={containerRef} style={compact ? undefined : { maxHeight: '70vh', overflowY: 'auto' }}>
         {/* Verify Tab */}
         {activeTab === 'verify' && (
           <div className="mr11-verify">
