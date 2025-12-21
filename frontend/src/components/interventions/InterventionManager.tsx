@@ -539,6 +539,15 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
    * Only runs if no backend activeMRs are available
    */
   useEffect(() => {
+    // DEBUG: Log check conditions
+    console.log('[InterventionManager] Check conditions:', {
+      activeMRsLength: activeMRs.length,
+      messagesLength: messages.length,
+      minMessagesForDetection,
+      isAnalyzing,
+      willSkip: activeMRs.length > 0 || messages.length < minMessagesForDetection || isAnalyzing
+    });
+
     // Skip if we have backend MRs or messages too short or analyzing
     if (activeMRs.length > 0 || messages.length < minMessagesForDetection || isAnalyzing) {
       return;
@@ -553,9 +562,27 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         // Run pattern detection
         const detection = detectPatternF(signals, messages);
 
+        // DEBUG: Log detection results
+        console.log('[InterventionManager] Pattern Detection:', {
+          messageCount: messages.length,
+          aiMessageCount: messages.filter(m => m.role === 'ai').length,
+          signals: {
+            verificationRate: signals.verificationRate,
+            modificationRate: signals.modificationRate,
+            rejectionRate: signals.rejectionRate,
+            totalInteractions: signals.totalInteractions,
+          },
+          detection: {
+            confidence: detection.confidence,
+            triggeredRules: detection.layer1?.triggeredRules,
+            recommendedTier: detection.recommendedTier,
+          }
+        });
+
         // Only proceed if pattern detected with meaningful confidence
         // Lowered threshold to 0.2 (1 rule triggered) for easier testing
         if (detection.confidence < 0.2) {
+          console.log('[InterventionManager] Confidence too low, skipping intervention');
           setIsAnalyzing(false);
           return;
         }
@@ -573,8 +600,11 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
           store.suppressionState
         );
 
+        console.log('[InterventionManager] Suppression decision:', decision);
+
         // If suppressed, don't display anything
         if (!decision.shouldDisplay) {
+          console.log('[InterventionManager] Intervention suppressed');
           setIsAnalyzing(false);
           return;
         }
