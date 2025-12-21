@@ -1,9 +1,8 @@
 /**
  * RegenerateDropdown Component
  *
- * Dropdown menu for regenerating AI responses with options:
- * - Model selection (GPT-4o, GPT-4o-mini, GPT-3.5-turbo)
- * - Branch options (current branch or new branch)
+ * Dropdown menu for regenerating AI responses with model selection.
+ * Creates a new branch so you can switch between different responses.
  */
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -13,7 +12,7 @@ export type ModelType = 'gpt-4o' | 'gpt-4o-mini' | 'gpt-3.5-turbo';
 
 export interface RegenerateOptions {
   model: ModelType;
-  createNewBranch: boolean;
+  createNewBranch: boolean; // Always true now, kept for API compatibility
 }
 
 interface RegenerateDropdownProps {
@@ -24,7 +23,7 @@ interface RegenerateDropdownProps {
 
 const MODEL_INFO: Record<ModelType, { name: string; desc: string; icon: string }> = {
   'gpt-4o': { name: 'GPT-4o', desc: 'Most capable', icon: '🚀' },
-  'gpt-4o-mini': { name: 'GPT-4o Mini', desc: 'Fast & efficient', icon: '⚡' },
+  'gpt-4o-mini': { name: 'GPT-4o Mini', desc: 'Fast & balanced', icon: '⚡' },
   'gpt-3.5-turbo': { name: 'GPT-3.5', desc: 'Quick & simple', icon: '💨' },
 };
 
@@ -35,7 +34,7 @@ export const RegenerateDropdown: React.FC<RegenerateDropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<ModelType>(currentModel);
-  const [createNewBranch, setCreateNewBranch] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -49,33 +48,38 @@ export const RegenerateDropdown: React.FC<RegenerateDropdownProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleRegenerate = () => {
-    onRegenerate({ model: selectedModel, createNewBranch });
-    setIsOpen(false);
+  const handleRegenerate = async () => {
+    setIsLoading(true);
+    try {
+      await onRegenerate({ model: selectedModel, createNewBranch: true });
+    } finally {
+      setIsLoading(false);
+      setIsOpen(false);
+    }
   };
 
   return (
     <div ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
       {/* Main button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        disabled={disabled}
-        title="Regenerate AI response"
+        onClick={() => !disabled && !isLoading && setIsOpen(!isOpen)}
+        disabled={disabled || isLoading}
+        title="Regenerate - Create alternative response"
         className={`${styles.actionButton} ${styles.regenerateButton}`}
         style={{
-          opacity: disabled ? 0.6 : 1,
-          cursor: disabled ? 'not-allowed' : 'pointer',
+          opacity: (disabled || isLoading) ? 0.6 : 1,
+          cursor: (disabled || isLoading) ? 'not-allowed' : 'pointer',
           display: 'flex',
           alignItems: 'center',
           gap: '4px',
         }}
       >
-        🔄
+        {isLoading ? '⏳' : '🔄'}
         <span style={{ fontSize: '8px', marginLeft: '2px' }}>▼</span>
       </button>
 
       {/* Dropdown menu */}
-      {isOpen && !disabled && (
+      {isOpen && !disabled && !isLoading && (
         <div
           style={{
             position: 'absolute',
@@ -86,7 +90,7 @@ export const RegenerateDropdown: React.FC<RegenerateDropdownProps> = ({
             border: '1px solid #e5e7eb',
             borderRadius: '8px',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
-            minWidth: '220px',
+            minWidth: '200px',
             zIndex: 1000,
             overflow: 'hidden',
           }}
@@ -100,19 +104,13 @@ export const RegenerateDropdown: React.FC<RegenerateDropdownProps> = ({
             <div style={{ fontWeight: 600, fontSize: '13px', color: '#374151' }}>
               🔄 Regenerate Response
             </div>
+            <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '2px' }}>
+              Creates a new branch (use ← → to switch)
+            </div>
           </div>
 
           {/* Model selection */}
           <div style={{ padding: '8px' }}>
-            <div style={{
-              fontSize: '11px',
-              color: '#6b7280',
-              marginBottom: '6px',
-              paddingLeft: '4px',
-              fontWeight: 500,
-            }}>
-              Select Model:
-            </div>
             {(Object.keys(MODEL_INFO) as ModelType[]).map((model) => (
               <div
                 key={model}
@@ -150,33 +148,6 @@ export const RegenerateDropdown: React.FC<RegenerateDropdownProps> = ({
             ))}
           </div>
 
-          {/* Branch option */}
-          <div style={{
-            padding: '8px 12px',
-            borderTop: '1px solid #e5e7eb',
-            backgroundColor: '#f9fafb',
-          }}>
-            <label style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              cursor: 'pointer',
-              fontSize: '12px',
-              color: '#374151',
-            }}>
-              <input
-                type="checkbox"
-                checked={createNewBranch}
-                onChange={(e) => setCreateNewBranch(e.target.checked)}
-                style={{ cursor: 'pointer' }}
-              />
-              <span>🌿 Create new branch</span>
-            </label>
-            <div style={{ fontSize: '10px', color: '#9ca3af', marginTop: '4px', marginLeft: '24px' }}>
-              Keep original response in a separate branch
-            </div>
-          </div>
-
           {/* Action button */}
           <div style={{ padding: '8px 12px', borderTop: '1px solid #e5e7eb' }}>
             <button
@@ -197,7 +168,7 @@ export const RegenerateDropdown: React.FC<RegenerateDropdownProps> = ({
                 gap: '6px',
               }}
             >
-              🔄 Regenerate with {MODEL_INFO[selectedModel].name}
+              🔄 Regenerate
             </button>
           </div>
         </div>

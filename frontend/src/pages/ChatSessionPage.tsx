@@ -1355,39 +1355,97 @@ Message: "${firstMessage.slice(0, 200)}"`,
    * Finds the corresponding user message and re-sends it to get a new response
    */
   const handleRegenerate = useCallback(async (aiMessageId: string, options: RegenerateOptions) => {
-    // Find the AI message index
+    // Find the AI message
     const aiMessageIndex = messages.findIndex(m => m.id === aiMessageId);
     if (aiMessageIndex === -1 || aiMessageIndex === 0) return;
+
+    const aiMessage = messages[aiMessageIndex];
 
     // The user message should be right before the AI message
     const userMessage = messages[aiMessageIndex - 1];
     if (!userMessage || userMessage.role !== 'user') return;
 
-    // Get conversation history up to (but not including) the user message being regenerated
+    // Get conversation history up to (but not including) the user message
     const conversationHistory = messages.slice(0, aiMessageIndex - 1);
 
-    console.log('[Chat] Regenerating response for message:', aiMessageId, 'with options:', options);
+    console.log('[Chat] Regenerating response for message:', aiMessageId, 'with model:', options.model);
 
-    if (options.createNewBranch) {
-      // Create a new branch and regenerate there, keeping original
-      const branchName = `regenerate-${options.model}-${Date.now()}`;
-      try {
-        await forkConversation(aiMessageId, branchName);
-        // After forking, send the message on the new branch
-        await sendMessage(userMessage.content, conversationHistory);
-        console.log('[Chat] Created new branch for regeneration:', branchName);
-      } catch (err) {
-        console.error('Failed to create branch for regeneration:', err);
+    try {
+      // Call AI API to get new response
+      const response = await apiService.ai.stream(
+        userMessage.content,
+        conversationHistory.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content })),
+        { useWebSearch: false }
+      );
+
+      // Read the streaming response
+      const decoder = new TextDecoder();
+      let newContent = '';
+
+      const processStream = async () => {
+        while (true) {
+          const { done, value } = await response.stream.read();
+          if (done) break;
+
+          const text = decoder.decode(value, { stream: true });
+          const lines = text.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6));
+                if (data.type === 'chunk') {
+                  newContent += data.content;
+                }
+              } catch (e) {
+                // Skip invalid JSON
+              }
+            }
+          }
+        }
+      };
+
+      await processStream();
+
+      // Remove thinking tags from content
+      const cleanContent = newContent.replace(/<thinking>[\s\S]*?<\/thinking>\s*/g, '').trim();
+
+      if (!cleanContent) {
+        console.error('[Chat] Regenerate: Empty response');
+        return;
       }
-    } else {
-      // Remove the current AI message and regenerate in place
-      setMessages(prev => prev.filter(m => m.id !== aiMessageId));
 
-      // Re-send the user message to get a new AI response
-      // TODO: Pass model selection to sendMessage when backend supports it
-      await sendMessage(userMessage.content, conversationHistory);
+      // Create new branch
+      const newBranch = {
+        id: `branch-${Date.now()}`,
+        content: cleanContent,
+        source: 'manual' as const,
+        model: options.model,
+        createdAt: new Date().toISOString(),
+        wasVerified: false,
+        wasModified: false,
+      };
+
+      // Add branch to message and switch to it
+      setMessages(prev => prev.map(m => {
+        if (m.id === aiMessageId) {
+          const existingBranches = m.branches || [];
+          const newBranches = [...existingBranches, newBranch];
+          return {
+            ...m,
+            branches: newBranches,
+            currentBranchIndex: newBranches.length, // Switch to the new branch (index = length because 0 is original)
+          };
+        }
+        return m;
+      }));
+
+      console.log('[Chat] Added regenerated response as branch');
+    } catch (err) {
+      console.error('Failed to regenerate:', err);
+      setError('Failed to regenerate response');
     }
-  }, [messages, sendMessage, setMessages, forkConversation]);
+  }, [messages, setMessages, setError]);
 
   /**
    * handleMR11Decision - Called when user makes a decision in MR11
