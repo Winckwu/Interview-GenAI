@@ -190,6 +190,7 @@ export const MessageList: React.FC<MessageListProps> = ({
         badge={badge}
         recommendations={orchestrationResult.recommendations}
         onRecommendationClick={onTrustRecommendationClick}
+        aiContent={message.content}
       />
     );
   }, [showTrustIndicator, orchestrateForMessage, messageTrustScores, getTrustBadge, onTrustRecommendationClick, shouldHideTools]);
