@@ -1257,26 +1257,6 @@ Message: "${firstMessage.slice(0, 200)}"`,
   }, [messages, setActiveMRTool, setShowMRToolsSection]);
 
   /**
-   * handleRegenerate - Opens MR6 cross-model comparison for regenerating a response
-   * Allows user to get responses from different AI models
-   */
-  const handleRegenerate = useCallback((messageId: string) => {
-    // Find the message
-    const messageIndex = messages.findIndex(m => m.id === messageId);
-    if (messageIndex === -1) return;
-
-    // Find the corresponding user prompt (previous message)
-    const userMessage = messages[messageIndex - 1];
-    if (!userMessage || userMessage.role !== 'user') return;
-
-    // Open MR6 cross-model comparison with this prompt
-    setActiveMRTool('mr6-models');
-    setShowMRToolsSection(true);
-
-    console.log('[Chat] Opening regenerate/cross-model for message:', messageId);
-  }, [messages, setActiveMRTool, setShowMRToolsSection]);
-
-  /**
    * handleMR11Decision - Called when user makes a decision in MR11
    * If decision is 'accept', mark the message as verified
    */
@@ -4164,7 +4144,6 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 onVerify={handleVerifyClick}
                 onModify={markAsModified}
                 onViewInsights={handleViewInsights}
-                onRegenerate={handleRegenerate}
                 onEditUserMessage={(messageId) => {
                   const message = messages.find(m => m.id === messageId);
                   if (message) {

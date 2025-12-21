@@ -42,7 +42,6 @@ export interface MessageItemProps {
   onVerify: () => void;
   onModify: () => void;
   onViewInsights?: () => void; // Open MR2 insights for this message
-  onRegenerate?: () => void; // Regenerate response with different model
   onEditUserMessage?: () => void; // Edit user message (creates new branch)
 
   // Branch navigation
@@ -84,7 +83,6 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onVerify,
   onModify,
   onViewInsights,
-  onRegenerate,
   onEditUserMessage,
   onBranchPrev,
   onBranchNext,
@@ -879,7 +877,6 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               // Calculate word count for conditional button display
               const wordCount = message.content.split(/\s+/).filter(w => w.length > 0).length;
               const showInsightsButton = wordCount >= 30 && onViewInsights; // Show for responses >= 30 words
-              const showRegenerateButton = onRegenerate;
 
               return (
                 <div className={styles.actionButtons}>
@@ -910,17 +907,6 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                       style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
                     >
                       🔍 Insights
-                    </button>
-                  )}
-                  {showRegenerateButton && (
-                    <button
-                      onClick={onRegenerate}
-                      disabled={isUpdating}
-                      title="🔄 REGENERATE: Get a new response from a different AI model"
-                      className={`${styles.actionButton} ${styles.regenerateButton}`}
-                      style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
-                    >
-                      🔄 Regenerate
                     </button>
                   )}
                 </div>

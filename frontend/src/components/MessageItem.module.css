@@ -252,16 +252,6 @@
   background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
 }
 
-.regenerateButton {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: #fff;
-  border-color: #2563eb;
-}
-
-.regenerateButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-}
-
 .verifiedBadge {
   background-color: #d1fae5;
   color: #065f46;
