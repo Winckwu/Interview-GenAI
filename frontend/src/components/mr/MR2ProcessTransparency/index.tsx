@@ -99,6 +99,10 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
       console.log('[MR2] Auto-selecting version from prop:', selectedVersionId);
     }
   }, [selectedVersionId, versions]);
+
+  // Local cache for insights - prevents re-fetching after save
+  const [insightsCache, setInsightsCache] = useState<Map<string, InsightsData>>(new Map());
+
   // Insights state
   const [insights, setInsights] = useState<{
     keyPoints: string[];
@@ -127,15 +131,30 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
 
   /**
    * Fetch insights for a specific version
-   * First checks if insights are already stored in the database
-   * If not, calls API and saves the result
+   * Priority: 1) Local cache, 2) Database (via props), 3) API call
    */
   const fetchInsights = useCallback(async (version: InteractionVersion) => {
     if (!version.userPrompt || !version.aiOutput) return;
 
-    // Check if insights already exist in the version data (from database)
+    // 1. Check local cache first (for insights we just fetched in this session)
+    const cachedInsights = insightsCache.get(version.id);
+    if (cachedInsights && Object.keys(cachedInsights).length > 0) {
+      console.log('[MR2] Using local cache for insights:', version.id);
+      setInsights({
+        keyPoints: cachedInsights.keyPoints || [],
+        aiApproach: cachedInsights.aiApproach || '',
+        assumptions: cachedInsights.assumptions || [],
+        missingAspects: cachedInsights.missingAspects || [],
+        suggestedFollowups: cachedInsights.suggestedFollowups || [],
+        isLoading: false,
+        error: null
+      });
+      return;
+    }
+
+    // 2. Check if insights exist in the version data (from database via props)
     if (version.insights && Object.keys(version.insights).length > 0) {
-      console.log('[MR2] Using cached insights from database');
+      console.log('[MR2] Using cached insights from database:', version.id);
       setInsights({
         keyPoints: version.insights.keyPoints || [],
         aiApproach: version.insights.aiApproach || '',
@@ -145,16 +164,19 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
         isLoading: false,
         error: null
       });
+      // Also save to local cache for faster access
+      setInsightsCache(prev => new Map(prev).set(version.id, version.insights!));
       return;
     }
 
+    // 3. Call API to generate insights
     setInsights(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
       const response = await apiService.ai.analyzeResponse(version.userPrompt, version.aiOutput);
       if (response.data?.success && response.data?.data) {
         const data = response.data.data;
-        const insightsData = {
+        const insightsData: InsightsData = {
           keyPoints: data.keyPoints || [],
           aiApproach: data.aiApproach || '',
           assumptions: data.assumptions || [],
@@ -168,6 +190,10 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
           error: null
         });
 
+        // Save to local cache immediately (so subsequent clicks don't re-fetch)
+        setInsightsCache(prev => new Map(prev).set(version.id, insightsData));
+        console.log('[MR2] Saved insights to local cache:', version.id);
+
         // Save insights to database if we have session ID
         if (version.sessionId && version.id) {
           try {
@@ -175,7 +201,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
             console.log('[MR2] Insights saved to database');
           } catch (saveError) {
             console.warn('[MR2] Failed to save insights to database:', saveError);
-            // Don't show error to user - insights still work, just not cached
+            // Don't show error to user - insights still work via local cache
           }
         }
       }
@@ -187,7 +213,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
         error: error.message || 'Failed to analyze response'
       }));
     }
-  }, []);
+  }, [insightsCache]);
 
   // Auto-fetch insights when selecting a version in insights mode
   useEffect(() => {
