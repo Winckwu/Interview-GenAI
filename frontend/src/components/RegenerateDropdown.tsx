@@ -69,13 +69,10 @@ export const RegenerateDropdown: React.FC<RegenerateDropdownProps> = ({
         style={{
           opacity: (disabled || isLoading) ? 0.6 : 1,
           cursor: (disabled || isLoading) ? 'not-allowed' : 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
         }}
       >
-        {isLoading ? '⏳' : '🔄'}
-        <span style={{ fontSize: '8px', marginLeft: '2px' }}>▼</span>
+        {isLoading ? '⏳' : '↻'}
+        <span style={{ fontSize: '10px' }}>▾</span>
       </button>
 
       {/* Dropdown menu */}
