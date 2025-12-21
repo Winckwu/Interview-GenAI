@@ -1511,3 +1511,26 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
+
+/* Tab Group Styles */
+.mr2-tab-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mr2-tab-group-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-right: 0.5rem;
+}
+
+.mr2-tab-divider {
+  width: 1px;
+  height: 24px;
+  background: #e2e8f0;
+  margin: 0 0.75rem;
+}

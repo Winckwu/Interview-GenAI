@@ -897,37 +897,48 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
     <div className="mr2-container">
       <div className="mr2-header">
         <h1 className="mr2-title">🔍 AI Response Insights</h1>
-        <p className="mr2-subtitle">Understand and analyze AI responses</p>
+        <p className="mr2-subtitle">Analyze AI responses • Track conversation history</p>
 
         <div className="mr2-view-tabs">
-          <button
-            className={`mr2-tab ${viewMode === 'insights' ? 'active' : ''}`}
-            onClick={() => setViewMode('insights')}
-            title="Get key insights and analysis of AI responses"
-          >
-            💡 Insights
-          </button>
-          <button
-            className={`mr2-tab ${viewMode === 'timeline' ? 'active' : ''}`}
-            onClick={() => setViewMode('timeline')}
-            title="View all interactions in chronological order"
-          >
-            📅 Timeline
-          </button>
-          <button
-            className={`mr2-tab ${viewMode === 'diff' ? 'active' : ''}`}
-            onClick={() => setViewMode('diff')}
-            title="Compare changes between consecutive turns (only for same-topic refinements)"
-          >
-            📝 Changes
-          </button>
-          <button
-            className={`mr2-tab ${viewMode === 'reasoning' ? 'active' : ''}`}
-            onClick={() => setViewMode('reasoning')}
-            title="View AI's step-by-step thinking process for each response"
-          >
-            🧠 Reasoning
-          </button>
+          {/* Analyze Section */}
+          <div className="mr2-tab-group">
+            <span className="mr2-tab-group-label">Analyze</span>
+            <button
+              className={`mr2-tab ${viewMode === 'insights' ? 'active' : ''}`}
+              onClick={() => setViewMode('insights')}
+              title="Get key insights: what AI said, assumptions made, follow-up questions"
+            >
+              💡 Insights
+            </button>
+          </div>
+
+          <div className="mr2-tab-divider"></div>
+
+          {/* History Section */}
+          <div className="mr2-tab-group">
+            <span className="mr2-tab-group-label">History</span>
+            <button
+              className={`mr2-tab ${viewMode === 'timeline' ? 'active' : ''}`}
+              onClick={() => setViewMode('timeline')}
+              title="View full conversation Q&A"
+            >
+              📅 Timeline
+            </button>
+            <button
+              className={`mr2-tab ${viewMode === 'diff' ? 'active' : ''}`}
+              onClick={() => setViewMode('diff')}
+              title="Compare changes between versions"
+            >
+              📝 Changes
+            </button>
+            <button
+              className={`mr2-tab ${viewMode === 'reasoning' ? 'active' : ''}`}
+              onClick={() => setViewMode('reasoning')}
+              title="View AI's thinking process (if available)"
+            >
+              🧠 Reasoning
+            </button>
+          </div>
         </div>
 
         <div className="mr2-actions">
