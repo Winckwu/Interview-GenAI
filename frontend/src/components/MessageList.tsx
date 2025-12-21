@@ -32,21 +32,12 @@ const GREETING_PATTERNS = [
 
 const isSimpleMessage = (userMessage: string, aiResponse: string): boolean => {
   const userMsg = userMessage.trim().toLowerCase();
-  const aiMsg = aiResponse.trim().toLowerCase();
 
-  // Very short messages (< 15 chars for user, < 50 chars for AI)
-  if (userMsg.length < 15 && aiMsg.length < 100) {
-    // Check if it matches greeting patterns
-    for (const pattern of GREETING_PATTERNS) {
-      if (pattern.test(userMsg)) {
-        return true;
-      }
+  // Only hide tools for actual greeting patterns, not just any short message
+  for (const pattern of GREETING_PATTERNS) {
+    if (pattern.test(userMsg)) {
+      return true;
     }
-  }
-
-  // Simple one-word questions
-  if (userMsg.split(/\s+/).length <= 2 && aiMsg.length < 150) {
-    return true;
   }
 
   return false;
