@@ -50,6 +50,8 @@ interface MR11Props {
   messageId?: string;
   /** Callback when message verification is complete (accept = verified) */
   onMessageVerified?: (messageId: string, decision: UserDecision) => void;
+  /** Use compact mode for sidebar/floating panel display */
+  compact?: boolean;
 }
 
 type TabType = 'verify' | 'history' | 'stats';
@@ -59,7 +61,8 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   onDecisionMade,
   initialContent = '',
   messageId,
-  onMessageVerified
+  onMessageVerified,
+  compact = true // Default to compact for sidebar usage
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('verify');
 
@@ -276,7 +279,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   };
 
   return (
-    <div className="mr11-container">
+    <div className={`mr11-container ${compact ? 'mr11-compact' : ''}`}>
       {/* Header */}
       <div className="mr11-header">
         <h1 className="mr11-title">Integrated Verification Tools</h1>
