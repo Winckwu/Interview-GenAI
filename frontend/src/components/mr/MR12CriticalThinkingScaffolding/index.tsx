@@ -66,6 +66,14 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   // Tab state: 'evaluate' or 'history'
   const [activeTab, setActiveTab] = useState<'evaluate' | 'history'>('evaluate');
 
+  // Content preview expanded state
+  const [isContentExpanded, setIsContentExpanded] = useState(false);
+
+  // Existing record state (loaded from DB if messageId has a record)
+  const [existingRecord, setExistingRecord] = useState<any>(null);
+  const [isLoadingExisting, setIsLoadingExisting] = useState(false);
+  const [hasCheckedExisting, setHasCheckedExisting] = useState(false);
+
   // Auto-detect or use provided content type
   const [contentType, setContentType] = useState<ContentType>(() => {
     if (domain) return domain as ContentType;
@@ -125,6 +133,43 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   const typeInfo = getContentTypeInfo(contentType);
 
   /**
+   * Check for existing thinking record for this messageId
+   */
+  const checkExistingRecord = useCallback(async () => {
+    if (!messageId) {
+      setHasCheckedExisting(true);
+      return null;
+    }
+
+    setIsLoadingExisting(true);
+    try {
+      const authStorage = localStorage.getItem('auth-storage');
+      const token = authStorage ? JSON.parse(authStorage).state?.token : null;
+      const response = await fetch(`${API_BASE}/thinking-records?messageId=${messageId}&limit=1`, {
+        headers: {
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data.length > 0) {
+          const record = data.data[0];
+          setExistingRecord(record);
+          console.log('[MR12] Found existing record:', record.id);
+          return record;
+        }
+      }
+    } catch (error) {
+      console.error('[MR12] Error checking existing record:', error);
+    } finally {
+      setIsLoadingExisting(false);
+      setHasCheckedExisting(true);
+    }
+    return null;
+  }, [messageId]);
+
+  /**
    * Fetch AI-generated questions
    */
   const fetchAIQuestions = useCallback(async () => {
@@ -168,12 +213,30 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     }
   }, [aiOutput, contentType]);
 
-  // Fetch AI questions when content changes
+  // Check for existing record first, then fetch AI questions if none exists
   useEffect(() => {
-    if (aiOutput && aiOutput.length >= 50) {
-      fetchAIQuestions();
-    }
-  }, [aiOutput]);
+    const init = async () => {
+      if (!aiOutput || aiOutput.length < 50) return;
+
+      // First check if there's an existing record for this message
+      const existing = await checkExistingRecord();
+
+      // Only fetch new questions if no existing record
+      if (!existing) {
+        fetchAIQuestions();
+      }
+    };
+
+    // Reset state when messageId changes
+    setExistingRecord(null);
+    setHasCheckedExisting(false);
+    setAssessment(null);
+    setCurrentIndex(0);
+    setResponses([]);
+    setRecordId(null);
+
+    init();
+  }, [aiOutput, messageId]);
 
   // Re-detect content type when aiOutput changes
   useEffect(() => {
@@ -337,13 +400,102 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     setAssessment(null);
   }, []);
 
+  /**
+   * Start new evaluation (clear existing record)
+   */
+  const handleStartNew = useCallback(() => {
+    setExistingRecord(null);
+    setAssessment(null);
+    setCurrentIndex(0);
+    setResponses([]);
+    setRecordId(null);
+    fetchAIQuestions();
+  }, [fetchAIQuestions]);
+
   // Loading state
-  if (isLoadingQuestions && activeTab === 'evaluate') {
+  if ((isLoadingQuestions || isLoadingExisting) && activeTab === 'evaluate') {
     return (
       <div className={`mr12-container ${compact ? 'mr12-compact' : ''}`}>
         <div className="mr12-loading">
           <div className="mr12-loading-spinner" />
-          <p>🧠 Analyzing content and generating targeted questions...</p>
+          <p>{isLoadingExisting ? '🔍 Checking for existing evaluation...' : '🧠 Analyzing content and generating targeted questions...'}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show existing record view
+  if (existingRecord && activeTab === 'evaluate') {
+    const recordResponses = existingRecord.user_responses || [];
+    const recordQuestions = existingRecord.ai_questions || [];
+    const needsVerification = existingRecord.needs_verification;
+    const createdAt = new Date(existingRecord.created_at);
+
+    return (
+      <div className={`mr12-container ${compact ? 'mr12-compact' : ''}`}>
+        {/* Tab Switcher */}
+        <div className="mr12-tabs">
+          <button
+            className={`mr12-tab ${activeTab === 'evaluate' ? 'active' : ''}`}
+            onClick={() => setActiveTab('evaluate')}
+          >
+            🧠 Evaluate
+          </button>
+          <button
+            className={`mr12-tab ${activeTab === 'history' ? 'active' : ''}`}
+            onClick={() => setActiveTab('history')}
+          >
+            📋 History
+          </button>
+        </div>
+
+        <div className="mr12-existing-record">
+          <div className="mr12-existing-header">
+            <span className="mr12-existing-icon">📝</span>
+            <div className="mr12-existing-info">
+              <h3>Previous Evaluation</h3>
+              <span className="mr12-existing-time">
+                {createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}
+              </span>
+            </div>
+            <span className={`mr12-existing-badge ${needsVerification ? 'warning' : 'success'}`}>
+              {needsVerification ? '⚠️ Needs Attention' : '✅ Verified'}
+            </span>
+          </div>
+
+          {/* Show responses */}
+          <div className="mr12-response-summary">
+            {recordResponses.map((r: any, idx: number) => {
+              const q = recordQuestions.find((q: any) => q.id === r.questionId);
+              if (!q || r.response === 'skip') return null;
+              return (
+                <div
+                  key={r.questionId}
+                  className={`mr12-response-item mr12-response-${r.response}`}
+                >
+                  <span className="mr12-response-icon">
+                    {r.response === 'yes' ? '✓' : r.response === 'no' ? '✗' : '?'}
+                  </span>
+                  <span className="mr12-response-text">{q.question}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Actions */}
+          <div className="mr12-assessment-actions">
+            {needsVerification && onOpenMR11 && (
+              <button
+                className="mr12-btn mr12-btn-primary"
+                onClick={() => onOpenMR11(aiOutput)}
+              >
+                🔍 Verify with MR11
+              </button>
+            )}
+            <button className="mr12-btn mr12-btn-secondary" onClick={handleStartNew}>
+              🔄 Start New Evaluation
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -488,10 +640,18 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
               </button>
             </div>
           </div>
-          <div className="mr12-preview-content">
-            {aiOutput.slice(0, 300)}
-            {aiOutput.length > 300 && '...'}
+          <div className={`mr12-preview-content ${isContentExpanded ? 'expanded' : ''}`}>
+            {isContentExpanded ? aiOutput : aiOutput.slice(0, 300)}
+            {!isContentExpanded && aiOutput.length > 300 && '...'}
           </div>
+          {aiOutput.length > 300 && (
+            <button
+              className="mr12-expand-btn"
+              onClick={() => setIsContentExpanded(!isContentExpanded)}
+            >
+              {isContentExpanded ? '▲ Show less' : '▼ Show full content'}
+            </button>
+          )}
         </div>
       )}
 
