@@ -116,8 +116,6 @@ export const SessionSidebar: React.FC<SessionSidebarProps> = ({
                     {new Date(session.startedAt || session.createdAt).toLocaleDateString([], {
                       month: 'short',
                       day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
                     })}
                   </div>
                 </button>
