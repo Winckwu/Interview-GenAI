@@ -319,18 +319,43 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     console.log(`Evaluate outcome for log ${logId}`);
   };
 
+  // Compact inline styles as backup
+  const compactContainerStyle: React.CSSProperties = compact ? {
+    padding: 0,
+    margin: 0,
+    maxWidth: '100%',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden',
+  } : {};
+
+  const compactTabsStyle: React.CSSProperties = compact ? {
+    margin: 0,
+    padding: '0.25rem 0.5rem',
+    gap: '0.25rem',
+    minHeight: 'auto',
+  } : {};
+
   return (
-    <div className={`mr11-container ${compact ? 'mr11-compact' : ''}`}>
-      {/* Header */}
-      <div className="mr11-header">
-        <h1 className="mr11-title">Integrated Verification Tools</h1>
-        <p className="mr11-subtitle">
-          Verify AI-generated content with one-click verification methods
-        </p>
-      </div>
+    <div
+      className={`mr11-container ${compact ? 'mr11-compact' : ''}`}
+      data-compact={compact}
+      style={compactContainerStyle}
+    >
+      {/* Header - only show in non-compact mode */}
+      {!compact && (
+        <div className="mr11-header">
+          <h1 className="mr11-title">Integrated Verification Tools</h1>
+          <p className="mr11-subtitle">
+            Verify AI-generated content with one-click verification methods
+          </p>
+        </div>
+      )}
 
       {/* Tabs */}
-      <div className="mr11-tabs">
+      <div className="mr11-tabs" style={compactTabsStyle}>
         <button
           className={`mr11-tab ${activeTab === 'verify' ? 'active' : ''}`}
           onClick={() => setActiveTab('verify')}
