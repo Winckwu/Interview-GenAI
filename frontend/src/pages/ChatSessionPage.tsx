@@ -503,6 +503,9 @@ const ChatSessionPage: React.FC = () => {
   const [verifyingMessageId, setVerifyingMessageId] = useState<string | null>(null);
   const [verifyingMessageContent, setVerifyingMessageContent] = useState<string>('');
 
+  // MR2 context: Track the message to show insights for
+  const [selectedInsightsMessageId, setSelectedInsightsMessageId] = useState<string | null>(null);
+
   // Track MR9 Dynamic Orchestration - Trust-based MR activation
   const [messageTrustScores, setMessageTrustScores] = useState<Map<string, number>>(new Map());
   const [orchestrationResults, setOrchestrationResults] = useState<Map<string, any>>(new Map());
@@ -1243,11 +1246,13 @@ Message: "${firstMessage.slice(0, 200)}"`,
     const messageIndex = messages.findIndex(m => m.id === messageId);
     if (messageIndex === -1) return;
 
+    // Store the selected message ID so MR2 can auto-select the corresponding turn
+    setSelectedInsightsMessageId(messageId);
+
     // Set the MR2 tool as active and show the MR tools section
     setActiveMRTool('mr2-transparency');
     setShowMRToolsSection(true);
 
-    // The MR2 component will automatically show insights for the current message
     console.log('[Chat] Opening insights for message:', messageId);
   }, [messages, setActiveMRTool, setShowMRToolsSection]);
 
@@ -1891,26 +1896,35 @@ Message: "${firstMessage.slice(0, 200)}"`,
       case 'mr1-decomposition':
         return <MR1TaskDecompositionScaffold sessionId={sessionId || ''} onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)} onOpenMR4={openMR4RoleDefinition} />;
       case 'mr2-transparency':
-        return <MR2ProcessTransparency sessionId={sessionId || ''} versions={
-          messages.reduce((acc: any[], msg, i) => {
-            if (msg.role === 'user' && i + 1 < messages.length && messages[i + 1].role === 'ai') {
-              const aiMsg = messages[i + 1];
-              acc.push({
-                id: aiMsg.id,
-                timestamp: new Date(msg.timestamp),
-                promptVersion: Math.floor(i / 2) + 1,
-                userPrompt: msg.content,
-                aiOutput: aiMsg.content,
-                modelName: 'AI Assistant',
-                confidenceScore: 0.85,
-                reasoning: aiMsg.reasoning, // Pass AI reasoning for MR2 Reasoning tab
-                insights: aiMsg.insights, // MR2: Pass stored insights from database
-                sessionId: sessionId || '', // MR2: Pass sessionId for saving insights
-              });
-            }
-            return acc;
-          }, [])
-        } onVersionSelect={(v) => console.log('Version:', v)} />;
+        return <MR2ProcessTransparency
+          sessionId={sessionId || ''}
+          selectedVersionId={selectedInsightsMessageId || undefined}
+          versions={
+            messages.reduce((acc: any[], msg, i) => {
+              if (msg.role === 'user' && i + 1 < messages.length && messages[i + 1].role === 'ai') {
+                const aiMsg = messages[i + 1];
+                acc.push({
+                  id: aiMsg.id,
+                  timestamp: new Date(msg.timestamp),
+                  promptVersion: Math.floor(i / 2) + 1,
+                  userPrompt: msg.content,
+                  aiOutput: aiMsg.content,
+                  modelName: 'AI Assistant',
+                  confidenceScore: 0.85,
+                  reasoning: aiMsg.reasoning, // Pass AI reasoning for MR2 Reasoning tab
+                  insights: aiMsg.insights, // MR2: Pass stored insights from database
+                  sessionId: sessionId || '', // MR2: Pass sessionId for saving insights
+                });
+              }
+              return acc;
+            }, [])
+          }
+          onVersionSelect={(v) => {
+            console.log('Version:', v);
+            // Clear the selectedInsightsMessageId after user manually selects a version
+            setSelectedInsightsMessageId(null);
+          }}
+        />;
       case 'mr3-agency':
         return <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />;
       case 'mr4-roles':

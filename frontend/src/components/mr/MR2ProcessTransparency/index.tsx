@@ -58,6 +58,7 @@ export type ViewMode = 'insights' | 'timeline' | 'diff' | 'reasoning';
 interface MR2Props {
   versions: InteractionVersion[];
   sessionId?: string;
+  selectedVersionId?: string; // Auto-select this version when provided (from Insights button click)
   onVersionSelect?: (version: InteractionVersion) => void;
   onExport?: (data: any) => void;
   onRevert?: (versionId: string) => void;
@@ -68,6 +69,7 @@ interface MR2Props {
 export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   versions,
   sessionId = 'session-' + Date.now(),
+  selectedVersionId,
   onVersionSelect,
   onExport,
   onRevert,
@@ -76,7 +78,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
 }) => {
   // State management
   const [viewMode, setViewMode] = useState<ViewMode>('insights');
-  const [selectedVersionId, setSelectedVersionId] = useState<string>(
+  const [currentVersionId, setCurrentVersionId] = useState<string>(
     versions.length > 0 ? versions[versions.length - 1].id : ''
   );
   const [comparisonVersionIds, setComparisonVersionIds] = useState<[string, string] | null>(null);
@@ -84,10 +86,19 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   const [diffs, setDiffs] = useState<DiffChange[]>([]);
   const [chainOfThought, setChainOfThought] = useState<ChainOfThoughtStep[]>([]);
   const [isDifferentTopic, setIsDifferentTopic] = useState<boolean>(false);
-  // Default to first version if available
+  // Track which turn is expanded in the sidebar - controlled by selectedVersionId prop or user selection
   const [expandedTurnId, setExpandedTurnId] = useState<string | null>(
-    versions.length > 0 ? versions[0].id : null
+    selectedVersionId || (versions.length > 0 ? versions[0].id : null)
   );
+
+  // Auto-select version when selectedVersionId prop changes (from Insights button click)
+  useEffect(() => {
+    if (selectedVersionId && versions.some(v => v.id === selectedVersionId)) {
+      setExpandedTurnId(selectedVersionId);
+      setCurrentVersionId(selectedVersionId);
+      console.log('[MR2] Auto-selecting version from prop:', selectedVersionId);
+    }
+  }, [selectedVersionId, versions]);
   // Insights state
   const [insights, setInsights] = useState<{
     keyPoints: string[];
@@ -230,7 +241,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
    */
   const handleVersionSelect = useCallback(
     (versionId: string, switchToView?: ViewMode) => {
-      setSelectedVersionId(versionId);
+      setCurrentVersionId(versionId);
       const selectedVersion = versions.find(v => v.id === versionId);
 
       if (selectedVersion) {
@@ -569,8 +580,8 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
    * Render diff view
    */
   const renderDiffView = () => {
-    const selectedVersion = versions.find(v => v.id === selectedVersionId);
-    const versionIndex = versions.findIndex(v => v.id === selectedVersionId);
+    const selectedVersion = versions.find(v => v.id === currentVersionId);
+    const versionIndex = versions.findIndex(v => v.id === currentVersionId);
 
     // First version - no previous to compare
     if (versionIndex === 0) {
@@ -684,7 +695,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
    * Render reasoning/chain-of-thought view - shows AI's step-by-step thinking
    */
   const renderReasoningView = () => {
-    const selectedVersion = versions.find(v => v.id === selectedVersionId);
+    const selectedVersion = versions.find(v => v.id === currentVersionId);
 
     if (!selectedVersion) {
       return (
@@ -774,7 +785,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
 
         <div className="mr2-comparison-header">
           <button
-            className={`mr2-version-selector ${selectedVersionId === v1Id ? 'active' : ''}`}
+            className={`mr2-version-selector ${currentVersionId === v1Id ? 'active' : ''}`}
             onClick={() => handleVersionSelect(v1Id)}
           >
             <div className="mr2-version-label">版本 {v1.promptVersion} (较早版本)</div>
@@ -787,7 +798,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
           </button>
 
           <button
-            className={`mr2-version-selector ${selectedVersionId === v2Id ? 'active' : ''}`}
+            className={`mr2-version-selector ${currentVersionId === v2Id ? 'active' : ''}`}
             onClick={() => handleVersionSelect(v2Id)}
           >
             <div className="mr2-version-label">版本 {v2.promptVersion} (最新版本)</div>
