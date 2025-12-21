@@ -600,15 +600,6 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
               <MarkdownText content={selectedVersion.aiOutput} />
             </div>
           </div>
-
-          {selectedVersion.reasoning && (
-            <div className="mr2-turn-message mr2-turn-reasoning">
-              <div className="mr2-turn-role">🧠 Reasoning</div>
-              <div className="mr2-turn-text">
-                <MarkdownText content={selectedVersion.reasoning} />
-              </div>
-            </div>
-          )}
         </div>
       </div>
     );
