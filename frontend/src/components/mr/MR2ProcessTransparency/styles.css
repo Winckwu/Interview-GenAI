@@ -83,9 +83,9 @@
 
 .mr2-btn-export {
   padding: 0.625rem 1rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
-  border: none;
+  background: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
@@ -94,8 +94,9 @@
 }
 
 .mr2-btn-export:hover {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
 }
 
