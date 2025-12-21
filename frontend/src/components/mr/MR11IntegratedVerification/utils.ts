@@ -92,6 +92,93 @@ const TOOL_DESCRIPTIONS: Record<VerificationMethod, string> = {
 };
 
 /**
+ * Auto-detect content type from text
+ */
+export function detectContentType(text: string): ContentType {
+  const trimmed = text.trim();
+
+  // Code detection: look for common programming patterns
+  const codePatterns = [
+    /^(function|const|let|var|class|import|export|if|for|while|return|def|public|private)\s/m,
+    /[{}\[\]();]\s*$/m,
+    /=>\s*{/,
+    /\.(js|ts|py|java|cpp|c|go|rs|rb)$/i,
+    /```[\s\S]*```/,
+    /<[a-z]+[^>]*>/i, // HTML tags
+    /^\s*(import|from|require)\s+/m,
+  ];
+
+  for (const pattern of codePatterns) {
+    if (pattern.test(trimmed)) {
+      return 'code';
+    }
+  }
+
+  // Math detection: equations, formulas
+  const mathPatterns = [
+    /[=+\-*/^√∑∏∫]\s*\d/,
+    /\d\s*[=+\-*/^]\s*\d/,
+    /\b(sin|cos|tan|log|ln|sqrt|sum|integral)\b/i,
+    /\bx\s*[=+\-*/^]\s*\d/i,
+    /\d+\s*[×÷±]/,
+    /[∑∏∫∂∇]/,
+  ];
+
+  for (const pattern of mathPatterns) {
+    if (pattern.test(trimmed)) {
+      return 'math';
+    }
+  }
+
+  // Citation detection: references, quotes with sources
+  const citationPatterns = [
+    /\([A-Z][a-z]+,?\s*\d{4}\)/,  // (Author, 2020)
+    /\[[0-9]+\]/,                  // [1] style references
+    /et\s+al\./i,
+    /according to\s+[A-Z]/i,
+    /\bDOI:\s*10\./i,
+    /https?:\/\/[^\s]+/,          // URLs
+  ];
+
+  for (const pattern of citationPatterns) {
+    if (pattern.test(trimmed)) {
+      return 'citation';
+    }
+  }
+
+  // Fact detection: claims about real-world entities
+  const factPatterns = [
+    /\b(is|was|are|were|will be)\s+(the|a|an)\s+/i,
+    /\b(founded|invented|discovered|created|established)\s+(in|by)\b/i,
+    /\b(percent|%|million|billion|trillion)\b/i,
+    /\b(according|based on|studies show|research indicates)\b/i,
+    /\b\d{4}\b/, // Years
+  ];
+
+  let factScore = 0;
+  for (const pattern of factPatterns) {
+    if (pattern.test(trimmed)) {
+      factScore++;
+    }
+  }
+
+  if (factScore >= 2) {
+    return 'fact';
+  }
+
+  // Default to text
+  return 'text';
+}
+
+/**
+ * Get the best verification method for a content type
+ */
+export function getRecommendedMethod(contentType: ContentType): VerificationMethod {
+  const tools = VERIFICATION_TOOLS[contentType];
+  return tools.methods[0]; // Return the first (primary) method
+}
+
+/**
  * Map frontend method to backend method
  */
 function mapMethodToBackend(method: VerificationMethod): string {

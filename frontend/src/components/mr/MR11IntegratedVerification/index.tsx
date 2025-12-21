@@ -36,7 +36,9 @@ import {
   getActionRecommendation,
   getWorkflowGuidance,
   VERIFICATION_TOOLS,
-  DBVerificationLog
+  DBVerificationLog,
+  detectContentType,
+  getRecommendedMethod
 } from './utils';
 import { apiService } from '../../../services/api';
 import './styles.css';
@@ -166,20 +168,17 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     }
   }, [sessionId, messageId, contentType, contentText]);
 
-  // Update content when initialContent prop changes (e.g., when verifying a different message)
+  // Auto-detect content type and method when initialContent is provided
+  // This enables the simplified "one-click verify" flow
   useEffect(() => {
     if (initialContent) {
       setContentText(initialContent);
-      // Auto-detect content type based on content
-      if (initialContent.includes('```') || initialContent.includes('function ') || initialContent.includes('const ') || initialContent.includes('import ')) {
-        setContentType('code');
-      } else if (initialContent.includes('$$') || /\d+\s*[+\-*/]\s*\d+/.test(initialContent)) {
-        setContentType('math');
-      } else if (initialContent.includes('http') || initialContent.includes('[') && initialContent.includes(']')) {
-        setContentType('citation');
-      } else {
-        setContentType('text');
-      }
+      // Use the new detectContentType function for better detection
+      const detected = detectContentType(initialContent);
+      setContentType(detected);
+      // Auto-select the recommended method for this content type
+      const recommendedMethod = getRecommendedMethod(detected);
+      setSelectedMethod(recommendedMethod);
     }
   }, [initialContent]);
 
@@ -232,6 +231,48 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       setVerifying(false);
     }
   }, [selectedMethod, contentType, contentText, scrollToTop]);
+
+  /**
+   * One-click verification: auto-detect type, select method, and verify
+   * This is the simplified flow for when initialContent is provided
+   */
+  const handleOneClickVerify = useCallback(async () => {
+    if (!contentText.trim()) {
+      alert('No content to verify');
+      return;
+    }
+
+    // Auto-detect content type
+    const detected = detectContentType(contentText);
+    setContentType(detected);
+
+    // Get recommended method
+    const method = getRecommendedMethod(detected);
+    setSelectedMethod(method);
+
+    // Create verification content
+    const content: VerifiableContent = {
+      id: `content-${Date.now()}`,
+      contentType: detected,
+      content: contentText,
+      flagged: true,
+      verificationMethod: method
+    };
+
+    setVerifying(true);
+    setVerificationResult(null);
+
+    try {
+      const result = await performVerificationAsync(content, method);
+      setVerificationResult(result);
+      setUserDecision(null);
+    } catch (error) {
+      console.error('[MR11] One-click verification failed:', error);
+      alert('Verification failed. Please try again.');
+    } finally {
+      setVerifying(false);
+    }
+  }, [contentText]);
 
   /**
    * Make a decision on verification result
@@ -317,93 +358,138 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
           <div className="mr11-verify">
             {!verificationResult ? (
               <div className="mr11-form">
+                {/* Simplified One-Click Flow */}
                 <div className="mr11-form-section">
-                  <h3 className="mr11-section-title">Step 1: Provide Content</h3>
+                  {/* Content Input/Preview */}
                   <div className="mr11-form-group">
-                    <label className="mr11-label">What do you want to verify?</label>
+                    <label className="mr11-label">Content to verify</label>
                     <textarea
                       className="mr11-textarea"
-                      placeholder="Paste AI-generated content here (code, math, citation, fact, etc.)"
-                      rows={5}
+                      placeholder="Paste AI-generated content here..."
+                      rows={compact ? 3 : 5}
                       value={contentText}
-                      onChange={e => setContentText(e.target.value)}
+                      onChange={e => {
+                        setContentText(e.target.value);
+                        // Auto-detect when typing
+                        if (e.target.value.trim()) {
+                          const detected = detectContentType(e.target.value);
+                          setContentType(detected);
+                          setSelectedMethod(getRecommendedMethod(detected));
+                        }
+                      }}
                     />
                   </div>
 
-                  <div className="mr11-form-group">
-                    <label className="mr11-label">Content Type</label>
-                    <div className="mr11-type-buttons">
-                      {(['code', 'math', 'citation', 'fact', 'text'] as ContentType[]).map(type => (
-                        <button
-                          key={type}
-                          type="button"
-                          className={`mr11-type-btn ${contentType === type ? 'active' : ''}`}
-                          onClick={() => setContentType(type)}
-                        >
-                          {type === 'code' && '💻'}
-                          {type === 'math' && '🔢'}
-                          {type === 'citation' && '📖'}
-                          {type === 'fact' && '📰'}
-                          {type === 'text' && '📝'}
-                          <span>{type}</span>
-                        </button>
-                      ))}
+                  {/* Auto-detected Info (shown when content exists) */}
+                  {contentText.trim() && (
+                    <div className="mr11-auto-detect-info" style={{
+                      display: 'flex',
+                      gap: '1rem',
+                      alignItems: 'center',
+                      padding: '0.5rem 0.75rem',
+                      background: '#f0f9ff',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.85rem',
+                      flexWrap: 'wrap'
+                    }}>
+                      <span style={{ color: '#0369a1' }}>
+                        <strong>Type:</strong>{' '}
+                        {contentType === 'code' && '💻 Code'}
+                        {contentType === 'math' && '🔢 Math'}
+                        {contentType === 'citation' && '📖 Citation'}
+                        {contentType === 'fact' && '📰 Fact'}
+                        {contentType === 'text' && '📝 Text'}
+                      </span>
+                      <span style={{ color: '#0369a1' }}>
+                        <strong>Method:</strong>{' '}
+                        {selectedMethod === 'code-execution' && '⚙️ Run Code'}
+                        {selectedMethod === 'syntax-check' && '✓ Syntax Check'}
+                        {selectedMethod === 'calculation' && '🧮 Calculate'}
+                        {selectedMethod === 'citation-check' && '🔗 Check Citation'}
+                        {selectedMethod === 'cross-reference' && '🔍 Cross-Reference'}
+                        {selectedMethod === 'fact-check' && '✔️ Fact Check'}
+                      </span>
+                      {/* Change type/method link */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Toggle advanced options
+                          const advElem = document.getElementById('mr11-advanced-options');
+                          if (advElem) advElem.style.display = advElem.style.display === 'none' ? 'block' : 'none';
+                        }}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: '#0066ff',
+                          cursor: 'pointer',
+                          fontSize: '0.8rem',
+                          textDecoration: 'underline'
+                        }}
+                      >
+                        Change
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Advanced Options (hidden by default) */}
+                  <div id="mr11-advanced-options" style={{ display: 'none', marginTop: '0.75rem' }}>
+                    <div className="mr11-form-group">
+                      <label className="mr11-label">Content Type</label>
+                      <div className="mr11-type-buttons">
+                        {(['code', 'math', 'citation', 'fact', 'text'] as ContentType[]).map(type => (
+                          <button
+                            key={type}
+                            type="button"
+                            className={`mr11-type-btn ${contentType === type ? 'active' : ''}`}
+                            onClick={() => {
+                              setContentType(type);
+                              setSelectedMethod(getRecommendedMethod(type));
+                            }}
+                          >
+                            {type === 'code' && '💻'}
+                            {type === 'math' && '🔢'}
+                            {type === 'citation' && '📖'}
+                            {type === 'fact' && '📰'}
+                            {type === 'text' && '📝'}
+                            <span>{type}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mr11-form-group">
+                      <label className="mr11-label">Verification Method</label>
+                      <div className="mr11-method-grid">
+                        {recommendations.map(method => (
+                          <button
+                            key={method}
+                            className={`mr11-method-card ${selectedMethod === method ? 'selected' : ''}`}
+                            onClick={() => setSelectedMethod(method)}
+                          >
+                            <div className="mr11-method-icon">
+                              {method === 'code-execution' && '⚙️'}
+                              {method === 'syntax-check' && '✓'}
+                              {method === 'calculation' && '🧮'}
+                              {method === 'citation-check' && '🔗'}
+                              {method === 'cross-reference' && '🔍'}
+                              {method === 'fact-check' && '✔️'}
+                            </div>
+                            <div className="mr11-method-name">{method}</div>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
+                  {/* One-Click Verify Button */}
                   <button
-                    className="mr11-next-btn"
-                    onClick={handleStartVerification}
+                    className="mr11-btn-primary"
+                    onClick={handleOneClickVerify}
+                    disabled={!contentText.trim() || verifying}
+                    style={{ marginTop: '0.75rem', width: '100%' }}
                   >
-                    Continue to Verification Methods
+                    {verifying ? '⏳ Verifying...' : '🔍 Verify Now'}
                   </button>
                 </div>
-
-                {contentText && contentType && (
-                  <div className="mr11-form-section" ref={methodSectionRef}>
-                    <h3 className="mr11-section-title">Step 2: Select Verification Method</h3>
-                    <div className="mr11-guidance">
-                      <strong>Recommended methods for {contentType}:</strong>
-                      <p>{getWorkflowGuidance('select')}</p>
-                    </div>
-
-                    <div className="mr11-method-grid">
-                      {recommendations.map(method => (
-                        <button
-                          key={method}
-                          className={`mr11-method-card ${selectedMethod === method ? 'selected' : ''}`}
-                          onClick={() => setSelectedMethod(method)}
-                        >
-                          <div className="mr11-method-icon">
-                            {method === 'code-execution' && '⚙️'}
-                            {method === 'syntax-check' && '✓'}
-                            {method === 'calculation' && '🧮'}
-                            {method === 'citation-check' && '🔗'}
-                            {method === 'cross-reference' && '🔍'}
-                            {method === 'fact-check' && '✔️'}
-                          </div>
-                          <div className="mr11-method-name">{method}</div>
-                          <div className="mr11-method-desc">
-                            {method === 'code-execution' && 'Run in test environment'}
-                            {method === 'syntax-check' && 'Check syntax validity'}
-                            {method === 'calculation' && 'Verify math expressions'}
-                            {method === 'citation-check' && 'Verify against Google Scholar'}
-                            {method === 'cross-reference' && 'Cross-reference sources'}
-                            {method === 'fact-check' && 'Check against authorities'}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-
-                    <button
-                      className="mr11-verify-btn"
-                      onClick={handleVerify}
-                      disabled={!selectedMethod || verifying}
-                    >
-                      {verifying ? '⏳ Verifying...' : '🔍 Run Verification'}
-                    </button>
-                  </div>
-                )}
               </div>
             ) : (
               <div className="mr11-results" ref={resultsSectionRef}>
