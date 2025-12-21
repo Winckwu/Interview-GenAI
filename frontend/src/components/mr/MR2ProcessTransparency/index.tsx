@@ -13,7 +13,7 @@
  * Design principle: Transparency builds understanding and appropriate trust calibration
  */
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './styles.css';
 import MarkdownText from '../../common/MarkdownText';
 import { apiService } from '../../../services/api';
@@ -91,12 +91,24 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
     selectedVersionId || (versions.length > 0 ? versions[0].id : null)
   );
 
+  // Refs for auto-scrolling to selected turn
+  const turnRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+
   // Auto-select version when selectedVersionId prop changes (from Insights button click)
   useEffect(() => {
     if (selectedVersionId && versions.some(v => v.id === selectedVersionId)) {
       setExpandedTurnId(selectedVersionId);
       setCurrentVersionId(selectedVersionId);
       console.log('[MR2] Auto-selecting version from prop:', selectedVersionId);
+
+      // Auto-scroll to the selected turn after a brief delay (for DOM update)
+      setTimeout(() => {
+        const turnElement = turnRefs.current.get(selectedVersionId);
+        if (turnElement) {
+          turnElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          console.log('[MR2] Scrolled to turn:', selectedVersionId);
+        }
+      }, 100);
     }
   }, [selectedVersionId, versions]);
 
@@ -953,6 +965,11 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
             return (
               <button
                 key={version.id}
+                ref={(el) => {
+                  if (el) {
+                    turnRefs.current.set(version.id, el);
+                  }
+                }}
                 className={`mr2-version-item ${isSelected ? 'active' : ''}`}
                 onClick={() => handleTurnSelect(version.id)}
                 title={`Turn ${version.promptVersion}: ${version.modelName}`}
