@@ -336,6 +336,8 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     padding: '0.25rem 0.5rem',
     gap: '0.25rem',
     minHeight: 'auto',
+    flex: '0 0 auto',
+    height: 'auto',
   } : {};
 
   return (

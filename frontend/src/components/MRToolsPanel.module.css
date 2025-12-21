@@ -317,15 +317,13 @@
   flex-direction: column !important;
 }
 
-/* Ensure nested containers also fill */
-.modalBody > div > div,
-.modalBody > * > * {
-  flex: 1 1 0;
-  min-height: 0;
-  height: 100%;
-  width: 100%;
-  max-width: 100%;
+/* Only the content area should expand, not tabs/headers */
+.modalBody > div > div:first-child {
+  flex: 0 0 auto !important;
+  height: auto !important;
 }
+
+/* Don't force all nested containers to fill - let components control their own layout */
 
 /* Scrollbar for modal body */
 .modalBody::-webkit-scrollbar {
