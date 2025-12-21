@@ -55,6 +55,7 @@ import { useLearningProgress } from '../hooks/useLearningProgress';
 import MessageList from '../components/MessageList';
 import { type TrustBadge, type MRRecommendation } from '../components/TrustIndicator';
 import { type ReflectionResponse } from '../components/QuickReflection';
+import { type RegenerateOptions } from '../components/RegenerateDropdown';
 
 // Phase 3 Refactoring: Panel Components
 import SessionSidebar, { type SessionItem } from '../components/SessionSidebar';
@@ -1353,7 +1354,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
    * handleRegenerate - Regenerate AI response for a message
    * Finds the corresponding user message and re-sends it to get a new response
    */
-  const handleRegenerate = useCallback(async (aiMessageId: string) => {
+  const handleRegenerate = useCallback(async (aiMessageId: string, options: RegenerateOptions) => {
     // Find the AI message index
     const aiMessageIndex = messages.findIndex(m => m.id === aiMessageId);
     if (aiMessageIndex === -1 || aiMessageIndex === 0) return;
@@ -1365,15 +1366,28 @@ Message: "${firstMessage.slice(0, 200)}"`,
     // Get conversation history up to (but not including) the user message being regenerated
     const conversationHistory = messages.slice(0, aiMessageIndex - 1);
 
-    // Remove the current AI message from the messages array
-    setMessages(prev => prev.filter(m => m.id !== aiMessageId));
+    console.log('[Chat] Regenerating response for message:', aiMessageId, 'with options:', options);
 
-    // Re-send the user message to get a new AI response
-    // Use sendMessage (from hook) not handleSendMessage (form wrapper)
-    await sendMessage(userMessage.content, conversationHistory);
+    if (options.createNewBranch) {
+      // Create a new branch and regenerate there, keeping original
+      const branchName = `regenerate-${options.model}-${Date.now()}`;
+      try {
+        await forkConversation(aiMessageId, branchName);
+        // After forking, send the message on the new branch
+        await sendMessage(userMessage.content, conversationHistory);
+        console.log('[Chat] Created new branch for regeneration:', branchName);
+      } catch (err) {
+        console.error('Failed to create branch for regeneration:', err);
+      }
+    } else {
+      // Remove the current AI message and regenerate in place
+      setMessages(prev => prev.filter(m => m.id !== aiMessageId));
 
-    console.log('[Chat] Regenerating response for message:', aiMessageId);
-  }, [messages, sendMessage, setMessages]);
+      // Re-send the user message to get a new AI response
+      // TODO: Pass model selection to sendMessage when backend supports it
+      await sendMessage(userMessage.content, conversationHistory);
+    }
+  }, [messages, sendMessage, setMessages, forkConversation]);
 
   /**
    * handleMR11Decision - Called when user makes a decision in MR11

@@ -22,6 +22,7 @@ import { BranchAnalytics } from './BranchAnalytics';
 import { BranchBulkOperations } from './BranchBulkOperations';
 import { exportBranches } from '../utils/branchExport';
 import api from '../services/api';
+import { RegenerateDropdown, type RegenerateOptions } from './RegenerateDropdown';
 
 // Re-export Message type for backward compatibility
 export type { Message };
@@ -41,7 +42,7 @@ export interface MessageItemProps {
   // Actions
   onVerify: () => void;
   onModify: () => void;
-  onRegenerate?: () => void; // Regenerate AI response
+  onRegenerate?: (options: RegenerateOptions) => void; // Regenerate AI response with model/branch options
   onViewInsights?: () => void; // Open MR2 insights for this message
   onEditUserMessage?: () => void; // Edit user message (creates new branch)
 
@@ -908,15 +909,10 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     </button>
                   )}
                   {onRegenerate && (
-                    <button
-                      onClick={onRegenerate}
+                    <RegenerateDropdown
+                      onRegenerate={onRegenerate}
                       disabled={isUpdating}
-                      title="🔄 REGENERATE: Generate a new AI response for this question"
-                      className={`${styles.actionButton} ${styles.regenerateButton}`}
-                      style={{ opacity: isUpdating ? 0.6 : 1, cursor: isUpdating ? 'not-allowed' : 'pointer' }}
-                    >
-                      🔄
-                    </button>
+                    />
                   )}
                 </div>
               );

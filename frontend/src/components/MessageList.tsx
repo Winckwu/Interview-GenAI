@@ -15,6 +15,7 @@ import MessageItem, { type Message } from './MessageItem';
 import TrustIndicator, { type TrustBadge, type MRRecommendation } from './TrustIndicator';
 import QuickReflection, { type ReflectionResponse } from './QuickReflection';
 import MR6Suggestion from './MR6Suggestion';
+import { type RegenerateOptions } from './RegenerateDropdown';
 import styles from './MessageList.module.css';
 
 /**
@@ -65,7 +66,7 @@ export interface MessageListProps {
   // Actions
   onVerify: (messageId: string) => void;
   onModify: (messageId: string) => void;
-  onRegenerate?: (messageId: string) => void; // Regenerate AI response
+  onRegenerate?: (messageId: string, options: RegenerateOptions) => void; // Regenerate AI response with options
   onViewInsights?: (messageId: string) => void; // Open MR2 insights for this message
   onEditUserMessage?: (messageId: string) => void; // Edit user message and regenerate
 
@@ -249,7 +250,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             onCancelEdit={onCancelEdit}
             onVerify={() => onVerify(message.id)}
             onModify={() => onModify(message.id)}
-            onRegenerate={message.role === 'ai' && onRegenerate ? () => onRegenerate(message.id) : undefined}
+            onRegenerate={message.role === 'ai' && onRegenerate ? (options) => onRegenerate(message.id, options) : undefined}
             onViewInsights={message.role === 'ai' && onViewInsights ? () => onViewInsights(message.id) : undefined}
             onEditUserMessage={message.role === 'user' && onEditUserMessage ? () => onEditUserMessage(message.id) : undefined}
             onBranchPrev={onBranchSwitch ? () => onBranchSwitch(message.id, 'prev') : undefined}
