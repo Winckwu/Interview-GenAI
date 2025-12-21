@@ -1372,7 +1372,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
     try {
       // Call AI API to get new response
-      const response = await apiService.ai.stream(
+      const response = await apiService.ai.chatStream(
         userMessage.content,
         conversationHistory.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content })),
         { useWebSearch: false }
