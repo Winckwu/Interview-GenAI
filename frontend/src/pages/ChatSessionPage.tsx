@@ -1994,6 +1994,13 @@ Message: "${firstMessage.slice(0, 200)}"`,
             // Clear the selectedInsightsMessageId after user manually selects a version
             setSelectedInsightsMessageId(null);
           }}
+          onInsightsSaved={(messageId, insights) => {
+            // Update local messages state with the saved insights
+            setMessages(prev => prev.map(msg =>
+              msg.id === messageId ? { ...msg, insights } : msg
+            ));
+            console.log('[Chat] Updated message insights in local state:', messageId);
+          }}
         />;
       case 'mr3-agency':
         return <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />;

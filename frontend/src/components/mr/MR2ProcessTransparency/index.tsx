@@ -62,6 +62,7 @@ interface MR2Props {
   onVersionSelect?: (version: InteractionVersion) => void;
   onExport?: (data: any) => void;
   onRevert?: (versionId: string) => void;
+  onInsightsSaved?: (messageId: string, insights: InsightsData) => void; // Callback when insights are saved to DB
   showTimeline?: boolean;
   autoTrack?: boolean;
 }
@@ -73,6 +74,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   onVersionSelect,
   onExport,
   onRevert,
+  onInsightsSaved,
   showTimeline = true,
   autoTrack = true
 }) => {
@@ -148,11 +150,6 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   const fetchInsights = useCallback(async (version: InteractionVersion) => {
     if (!version.userPrompt || !version.aiOutput) return;
 
-    // DEBUG: Log what we're checking
-    console.log('[MR2] fetchInsights called for:', version.id);
-    console.log('[MR2] version.insights:', version.insights);
-    console.log('[MR2] insightsCache has:', insightsCache.has(version.id));
-
     // 1. Check local cache first (for insights we just fetched in this session)
     const cachedInsights = insightsCache.get(version.id);
     if (cachedInsights && Object.keys(cachedInsights).length > 0) {
@@ -216,6 +213,8 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
           try {
             await apiService.sessions.saveInsights(version.sessionId, version.id, insightsData);
             console.log('[MR2] Insights saved to database');
+            // Notify parent to update messages state
+            onInsightsSaved?.(version.id, insightsData);
           } catch (saveError) {
             console.warn('[MR2] Failed to save insights to database:', saveError);
             // Don't show error to user - insights still work via local cache
@@ -230,7 +229,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
         error: error.message || 'Failed to analyze response'
       }));
     }
-  }, [insightsCache]);
+  }, [insightsCache, onInsightsSaved]);
 
   // Auto-fetch insights when selecting a version in insights mode
   useEffect(() => {
