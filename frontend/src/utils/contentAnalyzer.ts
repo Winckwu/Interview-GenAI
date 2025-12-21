@@ -1,157 +1,150 @@
 /**
  * Content Analyzer for Trust Indicator
  *
- * Analyzes AI response content to generate specific verification suggestions
- * based on detected patterns (code, data, claims, etc.)
+ * Analyzes AI response content to explain WHY the trust score is what it is.
+ * Returns factors that contributed to the score (positive and negative).
  */
 
-export interface VerificationSuggestion {
+export interface TrustFactor {
   icon: string;
   text: string;
-  reason: string;  // Why this suggestion was triggered
-  priority: 'high' | 'medium' | 'low';
+  impact: 'positive' | 'negative' | 'neutral';
+  points: number;  // How much this factor contributed
 }
 
 export interface ContentAnalysisResult {
-  suggestions: VerificationSuggestion[];
-  detectedPatterns: string[];
-  actionLabel: string;  // Short action label like "建议核实要点"
+  factors: TrustFactor[];
+  actionLabel: string;
 }
 
 /**
- * Pattern detection rules
+ * Analyze content and return factors explaining the trust score
  */
-const DETECTION_RULES: Array<{
-  name: string;
-  pattern: RegExp;
-  suggestion: Omit<VerificationSuggestion, 'reason'>;
-  reasonTemplate: string;
-}> = [
-  // Code patterns
-  {
-    name: 'for_loop',
-    pattern: /\b(for|while)\s*\(/i,
-    suggestion: { icon: '🔄', text: '检查循环边界条件', priority: 'high' },
-    reasonTemplate: '检测到循环语句',
-  },
-  {
-    name: 'if_condition',
-    pattern: /\bif\s*\([^)]+\)\s*{/,
-    suggestion: { icon: '🔀', text: '验证条件判断逻辑', priority: 'medium' },
-    reasonTemplate: '检测到条件判断',
-  },
-  {
-    name: 'api_fetch',
-    pattern: /\b(fetch|axios|ajax|http|request)\s*\(/i,
-    suggestion: { icon: '🌐', text: '确认API参数和错误处理', priority: 'high' },
-    reasonTemplate: '检测到API调用',
-  },
-  {
-    name: 'database',
-    pattern: /\b(SELECT|INSERT|UPDATE|DELETE|query|findOne|findMany|prisma|mongoose)\b/i,
-    suggestion: { icon: '🗄️', text: '检查数据库操作安全性', priority: 'high' },
-    reasonTemplate: '检测到数据库操作',
-  },
-  {
-    name: 'async_await',
-    pattern: /\b(async|await|Promise|\.then\()\b/,
-    suggestion: { icon: '⏳', text: '检查异步错误处理', priority: 'medium' },
-    reasonTemplate: '检测到异步操作',
-  },
-  {
-    name: 'regex',
-    pattern: /new RegExp|\/[^/]+\/[gimsuy]*/,
-    suggestion: { icon: '🔍', text: '测试正则表达式边界情况', priority: 'medium' },
-    reasonTemplate: '检测到正则表达式',
-  },
-  {
-    name: 'error_handling',
-    pattern: /\b(try|catch|throw|Error)\b/,
-    suggestion: { icon: '⚠️', text: '验证异常处理完整性', priority: 'medium' },
-    reasonTemplate: '检测到错误处理',
-  },
-  {
-    name: 'file_operation',
-    pattern: /\b(readFile|writeFile|fs\.|open\(|close\(|path\.)/i,
-    suggestion: { icon: '📁', text: '检查文件路径和权限', priority: 'high' },
-    reasonTemplate: '检测到文件操作',
-  },
-  {
-    name: 'auth_security',
-    pattern: /\b(password|token|auth|secret|credential|jwt|session)\b/i,
-    suggestion: { icon: '🔐', text: '审查安全敏感代码', priority: 'high' },
-    reasonTemplate: '检测到安全敏感内容',
-  },
+export function analyzeContentFactors(content: string, trustScore: number): ContentAnalysisResult {
+  const factors: TrustFactor[] = [];
 
-  // Data patterns
-  {
-    name: 'numbers_stats',
-    pattern: /\d+(\.\d+)?%|\d{4,}|\b(统计|数据|比例|平均|总计)\b/,
-    suggestion: { icon: '📊', text: '核实数据来源准确性', priority: 'high' },
-    reasonTemplate: '检测到数字/统计数据',
-  },
-  {
-    name: 'dates',
-    pattern: /\b(20[0-2]\d年|\d{4}-\d{2}-\d{2}|最近|去年|今年)\b/,
-    suggestion: { icon: '📅', text: '确认信息时效性', priority: 'medium' },
-    reasonTemplate: '检测到日期/时间信息',
-  },
+  if (!content || content.length < 10) {
+    return {
+      factors: [{ icon: '📝', text: 'Short response', impact: 'neutral', points: 0 }],
+      actionLabel: getActionLabel(trustScore),
+    };
+  }
 
-  // Uncertainty patterns
-  {
-    name: 'uncertainty',
-    pattern: /\b(可能|也许|大概|我认为|似乎|或许|不确定|maybe|probably|perhaps|might|could be)\b/i,
-    suggestion: { icon: '❓', text: 'AI不确定，建议查证', priority: 'high' },
-    reasonTemplate: '检测到不确定表述',
-  },
-  {
-    name: 'assumption',
-    pattern: /\b(假设|假定|如果.*那么|assuming|suppose)\b/i,
-    suggestion: { icon: '💭', text: '验证假设条件是否成立', priority: 'medium' },
-    reasonTemplate: '检测到假设条件',
-  },
+  // 1. Check for uncertainty indicators (negative)
+  const uncertaintyPatterns = [
+    { pattern: /\b(might|maybe|perhaps|possibly|could be|may be)\b/gi, text: 'Uncertain language' },
+    { pattern: /\b(not sure|uncertain|unsure|unclear)\b/gi, text: 'Expressed uncertainty' },
+    { pattern: /\b(I think|I believe|I guess|I suppose|it seems|appears to)\b/gi, text: 'Subjective phrasing' },
+    { pattern: /\b(probably|likely|unlikely|potentially)\b/gi, text: 'Probabilistic terms' },
+    { pattern: /(可能|也许|或许|大概|不确定|我认为|我觉得|似乎|好像)/g, text: 'Uncertain expressions' },
+  ];
 
-  // External reference patterns
-  {
-    name: 'library_reference',
-    pattern: /\b(npm|pip|import|require|from\s+['"]|版本|version)\b/i,
-    suggestion: { icon: '📦', text: '检查库版本兼容性', priority: 'medium' },
-    reasonTemplate: '检测到外部库引用',
-  },
-  {
-    name: 'url_link',
-    pattern: /https?:\/\/[^\s]+/,
-    suggestion: { icon: '🔗', text: '验证链接有效性', priority: 'low' },
-    reasonTemplate: '检测到URL链接',
-  },
+  let uncertaintyCount = 0;
+  uncertaintyPatterns.forEach(({ pattern, text }) => {
+    const matches = content.match(pattern);
+    if (matches && matches.length > 0) {
+      uncertaintyCount += matches.length;
+      if (!factors.find(f => f.text === text)) {
+        factors.push({
+          icon: '⚠️',
+          text,
+          impact: 'negative',
+          points: -Math.min(matches.length * 2.5, 10),
+        });
+      }
+    }
+  });
 
-  // Claim patterns
-  {
-    name: 'factual_claim',
-    pattern: /\b(研究表明|据.*报道|根据|according to|research shows)\b/i,
-    suggestion: { icon: '📰', text: '核实引用来源', priority: 'high' },
-    reasonTemplate: '检测到事实性声明',
-  },
-  {
-    name: 'recommendation',
-    pattern: /\b(建议|推荐|最好|应该|recommend|should|best practice)\b/i,
-    suggestion: { icon: '💡', text: '评估建议是否适合您的场景', priority: 'low' },
-    reasonTemplate: '检测到建议/推荐',
-  },
-];
+  // 2. Check for confidence indicators (positive)
+  const confidencePatterns = [
+    { pattern: /\b(definitely|certainly|clearly|obviously|absolutely)\b/gi, text: 'Confident language' },
+    { pattern: /\b(specifically|exactly|precisely)\b/gi, text: 'Precise terms' },
+    { pattern: /(一定|确定|肯定|明确|显然)/g, text: 'Assertive expressions' },
+  ];
+
+  confidencePatterns.forEach(({ pattern, text }) => {
+    const matches = content.match(pattern);
+    if (matches && matches.length > 0) {
+      factors.push({
+        icon: '✓',
+        text,
+        impact: 'positive',
+        points: Math.min(matches.length * 1.5, 6),
+      });
+    }
+  });
+
+  // 3. Check structure quality (positive)
+  if (/^\s*\d+[.)]\s/m.test(content)) {
+    factors.push({ icon: '📋', text: 'Numbered list structure', impact: 'positive', points: 4 });
+  }
+  if (/^\s*[-*•]\s/m.test(content)) {
+    factors.push({ icon: '•', text: 'Bullet point organization', impact: 'positive', points: 3 });
+  }
+  if (/^#{1,3}\s|^\*\*[^*]+\*\*:/m.test(content)) {
+    factors.push({ icon: '📑', text: 'Clear headings', impact: 'positive', points: 3 });
+  }
+  if (/```[\s\S]*?```/.test(content)) {
+    factors.push({ icon: '💻', text: 'Code examples provided', impact: 'positive', points: 5 });
+  }
+  if (/\|.*\|.*\|/m.test(content)) {
+    factors.push({ icon: '📊', text: 'Table format used', impact: 'positive', points: 4 });
+  }
+
+  // 4. Check for specific evidence (positive)
+  if (/\d+(\.\d+)?(%|个|次|年|月|日|元|美元|\$|GB|MB|KB)/.test(content)) {
+    factors.push({ icon: '🔢', text: 'Specific numbers/data', impact: 'positive', points: 3 });
+  }
+  if (/https?:\/\/\S+/.test(content)) {
+    factors.push({ icon: '🔗', text: 'Reference links included', impact: 'positive', points: 2 });
+  }
+
+  // 5. Check content length (longer = more thorough, generally positive)
+  const wordCount = content.split(/\s+/).length;
+  if (wordCount > 200) {
+    factors.push({ icon: '📖', text: 'Detailed response', impact: 'positive', points: 3 });
+  } else if (wordCount < 50) {
+    factors.push({ icon: '📝', text: 'Brief response', impact: 'neutral', points: 0 });
+  }
+
+  // Sort: negative factors first, then positive
+  factors.sort((a, b) => {
+    if (a.impact === 'negative' && b.impact !== 'negative') return -1;
+    if (a.impact !== 'negative' && b.impact === 'negative') return 1;
+    return Math.abs(b.points) - Math.abs(a.points);
+  });
+
+  // Limit to top 4 most significant factors
+  const limitedFactors = factors.slice(0, 4);
+
+  // If no factors found, add a default
+  if (limitedFactors.length === 0) {
+    limitedFactors.push({
+      icon: '📝',
+      text: 'Standard response format',
+      impact: 'neutral',
+      points: 0,
+    });
+  }
+
+  return {
+    factors: limitedFactors,
+    actionLabel: getActionLabel(trustScore),
+  };
+}
 
 /**
  * Get action label based on trust score
  */
 function getActionLabel(trustScore: number): string {
   if (trustScore >= 80) {
-    return '快速检查即可';
+    return 'Quick check sufficient';
   } else if (trustScore >= 60) {
-    return '建议核实要点';
+    return 'Verify key points';
   } else if (trustScore >= 40) {
-    return '请仔细审查';
+    return 'Review carefully';
   } else {
-    return '建议专业验证';
+    return 'Expert review recommended';
   }
 }
 
@@ -171,59 +164,41 @@ export function getTrustIcon(trustScore: number): string {
 }
 
 /**
- * Get trust level color based on score
+ * Get trust color scheme based on score
  */
-export function getTrustColor(trustScore: number): string {
+export function getTrustColors(trustScore: number): {
+  text: string;
+  bg: string;
+  bgLight: string;
+  border: string;
+} {
   if (trustScore >= 80) {
-    return '#22c55e'; // green
+    return {
+      text: '#166534',      // dark green
+      bg: '#22c55e',        // green
+      bgLight: '#dcfce7',   // light green
+      border: '#86efac',    // green border
+    };
   } else if (trustScore >= 60) {
-    return '#f59e0b'; // yellow/amber
+    return {
+      text: '#92400e',      // dark amber
+      bg: '#f59e0b',        // amber
+      bgLight: '#fef3c7',   // light amber
+      border: '#fcd34d',    // amber border
+    };
   } else if (trustScore >= 40) {
-    return '#f97316'; // orange
+    return {
+      text: '#9a3412',      // dark orange
+      bg: '#f97316',        // orange
+      bgLight: '#ffedd5',   // light orange
+      border: '#fdba74',    // orange border
+    };
   } else {
-    return '#ef4444'; // red
+    return {
+      text: '#991b1b',      // dark red
+      bg: '#ef4444',        // red
+      bgLight: '#fee2e2',   // light red
+      border: '#fca5a5',    // red border
+    };
   }
-}
-
-/**
- * Analyze AI response content and generate specific suggestions
- */
-export function analyzeContent(content: string, trustScore: number): ContentAnalysisResult {
-  const suggestions: VerificationSuggestion[] = [];
-  const detectedPatterns: string[] = [];
-
-  // Run all detection rules
-  for (const rule of DETECTION_RULES) {
-    if (rule.pattern.test(content)) {
-      detectedPatterns.push(rule.name);
-      suggestions.push({
-        ...rule.suggestion,
-        reason: rule.reasonTemplate,
-      });
-    }
-  }
-
-  // Sort by priority (high first)
-  const priorityOrder = { high: 0, medium: 1, low: 2 };
-  suggestions.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
-
-  // Limit to top 4 suggestions to avoid overwhelming users
-  const limitedSuggestions = suggestions.slice(0, 4);
-
-  return {
-    suggestions: limitedSuggestions,
-    detectedPatterns,
-    actionLabel: getActionLabel(trustScore),
-  };
-}
-
-/**
- * Get a brief summary for tooltip
- */
-export function getSummaryText(trustScore: number, suggestionsCount: number): string {
-  const actionLabel = getActionLabel(trustScore);
-  if (suggestionsCount === 0) {
-    return actionLabel;
-  }
-  return `${actionLabel} (${suggestionsCount}项)`;
 }
