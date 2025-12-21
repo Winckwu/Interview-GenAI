@@ -217,6 +217,11 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       const total = responseData.total || 0;
 
       if (interactions && interactions.length > 0) {
+        // DEBUG: Log insights from API response
+        console.log('[useMessages] Interactions loaded, checking insights:',
+          interactions.map((i: any) => ({ id: i.id?.substring(0, 8), hasInsights: !!i.insights }))
+        );
+
         // Remove duplicate interactions by ID and filter valid interactions
         const uniqueInteractions = Array.from(
           new Map(
