@@ -42,6 +42,7 @@ import {
   recordInterventionAction as updateInterventionAction,
   calculateFatigueScore,
   calculateSuppressionExpiry,
+  UserPatternType,
 } from '../../utils/InterventionScheduler';
 import { useInterventionStore } from '../../stores/interventionStore';
 import { useMetricsStore } from '../../stores/metricsStore';
@@ -158,6 +159,7 @@ export interface InterventionManagerProps {
   activeMRs?: ActiveMR[]; // Backend MCA orchestrator results - takes priority over frontend detection
   isStreaming?: boolean; // Whether AI is currently generating response
   userInput?: string; // Current user input (for phase detection)
+  userPattern?: UserPatternType; // User's behavioral pattern (A-F) for intervention threshold adjustment
 }
 
 /**
@@ -187,6 +189,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   activeMRs = [],
   isStreaming = false,
   userInput = '',
+  userPattern = 'unknown',
 }) => {
   const store = useInterventionStore();
   const metricsStore = useMetricsStore();
@@ -740,6 +743,9 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         }
 
         // Check suppression and schedule intervention
+        // userPattern affects tier thresholds:
+        // - Pattern F users get intervention at lower confidence (aggressive)
+        // - Pattern A/B/D/E users rarely see interventions (high thresholds)
         const decision = scheduleIntervention(
           detection.recommendedTier === 'hard'
             ? 'MR_PATTERN_F_BARRIER'
@@ -749,7 +755,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
           detection.confidence,
           detection.recommendedTier,
           store.userHistory,
-          store.suppressionState
+          store.suppressionState,
+          userPattern
         );
 
         console.log('[InterventionManager] Suppression decision:', decision);
@@ -801,7 +808,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI]);
+  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern]);
 
   /**
    * Render active intervention

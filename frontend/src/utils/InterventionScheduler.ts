@@ -2,12 +2,18 @@
  * Intervention Scheduler: Fatigue-Aware Intervention Decision Making
  *
  * Purpose: Determine whether to display an intervention UI based on:
- * 1. Pattern confidence level (from PatternDetector)
- * 2. User's fatigue state (dismissal history, engagement)
- * 3. Time decay (suppress for N minutes after dismissal)
+ * 1. User's behavioral pattern (A-F) for threshold adjustment
+ * 2. Pattern confidence level (from PatternDetector)
+ * 3. User's fatigue state (dismissal history, engagement)
+ * 4. Time decay (suppress for N minutes after dismissal)
  *
  * Theory: Prevent "intervention fatigue" where users get annoyed at repeated warnings
  * and lose trust in system. After 3 dismissals of same MR type, suppress for 30 minutes.
+ *
+ * Pattern-based intervention intensity:
+ * - Pattern A/B/D/E: Low risk users - minimal intervention (high thresholds)
+ * - Pattern C: Medium risk - default thresholds
+ * - Pattern F: High risk - aggressive intervention (low thresholds)
  */
 
 /**
@@ -23,6 +29,54 @@ export type InterventionType =
   | 'MR_PATTERN_F_BARRIER';    // Hard: Pattern F detected (high confidence)
 
 export type InterventionTier = 'soft' | 'medium' | 'hard' | 'suppress';
+
+/**
+ * User behavioral pattern type (from qualitative analysis of 49 interviews)
+ *
+ * Pattern A: Strategic Decomposition - sophisticated pre-planning, strong cognitive control
+ * Pattern B: Iterative Refinement - rapid experimentation, learns from failures (3-7 iterations)
+ * Pattern C: Context-Sensitive Adaptation - flexible strategies, 44.9% of users
+ * Pattern D: Deep Verification - systematic verification, parallel-solving
+ * Pattern E: Pedagogical Reflection - learning-oriented, uses AI for self-development
+ * Pattern F: Passive Dependency - HIGH RISK, minimal metacognitive engagement
+ */
+export type UserPatternType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'unknown';
+
+/**
+ * Pattern-based confidence thresholds for tier selection
+ *
+ * Lower thresholds = more likely to trigger interventions
+ * Pattern F users get aggressive intervention (low thresholds)
+ * Pattern A/B/D/E users rarely need intervention (high thresholds)
+ */
+export const PATTERN_THRESHOLDS: Record<UserPatternType, { soft: number; medium: number; hard: number }> = {
+  // Pattern A: Strategic Decomposition - almost never intervene
+  // They do sophisticated pre-planning and have strong cognitive control
+  'A': { soft: 0.90, medium: 0.95, hard: 0.99 },
+
+  // Pattern B: Iterative Refinement - rarely intervene
+  // They learn from failures and iterate effectively
+  'B': { soft: 0.80, medium: 0.90, hard: 0.95 },
+
+  // Pattern D: Deep Verification - minimal intervention
+  // They verify systematically themselves
+  'D': { soft: 0.85, medium: 0.92, hard: 0.98 },
+
+  // Pattern E: Pedagogical Reflection - minimal intervention
+  // They treat AI as learning opportunity, high self-development
+  'E': { soft: 0.88, medium: 0.94, hard: 0.99 },
+
+  // Pattern C: Context-Sensitive Adaptation - default thresholds
+  // Largest group (44.9%), moderate metacognitive engagement
+  'C': { soft: 0.60, medium: 0.75, hard: 0.85 },
+
+  // Pattern F: Passive Dependency - AGGRESSIVE intervention!
+  // HIGH RISK: minimal verification, 1.2 turns vs 4.7 for Pattern B, <30s review
+  'F': { soft: 0.40, medium: 0.55, hard: 0.70 },
+
+  // Unknown: use default (same as C)
+  'unknown': { soft: 0.60, medium: 0.75, hard: 0.85 },
+};
 
 /**
  * Single user's intervention history
@@ -213,9 +267,10 @@ export function calculateSuppressionExpiry(
  * Main decision function: Should we display this intervention?
  *
  * Considers:
- * 1. Confidence level from pattern detection
- * 2. Fatigue score
- * 3. Suppression timers
+ * 1. User's behavioral pattern (A-F) for threshold adjustment
+ * 2. Confidence level from pattern detection
+ * 3. Fatigue score
+ * 4. Suppression timers
  *
  * Returns decision and reasoning
  */
@@ -224,8 +279,11 @@ export function scheduleIntervention(
   patternConfidence: number,
   recommendedTier: string,
   userHistory: UserInterventionHistory,
-  suppressionState: InterventionSuppressionState
+  suppressionState: InterventionSuppressionState,
+  userPattern: UserPatternType = 'unknown'
 ): InterventionSchedulingDecision {
+  // Get thresholds based on user's behavioral pattern
+  const thresholds = PATTERN_THRESHOLDS[userPattern];
   // Get fatigue score for this specific MR type
   const fatigueScore = calculateFatigueScore(mrType, userHistory);
 
@@ -261,12 +319,12 @@ export function scheduleIntervention(
   // If not suppressed, determine tier to display
   // Hard barriers show even if fatigue is high (safety takes priority)
   if (mrType === 'MR_PATTERN_F_BARRIER') {
-    // Hard barrier: only show if confidence is high enough
-    if (patternConfidence >= 0.85) {
+    // Hard barrier: only show if confidence exceeds pattern-specific hard threshold
+    if (patternConfidence >= thresholds.hard) {
       return {
         shouldDisplay: true,
         tier: 'hard',
-        reason: `Pattern F detected with ${(patternConfidence * 100).toFixed(0)}% confidence. Hard barrier required for safety.`,
+        reason: `Pattern F detected with ${(patternConfidence * 100).toFixed(0)}% confidence (threshold: ${(thresholds.hard * 100).toFixed(0)}% for Pattern ${userPattern}). Hard barrier required for safety.`,
         fatigueScore,
         dismissalCount,
         suppressedUntil: null,
@@ -276,7 +334,7 @@ export function scheduleIntervention(
       return {
         shouldDisplay: false,
         tier: 'suppress',
-        reason: `Pattern F confidence (${(patternConfidence * 100).toFixed(0)}%) below hard barrier threshold (85%). Not showing hard intervention.`,
+        reason: `Pattern F confidence (${(patternConfidence * 100).toFixed(0)}%) below hard barrier threshold (${(thresholds.hard * 100).toFixed(0)}% for Pattern ${userPattern}). Not showing hard intervention.`,
         fatigueScore,
         dismissalCount,
         suppressedUntil: null,
@@ -284,26 +342,36 @@ export function scheduleIntervention(
     }
   }
 
-  // Soft/Medium signals respect fatigue and confidence
-  if (patternConfidence >= 0.6) {
+  // Tier selection based on pattern-specific thresholds
+  // Pattern F users get intervention at lower confidence (more aggressive)
+  // Pattern A/B/D/E users rarely see interventions (high thresholds)
+  if (patternConfidence >= thresholds.medium) {
     return {
       shouldDisplay: true,
-      tier: patternConfidence >= 0.75 ? 'medium' : 'soft',
-      reason:
-        patternConfidence >= 0.75
-          ? `Medium confidence (${(patternConfidence * 100).toFixed(0)}%). Showing medium alert.`
-          : `Soft confidence (${(patternConfidence * 100).toFixed(0)}%). Showing soft signal.`,
+      tier: 'medium',
+      reason: `Confidence ${(patternConfidence * 100).toFixed(0)}% >= medium threshold ${(thresholds.medium * 100).toFixed(0)}% (Pattern ${userPattern}). Showing medium alert.`,
       fatigueScore,
       dismissalCount,
       suppressedUntil: null,
     };
   }
 
-  // Below threshold confidence
+  if (patternConfidence >= thresholds.soft) {
+    return {
+      shouldDisplay: true,
+      tier: 'soft',
+      reason: `Confidence ${(patternConfidence * 100).toFixed(0)}% >= soft threshold ${(thresholds.soft * 100).toFixed(0)}% (Pattern ${userPattern}). Showing soft signal.`,
+      fatigueScore,
+      dismissalCount,
+      suppressedUntil: null,
+    };
+  }
+
+  // Below pattern-specific soft threshold
   return {
     shouldDisplay: false,
     tier: 'suppress',
-    reason: `Confidence (${(patternConfidence * 100).toFixed(0)}%) below display threshold (60%). Not showing intervention.`,
+    reason: `Confidence (${(patternConfidence * 100).toFixed(0)}%) below soft threshold (${(thresholds.soft * 100).toFixed(0)}% for Pattern ${userPattern}). Not showing intervention.`,
     fatigueScore,
     dismissalCount,
     suppressedUntil: null,
