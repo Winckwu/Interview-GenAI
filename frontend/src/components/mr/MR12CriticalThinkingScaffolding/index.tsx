@@ -400,6 +400,9 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     setAssessment(null);
   }, []);
 
+  // Expanded item in existing record view
+  const [expandedRecordItem, setExpandedRecordItem] = useState<string | null>(null);
+
   /**
    * Start new evaluation (clear existing record)
    */
@@ -468,15 +471,35 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
             {recordResponses.map((r: any, idx: number) => {
               const q = recordQuestions.find((q: any) => q.id === r.questionId);
               if (!q || r.response === 'skip') return null;
+              const isExpanded = expandedRecordItem === r.questionId;
               return (
                 <div
                   key={r.questionId}
-                  className={`mr12-response-item mr12-response-${r.response}`}
+                  className={`mr12-response-item mr12-response-${r.response} ${isExpanded ? 'expanded' : ''}`}
                 >
-                  <span className="mr12-response-icon">
-                    {r.response === 'yes' ? '✓' : r.response === 'no' ? '✗' : '?'}
-                  </span>
-                  <span className="mr12-response-text">{q.question}</span>
+                  <div
+                    className="mr12-response-header"
+                    onClick={() => setExpandedRecordItem(isExpanded ? null : r.questionId)}
+                  >
+                    <span className="mr12-response-icon">
+                      {r.response === 'yes' ? '✓' : r.response === 'no' ? '✗' : '?'}
+                    </span>
+                    <span className="mr12-response-text">{q.question}</span>
+                    <span className="mr12-response-arrow">{isExpanded ? '▲' : '▼'}</span>
+                  </div>
+                  {isExpanded && (
+                    <div className="mr12-response-details">
+                      {q.description && (
+                        <p className="mr12-response-desc">{q.description}</p>
+                      )}
+                      {q.verificationTip && (
+                        <p className="mr12-response-tip">💡 {q.verificationTip}</p>
+                      )}
+                      {q.targetText && (
+                        <p className="mr12-response-target">📌 "{q.targetText.slice(0, 150)}..."</p>
+                      )}
+                    </div>
+                  )}
                 </div>
               );
             })}
