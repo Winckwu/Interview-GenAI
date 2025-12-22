@@ -391,6 +391,34 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       };
 
       if (tier === 'soft') {
+        // MR15: Use contextual tip if available
+        if (mr.mrId === 'MR15') {
+          const contextualTip = getContextualTip(userPhase, dismissedTips);
+          if (contextualTip) {
+            return {
+              ...baseIntervention,
+              mrType: `MR15_${contextualTip.id}`,
+              icon: '💡',
+              title: contextualTip.tip,
+              message: contextualTip.detail || mr.message,
+              description: `Strategy tip • ${metadata.category}`,
+              contextualTipId: contextualTip.id,
+              onDismiss: () => {
+                // Dismiss the contextual tip permanently
+                setDismissedTips(prev => new Set([...prev, contextualTip.id]));
+                handleDismiss(mr.mrId);
+              },
+              onLearnMore: contextualTip.actionLabel ? () => {
+                console.log(`[InterventionManager] Backend MR15 contextual tip action: ${contextualTip.id}`);
+                setDismissedTips(prev => new Set([...prev, contextualTip.id]));
+                handleLearnMore(mr.mrId);
+              } : undefined,
+            };
+          }
+          // No available contextual tip - skip MR15
+          return null;
+        }
+
         return {
           ...baseIntervention,
           icon: metadata.icon,
@@ -437,7 +465,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onCancel: () => handleDismiss(mr.mrId),
       };
     },
-    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, HARD_BARRIER_COOLDOWN_MS]
+    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, HARD_BARRIER_COOLDOWN_MS, userPhase, dismissedTips]
   );
 
   /**
@@ -653,8 +681,22 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }
 
     // If we have active MRs from backend, display the first one
+    // Filter out MR15 if user has dismissed all contextual tips (respect dismissedTips)
+    const filteredMRs = activeMRs.filter(mr => {
+      // Skip MR15 if all contextual tips have been dismissed
+      if (mr.mrId === 'MR15' && dismissedTips.size >= MR15_CONTEXTUAL_TIPS.length) {
+        console.log(`[InterventionManager] Skipping MR15 - all contextual tips dismissed`);
+        return false;
+      }
+      return true;
+    });
+
+    if (filteredMRs.length === 0) {
+      return;
+    }
+
     // Sort by priority to show most important first
-    const sortedMRs = [...activeMRs].sort((a, b) => b.priority - a.priority);
+    const sortedMRs = [...filteredMRs].sort((a, b) => b.priority - a.priority);
     const topMR = sortedMRs[0];
 
     // Avoid re-displaying the same MR
@@ -671,6 +713,14 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     // Pass lastHardBarrierTime as parameter to avoid dependency issues
     const intervention = convertActiveMRToIntervention(topMR, lastHardBarrierTimeRef.current);
+
+    // MR15 may return null if no contextual tip is available
+    if (!intervention) {
+      console.log(`[InterventionManager] Skipping MR: ${topMR.mrId} - no intervention available`);
+      // Mark as displayed so we don't retry
+      setLastDisplayedMRId(topMR.mrId);
+      return;
+    }
 
     // Update hard barrier time if needed (using ref to avoid triggering re-renders)
     if (intervention.tier === 'hard') {
@@ -706,7 +756,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     onInterventionDisplayed?.(intervention.tier, topMR.mrId);
     // Note: metricsStore and store are stable Zustand stores, excluded from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime]);
+  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips]);
 
   /**
    * Core detection and scheduling logic - Frontend fallback
