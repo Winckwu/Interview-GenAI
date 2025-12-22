@@ -203,9 +203,9 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const POST_ACTION_COOLDOWN_MS = 30000;
 
   // SESSION-LEVEL SUPPRESSION (Solution D+C)
-  // When user clicks "Don't show again this session", suppress until confidence significantly increases
-  const [sessionSuppressed, setSessionSuppressed] = useState<boolean>(false);
-  const [acknowledgedConfidence, setAcknowledgedConfidence] = useState<number>(0);
+  // When user clicks "Don't show again this session", suppress ONLY that specific MR type
+  // Map: mrType -> acknowledged confidence level
+  const [suppressedMRs, setSuppressedMRs] = useState<Map<string, number>>(new Map());
   // Re-trigger threshold: only show again if confidence increases by this much (15%)
   const CONFIDENCE_INCREASE_THRESHOLD = 0.15;
 
@@ -312,11 +312,11 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
   /**
    * Handle "Don't show again this session" button (Solution D+C)
-   * Suppresses interventions until confidence significantly increases
+   * Suppresses ONLY this specific MR type until confidence significantly increases
    */
   const handleDontShowThisSession = useCallback(
     (mrType: string, currentConfidence: number) => {
-      console.log(`[InterventionManager] Session suppression activated at confidence: ${(currentConfidence * 100).toFixed(1)}%`);
+      console.log(`[InterventionManager] Session suppression for ${mrType} at confidence: ${(currentConfidence * 100).toFixed(1)}%`);
       store.recordUserAction(mrType, 'suppress_session');
 
       // Record action in metrics store
@@ -325,9 +325,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         metricsStore.recordUserAction(sessionId, lastInterventionId, 'dismiss', timeToAction);
       }
 
-      // Enable session suppression and remember current confidence level
-      setSessionSuppressed(true);
-      setAcknowledgedConfidence(currentConfidence);
+      // Add this MR type to suppressed map with its confidence level
+      setSuppressedMRs(prev => new Map(prev).set(mrType, currentConfidence));
 
       store.clearActiveIntervention();
       onUserAction?.(mrType, 'suppress_session');
@@ -716,28 +715,31 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       return;
     }
 
-    // SESSION SUPPRESSION CHECK (Solution D+C)
-    // If user clicked "Don't show again this session", only show if confidence significantly increased
-    const currentConfidence = 0.7; // Default confidence for backend MRs
-    if (sessionSuppressed) {
-      const confidenceIncrease = currentConfidence - acknowledgedConfidence;
-      if (confidenceIncrease < CONFIDENCE_INCREASE_THRESHOLD) {
-        console.log(`[InterventionManager] Session suppressed. Current: ${(currentConfidence * 100).toFixed(1)}%, Acknowledged: ${(acknowledgedConfidence * 100).toFixed(1)}%, Increase needed: ${(CONFIDENCE_INCREASE_THRESHOLD * 100).toFixed(1)}%`);
-        return;
-      }
-      // Confidence increased significantly - show intervention and reset suppression
-      console.log(`[InterventionManager] Confidence increased significantly (${(confidenceIncrease * 100).toFixed(1)}% > ${(CONFIDENCE_INCREASE_THRESHOLD * 100).toFixed(1)}%) - resetting suppression`);
-      setSessionSuppressed(false);
-      setAcknowledgedConfidence(0);
-    }
-
     // If we have active MRs from backend, display the first one
-    // Filter out MR15 if user has dismissed all contextual tips (respect dismissedTips)
+    // Filter out suppressed MRs and MR15 if user has dismissed all contextual tips
+    const currentConfidence = 0.7; // Default confidence for backend MRs
     const filteredMRs = activeMRs.filter(mr => {
       // Skip MR15 if all contextual tips have been dismissed
       if (mr.mrId === 'MR15' && dismissedTips.size >= MR15_CONTEXTUAL_TIPS.length) {
         console.log(`[InterventionManager] Skipping MR15 - all contextual tips dismissed`);
         return false;
+      }
+
+      // SESSION SUPPRESSION CHECK (Solution D+C) - check if this specific MR is suppressed
+      const acknowledgedConfidence = suppressedMRs.get(mr.mrId);
+      if (acknowledgedConfidence !== undefined) {
+        const confidenceIncrease = currentConfidence - acknowledgedConfidence;
+        if (confidenceIncrease < CONFIDENCE_INCREASE_THRESHOLD) {
+          console.log(`[InterventionManager] ${mr.mrId} suppressed. Current: ${(currentConfidence * 100).toFixed(1)}%, Acknowledged: ${(acknowledgedConfidence * 100).toFixed(1)}%`);
+          return false;
+        }
+        // Confidence increased significantly - allow this MR and remove from suppressed
+        console.log(`[InterventionManager] ${mr.mrId} confidence increased - removing suppression`);
+        setSuppressedMRs(prev => {
+          const newMap = new Map(prev);
+          newMap.delete(mr.mrId);
+          return newMap;
+        });
       }
       return true;
     });
@@ -807,7 +809,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     onInterventionDisplayed?.(intervention.tier, topMR.mrId);
     // Note: metricsStore and store are stable Zustand stores, excluded from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips, sessionSuppressed, acknowledgedConfidence, CONFIDENCE_INCREASE_THRESHOLD]);
+  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips, suppressedMRs, CONFIDENCE_INCREASE_THRESHOLD]);
 
   /**
    * Core detection and scheduling logic - Frontend fallback
@@ -838,12 +840,6 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     // Skip if we have backend MRs or messages too short or analyzing
     if (activeMRs.length > 0 || messages.length < minMessagesForDetection || isAnalyzing) {
       return;
-    }
-
-    // SESSION SUPPRESSION CHECK (Solution D+C) - will be checked again with actual confidence after detection
-    // Initial check to avoid unnecessary pattern detection when suppressed
-    if (sessionSuppressed) {
-      console.log(`[InterventionManager] Session suppressed - will check confidence after detection`);
     }
 
     const performAnalysis = async () => {
@@ -880,19 +876,30 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
           return;
         }
 
+        // Determine MR type for suppression check
+        const mrType = detection.recommendedTier === 'hard'
+          ? 'MR_PATTERN_F_BARRIER'
+          : detection.recommendedTier === 'medium'
+            ? 'MR18_OverDependence'
+            : 'MR13_Uncertainty';
+
         // SESSION SUPPRESSION CHECK (Solution D+C)
-        // If user clicked "Don't show again this session", only show if confidence significantly increased
-        if (sessionSuppressed) {
+        // Check if this specific MR type is suppressed
+        const acknowledgedConfidence = suppressedMRs.get(mrType);
+        if (acknowledgedConfidence !== undefined) {
           const confidenceIncrease = detection.confidence - acknowledgedConfidence;
           if (confidenceIncrease < CONFIDENCE_INCREASE_THRESHOLD) {
-            console.log(`[InterventionManager] Session suppressed. Current: ${(detection.confidence * 100).toFixed(1)}%, Acknowledged: ${(acknowledgedConfidence * 100).toFixed(1)}%, Increase needed: ${(CONFIDENCE_INCREASE_THRESHOLD * 100).toFixed(1)}%`);
+            console.log(`[InterventionManager] ${mrType} suppressed. Current: ${(detection.confidence * 100).toFixed(1)}%, Acknowledged: ${(acknowledgedConfidence * 100).toFixed(1)}%`);
             setIsAnalyzing(false);
             return;
           }
-          // Confidence increased significantly - show intervention and reset suppression
-          console.log(`[InterventionManager] Confidence increased significantly (${(confidenceIncrease * 100).toFixed(1)}% > ${(CONFIDENCE_INCREASE_THRESHOLD * 100).toFixed(1)}%) - resetting suppression`);
-          setSessionSuppressed(false);
-          setAcknowledgedConfidence(0);
+          // Confidence increased significantly - allow and remove from suppressed
+          console.log(`[InterventionManager] ${mrType} confidence increased - removing suppression`);
+          setSuppressedMRs(prev => {
+            const newMap = new Map(prev);
+            newMap.delete(mrType);
+            return newMap;
+          });
         }
 
         // Check suppression and schedule intervention
@@ -961,7 +968,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern, lastUserActionTime, sessionSuppressed, acknowledgedConfidence, CONFIDENCE_INCREASE_THRESHOLD]);
+  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern, lastUserActionTime, suppressedMRs, CONFIDENCE_INCREASE_THRESHOLD]);
 
   /**
    * Render active intervention
