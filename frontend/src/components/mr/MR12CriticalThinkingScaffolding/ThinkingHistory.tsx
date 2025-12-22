@@ -37,6 +37,8 @@ export const ThinkingHistory: React.FC<ThinkingHistoryProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  // Track expanded questions within records: "recordId-questionId"
+  const [expandedQuestion, setExpandedQuestion] = useState<string | null>(null);
 
   // Fetch records
   const fetchRecords = useCallback(async () => {
@@ -187,19 +189,43 @@ export const ThinkingHistory: React.FC<ThinkingHistoryProps> = ({
                 {/* Questions & Responses */}
                 <div className="th-responses">
                   {(record.ai_questions || []).map((q: any, idx: number) => {
-                    const response = (record.user_responses || [])[idx];
+                    const response = (record.user_responses || []).find((r: any) => r.questionId === q.id) || (record.user_responses || [])[idx];
+                    const questionKey = `${record.id}-${q.id || idx}`;
+                    const isQuestionExpanded = expandedQuestion === questionKey;
+
                     return (
-                      <div key={q.id || idx} className="th-response-item">
-                        <div className="th-response-question">
-                          Q{idx + 1}: {q.question}
+                      <div
+                        key={q.id || idx}
+                        className={`th-response-item ${isQuestionExpanded ? 'th-response-expanded' : ''}`}
+                      >
+                        <div
+                          className="th-response-header"
+                          onClick={() => setExpandedQuestion(isQuestionExpanded ? null : questionKey)}
+                        >
+                          <div className="th-response-main">
+                            <span className={`th-response-icon th-icon-${response?.response || 'skip'}`}>
+                              {response?.response === 'yes' && '✓'}
+                              {response?.response === 'no' && '✗'}
+                              {response?.response === 'unsure' && '?'}
+                              {(response?.response === 'skip' || !response) && '—'}
+                            </span>
+                            <span className="th-response-question">{q.question}</span>
+                          </div>
+                          <span className="th-response-arrow">{isQuestionExpanded ? '▲' : '▼'}</span>
                         </div>
-                        <div className={`th-response-answer th-answer-${response?.response || 'skip'}`}>
-                          {response?.response === 'yes' && '✓ Yes'}
-                          {response?.response === 'no' && '✗ No'}
-                          {response?.response === 'unsure' && '? Unsure'}
-                          {response?.response === 'skip' && '— Skipped'}
-                          {!response && '— No response'}
-                        </div>
+                        {isQuestionExpanded && (
+                          <div className="th-response-details">
+                            {q.description && (
+                              <p className="th-detail-desc">{q.description}</p>
+                            )}
+                            {q.verificationTip && (
+                              <p className="th-detail-tip">💡 {q.verificationTip}</p>
+                            )}
+                            {q.targetText && (
+                              <p className="th-detail-target">📌 "{q.targetText.slice(0, 150)}..."</p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}

@@ -199,13 +199,66 @@
 }
 
 .th-response-item {
+  padding: 0.5rem;
+  background: #f9fafb;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.th-response-item:hover {
+  background: #f3f4f6;
+}
+
+.th-response-expanded {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+}
+
+.th-response-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 0.5rem;
-  padding: 0.5rem;
-  background: #f9fafb;
-  border-radius: 4px;
+}
+
+.th-response-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.th-response-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.th-icon-yes {
+  background: #16a34a;
+  color: white;
+}
+
+.th-icon-no {
+  background: #dc2626;
+  color: white;
+}
+
+.th-icon-unsure {
+  background: #ca8a04;
+  color: white;
+}
+
+.th-icon-skip {
+  background: #9ca3af;
+  color: white;
 }
 
 .th-response-question {
@@ -213,6 +266,55 @@
   font-size: 0.75rem;
   color: #374151;
   line-height: 1.4;
+}
+
+.th-response-arrow {
+  font-size: 0.55rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+  margin-left: 0.25rem;
+}
+
+/* Expanded question details */
+.th-response-details {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #d1d5db;
+  animation: thFadeIn 0.2s ease;
+}
+
+@keyframes thFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.th-detail-desc {
+  margin: 0 0 0.375rem 0;
+  font-size: 0.7rem;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.th-detail-tip {
+  margin: 0 0 0.375rem 0;
+  font-size: 0.7rem;
+  color: #059669;
+  line-height: 1.4;
+  padding: 0.375rem 0.5rem;
+  background: rgba(5, 150, 105, 0.08);
+  border-radius: 4px;
+}
+
+.th-detail-target {
+  margin: 0;
+  font-size: 0.65rem;
+  color: #6b7280;
+  font-style: italic;
+  line-height: 1.4;
+  padding: 0.375rem 0.5rem;
+  background: #f3f4f6;
+  border-radius: 4px;
+  border-left: 2px solid #d1d5db;
 }
 
 .th-response-answer {
