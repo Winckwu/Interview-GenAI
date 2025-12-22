@@ -4945,6 +4945,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
       )}
 
       {/* Intervention Manager - Handles Soft/Medium/Hard tier interventions */}
+      {/* MR3 interventionLevel controls which tiers are visible */}
       <InterventionManager
         sessionId={sessionId || ''}
         messages={messagesHook.messages}
@@ -4953,6 +4954,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
         isStreaming={isStreaming}
         userInput={userInput}
         userPattern={currentUserPattern?.patternType || 'unknown'}
+        interventionLevel={interventionLevel}
         onInterventionDisplayed={(tier, mrType) => {
           console.log(`[ChatSessionPage] Intervention displayed: ${tier} - ${mrType}`);
         }}

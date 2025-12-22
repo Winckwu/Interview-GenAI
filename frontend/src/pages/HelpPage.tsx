@@ -224,8 +224,8 @@ const HelpPage: React.FC = () => {
                 <div className="mr-card">
                   <div className="mr-number">MR3</div>
                   <div className="mr-content">
-                    <h4>Human Agency Control</h4>
-                    <p>Control intervention levels: Passive (minimal), Suggestive (default), or Proactive (all recommendations). Manual override indicator shows when you've customized settings.</p>
+                    <h4>Reminder Frequency</h4>
+                    <p>Control how often you receive metacognitive reminders. Choose 'Minimal' for only critical warnings, 'Balanced' for moderate guidance (default), or 'Active' for comprehensive coaching with all tips and suggestions.</p>
                   </div>
                 </div>
 

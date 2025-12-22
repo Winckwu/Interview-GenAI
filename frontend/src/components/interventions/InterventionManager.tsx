@@ -150,6 +150,15 @@ const getContextualTip = (phase: UserPhase, dismissedTips: Set<string>): Context
     .sort((a, b) => b.priority - a.priority)[0] || null;
 };
 
+// Intervention level determines which tiers are shown (MR3 control)
+type InterventionLevelType = 'minimal' | 'balanced' | 'active';
+
+const TIER_VISIBILITY: Record<InterventionLevelType, Set<string>> = {
+  minimal: new Set(['hard']),           // Only critical warnings
+  balanced: new Set(['medium', 'hard']), // Moderate guidance (default)
+  active: new Set(['soft', 'medium', 'hard']), // Comprehensive coaching
+};
+
 export interface InterventionManagerProps {
   sessionId: string;
   messages: Message[];
@@ -160,6 +169,7 @@ export interface InterventionManagerProps {
   isStreaming?: boolean; // Whether AI is currently generating response
   userInput?: string; // Current user input (for phase detection)
   userPattern?: UserPatternType; // User's behavioral pattern (A-F) for intervention threshold adjustment
+  interventionLevel?: InterventionLevelType; // MR3 control: which tiers to show
 }
 
 /**
@@ -190,6 +200,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   isStreaming = false,
   userInput = '',
   userPattern = 'unknown',
+  interventionLevel = 'balanced',
 }) => {
   const store = useInterventionStore();
   const metricsStore = useMetricsStore();
@@ -716,9 +727,17 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }
 
     // If we have active MRs from backend, display the first one
-    // Filter out suppressed MRs and MR15 if user has dismissed all contextual tips
+    // Filter based on: tier visibility (MR3), suppressed MRs, dismissed tips
     const currentConfidence = 0.7; // Default confidence for backend MRs
+    const allowedTiers = TIER_VISIBILITY[interventionLevel];
+
     const filteredMRs = activeMRs.filter(mr => {
+      // MR3 TIER VISIBILITY CHECK - filter based on user's intervention level setting
+      if (!allowedTiers.has(mr.tier)) {
+        console.log(`[InterventionManager] Skipping ${mr.mrId} - tier '${mr.tier}' not visible at '${interventionLevel}' level`);
+        return false;
+      }
+
       // Skip MR15 if all contextual tips have been dismissed
       if (mr.mrId === 'MR15' && dismissedTips.size >= MR15_CONTEXTUAL_TIPS.length) {
         console.log(`[InterventionManager] Skipping MR15 - all contextual tips dismissed`);
@@ -809,7 +828,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     onInterventionDisplayed?.(intervention.tier, topMR.mrId);
     // Note: metricsStore and store are stable Zustand stores, excluded from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips, suppressedMRs, CONFIDENCE_INCREASE_THRESHOLD]);
+  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips, suppressedMRs, CONFIDENCE_INCREASE_THRESHOLD, interventionLevel]);
 
   /**
    * Core detection and scheduling logic - Frontend fallback
@@ -872,6 +891,14 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         // Lowered threshold to 0.2 (1 rule triggered) for easier testing
         if (detection.confidence < 0.2) {
           console.log('[InterventionManager] Confidence too low, skipping intervention');
+          setIsAnalyzing(false);
+          return;
+        }
+
+        // MR3 TIER VISIBILITY CHECK - filter based on user's intervention level setting
+        const allowedTiers = TIER_VISIBILITY[interventionLevel];
+        if (!allowedTiers.has(detection.recommendedTier)) {
+          console.log(`[InterventionManager] Skipping - tier '${detection.recommendedTier}' not visible at '${interventionLevel}' level`);
           setIsAnalyzing(false);
           return;
         }
@@ -968,7 +995,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern, lastUserActionTime, suppressedMRs, CONFIDENCE_INCREASE_THRESHOLD]);
+  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern, lastUserActionTime, suppressedMRs, CONFIDENCE_INCREASE_THRESHOLD, interventionLevel]);
 
   /**
    * Render active intervention

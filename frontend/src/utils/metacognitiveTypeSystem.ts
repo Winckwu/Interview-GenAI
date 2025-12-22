@@ -623,9 +623,9 @@ export function getMultiDimensionRecommendations(
     regulation: [
       {
         id: 'MR3',
-        name: 'Human Agency Control',
-        icon: '🎛️',
-        description: 'Maintain decision-making autonomy with intervention controls',
+        name: 'Reminder Frequency',
+        icon: '🎚️',
+        description: 'Control how often you receive metacognitive reminders (Minimal/Balanced/Active)',
         color: '#ec4899',
       },
       {

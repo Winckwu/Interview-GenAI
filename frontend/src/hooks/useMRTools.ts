@@ -36,7 +36,18 @@ export type ActiveMRTool =
   | 'mr17-visualization'
   | 'mr19-assessment';
 
-export type InterventionLevel = 'passive' | 'suggestive' | 'proactive';
+// New simplified intervention levels (MR3 refactor)
+// - minimal: Only hard tier (critical warnings)
+// - balanced: Medium + hard tier (moderate guidance) - DEFAULT
+// - active: All tiers (comprehensive coaching)
+export type InterventionLevel = 'minimal' | 'balanced' | 'active';
+
+// Backwards compatibility mapping for old values
+export const INTERVENTION_LEVEL_MIGRATION: Record<string, InterventionLevel> = {
+  'passive': 'minimal',
+  'suggestive': 'balanced',
+  'proactive': 'active',
+};
 
 export interface UseMRToolsOptions {
   onToolOpened?: (toolId: ActiveMRTool) => void;
@@ -101,8 +112,18 @@ export function useMRTools(options: UseMRToolsOptions = {}): UseMRToolsReturn {
   const [showMRToolsPanel, setShowMRToolsPanel] = useState(false);
   const [showMRToolsSection, setShowMRToolsSection] = useState(true);
 
-  // MR Tool-specific state
-  const [interventionLevel, setInterventionLevel] = useState<InterventionLevel>('suggestive');
+  // MR Tool-specific state - Load from localStorage or use default
+  const [interventionLevel, setInterventionLevel] = useState<InterventionLevel>(() => {
+    const saved = localStorage.getItem('mr3-intervention-level');
+    if (saved && (saved === 'minimal' || saved === 'balanced' || saved === 'active')) {
+      return saved;
+    }
+    // Migrate old values
+    if (saved && saved in INTERVENTION_LEVEL_MIGRATION) {
+      return INTERVENTION_LEVEL_MIGRATION[saved];
+    }
+    return 'balanced';
+  });
   const [conversationBranches, setConversationBranches] = useState<any[]>([]);
   const [verificationLogs, setVerificationLogs] = useState<any[]>([]);
   const [usedMRTools, setUsedMRTools] = useState<string[]>([]);
