@@ -32,6 +32,7 @@ export interface Tier2MediumAlertProps {
   onAction?: () => void;
   onRemindLater?: () => void;
   onDontShowAgain?: () => void;
+  onDontShowThisSession?: () => void; // Suppress for this session, re-trigger only on confidence increase
   onDismiss: () => void;
   onSkip?: () => void;
   autoCloseSec?: number; // Auto-close after N seconds (0 = no auto-close)
@@ -62,6 +63,7 @@ const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
   onAction,
   onRemindLater,
   onDontShowAgain,
+  onDontShowThisSession,
   onDismiss,
   onSkip,
   autoCloseSec = 0,
@@ -119,6 +121,13 @@ const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
     setIsRemoving(true);
     setTimeout(() => {
       onDontShowAgain?.() || onDismiss();
+    }, 300);
+  };
+
+  const handleDontShowThisSession = () => {
+    setIsRemoving(true);
+    setTimeout(() => {
+      onDontShowThisSession?.() || onDismiss();
     }, 300);
   };
 
@@ -196,6 +205,19 @@ const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
             Remind Me Later
           </button>
         </div>
+
+        {/* Session suppression option - less prominent */}
+        {onDontShowThisSession && (
+          <div className="medium-alert-suppress">
+            <button
+              className="medium-alert-btn-text"
+              onClick={handleDontShowThisSession}
+              aria-label="Don't show again this session"
+            >
+              Don't show again this session
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

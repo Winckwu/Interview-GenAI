@@ -202,6 +202,13 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   // Cooldown period after user interacts with ANY intervention (30 seconds)
   const POST_ACTION_COOLDOWN_MS = 30000;
 
+  // SESSION-LEVEL SUPPRESSION (Solution D+C)
+  // When user clicks "Don't show again this session", suppress until confidence significantly increases
+  const [sessionSuppressed, setSessionSuppressed] = useState<boolean>(false);
+  const [acknowledgedConfidence, setAcknowledgedConfidence] = useState<number>(0);
+  // Re-trigger threshold: only show again if confidence increases by this much (15%)
+  const CONFIDENCE_INCREASE_THRESHOLD = 0.15;
+
   // MR15: Track dismissed contextual tips
   const [dismissedTips, setDismissedTips] = useState<Set<string>>(() => {
     const saved = localStorage.getItem('mr15-soft-tier-dismissed');
@@ -300,6 +307,33 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       setLastUserActionTime(Date.now());
     },
     // Note: store and metricsStore are stable Zustand stores, removed from deps to prevent infinite loops
+    [sessionId, lastInterventionId, interventionStartTime, onUserAction]
+  );
+
+  /**
+   * Handle "Don't show again this session" button (Solution D+C)
+   * Suppresses interventions until confidence significantly increases
+   */
+  const handleDontShowThisSession = useCallback(
+    (mrType: string, currentConfidence: number) => {
+      console.log(`[InterventionManager] Session suppression activated at confidence: ${(currentConfidence * 100).toFixed(1)}%`);
+      store.recordUserAction(mrType, 'suppress_session');
+
+      // Record action in metrics store
+      if (lastInterventionId) {
+        const timeToAction = Date.now() - interventionStartTime;
+        metricsStore.recordUserAction(sessionId, lastInterventionId, 'dismiss', timeToAction);
+      }
+
+      // Enable session suppression and remember current confidence level
+      setSessionSuppressed(true);
+      setAcknowledgedConfidence(currentConfidence);
+
+      store.clearActiveIntervention();
+      onUserAction?.(mrType, 'suppress_session');
+      setLastInterventionId(null);
+      setLastUserActionTime(Date.now());
+    },
     [sessionId, lastInterventionId, interventionStartTime, onUserAction]
   );
 
@@ -448,6 +482,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
           },
           onDismiss: () => handleDismiss(mr.mrId),
           onSkip: () => handleSkip(mr.mrId),
+          onDontShowThisSession: () => handleDontShowThisSession(mr.mrId, baseIntervention.confidence),
         };
       }
 
@@ -465,7 +500,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         onCancel: () => handleDismiss(mr.mrId),
       };
     },
-    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, HARD_BARRIER_COOLDOWN_MS, userPhase, dismissedTips]
+    [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, handleDontShowThisSession, HARD_BARRIER_COOLDOWN_MS, userPhase, dismissedTips]
   );
 
   /**
@@ -626,6 +661,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         },
         onDismiss: () => handleDismiss(baseIntervention.mrType),
         onSkip: () => handleSkip(baseIntervention.mrType),
+        onDontShowThisSession: () => handleDontShowThisSession(baseIntervention.mrType, detection.confidence),
       };
     }
 
@@ -646,7 +682,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
       onCancel: () => handleDismiss(baseIntervention.mrType),
     };
-  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, HARD_BARRIER_COOLDOWN_MS, userPhase, dismissedTips]);
+  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, handleDontShowThisSession, HARD_BARRIER_COOLDOWN_MS, userPhase, dismissedTips]);
 
   // Initialize session in store
   useEffect(() => {
@@ -678,6 +714,21 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     if (lastUserActionTime > 0 && timeSinceLastAction < POST_ACTION_COOLDOWN_MS) {
       console.log(`[InterventionManager] Post-action cooldown: ${Math.round((POST_ACTION_COOLDOWN_MS - timeSinceLastAction) / 1000)}s remaining`);
       return;
+    }
+
+    // SESSION SUPPRESSION CHECK (Solution D+C)
+    // If user clicked "Don't show again this session", only show if confidence significantly increased
+    const currentConfidence = 0.7; // Default confidence for backend MRs
+    if (sessionSuppressed) {
+      const confidenceIncrease = currentConfidence - acknowledgedConfidence;
+      if (confidenceIncrease < CONFIDENCE_INCREASE_THRESHOLD) {
+        console.log(`[InterventionManager] Session suppressed. Current: ${(currentConfidence * 100).toFixed(1)}%, Acknowledged: ${(acknowledgedConfidence * 100).toFixed(1)}%, Increase needed: ${(CONFIDENCE_INCREASE_THRESHOLD * 100).toFixed(1)}%`);
+        return;
+      }
+      // Confidence increased significantly - show intervention and reset suppression
+      console.log(`[InterventionManager] Confidence increased significantly (${(confidenceIncrease * 100).toFixed(1)}% > ${(CONFIDENCE_INCREASE_THRESHOLD * 100).toFixed(1)}%) - resetting suppression`);
+      setSessionSuppressed(false);
+      setAcknowledgedConfidence(0);
     }
 
     // If we have active MRs from backend, display the first one
@@ -756,7 +807,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     onInterventionDisplayed?.(intervention.tier, topMR.mrId);
     // Note: metricsStore and store are stable Zustand stores, excluded from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips]);
+  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips, sessionSuppressed, acknowledgedConfidence, CONFIDENCE_INCREASE_THRESHOLD]);
 
   /**
    * Core detection and scheduling logic - Frontend fallback
@@ -787,6 +838,12 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     // Skip if we have backend MRs or messages too short or analyzing
     if (activeMRs.length > 0 || messages.length < minMessagesForDetection || isAnalyzing) {
       return;
+    }
+
+    // SESSION SUPPRESSION CHECK (Solution D+C) - will be checked again with actual confidence after detection
+    // Initial check to avoid unnecessary pattern detection when suppressed
+    if (sessionSuppressed) {
+      console.log(`[InterventionManager] Session suppressed - will check confidence after detection`);
     }
 
     const performAnalysis = async () => {
@@ -821,6 +878,21 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
           console.log('[InterventionManager] Confidence too low, skipping intervention');
           setIsAnalyzing(false);
           return;
+        }
+
+        // SESSION SUPPRESSION CHECK (Solution D+C)
+        // If user clicked "Don't show again this session", only show if confidence significantly increased
+        if (sessionSuppressed) {
+          const confidenceIncrease = detection.confidence - acknowledgedConfidence;
+          if (confidenceIncrease < CONFIDENCE_INCREASE_THRESHOLD) {
+            console.log(`[InterventionManager] Session suppressed. Current: ${(detection.confidence * 100).toFixed(1)}%, Acknowledged: ${(acknowledgedConfidence * 100).toFixed(1)}%, Increase needed: ${(CONFIDENCE_INCREASE_THRESHOLD * 100).toFixed(1)}%`);
+            setIsAnalyzing(false);
+            return;
+          }
+          // Confidence increased significantly - show intervention and reset suppression
+          console.log(`[InterventionManager] Confidence increased significantly (${(confidenceIncrease * 100).toFixed(1)}% > ${(CONFIDENCE_INCREASE_THRESHOLD * 100).toFixed(1)}%) - resetting suppression`);
+          setSessionSuppressed(false);
+          setAcknowledgedConfidence(0);
         }
 
         // Check suppression and schedule intervention
@@ -889,7 +961,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern, lastUserActionTime]);
+  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern, lastUserActionTime, sessionSuppressed, acknowledgedConfidence, CONFIDENCE_INCREASE_THRESHOLD]);
 
   /**
    * Render active intervention
@@ -931,7 +1003,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
         actionLabel={intervention.actionLabel || 'Verify Now'}
         onAction={intervention.onAction}
         onRemindLater={intervention.onSkip}
-        onDontShowAgain={intervention.onDismiss}
+        onDontShowThisSession={intervention.onDontShowThisSession}
         onDismiss={intervention.onDismiss}
         onSkip={intervention.onSkip}
         autoCloseSec={0}
