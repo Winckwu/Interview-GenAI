@@ -18,27 +18,101 @@ import { MRToolType } from './MROrchestrator';
 // ============================================================
 
 /**
- * User behavioral patterns derived from interview analysis + Bayesian/SVM classification
+ * User behavioral patterns derived from qualitative analysis of 49 interviews
  *
- * Pattern A: Strategic Decomposition & Control (战略分解与控制) - 37%
- *   - Careful task planning, high verification, independent thinking
+ * Pattern A: Strategic Decomposition (战略性分解)
+ *   - Sophisticated pre-planning before AI engagement
+ *   - Strong cognitive control and independent problem-solving
+ *   - HIGH self-efficacy, LOW intervention needed
  *
- * Pattern B: Iterative Optimization & Calibration (迭代优化与校准) - 16%
- *   - Frequent iteration, prompt refinement, continuous learning
+ * Pattern B: Iterative Refinement (迭代优化)
+ *   - Rapid experimentation with 3-7 iteration cycles per task
+ *   - Learns from failures and iterates effectively
+ *   - MEDIUM self-efficacy, LOW intervention needed
  *
- * Pattern C: Adaptive Adjustment (自适应调整) - 29%
- *   - Multi-strategy usage, context-aware, flexible role switching
+ * Pattern C: Context-Sensitive Adaptation (情境适应) - 44.9% of users
+ *   - Flexible strategy switching based on context
+ *   - Moderate metacognitive engagement
+ *   - DEFAULT thresholds for intervention
  *
- * Pattern D: Deep Verification & Criticism (深度验证与批评) - 16%
- *   - Thorough checking, deep questioning, high reflection
+ * Pattern D: Deep Verification (深度验证)
+ *   - Systematic verification and parallel-solving
+ *   - Self-monitors effectively
+ *   - HIGH self-efficacy, MINIMAL intervention needed
  *
- * Pattern E: Teaching & Learning (教学与学习) - 2%
- *   - AI as learning tool, high learning reflection, knowledge building
+ * Pattern E: Pedagogical Reflection (教学反思)
+ *   - Learning-oriented, treats AI as self-development tool
+ *   - High reflection and knowledge building
+ *   - HIGH self-efficacy, MINIMAL intervention needed
  *
- * Pattern F: Passive Over-Reliance (被动过度依赖) - HIGH RISK
- *   - Uncritical acceptance, minimal verification, passive attitude
+ * Pattern F: Passive Dependency (被动依赖) - HIGH RISK
+ *   - Minimal metacognitive engagement
+ *   - Only 1.2 iterations vs 4.7 for Pattern B
+ *   - <30 second review time, uncritical acceptance
+ *   - AGGRESSIVE intervention required
  */
 export type UserPattern = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'unknown';
+
+/**
+ * Pattern descriptions for UI display
+ */
+export const PATTERN_DESCRIPTIONS: Record<UserPattern, {
+  name: string;
+  nameEn: string;
+  description: string;
+  riskLevel: 'low' | 'medium' | 'high';
+  interventionLevel: 'minimal' | 'default' | 'aggressive';
+}> = {
+  'A': {
+    name: '战略性分解',
+    nameEn: 'Strategic Decomposition',
+    description: 'Sophisticated pre-planning, strong cognitive control',
+    riskLevel: 'low',
+    interventionLevel: 'minimal',
+  },
+  'B': {
+    name: '迭代优化',
+    nameEn: 'Iterative Refinement',
+    description: 'Rapid experimentation, 3-7 iterations, learns from failures',
+    riskLevel: 'low',
+    interventionLevel: 'minimal',
+  },
+  'C': {
+    name: '情境适应',
+    nameEn: 'Context-Sensitive Adaptation',
+    description: 'Flexible strategies, 44.9% of users, moderate engagement',
+    riskLevel: 'medium',
+    interventionLevel: 'default',
+  },
+  'D': {
+    name: '深度验证',
+    nameEn: 'Deep Verification',
+    description: 'Systematic verification, parallel-solving, self-monitors',
+    riskLevel: 'low',
+    interventionLevel: 'minimal',
+  },
+  'E': {
+    name: '教学反思',
+    nameEn: 'Pedagogical Reflection',
+    description: 'Learning-oriented, uses AI for self-development',
+    riskLevel: 'low',
+    interventionLevel: 'minimal',
+  },
+  'F': {
+    name: '被动依赖',
+    nameEn: 'Passive Dependency',
+    description: 'HIGH RISK: Minimal verification, <30s review, uncritical acceptance',
+    riskLevel: 'high',
+    interventionLevel: 'aggressive',
+  },
+  'unknown': {
+    name: '未知',
+    nameEn: 'Unknown',
+    description: 'Pattern not yet determined',
+    riskLevel: 'medium',
+    interventionLevel: 'default',
+  },
+};
 
 /**
  * 12 metacognitive subprocesses from self-regulated learning theory

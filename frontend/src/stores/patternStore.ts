@@ -1,10 +1,22 @@
 import { create } from 'zustand';
 import api from '../services/api';
 
+/**
+ * User behavioral pattern type (from qualitative analysis of 49 interviews)
+ *
+ * Pattern A: Strategic Decomposition - sophisticated pre-planning, strong cognitive control
+ * Pattern B: Iterative Refinement - rapid experimentation, 3-7 iterations
+ * Pattern C: Context-Sensitive Adaptation - flexible strategies, 44.9% of users
+ * Pattern D: Deep Verification - systematic verification, parallel-solving
+ * Pattern E: Pedagogical Reflection - learning-oriented, uses AI for self-development
+ * Pattern F: Passive Dependency - HIGH RISK, minimal metacognitive engagement
+ */
+export type UserPatternType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+
 export interface Pattern {
   id: string;
   userId: string;
-  patternType: 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+  patternType: UserPatternType;
   confidence: number;
   stability?: number; // 0-1: Pattern stability over time
   aiRelianceScore?: number; // 0-1: AI reliance score
@@ -88,7 +100,7 @@ export const usePatternStore = create<PatternState>((set, get) => ({
             {
               id: '1',
               userId: userId || 'current',
-              patternType: statsData.dominantPattern as 'A' | 'B' | 'C' | 'D' | 'E' | 'F',
+              patternType: statsData.dominantPattern as UserPatternType,
               // Confidence from avgConfidence (0-1 scale)
               confidence: patternData.avgConfidence ?? metricsData.confidence ?? 0,
               // Stability from backend (0-1 scale)
