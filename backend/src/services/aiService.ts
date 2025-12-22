@@ -118,12 +118,14 @@ export const callOpenAIStream = async (
   onChunk: StreamCallback,
   options: StreamOptions = {}
 ): Promise<{ model: string; content: string }> => {
-  try {
-    // Build messages array
-    const messages: any[] = [];
+  const MAX_RETRIES = 3;
+  const BASE_DELAY_MS = 1000; // 1 second base delay for exponential backoff
 
-    // Base system prompt with reasoning instruction
-    const baseSystemPrompt = `You are a helpful AI assistant. Be concise, accurate, and provide clear explanations.
+  // Build messages array (outside retry loop to avoid rebuilding)
+  const messages: any[] = [];
+
+  // Base system prompt with reasoning instruction
+  const baseSystemPrompt = `You are a helpful AI assistant. Be concise, accurate, and provide clear explanations.
 
 **MANDATORY REQUIREMENT - MUST FOLLOW:**
 You MUST start EVERY response with <thinking> tags. This is NON-NEGOTIABLE.
@@ -145,10 +147,10 @@ RULES:
 
 This helps users understand AI decision-making and builds transparency.`;
 
-    // MR4: If custom role system prompt is provided, append it to base prompt
-    let finalSystemPrompt = baseSystemPrompt;
-    if (options.customSystemPrompt) {
-      finalSystemPrompt = `${baseSystemPrompt}
+  // MR4: If custom role system prompt is provided, append it to base prompt
+  let finalSystemPrompt = baseSystemPrompt;
+  if (options.customSystemPrompt) {
+    finalSystemPrompt = `${baseSystemPrompt}
 
 ---
 
@@ -156,57 +158,85 @@ This helps users understand AI decision-making and builds transparency.`;
 ${options.customSystemPrompt}
 
 You MUST adhere to the role constraints above while maintaining the thinking format requirement.`;
-    }
-
-    // Add system prompt
-    messages.push({
-      role: 'system',
-      content: finalSystemPrompt,
-    });
-
-    // Add conversation history if provided
-    if (conversationHistory.length > 0) {
-      messages.push(...conversationHistory);
-    }
-
-    // Add current user message
-    messages.push({
-      role: 'user',
-      content: userPrompt,
-    });
-
-    // Call OpenAI with streaming
-    const stream = await client.chat.completions.create({
-      model: MODEL,
-      messages,
-      temperature: 0.7,
-      max_tokens: 2000,
-      top_p: 0.9,
-      stream: true,
-    });
-
-    let fullContent = '';
-
-    // Process stream
-    for await (const chunk of stream) {
-      const delta = chunk.choices[0]?.delta?.content || '';
-      if (delta) {
-        fullContent += delta;
-        onChunk(delta, false);
-      }
-    }
-
-    // Signal completion
-    onChunk('', true);
-
-    return {
-      model: MODEL,
-      content: fullContent,
-    };
-  } catch (error: any) {
-    console.error('OpenAI Streaming Error:', error);
-    throw new Error(`Failed to stream AI response: ${error.message}`);
   }
+
+  // Add system prompt
+  messages.push({
+    role: 'system',
+    content: finalSystemPrompt,
+  });
+
+  // Add conversation history if provided
+  if (conversationHistory.length > 0) {
+    messages.push(...conversationHistory);
+  }
+
+  // Add current user message
+  messages.push({
+    role: 'user',
+    content: userPrompt,
+  });
+
+  // Retry loop with exponential backoff
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    try {
+      // Call OpenAI with streaming
+      const stream = await client.chat.completions.create({
+        model: MODEL,
+        messages,
+        temperature: 0.7,
+        max_tokens: 2000,
+        top_p: 0.9,
+        stream: true,
+      });
+
+      let fullContent = '';
+
+      // Process stream
+      for await (const chunk of stream) {
+        const delta = chunk.choices[0]?.delta?.content || '';
+        if (delta) {
+          fullContent += delta;
+          onChunk(delta, false);
+        }
+      }
+
+      // Signal completion
+      onChunk('', true);
+
+      return {
+        model: MODEL,
+        content: fullContent,
+      };
+    } catch (error: any) {
+      lastError = error;
+      const isRetryable =
+        error.message?.includes('terminated') ||
+        error.message?.includes('network') ||
+        error.message?.includes('timeout') ||
+        error.message?.includes('ECONNRESET') ||
+        error.message?.includes('ETIMEDOUT') ||
+        error.code === 'ECONNRESET' ||
+        error.code === 'ETIMEDOUT';
+
+      if (!isRetryable || attempt === MAX_RETRIES - 1) {
+        // Non-retryable error or last attempt
+        console.error(`OpenAI Streaming Error (attempt ${attempt + 1}/${MAX_RETRIES}):`, error);
+        break;
+      }
+
+      // Calculate delay with exponential backoff: 1s, 2s, 4s
+      const delayMs = BASE_DELAY_MS * Math.pow(2, attempt);
+      console.warn(`OpenAI stream error (attempt ${attempt + 1}/${MAX_RETRIES}), retrying in ${delayMs}ms:`, error.message);
+
+      // Wait before retry
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+
+  // All retries exhausted
+  throw new Error(`Failed to stream AI response after ${MAX_RETRIES} attempts: ${lastError?.message}`);
 };
 
 /**
