@@ -35,6 +35,7 @@ const ComponentLoader: React.FC = () => (
 );
 
 // MR tool configuration with colors and titles
+// Note: MR15 (Strategy Guide) removed - functionality merged into Soft Tier interventions
 const mrTools = [
   { id: 'mr1-decomposition' as ActiveMRTool, label: '📋 1', title: 'Task Decomposition', fullTitle: 'Break down complex tasks', color: '#dcfce7' },
   { id: 'mr2-transparency' as ActiveMRTool, label: '🔍 2', title: 'Response Insights', fullTitle: 'Analyze AI responses', color: '#dbeafe' },
@@ -48,7 +49,7 @@ const mrTools = [
   { id: 'mr12-critical' as ActiveMRTool, label: '🧐 12', title: 'Critical Thinking', fullTitle: 'Socratic questions', color: '#ede9fe' },
   { id: 'mr13-uncertainty' as ActiveMRTool, label: '❓ 13', title: 'Uncertainty', fullTitle: 'Show confidence levels', color: '#fef3c7' },
   { id: 'mr14-reflection' as ActiveMRTool, label: '💭 14', title: 'Reflection', fullTitle: 'Learning reflection', color: '#ccfbf1' },
-  { id: 'mr15-strategies' as ActiveMRTool, label: '📚 15', title: 'Strategy Guide', fullTitle: 'AI collaboration strategies', color: '#f3e8ff' },
+  // MR15 removed - contextual tips now auto-shown in InterventionManager soft tier
   { id: 'mr16-atrophy' as ActiveMRTool, label: '💪 16', title: 'Skill Prevention', fullTitle: 'Maintain your skills', color: '#fecaca' },
   { id: 'mr17-visualization' as ActiveMRTool, label: '📈 17', title: 'Visualization', fullTitle: 'Track learning progress', color: '#bfdbfe' },
 ];
