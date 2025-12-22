@@ -52,6 +52,8 @@ interface MR12Props {
   onOpenMR11?: (content?: string) => void;
   /** Compact mode for floating panel */
   compact?: boolean;
+  /** Allow manual input mode (for sidebar usage) */
+  allowManualInput?: boolean;
 }
 
 export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
@@ -62,9 +64,18 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   onAssessmentComplete,
   onOpenMR11,
   compact = true,
+  allowManualInput = false,
 }) => {
   // Tab state: 'evaluate' or 'history'
   const [activeTab, setActiveTab] = useState<'evaluate' | 'history'>('evaluate');
+
+  // Manual input mode state
+  const [manualInput, setManualInput] = useState('');
+  const [isManualMode, setIsManualMode] = useState(false);
+  const [activeContent, setActiveContent] = useState(aiOutput);
+
+  // Determine if we should show manual input UI
+  const showManualInputUI = allowManualInput && !aiOutput && !isManualMode;
 
   // Content preview expanded state
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -74,10 +85,18 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
   const [isLoadingExisting, setIsLoadingExisting] = useState(false);
   const [hasCheckedExisting, setHasCheckedExisting] = useState(false);
 
+  // Sync activeContent when aiOutput changes
+  useEffect(() => {
+    if (aiOutput) {
+      setActiveContent(aiOutput);
+      setIsManualMode(false);
+    }
+  }, [aiOutput]);
+
   // Auto-detect or use provided content type
   const [contentType, setContentType] = useState<ContentType>(() => {
     if (domain) return domain as ContentType;
-    if (aiOutput) return detectContentType(aiOutput);
+    if (activeContent) return detectContentType(activeContent);
     return 'general';
   });
 
@@ -173,7 +192,7 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
    * Fetch AI-generated questions
    */
   const fetchAIQuestions = useCallback(async () => {
-    if (!aiOutput || aiOutput.length < 50) return;
+    if (!activeContent || activeContent.length < 50) return;
 
     setIsLoadingQuestions(true);
     setAiError(null);
@@ -188,7 +207,7 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
           ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({
-          content: aiOutput,
+          content: activeContent,
           contentType,
         }),
       });
@@ -211,9 +230,10 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     } finally {
       setIsLoadingQuestions(false);
     }
-  }, [aiOutput, contentType]);
+  }, [activeContent, contentType]);
 
   // Check for existing record first, then fetch AI questions if none exists
+  // This runs when aiOutput changes (auto mode from chat)
   useEffect(() => {
     const init = async () => {
       if (!aiOutput || aiOutput.length < 50) return;
@@ -237,6 +257,37 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
 
     init();
   }, [aiOutput, messageId]);
+
+  /**
+   * Handler for starting manual input analysis
+   */
+  const handleStartManualAnalysis = useCallback(() => {
+    if (!manualInput || manualInput.length < 20) return;
+
+    // Set the active content and switch to manual mode
+    setActiveContent(manualInput);
+    setIsManualMode(true);
+
+    // Reset state for new analysis
+    setExistingRecord(null);
+    setHasCheckedExisting(true); // Skip existing record check for manual input
+    setAssessment(null);
+    setCurrentIndex(0);
+    setResponses([]);
+    setRecordId(null);
+    setAiQuestions([]);
+  }, [manualInput]);
+
+  // Fetch AI questions when entering manual mode
+  useEffect(() => {
+    if (isManualMode && activeContent && activeContent.length >= 50) {
+      // Re-detect content type for manual input
+      const detected = detectContentType(activeContent);
+      setContentType(detected);
+      // Fetch questions
+      fetchAIQuestions();
+    }
+  }, [isManualMode, activeContent]);
 
   // Re-detect content type when aiOutput changes
   useEffect(() => {
@@ -632,6 +683,75 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
         </button>
       </div>
 
+      {/* Manual Input Mode - Show when no aiOutput and allowManualInput is true */}
+      {showManualInputUI && (
+        <div className="mr12-manual-input">
+          <div className="mr12-manual-header">
+            <span className="mr12-manual-icon">✍️</span>
+            <h3>Enter Content to Analyze</h3>
+          </div>
+          <p className="mr12-manual-desc">
+            Paste or type any AI-generated content you'd like to critically evaluate.
+          </p>
+          <textarea
+            className="mr12-manual-textarea"
+            value={manualInput}
+            onChange={(e) => setManualInput(e.target.value)}
+            placeholder="Paste the AI response here... (minimum 20 characters)"
+            rows={6}
+          />
+          <div className="mr12-manual-footer">
+            <span className="mr12-manual-count">
+              {manualInput.length} characters {manualInput.length < 20 && '(min 20)'}
+            </span>
+            <button
+              className="mr12-btn mr12-btn-primary"
+              onClick={handleStartManualAnalysis}
+              disabled={manualInput.length < 20}
+            >
+              🧠 Start Critical Thinking
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Manual Mode Content Preview */}
+      {isManualMode && activeContent && (
+        <div className="mr12-content-preview mr12-manual-preview">
+          <div className="mr12-preview-header">
+            <div className="mr12-preview-title">
+              <span className="mr12-preview-label">Your Input</span>
+              <span className="mr12-type-badge" style={{ background: typeInfo.color }}>
+                {typeInfo.icon} {typeInfo.label}
+              </span>
+            </div>
+            <button
+              className="mr12-btn-text"
+              onClick={() => {
+                setIsManualMode(false);
+                setActiveContent('');
+                setManualInput('');
+                setAiQuestions([]);
+              }}
+            >
+              ← Change Input
+            </button>
+          </div>
+          <div className={`mr12-preview-content ${isContentExpanded ? 'expanded' : ''}`}>
+            {isContentExpanded ? activeContent : activeContent.slice(0, 300)}
+            {!isContentExpanded && activeContent.length > 300 && '...'}
+          </div>
+          {activeContent.length > 300 && (
+            <button
+              className="mr12-expand-btn"
+              onClick={() => setIsContentExpanded(!isContentExpanded)}
+            >
+              {isContentExpanded ? '▲ Show less' : '▼ Show full content'}
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Content Preview - Selected AI Response */}
       {aiOutput && (
         <div className="mr12-content-preview">
@@ -679,27 +799,29 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
       )}
 
       {/* AI Error notice */}
-      {aiError && !useAIQuestions && (
+      {aiError && !useAIQuestions && !showManualInputUI && (
         <div className="mr12-ai-notice">
           ℹ️ Using template questions (AI unavailable)
         </div>
       )}
 
-      {/* Progress */}
-      <div className="mr12-progress">
-        <div className="mr12-progress-bar">
-          <div
-            className="mr12-progress-fill"
-            style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
-          />
+      {/* Progress - only show when we have content to analyze */}
+      {(aiOutput || isManualMode) && (
+        <div className="mr12-progress">
+          <div className="mr12-progress-bar">
+            <div
+              className="mr12-progress-fill"
+              style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
+            />
+          </div>
+          <span className="mr12-progress-text">
+            Question {currentIndex + 1} / {totalQuestions}
+          </span>
         </div>
-        <span className="mr12-progress-text">
-          Question {currentIndex + 1} / {totalQuestions}
-        </span>
-      </div>
+      )}
 
-      {/* Current Question */}
-      {currentQuestion && (
+      {/* Current Question - only show when we have content to analyze */}
+      {currentQuestion && (aiOutput || isManualMode) && (
         <div className="mr12-question-card">
           <h3 className="mr12-question-text">{currentQuestion.question}</h3>
           <p className="mr12-question-desc">{currentQuestion.description}</p>

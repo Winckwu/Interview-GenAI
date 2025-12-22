@@ -2224,7 +2224,16 @@ Message: "${firstMessage.slice(0, 200)}"`,
           compact={true}
         />;
       case 'mr12-critical':
-        return <MR12CriticalThinkingScaffolding aiOutput={mr12TargetContent || messages[messages.length - 1]?.content || ''} messageId={mr12TargetMessageId || undefined} sessionId={sessionId || undefined} domain={sessionData?.taskType || 'general'} onAssessmentComplete={(a) => console.log('Assessment:', a)} compact={true} />;
+        // When opened from sidebar (no target content), enable manual input mode
+        return <MR12CriticalThinkingScaffolding
+          aiOutput={mr12TargetContent || ''}
+          messageId={mr12TargetMessageId || undefined}
+          sessionId={sessionId || undefined}
+          domain={sessionData?.taskType || 'general'}
+          onAssessmentComplete={(a) => console.log('Assessment:', a)}
+          compact={true}
+          allowManualInput={!mr12TargetContent}
+        />;
       case 'mr13-uncertainty':
         return <MR13TransparentUncertainty onAnalysisComplete={(u) => console.log('Uncertainty:', u)} onOpenMR11={openMR11Verification} onOpenMR6={openMR6CrossModel} />;
       case 'mr14-reflection':
