@@ -3,9 +3,23 @@
  *
  * Purpose: Determine whether to display an intervention UI based on:
  * 1. User's behavioral pattern (A-F) for threshold adjustment
- * 2. Pattern confidence level (from PatternDetector)
+ * 2. Behavior detection confidence (from PatternDetector rules)
  * 3. User's fatigue state (dismissal history, engagement)
  * 4. Time decay (suppress for N minutes after dismissal)
+ *
+ * IMPORTANT: Two types of "confidence" exist in this system:
+ *
+ * 1. PATTERN CLASSIFICATION CONFIDENCE (Backend, Bayesian+SVM)
+ *    - "How sure are we this user is Pattern F?"
+ *    - Typically 30-40% due to model uncertainty
+ *    - Used to SELECT which pattern the user belongs to (highest probability wins)
+ *    - NOT used for intervention thresholds
+ *
+ * 2. BEHAVIOR DETECTION CONFIDENCE (Frontend, PatternDetector rules)
+ *    - "How problematic is the user's CURRENT behavior?"
+ *    - 0-100% based on how many rules are triggered
+ *    - THIS is what we use for intervention thresholds
+ *    - Example: 5/10 rules triggered = 50% confidence
  *
  * Theory: Prevent "intervention fatigue" where users get annoyed at repeated warnings
  * and lose trust in system. After 3 dismissals of same MR type, suppress for 30 minutes.
@@ -43,7 +57,13 @@ export type InterventionTier = 'soft' | 'medium' | 'hard' | 'suppress';
 export type UserPatternType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'unknown';
 
 /**
- * Pattern-based confidence thresholds for tier selection
+ * Pattern-based BEHAVIOR DETECTION thresholds for tier selection
+ *
+ * These thresholds are applied to BEHAVIOR DETECTION CONFIDENCE (0-1),
+ * NOT to pattern classification confidence.
+ *
+ * Behavior detection confidence = how many problematic behavior rules are triggered
+ * Example: If 3 out of 5 passive dependency rules are triggered, confidence = 0.6
  *
  * Lower thresholds = more likely to trigger interventions
  * Pattern F users get aggressive intervention (low thresholds)
@@ -52,6 +72,7 @@ export type UserPatternType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'unknown';
 export const PATTERN_THRESHOLDS: Record<UserPatternType, { soft: number; medium: number; hard: number }> = {
   // Pattern A: Strategic Decomposition - almost never intervene
   // They do sophisticated pre-planning and have strong cognitive control
+  // Only intervene when behavior detection is very high (>90% rules triggered)
   'A': { soft: 0.90, medium: 0.95, hard: 0.99 },
 
   // Pattern B: Iterative Refinement - rarely intervene
@@ -68,10 +89,12 @@ export const PATTERN_THRESHOLDS: Record<UserPatternType, { soft: number; medium:
 
   // Pattern C: Context-Sensitive Adaptation - default thresholds
   // Largest group (44.9%), moderate metacognitive engagement
+  // Intervene when moderate problematic behavior detected (>60% rules triggered)
   'C': { soft: 0.60, medium: 0.75, hard: 0.85 },
 
   // Pattern F: Passive Dependency - AGGRESSIVE intervention!
   // HIGH RISK: minimal verification, 1.2 turns vs 4.7 for Pattern B, <30s review
+  // Intervene early when even mild problematic behavior detected (>40% rules triggered)
   'F': { soft: 0.40, medium: 0.55, hard: 0.70 },
 
   // Unknown: use default (same as C)

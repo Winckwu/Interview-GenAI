@@ -280,7 +280,7 @@ const ChatSessionPage: React.FC = () => {
   const { user } = useAuthStore();
   const { addInteraction, deleteSession: deleteSessionFromStore } = useSessionStore();
   const { setSidebarOpen } = useUIStore();
-  const { currentUserPattern } = usePatternStore();
+  const { currentUserPattern, fetchPatterns } = usePatternStore();
   const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
   const metricsStore = useMetricsStore();
   const [sessionStartTime] = useState(Date.now());
@@ -659,6 +659,14 @@ const ChatSessionPage: React.FC = () => {
       fetchLatestAssessment(user.id);
     }
   }, [user?.id, fetchLatestAssessment]);
+
+  // Fetch user's behavioral pattern (A-F) for intervention threshold adjustment
+  // Pattern persists across sessions and determines intervention aggressiveness
+  useEffect(() => {
+    if (user?.id) {
+      fetchPatterns(user.id);
+    }
+  }, [user?.id, fetchPatterns]);
 
   // Handle modal MRs display
   useEffect(() => {
@@ -4944,6 +4952,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
         minMessagesForDetection={5}
         isStreaming={isStreaming}
         userInput={userInput}
+        userPattern={currentUserPattern?.patternType || 'unknown'}
         onInterventionDisplayed={(tier, mrType) => {
           console.log(`[ChatSessionPage] Intervention displayed: ${tier} - ${mrType}`);
         }}
