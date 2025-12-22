@@ -150,7 +150,7 @@ const Tier2MediumAlert: React.FC<Tier2MediumAlertProps> = ({
           {/* Show detected behaviors as a list if multiple, otherwise show message */}
           {detectedBehaviors && detectedBehaviors.length > 1 ? (
             <div className="medium-alert-behaviors">
-              <p className="medium-alert-behaviors-title">Detected patterns:</p>
+              <p className="medium-alert-behaviors-title">Recent behavior observations:</p>
               <ul className="medium-alert-behaviors-list">
                 {detectedBehaviors.map((behavior, index) => (
                   <li key={index}>{behavior}</li>

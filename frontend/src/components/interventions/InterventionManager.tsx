@@ -493,9 +493,9 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     // F-R3: No modifications (accepting verbatim)
     if (triggeredRules.includes('F-R3')) {
-      messages.push('Accepting responses without modifications');
-      risks.push('May be missing opportunities to improve or customize the output');
-      suggestions.push('Consider editing or adapting the AI response to better fit your needs');
+      messages.push('Recent responses accepted as-is');
+      risks.push('Over time, this pattern may reduce active engagement');
+      suggestions.push('If the response fits your needs, that\'s fine! Otherwise, feel free to modify or ask follow-up questions');
     }
 
     // F-R4: Burst usage pattern
@@ -507,9 +507,9 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     // F-R5: Complete passivity
     if (triggeredRules.includes('F-R5')) {
-      messages.push('Complete passive consumption');
-      risks.push('Independent thinking ability may decline with passive consumption');
-      suggestions.push('Engage more actively by questioning, editing, or critiquing responses');
+      messages.push('Low engagement pattern detected');
+      risks.push('Extended passive use may affect skill development');
+      suggestions.push('Consider asking clarifying questions or verifying key points when relevant');
     }
 
     // Default fallbacks
@@ -613,11 +613,11 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     if (tier === 'medium') {
       return {
         ...baseIntervention,
-        icon: '🔔',
-        title: 'MCA Reminder',
+        icon: '💡',
+        title: 'Usage Pattern Insight',
         message: ruleContent.message,
         detectedBehaviors: ruleContent.messageList, // For list display when multiple
-        suggestion: ruleContent.suggestions[0] || 'Pause and review whether recent AI responses meet your expectations.',
+        suggestion: ruleContent.suggestions[0] || 'This is based on your recent interaction pattern, not a single response.',
         consecutiveCount: detection.layer1.triggeredCount,
         actionLabel: 'Review Now',
         onAction: () => {
