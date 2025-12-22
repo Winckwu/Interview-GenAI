@@ -30,24 +30,24 @@ const LEVEL_MIGRATION: Record<string, InterventionLevel> = {
 };
 
 // Pattern-based level restrictions
-// High autonomy patterns (A, C, E): Can choose any level
-// Low autonomy patterns (B, D, F): Minimum is 'balanced'
+// Only Pattern F (Passive Dependency) needs intervention restrictions
+// All other patterns have sufficient metacognitive engagement
 const PATTERN_ALLOWED_LEVELS: Record<UserPatternType, InterventionLevel[]> = {
-  'A': ['minimal', 'balanced', 'active'], // Strategic Learner - high autonomy
-  'B': ['balanced', 'active'],             // Efficient Executor - skips verification
-  'C': ['minimal', 'balanced', 'active'], // Curious Explorer - active learner
-  'D': ['balanced', 'active'],             // Passive Consumer - needs guidance
-  'E': ['minimal', 'balanced', 'active'], // Critical Thinker - high autonomy
-  'F': ['balanced', 'active'],             // Over-reliant - needs intervention most
+  'A': ['minimal', 'balanced', 'active'], // Strategic Decomposition - high planning & control
+  'B': ['minimal', 'balanced', 'active'], // Iterative Refinement - active experimentation & learning
+  'C': ['minimal', 'balanced', 'active'], // Context-Sensitive Adaptation - flexible strategies
+  'D': ['minimal', 'balanced', 'active'], // Deep Verification - systematic verification
+  'E': ['minimal', 'balanced', 'active'], // Pedagogical Reflection - learning-oriented
+  'F': ['balanced', 'active'],             // Passive Dependency - CRITICAL: needs intervention
 };
 
 const PATTERN_RESTRICTION_MESSAGES: Record<UserPatternType, string> = {
   'A': '',
-  'B': 'Based on your usage patterns, maintaining at least moderate reminders helps ensure verification habits.',
+  'B': '',
   'C': '',
-  'D': 'Based on your usage patterns, maintaining reminders helps build stronger AI collaboration habits.',
+  'D': '',
   'E': '',
-  'F': 'Based on your usage patterns, reminders are important to help maintain healthy AI interaction habits.',
+  'F': 'Your usage pattern shows signs of passive dependency. Maintaining reminders helps build healthier AI collaboration habits and prevents skill atrophy.',
 };
 
 interface MR3Props {
