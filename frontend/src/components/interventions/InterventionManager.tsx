@@ -14,7 +14,7 @@
  * This component is invisible - it manages everything behind the scenes
  */
 
-import React, { useEffect, useCallback, useState, useRef, ReactNode } from 'react';
+import React, { useEffect, useCallback, useState, useRef, useMemo, ReactNode } from 'react';
 import { Message } from '../../types';
 import { detectPatternF, extractUserSignals } from '../../utils/PatternDetector';
 import {
@@ -50,6 +50,105 @@ import Tier2MediumAlert from './Tier2MediumAlert';
 import Tier3HardBarrier, { BarrierOption } from './Tier3HardBarrier';
 import { ActiveMR } from '../chat/MCAConversationOrchestrator';
 
+// ============================================================================
+// MR15 Contextual Strategy Tips (merged into Soft Tier)
+// ============================================================================
+
+// User's current phase in conversation
+type UserPhase = 'composing' | 'waiting' | 'received' | 'idle';
+
+// Contextual tip structure
+interface ContextualTip {
+  id: string;
+  phase: UserPhase | UserPhase[];
+  tip: string;
+  detail?: string;
+  actionLabel?: string;
+  priority: number;
+}
+
+// MR15 Tips - shown in soft tier based on user phase and behavior
+const MR15_CONTEXTUAL_TIPS: ContextualTip[] = [
+  // COMPOSING phase - before sending
+  {
+    id: 'think-first',
+    phase: 'composing',
+    tip: 'Think for 2 minutes before asking',
+    detail: 'Try thinking it through first - you might already know the answer!',
+    actionLabel: 'Learn more',
+    priority: 10
+  },
+  {
+    id: 'be-specific',
+    phase: 'composing',
+    tip: 'Be specific for better answers',
+    detail: 'Describe your specific situation instead of asking general questions',
+    actionLabel: 'Learn more',
+    priority: 8
+  },
+  {
+    id: 'break-down',
+    phase: 'composing',
+    tip: 'Break big tasks into small steps',
+    detail: 'Ask one small question at a time for better results',
+    priority: 7
+  },
+
+  // WAITING phase - after sending
+  {
+    id: 'predict',
+    phase: 'waiting',
+    tip: 'Predict what AI will say',
+    detail: 'While waiting, think: what do you expect? This helps you evaluate the response',
+    priority: 6
+  },
+
+  // RECEIVED phase - after getting response
+  {
+    id: 'verify-facts',
+    phase: 'received',
+    tip: 'Verify key facts before trusting',
+    detail: 'Double-check dates, data, and technical terms from other sources',
+    actionLabel: 'Learn more',
+    priority: 10
+  },
+  {
+    id: 'ask-why',
+    phase: 'received',
+    tip: 'Ask "why" to understand the reasoning',
+    detail: "Don't just accept - understand why this is the answer",
+    actionLabel: 'Learn more',
+    priority: 8
+  },
+  {
+    id: 'get-options',
+    phase: 'received',
+    tip: 'Ask for alternatives',
+    detail: 'Get multiple options so you can make a better choice',
+    priority: 7
+  },
+
+  // IDLE phase - general
+  {
+    id: 'reflect',
+    phase: 'idle',
+    tip: 'Reflect on what you learned',
+    detail: 'What did you learn? How can you ask better next time?',
+    actionLabel: 'Learn more',
+    priority: 5
+  }
+];
+
+// Get a contextual tip based on phase and dismissed tips
+const getContextualTip = (phase: UserPhase, dismissedTips: Set<string>): ContextualTip | null => {
+  return MR15_CONTEXTUAL_TIPS
+    .filter(tip => {
+      const phases = Array.isArray(tip.phase) ? tip.phase : [tip.phase];
+      return phases.includes(phase) && !dismissedTips.has(tip.id);
+    })
+    .sort((a, b) => b.priority - a.priority)[0] || null;
+};
+
 export interface InterventionManagerProps {
   sessionId: string;
   messages: Message[];
@@ -57,6 +156,8 @@ export interface InterventionManagerProps {
   onUserAction?: (mrType: string, action: string) => void;
   minMessagesForDetection?: number; // Min messages before analyzing (avoid early noise)
   activeMRs?: ActiveMR[]; // Backend MCA orchestrator results - takes priority over frontend detection
+  isStreaming?: boolean; // Whether AI is currently generating response
+  userInput?: string; // Current user input (for phase detection)
 }
 
 /**
@@ -84,6 +185,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   onUserAction,
   minMessagesForDetection = 5,
   activeMRs = [],
+  isStreaming = false,
+  userInput = '',
 }) => {
   const store = useInterventionStore();
   const metricsStore = useMetricsStore();
@@ -91,6 +194,27 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const [lastInterventionId, setLastInterventionId] = useState<string | null>(null);
   const [interventionStartTime, setInterventionStartTime] = useState<number>(0);
   const [lastDisplayedMRId, setLastDisplayedMRId] = useState<string | null>(null);
+
+  // MR15: Track dismissed contextual tips
+  const [dismissedTips, setDismissedTips] = useState<Set<string>>(() => {
+    const saved = localStorage.getItem('mr15-soft-tier-dismissed');
+    return saved ? new Set(JSON.parse(saved)) : new Set();
+  });
+
+  // Persist dismissed tips
+  useEffect(() => {
+    localStorage.setItem('mr15-soft-tier-dismissed', JSON.stringify([...dismissedTips]));
+  }, [dismissedTips]);
+
+  // MR15: Detect user phase from messages and streaming state
+  const userPhase: UserPhase = useMemo(() => {
+    if (isStreaming) return 'waiting';
+    if (userInput.trim().length > 0) return 'composing';
+    if (messages.length === 0) return 'composing'; // New conversation
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage?.role === 'ai') return 'received';
+    return 'idle';
+  }, [isStreaming, userInput, messages]);
 
   // Use ref for lastHardBarrierTime to avoid triggering re-renders and infinite loops
   const lastHardBarrierTimeRef = useRef<number>(0);
@@ -403,6 +527,34 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     };
 
     if (tier === 'soft') {
+      // MR15: Get contextual tip based on user phase
+      const contextualTip = getContextualTip(userPhase, dismissedTips);
+
+      // If we have a contextual tip, show it with the pattern insight
+      if (contextualTip) {
+        return {
+          ...baseIntervention,
+          mrType: `MR15_${contextualTip.id}`,
+          icon: '💡',
+          title: contextualTip.tip,
+          message: contextualTip.detail || ruleContent.message,
+          description: `Strategy tip • ${ruleContent.message}`,
+          contextualTipId: contextualTip.id, // Track which tip was shown
+          onDismiss: () => {
+            // Dismiss the contextual tip permanently
+            setDismissedTips(prev => new Set([...prev, contextualTip.id]));
+            handleDismiss(baseIntervention.mrType);
+          },
+          onLearnMore: contextualTip.actionLabel ? () => {
+            console.log(`[createInterventionUI] Contextual tip action clicked: ${contextualTip.id}`);
+            // Dismiss the tip after action
+            setDismissedTips(prev => new Set([...prev, contextualTip.id]));
+            handleLearnMore(baseIntervention.mrType);
+          } : undefined,
+        };
+      }
+
+      // Fallback to standard pattern insight if no contextual tip
       return {
         ...baseIntervention,
         icon: '📊',
@@ -453,7 +605,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       onConfirm: (value: string) => handleBarrierConfirm(value, baseIntervention.mrType),
       onCancel: () => handleDismiss(baseIntervention.mrType),
     };
-  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, HARD_BARRIER_COOLDOWN_MS]);
+  }, [handleDismiss, handleLearnMore, handleSkip, handleBarrierConfirm, HARD_BARRIER_COOLDOWN_MS, userPhase, dismissedTips]);
 
   // Initialize session in store
   useEffect(() => {

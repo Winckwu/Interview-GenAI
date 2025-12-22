@@ -102,8 +102,7 @@ const MR12CriticalThinkingScaffolding = lazy(() => import('../components/mr/MR12
 const MR13TransparentUncertainty = lazy(() => import('../components/mr/MR13TransparentUncertainty'));
 const MR14GuidedReflectionMechanism = lazy(() => import('../components/mr/MR14GuidedReflectionMechanism'));
 const MR15MetacognitiveStrategyGuide = lazy(() => import('../components/mr/MR15MetacognitiveStrategyGuide'));
-import type { UserPhase } from '../components/mr/MR15MetacognitiveStrategyGuide';
-import { FloatingTipBar } from '../components/mr/MR15MetacognitiveStrategyGuide/FloatingTipBar';
+// MR15 tips now merged into Soft Tier intervention in InterventionManager
 import { usePatternStore } from '../stores/patternStore';
 const MR16SkillAtrophyPrevention = lazy(() => import('../components/mr/MR16SkillAtrophyPrevention'));
 const MR17LearningProcessVisualization = lazy(() => import('../components/mr/MR17LearningProcessVisualization'));
@@ -515,6 +514,8 @@ const ChatSessionPage: React.FC = () => {
   const [mr12TargetMessageId, setMr12TargetMessageId] = useState<string | null>(null);
 
   // MR15 context: Compute user phase for contextual tips
+  // Type inline since MR15 tips are now merged into InterventionManager soft tier
+  type UserPhase = 'composing' | 'waiting' | 'received' | 'idle';
   const userPhase: UserPhase = useMemo(() => {
     // Streaming = waiting for AI response
     if (isStreaming) return 'waiting';
@@ -4941,6 +4942,8 @@ Message: "${firstMessage.slice(0, 200)}"`,
         messages={messagesHook.messages}
         activeMRs={activeMRs || []}
         minMessagesForDetection={5}
+        isStreaming={isStreaming}
+        userInput={userInput}
         onInterventionDisplayed={(tier, mrType) => {
           console.log(`[ChatSessionPage] Intervention displayed: ${tier} - ${mrType}`);
         }}
