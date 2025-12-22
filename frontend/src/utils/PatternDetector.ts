@@ -90,6 +90,34 @@ export interface UserSignals {
 }
 
 /**
+ * Rule weight configuration for weighted confidence scoring
+ *
+ * Weights are based on signal confidence and behavioral significance:
+ * - HIGHEST (20%): Core passivity indicators with direct measurement
+ * - HIGH (15%): Strong behavioral signals with reliable detection
+ * - MEDIUM (10%): Supportive signals that add context
+ * - LOW (5%): Weak or indirect signals
+ */
+export const RULE_WEIGHTS: Record<string, number> = {
+  // Core passivity rules (HIGHEST weight)
+  'F-R5': 0.20,  // Complete passivity - most severe
+  'F-R2': 0.15,  // Zero verification - core SRL failure
+
+  // Behavioral pattern rules (HIGH weight)
+  'F-R3': 0.15,  // Input/output ratio - non-critical acceptance
+  'F-R6': 0.12,  // Low dwell time - not reading carefully
+  'F-R7': 0.10,  // No external verification signals
+
+  // Contextual rules (MEDIUM weight)
+  'F-R1': 0.10,  // Quick acceptance - may have false positives
+  'F-R8': 0.08,  // No follow-up questions
+
+  // Temporal rules (LOW weight - less reliable)
+  'F-R4': 0.05,  // Burst pattern - can be legitimate
+  'F-R9': 0.05,  // No deep scrolling
+};
+
+/**
  * Result of running all Layer 1 rules
  */
 export interface Layer1RuleResults {
@@ -98,9 +126,15 @@ export interface Layer1RuleResults {
   rule_F3_passed: boolean;     // Input/output ratio
   rule_F4_passed: boolean;     // Temporal pattern (burst then silence)
   rule_F5_passed: boolean;     // Complete passivity
+  // NEW: Enhanced behavioral rules
+  rule_F6_passed: boolean;     // Low dwell time
+  rule_F7_passed: boolean;     // No copy/selection events
+  rule_F8_passed: boolean;     // No follow-up questions
+  rule_F9_passed: boolean;     // No deep scrolling
 
-  triggeredCount: number;      // Total rules triggered (0-5)
+  triggeredCount: number;      // Total rules triggered (0-9)
   triggeredRules: string[];    // Names of triggered rules
+  weightedConfidence: number;  // Weighted confidence (0-1)
 }
 
 /**
@@ -243,13 +277,110 @@ export const checkRule_F5_CompletePassivity = (signals: UserSignals): boolean =>
 };
 
 /**
+ * LAYER 1, RULE F-R6: Low Dwell Time
+ *
+ * Theory: Insufficient time to process AI response
+ * Research shows reading comprehension requires minimum time per word.
+ * If average dwell time is very low (<5 seconds), user isn't reading carefully.
+ *
+ * Threshold:
+ *   Total interactions >= 3 AND averageDwellTimeMs < 5000ms → triggered
+ */
+export const checkRule_F6_LowDwellTime = (signals: UserSignals): boolean => {
+  const MIN_INTERACTIONS = 3;
+  const MIN_DWELL_TIME_MS = 5000; // 5 seconds
+
+  return (
+    signals.totalInteractions >= MIN_INTERACTIONS &&
+    signals.averageDwellTimeMs > 0 && // Only check if we have dwell time data
+    signals.averageDwellTimeMs < MIN_DWELL_TIME_MS
+  );
+};
+
+/**
+ * LAYER 1, RULE F-R7: No External Verification Signals
+ *
+ * Theory: Lack of cross-referencing behavior
+ * Users who verify AI output often copy text to search externally or select text to review.
+ * Zero copy/selection events after multiple interactions suggests blind acceptance.
+ *
+ * Threshold:
+ *   Total interactions >= 5 AND copyEventRate = 0% AND selectionEventRate = 0% → triggered
+ */
+export const checkRule_F7_NoExternalVerification = (signals: UserSignals): boolean => {
+  const MIN_INTERACTIONS = 5;
+
+  return (
+    signals.totalInteractions >= MIN_INTERACTIONS &&
+    signals.copyEventRate === 0 &&
+    signals.selectionEventRate === 0
+  );
+};
+
+/**
+ * LAYER 1, RULE F-R8: No Follow-Up Questions
+ *
+ * Theory: Lack of critical engagement
+ * Critical thinkers ask clarifying questions when receiving complex information.
+ * Zero follow-up questions after receiving long AI responses suggests passive acceptance.
+ *
+ * Threshold:
+ *   Total interactions >= 3 AND followUpQuestionRate = 0% → triggered
+ */
+export const checkRule_F8_NoFollowUpQuestions = (signals: UserSignals): boolean => {
+  const MIN_INTERACTIONS = 3;
+
+  return (
+    signals.totalInteractions >= MIN_INTERACTIONS &&
+    signals.followUpQuestionRate === 0
+  );
+};
+
+/**
+ * LAYER 1, RULE F-R9: No Deep Scrolling
+ *
+ * Theory: Not reading full response
+ * Long AI responses require scrolling to read completely.
+ * Low scroll depth suggests user only skims the beginning.
+ *
+ * Threshold:
+ *   Total interactions >= 3 AND deepScrollRate < 20% → triggered
+ *   (deepScrollRate = % of responses scrolled >80%)
+ */
+export const checkRule_F9_NoDeepScrolling = (signals: UserSignals): boolean => {
+  const MIN_INTERACTIONS = 3;
+  const MIN_DEEP_SCROLL_RATE = 20; // At least 20% of responses should be deeply scrolled
+
+  return (
+    signals.totalInteractions >= MIN_INTERACTIONS &&
+    signals.deepScrollRate < MIN_DEEP_SCROLL_RATE
+  );
+};
+
+/**
+ * Calculate weighted confidence score from triggered rules
+ *
+ * Unlike simple count-based scoring, this uses weighted scoring:
+ * - Core passivity rules contribute more
+ * - Contextual rules contribute less
+ * - Total weights sum to 1.0
+ */
+export const calculateWeightedConfidence = (triggeredRules: string[]): number => {
+  let totalWeight = 0;
+  for (const rule of triggeredRules) {
+    totalWeight += RULE_WEIGHTS[rule] || 0;
+  }
+  return Math.min(totalWeight, 1.0);
+};
+
+/**
  * Calculate confidence score from triggered rules
  *
- * Each rule contributes 0.2 (1/5) to confidence
- * More rules triggered = higher confidence in Pattern F detection
+ * LEGACY: Simple count-based scoring (kept for backwards compatibility)
+ * Each rule contributes 1/9 to confidence (now 9 rules total)
  */
 export const calculateConfidence = (triggeredRuleCount: number): number => {
-  return Math.min(triggeredRuleCount / 5, 1.0);
+  return Math.min(triggeredRuleCount / 9, 1.0);
 };
 
 /**
@@ -264,32 +395,38 @@ export const getConfidenceLevel = (
 };
 
 /**
- * Determine intervention tier based on confidence
+ * Determine intervention tier based on weighted confidence
  * Used by InterventionScheduler to decide what to display
  *
- * Thresholds (updated for better sensitivity):
- * - Hard: >= 0.6 (3+ rules) - for serious over-reliance patterns
- * - Medium: >= 0.4 (2+ rules) - moderate concern
- * - Soft: >= 0.2 (1+ rule) - gentle nudge
+ * Thresholds (updated for weighted scoring system):
+ * - Hard: >= 0.50 weighted + must include F-R5 (complete passivity)
+ * - Medium: >= 0.35 weighted (core passivity indicators triggered)
+ * - Soft: >= 0.15 weighted (at least one moderate signal)
+ *
+ * The weighted system ensures that:
+ * - F-R5 (20%) + F-R2 (15%) = 35% → Medium tier
+ * - F-R5 (20%) + F-R2 (15%) + F-R3 (15%) = 50% → Hard tier (with F-R5)
  */
 export const recommendInterventionTier = (
   confidence: number,
   triggeredRules: string[]
 ): 'none' | 'soft' | 'medium' | 'hard' => {
   // Hard barrier if:
-  // - Confidence >= 0.6 (3 out of 5 rules triggered)
+  // - Weighted confidence >= 0.50
   // - Must include F-R5 (complete passivity) for safety check
-  if (confidence >= 0.6 && triggeredRules.includes('F-R5')) {
+  if (confidence >= 0.50 && triggeredRules.includes('F-R5')) {
     return 'hard';
   }
 
-  // Medium warning if confidence >= 0.4 (2 out of 5 rules)
-  if (confidence >= 0.4) {
+  // Medium warning if weighted confidence >= 0.35
+  // This triggers when core passivity indicators are present
+  if (confidence >= 0.35) {
     return 'medium';
   }
 
-  // Soft signal if confidence >= 0.2 (1 out of 5 rules)
-  if (confidence >= 0.2) {
+  // Soft signal if weighted confidence >= 0.15
+  // This provides gentle nudge for early warning signs
+  if (confidence >= 0.15) {
     return 'soft';
   }
 
@@ -304,12 +441,17 @@ export function detectPatternF(
   signals: UserSignals,
   interactions: Interaction[]
 ): PatternFDetectionResult {
-  // Run all 5 rules
+  // Run all 9 rules (original 5 + 4 new enhanced rules)
   const rule_F1 = checkRule_F1_InputLengthSpeed(signals);
   const rule_F2 = checkRule_F2_VerificationGap(signals);
   const rule_F3 = checkRule_F3_InputOutputRatio(signals);
   const rule_F4 = checkRule_F4_TemporalBurstPattern(interactions);
   const rule_F5 = checkRule_F5_CompletePassivity(signals);
+  // NEW: Enhanced behavioral rules
+  const rule_F6 = checkRule_F6_LowDwellTime(signals);
+  const rule_F7 = checkRule_F7_NoExternalVerification(signals);
+  const rule_F8 = checkRule_F8_NoFollowUpQuestions(signals);
+  const rule_F9 = checkRule_F9_NoDeepScrolling(signals);
 
   // Collect results
   const triggeredRules: string[] = [];
@@ -318,9 +460,15 @@ export function detectPatternF(
   if (rule_F3) triggeredRules.push('F-R3');
   if (rule_F4) triggeredRules.push('F-R4');
   if (rule_F5) triggeredRules.push('F-R5');
+  if (rule_F6) triggeredRules.push('F-R6');
+  if (rule_F7) triggeredRules.push('F-R7');
+  if (rule_F8) triggeredRules.push('F-R8');
+  if (rule_F9) triggeredRules.push('F-R9');
 
   const triggeredCount = triggeredRules.length;
-  const confidence = calculateConfidence(triggeredCount);
+  // Use weighted confidence for more accurate severity assessment
+  const weightedConfidence = calculateWeightedConfidence(triggeredRules);
+  const confidence = weightedConfidence; // Primary confidence is now weighted
   const confidenceLevel = getConfidenceLevel(confidence);
   const recommendedTier = recommendInterventionTier(confidence, triggeredRules);
 
@@ -402,6 +550,83 @@ export function detectPatternF(
     });
   }
 
+  // NEW: Add explanation details for enhanced rules (F-R6 to F-R9)
+  if (rule_F6) {
+    triggeredRuleDetails.push({
+      ruleName: 'F-R6: Low Dwell Time',
+      description: 'Very short viewing time suggests not reading AI response carefully',
+      detectedValue: {
+        averageDwellTimeMs: `${signals.averageDwellTimeMs.toFixed(0)}ms`,
+        totalInteractions: signals.totalInteractions,
+      },
+      threshold: {
+        dwellTime: '< 5000ms',
+        minInteractions: '>= 3',
+      },
+    });
+  }
+
+  if (rule_F7) {
+    triggeredRuleDetails.push({
+      ruleName: 'F-R7: No External Verification',
+      description: 'No copy or selection events suggests no cross-referencing with external sources',
+      detectedValue: {
+        copyEventRate: `${signals.copyEventRate}%`,
+        selectionEventRate: `${signals.selectionEventRate}%`,
+      },
+      threshold: {
+        copyRate: '= 0%',
+        selectionRate: '= 0%',
+        minInteractions: '>= 5',
+      },
+    });
+  }
+
+  if (rule_F8) {
+    triggeredRuleDetails.push({
+      ruleName: 'F-R8: No Follow-Up Questions',
+      description: 'No clarifying questions after AI responses suggests passive acceptance',
+      detectedValue: {
+        followUpQuestionRate: `${signals.followUpQuestionRate}%`,
+        totalInteractions: signals.totalInteractions,
+      },
+      threshold: {
+        followUpRate: '= 0%',
+        minInteractions: '>= 3',
+      },
+    });
+  }
+
+  if (rule_F9) {
+    triggeredRuleDetails.push({
+      ruleName: 'F-R9: No Deep Scrolling',
+      description: 'Low scroll depth suggests only skimming the beginning of responses',
+      detectedValue: {
+        deepScrollRate: `${signals.deepScrollRate}%`,
+        averageScrollDepth: `${signals.averageScrollDepth.toFixed(0)}%`,
+      },
+      threshold: {
+        deepScrollRate: '< 20%',
+        minInteractions: '>= 3',
+      },
+    });
+  }
+
+  // Generate summary based on weighted confidence
+  const getSummary = (): string => {
+    if (weightedConfidence === 0) {
+      return 'No Pattern F indicators detected. User shows normal engagement.';
+    } else if (weightedConfidence < 0.15) {
+      return `Very low risk (${(weightedConfidence * 100).toFixed(0)}%): Minor signals detected, no intervention needed.`;
+    } else if (weightedConfidence < 0.35) {
+      return `Low risk (${(weightedConfidence * 100).toFixed(0)}%): ${triggeredCount} rule(s) triggered. Soft intervention recommended.`;
+    } else if (weightedConfidence < 0.50) {
+      return `Medium risk (${(weightedConfidence * 100).toFixed(0)}%): ${triggeredCount} rules triggered. Medium intervention recommended.`;
+    } else {
+      return `High risk (${(weightedConfidence * 100).toFixed(0)}%): ${triggeredCount} rules triggered. Hard barrier recommended.`;
+    }
+  };
+
   return {
     layer1: {
       rule_F1_passed: rule_F1,
@@ -409,21 +634,19 @@ export function detectPatternF(
       rule_F3_passed: rule_F3,
       rule_F4_passed: rule_F4,
       rule_F5_passed: rule_F5,
+      rule_F6_passed: rule_F6,
+      rule_F7_passed: rule_F7,
+      rule_F8_passed: rule_F8,
+      rule_F9_passed: rule_F9,
       triggeredCount,
       triggeredRules,
+      weightedConfidence,
     },
     confidence,
     confidenceLevel,
     recommendedTier,
     explanation: {
-      summary:
-        triggeredCount === 0
-          ? 'No Pattern F indicators detected. User shows normal engagement.'
-          : triggeredCount === 1
-            ? 'Low risk: One rule triggered, but insufficient evidence for intervention.'
-            : triggeredCount <= 3
-              ? `Medium risk: ${triggeredCount} rules triggered. Soft to medium intervention recommended.`
-              : `High risk: ${triggeredCount} rules triggered. User shows signs of ineffective use. Hard barrier recommended.`,
+      summary: getSummary(),
       triggeredRuleDetails,
     },
   };

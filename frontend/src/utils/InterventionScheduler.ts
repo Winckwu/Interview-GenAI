@@ -59,11 +59,21 @@ export type UserPatternType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'unknown';
 /**
  * Pattern-based BEHAVIOR DETECTION thresholds for tier selection
  *
- * These thresholds are applied to BEHAVIOR DETECTION CONFIDENCE (0-1),
+ * These thresholds are applied to WEIGHTED BEHAVIOR DETECTION CONFIDENCE (0-1),
  * NOT to pattern classification confidence.
  *
- * Behavior detection confidence = how many problematic behavior rules are triggered
- * Example: If 3 out of 5 passive dependency rules are triggered, confidence = 0.6
+ * WEIGHTED confidence scoring (9 rules total):
+ * - F-R5 (Complete Passivity): 20%
+ * - F-R2 (Zero Verification): 15%
+ * - F-R3 (Input/Output Ratio): 15%
+ * - F-R6 (Low Dwell Time): 12%
+ * - F-R7 (No External Verification): 10%
+ * - F-R1 (Quick Acceptance): 10%
+ * - F-R8 (No Follow-Ups): 8%
+ * - F-R4 (Burst Pattern): 5%
+ * - F-R9 (No Deep Scrolling): 5%
+ *
+ * Typical passive user triggers: F-R5 + F-R2 + F-R3 + F-R7 + F-R8 ≈ 68% weighted
  *
  * Lower thresholds = more likely to trigger interventions
  * Pattern F users get aggressive intervention (low thresholds)
@@ -72,33 +82,33 @@ export type UserPatternType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'unknown';
 export const PATTERN_THRESHOLDS: Record<UserPatternType, { soft: number; medium: number; hard: number }> = {
   // Pattern A: Strategic Decomposition - almost never intervene
   // They do sophisticated pre-planning and have strong cognitive control
-  // Only intervene when behavior detection is very high (>90% rules triggered)
-  'A': { soft: 0.90, medium: 0.95, hard: 0.99 },
+  // Only intervene when CORE passivity rules are triggered (F-R5 + F-R2 + more)
+  'A': { soft: 0.55, medium: 0.65, hard: 0.80 },
 
   // Pattern B: Iterative Refinement - rarely intervene
   // They learn from failures and iterate effectively
-  'B': { soft: 0.80, medium: 0.90, hard: 0.95 },
+  'B': { soft: 0.50, medium: 0.60, hard: 0.75 },
 
   // Pattern D: Deep Verification - minimal intervention
   // They verify systematically themselves
-  'D': { soft: 0.85, medium: 0.92, hard: 0.98 },
+  'D': { soft: 0.52, medium: 0.62, hard: 0.78 },
 
   // Pattern E: Pedagogical Reflection - minimal intervention
   // They treat AI as learning opportunity, high self-development
-  'E': { soft: 0.88, medium: 0.94, hard: 0.99 },
+  'E': { soft: 0.53, medium: 0.63, hard: 0.78 },
 
   // Pattern C: Context-Sensitive Adaptation - default thresholds
   // Largest group (44.9%), moderate metacognitive engagement
-  // Intervene when moderate problematic behavior detected (>60% rules triggered)
-  'C': { soft: 0.60, medium: 0.75, hard: 0.85 },
+  // Intervene at moderate weighted confidence (F-R5 + 1-2 other rules)
+  'C': { soft: 0.35, medium: 0.45, hard: 0.60 },
 
   // Pattern F: Passive Dependency - AGGRESSIVE intervention!
   // HIGH RISK: minimal verification, 1.2 turns vs 4.7 for Pattern B, <30s review
-  // Intervene early when even mild problematic behavior detected (>40% rules triggered)
-  'F': { soft: 0.40, medium: 0.55, hard: 0.70 },
+  // Intervene early: even single core rule (F-R5 at 20%) triggers soft
+  'F': { soft: 0.20, medium: 0.35, hard: 0.50 },
 
   // Unknown: use default (same as C)
-  'unknown': { soft: 0.60, medium: 0.75, hard: 0.85 },
+  'unknown': { soft: 0.35, medium: 0.45, hard: 0.60 },
 };
 
 /**
