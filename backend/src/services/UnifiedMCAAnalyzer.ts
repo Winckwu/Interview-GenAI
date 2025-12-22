@@ -99,6 +99,14 @@ Based on signals, determine which MRs should trigger and pre-generate their cont
 **MR1 (Task Decomposition)** - Trigger if: taskComplexity > 1.5 AND taskDecompositionEvidence < 2
 If triggered, generate subtasks for the user's task.
 
+**MR2 (Process Transparency)** - Trigger if: turnCount <= 2 OR taskComplexity > 2
+Show the AI's reasoning process to help users understand how the AI approaches problems.
+If triggered, generate a brief explanation of the AI's reasoning approach for this task.
+
+**MR11 (Integrated Verification)** - Trigger if: verificationIntent == false AND turnCount > 2 AND taskComplexity > 1
+Remind users about available verification tools to check AI outputs.
+If triggered, suggest relevant verification methods for the current task type.
+
 **MR13 (Uncertainty Display)** - Trigger if: taskComplexity > 1
 If triggered, identify uncertain aspects in the AI's potential response.
 
@@ -157,6 +165,32 @@ IMPORTANT: Most interventions should be "soft" or "medium". Use "hard" very rare
           {"id": "1", "title": "...", "description": "...", "estimatedTime": "..."}
         ],
         "reasoning": "..."
+      }
+    },
+    {
+      "mrId": "MR2",
+      "shouldTrigger": true,
+      "priority": "medium",
+      "tier": "soft",
+      "message": "Here's how I'm approaching this task...",
+      "content": {
+        "reasoningSteps": ["Step 1: ...", "Step 2: ...", "Step 3: ..."],
+        "approach": "Brief description of the reasoning approach",
+        "considerations": ["Key consideration 1", "Key consideration 2"]
+      }
+    },
+    {
+      "mrId": "MR11",
+      "shouldTrigger": true,
+      "priority": "medium",
+      "tier": "soft",
+      "message": "Consider verifying the AI's output using these methods.",
+      "content": {
+        "verificationMethods": [
+          {"method": "...", "description": "How to apply this verification"},
+          {"method": "...", "description": "..."}
+        ],
+        "relevantTools": ["Tool or resource suggestion"]
       }
     },
     {
