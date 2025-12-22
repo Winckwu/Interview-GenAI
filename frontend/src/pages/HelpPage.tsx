@@ -379,70 +379,70 @@ const HelpPage: React.FC = () => {
               <div className="pattern-grid">
                 <div className="pattern-card pattern-a">
                   <div className="pattern-badge">Pattern A</div>
-                  <h4>High Verification, High Modification</h4>
+                  <h4>Strategic Decomposition</h4>
                   <p>
-                    <strong>Characteristics:</strong> Active engagement, critical thinking, thorough verification
+                    <strong>Characteristics:</strong> Sophisticated pre-planning, breaks complex problems into sub-tasks, strong cognitive control over AI collaboration
                   </p>
                   <p>
-                    <strong>Risk Level:</strong> <span className="risk-low">Low</span> — Optimal collaboration style
+                    <strong>Risk Level:</strong> <span className="risk-low">Low</span> — High planning and control
                   </p>
                 </div>
 
                 <div className="pattern-card pattern-b">
                   <div className="pattern-badge">Pattern B</div>
-                  <h4>High Verification, Low Modification</h4>
+                  <h4>Iterative Refinement</h4>
                   <p>
-                    <strong>Characteristics:</strong> Careful validation but limited active engagement
+                    <strong>Characteristics:</strong> Rapid experimentation with 3-7 iterations, active learning through trial and error, continuous improvement
                   </p>
                   <p>
-                    <strong>Risk Level:</strong> <span className="risk-low">Low-Medium</span> — Generally safe
+                    <strong>Risk Level:</strong> <span className="risk-low">Low-Medium</span> — Active experimentation
                   </p>
                 </div>
 
                 <div className="pattern-card pattern-c">
                   <div className="pattern-badge">Pattern C</div>
-                  <h4>Low Verification, High Modification</h4>
+                  <h4>Context-Sensitive Adaptation</h4>
                   <p>
-                    <strong>Characteristics:</strong> Active modification without systematic verification
+                    <strong>Characteristics:</strong> Flexible strategies adapting to task complexity, switches approaches based on context (44.9% of users)
                   </p>
                   <p>
-                    <strong>Risk Level:</strong> <span className="risk-medium">Medium</span> — Potential quality issues
+                    <strong>Risk Level:</strong> <span className="risk-medium">Medium</span> — Balanced but variable
                   </p>
                 </div>
 
                 <div className="pattern-card pattern-d">
                   <div className="pattern-badge">Pattern D</div>
-                  <h4>Low Verification, Low Modification</h4>
+                  <h4>Deep Verification</h4>
                   <p>
-                    <strong>Characteristics:</strong> Passive acceptance of AI outputs
+                    <strong>Characteristics:</strong> Systematic verification, parallel problem-solving, thorough validation of AI outputs
                   </p>
                   <p>
-                    <strong>Risk Level:</strong> <span className="risk-high">High</span> — Skill degradation risk
+                    <strong>Risk Level:</strong> <span className="risk-low">Low-Medium</span> — Strong verification habits
                   </p>
                 </div>
 
                 <div className="pattern-card pattern-e">
                   <div className="pattern-badge">Pattern E</div>
-                  <h4>Erratic Behavior</h4>
+                  <h4>Pedagogical Reflection</h4>
                   <p>
-                    <strong>Characteristics:</strong> Inconsistent verification and modification patterns
+                    <strong>Characteristics:</strong> Learning-oriented approach, uses AI for self-development, focuses on understanding rather than just results
                   </p>
                   <p>
-                    <strong>Risk Level:</strong> <span className="risk-high">High</span> — Unpredictable quality
+                    <strong>Risk Level:</strong> <span className="risk-low">Low</span> — Growth mindset
                   </p>
                 </div>
 
                 <div className="pattern-card pattern-f">
                   <div className="pattern-badge">Pattern F</div>
-                  <h4>Passive Over-Reliance (Critical)</h4>
+                  <h4>Passive Dependency</h4>
                   <p>
-                    <strong>Characteristics:</strong> Zero verification, accepts AI outputs without questioning, minimal cognitive engagement
+                    <strong>Characteristics:</strong> Minimal metacognitive engagement, accepts AI outputs without verification, passive consumption
                   </p>
                   <p>
-                    <strong>Risk Level:</strong> <span className="risk-critical">Critical</span> — Highest skill degradation risk
+                    <strong>Risk Level:</strong> <span className="risk-critical">Critical</span> — HIGH RISK for skill atrophy
                   </p>
                   <p>
-                    <strong>Indicators:</strong> Short input times, no modifications, high output dependency ratio
+                    <strong>Indicators:</strong> Low verification rate, short prompts, no iterative refinement, high acceptance rate
                   </p>
                 </div>
               </div>
@@ -505,11 +505,11 @@ const HelpPage: React.FC = () => {
                 </div>
 
                 <div className="faq-item">
-                  <h4>How do I improve from Pattern D or E?</h4>
+                  <h4>How do I improve from Pattern F (Passive Dependency)?</h4>
                   <p>
-                    Start by actively verifying AI outputs and making thoughtful modifications.
-                    Engage with MR interventions when they appear, and complete reflection exercises.
-                    Over time, your pattern will improve to B or A.
+                    Start by actively verifying AI outputs before accepting them. Use MR12 Critical Thinking
+                    to question AI responses, try MR11 Verification workflow, and engage with MR interventions.
+                    Building verification habits will help you develop healthier AI collaboration patterns.
                   </p>
                 </div>
 
