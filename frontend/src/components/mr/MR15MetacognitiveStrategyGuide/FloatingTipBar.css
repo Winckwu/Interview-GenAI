@@ -1,0 +1,214 @@
+/**
+ * Floating Tip Bar Styles
+ * Minimal, non-intrusive tip display above input
+ */
+
+.floating-tip-bar {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  animation: floatingTipSlideIn 0.3s ease;
+}
+
+@keyframes floatingTipSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Main row */
+.floating-tip-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.floating-tip-main:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.floating-tip-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.floating-tip-text {
+  flex: 1;
+  font-size: 13px;
+  color: #0369a1;
+  font-weight: 500;
+}
+
+.floating-tip-dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.floating-tip-dismiss:hover {
+  background: rgba(0, 0, 0, 0.1);
+  opacity: 1;
+}
+
+/* Expanded content */
+.floating-tip-expanded {
+  padding: 0 12px 12px;
+  animation: floatingTipFadeIn 0.2s ease;
+}
+
+@keyframes floatingTipFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.floating-tip-detail {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.floating-tip-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.floating-tip-action-btn {
+  padding: 6px 12px;
+  background: #0284c7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.floating-tip-action-btn:hover {
+  background: #0369a1;
+}
+
+.floating-tip-disable-btn {
+  padding: 6px 12px;
+  background: transparent;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.floating-tip-disable-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+/* Timer mode */
+.floating-tip-timer {
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 14px;
+  gap: 10px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-color: #1d4ed8;
+}
+
+.floating-tip-timer-icon {
+  font-size: 16px;
+}
+
+.floating-tip-timer-display {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: monospace;
+  color: white;
+}
+
+.floating-tip-timer-text {
+  flex: 1;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.floating-tip-timer-done {
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.floating-tip-timer-done:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .floating-tip-bar {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+    border-color: #334155;
+  }
+
+  .floating-tip-main:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .floating-tip-text {
+    color: #7dd3fc;
+  }
+
+  .floating-tip-dismiss {
+    color: #94a3b8;
+  }
+
+  .floating-tip-dismiss:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .floating-tip-detail {
+    color: #cbd5e1;
+  }
+
+  .floating-tip-disable-btn {
+    color: #94a3b8;
+    border-color: #475569;
+  }
+
+  .floating-tip-disable-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #64748b;
+  }
+}

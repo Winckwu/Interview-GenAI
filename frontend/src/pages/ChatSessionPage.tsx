@@ -103,6 +103,7 @@ const MR13TransparentUncertainty = lazy(() => import('../components/mr/MR13Trans
 const MR14GuidedReflectionMechanism = lazy(() => import('../components/mr/MR14GuidedReflectionMechanism'));
 const MR15MetacognitiveStrategyGuide = lazy(() => import('../components/mr/MR15MetacognitiveStrategyGuide'));
 import type { UserPhase } from '../components/mr/MR15MetacognitiveStrategyGuide';
+import { FloatingTipBar } from '../components/mr/MR15MetacognitiveStrategyGuide/FloatingTipBar';
 const MR16SkillAtrophyPrevention = lazy(() => import('../components/mr/MR16SkillAtrophyPrevention'));
 const MR17LearningProcessVisualization = lazy(() => import('../components/mr/MR17LearningProcessVisualization'));
 const MR18OverRelianceWarning = lazy(() => import('../components/mr/MR18OverRelianceWarning'));
@@ -4548,6 +4549,23 @@ Message: "${firstMessage.slice(0, 200)}"`,
           boxShadow: '0 -1px 4px rgba(0, 0, 0, 0.03)',
           flexShrink: 0,
         }}>
+          {/* MR15: Floating Tip Bar - Contextual tips above input */}
+          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+            <FloatingTipBar
+              phase={userPhase}
+              interventionLevel={interventionLevel}
+              onInsertText={handleMR15InsertText}
+              onOpenTool={(toolId) => {
+                const toolMap: Record<string, () => void> = {
+                  'mr14-reflection': openMR14Reflection,
+                  'mr11-verification': openMR11Verification,
+                  'mr19-assessment': openMR19CapabilityAssessment,
+                };
+                toolMap[toolId]?.();
+              }}
+            />
+          </div>
+
           {/* MR4: Active Role Indicator */}
           {selectedRoles.length > 0 && (
             <div style={{
