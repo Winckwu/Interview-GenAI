@@ -60,7 +60,8 @@ export const ThinkingHistory: React.FC<ThinkingHistoryProps> = ({
 
       const data = await response.json();
       if (data.success) {
-        setRecords(data.data.records);
+        // Handle both old and new response formats
+        setRecords(Array.isArray(data.data) ? data.data : data.data?.records || []);
       }
     } catch (err: any) {
       setError(err.message);

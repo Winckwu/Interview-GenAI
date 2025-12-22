@@ -32,6 +32,7 @@ const initTable = async () => {
   await pool.query(`
     CREATE INDEX IF NOT EXISTS idx_thinking_records_session ON thinking_records(session_id);
     CREATE INDEX IF NOT EXISTS idx_thinking_records_user ON thinking_records(user_id);
+    CREATE INDEX IF NOT EXISTS idx_thinking_records_message ON thinking_records(message_id);
     CREATE INDEX IF NOT EXISTS idx_thinking_records_created ON thinking_records(created_at DESC);
   `);
 };
@@ -217,7 +218,7 @@ router.get(
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.id;
-    const { sessionId, limit = '20', offset = '0' } = req.query;
+    const { sessionId, messageId, limit = '20', offset = '0' } = req.query;
 
     try {
       let whereClause = 'WHERE 1=1';
@@ -234,6 +235,12 @@ router.get(
       if (sessionId) {
         whereClause += ` AND session_id = $${paramIndex++}`;
         values.push(sessionId);
+      }
+
+      // Filter by message if provided
+      if (messageId) {
+        whereClause += ` AND message_id = $${paramIndex++}`;
+        values.push(messageId);
       }
 
       const limitVal = parseInt(limit as string);
@@ -253,12 +260,10 @@ router.get(
 
       res.json({
         success: true,
-        data: {
-          records: recordsResult.rows,
-          total: parseInt(countResult.rows[0].total),
-          limit: limitVal,
-          offset: offsetVal,
-        },
+        data: recordsResult.rows,
+        total: parseInt(countResult.rows[0].total),
+        limit: limitVal,
+        offset: offsetVal,
         timestamp: new Date().toISOString(),
       });
     } catch (error: any) {
