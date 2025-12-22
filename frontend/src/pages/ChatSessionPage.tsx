@@ -2158,7 +2158,12 @@ Message: "${firstMessage.slice(0, 200)}"`,
           }}
         />;
       case 'mr3-agency':
-        return <MR3HumanAgencyControl interventionLevel={interventionLevel} onInterventionLevelChange={setInterventionLevel} sessionId={sessionId || ''} onSuggestionAction={(a, s) => console.log('Action:', a, s)} />;
+        return <MR3HumanAgencyControl
+          interventionLevel={interventionLevel}
+          onInterventionLevelChange={setInterventionLevel}
+          sessionId={sessionId || ''}
+          userPattern={currentUserPattern?.patternType}
+        />;
       case 'mr4-roles':
         return <MR4RoleDefinitionGuidance
           taskType={sessionData?.taskType || 'general'}

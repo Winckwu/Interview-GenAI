@@ -318,13 +318,14 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
         },
         body: JSON.stringify({
           sessionId,
-          messageId,
-          messageContent: aiOutput,
+          messageId: isManualMode ? undefined : messageId, // No messageId for manual input
+          messageContent: activeContent, // Use activeContent to support both auto and manual mode
           contentType,
           aiQuestions: useAIQuestions ? aiQuestions : templateQuestions,
           userResponses: finalResponses,
           needsVerification,
           completedAt: new Date().toISOString(),
+          isManualInput: isManualMode, // Flag to indicate manual input
         }),
       });
 
@@ -338,7 +339,7 @@ export const MR12CriticalThinkingScaffolding: React.FC<MR12Props> = ({
     } finally {
       setIsSaving(false);
     }
-  }, [sessionId, messageId, aiOutput, contentType, useAIQuestions, aiQuestions, templateQuestions]);
+  }, [sessionId, messageId, activeContent, contentType, useAIQuestions, aiQuestions, templateQuestions, isManualMode]);
 
   /**
    * Handle user selecting an option

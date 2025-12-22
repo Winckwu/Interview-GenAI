@@ -371,3 +371,91 @@
     margin-left: auto;
   }
 }
+
+/* ========================================
+   Pattern-based Restrictions
+   ======================================== */
+
+/* Disabled level buttons */
+.mr3-level-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.mr3-level-btn.disabled:hover {
+  transform: none;
+  box-shadow: none;
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.mr3-locked-icon {
+  font-size: 0.65rem;
+  margin-left: 0.25rem;
+}
+
+/* Restriction notice */
+.mr3-restriction-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  margin-top: 0.75rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.mr3-restriction-icon {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+}
+
+.mr3-restriction-text {
+  color: #92400e;
+}
+
+/* Compact mode disabled styles */
+.mr3-compact-option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mr3-compact-option.disabled:hover {
+  background: transparent;
+}
+
+.mr3-locked {
+  font-size: 0.65rem;
+  margin-left: auto;
+}
+
+/* Dark mode for restrictions */
+@media (prefers-color-scheme: dark) {
+  .mr3-level-btn.disabled {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .mr3-level-btn.disabled:hover {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .mr3-restriction-notice {
+    background: linear-gradient(135deg, #422006 0%, #451a03 100%);
+    border-color: #b45309;
+  }
+
+  .mr3-restriction-text {
+    color: #fcd34d;
+  }
+
+  .mr3-compact-option.disabled:hover {
+    background: transparent;
+  }
+}

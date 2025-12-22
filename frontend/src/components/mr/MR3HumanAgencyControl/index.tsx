@@ -9,6 +9,10 @@
  * - Balanced: Moderate guidance (medium + hard tier) - DEFAULT
  * - Active: Comprehensive coaching (all tiers)
  *
+ * Pattern-based restrictions:
+ * - Patterns A, C, E (high autonomy): All levels available
+ * - Patterns B, D, F (need intervention): Minimal not available
+ *
  * Evidence: 27/49 users (55%) fear AI over-intervention erodes autonomy
  */
 
@@ -16,6 +20,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import './styles.css';
 
 export type InterventionLevel = 'minimal' | 'balanced' | 'active';
+export type UserPatternType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
 
 // Map old values to new for backwards compatibility
 const LEVEL_MIGRATION: Record<string, InterventionLevel> = {
@@ -24,11 +29,33 @@ const LEVEL_MIGRATION: Record<string, InterventionLevel> = {
   'proactive': 'active',
 };
 
+// Pattern-based level restrictions
+// High autonomy patterns (A, C, E): Can choose any level
+// Low autonomy patterns (B, D, F): Minimum is 'balanced'
+const PATTERN_ALLOWED_LEVELS: Record<UserPatternType, InterventionLevel[]> = {
+  'A': ['minimal', 'balanced', 'active'], // Strategic Learner - high autonomy
+  'B': ['balanced', 'active'],             // Efficient Executor - skips verification
+  'C': ['minimal', 'balanced', 'active'], // Curious Explorer - active learner
+  'D': ['balanced', 'active'],             // Passive Consumer - needs guidance
+  'E': ['minimal', 'balanced', 'active'], // Critical Thinker - high autonomy
+  'F': ['balanced', 'active'],             // Over-reliant - needs intervention most
+};
+
+const PATTERN_RESTRICTION_MESSAGES: Record<UserPatternType, string> = {
+  'A': '',
+  'B': 'Based on your usage patterns, maintaining at least moderate reminders helps ensure verification habits.',
+  'C': '',
+  'D': 'Based on your usage patterns, maintaining reminders helps build stronger AI collaboration habits.',
+  'E': '',
+  'F': 'Based on your usage patterns, reminders are important to help maintain healthy AI interaction habits.',
+};
+
 interface MR3Props {
   interventionLevel?: InterventionLevel | string;
   onInterventionLevelChange?: (level: InterventionLevel) => void;
   sessionId?: string;
   compact?: boolean;
+  userPattern?: UserPatternType; // Current user behavior pattern
 }
 
 const LEVEL_CONFIG = {
@@ -56,14 +83,35 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
   interventionLevel: externalLevel,
   onInterventionLevelChange,
   compact = false,
+  userPattern,
 }) => {
-  // Migrate old level names if needed
-  const normalizeLevel = (level: string | undefined): InterventionLevel => {
-    if (!level) return 'balanced';
-    if (level in LEVEL_MIGRATION) return LEVEL_MIGRATION[level];
-    if (level in LEVEL_CONFIG) return level as InterventionLevel;
-    return 'balanced';
-  };
+  // Get allowed levels based on user pattern
+  const allowedLevels = userPattern
+    ? PATTERN_ALLOWED_LEVELS[userPattern]
+    : ['minimal', 'balanced', 'active'] as InterventionLevel[];
+
+  const restrictionMessage = userPattern
+    ? PATTERN_RESTRICTION_MESSAGES[userPattern]
+    : '';
+
+  // Migrate old level names if needed, respecting pattern restrictions
+  const normalizeLevel = useCallback((level: string | undefined): InterventionLevel => {
+    let normalized: InterventionLevel = 'balanced';
+    if (!level) {
+      normalized = 'balanced';
+    } else if (level in LEVEL_MIGRATION) {
+      normalized = LEVEL_MIGRATION[level];
+    } else if (level in LEVEL_CONFIG) {
+      normalized = level as InterventionLevel;
+    }
+
+    // If the level is not allowed for this pattern, default to the minimum allowed
+    if (!allowedLevels.includes(normalized)) {
+      normalized = allowedLevels[0]; // First allowed level (usually 'balanced')
+    }
+
+    return normalized;
+  }, [allowedLevels]);
 
   const [level, setLevel] = useState<InterventionLevel>(() =>
     normalizeLevel(externalLevel)
@@ -75,7 +123,16 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
     if (externalLevel) {
       setLevel(normalizeLevel(externalLevel));
     }
-  }, [externalLevel]);
+  }, [externalLevel, normalizeLevel]);
+
+  // Re-validate level when pattern changes
+  useEffect(() => {
+    if (!allowedLevels.includes(level)) {
+      const newLevel = allowedLevels[0];
+      setLevel(newLevel);
+      onInterventionLevelChange?.(newLevel);
+    }
+  }, [userPattern, allowedLevels, level, onInterventionLevelChange]);
 
   // Persist to localStorage
   useEffect(() => {
@@ -88,12 +145,14 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
     if (saved && !externalLevel) {
       setLevel(normalizeLevel(saved));
     }
-  }, []);
+  }, [externalLevel, normalizeLevel]);
 
   const handleLevelChange = useCallback((newLevel: InterventionLevel) => {
+    // Only allow changing to permitted levels
+    if (!allowedLevels.includes(newLevel)) return;
     setLevel(newLevel);
     onInterventionLevelChange?.(newLevel);
-  }, [onInterventionLevelChange]);
+  }, [onInterventionLevelChange, allowedLevels]);
 
   const levels: InterventionLevel[] = ['minimal', 'balanced', 'active'];
   const currentIndex = levels.indexOf(level);
@@ -115,16 +174,22 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
 
         {isExpanded && (
           <div className="mr3-compact-dropdown">
-            {levels.map((l) => (
-              <button
-                key={l}
-                className={`mr3-compact-option ${level === l ? 'active' : ''}`}
-                onClick={() => handleLevelChange(l)}
-              >
-                <span>{LEVEL_CONFIG[l].icon}</span>
-                <span>{LEVEL_CONFIG[l].label}</span>
-              </button>
-            ))}
+            {levels.map((l) => {
+              const isAllowed = allowedLevels.includes(l);
+              return (
+                <button
+                  key={l}
+                  className={`mr3-compact-option ${level === l ? 'active' : ''} ${!isAllowed ? 'disabled' : ''}`}
+                  onClick={() => isAllowed && handleLevelChange(l)}
+                  disabled={!isAllowed}
+                  title={!isAllowed ? 'Not available for your current usage pattern' : ''}
+                >
+                  <span>{LEVEL_CONFIG[l].icon}</span>
+                  <span>{LEVEL_CONFIG[l].label}</span>
+                  {!isAllowed && <span className="mr3-locked">🔒</span>}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -158,23 +223,35 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
         {levels.map((l, idx) => {
           const cfg = LEVEL_CONFIG[l];
           const isActive = level === l;
+          const isAllowed = allowedLevels.includes(l);
 
           return (
             <button
               key={l}
-              className={`mr3-level-btn ${isActive ? 'active' : ''}`}
-              onClick={() => handleLevelChange(l)}
+              className={`mr3-level-btn ${isActive ? 'active' : ''} ${!isAllowed ? 'disabled' : ''}`}
+              onClick={() => isAllowed && handleLevelChange(l)}
               aria-pressed={isActive}
+              disabled={!isAllowed}
+              title={!isAllowed ? 'Not available for your current usage pattern' : ''}
             >
               <span className="mr3-level-icon">{cfg.icon}</span>
               <span className="mr3-level-label">{cfg.label}</span>
               {l === 'balanced' && (
                 <span className="mr3-level-default">Default</span>
               )}
+              {!isAllowed && <span className="mr3-locked-icon">🔒</span>}
             </button>
           );
         })}
       </div>
+
+      {/* Pattern restriction notice */}
+      {restrictionMessage && (
+        <div className="mr3-restriction-notice">
+          <span className="mr3-restriction-icon">ℹ️</span>
+          <span className="mr3-restriction-text">{restrictionMessage}</span>
+        </div>
+      )}
 
       {/* Current Level Description */}
       <div className="mr3-current-level">
