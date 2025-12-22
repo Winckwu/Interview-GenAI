@@ -537,7 +537,11 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                 {/* Set as Main button - only show for branches (not original) */}
                 {currentBranchIndex > 0 && onBranchSetAsMain && (
                   <button
-                    onClick={onBranchSetAsMain}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onBranchSetAsMain();
+                    }}
                     title="Set this branch as the main answer"
                     style={{
                       background: '#fef3c7',

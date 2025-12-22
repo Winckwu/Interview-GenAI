@@ -1807,11 +1807,21 @@ Message: "${firstMessage.slice(0, 200)}"`,
    * This replaces the original AI response with the selected branch
    */
   const handleSetBranchAsMain = useCallback(async (messageId: string) => {
+    console.log('[SetAsMain] Called with messageId:', messageId);
+
     const messageIndex = messages.findIndex(m => m.id === messageId);
-    if (messageIndex === -1) return;
+    if (messageIndex === -1) {
+      console.error('[SetAsMain] Message not found:', messageId);
+      return;
+    }
 
     const message = messages[messageIndex];
-    if (!message.branches || message.branches.length === 0) return;
+    console.log('[SetAsMain] Message found:', { id: message.id, branches: message.branches?.length, currentBranchIndex: message.currentBranchIndex });
+
+    if (!message.branches || message.branches.length === 0) {
+      console.error('[SetAsMain] No branches found');
+      return;
+    }
 
     const currentIndex = message.currentBranchIndex ?? 0;
     if (currentIndex === 0) {
@@ -1822,10 +1832,16 @@ Message: "${firstMessage.slice(0, 200)}"`,
     }
 
     const branchToPromote = message.branches[currentIndex - 1];
-    if (!branchToPromote) return;
+    console.log('[SetAsMain] Branch to promote:', branchToPromote);
+
+    if (!branchToPromote) {
+      console.error('[SetAsMain] Branch to promote not found at index:', currentIndex - 1);
+      return;
+    }
 
     // Confirm promotion
-    if (!window.confirm(`Set this ${branchToPromote.source.toUpperCase()} branch (${branchToPromote.model || 'manual'}) as the main answer? The original will be preserved as a branch.`)) {
+    const sourceLabel = branchToPromote.source ? branchToPromote.source.toUpperCase() : 'MANUAL';
+    if (!window.confirm(`Set this ${sourceLabel} branch (${branchToPromote.model || 'manual'}) as the main answer? The original will be preserved as a branch.`)) {
       return;
     }
 
