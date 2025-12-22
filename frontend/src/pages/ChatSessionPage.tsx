@@ -1786,8 +1786,18 @@ Message: "${firstMessage.slice(0, 200)}"`,
     }
 
     try {
-      // Delete from backend
-      await api.delete(`/branches/${branchToDelete.id}`);
+      // Helper to check if ID is a valid UUID (backend-saved branch)
+      const isValidUUID = (id: string) => {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        return uuidRegex.test(id);
+      };
+
+      // Only call backend if branch has a valid UUID (was saved to database)
+      if (isValidUUID(branchToDelete.id)) {
+        await api.delete(`/branches/${branchToDelete.id}`);
+      } else {
+        console.log('[DeleteBranch] Skipping API call - local branch ID:', branchToDelete.id);
+      }
 
       // Remove branch from array
       const updatedBranches = message.branches.filter((_, index) => index !== currentIndex - 1);
@@ -1858,8 +1868,18 @@ Message: "${firstMessage.slice(0, 200)}"`,
     }
 
     try {
-      // Mark this branch as main in backend
-      await api.patch(`/branches/${branchToPromote.id}`, { isMain: true });
+      // Helper to check if ID is a valid UUID (backend-saved branch)
+      const isValidUUID = (id: string) => {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        return uuidRegex.test(id);
+      };
+
+      // Only call backend if branch has a valid UUID (was saved to database)
+      if (isValidUUID(branchToPromote.id)) {
+        await api.patch(`/branches/${branchToPromote.id}`, { isMain: true });
+      } else {
+        console.log('[SetAsMain] Skipping branch API call - local branch ID:', branchToPromote.id);
+      }
 
       // Update the interaction with the branch content
       const interactionId = messageId.startsWith('user-')
