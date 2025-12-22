@@ -422,6 +422,7 @@ const ChatSessionPage: React.FC = () => {
     editForkMessageIndex,
     switchBranchPath,
     forkConversation,
+    loadBranchPaths,
     setCurrentBranchPath,
   } = messagesHook;
 
@@ -1023,6 +1024,17 @@ const ChatSessionPage: React.FC = () => {
 
     loadSessionAndHistory();
   }, [sessionId, navigate]);
+
+  // Load branch paths after messages are loaded (for branch navigation persistence)
+  // This runs after the initial message load to restore edit fork navigation
+  const branchPathsLoadedForSession = useRef<string | null>(null);
+  useEffect(() => {
+    // Only load once per session, after messages are loaded
+    if (sessionId && messages.length > 0 && availableBranchPaths.length <= 1 && branchPathsLoadedForSession.current !== sessionId) {
+      branchPathsLoadedForSession.current = sessionId;
+      loadBranchPaths();
+    }
+  }, [sessionId, messages.length, availableBranchPaths.length, loadBranchPaths]);
 
   // Global MR Recommendation System now handled by useGlobalRecommendations hook
   // trackMRToolUsage now handled by useMRTools hook

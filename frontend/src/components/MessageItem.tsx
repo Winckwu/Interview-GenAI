@@ -861,8 +861,13 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* Branch navigation for user messages - only show on the edited message */}
-              {availableBranchPaths.length > 1 && onSwitchBranchPath && editForkMessageIndex === index && (() => {
+              {/* Branch navigation for user messages - show on fork point or edit branch message */}
+              {availableBranchPaths.length > 1 && onSwitchBranchPath && (
+                // Known fork point (during editing session)
+                editForkMessageIndex === index ||
+                // After refresh on edit branch: show on user message that's on an edit branch (the fork point)
+                (editForkMessageIndex === null && message.branchPath && message.branchPath.startsWith('edit-'))
+              ) && (() => {
                 // Find current branch index
                 const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
                 const canGoPrev = currentIndex > 0;
