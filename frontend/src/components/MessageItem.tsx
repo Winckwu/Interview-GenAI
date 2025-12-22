@@ -21,6 +21,7 @@ import { BranchBulkOperations } from './BranchBulkOperations';
 import { exportBranches } from '../utils/branchExport';
 import api from '../services/api';
 import { RegenerateDropdown, type RegenerateOptions } from './RegenerateDropdown';
+import { VersionNavigation } from './VersionNavigation';
 
 // Re-export Message type for backward compatibility
 export type { Message };
@@ -467,8 +468,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               </div>
             )}
 
-            {/* AI Response Alternatives Navigation - BLUE/PINK theme */}
-            {/* Different from user message version navigation (GREEN theme) */}
+            {/* AI Response Versions - Unified navigation component */}
             {hasBranches && (
               <div
                 className={styles.branchNavigation}
@@ -477,41 +477,23 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   flexWrap: 'wrap',
                   alignItems: 'center',
                   gap: '0.5rem',
-                  padding: '0.25rem 0.625rem',
-                  backgroundColor: currentBranchIndex === 0 ? '#e0f2fe' : '#fce7f3',
-                  border: `1px solid ${currentBranchIndex === 0 ? '#bae6fd' : '#fbcfe8'}`,
-                  borderRadius: '0.375rem',
-                  fontSize: '0.75rem',
                 }}
-                title="Alternative AI responses at this point. Keyboard: ← Previous | → Next | Delete to remove | Ctrl+Enter to set as main"
               >
-                {/* Response icon to differentiate from user version navigation */}
-                <span style={{ fontSize: '0.7rem', marginRight: '0.15rem' }}>🤖</span>
-                <button
-                  onClick={() => handleBranchNavWithHint('prev')}
-                  disabled={!canGoPrev}
-                  title="Previous AI response alternative (←)"
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: canGoPrev ? 'pointer' : 'not-allowed',
-                    padding: '0.125rem 0.25rem',
-                    opacity: canGoPrev ? 1 : 0.3,
-                    fontSize: '0.875rem',
-                  }}
-                >
-                  ◀
-                </button>
-                <span style={{ fontWeight: '500', color: '#374151', whiteSpace: 'nowrap' }}>
-                  {branchInfo.label} ({currentBranchIndex + 1}/{totalBranches})
-                </span>
+                {/* Unified version navigation */}
+                <VersionNavigation
+                  type="ai"
+                  currentIndex={currentBranchIndex}
+                  totalVersions={totalBranches}
+                  onPrevious={() => handleBranchNavWithHint('prev')}
+                  onNext={() => handleBranchNavWithHint('next')}
+                  tooltip={`AI response ${currentBranchIndex + 1} of ${totalBranches}. ${branchInfo.label}${branchMetadata?.model ? ` (${branchMetadata.model})` : ''}`}
+                />
 
                 {/* Branch metadata info button */}
                 {branchMetadata && (
                   <span
                     title={`Created: ${formatTimestamp(branchMetadata.createdAt)}\nSource: ${branchMetadata.source?.toUpperCase() || 'N/A'}${branchMetadata.model ? `\nModel: ${branchMetadata.model}` : ''}${branchMetadata.wasVerified ? '\n✓ Verified' : ''}${branchMetadata.wasModified ? '\n✎ Modified' : ''}`}
                     style={{
-                      marginLeft: '0.25rem',
                       cursor: 'help',
                       fontSize: '0.75rem',
                       color: '#9ca3af',
@@ -520,22 +502,6 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     ℹ️
                   </span>
                 )}
-
-                <button
-                  onClick={() => handleBranchNavWithHint('next')}
-                  disabled={!canGoNext}
-                  title="Next AI response alternative (→)"
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: canGoNext ? 'pointer' : 'not-allowed',
-                    padding: '0.125rem 0.25rem',
-                    opacity: canGoNext ? 1 : 0.3,
-                    fontSize: '0.875rem',
-                  }}
-                >
-                  ▶
-                </button>
 
                 {/* Set as Main button - only show for alternatives (not original) */}
                 {currentBranchIndex > 0 && onBranchSetAsMain && (
@@ -550,15 +516,14 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                       background: '#fef3c7',
                       border: '1px solid #f59e0b',
                       cursor: 'pointer',
-                      padding: '0.25rem 0.5rem',
-                      fontSize: '0.7rem',
+                      padding: '0.2rem 0.4rem',
+                      fontSize: '0.65rem',
                       color: '#92400e',
-                      marginLeft: '0.5rem',
                       borderRadius: '0.25rem',
                       fontWeight: '600',
                     }}
                   >
-                    ⭐ Set as Main
+                    ⭐ Main
                   </button>
                 )}
 
@@ -571,10 +536,9 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      padding: '0.125rem 0.25rem',
-                      fontSize: '0.875rem',
+                      padding: '0.125rem',
+                      fontSize: '0.75rem',
                       color: '#dc2626',
-                      marginLeft: '0.25rem',
                     }}
                   >
                     🗑️
@@ -864,7 +828,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* Conversation version navigation for user messages - GREEN theme to differentiate from AI branches */}
+              {/* User Message Versions - Unified navigation component */}
               {/* Only show on the ACTUAL fork point message, not all user messages */}
               {availableBranchPaths.length > 1 && onSwitchBranchPath && (
                 // Known fork point (during current editing session)
@@ -877,83 +841,24 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               ) && (() => {
                 // Find current branch index
                 const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
-                const canGoPrev = currentIndex > 0;
-                const canGoNext = currentIndex < availableBranchPaths.length - 1;
-                const editBranchCount = availableBranchPaths.filter(p => p.startsWith('edit-')).length;
-
-                // Format branch name for display - use "Version" terminology for clarity
-                const formatBranchName = (path: string) => {
-                  if (path === 'main') return 'Original';
-                  if (path.startsWith('edit-')) {
-                    const editIndex = availableBranchPaths.filter(p => p.startsWith('edit-')).indexOf(path) + 1;
-                    return `Version ${editIndex}`;
-                  }
-                  return path;
-                };
 
                 return (
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.25rem',
-                    background: currentBranchPath === 'main' ? '#f0fdf4' : '#fef3c7',
-                    border: `1px solid ${currentBranchPath === 'main' ? '#86efac' : '#fcd34d'}`,
-                    borderRadius: '0.375rem',
-                    padding: '0.15rem 0.35rem',
-                  }}
-                  title={`Conversation versions: ${editBranchCount} edit${editBranchCount > 1 ? 's' : ''} + original. Switching changes the entire conversation.`}
-                  >
-                    {/* Version icon to differentiate from AI branch navigation */}
-                    <span style={{ fontSize: '0.7rem', marginRight: '0.15rem' }}>📝</span>
-                    <button
-                      onClick={() => canGoPrev && onSwitchBranchPath(availableBranchPaths[currentIndex - 1])}
-                      disabled={!canGoPrev}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: canGoPrev ? 'pointer' : 'not-allowed',
-                        padding: '0 0.25rem',
-                        fontSize: '0.75rem',
-                        color: canGoPrev ? '#15803d' : '#cbd5e1',
-                        fontWeight: 'bold',
-                      }}
-                      title="Previous conversation version"
-                    >
-                      ◀
-                    </button>
-                    <span style={{
-                      fontSize: '0.7rem',
-                      color: currentBranchPath === 'main' ? '#15803d' : '#b45309',
-                      fontWeight: '600',
-                      minWidth: '55px',
-                      textAlign: 'center',
-                    }}>
-                      {formatBranchName(currentBranchPath)}
-                    </span>
-                    <button
-                      onClick={() => canGoNext && onSwitchBranchPath(availableBranchPaths[currentIndex + 1])}
-                      disabled={!canGoNext}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: canGoNext ? 'pointer' : 'not-allowed',
-                        padding: '0 0.25rem',
-                        fontSize: '0.75rem',
-                        color: canGoNext ? '#15803d' : '#cbd5e1',
-                        fontWeight: 'bold',
-                      }}
-                      title="Next conversation version"
-                    >
-                      ▶
-                    </button>
-                    <span style={{
-                      fontSize: '0.65rem',
-                      color: '#64748b',
-                      marginLeft: '0.15rem',
-                    }}>
-                      {currentIndex + 1}/{availableBranchPaths.length}
-                    </span>
-                  </div>
+                  <VersionNavigation
+                    type="user"
+                    currentIndex={currentIndex >= 0 ? currentIndex : 0}
+                    totalVersions={availableBranchPaths.length}
+                    onPrevious={() => {
+                      if (currentIndex > 0) {
+                        onSwitchBranchPath(availableBranchPaths[currentIndex - 1]);
+                      }
+                    }}
+                    onNext={() => {
+                      if (currentIndex < availableBranchPaths.length - 1) {
+                        onSwitchBranchPath(availableBranchPaths[currentIndex + 1]);
+                      }
+                    }}
+                    tooltip={`Message version ${currentIndex + 1} of ${availableBranchPaths.length}. Switching changes this message and all subsequent messages.`}
+                  />
                 );
               })()}
               {/* Edit button for user messages - shows badge when versions exist */}
