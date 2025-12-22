@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef, Suspense, lazy } from 'react';
+import React, { useEffect, useState, useCallback, useRef, Suspense, lazy, useMemo } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import api, { apiService } from '../services/api';
 import { useAuthStore } from '../stores/authStore';
