@@ -29,15 +29,15 @@ interface ContextualTip {
   priority: number;      // Higher = more important
 }
 
-// Simple, conversational tips (in Chinese for better UX)
+// Simple, conversational tips in English
 const CONTEXTUAL_TIPS: ContextualTip[] = [
   // COMPOSING phase - before sending
   {
     id: 'think-first',
     phase: 'composing',
-    tip: '先想2分钟再问',
-    detail: '试着自己先思考一下，可能你已经知道答案了',
-    actionLabel: '设置2分钟提醒',
+    tip: 'Think for 2 minutes before asking',
+    detail: 'Try thinking it through first - you might already know the answer!',
+    actionLabel: 'Start 2-min timer',
     actionType: 'timer',
     actionData: '120',
     priority: 10
@@ -45,21 +45,21 @@ const CONTEXTUAL_TIPS: ContextualTip[] = [
   {
     id: 'be-specific',
     phase: 'composing',
-    tip: '问题越具体，回答越好',
-    detail: '与其问"怎么做"，不如说清楚你的具体情况',
-    actionLabel: '帮我完善问题',
+    tip: 'Be specific for better answers',
+    detail: 'Instead of "how to do X", describe your specific situation',
+    actionLabel: 'Add context template',
     actionType: 'insert',
-    actionData: '我的具体情况是：...\n我想要达到的效果是：...',
+    actionData: 'My situation: ...\nWhat I want to achieve: ...',
     priority: 8
   },
   {
     id: 'break-down',
     phase: 'composing',
-    tip: '大问题拆成小步骤',
-    detail: '一次问一个小问题，比一次问一个大问题效果更好',
-    actionLabel: '帮我拆分',
+    tip: 'Break big tasks into small steps',
+    detail: 'Ask one small question at a time for better results',
+    actionLabel: 'Ask to break down',
     actionType: 'insert',
-    actionData: '请先帮我把这个任务拆分成小步骤：',
+    actionData: 'Please help me break this task into smaller steps first:',
     priority: 7
   },
 
@@ -67,8 +67,8 @@ const CONTEXTUAL_TIPS: ContextualTip[] = [
   {
     id: 'predict',
     phase: 'waiting',
-    tip: '猜猜AI会怎么回答',
-    detail: '等待时想想：你期望看到什么？这能帮你更好地评估回答',
+    tip: 'Predict what AI will say',
+    detail: 'While waiting, think: what do you expect? This helps you evaluate the response',
     priority: 6
   },
 
@@ -76,9 +76,9 @@ const CONTEXTUAL_TIPS: ContextualTip[] = [
   {
     id: 'verify-facts',
     phase: 'received',
-    tip: '关键信息要核实',
-    detail: '数据、日期、专业术语这些，最好自己查证一下',
-    actionLabel: '标记待核实',
+    tip: 'Verify key facts',
+    detail: 'Double-check dates, data, and technical terms from other sources',
+    actionLabel: 'Mark for verification',
     actionType: 'reflect',
     actionData: 'verify',
     priority: 10
@@ -86,31 +86,31 @@ const CONTEXTUAL_TIPS: ContextualTip[] = [
   {
     id: 'ask-why',
     phase: 'received',
-    tip: '多问一句"为什么"',
-    detail: '不只是接受答案，理解背后的原因更重要',
-    actionLabel: '追问原因',
+    tip: 'Ask "why" to understand',
+    detail: "Don't just accept - understand the reasoning behind the answer",
+    actionLabel: 'Ask for explanation',
     actionType: 'insert',
-    actionData: '为什么是这样？能解释一下原理吗？',
+    actionData: 'Why is this the case? Can you explain the reasoning?',
     priority: 8
   },
   {
     id: 'get-options',
     phase: 'received',
-    tip: '有没有其他方法？',
-    detail: '让AI给你更多选项，这样你可以做出更好的选择',
-    actionLabel: '要求更多方案',
+    tip: 'Ask for alternatives',
+    detail: 'Get multiple options so you can make a better choice',
+    actionLabel: 'Request alternatives',
     actionType: 'insert',
-    actionData: '还有其他方法吗？各有什么优缺点？',
+    actionData: 'Are there other approaches? What are the pros and cons of each?',
     priority: 7
   },
   {
     id: 'check-blind-spots',
     phase: 'received',
-    tip: '有没有遗漏的地方？',
-    detail: 'AI可能没考虑到你的特殊情况',
-    actionLabel: '检查盲点',
+    tip: 'Check for blind spots',
+    detail: 'AI might not have considered your specific situation',
+    actionLabel: 'Ask about limitations',
     actionType: 'insert',
-    actionData: '这个方案有什么潜在问题或限制吗？有没有我应该注意的特殊情况？',
+    actionData: 'What are the potential issues or limitations with this approach? Anything I should watch out for?',
     priority: 6
   },
 
@@ -118,9 +118,9 @@ const CONTEXTUAL_TIPS: ContextualTip[] = [
   {
     id: 'reflect',
     phase: 'idle',
-    tip: '回顾一下刚才的对话',
-    detail: '学到了什么？下次可以怎么问得更好？',
-    actionLabel: '打开反思工具',
+    tip: 'Reflect on the conversation',
+    detail: 'What did you learn? How can you ask better next time?',
+    actionLabel: 'Open reflection tool',
     actionType: 'open-tool',
     actionData: 'mr14-reflection',
     priority: 5
@@ -245,10 +245,10 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
 
   // Phase labels
   const phaseLabels: Record<UserPhase, { icon: string; label: string }> = {
-    composing: { icon: '📝', label: '写问题时' },
-    waiting: { icon: '⏳', label: '等待中' },
-    received: { icon: '💡', label: '收到回答' },
-    idle: { icon: '💭', label: '提示' }
+    composing: { icon: '📝', label: 'Writing' },
+    waiting: { icon: '⏳', label: 'Waiting' },
+    received: { icon: '💡', label: 'Response received' },
+    idle: { icon: '💭', label: 'Tips' }
   };
 
   const currentPhase = phaseLabels[phase];
@@ -266,12 +266,12 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
           <div className="mr15-timer-display">
             {Math.floor(timerSeconds / 60)}:{(timerSeconds % 60).toString().padStart(2, '0')}
           </div>
-          <div className="mr15-timer-label">先自己想想...</div>
+          <div className="mr15-timer-label">Think it through first...</div>
           <button
             className="mr15-timer-stop"
             onClick={() => setTimerActive(false)}
           >
-            完成思考
+            Done thinking
           </button>
         </div>
       )}
@@ -297,7 +297,7 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
               <button
                 className="mr15-tip-dismiss"
                 onClick={(e) => dismissTip(tip.id, e)}
-                title="不需要"
+                title="Dismiss"
               >
                 ×
               </button>
@@ -326,7 +326,7 @@ export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
           className="mr15-reset"
           onClick={() => setDismissedTips(new Set())}
         >
-          显示全部提示
+          Show all tips
         </button>
       )}
     </div>
