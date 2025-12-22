@@ -1,203 +1,333 @@
 /**
- * MR15: Quick Tips - Simplified Strategy Guide
+ * MR15: Contextual Strategy Tips
  *
- * Redesigned for better UX:
- * - Simple, contextual tips instead of overwhelming library
- * - 3 phases: Before Ask, While Working, After Response
- * - One-liner tips with quick actions
- * - Light progress tracking
+ * Key principles:
+ * 1. 情境化触发 - Shows tips based on what user is currently doing
+ * 2. 简化展示 - Only 1-2 most relevant tips at a time
+ * 3. 实践导向 - Actions directly affect current task
+ * 4. 通俗化语言 - Simple, conversational language
  */
-
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './styles.css';
 
-// Simple tip structure
-interface QuickTip {
+// User's current context/phase
+export type UserPhase =
+  | 'composing'   // Writing a message
+  | 'waiting'     // Sent message, waiting for response
+  | 'received'    // Just got AI response
+  | 'idle';       // Not actively doing anything
+
+// Tip structure
+interface ContextualTip {
   id: string;
-  phase: 'before' | 'during' | 'after';
-  tip: string;
-  action: string;
-  detail?: string;
+  phase: UserPhase | UserPhase[];
+  tip: string;           // Short, conversational
+  detail?: string;       // Expanded explanation
+  actionLabel?: string;  // Button text
+  actionType?: 'insert' | 'timer' | 'open-tool' | 'reflect';
+  actionData?: string;   // Data for action
+  priority: number;      // Higher = more important
 }
 
-// All quick tips organized by phase
-const QUICK_TIPS: QuickTip[] = [
-  // Before asking
-  { id: 'think-first', phase: 'before', tip: 'Think for 2 minutes before asking', action: 'Set Timer', detail: 'Write down what you already know, then ask a specific question' },
-  { id: 'break-down', phase: 'before', tip: 'Break big tasks into small steps', action: 'Try Now', detail: 'Ask about one step at a time, not everything at once' },
-  { id: 'clear-goal', phase: 'before', tip: 'Know what "good enough" looks like', action: 'Define Goal', detail: 'Before iterating, decide what success means' },
+// Simple, conversational tips (in Chinese for better UX)
+const CONTEXTUAL_TIPS: ContextualTip[] = [
+  // COMPOSING phase - before sending
+  {
+    id: 'think-first',
+    phase: 'composing',
+    tip: '先想2分钟再问',
+    detail: '试着自己先思考一下，可能你已经知道答案了',
+    actionLabel: '设置2分钟提醒',
+    actionType: 'timer',
+    actionData: '120',
+    priority: 10
+  },
+  {
+    id: 'be-specific',
+    phase: 'composing',
+    tip: '问题越具体，回答越好',
+    detail: '与其问"怎么做"，不如说清楚你的具体情况',
+    actionLabel: '帮我完善问题',
+    actionType: 'insert',
+    actionData: '我的具体情况是：...\n我想要达到的效果是：...',
+    priority: 8
+  },
+  {
+    id: 'break-down',
+    phase: 'composing',
+    tip: '大问题拆成小步骤',
+    detail: '一次问一个小问题，比一次问一个大问题效果更好',
+    actionLabel: '帮我拆分',
+    actionType: 'insert',
+    actionData: '请先帮我把这个任务拆分成小步骤：',
+    priority: 7
+  },
 
-  // While working
-  { id: 'mark-unsure', phase: 'during', tip: 'Mark anything you need to verify', action: 'Got it', detail: 'Facts, dates, technical details - flag them for checking' },
-  { id: 'understand', phase: 'during', tip: 'Can you explain this yourself?', action: 'Self-Check', detail: 'If you can\'t explain it, ask for clarification' },
-  { id: 'ask-why', phase: 'during', tip: 'Ask "why" to understand reasoning', action: 'Try Now', detail: 'Don\'t just accept - understand the logic behind suggestions' },
+  // WAITING phase - after sending
+  {
+    id: 'predict',
+    phase: 'waiting',
+    tip: '猜猜AI会怎么回答',
+    detail: '等待时想想：你期望看到什么？这能帮你更好地评估回答',
+    priority: 6
+  },
 
-  // After response
-  { id: 'verify', phase: 'after', tip: 'Check important facts elsewhere', action: 'Verify', detail: 'Cross-reference key claims with other sources' },
-  { id: 'iterate', phase: 'after', tip: 'Ask for variations if unsure', action: 'Request Options', detail: 'Get 2-3 different approaches, then pick the best' },
-  { id: 'reflect', phase: 'after', tip: 'What did you learn from this?', action: 'Reflect', detail: 'Take a moment to consolidate what you gained' },
+  // RECEIVED phase - after getting response
+  {
+    id: 'verify-facts',
+    phase: 'received',
+    tip: '关键信息要核实',
+    detail: '数据、日期、专业术语这些，最好自己查证一下',
+    actionLabel: '标记待核实',
+    actionType: 'reflect',
+    actionData: 'verify',
+    priority: 10
+  },
+  {
+    id: 'ask-why',
+    phase: 'received',
+    tip: '多问一句"为什么"',
+    detail: '不只是接受答案，理解背后的原因更重要',
+    actionLabel: '追问原因',
+    actionType: 'insert',
+    actionData: '为什么是这样？能解释一下原理吗？',
+    priority: 8
+  },
+  {
+    id: 'get-options',
+    phase: 'received',
+    tip: '有没有其他方法？',
+    detail: '让AI给你更多选项，这样你可以做出更好的选择',
+    actionLabel: '要求更多方案',
+    actionType: 'insert',
+    actionData: '还有其他方法吗？各有什么优缺点？',
+    priority: 7
+  },
+  {
+    id: 'check-blind-spots',
+    phase: 'received',
+    tip: '有没有遗漏的地方？',
+    detail: 'AI可能没考虑到你的特殊情况',
+    actionLabel: '检查盲点',
+    actionType: 'insert',
+    actionData: '这个方案有什么潜在问题或限制吗？有没有我应该注意的特殊情况？',
+    priority: 6
+  },
+
+  // IDLE phase - general
+  {
+    id: 'reflect',
+    phase: 'idle',
+    tip: '回顾一下刚才的对话',
+    detail: '学到了什么？下次可以怎么问得更好？',
+    actionLabel: '打开反思工具',
+    actionType: 'open-tool',
+    actionData: 'mr14-reflection',
+    priority: 5
+  }
 ];
 
-const PHASE_INFO = {
-  before: { icon: '🎯', label: 'Before You Ask', color: '#3b82f6' },
-  during: { icon: '👁️', label: 'While Working', color: '#f59e0b' },
-  after: { icon: '✅', label: 'After Response', color: '#10b981' },
-};
-
 interface MR15Props {
+  // Current user phase (auto-detected or passed from parent)
+  phase?: UserPhase;
+
+  // Callbacks for actions
+  onInsertText?: (text: string) => void;      // Insert text into input
+  onOpenTool?: (toolId: string) => void;      // Open another MR tool
+  onStartTimer?: (seconds: number) => void;   // Start a timer
+  onReflect?: (type: string) => void;         // Trigger reflection
+
+  // Legacy props for compatibility
+  taskType?: string;
+  userLevel?: string;
+  onStrategySelect?: (strategy: any) => void;
+  onOpenMR19?: () => void;
+
+  // Display options
   compact?: boolean;
-  onTipApplied?: (tipId: string) => void;
-  // Context for showing relevant tips
-  currentPhase?: 'before' | 'during' | 'after';
+  maxTips?: number;  // Max tips to show (default: 2)
 }
 
 export const MR15MetacognitiveStrategyGuide: React.FC<MR15Props> = ({
+  phase = 'idle',
+  onInsertText,
+  onOpenTool,
+  onStartTimer,
+  onReflect,
+  onStrategySelect,
   compact = true,
-  onTipApplied,
-  currentPhase,
+  maxTips = 2
 }) => {
-  // Track which tips user has acknowledged
-  const [learnedTips, setLearnedTips] = useState<Set<string>>(() => {
-    const saved = localStorage.getItem('mr15-learned-tips');
+  const [expandedTip, setExpandedTip] = useState<string | null>(null);
+  const [dismissedTips, setDismissedTips] = useState<Set<string>>(() => {
+    // Load dismissed tips from localStorage
+    const saved = localStorage.getItem('mr15-dismissed');
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
+  const [timerActive, setTimerActive] = useState(false);
+  const [timerSeconds, setTimerSeconds] = useState(0);
 
-  // Expanded tip for detail view
-  const [expandedTip, setExpandedTip] = useState<string | null>(null);
-
-  // Active phase filter (null = show all)
-  const [activePhase, setActivePhase] = useState<'before' | 'during' | 'after' | null>(currentPhase || null);
-
-  // Save learned tips to localStorage
+  // Save dismissed tips
   useEffect(() => {
-    localStorage.setItem('mr15-learned-tips', JSON.stringify([...learnedTips]));
-  }, [learnedTips]);
+    localStorage.setItem('mr15-dismissed', JSON.stringify([...dismissedTips]));
+  }, [dismissedTips]);
 
-  // Handle tip action
-  const handleTipAction = useCallback((tip: QuickTip) => {
-    setLearnedTips(prev => new Set([...prev, tip.id]));
-    if (onTipApplied) {
-      onTipApplied(tip.id);
+  // Get tips relevant to current phase
+  const relevantTips = CONTEXTUAL_TIPS
+    .filter(tip => {
+      const phases = Array.isArray(tip.phase) ? tip.phase : [tip.phase];
+      return phases.includes(phase) && !dismissedTips.has(tip.id);
+    })
+    .sort((a, b) => b.priority - a.priority)
+    .slice(0, maxTips);
+
+  // Handle action button click
+  const handleAction = useCallback((tip: ContextualTip) => {
+    switch (tip.actionType) {
+      case 'insert':
+        if (onInsertText && tip.actionData) {
+          onInsertText(tip.actionData);
+        }
+        break;
+      case 'timer':
+        if (onStartTimer && tip.actionData) {
+          onStartTimer(parseInt(tip.actionData));
+        } else {
+          // Built-in timer
+          setTimerSeconds(parseInt(tip.actionData || '120'));
+          setTimerActive(true);
+        }
+        break;
+      case 'open-tool':
+        if (onOpenTool && tip.actionData) {
+          onOpenTool(tip.actionData);
+        }
+        break;
+      case 'reflect':
+        if (onReflect && tip.actionData) {
+          onReflect(tip.actionData);
+        }
+        break;
     }
+
+    // Notify parent
+    if (onStrategySelect) {
+      onStrategySelect({ id: tip.id, action: tip.actionType });
+    }
+
+    // Dismiss this tip after action
+    setDismissedTips(prev => new Set([...prev, tip.id]));
     setExpandedTip(null);
-  }, [onTipApplied]);
+  }, [onInsertText, onStartTimer, onOpenTool, onReflect, onStrategySelect]);
 
-  // Toggle tip expansion
-  const toggleTip = useCallback((tipId: string) => {
-    setExpandedTip(prev => prev === tipId ? null : tipId);
-  }, []);
+  // Timer countdown
+  useEffect(() => {
+    if (!timerActive || timerSeconds <= 0) return;
 
-  // Filter tips by phase
-  const filteredTips = activePhase
-    ? QUICK_TIPS.filter(t => t.phase === activePhase)
-    : QUICK_TIPS;
+    const interval = setInterval(() => {
+      setTimerSeconds(prev => {
+        if (prev <= 1) {
+          setTimerActive(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-  // Calculate progress
-  const totalTips = QUICK_TIPS.length;
-  const learnedCount = learnedTips.size;
+    return () => clearInterval(interval);
+  }, [timerActive, timerSeconds]);
+
+  // Dismiss a tip
+  const dismissTip = (tipId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDismissedTips(prev => new Set([...prev, tipId]));
+  };
+
+  // Phase labels
+  const phaseLabels: Record<UserPhase, { icon: string; label: string }> = {
+    composing: { icon: '📝', label: '写问题时' },
+    waiting: { icon: '⏳', label: '等待中' },
+    received: { icon: '💡', label: '收到回答' },
+    idle: { icon: '💭', label: '提示' }
+  };
+
+  const currentPhase = phaseLabels[phase];
+
+  // If no relevant tips and no timer, show nothing (contextual!)
+  if (relevantTips.length === 0 && !timerActive) {
+    return null;
+  }
 
   return (
-    <div className={`mr15-v2-container ${compact ? 'compact' : ''}`}>
-      {/* Header */}
-      <div className="mr15-v2-header">
-        <div className="mr15-v2-title">
-          <span className="mr15-v2-icon">💡</span>
-          <span>Quick Tips</span>
+    <div className={`mr15-contextual ${compact ? 'mr15-compact' : ''}`}>
+      {/* Timer overlay */}
+      {timerActive && (
+        <div className="mr15-timer">
+          <div className="mr15-timer-display">
+            {Math.floor(timerSeconds / 60)}:{(timerSeconds % 60).toString().padStart(2, '0')}
+          </div>
+          <div className="mr15-timer-label">先自己想想...</div>
+          <button
+            className="mr15-timer-stop"
+            onClick={() => setTimerActive(false)}
+          >
+            完成思考
+          </button>
         </div>
-        <div className="mr15-v2-progress">
-          {[...Array(5)].map((_, i) => (
-            <span
-              key={i}
-              className={`mr15-v2-dot ${i < Math.ceil(learnedCount / 2) ? 'filled' : ''}`}
-            />
-          ))}
-          <span className="mr15-v2-count">{learnedCount}/{totalTips}</span>
-        </div>
+      )}
+
+      {/* Phase indicator - minimal */}
+      <div className="mr15-phase">
+        <span className="mr15-phase-icon">{currentPhase.icon}</span>
+        <span className="mr15-phase-label">{currentPhase.label}</span>
       </div>
 
-      {/* Phase Tabs */}
-      <div className="mr15-v2-phases">
-        <button
-          className={`mr15-v2-phase-btn ${activePhase === null ? 'active' : ''}`}
-          onClick={() => setActivePhase(null)}
-        >
-          All
-        </button>
-        {(['before', 'during', 'after'] as const).map(phase => (
-          <button
-            key={phase}
-            className={`mr15-v2-phase-btn ${activePhase === phase ? 'active' : ''}`}
-            onClick={() => setActivePhase(phase)}
-            style={{ '--phase-color': PHASE_INFO[phase].color } as React.CSSProperties}
+      {/* Tips - only 1-2 most relevant */}
+      <div className="mr15-tips">
+        {relevantTips.map(tip => (
+          <div
+            key={tip.id}
+            className={`mr15-tip ${expandedTip === tip.id ? 'mr15-tip-expanded' : ''}`}
           >
-            {PHASE_INFO[phase].icon}
-          </button>
+            <div
+              className="mr15-tip-main"
+              onClick={() => setExpandedTip(expandedTip === tip.id ? null : tip.id)}
+            >
+              <span className="mr15-tip-text">{tip.tip}</span>
+              <button
+                className="mr15-tip-dismiss"
+                onClick={(e) => dismissTip(tip.id, e)}
+                title="不需要"
+              >
+                ×
+              </button>
+            </div>
+
+            {expandedTip === tip.id && tip.detail && (
+              <div className="mr15-tip-detail">
+                <p>{tip.detail}</p>
+                {tip.actionLabel && (
+                  <button
+                    className="mr15-action-btn"
+                    onClick={() => handleAction(tip)}
+                  >
+                    {tip.actionLabel}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         ))}
       </div>
 
-      {/* Tips List */}
-      <div className="mr15-v2-tips">
-        {(['before', 'during', 'after'] as const).map(phase => {
-          const phaseTips = filteredTips.filter(t => t.phase === phase);
-          if (phaseTips.length === 0) return null;
-
-          return (
-            <div key={phase} className="mr15-v2-section">
-              {!activePhase && (
-                <div
-                  className="mr15-v2-section-header"
-                  style={{ borderLeftColor: PHASE_INFO[phase].color }}
-                >
-                  <span>{PHASE_INFO[phase].icon}</span>
-                  <span>{PHASE_INFO[phase].label}</span>
-                </div>
-              )}
-
-              {phaseTips.map(tip => {
-                const isLearned = learnedTips.has(tip.id);
-                const isExpanded = expandedTip === tip.id;
-
-                return (
-                  <div
-                    key={tip.id}
-                    className={`mr15-v2-tip ${isLearned ? 'learned' : ''} ${isExpanded ? 'expanded' : ''}`}
-                  >
-                    <div
-                      className="mr15-v2-tip-main"
-                      onClick={() => toggleTip(tip.id)}
-                    >
-                      <span className={`mr15-v2-tip-check ${isLearned ? 'checked' : ''}`}>
-                        {isLearned ? '✓' : '○'}
-                      </span>
-                      <span className="mr15-v2-tip-text">{tip.tip}</span>
-                      <span className="mr15-v2-tip-arrow">{isExpanded ? '▲' : '▼'}</span>
-                    </div>
-
-                    {isExpanded && (
-                      <div className="mr15-v2-tip-detail">
-                        <p>{tip.detail}</p>
-                        <button
-                          className="mr15-v2-tip-action"
-                          onClick={() => handleTipAction(tip)}
-                          style={{ '--phase-color': PHASE_INFO[phase].color } as React.CSSProperties}
-                        >
-                          {isLearned ? '✓ Done' : tip.action}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Footer encouragement */}
-      {learnedCount >= 5 && (
-        <div className="mr15-v2-achievement">
-          🎉 Great progress! You're developing strong AI collaboration habits.
-        </div>
+      {/* Reset link - only show if some tips dismissed */}
+      {dismissedTips.size > 0 && relevantTips.length === 0 && (
+        <button
+          className="mr15-reset"
+          onClick={() => setDismissedTips(new Set())}
+        >
+          显示全部提示
+        </button>
       )}
     </div>
   );

@@ -102,6 +102,7 @@ const MR12CriticalThinkingScaffolding = lazy(() => import('../components/mr/MR12
 const MR13TransparentUncertainty = lazy(() => import('../components/mr/MR13TransparentUncertainty'));
 const MR14GuidedReflectionMechanism = lazy(() => import('../components/mr/MR14GuidedReflectionMechanism'));
 const MR15MetacognitiveStrategyGuide = lazy(() => import('../components/mr/MR15MetacognitiveStrategyGuide'));
+import type { UserPhase } from '../components/mr/MR15MetacognitiveStrategyGuide';
 const MR16SkillAtrophyPrevention = lazy(() => import('../components/mr/MR16SkillAtrophyPrevention'));
 const MR17LearningProcessVisualization = lazy(() => import('../components/mr/MR17LearningProcessVisualization'));
 const MR18OverRelianceWarning = lazy(() => import('../components/mr/MR18OverRelianceWarning'));
@@ -509,6 +510,20 @@ const ChatSessionPage: React.FC = () => {
   // MR12 context: Track the message being critically evaluated
   const [mr12TargetContent, setMr12TargetContent] = useState<string>('');
   const [mr12TargetMessageId, setMr12TargetMessageId] = useState<string | null>(null);
+
+  // MR15 context: Compute user phase for contextual tips
+  const userPhase: UserPhase = useMemo(() => {
+    if (isStreaming) return 'waiting';
+    if (userInput.trim().length > 0) return 'composing';
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage?.role === 'ai') return 'received';
+    return 'idle';
+  }, [isStreaming, userInput, messages]);
+
+  // MR15 handler: Insert text into user input
+  const handleMR15InsertText = useCallback((text: string) => {
+    setUserInput(prev => prev + (prev ? '\n' : '') + text);
+  }, []);
 
   // MR2 context: Track the message to show insights for
   const [selectedInsightsMessageId, setSelectedInsightsMessageId] = useState<string | null>(null);
@@ -2196,7 +2211,20 @@ Message: "${firstMessage.slice(0, 200)}"`,
       case 'mr14-reflection':
         return <MR14GuidedReflectionMechanism sessionId={sessionId || ''} messages={messages} onReflectionComplete={(r) => console.log('Reflection:', r)} onOpenMR15={openMR15StrategyGuide} />;
       case 'mr15-strategies':
-        return <MR15MetacognitiveStrategyGuide taskType={sessionData?.taskType || 'general'} userLevel="intermediate" onStrategySelect={(s) => console.log('Strategy:', s)} onOpenMR19={openMR19CapabilityAssessment} />;
+        return <MR15MetacognitiveStrategyGuide
+          phase={userPhase}
+          onInsertText={handleMR15InsertText}
+          onOpenTool={(toolId) => {
+            // Map tool IDs to open functions
+            const toolMap: Record<string, () => void> = {
+              'mr14-reflection': openMR14Reflection,
+              'mr11-verification': openMR11Verification,
+              'mr19-assessment': openMR19CapabilityAssessment,
+            };
+            toolMap[toolId]?.();
+          }}
+          onStrategySelect={(s) => console.log('Strategy:', s)}
+        />;
       case 'mr16-atrophy':
         return <MR16SkillAtrophyPrevention userId={user?.id || sessionId || ''} onOpenMR17={openMR17LearningVisualization} onOpenMR19={openMR19CapabilityAssessment} />;
       case 'mr17-visualization':
@@ -2206,7 +2234,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
       default:
         return null;
     }
-  }, [activeMRTool, sessionId, messages, interventionLevel, sessionData, conversationBranches, verificationLogs, userInput, user, mr6Context, handleMR6ModelSelected, openMR4RoleDefinition, openMR8TaskRecognition, openMR6CrossModel, openMR3AgencyControl, openMR5Iteration, openMR9TrustCalibration, openMR11Verification, openMR14Reflection, openMR15StrategyGuide, openMR19CapabilityAssessment, openMR17LearningVisualization, openMR16SkillAtrophy, setInterventionLevel, setConversationBranches, setVerificationLogs]);
+  }, [activeMRTool, sessionId, messages, interventionLevel, sessionData, conversationBranches, verificationLogs, userInput, user, mr6Context, handleMR6ModelSelected, openMR4RoleDefinition, openMR8TaskRecognition, openMR6CrossModel, openMR3AgencyControl, openMR5Iteration, openMR9TrustCalibration, openMR11Verification, openMR14Reflection, openMR15StrategyGuide, openMR19CapabilityAssessment, openMR17LearningVisualization, openMR16SkillAtrophy, setInterventionLevel, setConversationBranches, setVerificationLogs, userPhase, handleMR15InsertText]);
 
 
   /**

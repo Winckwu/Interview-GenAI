@@ -1,225 +1,156 @@
 /**
- * MR15 v2: Quick Tips - Simplified Styles
+ * MR15: Contextual Strategy Tips
+ * Minimal, floating tip design
  */
 
-.mr15-v2-container {
+/* Main Container - floats in corner */
+.mr15-contextual {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: #ffffff;
-  font-family: system-ui, -apple-system, sans-serif;
-  color: #1a1a1a;
-}
-
-.mr15-v2-container.compact {
+  gap: 0.5rem;
   padding: 0.75rem;
-  gap: 0.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 280px;
+  animation: mr15SlideIn 0.3s ease;
 }
 
-/* Header */
-.mr15-v2-header {
+@keyframes mr15SlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mr15-compact {
+  padding: 0.5rem;
+  max-width: 240px;
+}
+
+/* Phase Indicator - minimal */
+.mr15-phase {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0;
 }
 
-.mr15-v2-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.mr15-v2-icon {
-  font-size: 1.25rem;
-}
-
-.compact .mr15-v2-title {
+.mr15-phase-icon {
   font-size: 0.9rem;
 }
 
-/* Progress Dots */
-.mr15-v2-progress {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.mr15-v2-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #e5e7eb;
-  transition: all 0.2s;
-}
-
-.mr15-v2-dot.filled {
-  background: #10b981;
-}
-
-.mr15-v2-count {
-  margin-left: 0.5rem;
-  font-size: 0.7rem;
-  color: #6b7280;
-}
-
-/* Phase Tabs */
-.mr15-v2-phases {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  background: #f3f4f6;
-  border-radius: 8px;
-}
-
-.mr15-v2-phase-btn {
-  flex: 1;
-  padding: 0.375rem 0.5rem;
-  background: transparent;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.15s;
-  color: #6b7280;
-}
-
-.mr15-v2-phase-btn:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.mr15-v2-phase-btn.active {
-  background: white;
-  color: var(--phase-color, #3b82f6);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Tips Container */
-.mr15-v2-tips {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-/* Section */
-.mr15-v2-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
-.mr15-v2-section-header {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.25rem 0.5rem;
+.mr15-phase-label {
   font-size: 0.7rem;
   font-weight: 600;
   color: #6b7280;
-  border-left: 3px solid;
-  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Tips List */
+.mr15-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
 }
 
 /* Individual Tip */
-.mr15-v2-tip {
+.mr15-tip {
   background: #f9fafb;
-  border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
 }
 
-.mr15-v2-tip:hover {
-  border-color: #d1d5db;
+.mr15-tip:hover {
+  background: #f3f4f6;
 }
 
-.mr15-v2-tip.expanded {
-  border-color: #3b82f6;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+.mr15-tip-expanded {
+  background: #eff6ff;
 }
 
-.mr15-v2-tip.learned {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
-}
-
-.mr15-v2-tip-main {
+.mr15-tip-main {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 0.75rem;
   cursor: pointer;
-  user-select: none;
 }
 
-.mr15-v2-tip-check {
+.mr15-tip-text {
+  flex: 1;
+  font-size: 0.8rem;
+  color: #1f2937;
+  line-height: 1.3;
+}
+
+.mr15-compact .mr15-tip-text {
+  font-size: 0.75rem;
+}
+
+.mr15-tip-dismiss {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 18px;
   height: 18px;
+  background: transparent;
+  border: none;
   border-radius: 50%;
-  font-size: 0.65rem;
-  font-weight: 700;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.15s;
   flex-shrink: 0;
+}
+
+.mr15-tip:hover .mr15-tip-dismiss {
+  opacity: 1;
+}
+
+.mr15-tip-dismiss:hover {
   background: #e5e7eb;
-  color: #9ca3af;
-}
-
-.mr15-v2-tip-check.checked {
-  background: #10b981;
-  color: white;
-}
-
-.mr15-v2-tip-text {
-  flex: 1;
-  font-size: 0.8rem;
-  color: #374151;
-  line-height: 1.4;
-}
-
-.compact .mr15-v2-tip-text {
-  font-size: 0.75rem;
-}
-
-.mr15-v2-tip.learned .mr15-v2-tip-text {
-  color: #166534;
-}
-
-.mr15-v2-tip-arrow {
-  font-size: 0.55rem;
-  color: #9ca3af;
-  flex-shrink: 0;
+  color: #6b7280;
 }
 
 /* Tip Detail (expanded) */
-.mr15-v2-tip-detail {
-  padding: 0.75rem;
-  padding-top: 0;
+.mr15-tip-detail {
+  padding: 0 0.75rem 0.75rem;
   animation: mr15FadeIn 0.2s ease;
 }
 
 @keyframes mr15FadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.mr15-v2-tip-detail p {
-  margin: 0 0 0.75rem 0;
+.mr15-tip-detail p {
+  margin: 0 0 0.625rem 0;
   font-size: 0.75rem;
   color: #6b7280;
-  line-height: 1.5;
-  padding-left: 1.625rem;
+  line-height: 1.4;
 }
 
-.mr15-v2-tip-action {
+/* Action Button */
+.mr15-action-btn {
   display: block;
-  width: calc(100% - 1.625rem);
-  margin-left: 1.625rem;
-  padding: 0.5rem 1rem;
-  background: var(--phase-color, #3b82f6);
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: #3b82f6;
   color: white;
   border: none;
   border-radius: 6px;
@@ -229,60 +160,119 @@
   transition: all 0.15s;
 }
 
-.mr15-v2-tip-action:hover {
-  filter: brightness(1.1);
+.mr15-action-btn:hover {
+  background: #2563eb;
   transform: translateY(-1px);
 }
 
-.mr15-v2-tip.learned .mr15-v2-tip-action {
-  background: #10b981;
+.mr15-action-btn:active {
+  transform: translateY(0);
 }
 
-/* Achievement */
-.mr15-v2-achievement {
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-radius: 8px;
-  font-size: 0.8rem;
-  color: #92400e;
+/* Reset Button */
+.mr15-reset {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0.25rem;
   text-align: center;
+  transition: color 0.15s;
+}
+
+.mr15-reset:hover {
+  color: #6b7280;
+}
+
+/* Timer Overlay */
+.mr15-timer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 12px;
+  z-index: 10;
   animation: mr15FadeIn 0.3s ease;
+}
+
+.mr15-timer-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  font-family: monospace;
+}
+
+.mr15-timer-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mr15-timer-stop {
+  padding: 0.5rem 1.25rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mr15-timer-stop:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-  .mr15-v2-container {
+  .mr15-contextual {
     background: #1e1e1e;
-    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
-  .mr15-v2-phases {
+  .mr15-phase-label {
+    color: #9ca3af;
+  }
+
+  .mr15-tip {
     background: #2a2a2a;
   }
 
-  .mr15-v2-phase-btn {
-    color: #a0a0a0;
+  .mr15-tip:hover {
+    background: #333333;
   }
 
-  .mr15-v2-phase-btn.active {
-    background: #3a3a3a;
+  .mr15-tip-expanded {
+    background: #1e3a5f;
   }
 
-  .mr15-v2-tip {
-    background: #2a2a2a;
-    border-color: #404040;
+  .mr15-tip-text {
+    color: #e5e7eb;
   }
 
-  .mr15-v2-tip.learned {
-    background: rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.3);
+  .mr15-tip-dismiss:hover {
+    background: #404040;
+    color: #d1d5db;
   }
 
-  .mr15-v2-tip-text {
-    color: #e0e0e0;
+  .mr15-tip-detail p {
+    color: #9ca3af;
   }
 
-  .mr15-v2-tip-detail p {
-    color: #a0a0a0;
+  .mr15-reset {
+    color: #6b7280;
   }
+
+  .mr15-reset:hover {
+    color: #9ca3af;
+  }
+}
+
+/* When used in sidebar - need relative positioning for timer */
+.mr15-contextual {
+  position: relative;
 }
