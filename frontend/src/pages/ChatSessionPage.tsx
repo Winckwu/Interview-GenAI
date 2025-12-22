@@ -4558,23 +4558,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
           boxShadow: '0 -1px 4px rgba(0, 0, 0, 0.03)',
           flexShrink: 0,
         }}>
-          {/* MR15: Floating Tip Bar - Contextual tips above input */}
-          {/* Shows for Pattern C-F users (who need tips) or new users (no pattern yet) */}
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <FloatingTipBar
-              phase={userPhase}
-              userPattern={currentUserPattern?.patternType || null}
-              onInsertText={handleMR15InsertText}
-              onOpenTool={(toolId) => {
-                const toolMap: Record<string, () => void> = {
-                  'mr14-reflection': openMR14Reflection,
-                  'mr11-verification': openMR11Verification,
-                  'mr19-assessment': openMR19CapabilityAssessment,
-                };
-                toolMap[toolId]?.();
-              }}
-            />
-          </div>
+          {/* MR15: Hidden for now - functionality may be merged into other MRs */}
 
           {/* MR4: Active Role Indicator */}
           {selectedRoles.length > 0 && (
