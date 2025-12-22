@@ -763,14 +763,26 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
    * Only runs if no backend activeMRs are available
    */
   useEffect(() => {
+    // Check post-action cooldown first
+    const timeSinceLastAction = Date.now() - lastUserActionTime;
+    const inCooldown = lastUserActionTime > 0 && timeSinceLastAction < POST_ACTION_COOLDOWN_MS;
+
     // DEBUG: Log check conditions
     console.log('[InterventionManager] Check conditions:', {
       activeMRsLength: activeMRs.length,
       messagesLength: messages.length,
       minMessagesForDetection,
       isAnalyzing,
-      willSkip: activeMRs.length > 0 || messages.length < minMessagesForDetection || isAnalyzing
+      inCooldown,
+      cooldownRemaining: inCooldown ? Math.round((POST_ACTION_COOLDOWN_MS - timeSinceLastAction) / 1000) : 0,
+      willSkip: activeMRs.length > 0 || messages.length < minMessagesForDetection || isAnalyzing || inCooldown
     });
+
+    // Skip if in cooldown period (user just interacted with an intervention)
+    if (inCooldown) {
+      console.log(`[InterventionManager] Frontend detection skipped - post-action cooldown: ${Math.round((POST_ACTION_COOLDOWN_MS - timeSinceLastAction) / 1000)}s remaining`);
+      return;
+    }
 
     // Skip if we have backend MRs or messages too short or analyzing
     if (activeMRs.length > 0 || messages.length < minMessagesForDetection || isAnalyzing) {
@@ -877,7 +889,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern]);
+  }, [messages, minMessagesForDetection, isAnalyzing, sessionId, onInterventionDisplayed, activeMRs.length, createInterventionUI, userPattern, lastUserActionTime]);
 
   /**
    * Render active intervention
