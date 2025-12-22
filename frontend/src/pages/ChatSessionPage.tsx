@@ -516,10 +516,17 @@ const ChatSessionPage: React.FC = () => {
 
   // MR15 context: Compute user phase for contextual tips
   const userPhase: UserPhase = useMemo(() => {
+    // Streaming = waiting for AI response
     if (isStreaming) return 'waiting';
+    // User is typing
     if (userInput.trim().length > 0) return 'composing';
+    // Check last message
     const lastMessage = messages[messages.length - 1];
+    // Just received AI response
     if (lastMessage?.role === 'ai') return 'received';
+    // New conversation (no messages) = composing phase (ready to start)
+    if (messages.length === 0) return 'composing';
+    // Has messages but idle
     return 'idle';
   }, [isStreaming, userInput, messages]);
 
