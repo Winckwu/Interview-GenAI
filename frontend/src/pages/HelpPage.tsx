@@ -250,7 +250,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR6</div>
                   <div className="mr-content">
                     <h4>Cross-Model Experimentation</h4>
-                    <p>Compares outputs from different AI models</p>
+                    <p>Send the same prompt to multiple AI models (GPT-4, Claude, Gemini) and compare outputs side-by-side. Track latency, token usage, and your ratings to find the best model for each task type.</p>
                   </div>
                 </div>
 
@@ -258,7 +258,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR7</div>
                   <div className="mr-content">
                     <h4>Failure Tolerance Learning</h4>
-                    <p>Turns mistakes into learning opportunities</p>
+                    <p>Frame failed iterations as learning opportunities. The system analyzes what went wrong, builds a personal "anti-pattern library", and shows statistics like "success often requires X failed attempts".</p>
                   </div>
                 </div>
 
@@ -266,7 +266,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR8</div>
                   <div className="mr-content">
                     <h4>Task Characteristic Recognition</h4>
-                    <p>Identifies when tasks are suitable for AI assistance</p>
+                    <p>Automatically identifies task attributes (criticality, familiarity, time pressure) and adjusts AI behavior accordingly. High-stakes unfamiliar tasks get more verification prompts; routine tasks get streamlined assistance.</p>
                   </div>
                 </div>
 
@@ -274,7 +274,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR9</div>
                   <div className="mr-content">
                     <h4>Dynamic Trust Calibration</h4>
-                    <p>Adjusts trust levels based on AI performance and reliability</p>
+                    <p>Provides context-specific trust guidance: 85% for grammar checks, 40% for math derivations, 5% for academic citations. Tracks your verification findings to personalize recommendations.</p>
                   </div>
                 </div>
 
@@ -282,7 +282,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR10</div>
                   <div className="mr-content">
                     <h4>Cost-Benefit Analysis</h4>
-                    <p>Evaluates trade-offs of using AI for specific tasks</p>
+                    <p>Shows explicit trade-off analysis: estimated time savings, quality risk level, and learning opportunity cost. Warns when AI use may reduce practice opportunities for important skills.</p>
                   </div>
                 </div>
 
@@ -291,7 +291,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR11</div>
                   <div className="mr-content">
                     <h4>Integrated Verification</h4>
-                    <p>Promotes systematic verification of AI outputs</p>
+                    <p>One-click verification tools: run code snippets, check math with calculators, verify citations via Google Scholar. Tracks what you verified and error rates discovered.</p>
                   </div>
                 </div>
 
@@ -299,7 +299,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR12</div>
                   <div className="mr-content">
                     <h4>Critical Thinking Scaffolding</h4>
-                    <p>Strengthens critical evaluation skills</p>
+                    <p>Socratic questioning prompts: "What assumptions does this make?", "What are counter-examples?", "Is the logic complete?" Domain-specific checklists for code, writing, and math.</p>
                   </div>
                 </div>
 
@@ -307,7 +307,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR13</div>
                   <div className="mr-content">
                     <h4>Transparent Uncertainty</h4>
-                    <p>Highlights areas where AI is uncertain</p>
+                    <p>Shows AI confidence levels per statement (high/medium/low). Marks knowledge boundaries: "This information may be outdated" or "This requires domain expert verification".</p>
                   </div>
                 </div>
 
@@ -315,7 +315,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR14</div>
                   <div className="mr-content">
                     <h4>Guided Reflection Mechanism</h4>
-                    <p>Prompts reflection on collaboration process</p>
+                    <p>Post-response prompts: "How did this help you?", "How much did you understand?", "Could you do this without AI?" Builds learning logs and metacognitive awareness.</p>
                   </div>
                 </div>
 
@@ -323,7 +323,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR15</div>
                   <div className="mr-content">
                     <h4>Metacognitive Strategy Guide</h4>
-                    <p>Teaches metacognitive strategies for better collaboration</p>
+                    <p>Just-in-time strategy tips: "Try thinking 5 minutes before asking AI", "Mark suspicious parts for verification", "Track AI error patterns". Prevents Pattern F formation.</p>
                   </div>
                 </div>
 
@@ -332,7 +332,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR16</div>
                   <div className="mr-content">
                     <h4>Skill Atrophy Prevention</h4>
-                    <p>Provides exercises to maintain critical skills</p>
+                    <p>Monitors your independent task completion rate over time. Warns when skills may be declining (e.g., "30% independent 3 months ago → 5% now"). Suggests "AI-free practice" exercises.</p>
                   </div>
                 </div>
 
@@ -340,7 +340,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR17</div>
                   <div className="mr-content">
                     <h4>Learning Process Visualization</h4>
-                    <p>Shows your learning progress and growth areas</p>
+                    <p>Visualizes your knowledge growth, concept connections, and skill trajectories. Shows metacognitive dashboard: verification rate, reflection depth, strategy diversity.</p>
                   </div>
                 </div>
 
@@ -348,7 +348,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR18</div>
                   <div className="mr-content">
                     <h4>Over-Reliance Warning</h4>
-                    <p>Alerts when dependency on AI becomes excessive</p>
+                    <p>Detects Pattern F danger signs: no verification, short prompts, accepting first output. Triggers when 20+ queries have zero verification. Recommends critical thinking exercises.</p>
                   </div>
                 </div>
 
@@ -356,7 +356,7 @@ const HelpPage: React.FC = () => {
                   <div className="mr-number">MR19</div>
                   <div className="mr-content">
                     <h4>Metacognitive Capability Assessment</h4>
-                    <p>Evaluates 12 dimensions of cognitive abilities</p>
+                    <p>Evaluates 12 dimensions: Planning, Monitoring, Evaluation, Critical Thinking, Reasoning, Problem-Solving, Reflection, Self-Regulation, Knowledge Application, Adaptability, Awareness, Strategic Thinking.</p>
                   </div>
                 </div>
               </div>
