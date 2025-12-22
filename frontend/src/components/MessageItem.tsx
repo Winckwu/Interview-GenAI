@@ -865,16 +865,15 @@ export const MessageItem: React.FC<MessageItemProps> = ({
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {/* Conversation version navigation for user messages - GREEN theme to differentiate from AI branches */}
-              {/* Show when: 1) multiple branches exist AND 2) this is the fork point or we're on an edit branch */}
+              {/* Only show on the ACTUAL fork point message, not all user messages */}
               {availableBranchPaths.length > 1 && onSwitchBranchPath && (
-                // Known fork point (during editing session)
+                // Known fork point (during current editing session)
                 editForkMessageIndex === index ||
-                // After refresh on edit branch: show on user message that's on an edit branch
-                (editForkMessageIndex === null && message.branchPath && message.branchPath.startsWith('edit-')) ||
-                // On main branch: show on the last user message to allow switching to edit branches
-                (editForkMessageIndex === null && currentBranchPath === 'main' &&
-                 availableBranchPaths.some(p => p.startsWith('edit-')) &&
-                 (!message.branchPath || message.branchPath === 'main'))
+                // After refresh on edit branch: show ONLY on the user message that's on an edit branch
+                // (this is the edited message - the fork point)
+                (editForkMessageIndex === null && message.branchPath && message.branchPath.startsWith('edit-'))
+                // NOTE: On main branch after refresh, use the header dropdown to switch branches
+                // We don't show inline navigation because we can't identify the exact fork point
               ) && (() => {
                 // Find current branch index
                 const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
