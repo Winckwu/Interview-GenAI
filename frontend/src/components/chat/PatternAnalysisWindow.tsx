@@ -40,12 +40,12 @@ const PatternAnalysisWindow: React.FC<PatternAnalysisWindowProps> = ({
 
   const getPatternLabel = (p: string): string => {
     const labels: { [key: string]: string } = {
-      A: 'Strategic Decomposition & Control',
-      B: 'Iterative Optimization & Calibration',
-      C: 'Adaptive Adjustment',
-      D: 'Deep Verification & Criticism',
-      E: 'Teaching & Learning',
-      F: 'Passive Over-Reliance (⚠️ Risk)',
+      A: 'Strategic Decomposition',
+      B: 'Iterative Refinement',
+      C: 'Context-Sensitive Adaptation',
+      D: 'Deep Verification',
+      E: 'Pedagogical Reflection',
+      F: 'Passive Dependency (⚠️ Risk)',
     };
     return labels[p] || 'Unknown Pattern';
   };

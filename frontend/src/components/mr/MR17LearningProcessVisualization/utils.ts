@@ -2,7 +2,7 @@
  * MR17: Learning Process Visualization - Utilities
  *
  * Visualize abstract learning progress and competency growth over time.
- * Focuses on Pattern E (Teaching & Learning) users
+ * Focuses on Pattern E (Pedagogical Reflection) users
  * Evidence: Metacognitive visualization shows broad benefits in learning outcomes
  */
 

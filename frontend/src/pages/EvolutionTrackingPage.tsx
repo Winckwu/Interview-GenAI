@@ -15,11 +15,11 @@ const EvolutionTrackingPage: React.FC = () => {
 
   // Pattern quality hierarchy (higher index = better pattern)
   const PATTERN_QUALITY: Record<BehavioralPattern, number> = {
-    F: 0, // Passive Over-Reliance (worst)
-    C: 1, // Adaptive Adjustment
+    F: 0, // Passive Dependency (worst)
+    C: 1, // Context-Sensitive Adaptation
     D: 2, // Deep Verification
-    E: 3, // Teaching & Learning
-    B: 4, // Iterative Optimization
+    E: 3, // Pedagogical Reflection
+    B: 4, // Iterative Refinement
     A: 5, // Strategic Decomposition (best)
   };
 

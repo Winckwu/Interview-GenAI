@@ -33,12 +33,12 @@ const PatternSupportPanel: React.FC = () => {
         confidence: mostRecentPattern.confidence,
         recommendations: mostRecentPattern.reasoning || [],
         descriptions: {
-          A: 'Strategic Decomposition & Control - Careful planning, high verification, maintains independence',
-          B: 'Iterative Optimization & Calibration - Multiple iterations, questions outputs, selective acceptance',
-          C: 'Adaptive Adjustment - Dynamic strategy switching, context-aware approach',
-          D: 'Deep Verification & Criticism - Thorough scrutiny, probing questions, high reflection',
-          E: 'Teaching & Learning - Uses AI as educational tool, high learning reflection',
-          F: 'Passive Over-Reliance ⚠️ - Uncritical acceptance, minimal verification (HIGH RISK)',
+          A: 'Strategic Decomposition - Careful planning, high verification, maintains independence',
+          B: 'Iterative Refinement - Rapid experimentation, active learning through trial and error',
+          C: 'Context-Sensitive Adaptation - Flexible strategies adapting to task complexity',
+          D: 'Deep Verification - Systematic verification, thorough validation of AI outputs',
+          E: 'Pedagogical Reflection - Learning-oriented, uses AI for self-development',
+          F: 'Passive Dependency ⚠️ - Minimal metacognitive engagement (HIGH RISK)',
         },
       });
     }

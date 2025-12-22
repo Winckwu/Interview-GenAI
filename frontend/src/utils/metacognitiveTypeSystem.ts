@@ -37,24 +37,24 @@ export type BehavioralPattern = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
  *   - Careful task planning, high verification, independent thinking
  *   - Detection: planning ≥ 10, monitoring ≥ 7, evaluation ≥ 7
  *
- * Pattern B: Iterative Optimization & Calibration (迭代优化与校准)
- *   - Frequent iteration, prompt refinement, continuous learning
+ * Pattern B: Iterative Refinement (迭代精进)
+ *   - Rapid experimentation with 3-7 iterations, active learning through trial and error
  *   - Detection: iteration_frequency ≥ 2.5, reflection_depth ≥ 1.5
  *
- * Pattern C: Adaptive Adjustment (自适应调整)
- *   - Multi-strategy usage, context-aware, flexible role switching
+ * Pattern C: Context-Sensitive Adaptation (情境适应)
+ *   - Flexible strategies adapting to task complexity, switches approaches based on context
  *   - Detection: strategy_diversity ≥ 2, cross_model_usage ≥ 1.5
  *
- * Pattern D: Deep Verification & Criticism (深度验证与批评)
- *   - Thorough checking, deep questioning, high reflection
+ * Pattern D: Deep Verification (深度验证)
+ *   - Systematic verification, parallel problem-solving, thorough validation
  *   - Detection: verification_rate ≥ 2.5, error_awareness ≥ 2, planning ≤ 9
  *
- * Pattern E: Teaching & Learning (教学与学习)
- *   - AI as learning tool, high learning reflection, knowledge building
+ * Pattern E: Pedagogical Reflection (教学反思)
+ *   - Learning-oriented, uses AI for self-development, focuses on understanding
  *   - Detection: reflection_depth ≥ 2.5, modification_rate ≥ 2
  *
- * Pattern F: Passive Over-Reliance (被动过度依赖 - HIGH RISK)
- *   - Uncritical acceptance, minimal verification, passive attitude
+ * Pattern F: Passive Dependency (被动依赖 - HIGH RISK)
+ *   - Minimal metacognitive engagement, accepts AI outputs without verification
  *   - Detection: reflection_depth = 0, total_score < 15
  */
 
@@ -126,23 +126,23 @@ const PATTERN_PROFILES: Record<BehavioralPattern, BehavioralPatternProfile> = {
   },
   B: {
     pattern: 'B',
-    name: 'Iterative Optimization & Calibration',
-    nameCN: '迭代优化与校准',
+    name: 'Iterative Refinement',
+    nameCN: '迭代精进',
     icon: '🔄',
     color: '#3b82f6',
-    description: 'Frequent iteration, prompt refinement, continuous learning',
-    descriptionCN: '频繁迭代、提示词优化、持续学习',
+    description: 'Rapid experimentation with 3-7 iterations, active learning through trial and error',
+    descriptionCN: '快速迭代实验、通过试错主动学习',
     characteristics: [
-      'Frequent iteration and modification',
-      'Question refinement and rephrasing',
+      'Rapid experimentation with multiple iterations',
+      'Active learning through trial and error',
+      'Continuous improvement mindset',
       'Selective acceptance of AI suggestions',
-      'Continuous learning and optimization',
     ],
     characteristicsCN: [
-      '频繁迭代和修改',
-      '问题重新提问和细化',
+      '多次迭代的快速实验',
+      '通过试错主动学习',
+      '持续改进的心态',
       '有选择性地接受AI建议',
-      '持续学习和优化',
     ],
     riskLevel: 'low',
     recommendedMRs: [
@@ -166,23 +166,23 @@ const PATTERN_PROFILES: Record<BehavioralPattern, BehavioralPatternProfile> = {
   },
   C: {
     pattern: 'C',
-    name: 'Adaptive Adjustment',
-    nameCN: '自适应调整',
+    name: 'Context-Sensitive Adaptation',
+    nameCN: '情境适应',
     icon: '🎨',
     color: '#8b5cf6',
-    description: 'Multi-strategy usage, context-aware, flexible role switching',
-    descriptionCN: '多策略使用、上下文感知、灵活角色转换',
+    description: 'Flexible strategies adapting to task complexity, switches approaches based on context',
+    descriptionCN: '灵活策略适应任务复杂度、根据情境切换方法',
     characteristics: [
-      'Multi-strategy parallel usage',
-      'Context-aware approach',
-      'Flexible role switching',
-      'Dynamic strategy adaptation',
+      'Flexible strategies adapting to task complexity',
+      'Context-aware approach switching',
+      'Dynamic strategy adaptation (44.9% of users)',
+      'Balanced but variable engagement',
     ],
     characteristicsCN: [
-      '多策略并行使用',
-      '上下文感知的方法',
-      '灵活的角色转换',
-      '动态战略切换',
+      '灵活策略适应任务复杂度',
+      '上下文感知的方法切换',
+      '动态战略切换（44.9%用户）',
+      '平衡但多变的参与度',
     ],
     riskLevel: 'low',
     recommendedMRs: [
@@ -206,23 +206,23 @@ const PATTERN_PROFILES: Record<BehavioralPattern, BehavioralPatternProfile> = {
   },
   D: {
     pattern: 'D',
-    name: 'Deep Verification & Criticism',
-    nameCN: '深度验证与批评',
+    name: 'Deep Verification',
+    nameCN: '深度验证',
     icon: '🔍',
     color: '#f59e0b',
-    description: 'Thorough checking, deep questioning, high reflection',
-    descriptionCN: '彻底检查、深入质疑、高度反思',
+    description: 'Systematic verification, parallel problem-solving, thorough validation of AI outputs',
+    descriptionCN: '系统性验证、并行问题解决、彻底验证AI输出',
     characteristics: [
-      'Thorough review and checking',
-      'Deep questioning and exploration',
-      'High reflection level',
-      'Attention to detail',
+      'Systematic verification of AI outputs',
+      'Parallel problem-solving approach',
+      'Thorough validation before acceptance',
+      'Strong verification habits',
     ],
     characteristicsCN: [
-      '彻底的审查和检查',
-      '深入的问题探索',
-      '高度的反思',
-      '对细节的关注',
+      '系统性验证AI输出',
+      '并行问题解决方法',
+      '接受前彻底验证',
+      '强健的验证习惯',
     ],
     riskLevel: 'low',
     recommendedMRs: [
@@ -246,23 +246,23 @@ const PATTERN_PROFILES: Record<BehavioralPattern, BehavioralPatternProfile> = {
   },
   E: {
     pattern: 'E',
-    name: 'Teaching & Learning',
-    nameCN: '教学与学习',
+    name: 'Pedagogical Reflection',
+    nameCN: '教学反思',
     icon: '📚',
     color: '#06b6d4',
-    description: 'AI as learning tool, high learning reflection, knowledge building',
-    descriptionCN: '将AI作为学习工具、高度学习反思、知识构建',
+    description: 'Learning-oriented approach, uses AI for self-development, focuses on understanding',
+    descriptionCN: '学习导向方法、用AI促进自我发展、注重理解',
     characteristics: [
-      'Using AI as a learning tool',
-      'High learning reflection',
-      'Focus on knowledge building process',
-      'Strong autonomous learning willingness',
+      'Learning-oriented approach to AI usage',
+      'Uses AI for self-development',
+      'Focuses on understanding rather than just results',
+      'Growth mindset with strong metacognitive awareness',
     ],
     characteristicsCN: [
-      '用AI作为学习工具',
-      '高度的学习反思',
-      '重视知识构建过程',
-      '自主学习意愿强',
+      '学习导向的AI使用方法',
+      '用AI促进自我发展',
+      '注重理解而非仅仅结果',
+      '成长心态与强元认知意识',
     ],
     riskLevel: 'low',
     recommendedMRs: [
@@ -286,23 +286,23 @@ const PATTERN_PROFILES: Record<BehavioralPattern, BehavioralPatternProfile> = {
   },
   F: {
     pattern: 'F',
-    name: 'Passive Over-Reliance',
-    nameCN: '被动过度依赖',
+    name: 'Passive Dependency',
+    nameCN: '被动依赖',
     icon: '⚠️',
     color: '#ef4444',
-    description: 'Uncritical acceptance, minimal verification, passive attitude - HIGH RISK',
-    descriptionCN: '不加批判接受、最少验证、被动态度 - 高风险',
+    description: 'Minimal metacognitive engagement, accepts AI outputs without verification - HIGH RISK',
+    descriptionCN: '元认知参与度低、不验证就接受AI输出 - 高风险',
     characteristics: [
-      'Uncritical acceptance of answers',
-      'Minimal verification',
-      'Passive learning attitude',
-      'High dependence on AI',
+      'Minimal metacognitive engagement',
+      'Accepts AI outputs without verification',
+      'Low verification rate and short prompts',
+      'High risk for skill atrophy',
     ],
     characteristicsCN: [
-      '不加批判的接受答案',
-      '最少的验证',
-      '被动学习态度',
-      '高度依赖AI',
+      '元认知参与度低',
+      '不验证就接受AI输出',
+      '低验证率和简短提示',
+      '技能退化风险高',
     ],
     riskLevel: 'high',
     recommendedMRs: [
@@ -347,12 +347,12 @@ const PATTERN_PROFILES: Record<BehavioralPattern, BehavioralPatternProfile> = {
  * - Baseline setting: Establish "potential capability" profile
  *
  * Mapping logic (based on 4-dimension scores):
- * - Pattern F (Priority 1): Low regulation + low overall → Passive over-reliance
- * - Pattern A (Priority 2): High all dimensions → Strategic control
- * - Pattern D (Priority 3): High eval/monitor, low planning → Deep verification
- * - Pattern E (Priority 4): High regulation + high evaluation → Learning-focused
- * - Pattern B (Priority 5): High regulation + moderate others → Iterative optimization
- * - Pattern C (Default): Balanced dimensions → Adaptive adjustment
+ * - Pattern F (Priority 1): Low regulation + low overall → Passive Dependency
+ * - Pattern A (Priority 2): High all dimensions → Strategic Decomposition
+ * - Pattern D (Priority 3): High eval/monitor, low planning → Deep Verification
+ * - Pattern E (Priority 4): High regulation + high evaluation → Pedagogical Reflection
+ * - Pattern B (Priority 5): High regulation + moderate others → Iterative Refinement
+ * - Pattern C (Default): Balanced dimensions → Context-Sensitive Adaptation
  *
  * @param scores - 4-dimension assessment scores (0-1 range)
  * @returns Predicted behavioral pattern (A-F)
@@ -363,7 +363,7 @@ export function predictPatternFromAssessment(scores: DimensionScores): Behaviora
   // Calculate overall average
   const avgScore = (planning + monitoring + evaluation + regulation) / 4;
 
-  // Priority 1: Pattern F - Passive Over-Reliance (CRITICAL to detect early!)
+  // Priority 1: Pattern F - Passive Dependency (CRITICAL to detect early!)
   // Low regulation (<0.4) AND low overall score (<0.5) indicates potential over-reliance
   if (regulation < 0.4 && avgScore < 0.5) {
     return 'F';
@@ -375,25 +375,25 @@ export function predictPatternFromAssessment(scores: DimensionScores): Behaviora
     return 'A';
   }
 
-  // Priority 3: Pattern D - Deep Verification & Criticism
+  // Priority 3: Pattern D - Deep Verification
   // High evaluation + high monitoring, but lower planning → focus on verification over planning
   if (evaluation >= 0.7 && monitoring >= 0.7 && planning < 0.7) {
     return 'D';
   }
 
-  // Priority 4: Pattern E - Teaching & Learning
+  // Priority 4: Pattern E - Pedagogical Reflection
   // High regulation (self-adjustment) + high evaluation (reflection) → learning-focused
   if (regulation >= 0.7 && evaluation >= 0.7) {
     return 'E';
   }
 
-  // Priority 5: Pattern B - Iterative Optimization & Calibration
+  // Priority 5: Pattern B - Iterative Refinement
   // High regulation (≥0.6) with moderate other dimensions → iterative improvement tendency
   if (regulation >= 0.6 && avgScore >= 0.5) {
     return 'B';
   }
 
-  // Default: Pattern C - Adaptive Adjustment
+  // Default: Pattern C - Context-Sensitive Adaptation
   // Balanced dimensions without clear specialization → flexible, adaptive approach
   return 'C';
 }

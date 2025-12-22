@@ -258,7 +258,7 @@ const PATTERN_MODIFIERS: Record<UserPattern, Partial<Record<MRToolType, number>>
     'mr7-failure': 15,
   },
   'F': {
-    // Pattern F: Passive Over-Reliance (HIGH RISK) - 需要强干预
+    // Pattern F: Passive Dependency (HIGH RISK) - 需要强干预
     'mr18-warnings': 30,       // Over-reliance warning (highest priority)
     'mr11-verify': 25,         // Strong verification push
     'mr12-critical': 25,       // Critical thinking scaffolding
@@ -333,13 +333,13 @@ export function classifyUserPattern(scores: SubprocessScores): UserPattern {
     return 'C';
   }
 
-  // Pattern B: Iterative Optimization
+  // Pattern B: Iterative Refinement
   // Conditions: R1≥2, Total≥20
   if (scores.R1 >= 2 && total >= 20) {
     return 'B';
   }
 
-  // Pattern F: Passive Over-Reliance (HIGH RISK)
+  // Pattern F: Passive Dependency (HIGH RISK)
   // Conditions: Very low total score OR minimal reflection with low engagement
   // Detection criteria from metacognitiveTypeSystem.ts: reflection_depth = 0, total_score < 15
   if (total < 15 || (scores.E2 === 0 && total < 20)) {

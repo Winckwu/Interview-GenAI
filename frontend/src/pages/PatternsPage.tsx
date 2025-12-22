@@ -856,28 +856,28 @@ const PatternsPage: React.FC = () => {
           </div>
           <div className="guide-card">
             <h4>Pattern B ⭐⭐⭐⭐</h4>
-            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Iterative Optimization & Calibration</p>
-            <p>Learns through rapid experimentation and failure. Maintains failure logs and progressively calibrates trust based on success/failure patterns.</p>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Iterative Refinement</p>
+            <p>Rapid experimentation with 3-7 iterations, active learning through trial and error, continuous improvement mindset.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern C ⭐⭐⭐⭐</h4>
-            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Adaptive Adjustment</p>
-            <p>Adapts strategy based on task requirements. Modulates AI reliance dynamically: high for brainstorming, low for critical tasks, medium for routine work.</p>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Context-Sensitive Adaptation</p>
+            <p>Flexible strategies adapting to task complexity. Switches approaches based on context (44.9% of users). Balanced but variable engagement.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern D ⭐⭐⭐⭐⭐</h4>
-            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Deep Verification & Criticism</p>
-            <p>Assumes nothing, verifies everything. Uses multi-tool verification, identifies assumptions, constructs counter-examples, and demands explanations.</p>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Deep Verification</p>
+            <p>Systematic verification, parallel problem-solving, thorough validation of AI outputs. Strong verification habits.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern E ⭐⭐⭐⭐</h4>
-            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Teaching & Learning</p>
-            <p>Treats AI as a learning tutor, not a task automator. Maintains learning logs and regularly practices without AI to ensure skill retention.</p>
+            <p style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>Pedagogical Reflection</p>
+            <p>Learning-oriented approach, uses AI for self-development, focuses on understanding rather than just results. Growth mindset.</p>
           </div>
           <div className="guide-card">
             <h4>Pattern F ⚠️ Risk</h4>
-            <p style={{ fontSize: '0.875rem', color: '#dc2626', fontWeight: '600', marginBottom: '0.5rem' }}>Passive Over-Reliance</p>
-            <p>Uncritical adoption with low verification. May lead to skill degradation, false productivity, and unconscious dependence. Requires intervention and awareness.</p>
+            <p style={{ fontSize: '0.875rem', color: '#dc2626', fontWeight: '600', marginBottom: '0.5rem' }}>Passive Dependency</p>
+            <p>Minimal metacognitive engagement, accepts AI outputs without verification. HIGH RISK for skill atrophy. Requires intervention.</p>
           </div>
         </div>
       </div>

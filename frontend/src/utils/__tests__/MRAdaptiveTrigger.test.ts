@@ -177,7 +177,7 @@ describe('Pattern Classification', () => {
     });
   });
 
-  describe('Pattern B: Iterative Optimization', () => {
+  describe('Pattern B: Iterative Refinement', () => {
     it('should classify as B when R1≥2, Total≥20', () => {
       // Scores: P1=1, P2=2, P3=1, P4=2, M1=3, M2=1, M3=1, E1=2, E2=2, E3=1, R1=3, R2=1
       // Total = 6+5+5+4 = 20
@@ -203,7 +203,7 @@ describe('Pattern Classification', () => {
     });
   });
 
-  describe('Pattern F: Passive Over-Reliance (HIGH RISK)', () => {
+  describe('Pattern F: Passive Dependency (HIGH RISK)', () => {
     it('should classify as F when Total < 15', () => {
       const scores: SubprocessScores = {
         P1: 1, P2: 1, P3: 1, P4: 1,

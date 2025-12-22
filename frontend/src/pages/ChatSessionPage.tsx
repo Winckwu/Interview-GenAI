@@ -2617,12 +2617,12 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
   const getPatternLabel = (pattern: string): string => {
     const labels: { [key: string]: string } = {
-      A: 'Strategic Decomposition & Control',
-      B: 'Iterative Optimization & Calibration',
-      C: 'Adaptive Adjustment',
-      D: 'Deep Verification & Criticism',
-      E: 'Teaching & Learning',
-      F: 'Passive Over-Reliance (⚠️ Risk)',
+      A: 'Strategic Decomposition',
+      B: 'Iterative Refinement',
+      C: 'Context-Sensitive Adaptation',
+      D: 'Deep Verification',
+      E: 'Pedagogical Reflection',
+      F: 'Passive Dependency (⚠️ Risk)',
     };
     return labels[pattern] || 'Unknown Pattern';
   };

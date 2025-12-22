@@ -3,7 +3,7 @@
  *
  * Visualize learning progress, knowledge growth, and capability development.
  * Evidence: Metacognitive visualization shows broad benefits
- * Designed for Pattern E (Teaching & Learning) users
+ * Designed for Pattern E (Pedagogical Reflection) users
  *
  * React 18 + TypeScript
  */
