@@ -104,6 +104,7 @@ const MR14GuidedReflectionMechanism = lazy(() => import('../components/mr/MR14Gu
 const MR15MetacognitiveStrategyGuide = lazy(() => import('../components/mr/MR15MetacognitiveStrategyGuide'));
 import type { UserPhase } from '../components/mr/MR15MetacognitiveStrategyGuide';
 import { FloatingTipBar } from '../components/mr/MR15MetacognitiveStrategyGuide/FloatingTipBar';
+import { usePatternStore } from '../stores/patternStore';
 const MR16SkillAtrophyPrevention = lazy(() => import('../components/mr/MR16SkillAtrophyPrevention'));
 const MR17LearningProcessVisualization = lazy(() => import('../components/mr/MR17LearningProcessVisualization'));
 const MR18OverRelianceWarning = lazy(() => import('../components/mr/MR18OverRelianceWarning'));
@@ -280,6 +281,7 @@ const ChatSessionPage: React.FC = () => {
   const { user } = useAuthStore();
   const { addInteraction, deleteSession: deleteSessionFromStore } = useSessionStore();
   const { setSidebarOpen } = useUIStore();
+  const { currentUserPattern } = usePatternStore();
   const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
   const metricsStore = useMetricsStore();
   const [sessionStartTime] = useState(Date.now());
@@ -4550,10 +4552,11 @@ Message: "${firstMessage.slice(0, 200)}"`,
           flexShrink: 0,
         }}>
           {/* MR15: Floating Tip Bar - Contextual tips above input */}
+          {/* Shows for Pattern C-F users (who need tips) or new users (no pattern yet) */}
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
             <FloatingTipBar
               phase={userPhase}
-              interventionLevel={interventionLevel}
+              userPattern={currentUserPattern?.patternType || null}
               onInsertText={handleMR15InsertText}
               onOpenTool={(toolId) => {
                 const toolMap: Record<string, () => void> = {

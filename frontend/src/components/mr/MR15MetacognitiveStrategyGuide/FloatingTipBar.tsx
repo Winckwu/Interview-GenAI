@@ -5,7 +5,7 @@
  * Shows contextual tips based on user's current phase.
  *
  * Features:
- * - Auto-shows based on intervention level (Level 2+)
+ * - Auto-shows based on user's Pattern (C-F need tips, A/B don't)
  * - User can permanently disable
  * - Shows only 1 most relevant tip at a time
  * - Expandable for details and actions
@@ -13,6 +13,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { UserPhase } from './index';
 import './FloatingTipBar.css';
+
+// Pattern type
+export type UserPattern = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | null;
 
 // Tip structure (same as main component)
 interface ContextualTip {
@@ -96,7 +99,7 @@ const CONTEXTUAL_TIPS: ContextualTip[] = [
 
 interface FloatingTipBarProps {
   phase: UserPhase;
-  interventionLevel: number;  // 1-4, tips show at level 2+
+  userPattern?: UserPattern;  // User's current pattern (A-F), tips show for C-F
   onInsertText?: (text: string) => void;
   onOpenTool?: (toolId: string) => void;
   onStartTimer?: (seconds: number) => void;
@@ -104,9 +107,12 @@ interface FloatingTipBarProps {
 
 const STORAGE_KEY = 'mr15-tips-disabled';
 
+// Patterns that need tips (higher risk patterns)
+const PATTERNS_NEEDING_TIPS: UserPattern[] = ['C', 'D', 'E', 'F'];
+
 export const FloatingTipBar: React.FC<FloatingTipBarProps> = ({
   phase,
-  interventionLevel,
+  userPattern = null,
   onInsertText,
   onOpenTool,
   onStartTimer,
@@ -192,10 +198,12 @@ export const FloatingTipBar: React.FC<FloatingTipBarProps> = ({
 
   // Don't show if:
   // - User disabled tips
-  // - Intervention level is 1 (minimal)
-  // - No relevant tip
-  // - Timer is not active and no tip
-  if (isDisabled || interventionLevel < 2 || (!currentTip && !timerActive)) {
+  // - User has Pattern A or B (they're doing well, don't need tips)
+  // - No pattern detected yet (null) - show tips by default for new users
+  // - No relevant tip and timer not active
+  const shouldShowTips = userPattern === null || PATTERNS_NEEDING_TIPS.includes(userPattern);
+
+  if (isDisabled || !shouldShowTips || (!currentTip && !timerActive)) {
     return null;
   }
 
