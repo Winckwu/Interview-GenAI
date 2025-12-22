@@ -197,6 +197,10 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   const [lastInterventionId, setLastInterventionId] = useState<string | null>(null);
   const [interventionStartTime, setInterventionStartTime] = useState<number>(0);
   const [lastDisplayedMRId, setLastDisplayedMRId] = useState<string | null>(null);
+  // NEW: Track last user interaction time for cooldown between different MRs
+  const [lastUserActionTime, setLastUserActionTime] = useState<number>(0);
+  // Cooldown period after user interacts with ANY intervention (30 seconds)
+  const POST_ACTION_COOLDOWN_MS = 30000;
 
   // MR15: Track dismissed contextual tips
   const [dismissedTips, setDismissedTips] = useState<Set<string>>(() => {
@@ -269,6 +273,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       store.clearActiveIntervention();
       onUserAction?.(mrType, 'learn_more');
       setLastInterventionId(null);
+      // NEW: Set cooldown timer to prevent immediate next intervention
+      setLastUserActionTime(Date.now());
     },
     // Note: store and metricsStore are stable Zustand stores, removed from deps to prevent infinite loops
     [sessionId, lastInterventionId, interventionStartTime, onUserAction]
@@ -290,6 +296,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       store.clearActiveIntervention();
       onUserAction?.(mrType, 'skip');
       setLastInterventionId(null);
+      // NEW: Set cooldown timer to prevent immediate next intervention
+      setLastUserActionTime(Date.now());
     },
     // Note: store and metricsStore are stable Zustand stores, removed from deps to prevent infinite loops
     [sessionId, lastInterventionId, interventionStartTime, onUserAction]
@@ -320,6 +328,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       store.clearActiveIntervention();
       onUserAction?.(mrType, selectedValue);
       setLastInterventionId(null);
+      // NEW: Set cooldown timer to prevent immediate next intervention
+      setLastUserActionTime(Date.now());
     },
     // Note: store and metricsStore are stable Zustand stores, removed from deps to prevent infinite loops
     [sessionId, lastInterventionId, interventionStartTime, onUserAction]
@@ -623,6 +633,8 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     // Minimum display time: don't replace intervention too quickly (10 seconds)
     const MIN_DISPLAY_TIME_MS = 10000;
     const timeSinceLastIntervention = Date.now() - interventionStartTime;
+    // NEW: Check for post-action cooldown
+    const timeSinceLastAction = Date.now() - lastUserActionTime;
 
     if (activeMRs.length === 0) {
       // Clear any previously displayed backend MR if activeMRs is now empty
@@ -630,6 +642,13 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       if (lastDisplayedMRId && timeSinceLastIntervention > MIN_DISPLAY_TIME_MS) {
         setLastDisplayedMRId(null);
       }
+      return;
+    }
+
+    // NEW: Don't show new intervention if user just interacted with one
+    // This prevents rapid-fire interventions after user dismisses/acts on one
+    if (lastUserActionTime > 0 && timeSinceLastAction < POST_ACTION_COOLDOWN_MS) {
+      console.log(`[InterventionManager] Post-action cooldown: ${Math.round((POST_ACTION_COOLDOWN_MS - timeSinceLastAction) / 1000)}s remaining`);
       return;
     }
 
@@ -687,7 +706,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     onInterventionDisplayed?.(intervention.tier, topMR.mrId);
     // Note: metricsStore and store are stable Zustand stores, excluded from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime]);
+  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime]);
 
   /**
    * Core detection and scheduling logic - Frontend fallback
