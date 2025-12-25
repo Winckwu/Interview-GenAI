@@ -868,35 +868,80 @@ router.get(
     }
 
     // Calculate siblings for each message
-    for (const [parentId, siblings] of messagesByParent.entries()) {
+    Array.from(messagesByParent.entries()).forEach(([parentId, siblings]) => {
       // Sort siblings by created_at
       siblings.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 
-      const siblingIds = siblings.map(s => s.id);
-      siblings.forEach((msg, index) => {
+      const siblingIds = siblings.map((s: any) => s.id);
+      siblings.forEach((msg: any, index: number) => {
         msg.siblingIds = siblingIds;
         msg.siblingIndex = index;
       });
-    }
+    });
 
     // Calculate children for each message
-    for (const msg of messagesById.values()) {
+    Array.from(messagesById.values()).forEach((msg: any) => {
       if (msg.parentId && messagesById.has(msg.parentId)) {
         const parent = messagesById.get(msg.parentId);
         if (!parent.childIds.includes(msg.id)) {
           parent.childIds.push(msg.id);
         }
       }
-    }
+    });
 
     // Parse selected path or determine default path
     let pathIds: string[] = [];
+    let targetMessageId: string | null = null;
+
     if (selectedPath) {
       try {
-        pathIds = JSON.parse(selectedPath as string);
+        const parsed = JSON.parse(selectedPath as string);
+        if (Array.isArray(parsed) && parsed.length === 1) {
+          // Single message ID - this is a sibling switch request
+          targetMessageId = parsed[0];
+        } else if (Array.isArray(parsed)) {
+          pathIds = parsed;
+        }
       } catch {
-        pathIds = [];
+        // If not valid JSON, treat as a single message ID
+        targetMessageId = selectedPath as string;
       }
+    }
+
+    // Helper function to build path from root to a specific message
+    const buildPathToMessage = (targetId: string): string[] => {
+      const target = messagesById.get(targetId);
+      if (!target) return [];
+
+      const path: string[] = [];
+      let current = target;
+
+      // Build path from target up to root
+      while (current) {
+        path.unshift(current.id);
+        if (current.parentId) {
+          current = messagesById.get(current.parentId);
+        } else {
+          break;
+        }
+      }
+
+      // Then follow children to the end
+      current = target;
+      while (true) {
+        const children = messagesByParent.get(current.id) || [];
+        if (children.length === 0) break;
+        // Follow main branch or first child
+        current = children.find(c => c.branchPath === 'main') || children[0];
+        path.push(current.id);
+      }
+
+      return path;
+    };
+
+    // If a specific target message was requested, build path to it
+    if (targetMessageId) {
+      pathIds = buildPathToMessage(targetMessageId);
     }
 
     // If no path specified, follow the "main" branch or first sibling at each level
@@ -925,7 +970,7 @@ router.get(
     }
 
     // Get unique branch paths for compatibility
-    const branchPaths = [...new Set(result.rows.map((r: any) => r.branch_path))];
+    const branchPaths = Array.from(new Set(result.rows.map((r: any) => r.branch_path)));
 
     res.json({
       success: true,

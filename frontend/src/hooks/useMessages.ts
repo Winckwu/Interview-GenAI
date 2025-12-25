@@ -57,6 +57,10 @@ export interface Message {
   parentId?: string | null;  // Reference to parent message for tree structure
   branchPath?: string;       // Which conversation path this message belongs to (e.g., 'main', 'branch-1')
 
+  // GPT/Claude style sibling versioning
+  siblingIds?: string[];     // IDs of all sibling messages (same parent)
+  siblingIndex?: number;     // This message's index among siblings (0-based)
+
   // Conversation branching support (alternative responses at same point)
   branches?: MessageBranch[]; // Alternative responses for this message
   currentBranchIndex?: number; // Which branch is currently displayed (0 = original, 1+ = branches)
@@ -752,157 +756,266 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   }, [messages, startEditingMessage]);
 
   /**
-   * Switch to a different conversation branch path
-   * Reloads messages for the selected path
+   * Switch to a different conversation sibling or branch path
+   * Supports both:
+   * 1. Message ID navigation (GPT/Claude style sibling switching)
+   * 2. Legacy branch paths (for backwards compatibility)
    * Protected against rapid clicks with ref guard
    */
-  const switchBranchPath = useCallback(async (branchPath: string) => {
-    // Guard: skip if no session, same path, or already switching to this path
-    if (!sessionId || branchPath === currentBranchPath) return;
-    if (switchingBranchRef.current === branchPath) return;
+  const switchBranchPath = useCallback(async (branchPathOrMessageId: string) => {
+    // Guard: skip if no session, same path, or already switching
+    if (!sessionId || branchPathOrMessageId === currentBranchPath) return;
+    if (switchingBranchRef.current === branchPathOrMessageId) return;
 
     // Mark as switching (ref for synchronous guard, state for UI)
-    switchingBranchRef.current = branchPath;
+    switchingBranchRef.current = branchPathOrMessageId;
     setIsSwitchingBranch(true);
 
     try {
       setLoading(true);
-      setCurrentBranchPath(branchPath);
 
-      // Load messages for the new branch path using tree endpoint
-      const response = await api.get(`/interactions/tree/${sessionId}`, {
-        params: { branchPath }
-      });
+      // Determine if this is a message ID (UUID format) or branch path
+      const isMessageId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(branchPathOrMessageId);
 
-      const { interactions, availableBranchPaths: paths } = response.data.data;
-
-      // Transform interactions to messages
-      const loadedMessages: Message[] = [];
-      for (const interaction of interactions) {
-        // Add user message
-        loadedMessages.push({
-          id: `user-${interaction.id}`,
-          role: 'user',
-          content: interaction.userPrompt,
-          timestamp: interaction.createdAt,
-          parentId: interaction.parentId,
-          branchPath: interaction.branchPath,
-        });
-
-        // Add AI message
-        loadedMessages.push({
-          id: interaction.id,
-          role: 'ai',
-          content: interaction.aiResponse,
-          timestamp: interaction.createdAt,
-          wasVerified: interaction.wasVerified,
-          wasModified: interaction.wasModified,
-          wasRejected: interaction.wasRejected,
-          branches: interaction.branches,
-          parentId: interaction.parentId,
-          branchPath: interaction.branchPath,
+      let response;
+      try {
+        if (isMessageId) {
+          // GPT/Claude style: Pass the selected message ID as part of the path
+          response = await api.get(`/interactions/tree-v2/${sessionId}`, {
+            params: { selectedPath: JSON.stringify([branchPathOrMessageId]) }
+          });
+        } else {
+          // Legacy: Use tree-v2 but let it auto-select the path
+          response = await api.get(`/interactions/tree-v2/${sessionId}`);
+        }
+      } catch {
+        // Fallback to legacy API
+        response = await api.get(`/interactions/tree/${sessionId}`, {
+          params: { branchPath: branchPathOrMessageId }
         });
       }
 
-      setMessages(loadedMessages);
-      // Ensure we always have at least 'main' in the branch paths
-      const branchPaths = paths && paths.length > 0 ? paths : ['main'];
-      setAvailableBranchPaths(branchPaths);
+      const responseData = response.data.data;
 
-      // GPT/Claude style: Build fork map to show navigation on EACH edited message position
-      const forkMap = buildMessageForkMap(branchPaths);
-      setMessageForkMap(forkMap);
+      // Check if this is tree-v2 response (has 'conversation') or legacy (has 'interactions')
+      if (responseData.conversation) {
+        // Tree-v2 response format
+        const { conversation, allMessages, availableBranchPaths: paths } = responseData;
 
-      // For backwards compatibility, still set editForkMessageIndex
-      // (will be deprecated once MessageItem uses messageForkMap)
-      const hasEditBranches = paths && paths.some(p => p.startsWith('edit-'));
-      if (hasEditBranches) {
-        // Find the first fork position from the map
-        const firstForkPos = forkMap.size > 0 ? Math.min(...forkMap.keys()) : null;
-        setEditForkMessageIndex(firstForkPos);
-      } else {
+        // Transform conversation to messages with sibling info
+        const loadedMessages: Message[] = [];
+        for (const interaction of conversation) {
+          // Add user message with sibling info
+          loadedMessages.push({
+            id: `user-${interaction.id}`,
+            role: 'user',
+            content: interaction.userPrompt,
+            timestamp: interaction.createdAt,
+            parentId: interaction.parentId,
+            branchPath: interaction.branchPath,
+            siblingIds: interaction.siblingIds,
+            siblingIndex: interaction.siblingIndex,
+          });
+
+          // Add AI message with sibling info
+          if (interaction.aiResponse) {
+            loadedMessages.push({
+              id: interaction.id,
+              role: 'ai',
+              content: interaction.aiResponse,
+              timestamp: interaction.createdAt,
+              wasVerified: interaction.wasVerified,
+              wasModified: interaction.wasModified,
+              wasRejected: interaction.wasRejected,
+              parentId: interaction.parentId,
+              branchPath: interaction.branchPath,
+              siblingIds: interaction.siblingIds,
+              siblingIndex: interaction.siblingIndex,
+              insights: interaction.insights,
+            });
+          }
+        }
+
+        setMessages(loadedMessages);
+        setCurrentBranchPath(isMessageId ? branchPathOrMessageId : 'main');
+
+        // Set available branch paths for compatibility
+        const branchPaths = paths && paths.length > 0 ? paths : ['main'];
+        setAvailableBranchPaths(branchPaths);
+
+        // Clear legacy fork map - we now use siblingIds directly from messages
+        setMessageForkMap(new Map());
         setEditForkMessageIndex(null);
+      } else {
+        // Legacy response format
+        const { interactions, availableBranchPaths: paths } = responseData;
+
+        // Transform interactions to messages
+        const loadedMessages: Message[] = [];
+        for (const interaction of interactions) {
+          loadedMessages.push({
+            id: `user-${interaction.id}`,
+            role: 'user',
+            content: interaction.userPrompt,
+            timestamp: interaction.createdAt,
+            parentId: interaction.parentId,
+            branchPath: interaction.branchPath,
+          });
+
+          loadedMessages.push({
+            id: interaction.id,
+            role: 'ai',
+            content: interaction.aiResponse,
+            timestamp: interaction.createdAt,
+            wasVerified: interaction.wasVerified,
+            wasModified: interaction.wasModified,
+            wasRejected: interaction.wasRejected,
+            branches: interaction.branches,
+            parentId: interaction.parentId,
+            branchPath: interaction.branchPath,
+          });
+        }
+
+        setMessages(loadedMessages);
+        setCurrentBranchPath(branchPathOrMessageId);
+
+        const branchPaths = paths && paths.length > 0 ? paths : ['main'];
+        setAvailableBranchPaths(branchPaths);
+
+        // Legacy: Build fork map for old-style navigation
+        const forkMap = buildMessageForkMap(branchPaths);
+        setMessageForkMap(forkMap);
+
+        const hasEditBranches = paths && paths.some((p: string) => p.startsWith('edit-'));
+        if (hasEditBranches) {
+          const firstForkPos = forkMap.size > 0 ? Math.min(...forkMap.keys()) : null;
+          setEditForkMessageIndex(firstForkPos);
+        } else {
+          setEditForkMessageIndex(null);
+        }
       }
 
-      setSuccessMessage(`Switched to branch: ${branchPath}`);
+      setSuccessMessage(`Switched conversation version`);
       setTimeout(() => setSuccessMessage(null), 2000);
     } catch (err: any) {
       console.error('Failed to switch branch:', err);
-      setError('Failed to switch conversation branch');
+      setError('Failed to switch conversation version');
     } finally {
       setLoading(false);
       setIsSwitchingBranch(false);
       switchingBranchRef.current = null;
     }
-  }, [sessionId, currentBranchPath]);
+  }, [sessionId, currentBranchPath, buildMessageForkMap]);
 
   /**
-   * Edit user message and regenerate AI response (Fork-based branching)
-   * Creates a new conversation branch from the edited message
-   * Preserves original conversation - user can switch back to it
+   * Edit user message and regenerate AI response (True sibling-based editing)
+   * Creates a sibling message at the same position instead of copying history
+   * This is the GPT/Claude style - shared history, independent versions
    */
   const editUserMessageAndRegenerate = useCallback(async (userMessageId: string, newContent: string) => {
     if (!newContent.trim() || !sessionId) return;
 
-    // Find the user message index
+    // Find the user message
     const userMessageIndex = messages.findIndex(m => m.id === userMessageId);
     if (userMessageIndex === -1) {
       setError('Message not found');
       return;
     }
 
-    // Calculate interaction index (each interaction = user + AI message pair)
-    // userMessageIndex / 2 gives us the interaction index (assuming alternating user/AI messages)
-    const interactionIndex = Math.floor(userMessageIndex / 2);
+    const userMessage = messages[userMessageIndex];
 
-    // Generate new branch name with message position for GPT/Claude style versioning
-    // Format: edit-{messageIndex}-{timestamp}
-    const newBranchPath = `edit-${userMessageIndex}-${Date.now()}`;
+    // Extract the original interaction ID from user message ID (format: user-{interactionId})
+    const originalInteractionId = userMessageId.replace('user-', '');
 
     try {
       setLoading(true);
 
-      // Fork conversation history to new branch (copy all interactions before this one)
-      await api.post('/interactions/fork-for-edit', {
-        sessionId,
-        beforeMessageIndex: interactionIndex,
-        newBranchPath,
-        originalBranchPath: currentBranchPath,
-      });
-
-      // Exit editing mode
+      // Exit editing mode first
       cancelEditingMessage();
 
-      // Update current branch path
-      setCurrentBranchPath(newBranchPath);
+      // Use the new edit-message API to create a sibling
+      const response = await api.post('/interactions/edit-message', {
+        originalMessageId: originalInteractionId,
+        newUserPrompt: newContent,
+        sessionId,
+      });
 
-      // Add new branch to available paths
-      setAvailableBranchPaths(prev => [...prev, newBranchPath]);
-
-      // Track the message index where edit fork happened
-      setEditForkMessageIndex(userMessageIndex);
+      const newInteraction = response.data.data.interaction;
 
       // Get conversation history up to (but not including) this user message for context
       const conversationHistory = messages.slice(0, userMessageIndex);
 
-      // Update messages to show only the copied history (will be updated by handleSendMessage)
-      setMessages(conversationHistory);
+      // Update messages to show history + edited message (without AI response yet)
+      const editedUserMessage: Message = {
+        id: `user-${newInteraction.id}`,
+        role: 'user',
+        content: newContent,
+        timestamp: newInteraction.createdAt,
+        parentId: newInteraction.parentId,
+        branchPath: newInteraction.branchPath,
+        siblingIds: newInteraction.siblingIds,
+        siblingIndex: newInteraction.siblingIndex,
+      };
 
-      // Send the edited message as a new message on the new branch
-      // This will create new user message + AI response
-      await handleSendMessage(newContent, conversationHistory, false, newBranchPath);
+      setMessages([...conversationHistory, editedUserMessage]);
 
-      setSuccessMessage(`Message edited on new branch - original preserved. Use branch switcher to go back.`);
-      setTimeout(() => setSuccessMessage(null), 5000);
+      // Now generate AI response for this edited message
+      // Use the history before the edit point for context
+      await handleSendMessage(newContent, conversationHistory, false, newInteraction.branchPath);
+
+      // After AI response, reload the tree to get proper sibling info
+      try {
+        const treeResponse = await api.get(`/interactions/tree-v2/${sessionId}`);
+        const { conversation, availableBranchPaths: paths } = treeResponse.data.data;
+
+        // Transform to messages with sibling info
+        const loadedMessages: Message[] = [];
+        for (const interaction of conversation) {
+          loadedMessages.push({
+            id: `user-${interaction.id}`,
+            role: 'user',
+            content: interaction.userPrompt,
+            timestamp: interaction.createdAt,
+            parentId: interaction.parentId,
+            branchPath: interaction.branchPath,
+            siblingIds: interaction.siblingIds,
+            siblingIndex: interaction.siblingIndex,
+          });
+
+          if (interaction.aiResponse) {
+            loadedMessages.push({
+              id: interaction.id,
+              role: 'ai',
+              content: interaction.aiResponse,
+              timestamp: interaction.createdAt,
+              wasVerified: interaction.wasVerified,
+              wasModified: interaction.wasModified,
+              wasRejected: interaction.wasRejected,
+              parentId: interaction.parentId,
+              branchPath: interaction.branchPath,
+              siblingIds: interaction.siblingIds,
+              siblingIndex: interaction.siblingIndex,
+              insights: interaction.insights,
+            });
+          }
+        }
+
+        setMessages(loadedMessages);
+        setAvailableBranchPaths(paths || ['main']);
+      } catch (reloadErr) {
+        console.error('Failed to reload tree after edit:', reloadErr);
+        // Messages are already updated from handleSendMessage, so this is non-fatal
+      }
+
+      setSuccessMessage(`Message edited - use < > to switch between versions`);
+      setTimeout(() => setSuccessMessage(null), 4000);
     } catch (err: any) {
-      console.error('Failed to fork for edit:', err);
-      setError('Failed to create edit branch');
-      // Reload original messages on error
-      await switchBranchPath(currentBranchPath);
+      console.error('Failed to edit message:', err);
+      setError('Failed to edit message');
     } finally {
       setLoading(false);
     }
-  }, [sessionId, messages, currentBranchPath, handleSendMessage, cancelEditingMessage, switchBranchPath]);
+  }, [sessionId, messages, handleSendMessage, cancelEditingMessage]);
 
   /**
    * Fork conversation from a specific message to create a new branch
@@ -941,38 +1054,88 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   }, [sessionId, switchBranchPath]);
 
   /**
-   * Load available branch paths for the current session
-   * Call this after initial message load to get branch info
+   * Load messages with sibling info from tree-v2 API
+   * Call this after initial message load to get proper tree structure
    */
   const loadBranchPaths = useCallback(async () => {
     if (!sessionId) return;
 
     try {
-      const response = await api.get(`/interactions/tree/${sessionId}`, {
-        params: { branchPath: currentBranchPath }
-      });
+      // Use tree-v2 API to get messages with sibling info
+      const response = await api.get(`/interactions/tree-v2/${sessionId}`);
+      const { conversation, availableBranchPaths: paths } = response.data.data;
 
-      const { interactions, availableBranchPaths: paths } = response.data.data;
+      if (conversation && conversation.length > 0) {
+        // Transform to messages with sibling info
+        const loadedMessages: Message[] = [];
+        for (const interaction of conversation) {
+          loadedMessages.push({
+            id: `user-${interaction.id}`,
+            role: 'user',
+            content: interaction.userPrompt,
+            timestamp: interaction.createdAt,
+            parentId: interaction.parentId,
+            branchPath: interaction.branchPath,
+            siblingIds: interaction.siblingIds,
+            siblingIndex: interaction.siblingIndex,
+          });
 
-      if (paths && paths.length > 1) {
-        setAvailableBranchPaths(paths);
-
-        // GPT/Claude style: Build fork map to show navigation on EACH edited message position
-        const forkMap = buildMessageForkMap(paths);
-        setMessageForkMap(forkMap);
-
-        // For backwards compatibility
-        const hasEditBranches = paths.some(p => p.startsWith('edit-'));
-        if (hasEditBranches) {
-          const firstForkPos = forkMap.size > 0 ? Math.min(...forkMap.keys()) : null;
-          setEditForkMessageIndex(firstForkPos);
+          if (interaction.aiResponse) {
+            loadedMessages.push({
+              id: interaction.id,
+              role: 'ai',
+              content: interaction.aiResponse,
+              timestamp: interaction.createdAt,
+              wasVerified: interaction.wasVerified,
+              wasModified: interaction.wasModified,
+              wasRejected: interaction.wasRejected,
+              parentId: interaction.parentId,
+              branchPath: interaction.branchPath,
+              siblingIds: interaction.siblingIds,
+              siblingIndex: interaction.siblingIndex,
+              insights: interaction.insights,
+            });
+          }
         }
+
+        setMessages(loadedMessages);
       }
+
+      if (paths && paths.length > 0) {
+        setAvailableBranchPaths(paths);
+      }
+
+      // Clear legacy fork map - now using siblingIds
+      setMessageForkMap(new Map());
+      setEditForkMessageIndex(null);
     } catch (err) {
-      console.log('[loadBranchPaths] No branch paths found or error:', err);
-      // Not an error - session may not have branches yet
+      console.log('[loadBranchPaths] Falling back to legacy API:', err);
+      // Fallback to legacy API
+      try {
+        const legacyResponse = await api.get(`/interactions/tree/${sessionId}`, {
+          params: { branchPath: currentBranchPath }
+        });
+
+        const { availableBranchPaths: paths } = legacyResponse.data.data;
+
+        if (paths && paths.length > 1) {
+          setAvailableBranchPaths(paths);
+
+          // Legacy: Build fork map for old-style navigation
+          const forkMap = buildMessageForkMap(paths);
+          setMessageForkMap(forkMap);
+
+          const hasEditBranches = paths.some((p: string) => p.startsWith('edit-'));
+          if (hasEditBranches) {
+            const firstForkPos = forkMap.size > 0 ? Math.min(...forkMap.keys()) : null;
+            setEditForkMessageIndex(firstForkPos);
+          }
+        }
+      } catch (legacyErr) {
+        console.log('[loadBranchPaths] No branch paths found:', legacyErr);
+      }
     }
-  }, [sessionId, currentBranchPath, messages]);
+  }, [sessionId, currentBranchPath, buildMessageForkMap]);
 
   return {
     // State

@@ -834,71 +834,106 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* GPT/Claude style: Show version navigation on EACH message that has versions */}
+              {/* GPT/Claude style: Show version navigation when message has siblings */}
               {onSwitchBranchPath && (() => {
-                // Check if this message has fork versions using messageForkMap
-                const forkBranches = messageForkMap?.get(index);
-                if (!forkBranches || forkBranches.length <= 1) {
-                  // Fallback to old behavior if no messageForkMap
-                  if (availableBranchPaths.length > 1 && editForkMessageIndex === index) {
-                    const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
-                    return (
-                      <VersionNavigation
-                        type="user"
-                        currentIndex={currentIndex >= 0 ? currentIndex : 0}
-                        totalVersions={availableBranchPaths.length}
-                        onPrevious={() => {
-                          if (currentIndex > 0 && !isSwitchingBranch) {
-                            onSwitchBranchPath(availableBranchPaths[currentIndex - 1]);
-                          }
-                        }}
-                        onNext={() => {
-                          if (currentIndex < availableBranchPaths.length - 1 && !isSwitchingBranch) {
-                            onSwitchBranchPath(availableBranchPaths[currentIndex + 1]);
-                          }
-                        }}
-                        tooltip={isSwitchingBranch ? 'Loading...' : `Version ${currentIndex + 1} of ${availableBranchPaths.length}`}
-                        disabled={isSwitchingBranch}
-                      />
-                    );
-                  }
-                  return null;
+                // NEW: Check if this message has siblings using siblingIds from the message itself
+                const siblingIds = message.siblingIds;
+                const siblingIndex = message.siblingIndex ?? 0;
+
+                if (siblingIds && siblingIds.length > 1) {
+                  // True tree navigation: use sibling IDs directly
+                  return (
+                    <VersionNavigation
+                      type="user"
+                      currentIndex={siblingIndex}
+                      totalVersions={siblingIds.length}
+                      onPrevious={() => {
+                        if (siblingIndex > 0 && !isSwitchingBranch) {
+                          // Switch to previous sibling by message ID
+                          onSwitchBranchPath(siblingIds[siblingIndex - 1]);
+                        }
+                      }}
+                      onNext={() => {
+                        if (siblingIndex < siblingIds.length - 1 && !isSwitchingBranch) {
+                          // Switch to next sibling by message ID
+                          onSwitchBranchPath(siblingIds[siblingIndex + 1]);
+                        }
+                      }}
+                      tooltip={isSwitchingBranch ? 'Loading...' : `Message version ${siblingIndex + 1} of ${siblingIds.length}. Click arrows to see different edits.`}
+                      disabled={isSwitchingBranch}
+                    />
+                  );
                 }
 
-                // GPT/Claude style: Show navigation for THIS message's versions
-                const currentIndex = forkBranches.indexOf(currentBranchPath);
-                const displayIndex = currentIndex >= 0 ? currentIndex : 0;
+                // LEGACY FALLBACK: Use messageForkMap for old-style branch paths
+                const forkBranches = messageForkMap?.get(index);
+                if (forkBranches && forkBranches.length > 1) {
+                  const currentIdx = forkBranches.indexOf(currentBranchPath);
+                  const displayIndex = currentIdx >= 0 ? currentIdx : 0;
 
-                return (
-                  <VersionNavigation
-                    type="user"
-                    currentIndex={displayIndex}
-                    totalVersions={forkBranches.length}
-                    onPrevious={() => {
-                      if (displayIndex > 0 && !isSwitchingBranch) {
-                        onSwitchBranchPath(forkBranches[displayIndex - 1]);
-                      }
-                    }}
-                    onNext={() => {
-                      if (displayIndex < forkBranches.length - 1 && !isSwitchingBranch) {
-                        onSwitchBranchPath(forkBranches[displayIndex + 1]);
-                      }
-                    }}
-                    tooltip={isSwitchingBranch ? 'Loading...' : `Message version ${displayIndex + 1} of ${forkBranches.length}. Click arrows to see different edits of this message.`}
-                    disabled={isSwitchingBranch}
-                  />
-                );
+                  return (
+                    <VersionNavigation
+                      type="user"
+                      currentIndex={displayIndex}
+                      totalVersions={forkBranches.length}
+                      onPrevious={() => {
+                        if (displayIndex > 0 && !isSwitchingBranch) {
+                          onSwitchBranchPath(forkBranches[displayIndex - 1]);
+                        }
+                      }}
+                      onNext={() => {
+                        if (displayIndex < forkBranches.length - 1 && !isSwitchingBranch) {
+                          onSwitchBranchPath(forkBranches[displayIndex + 1]);
+                        }
+                      }}
+                      tooltip={isSwitchingBranch ? 'Loading...' : `Message version ${displayIndex + 1} of ${forkBranches.length}. Click arrows to switch versions.`}
+                      disabled={isSwitchingBranch}
+                    />
+                  );
+                }
+
+                // OLD FALLBACK: Check editForkMessageIndex for backwards compatibility
+                if (availableBranchPaths.length > 1 && editForkMessageIndex === index) {
+                  const currentIdx = availableBranchPaths.indexOf(currentBranchPath);
+                  return (
+                    <VersionNavigation
+                      type="user"
+                      currentIndex={currentIdx >= 0 ? currentIdx : 0}
+                      totalVersions={availableBranchPaths.length}
+                      onPrevious={() => {
+                        if (currentIdx > 0 && !isSwitchingBranch) {
+                          onSwitchBranchPath(availableBranchPaths[currentIdx - 1]);
+                        }
+                      }}
+                      onNext={() => {
+                        if (currentIdx < availableBranchPaths.length - 1 && !isSwitchingBranch) {
+                          onSwitchBranchPath(availableBranchPaths[currentIdx + 1]);
+                        }
+                      }}
+                      tooltip={isSwitchingBranch ? 'Loading...' : `Version ${currentIdx + 1} of ${availableBranchPaths.length}`}
+                      disabled={isSwitchingBranch}
+                    />
+                  );
+                }
+
+                return null;
               })()}
               {/* Edit button for user messages - shows badge when versions exist */}
               {onEditUserMessage && (() => {
+                // NEW: Check siblingIds for version count
+                const siblingCount = message.siblingIds?.length || 0;
+                const hasVersionsFromSiblings = siblingCount > 1;
+
+                // LEGACY: Fallback to branch paths
                 const editVersionCount = availableBranchPaths.filter(p => p.startsWith('edit-')).length;
-                const hasVersions = editVersionCount > 0;
+                const hasVersions = hasVersionsFromSiblings || editVersionCount > 0;
+                const displayCount = hasVersionsFromSiblings ? siblingCount - 1 : editVersionCount;
 
                 return (
                   <button
                     onClick={onEditUserMessage}
                     title={hasVersions
-                      ? `Edit this message (${editVersionCount} version${editVersionCount > 1 ? 's' : ''} exist)`
+                      ? `Edit this message (${displayCount} other version${displayCount > 1 ? 's' : ''} exist)`
                       : "Edit this message and regenerate AI response (creates a new version)"
                     }
                     style={{
@@ -929,7 +964,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     <span style={{ fontSize: '0.875rem' }}>✎</span>
                     Edit
                     {/* Version count badge */}
-                    {hasVersions && (
+                    {hasVersions && displayCount > 0 && (
                       <span style={{
                         marginLeft: '0.25rem',
                         padding: '0 0.3rem',
@@ -941,7 +976,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                         minWidth: '1rem',
                         textAlign: 'center',
                       }}>
-                        {editVersionCount}
+                        {displayCount}
                       </span>
                     )}
                   </button>
