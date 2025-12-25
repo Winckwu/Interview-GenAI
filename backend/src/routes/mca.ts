@@ -227,6 +227,62 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
       isHighRiskF,
     });
 
+    // Save pattern detection to database for consistency across pages
+    // Only save if confidence is above threshold and pattern is valid
+    if (patternEstimate.topPattern && patternEstimate.confidence >= 0.5) {
+      try {
+        // Check if a pattern log already exists for this session
+        const existingLog = await pool.query(
+          'SELECT id FROM pattern_logs WHERE session_id = $1 ORDER BY created_at DESC LIMIT 1',
+          [sessionId]
+        );
+
+        const features = {
+          signals,
+          probabilities: patternEstimate.probabilities,
+          classifier,
+          turnCount,
+          stability: patternEstimate.stability || 'low',
+          reasoning: patternEstimate.reasoning || [],
+        };
+
+        if (existingLog.rows.length > 0) {
+          // Update existing record
+          await pool.query(
+            `UPDATE pattern_logs
+             SET detected_pattern = $1, confidence = $2, features = $3, detection_method = $4, created_at = NOW()
+             WHERE id = $5`,
+            [
+              patternEstimate.topPattern,
+              patternEstimate.confidence,
+              JSON.stringify(features),
+              classifier === 'svm' ? 'svm_ml' : 'bayesian_hybrid',
+              existingLog.rows[0].id,
+            ]
+          );
+        } else {
+          // Insert new record
+          await pool.query(
+            `INSERT INTO pattern_logs (session_id, user_id, detected_pattern, confidence, detection_method, features, all_probabilities)
+             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+            [
+              sessionId,
+              userId,
+              patternEstimate.topPattern,
+              patternEstimate.confidence,
+              classifier === 'svm' ? 'svm_ml' : 'bayesian_hybrid',
+              JSON.stringify(features),
+              JSON.stringify(patternEstimate.probabilities || {}),
+            ]
+          );
+        }
+        console.log(`[MCA:${sessionId}] Pattern saved to database: ${patternEstimate.topPattern}`);
+      } catch (dbError: any) {
+        // Don't fail the request if DB save fails - just log it
+        console.warn(`[MCA:${sessionId}] Failed to save pattern to database:`, dbError.message);
+      }
+    }
+
     res.json({
       success: true,
       data: {
