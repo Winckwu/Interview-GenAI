@@ -50,6 +50,16 @@ const PATTERN_RESTRICTION_MESSAGES: Record<UserPatternType, string> = {
   'F': 'Your usage pattern shows signs of passive dependency. Maintaining reminders helps build healthier AI collaboration habits and prevents skill atrophy.',
 };
 
+// Pattern display names for UI
+const PATTERN_DISPLAY: Record<UserPatternType, { name: string; icon: string; description: string }> = {
+  'A': { name: 'Strategic Decomposition', icon: '🎯', description: 'High planning & control' },
+  'B': { name: 'Iterative Refinement', icon: '🔄', description: 'Active experimentation' },
+  'C': { name: 'Context-Adaptive', icon: '🌊', description: 'Flexible strategies' },
+  'D': { name: 'Deep Verification', icon: '🔍', description: 'Systematic checking' },
+  'E': { name: 'Pedagogical Reflection', icon: '📚', description: 'Learning-oriented' },
+  'F': { name: 'Passive Dependency', icon: '⚠️', description: 'Needs intervention support' },
+};
+
 interface MR3Props {
   interventionLevel?: InterventionLevel | string;
   onInterventionLevelChange?: (level: InterventionLevel) => void;
@@ -217,6 +227,31 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
       <p className="mr3-subtitle">
         Control how often you receive metacognitive reminders
       </p>
+
+      {/* Current Pattern Indicator */}
+      {userPattern && (
+        <div className="mr3-pattern-indicator" style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 0.75rem',
+          marginBottom: '0.75rem',
+          backgroundColor: userPattern === 'F' ? '#fef2f2' : '#f0fdf4',
+          border: `1px solid ${userPattern === 'F' ? '#fecaca' : '#bbf7d0'}`,
+          borderRadius: '0.5rem',
+          fontSize: '0.85rem',
+        }}>
+          <span style={{ fontSize: '1.1rem' }}>{PATTERN_DISPLAY[userPattern].icon}</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, color: userPattern === 'F' ? '#dc2626' : '#15803d' }}>
+              Current: Pattern {userPattern} - {PATTERN_DISPLAY[userPattern].name}
+            </div>
+            <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+              {PATTERN_DISPLAY[userPattern].description}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Level Selector */}
       <div className="mr3-level-selector">
