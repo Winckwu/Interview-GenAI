@@ -2212,7 +2212,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
           interventionLevel={interventionLevel}
           onInterventionLevelChange={setInterventionLevel}
           sessionId={sessionId || ''}
-          userPattern={currentUserPattern?.patternType}
+          userPattern={(mcaResult?.pattern?.topPattern as any) || currentUserPattern?.patternType}
         />;
       case 'mr4-roles':
         return <MR4RoleDefinitionGuidance
@@ -5019,7 +5019,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
         minMessagesForDetection={5}
         isStreaming={isStreaming}
         userInput={userInput}
-        userPattern={currentUserPattern?.patternType || 'unknown'}
+        userPattern={(mcaResult?.pattern?.topPattern as any) || currentUserPattern?.patternType || 'unknown'}
         interventionLevel={interventionLevel}
         onInterventionDisplayed={(tier, mrType) => {
           console.log(`[ChatSessionPage] Intervention displayed: ${tier} - ${mrType}`);
