@@ -784,4 +784,284 @@ router.post(
   })
 );
 
+/**
+ * GET /api/interactions/tree-v2/:sessionId
+ * Get interactions as a TRUE tree structure with sibling information
+ * Returns messages with their siblings (different versions at the same position)
+ */
+router.get(
+  '/tree-v2/:sessionId',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { sessionId } = req.params;
+    const userId = req.user?.id;
+    // selectedPath is a JSON array of interaction IDs representing the current path through the tree
+    const { selectedPath } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Verify session belongs to user
+    const sessionCheck = await pool.query(
+      'SELECT id FROM work_sessions WHERE id = $1 AND user_id = $2',
+      [sessionId, userId]
+    );
+
+    if (sessionCheck.rows.length === 0) {
+      return res.status(403).json({
+        success: false,
+        error: 'Session not found or does not belong to user',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Get ALL interactions for this session (we'll build the tree client-side)
+    const result = await pool.query(
+      `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
+              i.response_time_ms, i.was_verified, i.was_modified, i.was_rejected,
+              i.parent_id, i.branch_path, i.insights, i.created_at, i.updated_at
+       FROM interactions i
+       WHERE i.session_id = $1
+       ORDER BY i.created_at ASC`,
+      [sessionId]
+    );
+
+    // Build tree structure: group messages by their parent_id to find siblings
+    const messagesByParent = new Map<string | null, any[]>();
+    const messagesById = new Map<string, any>();
+
+    for (const row of result.rows) {
+      const msg = {
+        id: row.id,
+        sessionId: row.session_id,
+        userId: row.user_id,
+        userPrompt: row.user_prompt,
+        aiResponse: row.ai_response,
+        aiModel: row.ai_model,
+        responseTimeMs: row.response_time_ms,
+        wasVerified: row.was_verified,
+        wasModified: row.was_modified,
+        wasRejected: row.was_rejected,
+        parentId: row.parent_id,
+        branchPath: row.branch_path,
+        insights: row.insights,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+        // Will be populated below
+        siblingIds: [] as string[],
+        siblingIndex: 0,
+        childIds: [] as string[],
+      };
+
+      messagesById.set(msg.id, msg);
+
+      const parentKey = msg.parentId || 'root';
+      if (!messagesByParent.has(parentKey)) {
+        messagesByParent.set(parentKey, []);
+      }
+      messagesByParent.get(parentKey)!.push(msg);
+    }
+
+    // Calculate siblings for each message
+    for (const [parentId, siblings] of messagesByParent.entries()) {
+      // Sort siblings by created_at
+      siblings.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+      const siblingIds = siblings.map(s => s.id);
+      siblings.forEach((msg, index) => {
+        msg.siblingIds = siblingIds;
+        msg.siblingIndex = index;
+      });
+    }
+
+    // Calculate children for each message
+    for (const msg of messagesById.values()) {
+      if (msg.parentId && messagesById.has(msg.parentId)) {
+        const parent = messagesById.get(msg.parentId);
+        if (!parent.childIds.includes(msg.id)) {
+          parent.childIds.push(msg.id);
+        }
+      }
+    }
+
+    // Parse selected path or determine default path
+    let pathIds: string[] = [];
+    if (selectedPath) {
+      try {
+        pathIds = JSON.parse(selectedPath as string);
+      } catch {
+        pathIds = [];
+      }
+    }
+
+    // If no path specified, follow the "main" branch or first sibling at each level
+    if (pathIds.length === 0) {
+      // Start with root messages (no parent)
+      const rootMessages = messagesByParent.get('root') || [];
+      // Find the "main" branch or first message
+      let current = rootMessages.find(m => m.branchPath === 'main') || rootMessages[0];
+
+      while (current) {
+        pathIds.push(current.id);
+        // Get children of current message
+        const children = messagesByParent.get(current.id) || [];
+        // Follow main branch or first child
+        current = children.find(c => c.branchPath === 'main') || children[0];
+      }
+    }
+
+    // Build the conversation following the selected path
+    const conversation: any[] = [];
+    for (const id of pathIds) {
+      const msg = messagesById.get(id);
+      if (msg) {
+        conversation.push(msg);
+      }
+    }
+
+    // Get unique branch paths for compatibility
+    const branchPaths = [...new Set(result.rows.map((r: any) => r.branch_path))];
+
+    res.json({
+      success: true,
+      data: {
+        // The conversation following the selected path
+        conversation,
+        // The selected path through the tree
+        selectedPath: pathIds,
+        // All messages for client-side tree building
+        allMessages: Array.from(messagesById.values()),
+        // Messages grouped by parent for easy sibling lookup
+        messagesByParent: Object.fromEntries(
+          Array.from(messagesByParent.entries()).map(([k, v]) => [k, v.map(m => m.id)])
+        ),
+        // For backwards compatibility
+        availableBranchPaths: branchPaths,
+      },
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
+ * POST /api/interactions/edit-message
+ * Edit a user message by creating a sibling (same parent) instead of copying history
+ * This is the GPT/Claude style editing - creates a true tree branch
+ */
+router.post(
+  '/edit-message',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const {
+      originalMessageId,  // The message being edited
+      newUserPrompt,      // The new content
+      sessionId,
+    } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    if (!originalMessageId || !newUserPrompt || !sessionId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: originalMessageId, newUserPrompt, sessionId',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Get the original message to find its parent
+    const originalResult = await pool.query(
+      `SELECT * FROM interactions WHERE id = $1 AND user_id = $2`,
+      [originalMessageId, userId]
+    );
+
+    if (originalResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Original message not found',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const original = originalResult.rows[0];
+
+    // Create a sibling message with the SAME parent_id
+    // This creates a true tree branch at this position
+    const newInteractionId = uuidv4();
+    const branchPath = `edit-${Date.now()}`; // Simple branch identifier
+
+    const result = await pool.query(
+      `INSERT INTO interactions (
+        id, session_id, user_id, user_prompt, ai_response, ai_model,
+        response_time_ms, was_verified, was_modified, was_rejected, reasoning,
+        parent_id, branch_path, created_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+      RETURNING *`,
+      [
+        newInteractionId,
+        sessionId,
+        userId,
+        newUserPrompt,
+        null, // AI response will be generated separately
+        original.ai_model,
+        0,
+        false,
+        false,
+        false,
+        null,
+        original.parent_id, // SAME parent as original - this creates a sibling!
+        branchPath,
+        new Date(),
+      ]
+    );
+
+    const newMessage = result.rows[0];
+
+    // Get sibling count for this parent
+    const siblingsResult = await pool.query(
+      `SELECT id FROM interactions
+       WHERE (parent_id = $1 OR (parent_id IS NULL AND $1 IS NULL))
+       AND session_id = $2
+       ORDER BY created_at ASC`,
+      [original.parent_id, sessionId]
+    );
+
+    const siblingIds = siblingsResult.rows.map((r: any) => r.id);
+    const siblingIndex = siblingIds.indexOf(newInteractionId);
+
+    res.status(201).json({
+      success: true,
+      data: {
+        interaction: {
+          id: newMessage.id,
+          sessionId: newMessage.session_id,
+          userId: newMessage.user_id,
+          userPrompt: newMessage.user_prompt,
+          aiResponse: newMessage.ai_response,
+          parentId: newMessage.parent_id,
+          branchPath: newMessage.branch_path,
+          createdAt: newMessage.created_at,
+          // Sibling info
+          siblingIds,
+          siblingIndex,
+          totalSiblings: siblingIds.length,
+        },
+      },
+      message: 'Message edited - created new version at same position',
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
 export default router;
