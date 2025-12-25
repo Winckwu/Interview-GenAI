@@ -107,6 +107,8 @@ export interface UseMessagesReturn {
   availableBranchPaths: string[];
   editForkMessageIndex: number | null;
   isSwitchingBranch: boolean;
+  // GPT/Claude style: map of messageIndex -> branches that fork from that position
+  messageForkMap: Map<number, string[]>;
 
   // Streaming state
   isStreaming: boolean;
@@ -206,6 +208,55 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   const [editForkMessageIndex, setEditForkMessageIndex] = useState<number | null>(null); // Index of message where edit fork happened
   const [isSwitchingBranch, setIsSwitchingBranch] = useState(false);
   const switchingBranchRef = useRef<string | null>(null); // Guard against concurrent switches
+  // GPT/Claude style: map of messageIndex -> branches that fork from that position
+  const [messageForkMap, setMessageForkMap] = useState<Map<number, string[]>>(new Map());
+
+  /**
+   * Parse branch name to extract fork position
+   * Format: edit-{messageIndex}-{timestamp} or edit-{timestamp} (legacy)
+   */
+  const parseBranchForkPosition = (branchPath: string): number | null => {
+    if (!branchPath.startsWith('edit-')) return null;
+    const parts = branchPath.split('-');
+    // New format: edit-{messageIndex}-{timestamp}
+    if (parts.length === 3) {
+      const index = parseInt(parts[1], 10);
+      return isNaN(index) ? null : index;
+    }
+    // Legacy format: edit-{timestamp} - return null (unknown position)
+    return null;
+  };
+
+  /**
+   * Build fork map from branch paths
+   * Groups branches by their fork position (message index)
+   */
+  const buildMessageForkMap = useCallback((branches: string[]): Map<number, string[]> => {
+    const forkMap = new Map<number, string[]>();
+
+    // Always include 'main' at position 0 if there are any edit branches
+    const hasEditBranches = branches.some(b => b.startsWith('edit-'));
+
+    for (const branch of branches) {
+      const forkPos = parseBranchForkPosition(branch);
+      if (forkPos !== null) {
+        const existing = forkMap.get(forkPos) || ['main']; // Include main as first option
+        if (!existing.includes(branch)) {
+          existing.push(branch);
+        }
+        forkMap.set(forkPos, existing);
+      } else if (branch.startsWith('edit-') && hasEditBranches) {
+        // Legacy branch without position - group at position 0
+        const existing = forkMap.get(0) || ['main'];
+        if (!existing.includes(branch)) {
+          existing.push(branch);
+        }
+        forkMap.set(0, existing);
+      }
+    }
+
+    return forkMap;
+  }, []);
 
   /**
    * Load messages for a specific page with pagination
@@ -744,16 +795,17 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       const branchPaths = paths && paths.length > 0 ? paths : ['main'];
       setAvailableBranchPaths(branchPaths);
 
-      // Calculate editForkMessageIndex - ALWAYS show at FIRST user message when branches exist
-      // This creates a consistent, predictable navigation point like GPT/Claude
-      // Switching branches changes the entire conversation content
-      const hasEditBranches = paths && paths.some(p => p.startsWith('edit-'));
+      // GPT/Claude style: Build fork map to show navigation on EACH edited message position
+      const forkMap = buildMessageForkMap(branchPaths);
+      setMessageForkMap(forkMap);
 
+      // For backwards compatibility, still set editForkMessageIndex
+      // (will be deprecated once MessageItem uses messageForkMap)
+      const hasEditBranches = paths && paths.some(p => p.startsWith('edit-'));
       if (hasEditBranches) {
-        // Always show navigation on the FIRST user message
-        // This is the consistent entry point for switching conversation versions
-        const firstUserIndex = loadedMessages.findIndex(msg => msg.role === 'user');
-        setEditForkMessageIndex(firstUserIndex >= 0 ? firstUserIndex : 0);
+        // Find the first fork position from the map
+        const firstForkPos = forkMap.size > 0 ? Math.min(...forkMap.keys()) : null;
+        setEditForkMessageIndex(firstForkPos);
       } else {
         setEditForkMessageIndex(null);
       }
@@ -789,8 +841,9 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     // userMessageIndex / 2 gives us the interaction index (assuming alternating user/AI messages)
     const interactionIndex = Math.floor(userMessageIndex / 2);
 
-    // Generate new branch name
-    const newBranchPath = `edit-${Date.now()}`;
+    // Generate new branch name with message position for GPT/Claude style versioning
+    // Format: edit-{messageIndex}-{timestamp}
+    const newBranchPath = `edit-${userMessageIndex}-${Date.now()}`;
 
     try {
       setLoading(true);
@@ -890,12 +943,15 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       if (paths && paths.length > 1) {
         setAvailableBranchPaths(paths);
 
-        // Always show navigation on the FIRST user message when branches exist
-        // This creates a consistent, predictable navigation point
+        // GPT/Claude style: Build fork map to show navigation on EACH edited message position
+        const forkMap = buildMessageForkMap(paths);
+        setMessageForkMap(forkMap);
+
+        // For backwards compatibility
         const hasEditBranches = paths.some(p => p.startsWith('edit-'));
         if (hasEditBranches) {
-          const firstUserIndex = messages.findIndex(msg => msg.role === 'user');
-          setEditForkMessageIndex(firstUserIndex >= 0 ? firstUserIndex : 0);
+          const firstForkPos = forkMap.size > 0 ? Math.min(...forkMap.keys()) : null;
+          setEditForkMessageIndex(firstForkPos);
         }
       }
     } catch (err) {
@@ -919,6 +975,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     availableBranchPaths,
     editForkMessageIndex,
     isSwitchingBranch,
+    messageForkMap, // GPT/Claude style: per-message fork navigation
 
     // Streaming state
     isStreaming,

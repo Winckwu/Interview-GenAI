@@ -61,6 +61,8 @@ export interface MessageItemProps {
   onSwitchBranchPath?: (branchPath: string) => void;
   editForkMessageIndex?: number | null;
   isSwitchingBranch?: boolean;
+  // GPT/Claude style: per-message fork navigation
+  messageForkMap?: Map<number, string[]>;
 
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
@@ -97,6 +99,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onSwitchBranchPath,
   editForkMessageIndex = null,
   isSwitchingBranch = false,
+  messageForkMap,
   trustIndicator,
   hideActionButtons = false,
   isStreaming = false,
@@ -831,27 +834,57 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* User Message Versions - Only show at fork point (tree structure) */}
-              {availableBranchPaths.length > 1 && onSwitchBranchPath && editForkMessageIndex === index && (() => {
-                // Find current branch index
-                const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
+              {/* GPT/Claude style: Show version navigation on EACH message that has versions */}
+              {onSwitchBranchPath && (() => {
+                // Check if this message has fork versions using messageForkMap
+                const forkBranches = messageForkMap?.get(index);
+                if (!forkBranches || forkBranches.length <= 1) {
+                  // Fallback to old behavior if no messageForkMap
+                  if (availableBranchPaths.length > 1 && editForkMessageIndex === index) {
+                    const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
+                    return (
+                      <VersionNavigation
+                        type="user"
+                        currentIndex={currentIndex >= 0 ? currentIndex : 0}
+                        totalVersions={availableBranchPaths.length}
+                        onPrevious={() => {
+                          if (currentIndex > 0 && !isSwitchingBranch) {
+                            onSwitchBranchPath(availableBranchPaths[currentIndex - 1]);
+                          }
+                        }}
+                        onNext={() => {
+                          if (currentIndex < availableBranchPaths.length - 1 && !isSwitchingBranch) {
+                            onSwitchBranchPath(availableBranchPaths[currentIndex + 1]);
+                          }
+                        }}
+                        tooltip={isSwitchingBranch ? 'Loading...' : `Version ${currentIndex + 1} of ${availableBranchPaths.length}`}
+                        disabled={isSwitchingBranch}
+                      />
+                    );
+                  }
+                  return null;
+                }
+
+                // GPT/Claude style: Show navigation for THIS message's versions
+                const currentIndex = forkBranches.indexOf(currentBranchPath);
+                const displayIndex = currentIndex >= 0 ? currentIndex : 0;
 
                 return (
                   <VersionNavigation
                     type="user"
-                    currentIndex={currentIndex >= 0 ? currentIndex : 0}
-                    totalVersions={availableBranchPaths.length}
+                    currentIndex={displayIndex}
+                    totalVersions={forkBranches.length}
                     onPrevious={() => {
-                      if (currentIndex > 0 && !isSwitchingBranch) {
-                        onSwitchBranchPath(availableBranchPaths[currentIndex - 1]);
+                      if (displayIndex > 0 && !isSwitchingBranch) {
+                        onSwitchBranchPath(forkBranches[displayIndex - 1]);
                       }
                     }}
                     onNext={() => {
-                      if (currentIndex < availableBranchPaths.length - 1 && !isSwitchingBranch) {
-                        onSwitchBranchPath(availableBranchPaths[currentIndex + 1]);
+                      if (displayIndex < forkBranches.length - 1 && !isSwitchingBranch) {
+                        onSwitchBranchPath(forkBranches[displayIndex + 1]);
                       }
                     }}
-                    tooltip={isSwitchingBranch ? 'Loading...' : `Branch ${currentIndex + 1} of ${availableBranchPaths.length}. This is a fork point - switch to see different conversation versions.`}
+                    tooltip={isSwitchingBranch ? 'Loading...' : `Message version ${displayIndex + 1} of ${forkBranches.length}. Click arrows to see different edits of this message.`}
                     disabled={isSwitchingBranch}
                   />
                 );
