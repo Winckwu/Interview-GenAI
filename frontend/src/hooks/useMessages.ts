@@ -718,7 +718,10 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       }
 
       setMessages(loadedMessages);
-      setAvailableBranchPaths(paths || ['main']);
+      // Ensure we always have at least 'main' in the branch paths
+      const branchPaths = paths && paths.length > 0 ? paths : ['main'];
+      setAvailableBranchPaths(branchPaths);
+      console.log('[switchBranchPath] Branch paths set:', branchPaths);
 
       // Calculate editForkMessageIndex for edit branches
       // Find the first user message that's on the current edit branch (fork point)

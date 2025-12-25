@@ -829,6 +829,16 @@ export const MessageItem: React.FC<MessageItemProps> = ({
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {/* User Message Versions - Show on ALL user messages when branches exist */}
+              {/* Debug: log why navigation might not show */}
+              {(() => {
+                if (availableBranchPaths.length <= 1) {
+                  console.log('[MessageItem] Version nav hidden: availableBranchPaths.length =', availableBranchPaths.length);
+                }
+                if (!onSwitchBranchPath) {
+                  console.log('[MessageItem] Version nav hidden: onSwitchBranchPath is undefined');
+                }
+                return null;
+              })()}
               {/* This allows switching versions from any user message in the conversation */}
               {availableBranchPaths.length > 1 && onSwitchBranchPath && (() => {
                 // Find current branch index
