@@ -60,6 +60,14 @@ const PATTERN_DISPLAY: Record<UserPatternType, { name: string; icon: string; des
   'F': { name: 'Passive Dependency', icon: '⚠️', description: 'Needs intervention support' },
 };
 
+// LLM Explanation type
+interface PatternExplanation {
+  explanation: string;
+  keyBehaviors: string[];
+  recommendations: string[];
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
 interface MR3Props {
   interventionLevel?: InterventionLevel | string;
   onInterventionLevelChange?: (level: InterventionLevel) => void;
@@ -92,6 +100,7 @@ const LEVEL_CONFIG = {
 export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
   interventionLevel: externalLevel,
   onInterventionLevelChange,
+  sessionId,
   compact = false,
   userPattern,
 }) => {
@@ -103,6 +112,35 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
   const restrictionMessage = userPattern
     ? PATTERN_RESTRICTION_MESSAGES[userPattern]
     : '';
+
+  // LLM Explanation state for Pattern F
+  const [explanation, setExplanation] = useState<PatternExplanation | null>(null);
+  const [loadingExplanation, setLoadingExplanation] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
+
+  // Fetch LLM explanation when Pattern F is detected
+  useEffect(() => {
+    if (userPattern === 'F' && sessionId) {
+      const fetchExplanation = async () => {
+        setLoadingExplanation(true);
+        try {
+          const response = await fetch(`/api/mca/explanation/${sessionId}`);
+          const data = await response.json();
+          if (data.success && data.data.hasExplanation) {
+            setExplanation(data.data.explanation);
+          }
+        } catch (error) {
+          console.warn('[MR3] Failed to fetch pattern explanation:', error);
+        } finally {
+          setLoadingExplanation(false);
+        }
+      };
+
+      // Delay fetch slightly to allow async generation to complete
+      const timer = setTimeout(fetchExplanation, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [userPattern, sessionId]);
 
   // Migrate old level names if needed, respecting pattern restrictions
   const normalizeLevel = useCallback((level: string | undefined): InterventionLevel => {
@@ -250,6 +288,78 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
               {PATTERN_DISPLAY[userPattern].description}
             </div>
           </div>
+          {/* Show explanation toggle for Pattern F */}
+          {userPattern === 'F' && (explanation || loadingExplanation) && (
+            <button
+              onClick={() => setShowExplanation(!showExplanation)}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '0.8rem',
+                color: '#6b7280',
+                padding: '0.25rem',
+              }}
+              title={showExplanation ? 'Hide details' : 'Show details'}
+            >
+              {showExplanation ? '▼' : '▶'} Details
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* LLM Explanation for Pattern F */}
+      {userPattern === 'F' && showExplanation && (
+        <div style={{
+          padding: '0.75rem',
+          marginBottom: '0.75rem',
+          backgroundColor: '#fef3c7',
+          border: '1px solid #fcd34d',
+          borderRadius: '0.5rem',
+          fontSize: '0.85rem',
+        }}>
+          {loadingExplanation ? (
+            <div style={{ color: '#92400e', textAlign: 'center' }}>
+              <span style={{ marginRight: '0.5rem' }}>🔍</span>
+              Analyzing your interaction pattern...
+            </div>
+          ) : explanation ? (
+            <div>
+              {/* Explanation */}
+              <div style={{ marginBottom: '0.75rem', color: '#92400e' }}>
+                <strong>📝 Analysis:</strong> {explanation.explanation}
+              </div>
+
+              {/* Key Behaviors */}
+              {explanation.keyBehaviors && explanation.keyBehaviors.length > 0 && (
+                <div style={{ marginBottom: '0.75rem' }}>
+                  <strong style={{ color: '#92400e' }}>🔍 Observed Behaviors:</strong>
+                  <ul style={{ margin: '0.25rem 0 0 1rem', padding: 0, color: '#78350f' }}>
+                    {explanation.keyBehaviors.map((behavior, idx) => (
+                      <li key={idx} style={{ marginBottom: '0.15rem' }}>{behavior}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Recommendations */}
+              {explanation.recommendations && explanation.recommendations.length > 0 && (
+                <div>
+                  <strong style={{ color: '#15803d' }}>💡 Suggestions:</strong>
+                  <ul style={{ margin: '0.25rem 0 0 1rem', padding: 0, color: '#166534' }}>
+                    {explanation.recommendations.map((rec, idx) => (
+                      <li key={idx} style={{ marginBottom: '0.15rem' }}>{rec}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ color: '#92400e', textAlign: 'center' }}>
+              <span style={{ marginRight: '0.5rem' }}>ℹ️</span>
+              Explanation will be available after more interactions.
+            </div>
+          )}
         </div>
       )}
 

@@ -17,6 +17,7 @@ import RealtimePatternRecognizer from '../services/RealtimePatternRecognizer';
 import SVMPatternClassifier from '../services/SVMPatternClassifier';
 import AdaptiveMRActivator from '../services/AdaptiveMRActivator';
 import UnifiedMCAAnalyzer from '../services/UnifiedMCAAnalyzer';
+import { queuePatternExplanation, getPatternExplanation } from '../services/PatternExplanationService';
 import pool from '../config/database';
 
 const router = express.Router();
@@ -277,6 +278,26 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
           );
         }
         console.log(`[MCA:${sessionId}] Pattern saved to database: ${patternEstimate.topPattern}`);
+
+        // Queue async LLM explanation for Pattern F (non-blocking)
+        if (patternEstimate.topPattern === 'F' && patternEstimate.confidence >= 0.7) {
+          // Convert conversation turns to simple format for explanation
+          const conversationHistory = conversationTurns
+            .filter((t: any) => t.userMessage)
+            .map((t: any) => ({
+              role: 'user',
+              content: t.userMessage,
+            }));
+
+          queuePatternExplanation(
+            sessionId,
+            userId,
+            signals,
+            patternEstimate.confidence,
+            conversationHistory
+          );
+          console.log(`[MCA:${sessionId}] Queued LLM explanation for Pattern F`);
+        }
       } catch (dbError: any) {
         // Don't fail the request if DB save fails - just log it
         console.warn(`[MCA:${sessionId}] Failed to save pattern to database:`, dbError.message);
@@ -685,6 +706,41 @@ router.get('/stability/unstable/:userId', async (req: Request, res: Response) =>
     res.status(500).json({
       success: false,
       error: 'Failed to get unstable sessions',
+    });
+  }
+});
+
+/**
+ * GET /mca/explanation/:sessionId
+ * Get LLM-generated explanation for Pattern F detection
+ * Returns null if no explanation has been generated yet
+ */
+router.get('/explanation/:sessionId', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+
+    if (!sessionId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Session ID is required',
+      });
+    }
+
+    const explanation = await getPatternExplanation(sessionId);
+
+    res.json({
+      success: true,
+      data: {
+        sessionId,
+        explanation,
+        hasExplanation: explanation !== null,
+      },
+    });
+  } catch (error: any) {
+    console.error('MCA explanation error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get pattern explanation',
     });
   }
 });
