@@ -831,8 +831,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* User Message Versions - Show on ALL user messages when branches exist */}
-              {availableBranchPaths.length > 1 && onSwitchBranchPath && (() => {
+              {/* User Message Versions - Only show at fork point (tree structure) */}
+              {availableBranchPaths.length > 1 && onSwitchBranchPath && editForkMessageIndex === index && (() => {
                 // Find current branch index
                 const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
 
@@ -851,7 +851,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                         onSwitchBranchPath(availableBranchPaths[currentIndex + 1]);
                       }
                     }}
-                    tooltip={isSwitchingBranch ? 'Loading...' : `Conversation version ${currentIndex + 1} of ${availableBranchPaths.length}. Switching loads a different version of this conversation.`}
+                    tooltip={isSwitchingBranch ? 'Loading...' : `Branch ${currentIndex + 1} of ${availableBranchPaths.length}. This is a fork point - switch to see different conversation versions.`}
                     disabled={isSwitchingBranch}
                   />
                 );
