@@ -828,17 +828,9 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* User Message Versions - Unified navigation component */}
-              {/* Only show on the ACTUAL fork point message, not all user messages */}
-              {availableBranchPaths.length > 1 && onSwitchBranchPath && (
-                // Known fork point (during current editing session)
-                editForkMessageIndex === index ||
-                // After refresh on edit branch: show ONLY on the user message that's on an edit branch
-                // (this is the edited message - the fork point)
-                (editForkMessageIndex === null && message.branchPath && message.branchPath.startsWith('edit-'))
-                // NOTE: On main branch after refresh, use the header dropdown to switch branches
-                // We don't show inline navigation because we can't identify the exact fork point
-              ) && (() => {
+              {/* User Message Versions - Show on ALL user messages when branches exist */}
+              {/* This allows switching versions from any user message in the conversation */}
+              {availableBranchPaths.length > 1 && onSwitchBranchPath && (() => {
                 // Find current branch index
                 const currentIndex = availableBranchPaths.indexOf(currentBranchPath);
 
@@ -857,7 +849,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                         onSwitchBranchPath(availableBranchPaths[currentIndex + 1]);
                       }
                     }}
-                    tooltip={`Message version ${currentIndex + 1} of ${availableBranchPaths.length}. Switching changes this message and all subsequent messages.`}
+                    tooltip={`Conversation version ${currentIndex + 1} of ${availableBranchPaths.length}. Switching loads a different version of this conversation.`}
                   />
                 );
               })()}
