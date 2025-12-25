@@ -744,32 +744,18 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       const branchPaths = paths && paths.length > 0 ? paths : ['main'];
       setAvailableBranchPaths(branchPaths);
 
-      // Calculate editForkMessageIndex for edit branches
-      // Find the first user message that's on the current edit branch (fork point)
-      if (branchPath.startsWith('edit-')) {
-        const forkIndex = loadedMessages.findIndex(
-          (msg, idx) => msg.role === 'user' && msg.branchPath === branchPath
-        );
-        if (forkIndex >= 0) {
-          setEditForkMessageIndex(forkIndex);
-        }
-      } else if (branchPath === 'main') {
-        // On main branch, find if there's a fork point (last user message before any edit branches exist)
-        // This is for when multiple edit branches exist and we're on main
-        if (paths && paths.length > 1) {
-          // Find the last user message on main (this is where edit branches would fork from)
-          const lastMainUserIndex = loadedMessages.reduce((lastIdx, msg, idx) => {
-            if (msg.role === 'user' && (!msg.branchPath || msg.branchPath === 'main')) {
-              return idx;
-            }
-            return lastIdx;
-          }, -1);
-          if (lastMainUserIndex >= 0) {
-            setEditForkMessageIndex(lastMainUserIndex);
-          }
-        } else {
-          setEditForkMessageIndex(null);
-        }
+      // Calculate editForkMessageIndex - ALWAYS show at FIRST user message when branches exist
+      // This creates a consistent, predictable navigation point like GPT/Claude
+      // Switching branches changes the entire conversation content
+      const hasEditBranches = paths && paths.some(p => p.startsWith('edit-'));
+
+      if (hasEditBranches) {
+        // Always show navigation on the FIRST user message
+        // This is the consistent entry point for switching conversation versions
+        const firstUserIndex = loadedMessages.findIndex(msg => msg.role === 'user');
+        setEditForkMessageIndex(firstUserIndex >= 0 ? firstUserIndex : 0);
+      } else {
+        setEditForkMessageIndex(null);
       }
 
       setSuccessMessage(`Switched to branch: ${branchPath}`);
@@ -904,26 +890,12 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       if (paths && paths.length > 1) {
         setAvailableBranchPaths(paths);
 
-        // Calculate editForkMessageIndex based on current branch
-        if (currentBranchPath.startsWith('edit-')) {
-          // On edit branch: find the first user message on this branch
-          const forkIndex = messages.findIndex(
-            (msg) => msg.role === 'user' && msg.branchPath === currentBranchPath
-          );
-          if (forkIndex >= 0) {
-            setEditForkMessageIndex(forkIndex);
-          }
-        } else if (currentBranchPath === 'main') {
-          // On main branch with edit branches: find the last user message on main
-          const lastMainUserIndex = messages.reduce((lastIdx, msg, idx) => {
-            if (msg.role === 'user' && (!msg.branchPath || msg.branchPath === 'main')) {
-              return idx;
-            }
-            return lastIdx;
-          }, -1);
-          if (lastMainUserIndex >= 0) {
-            setEditForkMessageIndex(lastMainUserIndex);
-          }
+        // Always show navigation on the FIRST user message when branches exist
+        // This creates a consistent, predictable navigation point
+        const hasEditBranches = paths.some(p => p.startsWith('edit-'));
+        if (hasEditBranches) {
+          const firstUserIndex = messages.findIndex(msg => msg.role === 'user');
+          setEditForkMessageIndex(firstUserIndex >= 0 ? firstUserIndex : 0);
         }
       }
     } catch (err) {
