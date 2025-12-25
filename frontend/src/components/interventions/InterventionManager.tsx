@@ -213,6 +213,29 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
   // Cooldown period after user interacts with ANY intervention (30 seconds)
   const POST_ACTION_COOLDOWN_MS = 30000;
 
+  // Helper: Get tier priority (higher number = higher priority)
+  const getTierPriority = (tier: string): number => {
+    switch (tier) {
+      case 'hard': return 3;
+      case 'medium': return 2;
+      case 'soft': return 1;
+      default: return 0;
+    }
+  };
+
+  // Helper: Check if new intervention should override current one
+  // Only override if new tier >= current tier
+  const shouldOverrideIntervention = useCallback((newTier: string): boolean => {
+    const currentIntervention = store.activeIntervention;
+    if (!currentIntervention) return true; // No current intervention, allow new one
+
+    const currentPriority = getTierPriority(currentIntervention.tier);
+    const newPriority = getTierPriority(newTier);
+
+    // Only override if new intervention has equal or higher priority
+    return newPriority >= currentPriority;
+  }, [store.activeIntervention]);
+
   // SESSION-LEVEL SUPPRESSION (Solution D+C)
   // When user clicks "Don't show again this session", suppress ONLY that specific MR type
   // Map: mrType -> acknowledged confidence level
@@ -826,6 +849,12 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       }
     }
 
+    // Check if new intervention should override current one (prevent medium from overriding hard)
+    if (!shouldOverrideIntervention(intervention.tier)) {
+      console.log(`[InterventionManager] Skipping ${intervention.tier} intervention - higher priority intervention already active`);
+      return;
+    }
+
     // Track intervention
     setLastInterventionId(intervention.id);
     setInterventionStartTime(Date.now());
@@ -836,7 +865,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     onInterventionDisplayed?.(intervention.tier, topMR.mrId);
     // Note: metricsStore and store are stable Zustand stores, excluded from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips, suppressedMRs, CONFIDENCE_INCREASE_THRESHOLD, interventionLevel]);
+  }, [activeMRs, lastDisplayedMRId, sessionId, messages.length, onInterventionDisplayed, interventionStartTime, lastUserActionTime, dismissedTips, suppressedMRs, CONFIDENCE_INCREASE_THRESHOLD, interventionLevel, shouldOverrideIntervention]);
 
   /**
    * Core detection and scheduling logic - Frontend fallback
@@ -958,6 +987,12 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
           decision.tier,
           messages
         );
+
+        // Check if new intervention should override current one (prevent medium from overriding hard)
+        if (!shouldOverrideIntervention(intervention.tier)) {
+          console.log(`[InterventionManager] Skipping ${intervention.tier} intervention - higher priority intervention already active`);
+          return;
+        }
 
         // Record intervention display in metrics
         metricsStore.recordInterventionDisplay({
