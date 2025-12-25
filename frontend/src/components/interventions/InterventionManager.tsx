@@ -767,8 +767,16 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
       return;
     }
 
-    // Sort by priority to show most important first
-    const sortedMRs = [...filteredMRs].sort((a, b) => b.priority - a.priority);
+    // Sort by tier first (hard > medium > soft), then by priority within same tier
+    const tierOrder: Record<string, number> = { 'hard': 3, 'medium': 2, 'soft': 1 };
+    const sortedMRs = [...filteredMRs].sort((a, b) => {
+      // Sort by tier first (hard=3, medium=2, soft=1)
+      const tierA = tierOrder[a.tier || 'soft'] || 1;
+      const tierB = tierOrder[b.tier || 'soft'] || 1;
+      if (tierB !== tierA) return tierB - tierA;
+      // Then by priority within the same tier
+      return b.priority - a.priority;
+    });
     const topMR = sortedMRs[0];
 
     // Avoid re-displaying the same MR
