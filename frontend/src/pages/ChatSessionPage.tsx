@@ -420,6 +420,7 @@ const ChatSessionPage: React.FC = () => {
     currentBranchPath,
     availableBranchPaths,
     editForkMessageIndex,
+    isSwitchingBranch,
     switchBranchPath,
     forkConversation,
     loadBranchPaths,
@@ -4488,6 +4489,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 currentBranchPath={currentBranchPath}
                 onSwitchBranchPath={switchBranchPath}
                 editForkMessageIndex={editForkMessageIndex}
+                isSwitchingBranch={isSwitchingBranch}
                 showTrustIndicator={showTrustIndicator}
                 messageTrustScores={messageTrustScores}
                 getTrustBadge={getTrustBadge}

@@ -14,6 +14,18 @@ import { useState, useCallback, useRef } from 'react';
 import api, { apiService } from '../services/api';
 import { useSessionStore } from '../stores/sessionStore';
 
+// Debounce helper for preventing rapid function calls
+const debounce = <T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): ((...args: Parameters<T>) => void) => {
+  let timeoutId: NodeJS.Timeout | null = null;
+  return (...args: Parameters<T>) => {
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), wait);
+  };
+};
+
 // ============================================================
 // TYPES
 // ============================================================
@@ -94,6 +106,7 @@ export interface UseMessagesReturn {
   currentBranchPath: string;
   availableBranchPaths: string[];
   editForkMessageIndex: number | null;
+  isSwitchingBranch: boolean;
 
   // Streaming state
   isStreaming: boolean;
@@ -191,6 +204,8 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   const [currentBranchPath, setCurrentBranchPath] = useState<string>('main');
   const [availableBranchPaths, setAvailableBranchPaths] = useState<string[]>(['main']);
   const [editForkMessageIndex, setEditForkMessageIndex] = useState<number | null>(null); // Index of message where edit fork happened
+  const [isSwitchingBranch, setIsSwitchingBranch] = useState(false);
+  const switchingBranchRef = useRef<string | null>(null); // Guard against concurrent switches
 
   /**
    * Load messages for a specific page with pagination
@@ -674,9 +689,16 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
   /**
    * Switch to a different conversation branch path
    * Reloads messages for the selected path
+   * Protected against rapid clicks with ref guard
    */
   const switchBranchPath = useCallback(async (branchPath: string) => {
+    // Guard: skip if no session, same path, or already switching to this path
     if (!sessionId || branchPath === currentBranchPath) return;
+    if (switchingBranchRef.current === branchPath) return;
+
+    // Mark as switching (ref for synchronous guard, state for UI)
+    switchingBranchRef.current = branchPath;
+    setIsSwitchingBranch(true);
 
     try {
       setLoading(true);
@@ -757,6 +779,8 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
       setError('Failed to switch conversation branch');
     } finally {
       setLoading(false);
+      setIsSwitchingBranch(false);
+      switchingBranchRef.current = null;
     }
   }, [sessionId, currentBranchPath]);
 
@@ -922,6 +946,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
     currentBranchPath,
     availableBranchPaths,
     editForkMessageIndex,
+    isSwitchingBranch,
 
     // Streaming state
     isStreaming,

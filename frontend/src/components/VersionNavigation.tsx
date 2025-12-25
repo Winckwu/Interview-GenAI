@@ -30,6 +30,8 @@ export interface VersionNavigationProps {
   tooltip?: string;
   /** Optional: Compact mode for smaller display */
   compact?: boolean;
+  /** Optional: Disable navigation (e.g., during loading) */
+  disabled?: boolean;
 }
 
 export const VersionNavigation: React.FC<VersionNavigationProps> = ({
@@ -42,9 +44,10 @@ export const VersionNavigation: React.FC<VersionNavigationProps> = ({
   showLabel = false,
   tooltip,
   compact = false,
+  disabled = false,
 }) => {
-  const canGoPrev = currentIndex > 0;
-  const canGoNext = currentIndex < totalVersions - 1;
+  const canGoPrev = currentIndex > 0 && !disabled;
+  const canGoNext = currentIndex < totalVersions - 1 && !disabled;
 
   // Theme colors based on message type
   const theme = type === 'user'

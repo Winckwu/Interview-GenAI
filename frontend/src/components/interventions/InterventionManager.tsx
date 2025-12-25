@@ -847,20 +847,9 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     const timeSinceLastAction = Date.now() - lastUserActionTime;
     const inCooldown = lastUserActionTime > 0 && timeSinceLastAction < POST_ACTION_COOLDOWN_MS;
 
-    // DEBUG: Log check conditions
-    console.log('[InterventionManager] Check conditions:', {
-      activeMRsLength: activeMRs.length,
-      messagesLength: messages.length,
-      minMessagesForDetection,
-      isAnalyzing,
-      inCooldown,
-      cooldownRemaining: inCooldown ? Math.round((POST_ACTION_COOLDOWN_MS - timeSinceLastAction) / 1000) : 0,
-      willSkip: activeMRs.length > 0 || messages.length < minMessagesForDetection || isAnalyzing || inCooldown
-    });
-
     // Skip if in cooldown period (user just interacted with an intervention)
     if (inCooldown) {
-      console.log(`[InterventionManager] Frontend detection skipped - post-action cooldown: ${Math.round((POST_ACTION_COOLDOWN_MS - timeSinceLastAction) / 1000)}s remaining`);
+      // Only log cooldown status occasionally (not every render)
       return;
     }
 

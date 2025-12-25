@@ -60,6 +60,7 @@ export interface MessageItemProps {
   currentBranchPath?: string;
   onSwitchBranchPath?: (branchPath: string) => void;
   editForkMessageIndex?: number | null;
+  isSwitchingBranch?: boolean;
 
   // Child components (intervention panels)
   trustIndicator?: React.ReactNode;
@@ -95,6 +96,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   currentBranchPath = 'main',
   onSwitchBranchPath,
   editForkMessageIndex = null,
+  isSwitchingBranch = false,
   trustIndicator,
   hideActionButtons = false,
   isStreaming = false,
@@ -487,6 +489,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   onPrevious={() => handleBranchNavWithHint('prev')}
                   onNext={() => handleBranchNavWithHint('next')}
                   tooltip={`AI response ${currentBranchIndex + 1} of ${totalBranches}. ${branchInfo.label}${branchMetadata?.model ? ` (${branchMetadata.model})` : ''}`}
+                  disabled={isSwitchingBranch}
                 />
 
                 {/* Branch metadata info button */}
@@ -839,16 +842,17 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     currentIndex={currentIndex >= 0 ? currentIndex : 0}
                     totalVersions={availableBranchPaths.length}
                     onPrevious={() => {
-                      if (currentIndex > 0) {
+                      if (currentIndex > 0 && !isSwitchingBranch) {
                         onSwitchBranchPath(availableBranchPaths[currentIndex - 1]);
                       }
                     }}
                     onNext={() => {
-                      if (currentIndex < availableBranchPaths.length - 1) {
+                      if (currentIndex < availableBranchPaths.length - 1 && !isSwitchingBranch) {
                         onSwitchBranchPath(availableBranchPaths[currentIndex + 1]);
                       }
                     }}
-                    tooltip={`Conversation version ${currentIndex + 1} of ${availableBranchPaths.length}. Switching loads a different version of this conversation.`}
+                    tooltip={isSwitchingBranch ? 'Loading...' : `Conversation version ${currentIndex + 1} of ${availableBranchPaths.length}. Switching loads a different version of this conversation.`}
+                    disabled={isSwitchingBranch}
                   />
                 );
               })()}
