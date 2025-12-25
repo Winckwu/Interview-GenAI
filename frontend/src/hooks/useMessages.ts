@@ -10,7 +10,7 @@
  * Extracted from ChatSessionPage.tsx as part of Phase 1 refactoring.
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import api, { apiService } from '../services/api';
 import { useSessionStore } from '../stores/sessionStore';
 
@@ -257,6 +257,20 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
 
     return forkMap;
   }, []);
+
+  /**
+   * Reset branch-related state when session changes
+   * This prevents stale branch data from showing in new conversations
+   */
+  useEffect(() => {
+    // Reset all branch state to defaults when sessionId changes
+    setCurrentBranchPath('main');
+    setAvailableBranchPaths(['main']);
+    setEditForkMessageIndex(null);
+    setMessageForkMap(new Map());
+    setIsSwitchingBranch(false);
+    switchingBranchRef.current = null;
+  }, [sessionId]);
 
   /**
    * Load messages for a specific page with pagination
