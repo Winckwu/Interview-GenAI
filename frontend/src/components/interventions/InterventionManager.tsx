@@ -225,8 +225,11 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
   // Helper: Check if new intervention should override current one
   // Only override if new tier >= current tier
+  // Note: We read store.activeIntervention directly inside the function
+  // instead of making it a dependency to avoid infinite loops
   const shouldOverrideIntervention = useCallback((newTier: string): boolean => {
-    const currentIntervention = store.activeIntervention;
+    // Get current intervention from store (stable reference, not a dependency)
+    const currentIntervention = useInterventionStore.getState().activeIntervention;
     if (!currentIntervention) return true; // No current intervention, allow new one
 
     const currentPriority = getTierPriority(currentIntervention.tier);
@@ -234,7 +237,7 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
 
     // Only override if new intervention has equal or higher priority
     return newPriority >= currentPriority;
-  }, [store.activeIntervention]);
+  }, []); // Empty deps - uses getState() to avoid re-render loops
 
   // SESSION-LEVEL SUPPRESSION (Solution D+C)
   // When user clicks "Don't show again this session", suppress ONLY that specific MR type
