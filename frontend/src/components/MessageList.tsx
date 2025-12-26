@@ -66,6 +66,7 @@ export interface MessageListProps {
   onBranchSwitch?: (messageId: string, direction: 'prev' | 'next') => void;
   onBranchDelete?: (messageId: string) => void;
   onBranchSetAsMain?: (messageId: string) => void;
+  onBranchesUpdate?: (messageId: string, updatedBranches: import('../hooks/useMessages').MessageBranch[]) => void;
 
   // Conversation forking
   onForkConversation?: (messageId: string) => void;
@@ -125,6 +126,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   onBranchSwitch,
   onBranchDelete,
   onBranchSetAsMain,
+  onBranchesUpdate,
   onForkConversation,
   availableBranchPaths = ['main'],
   currentBranchPath = 'main',
@@ -251,6 +253,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             onBranchNext={onBranchSwitch ? () => onBranchSwitch(message.id, 'next') : undefined}
             onBranchDelete={onBranchDelete ? () => onBranchDelete(message.id) : undefined}
             onBranchSetAsMain={onBranchSetAsMain ? () => onBranchSetAsMain(message.id) : undefined}
+            onBranchesUpdate={onBranchesUpdate ? (branches) => onBranchesUpdate(message.id, branches) : undefined}
             onForkConversation={message.role === 'ai' && onForkConversation ? () => onForkConversation(message.id) : undefined}
             availableBranchPaths={availableBranchPaths}
             currentBranchPath={currentBranchPath}

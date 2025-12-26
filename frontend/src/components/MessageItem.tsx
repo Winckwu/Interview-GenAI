@@ -52,6 +52,9 @@ export interface MessageItemProps {
   onBranchDelete?: () => void;
   onBranchSetAsMain?: () => void;
 
+  // Branch bulk operations callback
+  onBranchesUpdate?: (updatedBranches: import('../hooks/useMessages').MessageBranch[]) => void;
+
   // Conversation forking (true branch from this message)
   onForkConversation?: () => void;
 
@@ -93,6 +96,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   onBranchNext,
   onBranchDelete,
   onBranchSetAsMain,
+  onBranchesUpdate,
   onForkConversation,
   availableBranchPaths = ['main'],
   currentBranchPath = 'main',
@@ -188,7 +192,15 @@ export const MessageItem: React.FC<MessageItemProps> = ({
       branchIds.map(id => api.patch(`/branches/${id}`, { wasVerified: true }))
     );
 
-    // Note: Parent component should handle refreshing the message data
+    // Update branches in parent component
+    if (onBranchesUpdate) {
+      const updatedBranches = message.branches.map(branch =>
+        branchIds.includes(branch.id)
+          ? { ...branch, wasVerified: true }
+          : branch
+      );
+      onBranchesUpdate(updatedBranches);
+    }
   };
 
   const handleBulkExport = (branchIds: string[], format: 'json' | 'csv' | 'markdown') => {

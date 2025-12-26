@@ -2005,6 +2005,24 @@ Message: "${firstMessage.slice(0, 200)}"`,
   }, [messages, setMessages]);
 
   /**
+   * Handle branch bulk updates - Updates branches in a message (e.g., after bulk verify)
+   */
+  const handleBranchesUpdate = useCallback((messageId: string, updatedBranches: import('../hooks/useMessages').MessageBranch[]) => {
+    const messageIndex = messages.findIndex(m => m.id === messageId);
+    if (messageIndex === -1) return;
+
+    const message = messages[messageIndex];
+    const updatedMessage = {
+      ...message,
+      branches: updatedBranches,
+    };
+
+    const updatedMessages = [...messages];
+    updatedMessages[messageIndex] = updatedMessage;
+    setMessages(updatedMessages);
+  }, [messages, setMessages]);
+
+  /**
    * Handle fork conversation - Creates a new conversation timeline from a specific message
    * User will be prompted to name the branch, then can continue chatting on the new branch
    */
@@ -4577,6 +4595,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
                 onBranchSwitch={handleBranchSwitch}
                 onBranchDelete={handleDeleteBranch}
                 onBranchSetAsMain={handleSetBranchAsMain}
+                onBranchesUpdate={handleBranchesUpdate}
                 onForkConversation={handleForkConversation}
                 availableBranchPaths={availableBranchPaths}
                 currentBranchPath={currentBranchPath}
