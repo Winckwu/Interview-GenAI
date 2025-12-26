@@ -1003,9 +1003,11 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
             </button>
           </div>
 
+          {/* History Section - HIDDEN for cleaner UI */}
+          {false && (
+          <>
           <div className="mr2-tab-divider"></div>
 
-          {/* History Section */}
           <div className="mr2-tab-group">
             <span className="mr2-tab-group-label">History</span>
             <button
@@ -1030,8 +1032,12 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
               🧠 Reasoning
             </button>
           </div>
+          </>
+          )}
         </div>
 
+        {/* Export buttons - HIDDEN for cleaner UI */}
+        {false && (
         <div className="mr2-actions">
           <button className="mr2-btn-export" onClick={() => handleExport('markdown')}>
             📄 Export Markdown
@@ -1047,10 +1053,12 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
             📕 Export PDF
           </button>
         </div>
+        )}
       </div>
 
       <div className="mr2-content-area">
-        {versions.length > 0 && renderVersionSelector()}
+        {/* Turns sidebar - HIDDEN for cleaner UI */}
+        {false && versions.length > 0 && renderVersionSelector()}
 
         <div className="mr2-main-view">
           {viewMode === 'insights' && renderInsightsView()}
