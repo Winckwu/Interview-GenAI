@@ -33,64 +33,67 @@ export interface ModelPerformance {
 
 /**
  * Call multiple AI models in parallel and compare outputs
+ * Throws error if API call fails - caller should handle error display
  */
 export async function callMultipleModels(
   userPrompt: string,
   conversationHistory: Array<{ role: string; content: string }> = [],
   models: ModelType[] = ['gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo']
 ): Promise<ModelComparison> {
-  try {
-    // Call backend multi-model endpoint
-    const response = await apiService.ai.multiModel(
-      userPrompt,
-      conversationHistory,
-      models
-    );
+  // Call backend multi-model endpoint
+  const response = await apiService.ai.multiModel(
+    userPrompt,
+    conversationHistory,
+    models
+  );
 
-    if (response.data?.success && response.data?.data?.comparisons) {
-      const comparisons = response.data.data.comparisons;
-      const outputs: Record<ModelType, string> = {} as any;
-      const metrics: Record<ModelType, ComparisonMetrics> = {} as any;
+  if (response.data?.success && response.data?.data?.comparisons) {
+    const comparisons = response.data.data.comparisons;
+    const outputs: Record<ModelType, string> = {} as any;
+    const metrics: Record<ModelType, ComparisonMetrics> = {} as any;
 
-      comparisons.forEach((comp: any) => {
-        const modelId = comp.modelId as ModelType;
-        outputs[modelId] = comp.content;
-        metrics[modelId] = {
-          speed: comp.latency / 1000, // Convert ms to seconds
-          tokenCount: comp.usage?.totalTokens || 0,
-          quality: 0, // Will be set by user rating
-          relevance: 0, // Will be set by user rating
-          cost: comp.estimatedCost || 0,
-        };
-      });
-
-      // Determine best model based on latency and token efficiency
-      const bestModel = models.reduce((best, model) => {
-        const bestMetrics = metrics[best];
-        const currentMetrics = metrics[model];
-
-        // Lower latency + lower token count = better
-        const bestScore = bestMetrics.speed * 0.5 + (bestMetrics.tokenCount / 1000) * 0.5;
-        const currentScore = currentMetrics.speed * 0.5 + (currentMetrics.tokenCount / 1000) * 0.5;
-
-        return currentScore < bestScore ? model : best;
-      });
-
-      return {
-        models,
-        outputs,
-        metrics,
-        bestModel,
-        reasoning: generateReasoning(bestModel, metrics),
-        recommendedFor: getRecommendedTasks(bestModel),
+    comparisons.forEach((comp: any) => {
+      const modelId = comp.modelId as ModelType;
+      outputs[modelId] = comp.content;
+      metrics[modelId] = {
+        speed: comp.latency / 1000, // Convert ms to seconds
+        tokenCount: comp.usage?.totalTokens || 0,
+        quality: 0, // Will be set by user rating
+        relevance: 0, // Will be set by user rating
+        cost: parseFloat(comp.estimatedCost) || 0,
       };
-    }
-  } catch (error) {
-    console.error('[MR6] Multi-model call failed:', error);
+    });
+
+    // Determine best model based on latency and token efficiency
+    const bestModel = models.reduce((best, model) => {
+      const bestMetrics = metrics[best];
+      const currentMetrics = metrics[model];
+
+      // Handle missing metrics gracefully
+      if (!currentMetrics) return best;
+      if (!bestMetrics) return model;
+
+      // Lower latency + lower token count = better
+      const bestScore = bestMetrics.speed * 0.5 + (bestMetrics.tokenCount / 1000) * 0.5;
+      const currentScore = currentMetrics.speed * 0.5 + (currentMetrics.tokenCount / 1000) * 0.5;
+
+      return currentScore < bestScore ? model : best;
+    });
+
+    return {
+      models,
+      outputs,
+      metrics,
+      bestModel,
+      reasoning: generateReasoning(bestModel, metrics),
+      recommendedFor: getRecommendedTasks(bestModel),
+    };
   }
 
-  // Fallback to mock data
-  return generateMockComparison(models, userPrompt);
+  // API returned unexpected format
+  const errorMessage = response.data?.error || 'API returned unexpected response format';
+  console.error('[MR6] API error:', errorMessage);
+  throw new Error(errorMessage);
 }
 
 function generateReasoning(bestModel: ModelType, metrics: Record<ModelType, ComparisonMetrics>): string {

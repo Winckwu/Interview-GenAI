@@ -1702,21 +1702,34 @@ Message: "${firstMessage.slice(0, 200)}"`,
   /**
    * Handle MR6 model selection - Create a new branch with selected model output
    * Preserves original conversation while allowing exploration of alternatives
+   * Works both when opened from a specific message suggestion OR manually
    */
   const handleMR6ModelSelected = useCallback(async (model: string, output: string) => {
-    if (!mr6Context) {
-      console.error('[MR6] No context available for branch creation');
+    // Determine target message - either from context or find last AI message
+    let targetMessage: Message | undefined;
+    let targetMessageIndex: number;
+
+    if (mr6Context) {
+      // Use saved context from clicking specific message's MR6 suggestion
+      targetMessage = messages[mr6Context.messageIndex];
+      targetMessageIndex = mr6Context.messageIndex;
+    } else {
+      // MR6 opened manually - find the last AI message to add branch to
+      targetMessageIndex = messages.length - 1;
+      while (targetMessageIndex >= 0 && messages[targetMessageIndex].role !== 'ai') {
+        targetMessageIndex--;
+      }
+      targetMessage = targetMessageIndex >= 0 ? messages[targetMessageIndex] : undefined;
+    }
+
+    if (!targetMessage || targetMessage.role !== 'ai') {
+      console.error('[MR6] No AI message found to add branch to');
+      setErrorMessage('No AI message found to add this response to.');
+      setTimeout(() => setErrorMessage(null), 3000);
       return;
     }
 
     try {
-      // Find the message to branch from
-      const targetMessage = messages[mr6Context.messageIndex];
-      if (!targetMessage || targetMessage.role !== 'ai') {
-        console.error('[MR6] Invalid message to branch from');
-        return;
-      }
-
       // Get the interaction ID (remove 'user-' prefix if present)
       const interactionId = targetMessage.id.startsWith('user-')
         ? targetMessage.id.replace('user-', '')
@@ -1752,7 +1765,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
       // Update messages array
       const updatedMessages = [...messages];
-      updatedMessages[mr6Context.messageIndex] = updatedMessage;
+      updatedMessages[targetMessageIndex] = updatedMessage;
       setMessages(updatedMessages);
 
       // Persist the branch selection to backend (so it survives page refresh)

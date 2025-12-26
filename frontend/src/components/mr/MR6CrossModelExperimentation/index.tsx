@@ -90,6 +90,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
   const [selectedModels, setSelectedModels] = useState<ModelType[]>(availableModels);
   const [comparison, setComparison] = useState<ModelComparison | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedMetrics, setSelectedMetrics] = useState<(keyof ComparisonMetrics)[]>([
     'speed',
     'tokenCount',
@@ -134,6 +135,8 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
 
     setIsLoading(true);
     setActiveStep(3);
+    setError(null);
+    setComparison(null);
 
     // Track running the experiment
     flowTracker?.recordInteraction?.('MR6', 'run_experiment', {
@@ -165,8 +168,9 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
       });
 
       onComparisonComplete?.(comp);
-    } catch (error) {
-      console.error('[MR6] Failed to run experiment:', error);
+    } catch (err: any) {
+      console.error('[MR6] Failed to run experiment:', err);
+      setError(err.message || 'Failed to call AI models. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -362,7 +366,22 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
 
         {/* Right Panel - Results */}
         <div className="mr6-results-panel">
-          {comparison ? (
+          {error ? (
+            <div className="mr6-error-state">
+              <div className="mr6-error-icon">❌</div>
+              <h3 className="mr6-error-title">Failed to Compare Models</h3>
+              <p className="mr6-error-desc">{error}</p>
+              <button
+                className="mr6-retry-btn"
+                onClick={() => {
+                  setError(null);
+                  setActiveStep(2);
+                }}
+              >
+                Try Again
+              </button>
+            </div>
+          ) : comparison ? (
             <>
               <div className="mr6-results-header">
                 <h2 className="mr6-results-title">📊 Comparison Results</h2>

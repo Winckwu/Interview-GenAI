@@ -688,6 +688,56 @@
   font-size: 0.9rem;
 }
 
+/* ========================================
+   Error State
+   ======================================== */
+.mr6-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 12px;
+  min-height: 350px;
+}
+
+.mr6-error-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.mr6-error-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.mr6-error-desc {
+  margin: 0 0 1.5rem 0;
+  color: #991b1b;
+  font-size: 0.9rem;
+  max-width: 400px;
+}
+
+.mr6-retry-btn {
+  padding: 0.75rem 1.5rem;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.mr6-retry-btn:hover {
+  background: #b91c1c;
+}
+
 .mr6-empty-tips {
   display: flex;
   flex-direction: column;
