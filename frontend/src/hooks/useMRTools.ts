@@ -7,11 +7,12 @@
  * - MR tool-specific state (verification logs, conversation branches, etc.)
  * - Tool usage tracking
  * - Helper functions to open specific MR tools
+ * - Integration with MRFlowTracker for comprehensive usage tracking
  *
  * Extracted from ChatSessionPage.tsx as part of Phase 1 refactoring.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 // ============================================================
 // TYPES
@@ -49,9 +50,17 @@ export const INTERVENTION_LEVEL_MIGRATION: Record<string, InterventionLevel> = {
   'proactive': 'active',
 };
 
+// Flow tracker integration interface
+export interface FlowTrackerCallbacks {
+  startFlow: (mrId: string) => void;
+  endFlow: (mrId: string, reason?: 'close' | 'navigate' | 'timeout') => void;
+}
+
 export interface UseMRToolsOptions {
   onToolOpened?: (toolId: ActiveMRTool) => void;
+  onToolClosed?: (toolId: ActiveMRTool) => void;
   onSuccessMessage?: (message: string) => void;
+  flowTracker?: FlowTrackerCallbacks;
 }
 
 export interface UseMRToolsReturn {
@@ -105,10 +114,11 @@ export interface UseMRToolsReturn {
 // ============================================================
 
 export function useMRTools(options: UseMRToolsOptions = {}): UseMRToolsReturn {
-  const { onToolOpened, onSuccessMessage } = options;
+  const { onToolOpened, onToolClosed, onSuccessMessage, flowTracker } = options;
 
   // MR Tools Panel state
   const [activeMRTool, setActiveMRTool] = useState<ActiveMRTool>('none');
+  const previousToolRef = useRef<ActiveMRTool>('none');
   const [showMRToolsPanel, setShowMRToolsPanel] = useState(false);
   const [showMRToolsSection, setShowMRToolsSection] = useState(true);
 
@@ -127,6 +137,29 @@ export function useMRTools(options: UseMRToolsOptions = {}): UseMRToolsReturn {
   const [conversationBranches, setConversationBranches] = useState<any[]>([]);
   const [verificationLogs, setVerificationLogs] = useState<any[]>([]);
   const [usedMRTools, setUsedMRTools] = useState<string[]>([]);
+
+  /**
+   * Effect: Track tool changes for MR flow tracking
+   * - End flow when tool is closed
+   * - Start flow when tool is opened
+   */
+  useEffect(() => {
+    const prevTool = previousToolRef.current;
+
+    // End previous tool flow if it was open
+    if (prevTool !== 'none' && prevTool !== activeMRTool) {
+      flowTracker?.endFlow(prevTool, 'close');
+      onToolClosed?.(prevTool);
+    }
+
+    // Start new tool flow if opening a tool
+    if (activeMRTool !== 'none' && activeMRTool !== prevTool) {
+      flowTracker?.startFlow(activeMRTool);
+    }
+
+    // Update ref
+    previousToolRef.current = activeMRTool;
+  }, [activeMRTool, flowTracker, onToolClosed]);
 
   /**
    * Track when MR tools are opened

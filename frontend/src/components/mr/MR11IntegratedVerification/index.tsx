@@ -43,6 +43,13 @@ import {
 import { apiService } from '../../../services/api';
 import './styles.css';
 
+// Flow tracker interface for MR usage tracking
+interface FlowTrackerProps {
+  recordInteraction?: (mrId: string, interactionType: string, data?: any) => void;
+  recordApply?: (mrId: string, result?: any) => void;
+  recordComplete?: (mrId: string) => void;
+}
+
 interface MR11Props {
   sessionId?: string;
   onDecisionMade?: (log: VerificationLog) => void;
@@ -54,6 +61,8 @@ interface MR11Props {
   onMessageVerified?: (messageId: string, decision: UserDecision) => void;
   /** Use compact mode for sidebar/floating panel display */
   compact?: boolean;
+  // MR Flow Tracker integration
+  flowTracker?: FlowTrackerProps;
 }
 
 type TabType = 'verify' | 'history' | 'stats';
@@ -64,7 +73,8 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
   initialContent = '',
   messageId,
   onMessageVerified,
-  compact = true // Default to compact for sidebar usage
+  compact = true, // Default to compact for sidebar usage
+  flowTracker
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('verify');
 
@@ -242,9 +252,15 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       return;
     }
 
+    // Track input content
+    flowTracker?.recordInteraction?.('MR11', 'input_content', { contentLength: contentText.length });
+
     // Auto-detect content type
     const detected = detectContentType(contentText);
     setContentType(detected);
+
+    // Track content type selection
+    flowTracker?.recordInteraction?.('MR11', 'select_type', { contentType: detected });
 
     // Get recommended method
     const method = getRecommendedMethod(detected);
@@ -262,17 +278,27 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     setVerifying(true);
     setVerificationResult(null);
 
+    // Track running verification
+    flowTracker?.recordInteraction?.('MR11', 'run_verification', { method, contentType: detected });
+
     try {
       const result = await performVerificationAsync(content, method);
       setVerificationResult(result);
       setUserDecision(null);
+
+      // Track viewing results
+      flowTracker?.recordInteraction?.('MR11', 'view_results', {
+        status: result.status,
+        discrepanciesCount: result.discrepancies.length,
+        confidenceScore: result.confidenceScore
+      });
     } catch (error) {
       console.error('[MR11] One-click verification failed:', error);
       alert('Verification failed. Please try again.');
     } finally {
       setVerifying(false);
     }
-  }, [contentText]);
+  }, [contentText, flowTracker]);
 
   /**
    * Make a decision on verification result
@@ -285,12 +311,24 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
       return;
     }
 
+    // Track making decision
+    flowTracker?.recordInteraction?.('MR11', 'make_decision', {
+      decision: userDecision,
+      verificationStatus: verificationResult.status,
+      hasNotes: decisionNotes.trim().length > 0
+    });
+
     console.log('[MR11] Saving decision to database...');
     const log = createVerificationLog(verificationResult, userDecision, decisionNotes);
     onDecisionMade?.(log);
 
     // Save to database
     await saveLogToDB(verificationResult, userDecision, decisionNotes);
+
+    // Track confirmation (apply result)
+    flowTracker?.recordInteraction?.('MR11', 'confirm', { decision: userDecision });
+    flowTracker?.recordApply?.('MR11', { decision: userDecision, verificationResult });
+    flowTracker?.recordComplete?.('MR11');
 
     // Refresh database history to update stats (small delay to ensure DB commit)
     setTimeout(async () => {
@@ -309,7 +347,7 @@ const MR11IntegratedVerification: React.FC<MR11Props> = ({
     setVerificationResult(null);
     setUserDecision(null);
     setDecisionNotes('');
-  }, [verificationResult, userDecision, decisionNotes, onDecisionMade, messageId, onMessageVerified, saveLogToDB, loadHistoryFromDB]);
+  }, [verificationResult, userDecision, decisionNotes, onDecisionMade, messageId, onMessageVerified, saveLogToDB, loadHistoryFromDB, flowTracker]);
 
   /**
    * Update decision and evaluate actual correctness

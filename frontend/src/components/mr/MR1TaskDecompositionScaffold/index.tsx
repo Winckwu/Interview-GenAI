@@ -99,6 +99,13 @@ function savePersistedState(sessionId: string | undefined, data: Omit<PersistedM
   }
 }
 
+// Flow tracker interface for MR usage tracking
+interface FlowTrackerProps {
+  recordInteraction?: (mrId: string, interactionType: string, data?: any) => void;
+  recordApply?: (mrId: string, result?: any) => void;
+  recordComplete?: (mrId: string) => void;
+}
+
 interface MR1Props {
   sessionId?: string; // Session ID for persistence
   onDecompositionComplete?: (decomposition: TaskDecomposition) => void;
@@ -107,6 +114,8 @@ interface MR1Props {
   initialTask?: string;
   onHistoryChange?: (history: TaskDecomposition[]) => void;
   onOpenMR4?: () => void; // NEW: Callback to open MR4 role definition
+  // MR Flow Tracker integration
+  flowTracker?: FlowTrackerProps;
 }
 
 export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
@@ -116,7 +125,8 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
   onStrategySelected,
   initialTask = '',
   onHistoryChange,
-  onOpenMR4
+  onOpenMR4,
+  flowTracker
 }) => {
   // Try to load persisted state on initial mount (session-specific)
   const persistedState = useRef(loadPersistedState(sessionId));
@@ -214,6 +224,9 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
 
     setIsLoading(true);
     try {
+      // Track interaction
+      flowTracker?.recordInteraction?.('MR1', 'analyze_task', { taskLength: state.originalTask.length });
+
       // Analyze task dimensions
       const analyzed = await analyzeTaskDimensions(state.originalTask);
       setDimensions(analyzed);
@@ -229,7 +242,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [state.originalTask, onTaskAnalyzed]);
+  }, [state.originalTask, onTaskAnalyzed, flowTracker]);
 
   /**
    * Step 2: Generate initial decomposition
@@ -241,6 +254,12 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
         state.originalTask,
         state.decompositionStrategy
       );
+
+      // Track viewing decomposition result
+      flowTracker?.recordInteraction?.('MR1', 'view_decomposition', {
+        subtaskCount: decomposed.suggestedSubtasks.length,
+        strategy: state.decompositionStrategy
+      });
 
       setState(prev => ({
         ...prev,
@@ -255,7 +274,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [state.originalTask, state.decompositionStrategy]);
+  }, [state.originalTask, state.decompositionStrategy, flowTracker]);
 
   /**
    * Handle strategy selection
@@ -275,6 +294,9 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
    * Approve a suggested subtask
    */
   const handleApproveSubtask = useCallback((subtaskId: string) => {
+    // Track step selection
+    flowTracker?.recordInteraction?.('MR1', 'select_step', { subtaskId, action: 'approve' });
+
     setState(prev => ({
       ...prev,
       userModifiedSubtasks: [
@@ -283,7 +305,7 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       ],
       suggestedSubtasks: prev.suggestedSubtasks.filter(s => s.id !== subtaskId)
     }));
-  }, []);
+  }, [flowTracker]);
 
   /**
    * Modify and approve a subtask
@@ -360,6 +382,13 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       (sum, s) => sum + (s.estimatedTime || 0), 0
     );
 
+    // Track apply action (decomposition result being applied)
+    flowTracker?.recordInteraction?.('MR1', 'apply', {
+      subtaskCount: state.userModifiedSubtasks.length,
+      totalEstimatedTime
+    });
+    flowTracker?.recordApply?.('MR1', decomposition);
+
     // Save to database
     try {
       await apiService.decompositions.create({
@@ -390,8 +419,11 @@ export const MR1TaskDecompositionScaffold: React.FC<MR1Props> = ({
       onHistoryChange(historyRef.current);
     }
 
+    // Track completion
+    flowTracker?.recordComplete?.('MR1');
+
     setStep('complete');
-  }, [sessionId, state, dimensions, onDecompositionComplete, onHistoryChange]);
+  }, [sessionId, state, dimensions, onDecompositionComplete, onHistoryChange, flowTracker]);
 
   /**
    * Render step 1: Task input

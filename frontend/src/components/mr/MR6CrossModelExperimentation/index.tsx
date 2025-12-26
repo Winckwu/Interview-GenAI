@@ -27,6 +27,13 @@ import {
 } from './utils';
 import './styles.css';
 
+// Flow tracker interface for MR usage tracking
+interface FlowTrackerProps {
+  recordInteraction?: (mrId: string, interactionType: string, data?: any) => void;
+  recordApply?: (mrId: string, result?: any) => void;
+  recordComplete?: (mrId: string) => void;
+}
+
 interface MR6Props {
   prompt?: string;
   taskType?: string;
@@ -34,6 +41,8 @@ interface MR6Props {
   onModelSelected?: (model: ModelType, output: string) => void;
   onComparisonComplete?: (comparison: ModelComparison) => void;
   availableModels?: ModelType[];
+  // MR Flow Tracker integration
+  flowTracker?: FlowTrackerProps;
 }
 
 export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
@@ -43,6 +52,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
   onModelSelected,
   onComparisonComplete,
   availableModels = ['gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo'],
+  flowTracker,
 }) => {
   const [selectedModels, setSelectedModels] = useState<ModelType[]>(availableModels);
   const [comparison, setComparison] = useState<ModelComparison | null>(null);
@@ -63,6 +73,13 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
 
     setIsLoading(true);
 
+    // Track running the experiment
+    flowTracker?.recordInteraction?.('MR6', 'run_experiment', {
+      modelCount: selectedModels.length,
+      models: selectedModels,
+      promptLength: userPrompt.length
+    });
+
     try {
       // Convert conversation history to API format
       const apiHistory = conversationHistory.map(msg => ({
@@ -78,13 +95,20 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
       );
 
       setComparison(comp);
+
+      // Track viewing comparison results
+      flowTracker?.recordInteraction?.('MR6', 'view_comparison', {
+        bestModel: comp.bestModel,
+        modelCount: selectedModels.length
+      });
+
       onComparisonComplete?.(comp);
     } catch (error) {
       console.error('[MR6] Failed to run experiment:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [userPrompt, conversationHistory, selectedModels, onComparisonComplete]);
+  }, [userPrompt, conversationHistory, selectedModels, onComparisonComplete, flowTracker]);
 
   return (
     <div className="mr6-container">
@@ -117,8 +141,11 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
                     onChange={e => {
                       if (e.target.checked) {
                         setSelectedModels(prev => [...prev, model]);
+                        // Track model selection
+                        flowTracker?.recordInteraction?.('MR6', 'select_model', { model, action: 'add' });
                       } else {
                         setSelectedModels(prev => prev.filter(m => m !== model));
+                        flowTracker?.recordInteraction?.('MR6', 'select_model', { model, action: 'remove' });
                       }
                     }}
                   />
@@ -229,7 +256,13 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
 
                     <button
                       className="mr6-select-btn"
-                      onClick={() => onModelSelected?.(model, modelOutput || '')}
+                      onClick={() => {
+                        // Track making a selection (completing the MR flow)
+                        flowTracker?.recordInteraction?.('MR6', 'make_selection', { model });
+                        flowTracker?.recordApply?.('MR6', { model, output: modelOutput });
+                        flowTracker?.recordComplete?.('MR6');
+                        onModelSelected?.(model, modelOutput || '');
+                      }}
                     >
                       ✓ Replace with This Answer
                     </button>

@@ -50,6 +50,7 @@ import { useMRTools, type ActiveMRTool } from '../hooks/useMRTools';
 import { useGlobalRecommendations } from '../hooks/useGlobalRecommendations';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { useLearningProgress } from '../hooks/useLearningProgress';
+import useMRFlowTracker from '../hooks/useMRFlowTracker';
 
 // Phase 2 Refactoring: Message Components
 import MessageList from '../components/MessageList';
@@ -338,14 +339,27 @@ const ChatSessionPage: React.FC = () => {
     },
   });
 
+  // Hook 1.5: MR Flow Tracker - Comprehensive MR usage tracking
+  const mrFlowTracker = useMRFlowTracker(sessionId || 'anonymous');
+
   // Hook 2: MR Tools Management
   const mrToolsHook = useMRTools({
     onToolOpened: (toolId) => {
       // Tool opened - tracking handled by MR tools hook
+      console.log(`[ChatSessionPage] MR tool opened: ${toolId}`);
+    },
+    onToolClosed: (toolId) => {
+      // Tool closed - flow tracker handles outcome calculation
+      console.log(`[ChatSessionPage] MR tool closed: ${toolId}`);
     },
     onSuccessMessage: (msg) => {
       // Show success messages from MR tool operations
       messagesHook.setSuccessMessage(msg);
+    },
+    // Pass flow tracker for automatic start/end flow on tool open/close
+    flowTracker: {
+      startFlow: mrFlowTracker.startFlow,
+      endFlow: mrFlowTracker.endFlow,
     },
   });
 
@@ -2170,7 +2184,16 @@ Message: "${firstMessage.slice(0, 200)}"`,
   const renderActiveMRTool = useCallback(() => {
     switch (activeMRTool) {
       case 'mr1-decomposition':
-        return <MR1TaskDecompositionScaffold sessionId={sessionId || ''} onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)} onOpenMR4={openMR4RoleDefinition} />;
+        return <MR1TaskDecompositionScaffold
+          sessionId={sessionId || ''}
+          onDecompositionComplete={(subtasks) => console.log('Decomposed:', subtasks)}
+          onOpenMR4={openMR4RoleDefinition}
+          flowTracker={{
+            recordInteraction: mrFlowTracker.recordInteraction,
+            recordApply: mrFlowTracker.recordApply,
+            recordComplete: mrFlowTracker.recordComplete,
+          }}
+        />;
       case 'mr2-transparency':
         return <MR2ProcessTransparency
           sessionId={sessionId || ''}
@@ -2262,6 +2285,11 @@ Message: "${firstMessage.slice(0, 200)}"`,
           taskType={sessionData?.taskType}
           onModelSelected={handleMR6ModelSelected}
           onComparisonComplete={(r) => console.log('Comparison:', r)}
+          flowTracker={{
+            recordInteraction: mrFlowTracker.recordInteraction,
+            recordApply: mrFlowTracker.recordApply,
+            recordComplete: mrFlowTracker.recordComplete,
+          }}
         />;
       }
       case 'mr7-failure':
@@ -2278,6 +2306,11 @@ Message: "${firstMessage.slice(0, 200)}"`,
           messageId={verifyingMessageId || undefined}
           onMessageVerified={handleMR11Decision}
           compact={true}
+          flowTracker={{
+            recordInteraction: mrFlowTracker.recordInteraction,
+            recordApply: mrFlowTracker.recordApply,
+            recordComplete: mrFlowTracker.recordComplete,
+          }}
         />;
       case 'mr12-critical':
         // When opened from sidebar (no target content), enable manual input mode
