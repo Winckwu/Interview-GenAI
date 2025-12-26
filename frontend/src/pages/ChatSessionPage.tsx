@@ -1504,14 +1504,14 @@ Message: "${firstMessage.slice(0, 200)}"`,
         : aiMessage.id;
 
       // Save branch to database
-      const response = await api.post('/branches', {
+      const branchResponse = await api.post('/branches', {
         interactionId,
         branchContent: cleanContent,
         source: 'manual',
         model: options.model,
       });
 
-      const savedBranch = response.data.data.branch;
+      const savedBranch = branchResponse.data.data.branch;
 
       // Create branch object for frontend
       const newBranch: import('../hooks/useMessages').MessageBranch = {
