@@ -205,7 +205,7 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
   const levels: InterventionLevel[] = ['minimal', 'balanced', 'active'];
   const currentIndex = levels.indexOf(level);
   const config = LEVEL_CONFIG[level];
-  const isDefault = level === 'balanced';
+  const isDefault = level === 'active';
 
   if (compact) {
     return (
@@ -254,7 +254,7 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
         {!isDefault && (
           <button
             className="mr3-reset-btn"
-            onClick={() => handleLevelChange('balanced')}
+            onClick={() => handleLevelChange('active')}
             title="Reset to default"
           >
             Reset
@@ -381,7 +381,7 @@ export const MR3HumanAgencyControl: React.FC<MR3Props> = ({
             >
               <span className="mr3-level-icon">{cfg.icon}</span>
               <span className="mr3-level-label">{cfg.label}</span>
-              {l === 'balanced' && (
+              {l === 'active' && (
                 <span className="mr3-level-default">Default</span>
               )}
               {!isAllowed && <span className="mr3-locked-icon">🔒</span>}
