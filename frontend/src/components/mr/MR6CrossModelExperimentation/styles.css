@@ -1,16 +1,721 @@
 /**
- * MR6: Cross-Model Experimentation - Styling
+ * MR6: Cross-Model Experimentation - Optimized Styling
+ * Enhanced UX with step indicator, quick presets, and better visual hierarchy
  */
 
 .mr6-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem;
   background: var(--mr6-bg, #ffffff);
   font-family: system-ui, -apple-system, sans-serif;
   color: var(--mr6-text, #1a1a1a);
 }
 
+/* ========================================
+   Optimized Header
+   ======================================== */
+.mr6-header-compact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--mr6-border, #e0e0e0);
+}
+
+.mr6-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mr6-title-compact {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--mr6-text, #1a1a1a);
+}
+
+.mr6-subtitle-compact {
+  margin: 0;
+  color: var(--mr6-secondary, #666);
+  font-size: 0.9rem;
+}
+
+.mr6-guide-toggle {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--mr6-border, #e0e0e0);
+  border-radius: 6px;
+  color: var(--mr6-secondary, #666);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mr6-guide-toggle:hover {
+  background: var(--mr6-secondary-bg, #f5f5f5);
+  border-color: var(--mr6-accent, #0066ff);
+  color: var(--mr6-accent, #0066ff);
+}
+
+/* ========================================
+   Collapsible Model Guide
+   ======================================== */
+.mr6-model-guide-compact {
+  background: var(--mr6-secondary-bg, #f9f9f9);
+  border: 1px solid var(--mr6-border, #e0e0e0);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mr6-guide-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.mr6-guide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.mr6-guide-icon {
+  font-size: 1.5rem;
+}
+
+.mr6-guide-item strong {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.mr6-guide-desc {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--mr6-secondary, #666);
+}
+
+/* ========================================
+   Step Indicator
+   ======================================== */
+.mr6-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--mr6-secondary-bg, #f9f9f9);
+  border-radius: 8px;
+}
+
+.mr6-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--mr6-secondary, #999);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.mr6-step.active {
+  color: var(--mr6-accent, #0066ff);
+}
+
+.mr6-step.completed {
+  color: #10b981;
+}
+
+.mr6-step-number {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--mr6-border, #e0e0e0);
+  color: var(--mr6-secondary, #666);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.mr6-step.active .mr6-step-number {
+  background: var(--mr6-accent, #0066ff);
+  color: white;
+}
+
+.mr6-step.completed .mr6-step-number {
+  background: #10b981;
+  color: white;
+}
+
+.mr6-step-line {
+  width: 60px;
+  height: 2px;
+  background: var(--mr6-border, #e0e0e0);
+  margin: 0 0.75rem;
+}
+
+/* ========================================
+   Optimized Layout
+   ======================================== */
+.mr6-layout-optimized {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.5rem;
+}
+
+.mr6-controls-optimized {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.mr6-section-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--mr6-text, #1a1a1a);
+}
+
+/* ========================================
+   Quick Presets
+   ======================================== */
+.mr6-quick-section {
+  padding: 1rem;
+  background: var(--mr6-secondary-bg, #f9f9f9);
+  border: 1px solid var(--mr6-border, #e0e0e0);
+  border-radius: 8px;
+}
+
+.mr6-preset-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.mr6-preset-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--mr6-bg, #ffffff);
+  border: 1.5px solid var(--mr6-border, #e0e0e0);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.mr6-preset-btn:hover {
+  border-color: var(--mr6-accent, #0066ff);
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.02) 0%, rgba(0, 102, 255, 0.05) 100%);
+}
+
+.mr6-preset-btn.active {
+  border-color: var(--mr6-accent, #0066ff);
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.05) 0%, rgba(0, 102, 255, 0.1) 100%);
+}
+
+.mr6-preset-icon {
+  font-size: 1.25rem;
+}
+
+.mr6-preset-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* ========================================
+   Model Toggle Buttons
+   ======================================== */
+.mr6-model-section {
+  padding: 1rem;
+  background: var(--mr6-secondary-bg, #f9f9f9);
+  border: 1px solid var(--mr6-border, #e0e0e0);
+  border-radius: 8px;
+}
+
+.mr6-model-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mr6-model-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--mr6-bg, #ffffff);
+  border: 2px solid var(--mr6-border, #e0e0e0);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  position: relative;
+}
+
+.mr6-model-toggle:hover {
+  border-color: var(--mr6-accent, #0066ff);
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.1);
+}
+
+.mr6-model-toggle.selected {
+  border-color: var(--mr6-accent, #0066ff);
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.03) 0%, rgba(0, 102, 255, 0.08) 100%);
+}
+
+.mr6-toggle-icon {
+  font-size: 1.25rem;
+}
+
+.mr6-toggle-name {
+  flex: 1;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.mr6-toggle-tag {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+}
+
+.mr6-toggle-recommended {
+  padding: 0.15rem 0.4rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.mr6-toggle-check {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--mr6-border, #e0e0e0);
+  color: transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.mr6-toggle-check.visible {
+  background: var(--mr6-accent, #0066ff);
+  color: white;
+}
+
+/* ========================================
+   Prompt Section
+   ======================================== */
+.mr6-prompt-section {
+  padding: 1rem;
+  background: var(--mr6-secondary-bg, #f9f9f9);
+  border: 1px solid var(--mr6-border, #e0e0e0);
+  border-radius: 8px;
+}
+
+.mr6-prompt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.mr6-prompt-header .mr6-section-title {
+  margin-bottom: 0;
+}
+
+.mr6-use-chat-btn {
+  padding: 0.35rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--mr6-accent, #0066ff);
+  border-radius: 4px;
+  color: var(--mr6-accent, #0066ff);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mr6-use-chat-btn:hover {
+  background: var(--mr6-accent, #0066ff);
+  color: white;
+}
+
+.mr6-textarea-optimized {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--mr6-border, #e0e0e0);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  background: var(--mr6-bg, #ffffff);
+  color: var(--mr6-text, #1a1a1a);
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.mr6-textarea-optimized:focus {
+  outline: none;
+  border-color: var(--mr6-accent, #0066ff);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+.mr6-textarea-optimized::placeholder {
+  color: var(--mr6-secondary, #999);
+}
+
+/* ========================================
+   Run Button
+   ======================================== */
+.mr6-run-btn-optimized {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mr6-run-btn-optimized:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0052cc 0%, #003d99 100%);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.mr6-run-btn-optimized:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.mr6-loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mr6-warning {
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 4px;
+  color: #92400e;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ========================================
+   Results Panel
+   ======================================== */
+.mr6-results-panel {
+  min-height: 400px;
+}
+
+.mr6-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.mr6-results-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.mr6-metric-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mr6-metric-pill {
+  padding: 0.4rem 0.75rem;
+  background: var(--mr6-bg, #ffffff);
+  border: 1px solid var(--mr6-border, #e0e0e0);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mr6-metric-pill:hover {
+  border-color: var(--mr6-accent, #0066ff);
+}
+
+.mr6-metric-pill.active {
+  background: var(--mr6-accent, #0066ff);
+  border-color: var(--mr6-accent, #0066ff);
+  color: white;
+}
+
+/* ========================================
+   Result Cards
+   ======================================== */
+.mr6-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mr6-result-card {
+  position: relative;
+  padding: 1.25rem;
+  background: var(--mr6-bg, #ffffff);
+  border: 2px solid var(--mr6-border, #e0e0e0);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.mr6-result-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.mr6-result-card.best {
+  border-color: #10b981;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.02) 0%, rgba(16, 185, 129, 0.06) 100%);
+}
+
+.mr6-best-badge {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  padding: 0.3rem 0.75rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.mr6-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.mr6-card-icon {
+  font-size: 1.5rem;
+}
+
+.mr6-card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.mr6-card-metrics {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--mr6-secondary-bg, #f5f5f5);
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.mr6-card-metric {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.mr6-metric-label {
+  font-size: 1rem;
+}
+
+.mr6-metric-val {
+  font-weight: 600;
+  color: var(--mr6-accent, #0066ff);
+}
+
+.mr6-card-content {
+  flex: 1;
+  padding: 0.75rem;
+  background: var(--mr6-secondary-bg, #f9f9f9);
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--mr6-text, #333);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.mr6-card-content p {
+  margin: 0;
+}
+
+.mr6-card-select-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--mr6-accent, #0066ff);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mr6-card-select-btn:hover {
+  background: #0052cc;
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+}
+
+/* ========================================
+   Recommendation Box (Compact)
+   ======================================== */
+.mr6-recommendation-compact {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);
+  border: 1px solid var(--mr6-accent, #0066ff);
+  border-radius: 8px;
+}
+
+.mr6-rec-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.mr6-rec-content {
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.mr6-rec-content strong {
+  color: var(--mr6-text, #1a1a1a);
+}
+
+.mr6-rec-tags {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--mr6-secondary, #666);
+}
+
+/* ========================================
+   Enhanced Empty State
+   ======================================== */
+.mr6-empty-state-enhanced {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: var(--mr6-secondary-bg, #f9f9f9);
+  border: 2px dashed var(--mr6-border, #e0e0e0);
+  border-radius: 12px;
+  min-height: 350px;
+}
+
+.mr6-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.mr6-empty-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--mr6-text, #1a1a1a);
+}
+
+.mr6-empty-desc {
+  margin: 0 0 1.5rem 0;
+  color: var(--mr6-secondary, #666);
+  font-size: 0.9rem;
+}
+
+.mr6-empty-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 400px;
+}
+
+.mr6-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--mr6-bg, #ffffff);
+  border: 1px solid var(--mr6-border, #e0e0e0);
+  border-radius: 6px;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--mr6-secondary, #666);
+}
+
+.mr6-tip-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   Legacy styles (kept for compatibility)
+   ======================================== */
 .mr6-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -46,251 +751,6 @@
   height: fit-content;
 }
 
-.mr6-prompt-input,
-.mr6-model-selector,
-.mr6-metric-selector {
-  margin-bottom: 1.5rem;
-}
-
-.mr6-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid var(--mr6-border, #e0e0e0);
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 1rem;
-  resize: vertical;
-  background: var(--mr6-bg, #ffffff);
-  color: var(--mr6-text, #1a1a1a);
-  box-sizing: border-box;
-}
-
-.mr6-textarea:focus {
-  outline: none;
-  border-color: var(--mr6-accent, #0066ff);
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
-}
-
-.mr6-textarea::placeholder {
-  color: var(--mr6-secondary, #666);
-  font-style: italic;
-}
-
-.mr6-label {
-  margin: 0 0 1rem 0;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--mr6-text, #1a1a1a);
-}
-
-.mr6-model-grid,
-.mr6-metric-checkboxes {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.mr6-model-checkbox,
-.mr6-metric-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.625rem 0.75rem;
-  background: var(--mr6-bg, #ffffff);
-  border: 1.5px solid var(--mr6-border, #e0e0e0);
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.mr6-model-checkbox:hover,
-.mr6-metric-checkbox:hover {
-  border-color: var(--mr6-accent, #0066ff);
-  background: linear-gradient(135deg, rgba(0, 102, 255, 0.03) 0%, rgba(0, 102, 255, 0.08) 100%);
-  box-shadow: 0 1px 3px rgba(0, 102, 255, 0.1);
-}
-
-.mr6-model-checkbox input,
-.mr6-metric-checkbox input {
-  /* Custom checkbox styling */
-  appearance: none;
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  min-width: 18px;
-  min-height: 18px;
-  border: 2px solid var(--mr6-border, #d0d0d0);
-  border-radius: 4px;
-  cursor: pointer;
-  position: relative;
-  background: var(--mr6-bg, #ffffff);
-  transition: all 0.2s ease;
-  margin: 0;
-}
-
-.mr6-model-checkbox input:hover,
-.mr6-metric-checkbox input:hover {
-  border-color: var(--mr6-accent, #0066ff);
-}
-
-.mr6-model-checkbox input:checked,
-.mr6-metric-checkbox input:checked {
-  background: var(--mr6-accent, #0066ff);
-  border-color: var(--mr6-accent, #0066ff);
-}
-
-.mr6-model-checkbox input:checked::after,
-.mr6-metric-checkbox input:checked::after {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 2px;
-  width: 4px;
-  height: 8px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.mr6-model-name {
-  flex: 1;
-  font-weight: 500;
-  color: var(--mr6-text, #1a1a1a);
-}
-
-.mr6-recommended {
-  padding: 0.25rem 0.625rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  box-shadow: 0 1px 2px rgba(16, 185, 129, 0.2);
-}
-
-.mr6-run-btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: var(--mr6-accent, #0066ff);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.mr6-run-btn:hover:not(:disabled) {
-  background: #0052cc;
-  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
-}
-
-.mr6-run-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.mr6-comparison-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.mr6-comparison-title {
-  margin: 0 0 1rem 0;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--mr6-text, #1a1a1a);
-}
-
-.mr6-outputs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-
-.mr6-output-card {
-  padding: 1.5rem;
-  background: var(--mr6-secondary-bg, #f9f9f9);
-  border: 1px solid var(--mr6-border, #e0e0e0);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-}
-
-.mr6-output-title {
-  margin: 0 0 1rem 0;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--mr6-text, #1a1a1a);
-}
-
-.mr6-metrics {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--mr6-border, #e0e0e0);
-}
-
-.mr6-metric {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
-}
-
-.mr6-metric-value {
-  font-weight: 700;
-  color: var(--mr6-accent, #0066ff);
-}
-
-.mr6-output-content {
-  flex: 1;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  color: var(--mr6-secondary, #666);
-  line-height: 1.6;
-}
-
-.mr6-select-btn {
-  padding: 0.65rem 1rem;
-  background: var(--mr6-accent, #0066ff);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.mr6-select-btn:hover {
-  background: #0052cc;
-}
-
-.mr6-recommendation-box {
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);
-  border: 1px solid var(--mr6-accent, #0066ff);
-  border-radius: 8px;
-}
-
-.mr6-recommendation-title {
-  margin: 0 0 0.5rem 0;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--mr6-text, #1a1a1a);
-}
-
-.mr6-recommendation-text {
-  margin: 0;
-  color: var(--mr6-secondary, #666);
-  line-height: 1.5;
-}
-
 .mr6-empty-state {
   padding: 3rem 1rem;
   text-align: center;
@@ -305,45 +765,9 @@
   border-radius: 8px;
 }
 
-.mr6-guide-title {
-  margin: 0 0 1.5rem 0;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--mr6-text, #1a1a1a);
-}
-
-.mr6-guide-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-}
-
-.mr6-guide-card {
-  padding: 1.5rem;
-  background: var(--mr6-bg, #ffffff);
-  border: 1px solid var(--mr6-border, #e0e0e0);
-  border-radius: 6px;
-}
-
-.mr6-guide-card h4 {
-  margin: 0 0 1rem 0;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--mr6-accent, #0066ff);
-}
-
-.mr6-guide-card ul {
-  margin: 0;
-  padding-left: 1.5rem;
-  font-size: 1rem;
-  color: var(--mr6-secondary, #666);
-}
-
-.mr6-guide-card li {
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
-}
-
+/* ========================================
+   Dark Mode
+   ======================================== */
 @media (prefers-color-scheme: dark) {
   .mr6-container {
     --mr6-bg: #1e1e1e;
@@ -353,14 +777,32 @@
     --mr6-border: #404040;
     --mr6-accent: #4a9eff;
   }
+
+  .mr6-warning {
+    background: #451a03;
+    border-color: #c2410c;
+    color: #fdba74;
+  }
 }
 
+/* ========================================
+   Responsive Design
+   ======================================== */
 @media (max-width: 1024px) {
+  .mr6-layout-optimized,
   .mr6-layout {
     grid-template-columns: 1fr;
   }
 
-  .mr6-outputs-grid {
+  .mr6-controls-optimized {
+    order: 1;
+  }
+
+  .mr6-results-panel {
+    order: 2;
+  }
+
+  .mr6-cards-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -370,15 +812,40 @@
     padding: 1rem;
   }
 
-  .mr6-title {
-    font-size: 1.5rem;
+  .mr6-header-compact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 
-  .mr6-metrics {
+  .mr6-title-compact {
+    font-size: 1.25rem;
+  }
+
+  .mr6-steps {
+    padding: 0.75rem;
+    overflow-x: auto;
+  }
+
+  .mr6-step span {
+    display: none;
+  }
+
+  .mr6-step-line {
+    width: 30px;
+    margin: 0 0.5rem;
+  }
+
+  .mr6-results-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mr6-guide-grid-compact {
     grid-template-columns: 1fr;
   }
 
-  .mr6-guide-grid {
-    grid-template-columns: 1fr;
+  .mr6-empty-tips {
+    width: 100%;
   }
 }
