@@ -362,7 +362,8 @@ router.get(
     // Get paginated results
     const dataQuery = `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
                               i.response_time_ms, i.was_verified, i.was_modified,
-                              i.was_rejected, i.parent_id, i.branch_path, i.reasoning, i.insights, i.created_at, i.updated_at
+                              i.was_rejected, i.parent_id, i.branch_path, i.reasoning, i.insights,
+                              i.selected_branch_id, i.created_at, i.updated_at
                        FROM interactions i
                        ${whereClause}
                        ORDER BY i.created_at DESC LIMIT $${paramCount++} OFFSET $${paramCount}`;
@@ -435,6 +436,7 @@ router.get(
           branchPath: i.branch_path,
           reasoning: i.reasoning, // AI chain-of-thought reasoning
           insights: i.insights, // MR2 insights data
+          selectedBranchId: i.selected_branch_id, // Currently selected branch (null = original)
           createdAt: i.created_at,
           updatedAt: i.updated_at,
           branches: branchesMap.get(i.id) || [], // Include branches
@@ -1104,6 +1106,77 @@ router.post(
         },
       },
       message: 'Message edited - created new version at same position',
+      timestamp: new Date().toISOString(),
+    });
+  })
+);
+
+/**
+ * PATCH /api/interactions/:interactionId/select-branch
+ * Update the selected branch for an AI message
+ * When branchId is null, selects the original AI response
+ */
+router.patch(
+  '/:interactionId/select-branch',
+  authenticateToken,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { interactionId } = req.params;
+    const { branchId } = req.body; // null = original, UUID = specific branch
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'User ID not found in token',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Verify interaction belongs to user
+    const interactionCheck = await pool.query(
+      'SELECT id, session_id FROM interactions WHERE id = $1 AND user_id = $2',
+      [interactionId, userId]
+    );
+
+    if (interactionCheck.rows.length === 0) {
+      return res.status(403).json({
+        success: false,
+        error: 'Interaction not found or does not belong to user',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // If branchId is provided, verify it exists and belongs to this interaction
+    if (branchId) {
+      const branchCheck = await pool.query(
+        'SELECT id FROM message_branches WHERE id = $1 AND interaction_id = $2',
+        [branchId, interactionId]
+      );
+
+      if (branchCheck.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: 'Branch not found or does not belong to this interaction',
+          timestamp: new Date().toISOString(),
+        });
+      }
+    }
+
+    // Update selected_branch_id
+    await pool.query(
+      `UPDATE interactions
+       SET selected_branch_id = $1, updated_at = CURRENT_TIMESTAMP
+       WHERE id = $2`,
+      [branchId || null, interactionId]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        interactionId,
+        selectedBranchId: branchId || null,
+      },
+      message: branchId ? 'Branch selected' : 'Original response selected',
       timestamp: new Date().toISOString(),
     });
   })

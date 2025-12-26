@@ -418,6 +418,11 @@ export const apiService = {
     // Delete a branch
     delete: (branchId: string) =>
       api.delete(`/branches/${branchId}`),
+
+    // Select a branch for an interaction (persists the selection)
+    // branchId: null = original response, string = specific branch
+    select: (interactionId: string, branchId: string | null) =>
+      api.patch(`/interactions/${interactionId}/select-branch`, { branchId }),
   },
 
   /**

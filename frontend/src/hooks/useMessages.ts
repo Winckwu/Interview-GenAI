@@ -351,7 +351,17 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
               wasVerified: branch.wasVerified,
               wasModified: branch.wasModified,
             })) || [],
-            currentBranchIndex: 0, // Always start with original
+            // Calculate currentBranchIndex from selectedBranchId
+            // 0 = original, 1+ = index in branches array + 1
+            currentBranchIndex: (() => {
+              if (!interaction.selectedBranchId || !interaction.branches?.length) {
+                return 0; // Original response
+              }
+              const branchIndex = interaction.branches.findIndex(
+                (b: any) => b.id === interaction.selectedBranchId
+              );
+              return branchIndex >= 0 ? branchIndex + 1 : 0;
+            })(),
           });
         }
 

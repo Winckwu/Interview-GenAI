@@ -44,6 +44,7 @@ export const initializeDatabase = async () => {
       'migrations_mr_history.sql',
       'migrations_reasoning.sql',
       'migrations_conversation_tree.sql',
+      'migrations_branch_selection.sql', // Persist selected branch for AI responses
     ];
 
     for (const migrationFile of migrationFiles) {

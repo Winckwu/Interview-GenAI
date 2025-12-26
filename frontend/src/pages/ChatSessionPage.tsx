@@ -1730,7 +1730,16 @@ Message: "${firstMessage.slice(0, 200)}"`,
       // Update messages array
       const updatedMessages = [...messages];
       updatedMessages[mr6Context.messageIndex] = updatedMessage;
-      setMessages(updatedMessages)
+      setMessages(updatedMessages);
+
+      // Persist the branch selection to backend (so it survives page refresh)
+      try {
+        await apiService.branches.select(interactionId, savedBranch.id);
+        console.log(`[MR6] Persisted branch selection: ${savedBranch.id}`);
+      } catch (persistError) {
+        console.warn('[MR6] Failed to persist branch selection:', persistError);
+        // Don't fail the whole operation - branch was created, just selection won't persist
+      }
 
       // Close MR6 tool and show success message
       setActiveMRTool('none');
@@ -1746,8 +1755,9 @@ Message: "${firstMessage.slice(0, 200)}"`,
 
   /**
    * Handle branch switching - Navigate between original message and alternative branches
+   * Now persists the selection to the backend so it survives page refresh
    */
-  const handleBranchSwitch = useCallback((messageId: string, direction: 'prev' | 'next') => {
+  const handleBranchSwitch = useCallback(async (messageId: string, direction: 'prev' | 'next') => {
     const messageIndex = messages.findIndex(m => m.id === messageId);
     if (messageIndex === -1) return;
 
@@ -1765,6 +1775,7 @@ Message: "${firstMessage.slice(0, 200)}"`,
     }
 
     if (newIndex !== currentIndex) {
+      // Update local state immediately for responsive UI
       const updatedMessage = {
         ...message,
         currentBranchIndex: newIndex,
@@ -1773,6 +1784,17 @@ Message: "${firstMessage.slice(0, 200)}"`,
       const updatedMessages = [...messages];
       updatedMessages[messageIndex] = updatedMessage;
       setMessages(updatedMessages);
+
+      // Persist selection to backend
+      // newIndex 0 = original (null), newIndex 1+ = branch at index newIndex-1
+      const selectedBranchId = newIndex === 0 ? null : message.branches[newIndex - 1]?.id;
+      try {
+        await apiService.branches.select(messageId, selectedBranchId);
+        console.log(`[BranchSwitch] Persisted selection: message ${messageId}, branch ${selectedBranchId || 'original'}`);
+      } catch (error) {
+        console.warn('[BranchSwitch] Failed to persist branch selection:', error);
+        // Don't revert UI - selection works locally, just won't persist on refresh
+      }
     }
   }, [messages, setMessages]);
 
