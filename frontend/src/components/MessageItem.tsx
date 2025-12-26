@@ -22,6 +22,7 @@ import { exportBranches } from '../utils/branchExport';
 import api from '../services/api';
 import { RegenerateDropdown, type RegenerateOptions } from './RegenerateDropdown';
 import { VersionNavigation } from './VersionNavigation';
+import { detectSmartTrigger } from '../utils/smartTrigger';
 
 // Re-export Message type for backward compatibility
 export type { Message };
@@ -119,6 +120,9 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   // Fork hint state - shows tooltip when navigating branches
   const [showForkHint, setShowForkHint] = useState(false);
   const forkHintTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Smart trigger state - shows contextual suggestion for insights
+  const [smartTriggerDismissed, setSmartTriggerDismissed] = useState(false);
 
   // Show fork hint when navigating branches
   const handleBranchNavWithHint = (direction: 'prev' | 'next') => {
@@ -825,6 +829,35 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   )}
                 </div>
               );
+            })()}
+
+            {/* Smart Trigger Indicator - Shows contextual suggestion when AI response warrants exploration */}
+            {(() => {
+              const smartTrigger = detectSmartTrigger(message.content);
+              if (smartTrigger.shouldTrigger && onViewInsights && !smartTriggerDismissed && !isStreaming) {
+                return (
+                  <div className={styles.smartTriggerIndicator}>
+                    <span className={styles.smartTriggerText}>
+                      {smartTrigger.suggestion}
+                    </span>
+                    <button
+                      className={styles.smartTriggerAction}
+                      onClick={onViewInsights}
+                      title="Open Insights panel"
+                    >
+                      View Insights
+                    </button>
+                    <button
+                      className={styles.smartTriggerDismiss}
+                      onClick={() => setSmartTriggerDismissed(true)}
+                      title="Dismiss this suggestion"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              }
+              return null;
             })()}
 
           </div>
