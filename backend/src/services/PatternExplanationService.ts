@@ -131,12 +131,16 @@ async function saveExplanationToDatabase(
 ): Promise<void> {
   try {
     // Update the features column to include the explanation
+    // Use subquery because PostgreSQL doesn't support ORDER BY/LIMIT in UPDATE
     await pool.query(
       `UPDATE pattern_logs
        SET features = features || $1::jsonb
-       WHERE session_id = $2
-       ORDER BY created_at DESC
-       LIMIT 1`,
+       WHERE id = (
+         SELECT id FROM pattern_logs
+         WHERE session_id = $2
+         ORDER BY created_at DESC
+         LIMIT 1
+       )`,
       [
         JSON.stringify({
           llmExplanation: explanation,

@@ -17,10 +17,13 @@ import { PatternEstimate, Pattern } from './RealtimePatternRecognizer';
 export type Urgency = 'observe' | 'remind' | 'enforce';
 export type DisplayMode = 'inline' | 'sidebar' | 'modal';
 
+export type Tier = 'soft' | 'medium' | 'hard';
+
 export interface ActiveMR {
   mrId: string;
   name: string;
   urgency: Urgency;
+  tier: Tier;  // Added: maps urgency to tier for frontend InterventionManager
   displayMode: DisplayMode;
   message: string;
   priority: number;
@@ -143,11 +146,13 @@ export class AdaptiveMRActivator {
 
       const metadata = MR_METADATA[evaluation.mrId];
       const urgency = this.adjustUrgency(metadata.baseUrgency, signals, pattern);
+      const tier = this.urgencyToTier(urgency);
 
       activeMRs.push({
         mrId: evaluation.mrId,
         name: metadata.name,
         urgency,
+        tier,
         displayMode: this.determineDisplayMode(urgency),
         message: this.generateContextualMessage(evaluation.mrId, signals, pattern),
         priority: adjustedPriority,
@@ -595,6 +600,18 @@ export class AdaptiveMRActivator {
     }
 
     return baseUrgency;
+  }
+
+  /**
+   * Convert urgency to tier for frontend InterventionManager
+   */
+  private urgencyToTier(urgency: Urgency): Tier {
+    switch (urgency) {
+      case 'observe': return 'soft';
+      case 'remind': return 'medium';
+      case 'enforce': return 'hard';
+      default: return 'soft';
+    }
   }
 
   /**

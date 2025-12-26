@@ -758,9 +758,13 @@ const InterventionManager: React.FC<InterventionManagerProps> = ({
     const allowedTiers = TIER_VISIBILITY[interventionLevel];
 
     const filteredMRs = activeMRs.filter(mr => {
+      // Infer tier from urgency if not explicitly set
+      const mrTier: 'soft' | 'medium' | 'hard' = mr.tier ||
+        (mr.urgency === 'enforce' ? 'hard' : mr.urgency === 'remind' ? 'medium' : 'soft');
+
       // MR3 TIER VISIBILITY CHECK - filter based on user's intervention level setting
-      if (!allowedTiers.has(mr.tier)) {
-        console.log(`[InterventionManager] Skipping ${mr.mrId} - tier '${mr.tier}' not visible at '${interventionLevel}' level`);
+      if (!allowedTiers.has(mrTier)) {
+        console.log(`[InterventionManager] Skipping ${mr.mrId} - tier '${mrTier}' not visible at '${interventionLevel}' level`);
         return false;
       }
 
