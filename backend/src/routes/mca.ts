@@ -19,6 +19,7 @@ import AdaptiveMRActivator from '../services/AdaptiveMRActivator';
 import UnifiedMCAAnalyzer from '../services/UnifiedMCAAnalyzer';
 import { queuePatternExplanation, getPatternExplanation } from '../services/PatternExplanationService';
 import UserActionTracker, { ActionType, ActionCategory } from '../services/UserActionTracker';
+import PatternStabilityCalculator, { PatternHistoryEntry, StabilityMetrics } from '../services/PatternStabilityCalculator';
 import pool from '../config/database';
 
 const router = express.Router();
@@ -76,6 +77,12 @@ router.post('/analyze', async (req: Request, res: Response) => {
 
 // Store recognizers per session
 const recognizerMap = new Map<string, RealtimePatternRecognizer>();
+
+// Store pattern history for stability calculation (per session)
+const patternHistoryMap = new Map<string, PatternHistoryEntry[]>();
+
+// Stability calculator instance
+const stabilityCalculator = new PatternStabilityCalculator();
 
 /**
  * GET /mca/status/:sessionId
@@ -241,11 +248,47 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
       turnCount
     );
 
+    // Calculate pattern stability
+    // Add current pattern to history
+    if (!patternHistoryMap.has(sessionId)) {
+      patternHistoryMap.set(sessionId, []);
+    }
+    const patternHistory = patternHistoryMap.get(sessionId)!;
+    patternHistory.push({
+      pattern: patternEstimate.topPattern,
+      confidence: patternEstimate.confidence,
+      timestamp: Date.now(),
+    });
+
+    // Calculate stability metrics
+    const stabilityMetrics = stabilityCalculator.calculateStability(patternHistory);
+
+    // Adjust confidence based on stability (reduce confidence if pattern is unstable)
+    let adjustedConfidence = patternEstimate.confidence;
+    if (!stabilityMetrics.isStable && stabilityMetrics.stability < 0.5) {
+      adjustedConfidence = patternEstimate.confidence * 0.8;
+      console.log(`[MCA:${sessionId}] Pattern unstable (${stabilityMetrics.trendDirection}), reduced confidence by 20%`);
+    }
+
+    // Record stability snapshot to database (non-blocking)
+    stabilityCalculator.recordStabilitySnapshot(
+      userId,
+      sessionId,
+      stabilityMetrics,
+      turnCount
+    ).catch(err => {
+      console.warn(`[MCA:${sessionId}] Failed to record stability snapshot:`, err);
+    });
+
     // Log this orchestration step
     console.log(`[MCA:${sessionId}] Turn ${turnCount} (${classifier}):`, {
       topPattern: patternEstimate.topPattern,
       probability: (patternEstimate.probability * 100).toFixed(1) + '%',
       confidence: (patternEstimate.confidence * 100).toFixed(1) + '%',
+      adjustedConfidence: (adjustedConfidence * 100).toFixed(1) + '%',
+      stability: (stabilityMetrics.stability * 100).toFixed(1) + '%',
+      streakLength: stabilityMetrics.streakLength,
+      trendDirection: stabilityMetrics.trendDirection,
       activeMRCount: activeMRs.length,
       isHighRiskF,
     });
@@ -265,7 +308,16 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
           probabilities: patternEstimate.probabilities,
           classifier,
           turnCount,
-          stability: patternEstimate.stability || 'low',
+          // Include real stability metrics from PatternStabilityCalculator
+          stability: stabilityMetrics.stability,
+          stabilityMetrics: {
+            stability: stabilityMetrics.stability,
+            streakLength: stabilityMetrics.streakLength,
+            volatility: stabilityMetrics.volatility,
+            trendDirection: stabilityMetrics.trendDirection,
+            isStable: stabilityMetrics.isStable,
+          },
+          adjustedConfidence,
           reasoning: patternEstimate.reasoning || [],
         };
 
@@ -330,7 +382,19 @@ router.post('/orchestrate', async (req: Request, res: Response) => {
       success: true,
       data: {
         signals,
-        pattern: patternEstimate,
+        pattern: {
+          ...patternEstimate,
+          // Include stability metrics in pattern response
+          stability: stabilityMetrics.stability,
+          adjustedConfidence,
+          stabilityMetrics: {
+            stability: stabilityMetrics.stability,
+            streakLength: stabilityMetrics.streakLength,
+            volatility: stabilityMetrics.volatility,
+            trendDirection: stabilityMetrics.trendDirection,
+            isStable: stabilityMetrics.isStable,
+          },
+        },
         activeMRs,
         turnCount,
         isHighRiskF,
@@ -364,6 +428,12 @@ router.post('/reset/:sessionId', async (req: Request, res: Response) => {
 
     // Remove the recognizer to reset state
     recognizerMap.delete(sessionId);
+
+    // Also clear pattern history for stability calculation
+    patternHistoryMap.delete(sessionId);
+
+    // Clear user actions for this session
+    UserActionTracker.clearSession(sessionId);
 
     res.json({
       success: true,
