@@ -1057,8 +1057,8 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
       </div>
 
       <div className="mr2-content-area">
-        {/* Turns sidebar - HIDDEN for cleaner UI */}
-        {false && versions.length > 0 && renderVersionSelector()}
+        {/* Turns sidebar - for selecting different conversations */}
+        {versions.length > 0 && renderVersionSelector()}
 
         <div className="mr2-main-view">
           {viewMode === 'insights' && renderInsightsView()}
