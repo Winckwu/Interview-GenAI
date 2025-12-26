@@ -457,8 +457,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               })}
             </div>
 
-            {/* Branch Statistics */}
-            {branchStats && (
+            {/* Branch Statistics - HIDDEN for cleaner UI */}
+            {false && branchStats && (
               <div
                 style={{
                   display: 'inline-flex',
@@ -743,8 +743,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   </div>
                 )}
 
-                {/* Bulk operations button - show when there are multiple branches */}
-                {hasBranches && message.branches && message.branches.length > 1 && (
+                {/* Bulk operations button - HIDDEN for cleaner UI */}
+                {false && hasBranches && message.branches && message.branches.length > 1 && (
                   <button
                     onClick={() => setShowBulkOps(true)}
                     title="Bulk operations on branches"
