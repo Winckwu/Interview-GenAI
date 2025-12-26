@@ -151,14 +151,35 @@ router.get('/status/:sessionId', async (req: Request, res: Response) => {
  */
 router.post('/orchestrate', async (req: Request, res: Response) => {
   try {
-    const { sessionId, userId, conversationTurns, currentTurnIndex } = req.body;
+    const { sessionId, userId: providedUserId, conversationTurns, currentTurnIndex } = req.body;
     const { classifier = 'bayesian' } = req.query;
 
-    if (!sessionId || !userId || !conversationTurns || conversationTurns.length === 0) {
+    if (!sessionId || !conversationTurns || conversationTurns.length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'sessionId, userId, and conversationTurns are required',
+        error: 'sessionId and conversationTurns are required',
       });
+    }
+
+    // Get userId from request or look it up from session
+    let userId = providedUserId;
+    if (!userId) {
+      try {
+        const sessionResult = await pool.query(
+          'SELECT user_id FROM work_sessions WHERE id = $1',
+          [sessionId]
+        );
+        if (sessionResult.rows.length > 0) {
+          userId = sessionResult.rows[0].user_id;
+        }
+      } catch (err) {
+        console.warn(`[MCA:${sessionId}] Could not look up userId from session:`, err);
+      }
+    }
+
+    // If still no userId, use a fallback (won't save to DB but won't fail)
+    if (!userId) {
+      userId = 'anonymous';
     }
 
     // Find the latest user turn to analyze
