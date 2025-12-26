@@ -63,6 +63,7 @@ interface MR2Props {
   onExport?: (data: any) => void;
   onRevert?: (versionId: string) => void;
   onInsightsSaved?: (messageId: string, insights: InsightsData) => void; // Callback when insights are saved to DB
+  onFollowupClick?: (question: string) => void; // Callback when user clicks a follow-up question
   showTimeline?: boolean;
   autoTrack?: boolean;
 }
@@ -75,6 +76,7 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
   onExport,
   onRevert,
   onInsightsSaved,
+  onFollowupClick,
   showTimeline = true,
   autoTrack = true
 }) => {
@@ -515,16 +517,22 @@ export const MR2ProcessTransparency: React.FC<MR2Props> = ({
               </div>
             )}
 
-            {/* Suggested Follow-ups */}
+            {/* Suggested Follow-ups - Clickable action buttons */}
             {insights.suggestedFollowups.length > 0 && (
               <div className="mr2-insight-section mr2-insight-followups">
-                <h3>💡 Suggested Follow-up Questions</h3>
-                <div className="mr2-followup-list">
+                <h3>💡 Quick Actions</h3>
+                <p className="mr2-followup-hint">Click to ask this question</p>
+                <div className="mr2-followup-buttons">
                   {insights.suggestedFollowups.map((followup, idx) => (
-                    <div key={idx} className="mr2-followup-item">
+                    <button
+                      key={idx}
+                      className="mr2-followup-btn"
+                      onClick={() => onFollowupClick?.(followup)}
+                      title="Click to send this question"
+                    >
                       <span className="mr2-followup-icon">→</span>
                       <span>{followup}</span>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>

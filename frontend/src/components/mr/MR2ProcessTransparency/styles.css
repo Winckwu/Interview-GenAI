@@ -1458,33 +1458,50 @@
   color: #7c3aed;
 }
 
-.mr2-followup-list {
+.mr2-followup-hint {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin: 0 0 0.75rem 0;
+}
+
+.mr2-followup-buttons {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.mr2-followup-item {
+.mr2-followup-btn {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
   background: white;
-  border-radius: 6px;
-  border: 1px solid #e9d5ff;
+  border-radius: 8px;
+  border: 2px solid #e9d5ff;
   color: #7c3aed;
   cursor: pointer;
   transition: all 0.2s;
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
-.mr2-followup-item:hover {
+.mr2-followup-btn:hover {
   background: #f5f3ff;
+  border-color: #7c3aed;
   transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
+}
+
+.mr2-followup-btn:active {
+  transform: translateX(2px);
+  background: #ede9fe;
 }
 
 .mr2-followup-icon {
   font-weight: bold;
   flex-shrink: 0;
+  color: #7c3aed;
 }
 
 .mr2-insights-empty {

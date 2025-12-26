@@ -2306,6 +2306,20 @@ Message: "${firstMessage.slice(0, 200)}"`,
             ));
             console.log('[Chat] Updated message insights in local state:', messageId);
           }}
+          onFollowupClick={(question) => {
+            // Fill the input with the follow-up question
+            setUserInput(question);
+            // Close the MR panel
+            setActiveMRTool(null);
+            // Focus the input (after a brief delay to allow panel to close)
+            setTimeout(() => {
+              const inputEl = document.querySelector('textarea[placeholder*="Type"]') as HTMLTextAreaElement;
+              if (inputEl) {
+                inputEl.focus();
+                inputEl.setSelectionRange(question.length, question.length);
+              }
+            }, 100);
+          }}
         />;
       case 'mr3-agency':
         return <MR3HumanAgencyControl
