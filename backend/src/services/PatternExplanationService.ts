@@ -12,21 +12,28 @@
 
 import { callOpenAI } from './aiService';
 import pool from '../config/database';
-
-interface BehavioralSignals {
-  taskComplexity?: string;
-  aiRelianceDegree?: string;
-  taskDecompositionEvidence?: boolean;
-  verificationBehavior?: string;
-  iterativeRefinement?: boolean;
-  [key: string]: any;
-}
+import { BehavioralSignals } from './BehaviorSignalDetector';
 
 interface PatternExplanationResult {
   explanation: string;
   keyBehaviors: string[];
   recommendations: string[];
   riskLevel: 'low' | 'medium' | 'high';
+}
+
+/**
+ * Convert numeric signal values to human-readable descriptions
+ */
+function describeSignal(name: string, value: number | boolean | string): string {
+  if (typeof value === 'boolean') {
+    return value ? 'Yes' : 'No';
+  }
+  if (typeof value === 'number') {
+    if (value <= 1) return 'Low';
+    if (value <= 2) return 'Medium';
+    return 'High';
+  }
+  return String(value);
 }
 
 /**
@@ -44,11 +51,13 @@ export async function generatePatternFExplanation(
 Based on the following behavioral signals, explain why this student shows "Pattern F - Passive Over-Reliance" behavior.
 
 ## Behavioral Signals Detected:
-- Task Complexity: ${signals.taskComplexity || 'unknown'}
-- AI Reliance Degree: ${signals.aiRelianceDegree || 'unknown'}
-- Task Decomposition: ${signals.taskDecompositionEvidence ? 'Yes' : 'No'}
-- Verification Behavior: ${signals.verificationBehavior || 'none'}
-- Iterative Refinement: ${signals.iterativeRefinement ? 'Yes' : 'No'}
+- Task Complexity: ${describeSignal('taskComplexity', signals.taskComplexity)} (${signals.taskComplexity}/3)
+- AI Reliance Degree: ${describeSignal('aiRelianceDegree', signals.aiRelianceDegree)} (${signals.aiRelianceDegree}/3)
+- Task Decomposition Evidence: ${describeSignal('taskDecomposition', signals.taskDecompositionEvidence)} (${signals.taskDecompositionEvidence}/3)
+- Verification Attempted: ${signals.verificationAttempted ? 'Yes' : 'No'}
+- Quality Check Score: ${describeSignal('qualityCheck', signals.qualityCheckScore)} (${signals.qualityCheckScore}/3)
+- Reflection Depth: ${describeSignal('reflection', signals.reflectionDepth)} (${signals.reflectionDepth}/3)
+- Iteration Count: ${signals.iterationCount}
 - Detection Confidence: ${(confidence * 100).toFixed(0)}%
 
 ## Conversation Summary:
