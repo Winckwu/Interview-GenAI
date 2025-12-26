@@ -826,12 +826,47 @@ router.get(
     const result = await pool.query(
       `SELECT i.id, i.session_id, i.user_id, i.user_prompt, i.ai_response, i.ai_model,
               i.response_time_ms, i.was_verified, i.was_modified, i.was_rejected,
-              i.parent_id, i.branch_path, i.insights, i.created_at, i.updated_at
+              i.parent_id, i.branch_path, i.insights, i.selected_branch_id, i.created_at, i.updated_at
        FROM interactions i
        WHERE i.session_id = $1
        ORDER BY i.created_at ASC`,
       [sessionId]
     );
+
+    // Load branches for all interactions
+    const interactionIds = result.rows.map((i: any) => i.id);
+    let branchesMap = new Map<string, any[]>();
+
+    if (interactionIds.length > 0) {
+      const branchesResult = await pool.query(
+        `SELECT id, interaction_id, branch_content, source, model,
+                was_verified, was_modified, is_main, created_by, created_at, updated_at
+         FROM message_branches
+         WHERE interaction_id = ANY($1)
+         ORDER BY created_at ASC`,
+        [interactionIds]
+      );
+
+      // Group branches by interaction_id
+      for (const branch of branchesResult.rows) {
+        const interactionId = branch.interaction_id;
+        if (!branchesMap.has(interactionId)) {
+          branchesMap.set(interactionId, []);
+        }
+        branchesMap.get(interactionId)!.push({
+          id: branch.id,
+          content: branch.branch_content,
+          source: branch.source,
+          model: branch.model,
+          wasVerified: branch.was_verified,
+          wasModified: branch.was_modified,
+          isMain: branch.is_main,
+          createdBy: branch.created_by,
+          createdAt: branch.created_at,
+          updatedAt: branch.updated_at,
+        });
+      }
+    }
 
     // Build tree structure: group messages by their parent_id to find siblings
     const messagesByParent = new Map<string | null, any[]>();
@@ -852,6 +887,8 @@ router.get(
         parentId: row.parent_id,
         branchPath: row.branch_path,
         insights: row.insights,
+        selectedBranchId: row.selected_branch_id, // Currently selected branch
+        branches: branchesMap.get(row.id) || [], // AI response branches
         createdAt: row.created_at,
         updatedAt: row.updated_at,
         // Will be populated below
