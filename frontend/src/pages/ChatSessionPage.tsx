@@ -1498,15 +1498,30 @@ Message: "${firstMessage.slice(0, 200)}"`,
         return;
       }
 
-      // Create new branch
-      const newBranch = {
-        id: `branch-${Date.now()}`,
-        content: cleanContent,
-        source: 'manual' as const,
+      // Get the interaction ID for the AI message
+      const interactionId = aiMessage.id.startsWith('user-')
+        ? aiMessage.id.replace('user-', '')
+        : aiMessage.id;
+
+      // Save branch to database
+      const response = await api.post('/branches', {
+        interactionId,
+        branchContent: cleanContent,
+        source: 'manual',
         model: options.model,
-        createdAt: new Date().toISOString(),
-        wasVerified: false,
-        wasModified: false,
+      });
+
+      const savedBranch = response.data.data.branch;
+
+      // Create branch object for frontend
+      const newBranch: import('../hooks/useMessages').MessageBranch = {
+        id: savedBranch.id,
+        content: savedBranch.content,
+        source: savedBranch.source,
+        model: savedBranch.model,
+        createdAt: savedBranch.createdAt,
+        wasVerified: savedBranch.wasVerified,
+        wasModified: savedBranch.wasModified,
       };
 
       // Add branch to message and switch to it
@@ -1523,7 +1538,15 @@ Message: "${firstMessage.slice(0, 200)}"`,
         return m;
       }));
 
-      console.log('[Chat] Added regenerated response as branch');
+      // Persist the branch selection to backend (so it survives page refresh)
+      try {
+        await apiService.branches.select(interactionId, savedBranch.id);
+        console.log(`[Chat] Persisted regenerated branch selection: ${savedBranch.id}`);
+      } catch (persistError) {
+        console.warn('[Chat] Failed to persist branch selection:', persistError);
+      }
+
+      console.log('[Chat] Added regenerated response as branch (saved to database)');
     } catch (err) {
       console.error('Failed to regenerate:', err);
       setError('Failed to regenerate response');
