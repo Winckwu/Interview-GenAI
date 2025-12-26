@@ -15,6 +15,15 @@ export interface ConversationTurn {
   aiResponse?: string;
   timestamp: Date;
   sessionId: string;
+  // User action flags (from UI interactions)
+  wasVerified?: boolean;       // User clicked verify on AI response
+  wasModified?: boolean;       // User modified the AI response
+  wasRejected?: boolean;       // User rejected the AI response
+  wasCopied?: boolean;         // User copied the AI response
+  wasRegenerated?: boolean;    // User requested regeneration
+  // MR tool interaction flags
+  mrToolsUsed?: string[];      // List of MR tools used (e.g., ['MR1', 'MR6'])
+  mrApplied?: boolean;         // User applied MR result to conversation
 }
 
 export interface RiskFactors {
@@ -150,13 +159,30 @@ export class BehaviorSignalDetector {
       : 0;
 
     // Content analysis signals
-    const modified = this.detectModification(userMsg, ctx.previousAiResponse);
+    const modified = currentTurn.wasModified || this.detectModification(userMsg, ctx.previousAiResponse);
     const hasUncertainty = this.detectUncertaintyInAI(currentTurn.aiResponse);
     const containsDecisions = this.detectDecisionPoints(userMsg);
     const irreversibleAction = this.detectIrreversibleAction(userMsg);
     const controversialClaim = this.detectControversialClaim(currentTurn.aiResponse);
     const sessionEnding = this.detectSessionEnding(userMsg);
     const isMilestone = this.detectMilestone(userMsg, iterationCount);
+
+    // Enhanced signals from UI actions
+    const hasVerifiedAction = currentTurn.wasVerified || false;
+    const hasModifiedAction = currentTurn.wasModified || false;
+    const hasRejectedAction = currentTurn.wasRejected || false;
+    const mrToolsUsed = currentTurn.mrToolsUsed || [];
+    const mrApplied = currentTurn.mrApplied || false;
+
+    // Boost signals based on actual user actions
+    // If user verified, they're showing verification behavior
+    const enhancedVerificationAttempted = verificationAttempted || hasVerifiedAction;
+    // If user modified, they're showing evaluation behavior
+    const enhancedOutputEvaluation = outputEvaluationPresent || hasModifiedAction;
+    // If user used MR tools, they're showing metacognitive awareness
+    const mrEngagementBoost = mrToolsUsed.length > 0 ? Math.min(mrToolsUsed.length, 3) : 0;
+    // If user applied MR results, they're showing regulation behavior
+    const mrApplicationBoost = mrApplied ? 2 : 0;
 
     return {
       // ========== Planning signals (P1-P4) ==========
@@ -167,21 +193,21 @@ export class BehaviorSignalDetector {
       preparationScore,
 
       // ========== Monitoring signals (M1-M3) ==========
-      verificationAttempted,
+      verificationAttempted: enhancedVerificationAttempted,  // Enhanced with UI action
       qualityCheckMentioned,
-      qualityCheckScore,
-      contextAwarenessIndicator: this.detectContextAwareness(userMsg),
+      qualityCheckScore: Math.min(qualityCheckScore + (hasVerifiedAction ? 1 : 0), 3),  // Boost if verified
+      contextAwarenessIndicator: this.detectContextAwareness(userMsg) + mrEngagementBoost,
 
       // ========== Evaluation signals (E1-E3) ==========
-      outputEvaluationPresent,
-      outputEvaluationScore,
+      outputEvaluationPresent: enhancedOutputEvaluation,  // Enhanced with UI action
+      outputEvaluationScore: Math.min(outputEvaluationScore + (hasModifiedAction ? 1 : 0) + (hasRejectedAction ? 1 : 0), 3),
       reflectionDepth: this.detectReflection(userMsg),
-      capabilityJudgmentShown,
-      capabilityJudgmentScore,
+      capabilityJudgmentShown: capabilityJudgmentShown || hasRejectedAction,  // Rejecting shows judgment
+      capabilityJudgmentScore: Math.min(capabilityJudgmentScore + (hasRejectedAction ? 1 : 0), 3),
 
       // ========== Regulation signals (R1-R2) ==========
       iterationCount,
-      strategyAdjustmentScore,
+      strategyAdjustmentScore: Math.min(strategyAdjustmentScore + mrApplicationBoost, 3),  // Boost if applied MR
       trustCalibrationEvidence,
       trustCalibrationScore,
 
@@ -199,7 +225,8 @@ export class BehaviorSignalDetector {
       // Trust tracking
       trustScore: ctx.currentTrustScore,
       trustChange,
-      unverifiedConsecutive: ctx.unverifiedCount,
+      // Reset unverified count if user verified this response
+      unverifiedConsecutive: hasVerifiedAction ? 0 : ctx.unverifiedCount,
 
       // User/session state
       isNewUser: ctx.isNewUser,

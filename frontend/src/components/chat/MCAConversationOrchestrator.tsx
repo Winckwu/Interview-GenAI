@@ -182,12 +182,20 @@ const MCAConversationOrchestrator: React.FC<MCAConversationOrchestratorProps> = 
           };
         } else {
           // Use traditional orchestration (bayesian/svm)
+          // Include user action flags for enhanced pattern detection
           const conversationTurns = messages.map((msg, index) => ({
             id: msg.id,
             userMessage: msg.role === 'user' ? msg.content : '',
             aiResponse: msg.role === 'ai' ? msg.content : undefined,
             timestamp: new Date(msg.timestamp),
             sessionId,
+            // Include UI action flags for pattern detection
+            wasVerified: msg.wasVerified || false,
+            wasModified: msg.wasModified || false,
+            wasRejected: msg.wasRejected || false,
+            // Include MR tool usage if available
+            mrToolsUsed: (msg as any).mrToolsUsed || [],
+            mrApplied: (msg as any).mrApplied || false,
           }));
 
           const orchestrateResponse = await api.post('/mca/orchestrate', {
@@ -329,12 +337,19 @@ export const useMCAOrchestrator = (
           };
         } else {
           // Use traditional orchestration
+          // Include user action flags for enhanced pattern detection
           const conversationTurns = messages.map((msg) => ({
             id: msg.id,
             userMessage: msg.role === 'user' ? msg.content : '',
             aiResponse: msg.role === 'ai' ? msg.content : undefined,
             timestamp: new Date(msg.timestamp),
             sessionId,
+            // Include UI action flags for pattern detection
+            wasVerified: msg.wasVerified || false,
+            wasModified: msg.wasModified || false,
+            wasRejected: msg.wasRejected || false,
+            mrToolsUsed: (msg as any).mrToolsUsed || [],
+            mrApplied: (msg as any).mrApplied || false,
           }));
 
           const orchestrateResponse = await api.post('/mca/orchestrate', {

@@ -18,6 +18,7 @@ import SVMPatternClassifier from '../services/SVMPatternClassifier';
 import AdaptiveMRActivator from '../services/AdaptiveMRActivator';
 import UnifiedMCAAnalyzer from '../services/UnifiedMCAAnalyzer';
 import { queuePatternExplanation, getPatternExplanation } from '../services/PatternExplanationService';
+import UserActionTracker, { ActionType, ActionCategory } from '../services/UserActionTracker';
 import pool from '../config/database';
 
 const router = express.Router();
@@ -373,6 +374,135 @@ router.post('/reset/:sessionId', async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: 'Failed to reset MCA analysis',
+    });
+  }
+});
+
+/**
+ * POST /mca/track-action
+ * Track user actions for enhanced pattern detection
+ *
+ * Actions include:
+ * - Message actions: verify, modify, reject, copy, regenerate
+ * - MR tool actions: open, apply, dismiss, complete
+ * - Intervention actions: shown, acted, dismissed, suppressed
+ * - Verification actions: fact_check, cross_model, external_source
+ */
+router.post('/track-action', async (req: Request, res: Response) => {
+  try {
+    const {
+      sessionId,
+      userId,
+      category,
+      actionType,
+      targetId,
+      targetType,
+      mrId,
+      mrResult,
+      messageId,
+      messageContent,
+      durationMs,
+      metadata,
+    } = req.body;
+
+    if (!sessionId || !actionType) {
+      return res.status(400).json({
+        success: false,
+        error: 'sessionId and actionType are required',
+      });
+    }
+
+    // Record the action
+    const action = UserActionTracker.recordAction({
+      sessionId,
+      userId: userId || 'anonymous',
+      category: category as ActionCategory || 'message',
+      actionType: actionType as ActionType,
+      targetId,
+      targetType,
+      mrId,
+      mrResult,
+      messageId,
+      messageContent: messageContent?.substring(0, 200), // Truncate for storage
+      durationMs,
+      metadata,
+    });
+
+    // Get updated action summary
+    const summary = UserActionTracker.getActionSummary(sessionId);
+
+    // Optionally save to database for persistence
+    try {
+      await pool.query(
+        `INSERT INTO user_actions
+         (id, session_id, user_id, category, action_type, target_id, mr_id, metadata, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())`,
+        [
+          action.id,
+          sessionId,
+          userId || 'anonymous',
+          category || 'message',
+          actionType,
+          targetId || null,
+          mrId || null,
+          JSON.stringify(metadata || {}),
+        ]
+      );
+    } catch (dbError: any) {
+      // Table might not exist yet, just log
+      console.warn('[MCA:track-action] Could not save to DB:', dbError.message);
+    }
+
+    res.json({
+      success: true,
+      data: {
+        actionId: action.id,
+        summary: {
+          engagementScore: summary.engagementScore,
+          verificationRate: summary.verificationRate,
+          mrUtilizationRate: summary.mrUtilizationRate,
+        },
+      },
+    });
+  } catch (error: any) {
+    console.error('Track action error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to track action',
+    });
+  }
+});
+
+/**
+ * GET /mca/action-summary/:sessionId
+ * Get action summary for a session
+ */
+router.get('/action-summary/:sessionId', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+
+    if (!sessionId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Session ID is required',
+      });
+    }
+
+    const summary = UserActionTracker.getActionSummary(sessionId);
+    const signalsBoost = UserActionTracker.getSignalsBoost(sessionId);
+
+    res.json({
+      success: true,
+      data: {
+        summary,
+        signalsBoost,
+      },
+    });
+  } catch (error: any) {
+    console.error('Action summary error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get action summary',
     });
   }
 });
