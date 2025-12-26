@@ -509,8 +509,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   </span>
                 )}
 
-                {/* Set as Main button - only show for alternatives (not original) */}
-                {currentBranchIndex > 0 && onBranchSetAsMain && (
+                {/* Set as Main button - HIDDEN for cleaner UI */}
+                {false && currentBranchIndex > 0 && onBranchSetAsMain && (
                   <button
                     type="button"
                     onClick={(e) => {
@@ -533,8 +533,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   </button>
                 )}
 
-                {/* Delete button - only show for alternatives (not original) */}
-                {currentBranchIndex > 0 && onBranchDelete && (
+                {/* Delete button - HIDDEN for cleaner UI */}
+                {false && currentBranchIndex > 0 && onBranchDelete && (
                   <button
                     onClick={onBranchDelete}
                     title="Delete this AI response alternative"
@@ -551,8 +551,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   </button>
                 )}
 
-                {/* Compare AI responses button - show when there are multiple alternatives */}
-                {totalBranches > 1 && (
+                {/* Compare AI responses button - HIDDEN for cleaner UI */}
+                {false && totalBranches > 1 && (
                   <button
                     onClick={() => setShowComparison(true)}
                     title="Compare AI response alternatives side-by-side"
@@ -572,8 +572,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   </button>
                 )}
 
-                {/* Export branches button - show when there are branches */}
-                {hasBranches && message.branches && (
+                {/* Export branches button - HIDDEN for cleaner UI */}
+                {false && hasBranches && message.branches && (
                   <div ref={exportMenuRef} style={{ position: 'relative', marginLeft: '0.5rem' }}>
                     <button
                       onClick={() => setShowExportMenu(!showExportMenu)}
@@ -670,8 +670,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   </div>
                 )}
 
-                {/* Fork Conversation button - creates a new conversation timeline from this message */}
-                {onForkConversation && (
+                {/* Fork Conversation button - HIDDEN for cleaner UI */}
+                {false && onForkConversation && (
                   <div style={{ position: 'relative', display: 'inline-block', marginLeft: '0.5rem' }}>
                     <button
                       onClick={onForkConversation}
