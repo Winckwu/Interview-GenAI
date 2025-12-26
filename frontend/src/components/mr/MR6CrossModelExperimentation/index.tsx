@@ -46,24 +46,24 @@ interface QuickPreset {
 const QUICK_PRESETS: QuickPreset[] = [
   {
     id: 'all',
-    label: '全部比较',
+    label: 'Compare All',
     icon: '🔄',
     models: ['gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo'],
-    description: '同时对比所有可用模型',
+    description: 'Compare all available models simultaneously',
   },
   {
     id: 'quality-vs-speed',
-    label: '质量 vs 速度',
+    label: 'Quality vs Speed',
     icon: '⚖️',
     models: ['gpt-4o', 'gpt-3.5-turbo'],
-    description: '对比最高质量与最快速度',
+    description: 'Compare highest quality with fastest speed',
   },
   {
     id: 'balanced',
-    label: '性价比对比',
+    label: 'Cost-Effective',
     icon: '💰',
     models: ['gpt-4o-mini', 'gpt-3.5-turbo'],
-    description: '对比两个高性价比模型',
+    description: 'Compare two cost-effective models',
   },
 ];
 
@@ -103,17 +103,23 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
     return recommendModel(taskType);
   }, [taskType]);
 
-  // Auto-populate prompt from conversation if available
+  // Auto-populate prompt from conversation or initial prompt prop
   const lastUserMessage = useMemo(() => {
+    // First try to get from conversation history
     const userMessages = conversationHistory.filter(m => m.role === 'user');
-    return userMessages.length > 0 ? userMessages[userMessages.length - 1].content : '';
-  }, [conversationHistory]);
+    if (userMessages.length > 0) {
+      return userMessages[userMessages.length - 1].content;
+    }
+    // Fall back to prompt prop
+    return prompt || '';
+  }, [conversationHistory, prompt]);
 
   const handleUseCurrentChat = useCallback(() => {
-    if (lastUserMessage) {
-      setUserPrompt(lastUserMessage);
+    const messageToUse = lastUserMessage;
+    if (messageToUse) {
+      setUserPrompt(messageToUse);
       setActiveStep(2);
-      flowTracker?.recordInteraction?.('MR6', 'use_current_chat', { promptLength: lastUserMessage.length });
+      flowTracker?.recordInteraction?.('MR6', 'use_current_chat', { promptLength: messageToUse.length });
     }
   }, [lastUserMessage, flowTracker]);
 
@@ -169,11 +175,11 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
   const getModelDisplayInfo = (model: ModelType) => {
     switch (model) {
       case 'gpt-4o':
-        return { icon: '🤖', name: 'GPT-4o', tag: '最强大', tagColor: '#8b5cf6' };
+        return { icon: '🤖', name: 'GPT-4o', tag: 'Most Capable', tagColor: '#8b5cf6' };
       case 'gpt-4o-mini':
-        return { icon: '⚡', name: 'GPT-4o Mini', tag: '均衡', tagColor: '#10b981' };
+        return { icon: '⚡', name: 'GPT-4o Mini', tag: 'Balanced', tagColor: '#10b981' };
       case 'gpt-3.5-turbo':
-        return { icon: '🚀', name: 'GPT-3.5', tag: '最快', tagColor: '#f59e0b' };
+        return { icon: '🚀', name: 'GPT-3.5', tag: 'Fastest', tagColor: '#f59e0b' };
       default:
         return { icon: '🤖', name: model, tag: '', tagColor: '#6b7280' };
     }
@@ -184,15 +190,15 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
       {/* Compact Header */}
       <div className="mr6-header-compact">
         <div className="mr6-header-left">
-          <h1 className="mr6-title-compact">🔄 模型对比实验</h1>
-          <p className="mr6-subtitle-compact">同时运行多个模型，找到最佳答案</p>
+          <h1 className="mr6-title-compact">🔄 Model Comparison</h1>
+          <p className="mr6-subtitle-compact">Run multiple models simultaneously, find the best answer</p>
         </div>
         <button
           className="mr6-guide-toggle"
           onClick={() => setShowGuide(!showGuide)}
-          title={showGuide ? '隐藏指南' : '显示指南'}
+          title={showGuide ? 'Hide Guide' : 'Show Guide'}
         >
-          {showGuide ? '📖 隐藏指南' : '📖 模型指南'}
+          {showGuide ? '📖 Hide Guide' : '📖 Model Guide'}
         </button>
       </div>
 
@@ -204,21 +210,21 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
               <span className="mr6-guide-icon">🤖</span>
               <div>
                 <strong>GPT-4o</strong>
-                <span className="mr6-guide-desc">复杂推理、代码生成、创意写作</span>
+                <span className="mr6-guide-desc">Complex reasoning, code generation, creative writing</span>
               </div>
             </div>
             <div className="mr6-guide-item">
               <span className="mr6-guide-icon">⚡</span>
               <div>
                 <strong>GPT-4o Mini</strong>
-                <span className="mr6-guide-desc">日常任务、快速回答、代码审查</span>
+                <span className="mr6-guide-desc">Daily tasks, quick answers, code review</span>
               </div>
             </div>
             <div className="mr6-guide-item">
               <span className="mr6-guide-icon">🚀</span>
               <div>
                 <strong>GPT-3.5</strong>
-                <span className="mr6-guide-desc">简单问题、快速事实、翻译</span>
+                <span className="mr6-guide-desc">Simple questions, quick facts, translation</span>
               </div>
             </div>
           </div>
@@ -229,17 +235,17 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
       <div className="mr6-steps">
         <div className={`mr6-step ${activeStep >= 1 ? 'active' : ''} ${activeStep > 1 ? 'completed' : ''}`}>
           <div className="mr6-step-number">1</div>
-          <span>选择模型</span>
+          <span>Select Models</span>
         </div>
         <div className="mr6-step-line" />
         <div className={`mr6-step ${activeStep >= 2 ? 'active' : ''} ${activeStep > 2 ? 'completed' : ''}`}>
           <div className="mr6-step-number">2</div>
-          <span>输入问题</span>
+          <span>Enter Prompt</span>
         </div>
         <div className="mr6-step-line" />
         <div className={`mr6-step ${activeStep >= 3 ? 'active' : ''}`}>
           <div className="mr6-step-number">3</div>
-          <span>查看结果</span>
+          <span>View Results</span>
         </div>
       </div>
 
@@ -248,7 +254,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
         <div className="mr6-controls-optimized">
           {/* Quick Presets */}
           <div className="mr6-quick-section">
-            <h3 className="mr6-section-title">⚡ 快速选择</h3>
+            <h3 className="mr6-section-title">⚡ Quick Select</h3>
             <div className="mr6-preset-grid">
               {QUICK_PRESETS.map(preset => (
                 <button
@@ -271,7 +277,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
 
           {/* Model Selection */}
           <div className="mr6-model-section">
-            <h3 className="mr6-section-title">🎯 选择模型</h3>
+            <h3 className="mr6-section-title">🎯 Select Models</h3>
             <div className="mr6-model-toggles">
               {availableModels.map(model => {
                 const info = getModelDisplayInfo(model);
@@ -299,7 +305,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
                       {info.tag}
                     </span>
                     {model === recommendedModel && (
-                      <span className="mr6-toggle-recommended">推荐</span>
+                      <span className="mr6-toggle-recommended">Recommended</span>
                     )}
                     <span className={`mr6-toggle-check ${isSelected ? 'visible' : ''}`}>✓</span>
                   </button>
@@ -311,19 +317,19 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
           {/* Prompt Input */}
           <div className="mr6-prompt-section">
             <div className="mr6-prompt-header">
-              <h3 className="mr6-section-title">💬 输入问题</h3>
+              <h3 className="mr6-section-title">💬 Enter Prompt</h3>
               {lastUserMessage && (
                 <button
                   className="mr6-use-chat-btn"
                   onClick={handleUseCurrentChat}
                 >
-                  📋 使用当前对话
+                  📋 Use Current Chat
                 </button>
               )}
             </div>
             <textarea
               className="mr6-textarea-optimized"
-              placeholder="输入您想让多个模型回答的问题..."
+              placeholder="Enter a question for multiple models to answer..."
               value={userPrompt}
               onChange={e => {
                 setUserPrompt(e.target.value);
@@ -342,15 +348,15 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
             {isLoading ? (
               <>
                 <span className="mr6-loading-spinner" />
-                正在运行对比...
+                Running comparison...
               </>
             ) : (
-              <>▶️ 开始对比 ({selectedModels.length} 个模型)</>
+              <>▶️ Start Comparison ({selectedModels.length} models)</>
             )}
           </button>
 
           {selectedModels.length === 0 && (
-            <p className="mr6-warning">⚠️ 请至少选择一个模型</p>
+            <p className="mr6-warning">⚠️ Please select at least one model</p>
           )}
         </div>
 
@@ -359,7 +365,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
           {comparison ? (
             <>
               <div className="mr6-results-header">
-                <h2 className="mr6-results-title">📊 对比结果</h2>
+                <h2 className="mr6-results-title">📊 Comparison Results</h2>
                 <div className="mr6-metric-pills">
                   {(['speed', 'tokenCount', 'cost', 'quality'] as const).map(metric => (
                     <button
@@ -373,10 +379,10 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
                         }
                       }}
                     >
-                      {metric === 'speed' && '⚡ 速度'}
-                      {metric === 'tokenCount' && '📊 Token'}
-                      {metric === 'cost' && '💰 成本'}
-                      {metric === 'quality' && '⭐ 质量'}
+                      {metric === 'speed' && '⚡ Speed'}
+                      {metric === 'tokenCount' && '📊 Tokens'}
+                      {metric === 'cost' && '💰 Cost'}
+                      {metric === 'quality' && '⭐ Quality'}
                     </button>
                   ))}
                 </div>
@@ -396,7 +402,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
                     >
                       {isBest && (
                         <div className="mr6-best-badge">
-                          <span>🏆 最佳</span>
+                          <span>🏆 Best</span>
                         </div>
                       )}
 
@@ -428,14 +434,14 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
                           <div className="mr6-card-metric">
                             <span className="mr6-metric-label">⭐</span>
                             <span className="mr6-metric-val">
-                              {modelMetrics.quality > 0 ? `${modelMetrics.quality.toFixed(1)}/5` : '待评分'}
+                              {modelMetrics.quality > 0 ? `${modelMetrics.quality.toFixed(1)}/5` : 'Pending'}
                             </span>
                           </div>
                         )}
                       </div>
 
                       <div className="mr6-card-content">
-                        <p>{modelOutput || '无输出'}</p>
+                        <p>{modelOutput || 'No output'}</p>
                       </div>
 
                       <button
@@ -447,7 +453,7 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
                           onModelSelected?.(model, modelOutput || '');
                         }}
                       >
-                        ✓ 使用这个答案
+                        ✓ Use This Response
                       </button>
                     </div>
                   );
@@ -458,11 +464,11 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
               <div className="mr6-recommendation-compact">
                 <div className="mr6-rec-icon">💡</div>
                 <div className="mr6-rec-content">
-                  <strong>建议：</strong>
+                  <strong>Recommendation: </strong>
                   <span>{comparison.reasoning}</span>
                   {comparison.recommendedFor.length > 0 && (
                     <span className="mr6-rec-tags">
-                      适合: {comparison.recommendedFor.join('、')}
+                      Best for: {comparison.recommendedFor.join(', ')}
                     </span>
                   )}
                 </div>
@@ -471,22 +477,22 @@ export const MR6CrossModelExperimentation: React.FC<MR6Props> = ({
           ) : (
             <div className="mr6-empty-state-enhanced">
               <div className="mr6-empty-icon">🔬</div>
-              <h3 className="mr6-empty-title">开始您的模型实验</h3>
+              <h3 className="mr6-empty-title">Start Your Model Experiment</h3>
               <p className="mr6-empty-desc">
-                选择要比较的模型，输入问题，然后点击"开始对比"
+                Select models to compare, enter a prompt, then click "Start Comparison"
               </p>
               <div className="mr6-empty-tips">
                 <div className="mr6-tip">
                   <span className="mr6-tip-icon">💡</span>
-                  <span>复杂问题用 GPT-4o，简单问题用 GPT-3.5 更快更省</span>
+                  <span>Use GPT-4o for complex tasks, GPT-3.5 for simple ones to save time and cost</span>
                 </div>
                 <div className="mr6-tip">
                   <span className="mr6-tip-icon">⚡</span>
-                  <span>GPT-4o Mini 是日常使用的最佳选择</span>
+                  <span>GPT-4o Mini is the best choice for everyday use</span>
                 </div>
                 <div className="mr6-tip">
                   <span className="mr6-tip-icon">🎯</span>
-                  <span>同时对比多个模型，找到最适合你的答案</span>
+                  <span>Compare multiple models at once to find the best answer for you</span>
                 </div>
               </div>
             </div>

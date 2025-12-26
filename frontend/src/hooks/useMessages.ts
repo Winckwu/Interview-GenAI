@@ -159,6 +159,46 @@ export interface UseMessagesReturn {
 export const MESSAGES_PER_PAGE = 20;
 
 /**
+ * Create AI message from interaction data
+ * Ensures consistent branch loading across all message loading functions
+ */
+const createAIMessageFromInteraction = (interaction: any): Message => ({
+  id: interaction.id,
+  role: 'ai',
+  content: interaction.aiResponse,
+  timestamp: interaction.createdAt,
+  wasVerified: interaction.wasVerified,
+  wasModified: interaction.wasModified,
+  wasRejected: interaction.wasRejected,
+  reasoning: interaction.reasoning,
+  insights: interaction.insights,
+  parentId: interaction.parentId,
+  branchPath: interaction.branchPath,
+  siblingIds: interaction.siblingIds,
+  siblingIndex: interaction.siblingIndex,
+  // Load branches with proper mapping
+  branches: interaction.branches?.map((branch: any) => ({
+    id: branch.id,
+    content: branch.content,
+    source: branch.source,
+    model: branch.model,
+    createdAt: branch.createdAt,
+    wasVerified: branch.wasVerified,
+    wasModified: branch.wasModified,
+  })) || [],
+  // Calculate currentBranchIndex from selectedBranchId
+  currentBranchIndex: (() => {
+    if (!interaction.selectedBranchId || !interaction.branches?.length) {
+      return 0; // Original response
+    }
+    const branchIndex = interaction.branches.findIndex(
+      (b: any) => b.id === interaction.selectedBranchId
+    );
+    return branchIndex >= 0 ? branchIndex + 1 : 0;
+  })(),
+});
+
+/**
  * Batch update interactions to reduce API calls
  */
 const batchUpdateInteractions = async (
@@ -332,37 +372,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
           });
 
           // Add AI message with branches and insights
-          pageMessages.push({
-            id: interaction.id,
-            role: 'ai',
-            content: interaction.aiResponse,
-            timestamp: interaction.createdAt,
-            wasVerified: interaction.wasVerified,
-            wasModified: interaction.wasModified,
-            wasRejected: interaction.wasRejected,
-            reasoning: interaction.reasoning, // AI chain-of-thought reasoning
-            insights: interaction.insights, // MR2: Stored insights from database
-            branches: interaction.branches?.map((branch: any) => ({
-              id: branch.id,
-              content: branch.content,
-              source: branch.source,
-              model: branch.model,
-              createdAt: branch.createdAt,
-              wasVerified: branch.wasVerified,
-              wasModified: branch.wasModified,
-            })) || [],
-            // Calculate currentBranchIndex from selectedBranchId
-            // 0 = original, 1+ = index in branches array + 1
-            currentBranchIndex: (() => {
-              if (!interaction.selectedBranchId || !interaction.branches?.length) {
-                return 0; // Original response
-              }
-              const branchIndex = interaction.branches.findIndex(
-                (b: any) => b.id === interaction.selectedBranchId
-              );
-              return branchIndex >= 0 ? branchIndex + 1 : 0;
-            })(),
-          });
+          pageMessages.push(createAIMessageFromInteraction(interaction));
         }
 
         // Sort messages by timestamp in ascending order (oldest first)
@@ -827,22 +837,9 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
             siblingIndex: interaction.siblingIndex,
           });
 
-          // Add AI message with sibling info
+          // Add AI message with sibling info and branches
           if (interaction.aiResponse) {
-            loadedMessages.push({
-              id: interaction.id,
-              role: 'ai',
-              content: interaction.aiResponse,
-              timestamp: interaction.createdAt,
-              wasVerified: interaction.wasVerified,
-              wasModified: interaction.wasModified,
-              wasRejected: interaction.wasRejected,
-              parentId: interaction.parentId,
-              branchPath: interaction.branchPath,
-              siblingIds: interaction.siblingIds,
-              siblingIndex: interaction.siblingIndex,
-              insights: interaction.insights,
-            });
+            loadedMessages.push(createAIMessageFromInteraction(interaction));
           }
         }
 
@@ -872,18 +869,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
             branchPath: interaction.branchPath,
           });
 
-          loadedMessages.push({
-            id: interaction.id,
-            role: 'ai',
-            content: interaction.aiResponse,
-            timestamp: interaction.createdAt,
-            wasVerified: interaction.wasVerified,
-            wasModified: interaction.wasModified,
-            wasRejected: interaction.wasRejected,
-            branches: interaction.branches,
-            parentId: interaction.parentId,
-            branchPath: interaction.branchPath,
-          });
+          loadedMessages.push(createAIMessageFromInteraction(interaction));
         }
 
         setMessages(loadedMessages);
@@ -993,20 +979,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
           });
 
           if (interaction.aiResponse) {
-            loadedMessages.push({
-              id: interaction.id,
-              role: 'ai',
-              content: interaction.aiResponse,
-              timestamp: interaction.createdAt,
-              wasVerified: interaction.wasVerified,
-              wasModified: interaction.wasModified,
-              wasRejected: interaction.wasRejected,
-              parentId: interaction.parentId,
-              branchPath: interaction.branchPath,
-              siblingIds: interaction.siblingIds,
-              siblingIndex: interaction.siblingIndex,
-              insights: interaction.insights,
-            });
+            loadedMessages.push(createAIMessageFromInteraction(interaction));
           }
         }
 
@@ -1091,20 +1064,7 @@ export function useMessages(options: UseMessagesOptions): UseMessagesReturn {
           });
 
           if (interaction.aiResponse) {
-            loadedMessages.push({
-              id: interaction.id,
-              role: 'ai',
-              content: interaction.aiResponse,
-              timestamp: interaction.createdAt,
-              wasVerified: interaction.wasVerified,
-              wasModified: interaction.wasModified,
-              wasRejected: interaction.wasRejected,
-              parentId: interaction.parentId,
-              branchPath: interaction.branchPath,
-              siblingIds: interaction.siblingIds,
-              siblingIndex: interaction.siblingIndex,
-              insights: interaction.insights,
-            });
+            loadedMessages.push(createAIMessageFromInteraction(interaction));
           }
         }
 
