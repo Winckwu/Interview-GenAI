@@ -281,7 +281,7 @@ const ChatSessionPage: React.FC = () => {
   const { user } = useAuthStore();
   const { addInteraction, deleteSession: deleteSessionFromStore } = useSessionStore();
   const { setSidebarOpen } = useUIStore();
-  const { currentUserPattern, fetchPatterns } = usePatternStore();
+  const { currentUserPattern, fetchPatterns, updateCurrentPattern } = usePatternStore();
   const { latestAssessment, fetchLatestAssessment } = useAssessmentStore();
   const metricsStore = useMetricsStore();
   const [sessionStartTime] = useState(Date.now());
@@ -602,6 +602,21 @@ const ChatSessionPage: React.FC = () => {
   const { result: mcaResult, activeMRs } = useMCAOrchestrator(sessionId || '', messages, !isHistoricalSession, 'bayesian');
   const [displayedModalMR, setDisplayedModalMR] = useState<ActiveMR | null>(null);
   const [dismissedMRs, setDismissedMRs] = useState<Set<string>>(new Set());
+
+  // Sync MCA pattern to patternStore for consistent display across components (Dashboard, MR3, etc.)
+  useEffect(() => {
+    if (mcaResult?.pattern?.topPattern && mcaResult.pattern.confidence >= 0.5) {
+      updateCurrentPattern(
+        mcaResult.pattern.topPattern as any,
+        mcaResult.pattern.confidence,
+        {
+          stability: mcaResult.pattern.stability,
+          streakLength: mcaResult.pattern.streakLength,
+          trendDirection: mcaResult.pattern.stabilityMetrics?.trendDirection,
+        }
+      );
+    }
+  }, [mcaResult?.pattern?.topPattern, mcaResult?.pattern?.confidence, updateCurrentPattern]);
 
   // MR2 Transparency versions
   const [interactionVersions, setInteractionVersions] = useState<any[]>([]);

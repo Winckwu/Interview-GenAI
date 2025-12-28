@@ -69,6 +69,8 @@ export interface PatternState {
   createPrediction: (taskId: string, context: Record<string, any>) => Promise<Prediction>;
   submitFeedback: (predictionId: string, feedback: string, isCorrect: boolean) => Promise<void>;
   clearError: () => void;
+  // Real-time pattern sync from MCA
+  updateCurrentPattern: (patternType: UserPatternType, confidence: number, metrics?: Partial<Pattern>) => void;
 }
 
 /**
@@ -240,4 +242,36 @@ export const usePatternStore = create<PatternState>((set, get) => ({
   },
 
   clearError: () => set({ error: null }),
+
+  /**
+   * Update current pattern from real-time MCA detection
+   * This syncs the pattern across all components (Dashboard, MR3, etc.)
+   */
+  updateCurrentPattern: (patternType: UserPatternType, confidence: number, metrics?: Partial<Pattern>) => {
+    const currentPattern = get().currentUserPattern;
+    const now = new Date().toISOString();
+
+    const updatedPattern: Pattern = {
+      id: currentPattern?.id || '1',
+      userId: currentPattern?.userId || 'current',
+      patternType,
+      confidence,
+      stability: metrics?.stability ?? currentPattern?.stability,
+      aiRelianceScore: metrics?.aiRelianceScore ?? currentPattern?.aiRelianceScore,
+      verificationScore: metrics?.verificationScore ?? currentPattern?.verificationScore,
+      streakLength: metrics?.streakLength ?? currentPattern?.streakLength,
+      trendDirection: metrics?.trendDirection ?? currentPattern?.trendDirection,
+      totalInteractions: metrics?.totalInteractions ?? currentPattern?.totalInteractions,
+      metrics: currentPattern?.metrics || {},
+      createdAt: currentPattern?.createdAt || now,
+      updatedAt: now,
+    };
+
+    set({
+      currentUserPattern: updatedPattern,
+      patterns: [updatedPattern],
+    });
+
+    console.log('[PatternStore] Pattern synced from MCA:', patternType, 'confidence:', confidence);
+  },
 }));
